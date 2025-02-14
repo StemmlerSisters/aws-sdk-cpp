@@ -6,27 +6,39 @@
 #pragma once
 #include <aws/lex-models/LexModelBuildingService_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/lex-models/LexModelBuildingServiceServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/lex-models/LexModelBuildingServiceErrorMarshaller.h>
 
 namespace Aws
 {
 namespace LexModelBuildingService
 {
+  AWS_LEXMODELBUILDINGSERVICE_API extern const char SERVICE_NAME[];
   /**
    * <fullname>Amazon Lex Build-Time Actions</fullname> <p> Amazon Lex is an AWS
    * service for building conversational voice and text interfaces. Use these actions
    * to create, update, and delete conversational bots for new and existing client
    * applications. </p>
    */
-  class AWS_LEXMODELBUILDINGSERVICE_API LexModelBuildingServiceClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<LexModelBuildingServiceClient>
+  class AWS_LEXMODELBUILDINGSERVICE_API LexModelBuildingServiceClient : smithy::client::AwsSmithyClientT<Aws::LexModelBuildingService::SERVICE_NAME,
+      Aws::LexModelBuildingService::LexModelBuildingServiceClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      LexModelBuildingServiceEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::LexModelBuildingServiceErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<LexModelBuildingServiceClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Lex Model Building Service"; }
 
       typedef LexModelBuildingServiceClientConfiguration ClientConfigurationType;
       typedef LexModelBuildingServiceEndpointProvider EndpointProviderType;
@@ -655,13 +667,13 @@ namespace LexModelBuildingService
          * href="http://docs.aws.amazon.com/goto/WebAPI/lex-models-2017-04-19/GetBots">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetBotsOutcome GetBots(const Model::GetBotsRequest& request) const;
+        virtual Model::GetBotsOutcome GetBots(const Model::GetBotsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetBots that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetBotsRequestT = Model::GetBotsRequest>
-        Model::GetBotsOutcomeCallable GetBotsCallable(const GetBotsRequestT& request) const
+        Model::GetBotsOutcomeCallable GetBotsCallable(const GetBotsRequestT& request = {}) const
         {
             return SubmitCallable(&LexModelBuildingServiceClient::GetBots, request);
         }
@@ -670,7 +682,7 @@ namespace LexModelBuildingService
          * An Async wrapper for GetBots that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetBotsRequestT = Model::GetBotsRequest>
-        void GetBotsAsync(const GetBotsRequestT& request, const GetBotsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetBotsAsync(const GetBotsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetBotsRequestT& request = {}) const
         {
             return SubmitAsync(&LexModelBuildingServiceClient::GetBots, request, handler, context);
         }
@@ -709,13 +721,13 @@ namespace LexModelBuildingService
          * href="http://docs.aws.amazon.com/goto/WebAPI/lex-models-2017-04-19/GetBuiltinIntents">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetBuiltinIntentsOutcome GetBuiltinIntents(const Model::GetBuiltinIntentsRequest& request) const;
+        virtual Model::GetBuiltinIntentsOutcome GetBuiltinIntents(const Model::GetBuiltinIntentsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetBuiltinIntents that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetBuiltinIntentsRequestT = Model::GetBuiltinIntentsRequest>
-        Model::GetBuiltinIntentsOutcomeCallable GetBuiltinIntentsCallable(const GetBuiltinIntentsRequestT& request) const
+        Model::GetBuiltinIntentsOutcomeCallable GetBuiltinIntentsCallable(const GetBuiltinIntentsRequestT& request = {}) const
         {
             return SubmitCallable(&LexModelBuildingServiceClient::GetBuiltinIntents, request);
         }
@@ -724,7 +736,7 @@ namespace LexModelBuildingService
          * An Async wrapper for GetBuiltinIntents that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetBuiltinIntentsRequestT = Model::GetBuiltinIntentsRequest>
-        void GetBuiltinIntentsAsync(const GetBuiltinIntentsRequestT& request, const GetBuiltinIntentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetBuiltinIntentsAsync(const GetBuiltinIntentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetBuiltinIntentsRequestT& request = {}) const
         {
             return SubmitAsync(&LexModelBuildingServiceClient::GetBuiltinIntents, request, handler, context);
         }
@@ -739,13 +751,13 @@ namespace LexModelBuildingService
          * href="http://docs.aws.amazon.com/goto/WebAPI/lex-models-2017-04-19/GetBuiltinSlotTypes">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetBuiltinSlotTypesOutcome GetBuiltinSlotTypes(const Model::GetBuiltinSlotTypesRequest& request) const;
+        virtual Model::GetBuiltinSlotTypesOutcome GetBuiltinSlotTypes(const Model::GetBuiltinSlotTypesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetBuiltinSlotTypes that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetBuiltinSlotTypesRequestT = Model::GetBuiltinSlotTypesRequest>
-        Model::GetBuiltinSlotTypesOutcomeCallable GetBuiltinSlotTypesCallable(const GetBuiltinSlotTypesRequestT& request) const
+        Model::GetBuiltinSlotTypesOutcomeCallable GetBuiltinSlotTypesCallable(const GetBuiltinSlotTypesRequestT& request = {}) const
         {
             return SubmitCallable(&LexModelBuildingServiceClient::GetBuiltinSlotTypes, request);
         }
@@ -754,7 +766,7 @@ namespace LexModelBuildingService
          * An Async wrapper for GetBuiltinSlotTypes that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetBuiltinSlotTypesRequestT = Model::GetBuiltinSlotTypesRequest>
-        void GetBuiltinSlotTypesAsync(const GetBuiltinSlotTypesRequestT& request, const GetBuiltinSlotTypesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetBuiltinSlotTypesAsync(const GetBuiltinSlotTypesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetBuiltinSlotTypesRequestT& request = {}) const
         {
             return SubmitAsync(&LexModelBuildingServiceClient::GetBuiltinSlotTypes, request, handler, context);
         }
@@ -882,13 +894,13 @@ namespace LexModelBuildingService
          * href="http://docs.aws.amazon.com/goto/WebAPI/lex-models-2017-04-19/GetIntents">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetIntentsOutcome GetIntents(const Model::GetIntentsRequest& request) const;
+        virtual Model::GetIntentsOutcome GetIntents(const Model::GetIntentsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetIntents that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetIntentsRequestT = Model::GetIntentsRequest>
-        Model::GetIntentsOutcomeCallable GetIntentsCallable(const GetIntentsRequestT& request) const
+        Model::GetIntentsOutcomeCallable GetIntentsCallable(const GetIntentsRequestT& request = {}) const
         {
             return SubmitCallable(&LexModelBuildingServiceClient::GetIntents, request);
         }
@@ -897,7 +909,7 @@ namespace LexModelBuildingService
          * An Async wrapper for GetIntents that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetIntentsRequestT = Model::GetIntentsRequest>
-        void GetIntentsAsync(const GetIntentsRequestT& request, const GetIntentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetIntentsAsync(const GetIntentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetIntentsRequestT& request = {}) const
         {
             return SubmitAsync(&LexModelBuildingServiceClient::GetIntents, request, handler, context);
         }
@@ -935,13 +947,13 @@ namespace LexModelBuildingService
          * href="http://docs.aws.amazon.com/goto/WebAPI/lex-models-2017-04-19/GetMigrations">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetMigrationsOutcome GetMigrations(const Model::GetMigrationsRequest& request) const;
+        virtual Model::GetMigrationsOutcome GetMigrations(const Model::GetMigrationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetMigrations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetMigrationsRequestT = Model::GetMigrationsRequest>
-        Model::GetMigrationsOutcomeCallable GetMigrationsCallable(const GetMigrationsRequestT& request) const
+        Model::GetMigrationsOutcomeCallable GetMigrationsCallable(const GetMigrationsRequestT& request = {}) const
         {
             return SubmitCallable(&LexModelBuildingServiceClient::GetMigrations, request);
         }
@@ -950,7 +962,7 @@ namespace LexModelBuildingService
          * An Async wrapper for GetMigrations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetMigrationsRequestT = Model::GetMigrationsRequest>
-        void GetMigrationsAsync(const GetMigrationsRequestT& request, const GetMigrationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetMigrationsAsync(const GetMigrationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetMigrationsRequestT& request = {}) const
         {
             return SubmitAsync(&LexModelBuildingServiceClient::GetMigrations, request, handler, context);
         }
@@ -1028,13 +1040,13 @@ namespace LexModelBuildingService
          * href="http://docs.aws.amazon.com/goto/WebAPI/lex-models-2017-04-19/GetSlotTypes">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetSlotTypesOutcome GetSlotTypes(const Model::GetSlotTypesRequest& request) const;
+        virtual Model::GetSlotTypesOutcome GetSlotTypes(const Model::GetSlotTypesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetSlotTypes that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetSlotTypesRequestT = Model::GetSlotTypesRequest>
-        Model::GetSlotTypesOutcomeCallable GetSlotTypesCallable(const GetSlotTypesRequestT& request) const
+        Model::GetSlotTypesOutcomeCallable GetSlotTypesCallable(const GetSlotTypesRequestT& request = {}) const
         {
             return SubmitCallable(&LexModelBuildingServiceClient::GetSlotTypes, request);
         }
@@ -1043,7 +1055,7 @@ namespace LexModelBuildingService
          * An Async wrapper for GetSlotTypes that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetSlotTypesRequestT = Model::GetSlotTypesRequest>
-        void GetSlotTypesAsync(const GetSlotTypesRequestT& request, const GetSlotTypesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetSlotTypesAsync(const GetSlotTypesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetSlotTypesRequestT& request = {}) const
         {
             return SubmitAsync(&LexModelBuildingServiceClient::GetSlotTypes, request, handler, context);
         }
@@ -1392,11 +1404,7 @@ namespace LexModelBuildingService
       std::shared_ptr<LexModelBuildingServiceEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<LexModelBuildingServiceClient>;
-      void init(const LexModelBuildingServiceClientConfiguration& clientConfiguration);
 
-      LexModelBuildingServiceClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<LexModelBuildingServiceEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace LexModelBuildingService

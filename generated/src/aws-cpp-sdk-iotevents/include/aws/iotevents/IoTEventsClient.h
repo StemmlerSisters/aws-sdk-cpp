@@ -6,27 +6,39 @@
 #pragma once
 #include <aws/iotevents/IoTEvents_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/iotevents/IoTEventsServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/iotevents/IoTEventsErrorMarshaller.h>
 
 namespace Aws
 {
 namespace IoTEvents
 {
+  AWS_IOTEVENTS_API extern const char SERVICE_NAME[];
   /**
    * <p>AWS IoT Events monitors your equipment or device fleets for failures or
    * changes in operation, and triggers actions when such events occur. You can use
    * AWS IoT Events API operations to create, read, update, and delete inputs and
    * detector models, and to list their versions.</p>
    */
-  class AWS_IOTEVENTS_API IoTEventsClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<IoTEventsClient>
+  class AWS_IOTEVENTS_API IoTEventsClient : smithy::client::AwsSmithyClientT<Aws::IoTEvents::SERVICE_NAME,
+      Aws::IoTEvents::IoTEventsClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      IoTEventsEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::IoTEventsErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<IoTEventsClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "IoT Events"; }
 
       typedef IoTEventsClientConfiguration ClientConfigurationType;
       typedef IoTEventsEndpointProvider EndpointProviderType;
@@ -349,13 +361,13 @@ namespace IoTEvents
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotevents-2018-07-27/DescribeLoggingOptions">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeLoggingOptionsOutcome DescribeLoggingOptions(const Model::DescribeLoggingOptionsRequest& request) const;
+        virtual Model::DescribeLoggingOptionsOutcome DescribeLoggingOptions(const Model::DescribeLoggingOptionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeLoggingOptions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeLoggingOptionsRequestT = Model::DescribeLoggingOptionsRequest>
-        Model::DescribeLoggingOptionsOutcomeCallable DescribeLoggingOptionsCallable(const DescribeLoggingOptionsRequestT& request) const
+        Model::DescribeLoggingOptionsOutcomeCallable DescribeLoggingOptionsCallable(const DescribeLoggingOptionsRequestT& request = {}) const
         {
             return SubmitCallable(&IoTEventsClient::DescribeLoggingOptions, request);
         }
@@ -364,7 +376,7 @@ namespace IoTEvents
          * An Async wrapper for DescribeLoggingOptions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeLoggingOptionsRequestT = Model::DescribeLoggingOptionsRequest>
-        void DescribeLoggingOptionsAsync(const DescribeLoggingOptionsRequestT& request, const DescribeLoggingOptionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeLoggingOptionsAsync(const DescribeLoggingOptionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeLoggingOptionsRequestT& request = {}) const
         {
             return SubmitAsync(&IoTEventsClient::DescribeLoggingOptions, request, handler, context);
         }
@@ -428,13 +440,13 @@ namespace IoTEvents
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotevents-2018-07-27/ListAlarmModels">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAlarmModelsOutcome ListAlarmModels(const Model::ListAlarmModelsRequest& request) const;
+        virtual Model::ListAlarmModelsOutcome ListAlarmModels(const Model::ListAlarmModelsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAlarmModels that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAlarmModelsRequestT = Model::ListAlarmModelsRequest>
-        Model::ListAlarmModelsOutcomeCallable ListAlarmModelsCallable(const ListAlarmModelsRequestT& request) const
+        Model::ListAlarmModelsOutcomeCallable ListAlarmModelsCallable(const ListAlarmModelsRequestT& request = {}) const
         {
             return SubmitCallable(&IoTEventsClient::ListAlarmModels, request);
         }
@@ -443,7 +455,7 @@ namespace IoTEvents
          * An Async wrapper for ListAlarmModels that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAlarmModelsRequestT = Model::ListAlarmModelsRequest>
-        void ListAlarmModelsAsync(const ListAlarmModelsRequestT& request, const ListAlarmModelsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAlarmModelsAsync(const ListAlarmModelsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAlarmModelsRequestT& request = {}) const
         {
             return SubmitAsync(&IoTEventsClient::ListAlarmModels, request, handler, context);
         }
@@ -480,13 +492,13 @@ namespace IoTEvents
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotevents-2018-07-27/ListDetectorModels">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDetectorModelsOutcome ListDetectorModels(const Model::ListDetectorModelsRequest& request) const;
+        virtual Model::ListDetectorModelsOutcome ListDetectorModels(const Model::ListDetectorModelsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDetectorModels that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDetectorModelsRequestT = Model::ListDetectorModelsRequest>
-        Model::ListDetectorModelsOutcomeCallable ListDetectorModelsCallable(const ListDetectorModelsRequestT& request) const
+        Model::ListDetectorModelsOutcomeCallable ListDetectorModelsCallable(const ListDetectorModelsRequestT& request = {}) const
         {
             return SubmitCallable(&IoTEventsClient::ListDetectorModels, request);
         }
@@ -495,7 +507,7 @@ namespace IoTEvents
          * An Async wrapper for ListDetectorModels that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDetectorModelsRequestT = Model::ListDetectorModelsRequest>
-        void ListDetectorModelsAsync(const ListDetectorModelsRequestT& request, const ListDetectorModelsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDetectorModelsAsync(const ListDetectorModelsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDetectorModelsRequestT& request = {}) const
         {
             return SubmitAsync(&IoTEventsClient::ListDetectorModels, request, handler, context);
         }
@@ -530,13 +542,13 @@ namespace IoTEvents
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotevents-2018-07-27/ListInputs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListInputsOutcome ListInputs(const Model::ListInputsRequest& request) const;
+        virtual Model::ListInputsOutcome ListInputs(const Model::ListInputsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListInputs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListInputsRequestT = Model::ListInputsRequest>
-        Model::ListInputsOutcomeCallable ListInputsCallable(const ListInputsRequestT& request) const
+        Model::ListInputsOutcomeCallable ListInputsCallable(const ListInputsRequestT& request = {}) const
         {
             return SubmitCallable(&IoTEventsClient::ListInputs, request);
         }
@@ -545,7 +557,7 @@ namespace IoTEvents
          * An Async wrapper for ListInputs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListInputsRequestT = Model::ListInputsRequest>
-        void ListInputsAsync(const ListInputsRequestT& request, const ListInputsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListInputsAsync(const ListInputsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListInputsRequestT& request = {}) const
         {
             return SubmitAsync(&IoTEventsClient::ListInputs, request, handler, context);
         }
@@ -770,11 +782,7 @@ namespace IoTEvents
       std::shared_ptr<IoTEventsEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<IoTEventsClient>;
-      void init(const IoTEventsClientConfiguration& clientConfiguration);
 
-      IoTEventsClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<IoTEventsEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace IoTEvents

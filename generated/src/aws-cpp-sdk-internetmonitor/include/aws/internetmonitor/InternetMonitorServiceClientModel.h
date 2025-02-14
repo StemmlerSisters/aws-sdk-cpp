@@ -34,6 +34,8 @@
 #include <aws/internetmonitor/model/TagResourceResult.h>
 #include <aws/internetmonitor/model/UntagResourceResult.h>
 #include <aws/internetmonitor/model/UpdateMonitorResult.h>
+#include <aws/internetmonitor/model/ListMonitorsRequest.h>
+#include <aws/internetmonitor/model/ListInternetEventsRequest.h>
 /* End of service model headers required in InternetMonitorClient header */
 
 namespace Aws
@@ -67,7 +69,7 @@ namespace Aws
 
   namespace InternetMonitor
   {
-    using InternetMonitorClientConfiguration = Aws::Client::GenericClientConfiguration<false>;
+    using InternetMonitorClientConfiguration = Aws::Client::GenericClientConfiguration;
     using InternetMonitorEndpointProviderBase = Aws::InternetMonitor::Endpoint::InternetMonitorEndpointProviderBase;
     using InternetMonitorEndpointProvider = Aws::InternetMonitor::Endpoint::InternetMonitorEndpointProvider;
 

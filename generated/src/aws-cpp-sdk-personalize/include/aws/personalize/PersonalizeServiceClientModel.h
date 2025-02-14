@@ -78,6 +78,25 @@
 #include <aws/personalize/model/UpdateDatasetResult.h>
 #include <aws/personalize/model/UpdateMetricAttributionResult.h>
 #include <aws/personalize/model/UpdateRecommenderResult.h>
+#include <aws/personalize/model/UpdateSolutionResult.h>
+#include <aws/personalize/model/ListDatasetGroupsRequest.h>
+#include <aws/personalize/model/ListDatasetImportJobsRequest.h>
+#include <aws/personalize/model/ListRecipesRequest.h>
+#include <aws/personalize/model/ListDataDeletionJobsRequest.h>
+#include <aws/personalize/model/UpdateMetricAttributionRequest.h>
+#include <aws/personalize/model/ListDatasetExportJobsRequest.h>
+#include <aws/personalize/model/ListMetricAttributionMetricsRequest.h>
+#include <aws/personalize/model/ListMetricAttributionsRequest.h>
+#include <aws/personalize/model/ListSolutionsRequest.h>
+#include <aws/personalize/model/ListCampaignsRequest.h>
+#include <aws/personalize/model/ListDatasetsRequest.h>
+#include <aws/personalize/model/ListFiltersRequest.h>
+#include <aws/personalize/model/ListBatchSegmentJobsRequest.h>
+#include <aws/personalize/model/ListEventTrackersRequest.h>
+#include <aws/personalize/model/ListSolutionVersionsRequest.h>
+#include <aws/personalize/model/ListRecommendersRequest.h>
+#include <aws/personalize/model/ListBatchInferenceJobsRequest.h>
+#include <aws/personalize/model/ListSchemasRequest.h>
 #include <aws/core/NoResult.h>
 /* End of service model headers required in PersonalizeClient header */
 
@@ -112,7 +131,7 @@ namespace Aws
 
   namespace Personalize
   {
-    using PersonalizeClientConfiguration = Aws::Client::GenericClientConfiguration<false>;
+    using PersonalizeClientConfiguration = Aws::Client::GenericClientConfiguration;
     using PersonalizeEndpointProviderBase = Aws::Personalize::Endpoint::PersonalizeEndpointProviderBase;
     using PersonalizeEndpointProvider = Aws::Personalize::Endpoint::PersonalizeEndpointProvider;
 
@@ -189,6 +208,7 @@ namespace Aws
       class UpdateDatasetRequest;
       class UpdateMetricAttributionRequest;
       class UpdateRecommenderRequest;
+      class UpdateSolutionRequest;
       /* End of service model forward declarations required in PersonalizeClient header */
 
       /* Service model Outcome class definitions */
@@ -262,6 +282,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<UpdateDatasetResult, PersonalizeError> UpdateDatasetOutcome;
       typedef Aws::Utils::Outcome<UpdateMetricAttributionResult, PersonalizeError> UpdateMetricAttributionOutcome;
       typedef Aws::Utils::Outcome<UpdateRecommenderResult, PersonalizeError> UpdateRecommenderOutcome;
+      typedef Aws::Utils::Outcome<UpdateSolutionResult, PersonalizeError> UpdateSolutionOutcome;
       /* End of service model Outcome class definitions */
 
       /* Service model Outcome callable definitions */
@@ -335,6 +356,7 @@ namespace Aws
       typedef std::future<UpdateDatasetOutcome> UpdateDatasetOutcomeCallable;
       typedef std::future<UpdateMetricAttributionOutcome> UpdateMetricAttributionOutcomeCallable;
       typedef std::future<UpdateRecommenderOutcome> UpdateRecommenderOutcomeCallable;
+      typedef std::future<UpdateSolutionOutcome> UpdateSolutionOutcomeCallable;
       /* End of service model Outcome callable definitions */
     } // namespace Model
 
@@ -411,6 +433,7 @@ namespace Aws
     typedef std::function<void(const PersonalizeClient*, const Model::UpdateDatasetRequest&, const Model::UpdateDatasetOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > UpdateDatasetResponseReceivedHandler;
     typedef std::function<void(const PersonalizeClient*, const Model::UpdateMetricAttributionRequest&, const Model::UpdateMetricAttributionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > UpdateMetricAttributionResponseReceivedHandler;
     typedef std::function<void(const PersonalizeClient*, const Model::UpdateRecommenderRequest&, const Model::UpdateRecommenderOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > UpdateRecommenderResponseReceivedHandler;
+    typedef std::function<void(const PersonalizeClient*, const Model::UpdateSolutionRequest&, const Model::UpdateSolutionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > UpdateSolutionResponseReceivedHandler;
     /* End of service model async handlers definitions */
   } // namespace Personalize
 } // namespace Aws

@@ -31,14 +31,8 @@ DBSecurityGroup::DBSecurityGroup() :
 {
 }
 
-DBSecurityGroup::DBSecurityGroup(const XmlNode& xmlNode) : 
-    m_ownerIdHasBeenSet(false),
-    m_dBSecurityGroupNameHasBeenSet(false),
-    m_dBSecurityGroupDescriptionHasBeenSet(false),
-    m_vpcIdHasBeenSet(false),
-    m_eC2SecurityGroupsHasBeenSet(false),
-    m_iPRangesHasBeenSet(false),
-    m_dBSecurityGroupArnHasBeenSet(false)
+DBSecurityGroup::DBSecurityGroup(const XmlNode& xmlNode)
+  : DBSecurityGroup()
 {
   *this = xmlNode;
 }
@@ -136,7 +130,7 @@ void DBSecurityGroup::OutputToStream(Aws::OStream& oStream, const char* location
       for(auto& item : m_eC2SecurityGroups)
       {
         Aws::StringStream eC2SecurityGroupsSs;
-        eC2SecurityGroupsSs << location << index << locationValue << ".EC2SecurityGroup." << eC2SecurityGroupsIdx++;
+        eC2SecurityGroupsSs << location << index << locationValue << ".EC2SecurityGroups.EC2SecurityGroup." << eC2SecurityGroupsIdx++;
         item.OutputToStream(oStream, eC2SecurityGroupsSs.str().c_str());
       }
   }
@@ -147,7 +141,7 @@ void DBSecurityGroup::OutputToStream(Aws::OStream& oStream, const char* location
       for(auto& item : m_iPRanges)
       {
         Aws::StringStream iPRangesSs;
-        iPRangesSs << location << index << locationValue << ".IPRange." << iPRangesIdx++;
+        iPRangesSs << location << index << locationValue << ".IPRanges.IPRange." << iPRangesIdx++;
         item.OutputToStream(oStream, iPRangesSs.str().c_str());
       }
   }

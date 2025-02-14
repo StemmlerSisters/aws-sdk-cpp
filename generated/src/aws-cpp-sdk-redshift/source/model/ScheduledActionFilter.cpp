@@ -27,10 +27,8 @@ ScheduledActionFilter::ScheduledActionFilter() :
 {
 }
 
-ScheduledActionFilter::ScheduledActionFilter(const XmlNode& xmlNode) : 
-    m_name(ScheduledActionFilterName::NOT_SET),
-    m_nameHasBeenSet(false),
-    m_valuesHasBeenSet(false)
+ScheduledActionFilter::ScheduledActionFilter(const XmlNode& xmlNode)
+  : ScheduledActionFilter()
 {
   *this = xmlNode;
 }
@@ -76,7 +74,7 @@ void ScheduledActionFilter::OutputToStream(Aws::OStream& oStream, const char* lo
       unsigned valuesIdx = 1;
       for(auto& item : m_values)
       {
-        oStream << location << index << locationValue << ".item." << valuesIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
+        oStream << location << index << locationValue << ".Values.item." << valuesIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
       }
   }
 

@@ -23,6 +23,9 @@ namespace Aws
         static const int MEASUREMENTS_HASH = HashingUtils::HashString("MEASUREMENTS");
         static const int TOP_LOCATIONS_HASH = HashingUtils::HashString("TOP_LOCATIONS");
         static const int TOP_LOCATION_DETAILS_HASH = HashingUtils::HashString("TOP_LOCATION_DETAILS");
+        static const int OVERALL_TRAFFIC_SUGGESTIONS_HASH = HashingUtils::HashString("OVERALL_TRAFFIC_SUGGESTIONS");
+        static const int OVERALL_TRAFFIC_SUGGESTIONS_DETAILS_HASH = HashingUtils::HashString("OVERALL_TRAFFIC_SUGGESTIONS_DETAILS");
+        static const int ROUTING_SUGGESTIONS_HASH = HashingUtils::HashString("ROUTING_SUGGESTIONS");
 
 
         QueryType GetQueryTypeForName(const Aws::String& name)
@@ -39,6 +42,18 @@ namespace Aws
           else if (hashCode == TOP_LOCATION_DETAILS_HASH)
           {
             return QueryType::TOP_LOCATION_DETAILS;
+          }
+          else if (hashCode == OVERALL_TRAFFIC_SUGGESTIONS_HASH)
+          {
+            return QueryType::OVERALL_TRAFFIC_SUGGESTIONS;
+          }
+          else if (hashCode == OVERALL_TRAFFIC_SUGGESTIONS_DETAILS_HASH)
+          {
+            return QueryType::OVERALL_TRAFFIC_SUGGESTIONS_DETAILS;
+          }
+          else if (hashCode == ROUTING_SUGGESTIONS_HASH)
+          {
+            return QueryType::ROUTING_SUGGESTIONS;
           }
           EnumParseOverflowContainer* overflowContainer = Aws::GetEnumOverflowContainer();
           if(overflowContainer)
@@ -62,6 +77,12 @@ namespace Aws
             return "TOP_LOCATIONS";
           case QueryType::TOP_LOCATION_DETAILS:
             return "TOP_LOCATION_DETAILS";
+          case QueryType::OVERALL_TRAFFIC_SUGGESTIONS:
+            return "OVERALL_TRAFFIC_SUGGESTIONS";
+          case QueryType::OVERALL_TRAFFIC_SUGGESTIONS_DETAILS:
+            return "OVERALL_TRAFFIC_SUGGESTIONS_DETAILS";
+          case QueryType::ROUTING_SUGGESTIONS:
+            return "ROUTING_SUGGESTIONS";
           default:
             EnumParseOverflowContainer* overflowContainer = Aws::GetEnumOverflowContainer();
             if(overflowContainer)

@@ -5,8 +5,8 @@
 
 #pragma once
 #include <aws/opensearchserverless/OpenSearchServerless_EXPORTS.h>
-#include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/opensearchserverless/model/LifecyclePolicyType.h>
+#include <aws/core/utils/memory/stl/AWSString.h>
 #include <utility>
 
 namespace Aws
@@ -39,84 +39,38 @@ namespace Model
     AWS_OPENSEARCHSERVERLESS_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
-    /**
-     * <p>The name of the lifecycle policy.</p>
-     */
-    inline const Aws::String& GetName() const{ return m_name; }
-
-    /**
-     * <p>The name of the lifecycle policy.</p>
-     */
-    inline bool NameHasBeenSet() const { return m_nameHasBeenSet; }
-
-    /**
-     * <p>The name of the lifecycle policy.</p>
-     */
-    inline void SetName(const Aws::String& value) { m_nameHasBeenSet = true; m_name = value; }
-
-    /**
-     * <p>The name of the lifecycle policy.</p>
-     */
-    inline void SetName(Aws::String&& value) { m_nameHasBeenSet = true; m_name = std::move(value); }
-
-    /**
-     * <p>The name of the lifecycle policy.</p>
-     */
-    inline void SetName(const char* value) { m_nameHasBeenSet = true; m_name.assign(value); }
-
-    /**
-     * <p>The name of the lifecycle policy.</p>
-     */
-    inline LifecyclePolicyIdentifier& WithName(const Aws::String& value) { SetName(value); return *this;}
-
-    /**
-     * <p>The name of the lifecycle policy.</p>
-     */
-    inline LifecyclePolicyIdentifier& WithName(Aws::String&& value) { SetName(std::move(value)); return *this;}
-
-    /**
-     * <p>The name of the lifecycle policy.</p>
-     */
-    inline LifecyclePolicyIdentifier& WithName(const char* value) { SetName(value); return *this;}
-
-
+    ///@{
     /**
      * <p>The type of lifecycle policy.</p>
      */
     inline const LifecyclePolicyType& GetType() const{ return m_type; }
-
-    /**
-     * <p>The type of lifecycle policy.</p>
-     */
     inline bool TypeHasBeenSet() const { return m_typeHasBeenSet; }
-
-    /**
-     * <p>The type of lifecycle policy.</p>
-     */
     inline void SetType(const LifecyclePolicyType& value) { m_typeHasBeenSet = true; m_type = value; }
-
-    /**
-     * <p>The type of lifecycle policy.</p>
-     */
     inline void SetType(LifecyclePolicyType&& value) { m_typeHasBeenSet = true; m_type = std::move(value); }
-
-    /**
-     * <p>The type of lifecycle policy.</p>
-     */
     inline LifecyclePolicyIdentifier& WithType(const LifecyclePolicyType& value) { SetType(value); return *this;}
-
-    /**
-     * <p>The type of lifecycle policy.</p>
-     */
     inline LifecyclePolicyIdentifier& WithType(LifecyclePolicyType&& value) { SetType(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The name of the lifecycle policy.</p>
+     */
+    inline const Aws::String& GetName() const{ return m_name; }
+    inline bool NameHasBeenSet() const { return m_nameHasBeenSet; }
+    inline void SetName(const Aws::String& value) { m_nameHasBeenSet = true; m_name = value; }
+    inline void SetName(Aws::String&& value) { m_nameHasBeenSet = true; m_name = std::move(value); }
+    inline void SetName(const char* value) { m_nameHasBeenSet = true; m_name.assign(value); }
+    inline LifecyclePolicyIdentifier& WithName(const Aws::String& value) { SetName(value); return *this;}
+    inline LifecyclePolicyIdentifier& WithName(Aws::String&& value) { SetName(std::move(value)); return *this;}
+    inline LifecyclePolicyIdentifier& WithName(const char* value) { SetName(value); return *this;}
+    ///@}
   private:
-
-    Aws::String m_name;
-    bool m_nameHasBeenSet = false;
 
     LifecyclePolicyType m_type;
     bool m_typeHasBeenSet = false;
+
+    Aws::String m_name;
+    bool m_nameHasBeenSet = false;
   };
 
 } // namespace Model

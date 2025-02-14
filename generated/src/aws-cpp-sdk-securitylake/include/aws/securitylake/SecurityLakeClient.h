@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/securitylake/SecurityLake_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/securitylake/SecurityLakeServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/securitylake/SecurityLakeErrorMarshaller.h>
 
 namespace Aws
 {
 namespace SecurityLake
 {
+  AWS_SECURITYLAKE_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon Security Lake is a fully managed security data lake service. You can
    * use Security Lake to automatically centralize security data from cloud,
@@ -41,20 +45,28 @@ namespace SecurityLake
    * details. To learn more about Security Lake information in CloudTrail, see the <a
    * href="https://docs.aws.amazon.com/security-lake/latest/userguide/securitylake-cloudtrail.html">Amazon
    * Security Lake User Guide</a>.</p> <p>Security Lake automates the collection of
-   * security-related log and event data from integrated Amazon Web Services and
-   * third-party services. It also helps you manage the lifecycle of data with
+   * security-related log and event data from integrated Amazon Web Services services
+   * and third-party services. It also helps you manage the lifecycle of data with
    * customizable retention and replication settings. Security Lake converts ingested
    * data into Apache Parquet format and a standard open-source schema called the
-   * Open Cybersecurity Schema Framework (OCSF).</p> <p>Other Amazon Web Services and
-   * third-party services can subscribe to the data that's stored in Security Lake
-   * for incident response and security data analytics.</p>
+   * Open Cybersecurity Schema Framework (OCSF).</p> <p>Other Amazon Web Services
+   * services and third-party services can subscribe to the data that's stored in
+   * Security Lake for incident response and security data analytics.</p>
    */
-  class AWS_SECURITYLAKE_API SecurityLakeClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<SecurityLakeClient>
+  class AWS_SECURITYLAKE_API SecurityLakeClient : smithy::client::AwsSmithyClientT<Aws::SecurityLake::SERVICE_NAME,
+      Aws::SecurityLake::SecurityLakeClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      SecurityLakeEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::SecurityLakeErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<SecurityLakeClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "SecurityLake"; }
 
       typedef SecurityLakeClientConfiguration ClientConfigurationType;
       typedef SecurityLakeEndpointProvider EndpointProviderType;
@@ -108,14 +120,14 @@ namespace SecurityLake
         virtual ~SecurityLakeClient();
 
         /**
-         * <p>Adds a natively supported Amazon Web Service as an Amazon Security Lake
-         * source. Enables source types for member accounts in required Amazon Web Services
-         * Regions, based on the parameters you specify. You can choose any source type in
-         * any Region for either accounts that are part of a trusted organization or
-         * standalone accounts. Once you add an Amazon Web Service as a source, Security
-         * Lake starts collecting logs and events from it.</p> <p>You can use this API only
-         * to enable natively supported Amazon Web Services as a source. Use
-         * <code>CreateCustomLogSource</code> to enable data collection from a custom
+         * <p>Adds a natively supported Amazon Web Services service as an Amazon Security
+         * Lake source. Enables source types for member accounts in required Amazon Web
+         * Services Regions, based on the parameters you specify. You can choose any source
+         * type in any Region for either accounts that are part of a trusted organization
+         * or standalone accounts. Once you add an Amazon Web Services service as a source,
+         * Security Lake starts collecting logs and events from it.</p> <p>You can use this
+         * API only to enable natively supported Amazon Web Services services as a source.
+         * Use <code>CreateCustomLogSource</code> to enable data collection from a custom
          * source.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securitylake-2018-05-10/CreateAwsLogSource">AWS
          * API Reference</a></p>
@@ -183,7 +195,8 @@ namespace SecurityLake
          * Security Lake in the Region when you call this API, it will set up the data lake
          * in the Region with the specified configurations.</p> <p>When you enable Security
          * Lake, it starts ingesting security data after the
-         * <code>CreateAwsLogSource</code> call. This includes ingesting security data from
+         * <code>CreateAwsLogSource</code> call and after you create subscribers using the
+         * <code>CreateSubscriber</code> API. This includes ingesting security data from
          * sources, storing data, and making data accessible to subscribers. Security Lake
          * also enables all the existing settings and resources that it stores or maintains
          * for your Amazon Web Services account in the current Region, including security
@@ -215,7 +228,9 @@ namespace SecurityLake
 
         /**
          * <p>Creates the specified notification subscription in Amazon Security Lake for
-         * the organization you specify.</p><p><h3>See Also:</h3>   <a
+         * the organization you specify. The notification subscription is created for
+         * exceptions that cannot be resolved by Security Lake automatically.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securitylake-2018-05-10/CreateDataLakeExceptionSubscription">AWS
          * API Reference</a></p>
          */
@@ -242,17 +257,22 @@ namespace SecurityLake
         /**
          * <p>Automatically enables Amazon Security Lake for new member accounts in your
          * organization. Security Lake is not automatically enabled for any existing member
-         * accounts in your organization.</p><p><h3>See Also:</h3>   <a
+         * accounts in your organization.</p> <p>This operation merges the new data lake
+         * organization configuration with the existing configuration for Security Lake in
+         * your organization. If you want to create a new data lake organization
+         * configuration, you must delete the existing one using <a
+         * href="https://docs.aws.amazon.com/security-lake/latest/APIReference/API_DeleteDataLakeOrganizationConfiguration.html">DeleteDataLakeOrganizationConfiguration</a>.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securitylake-2018-05-10/CreateDataLakeOrganizationConfiguration">AWS
          * API Reference</a></p>
          */
-        virtual Model::CreateDataLakeOrganizationConfigurationOutcome CreateDataLakeOrganizationConfiguration(const Model::CreateDataLakeOrganizationConfigurationRequest& request) const;
+        virtual Model::CreateDataLakeOrganizationConfigurationOutcome CreateDataLakeOrganizationConfiguration(const Model::CreateDataLakeOrganizationConfigurationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for CreateDataLakeOrganizationConfiguration that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename CreateDataLakeOrganizationConfigurationRequestT = Model::CreateDataLakeOrganizationConfigurationRequest>
-        Model::CreateDataLakeOrganizationConfigurationOutcomeCallable CreateDataLakeOrganizationConfigurationCallable(const CreateDataLakeOrganizationConfigurationRequestT& request) const
+        Model::CreateDataLakeOrganizationConfigurationOutcomeCallable CreateDataLakeOrganizationConfigurationCallable(const CreateDataLakeOrganizationConfigurationRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityLakeClient::CreateDataLakeOrganizationConfiguration, request);
         }
@@ -261,15 +281,15 @@ namespace SecurityLake
          * An Async wrapper for CreateDataLakeOrganizationConfiguration that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename CreateDataLakeOrganizationConfigurationRequestT = Model::CreateDataLakeOrganizationConfigurationRequest>
-        void CreateDataLakeOrganizationConfigurationAsync(const CreateDataLakeOrganizationConfigurationRequestT& request, const CreateDataLakeOrganizationConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void CreateDataLakeOrganizationConfigurationAsync(const CreateDataLakeOrganizationConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const CreateDataLakeOrganizationConfigurationRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityLakeClient::CreateDataLakeOrganizationConfiguration, request, handler, context);
         }
 
         /**
-         * <p>Creates a subscription permission for accounts that are already enabled in
-         * Amazon Security Lake. You can create a subscriber with access to data in the
-         * current Amazon Web Services Region.</p><p><h3>See Also:</h3>   <a
+         * <p>Creates a subscriber for accounts that are already enabled in Amazon Security
+         * Lake. You can create a subscriber with access to data in the current Amazon Web
+         * Services Region.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securitylake-2018-05-10/CreateSubscriber">AWS
          * API Reference</a></p>
          */
@@ -321,13 +341,13 @@ namespace SecurityLake
         }
 
         /**
-         * <p>Removes a natively supported Amazon Web Service as an Amazon Security Lake
-         * source. You can remove a source for one or more Regions. When you remove the
-         * source, Security Lake stops collecting data from that source in the specified
-         * Regions and accounts, and subscribers can no longer consume new data from the
-         * source. However, subscribers can still consume data that Security Lake collected
-         * from the source before removal.</p> <p>You can choose any source type in any
-         * Amazon Web Services Region for either accounts that are part of a trusted
+         * <p>Removes a natively supported Amazon Web Services service as an Amazon
+         * Security Lake source. You can remove a source for one or more Regions. When you
+         * remove the source, Security Lake stops collecting data from that source in the
+         * specified Regions and accounts, and subscribers can no longer consume new data
+         * from the source. However, subscribers can still consume data that Security Lake
+         * collected from the source before removal.</p> <p>You can choose any source type
+         * in any Amazon Web Services Region for either accounts that are part of a trusted
          * organization or standalone accounts. </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securitylake-2018-05-10/DeleteAwsLogSource">AWS
          * API Reference</a></p>
@@ -419,13 +439,13 @@ namespace SecurityLake
          * href="http://docs.aws.amazon.com/goto/WebAPI/securitylake-2018-05-10/DeleteDataLakeExceptionSubscription">AWS
          * API Reference</a></p>
          */
-        virtual Model::DeleteDataLakeExceptionSubscriptionOutcome DeleteDataLakeExceptionSubscription(const Model::DeleteDataLakeExceptionSubscriptionRequest& request) const;
+        virtual Model::DeleteDataLakeExceptionSubscriptionOutcome DeleteDataLakeExceptionSubscription(const Model::DeleteDataLakeExceptionSubscriptionRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DeleteDataLakeExceptionSubscription that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DeleteDataLakeExceptionSubscriptionRequestT = Model::DeleteDataLakeExceptionSubscriptionRequest>
-        Model::DeleteDataLakeExceptionSubscriptionOutcomeCallable DeleteDataLakeExceptionSubscriptionCallable(const DeleteDataLakeExceptionSubscriptionRequestT& request) const
+        Model::DeleteDataLakeExceptionSubscriptionOutcomeCallable DeleteDataLakeExceptionSubscriptionCallable(const DeleteDataLakeExceptionSubscriptionRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityLakeClient::DeleteDataLakeExceptionSubscription, request);
         }
@@ -434,7 +454,7 @@ namespace SecurityLake
          * An Async wrapper for DeleteDataLakeExceptionSubscription that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DeleteDataLakeExceptionSubscriptionRequestT = Model::DeleteDataLakeExceptionSubscriptionRequest>
-        void DeleteDataLakeExceptionSubscriptionAsync(const DeleteDataLakeExceptionSubscriptionRequestT& request, const DeleteDataLakeExceptionSubscriptionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DeleteDataLakeExceptionSubscriptionAsync(const DeleteDataLakeExceptionSubscriptionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DeleteDataLakeExceptionSubscriptionRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityLakeClient::DeleteDataLakeExceptionSubscription, request, handler, context);
         }
@@ -449,13 +469,13 @@ namespace SecurityLake
          * href="http://docs.aws.amazon.com/goto/WebAPI/securitylake-2018-05-10/DeleteDataLakeOrganizationConfiguration">AWS
          * API Reference</a></p>
          */
-        virtual Model::DeleteDataLakeOrganizationConfigurationOutcome DeleteDataLakeOrganizationConfiguration(const Model::DeleteDataLakeOrganizationConfigurationRequest& request) const;
+        virtual Model::DeleteDataLakeOrganizationConfigurationOutcome DeleteDataLakeOrganizationConfiguration(const Model::DeleteDataLakeOrganizationConfigurationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DeleteDataLakeOrganizationConfiguration that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DeleteDataLakeOrganizationConfigurationRequestT = Model::DeleteDataLakeOrganizationConfigurationRequest>
-        Model::DeleteDataLakeOrganizationConfigurationOutcomeCallable DeleteDataLakeOrganizationConfigurationCallable(const DeleteDataLakeOrganizationConfigurationRequestT& request) const
+        Model::DeleteDataLakeOrganizationConfigurationOutcomeCallable DeleteDataLakeOrganizationConfigurationCallable(const DeleteDataLakeOrganizationConfigurationRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityLakeClient::DeleteDataLakeOrganizationConfiguration, request);
         }
@@ -464,7 +484,7 @@ namespace SecurityLake
          * An Async wrapper for DeleteDataLakeOrganizationConfiguration that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DeleteDataLakeOrganizationConfigurationRequestT = Model::DeleteDataLakeOrganizationConfigurationRequest>
-        void DeleteDataLakeOrganizationConfigurationAsync(const DeleteDataLakeOrganizationConfigurationRequestT& request, const DeleteDataLakeOrganizationConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DeleteDataLakeOrganizationConfigurationAsync(const DeleteDataLakeOrganizationConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DeleteDataLakeOrganizationConfigurationRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityLakeClient::DeleteDataLakeOrganizationConfiguration, request, handler, context);
         }
@@ -500,7 +520,7 @@ namespace SecurityLake
         }
 
         /**
-         * <p>Deletes the specified notification subscription in Amazon Security Lake for
+         * <p>Deletes the specified subscription notification in Amazon Security Lake for
          * the organization you specify.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securitylake-2018-05-10/DeleteSubscriberNotification">AWS
          * API Reference</a></p>
@@ -533,13 +553,13 @@ namespace SecurityLake
          * href="http://docs.aws.amazon.com/goto/WebAPI/securitylake-2018-05-10/DeregisterDataLakeDelegatedAdministrator">AWS
          * API Reference</a></p>
          */
-        virtual Model::DeregisterDataLakeDelegatedAdministratorOutcome DeregisterDataLakeDelegatedAdministrator(const Model::DeregisterDataLakeDelegatedAdministratorRequest& request) const;
+        virtual Model::DeregisterDataLakeDelegatedAdministratorOutcome DeregisterDataLakeDelegatedAdministrator(const Model::DeregisterDataLakeDelegatedAdministratorRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DeregisterDataLakeDelegatedAdministrator that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DeregisterDataLakeDelegatedAdministratorRequestT = Model::DeregisterDataLakeDelegatedAdministratorRequest>
-        Model::DeregisterDataLakeDelegatedAdministratorOutcomeCallable DeregisterDataLakeDelegatedAdministratorCallable(const DeregisterDataLakeDelegatedAdministratorRequestT& request) const
+        Model::DeregisterDataLakeDelegatedAdministratorOutcomeCallable DeregisterDataLakeDelegatedAdministratorCallable(const DeregisterDataLakeDelegatedAdministratorRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityLakeClient::DeregisterDataLakeDelegatedAdministrator, request);
         }
@@ -548,24 +568,24 @@ namespace SecurityLake
          * An Async wrapper for DeregisterDataLakeDelegatedAdministrator that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DeregisterDataLakeDelegatedAdministratorRequestT = Model::DeregisterDataLakeDelegatedAdministratorRequest>
-        void DeregisterDataLakeDelegatedAdministratorAsync(const DeregisterDataLakeDelegatedAdministratorRequestT& request, const DeregisterDataLakeDelegatedAdministratorResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DeregisterDataLakeDelegatedAdministratorAsync(const DeregisterDataLakeDelegatedAdministratorResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DeregisterDataLakeDelegatedAdministratorRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityLakeClient::DeregisterDataLakeDelegatedAdministrator, request, handler, context);
         }
 
         /**
-         * <p>Retrieves the details of exception notifications for the account in Amazon
-         * Security Lake.</p><p><h3>See Also:</h3>   <a
+         * <p>Retrieves the protocol and endpoint that were provided when subscribing to
+         * Amazon SNS topics for exception notifications.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securitylake-2018-05-10/GetDataLakeExceptionSubscription">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetDataLakeExceptionSubscriptionOutcome GetDataLakeExceptionSubscription(const Model::GetDataLakeExceptionSubscriptionRequest& request) const;
+        virtual Model::GetDataLakeExceptionSubscriptionOutcome GetDataLakeExceptionSubscription(const Model::GetDataLakeExceptionSubscriptionRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetDataLakeExceptionSubscription that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetDataLakeExceptionSubscriptionRequestT = Model::GetDataLakeExceptionSubscriptionRequest>
-        Model::GetDataLakeExceptionSubscriptionOutcomeCallable GetDataLakeExceptionSubscriptionCallable(const GetDataLakeExceptionSubscriptionRequestT& request) const
+        Model::GetDataLakeExceptionSubscriptionOutcomeCallable GetDataLakeExceptionSubscriptionCallable(const GetDataLakeExceptionSubscriptionRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityLakeClient::GetDataLakeExceptionSubscription, request);
         }
@@ -574,7 +594,7 @@ namespace SecurityLake
          * An Async wrapper for GetDataLakeExceptionSubscription that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetDataLakeExceptionSubscriptionRequestT = Model::GetDataLakeExceptionSubscriptionRequest>
-        void GetDataLakeExceptionSubscriptionAsync(const GetDataLakeExceptionSubscriptionRequestT& request, const GetDataLakeExceptionSubscriptionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetDataLakeExceptionSubscriptionAsync(const GetDataLakeExceptionSubscriptionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetDataLakeExceptionSubscriptionRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityLakeClient::GetDataLakeExceptionSubscription, request, handler, context);
         }
@@ -587,13 +607,13 @@ namespace SecurityLake
          * href="http://docs.aws.amazon.com/goto/WebAPI/securitylake-2018-05-10/GetDataLakeOrganizationConfiguration">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetDataLakeOrganizationConfigurationOutcome GetDataLakeOrganizationConfiguration(const Model::GetDataLakeOrganizationConfigurationRequest& request) const;
+        virtual Model::GetDataLakeOrganizationConfigurationOutcome GetDataLakeOrganizationConfiguration(const Model::GetDataLakeOrganizationConfigurationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetDataLakeOrganizationConfiguration that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetDataLakeOrganizationConfigurationRequestT = Model::GetDataLakeOrganizationConfigurationRequest>
-        Model::GetDataLakeOrganizationConfigurationOutcomeCallable GetDataLakeOrganizationConfigurationCallable(const GetDataLakeOrganizationConfigurationRequestT& request) const
+        Model::GetDataLakeOrganizationConfigurationOutcomeCallable GetDataLakeOrganizationConfigurationCallable(const GetDataLakeOrganizationConfigurationRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityLakeClient::GetDataLakeOrganizationConfiguration, request);
         }
@@ -602,7 +622,7 @@ namespace SecurityLake
          * An Async wrapper for GetDataLakeOrganizationConfiguration that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetDataLakeOrganizationConfigurationRequestT = Model::GetDataLakeOrganizationConfigurationRequest>
-        void GetDataLakeOrganizationConfigurationAsync(const GetDataLakeOrganizationConfigurationRequestT& request, const GetDataLakeOrganizationConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetDataLakeOrganizationConfigurationAsync(const GetDataLakeOrganizationConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetDataLakeOrganizationConfigurationRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityLakeClient::GetDataLakeOrganizationConfiguration, request, handler, context);
         }
@@ -614,13 +634,13 @@ namespace SecurityLake
          * href="http://docs.aws.amazon.com/goto/WebAPI/securitylake-2018-05-10/GetDataLakeSources">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetDataLakeSourcesOutcome GetDataLakeSources(const Model::GetDataLakeSourcesRequest& request) const;
+        virtual Model::GetDataLakeSourcesOutcome GetDataLakeSources(const Model::GetDataLakeSourcesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetDataLakeSources that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetDataLakeSourcesRequestT = Model::GetDataLakeSourcesRequest>
-        Model::GetDataLakeSourcesOutcomeCallable GetDataLakeSourcesCallable(const GetDataLakeSourcesRequestT& request) const
+        Model::GetDataLakeSourcesOutcomeCallable GetDataLakeSourcesCallable(const GetDataLakeSourcesRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityLakeClient::GetDataLakeSources, request);
         }
@@ -629,7 +649,7 @@ namespace SecurityLake
          * An Async wrapper for GetDataLakeSources that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetDataLakeSourcesRequestT = Model::GetDataLakeSourcesRequest>
-        void GetDataLakeSourcesAsync(const GetDataLakeSourcesRequestT& request, const GetDataLakeSourcesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetDataLakeSourcesAsync(const GetDataLakeSourcesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetDataLakeSourcesRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityLakeClient::GetDataLakeSources, request, handler, context);
         }
@@ -666,13 +686,13 @@ namespace SecurityLake
          * href="http://docs.aws.amazon.com/goto/WebAPI/securitylake-2018-05-10/ListDataLakeExceptions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDataLakeExceptionsOutcome ListDataLakeExceptions(const Model::ListDataLakeExceptionsRequest& request) const;
+        virtual Model::ListDataLakeExceptionsOutcome ListDataLakeExceptions(const Model::ListDataLakeExceptionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDataLakeExceptions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDataLakeExceptionsRequestT = Model::ListDataLakeExceptionsRequest>
-        Model::ListDataLakeExceptionsOutcomeCallable ListDataLakeExceptionsCallable(const ListDataLakeExceptionsRequestT& request) const
+        Model::ListDataLakeExceptionsOutcomeCallable ListDataLakeExceptionsCallable(const ListDataLakeExceptionsRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityLakeClient::ListDataLakeExceptions, request);
         }
@@ -681,7 +701,7 @@ namespace SecurityLake
          * An Async wrapper for ListDataLakeExceptions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDataLakeExceptionsRequestT = Model::ListDataLakeExceptionsRequest>
-        void ListDataLakeExceptionsAsync(const ListDataLakeExceptionsRequestT& request, const ListDataLakeExceptionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDataLakeExceptionsAsync(const ListDataLakeExceptionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDataLakeExceptionsRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityLakeClient::ListDataLakeExceptions, request, handler, context);
         }
@@ -693,13 +713,13 @@ namespace SecurityLake
          * href="http://docs.aws.amazon.com/goto/WebAPI/securitylake-2018-05-10/ListDataLakes">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDataLakesOutcome ListDataLakes(const Model::ListDataLakesRequest& request) const;
+        virtual Model::ListDataLakesOutcome ListDataLakes(const Model::ListDataLakesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDataLakes that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDataLakesRequestT = Model::ListDataLakesRequest>
-        Model::ListDataLakesOutcomeCallable ListDataLakesCallable(const ListDataLakesRequestT& request) const
+        Model::ListDataLakesOutcomeCallable ListDataLakesCallable(const ListDataLakesRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityLakeClient::ListDataLakes, request);
         }
@@ -708,24 +728,23 @@ namespace SecurityLake
          * An Async wrapper for ListDataLakes that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDataLakesRequestT = Model::ListDataLakesRequest>
-        void ListDataLakesAsync(const ListDataLakesRequestT& request, const ListDataLakesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDataLakesAsync(const ListDataLakesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDataLakesRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityLakeClient::ListDataLakes, request, handler, context);
         }
 
         /**
-         * <p>Retrieves the log sources in the current Amazon Web Services
-         * Region.</p><p><h3>See Also:</h3>   <a
+         * <p>Retrieves the log sources.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securitylake-2018-05-10/ListLogSources">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListLogSourcesOutcome ListLogSources(const Model::ListLogSourcesRequest& request) const;
+        virtual Model::ListLogSourcesOutcome ListLogSources(const Model::ListLogSourcesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListLogSources that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListLogSourcesRequestT = Model::ListLogSourcesRequest>
-        Model::ListLogSourcesOutcomeCallable ListLogSourcesCallable(const ListLogSourcesRequestT& request) const
+        Model::ListLogSourcesOutcomeCallable ListLogSourcesCallable(const ListLogSourcesRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityLakeClient::ListLogSources, request);
         }
@@ -734,25 +753,25 @@ namespace SecurityLake
          * An Async wrapper for ListLogSources that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListLogSourcesRequestT = Model::ListLogSourcesRequest>
-        void ListLogSourcesAsync(const ListLogSourcesRequestT& request, const ListLogSourcesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListLogSourcesAsync(const ListLogSourcesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListLogSourcesRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityLakeClient::ListLogSources, request, handler, context);
         }
 
         /**
-         * <p>List all subscribers for the specific Amazon Security Lake account ID. You
+         * <p>Lists all subscribers for the specific Amazon Security Lake account ID. You
          * can retrieve a list of subscriptions associated with a specific organization or
          * Amazon Web Services account.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securitylake-2018-05-10/ListSubscribers">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListSubscribersOutcome ListSubscribers(const Model::ListSubscribersRequest& request) const;
+        virtual Model::ListSubscribersOutcome ListSubscribers(const Model::ListSubscribersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListSubscribers that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListSubscribersRequestT = Model::ListSubscribersRequest>
-        Model::ListSubscribersOutcomeCallable ListSubscribersCallable(const ListSubscribersRequestT& request) const
+        Model::ListSubscribersOutcomeCallable ListSubscribersCallable(const ListSubscribersRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityLakeClient::ListSubscribers, request);
         }
@@ -761,7 +780,7 @@ namespace SecurityLake
          * An Async wrapper for ListSubscribers that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListSubscribersRequestT = Model::ListSubscribersRequest>
-        void ListSubscribersAsync(const ListSubscribersRequestT& request, const ListSubscribersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListSubscribersAsync(const ListSubscribersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListSubscribersRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityLakeClient::ListSubscribers, request, handler, context);
         }
@@ -887,9 +906,30 @@ namespace SecurityLake
         }
 
         /**
-         * <p>Specifies where to store your security data and for how long. You can add a
-         * rollup Region to consolidate data from multiple Amazon Web Services
-         * Regions.</p><p><h3>See Also:</h3>   <a
+         * <p>You can use <code>UpdateDataLake</code> to specify where to store your
+         * security data, how it should be encrypted at rest and for how long. You can add
+         * a <a
+         * href="https://docs.aws.amazon.com/security-lake/latest/userguide/manage-regions.html#add-rollup-region">Rollup
+         * Region</a> to consolidate data from multiple Amazon Web Services Regions,
+         * replace default encryption (SSE-S3) with <a
+         * href="https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk">Customer
+         * Manged Key</a>, or specify transition and expiration actions through storage <a
+         * href="https://docs.aws.amazon.com/security-lake/latest/userguide/lifecycle-management.html">Lifecycle
+         * management</a>. The <code>UpdateDataLake</code> API works as an "upsert"
+         * operation that performs an insert if the specified item or record does not
+         * exist, or an update if it already exists. Security Lake securely stores your
+         * data at rest using Amazon Web Services encryption solutions. For more details,
+         * see <a
+         * href="https://docs.aws.amazon.com/security-lake/latest/userguide/data-protection.html">Data
+         * protection in Amazon Security Lake</a>.</p> <p>For example, omitting the key
+         * <code>encryptionConfiguration</code> from a Region that is included in an update
+         * call that currently uses KMS will leave that Region's KMS key in place, but
+         * specifying <code>encryptionConfiguration: {kmsKeyId: 'S3_MANAGED_KEY'}</code>
+         * for that same Region will reset the key to <code>S3-managed</code>.</p> <p>For
+         * more details about lifecycle management and how to update retention settings for
+         * one or more Regions after enabling Security Lake, see the <a
+         * href="https://docs.aws.amazon.com/security-lake/latest/userguide/lifecycle-management.html">Amazon
+         * Security Lake User Guide</a>. </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securitylake-2018-05-10/UpdateDataLake">AWS
          * API Reference</a></p>
          */
@@ -998,11 +1038,7 @@ namespace SecurityLake
       std::shared_ptr<SecurityLakeEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<SecurityLakeClient>;
-      void init(const SecurityLakeClientConfiguration& clientConfiguration);
 
-      SecurityLakeClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<SecurityLakeEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace SecurityLake

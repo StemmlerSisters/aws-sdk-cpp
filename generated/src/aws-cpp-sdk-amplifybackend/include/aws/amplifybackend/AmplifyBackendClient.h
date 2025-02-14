@@ -6,24 +6,36 @@
 #pragma once
 #include <aws/amplifybackend/AmplifyBackend_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/amplifybackend/AmplifyBackendServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/amplifybackend/AmplifyBackendErrorMarshaller.h>
 
 namespace Aws
 {
 namespace AmplifyBackend
 {
+  AWS_AMPLIFYBACKEND_API extern const char SERVICE_NAME[];
   /**
    * <p>AWS Amplify Admin API</p>
    */
-  class AWS_AMPLIFYBACKEND_API AmplifyBackendClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<AmplifyBackendClient>
+  class AWS_AMPLIFYBACKEND_API AmplifyBackendClient : smithy::client::AwsSmithyClientT<Aws::AmplifyBackend::SERVICE_NAME,
+      Aws::AmplifyBackend::AmplifyBackendClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      AmplifyBackendEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::AmplifyBackendErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<AmplifyBackendClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "AmplifyBackend"; }
 
       typedef AmplifyBackendClientConfiguration ClientConfigurationType;
       typedef AmplifyBackendEndpointProvider EndpointProviderType;
@@ -667,13 +679,13 @@ namespace AmplifyBackend
          * href="http://docs.aws.amazon.com/goto/WebAPI/amplifybackend-2020-08-11/ListS3Buckets">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListS3BucketsOutcome ListS3Buckets(const Model::ListS3BucketsRequest& request) const;
+        virtual Model::ListS3BucketsOutcome ListS3Buckets(const Model::ListS3BucketsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListS3Buckets that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListS3BucketsRequestT = Model::ListS3BucketsRequest>
-        Model::ListS3BucketsOutcomeCallable ListS3BucketsCallable(const ListS3BucketsRequestT& request) const
+        Model::ListS3BucketsOutcomeCallable ListS3BucketsCallable(const ListS3BucketsRequestT& request = {}) const
         {
             return SubmitCallable(&AmplifyBackendClient::ListS3Buckets, request);
         }
@@ -682,7 +694,7 @@ namespace AmplifyBackend
          * An Async wrapper for ListS3Buckets that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListS3BucketsRequestT = Model::ListS3BucketsRequest>
-        void ListS3BucketsAsync(const ListS3BucketsRequestT& request, const ListS3BucketsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListS3BucketsAsync(const ListS3BucketsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListS3BucketsRequestT& request = {}) const
         {
             return SubmitAsync(&AmplifyBackendClient::ListS3Buckets, request, handler, context);
         }
@@ -871,11 +883,7 @@ namespace AmplifyBackend
       std::shared_ptr<AmplifyBackendEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<AmplifyBackendClient>;
-      void init(const AmplifyBackendClientConfiguration& clientConfiguration);
 
-      AmplifyBackendClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<AmplifyBackendEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace AmplifyBackend

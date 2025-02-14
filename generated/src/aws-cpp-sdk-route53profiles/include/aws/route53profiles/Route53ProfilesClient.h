@@ -6,25 +6,37 @@
 #pragma once
 #include <aws/route53profiles/Route53Profiles_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/route53profiles/Route53ProfilesServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/route53profiles/Route53ProfilesErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Route53Profiles
 {
+  AWS_ROUTE53PROFILES_API extern const char SERVICE_NAME[];
   /**
    * <p> With Amazon Route 53 Profiles you can share Route 53 configurations with
    * VPCs and AWS accounts </p>
    */
-  class AWS_ROUTE53PROFILES_API Route53ProfilesClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<Route53ProfilesClient>
+  class AWS_ROUTE53PROFILES_API Route53ProfilesClient : smithy::client::AwsSmithyClientT<Aws::Route53Profiles::SERVICE_NAME,
+      Aws::Route53Profiles::Route53ProfilesClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      Route53ProfilesEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::Route53ProfilesErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<Route53ProfilesClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Route53Profiles"; }
 
       typedef Route53ProfilesClientConfiguration ClientConfigurationType;
       typedef Route53ProfilesEndpointProvider EndpointProviderType;
@@ -321,13 +333,13 @@ namespace Route53Profiles
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53profiles-2018-05-10/ListProfileAssociations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListProfileAssociationsOutcome ListProfileAssociations(const Model::ListProfileAssociationsRequest& request) const;
+        virtual Model::ListProfileAssociationsOutcome ListProfileAssociations(const Model::ListProfileAssociationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListProfileAssociations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListProfileAssociationsRequestT = Model::ListProfileAssociationsRequest>
-        Model::ListProfileAssociationsOutcomeCallable ListProfileAssociationsCallable(const ListProfileAssociationsRequestT& request) const
+        Model::ListProfileAssociationsOutcomeCallable ListProfileAssociationsCallable(const ListProfileAssociationsRequestT& request = {}) const
         {
             return SubmitCallable(&Route53ProfilesClient::ListProfileAssociations, request);
         }
@@ -336,7 +348,7 @@ namespace Route53Profiles
          * An Async wrapper for ListProfileAssociations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListProfileAssociationsRequestT = Model::ListProfileAssociationsRequest>
-        void ListProfileAssociationsAsync(const ListProfileAssociationsRequestT& request, const ListProfileAssociationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListProfileAssociationsAsync(const ListProfileAssociationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListProfileAssociationsRequestT& request = {}) const
         {
             return SubmitAsync(&Route53ProfilesClient::ListProfileAssociations, request, handler, context);
         }
@@ -373,13 +385,13 @@ namespace Route53Profiles
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53profiles-2018-05-10/ListProfiles">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListProfilesOutcome ListProfiles(const Model::ListProfilesRequest& request) const;
+        virtual Model::ListProfilesOutcome ListProfiles(const Model::ListProfilesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListProfiles that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListProfilesRequestT = Model::ListProfilesRequest>
-        Model::ListProfilesOutcomeCallable ListProfilesCallable(const ListProfilesRequestT& request) const
+        Model::ListProfilesOutcomeCallable ListProfilesCallable(const ListProfilesRequestT& request = {}) const
         {
             return SubmitCallable(&Route53ProfilesClient::ListProfiles, request);
         }
@@ -388,7 +400,7 @@ namespace Route53Profiles
          * An Async wrapper for ListProfiles that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListProfilesRequestT = Model::ListProfilesRequest>
-        void ListProfilesAsync(const ListProfilesRequestT& request, const ListProfilesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListProfilesAsync(const ListProfilesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListProfilesRequestT& request = {}) const
         {
             return SubmitAsync(&Route53ProfilesClient::ListProfiles, request, handler, context);
         }
@@ -502,11 +514,7 @@ namespace Route53Profiles
       std::shared_ptr<Route53ProfilesEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<Route53ProfilesClient>;
-      void init(const Route53ProfilesClientConfiguration& clientConfiguration);
 
-      Route53ProfilesClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<Route53ProfilesEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Route53Profiles

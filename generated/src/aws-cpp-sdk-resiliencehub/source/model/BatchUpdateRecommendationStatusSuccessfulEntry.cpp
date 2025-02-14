@@ -19,6 +19,7 @@ namespace Model
 {
 
 BatchUpdateRecommendationStatusSuccessfulEntry::BatchUpdateRecommendationStatusSuccessfulEntry() : 
+    m_appComponentIdHasBeenSet(false),
     m_entryIdHasBeenSet(false),
     m_excludeReason(ExcludeRecommendationReason::NOT_SET),
     m_excludeReasonHasBeenSet(false),
@@ -29,20 +30,21 @@ BatchUpdateRecommendationStatusSuccessfulEntry::BatchUpdateRecommendationStatusS
 {
 }
 
-BatchUpdateRecommendationStatusSuccessfulEntry::BatchUpdateRecommendationStatusSuccessfulEntry(JsonView jsonValue) : 
-    m_entryIdHasBeenSet(false),
-    m_excludeReason(ExcludeRecommendationReason::NOT_SET),
-    m_excludeReasonHasBeenSet(false),
-    m_excluded(false),
-    m_excludedHasBeenSet(false),
-    m_itemHasBeenSet(false),
-    m_referenceIdHasBeenSet(false)
+BatchUpdateRecommendationStatusSuccessfulEntry::BatchUpdateRecommendationStatusSuccessfulEntry(JsonView jsonValue)
+  : BatchUpdateRecommendationStatusSuccessfulEntry()
 {
   *this = jsonValue;
 }
 
 BatchUpdateRecommendationStatusSuccessfulEntry& BatchUpdateRecommendationStatusSuccessfulEntry::operator =(JsonView jsonValue)
 {
+  if(jsonValue.ValueExists("appComponentId"))
+  {
+    m_appComponentId = jsonValue.GetString("appComponentId");
+
+    m_appComponentIdHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("entryId"))
   {
     m_entryId = jsonValue.GetString("entryId");
@@ -84,6 +86,12 @@ BatchUpdateRecommendationStatusSuccessfulEntry& BatchUpdateRecommendationStatusS
 JsonValue BatchUpdateRecommendationStatusSuccessfulEntry::Jsonize() const
 {
   JsonValue payload;
+
+  if(m_appComponentIdHasBeenSet)
+  {
+   payload.WithString("appComponentId", m_appComponentId);
+
+  }
 
   if(m_entryIdHasBeenSet)
   {

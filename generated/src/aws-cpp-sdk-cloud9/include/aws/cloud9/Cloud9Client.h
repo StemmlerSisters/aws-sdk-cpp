@@ -6,32 +6,39 @@
 #pragma once
 #include <aws/cloud9/Cloud9_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/cloud9/Cloud9ServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/cloud9/Cloud9ErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Cloud9
 {
+  AWS_CLOUD9_API extern const char SERVICE_NAME[];
   /**
    * <fullname>Cloud9</fullname> <p>Cloud9 is a collection of tools that you can use
    * to code, build, run, test, debug, and release software in the cloud.</p> <p>For
    * more information about Cloud9, see the <a
    * href="https://docs.aws.amazon.com/cloud9/latest/user-guide">Cloud9 User
-   * Guide</a>.</p> <p>Cloud9 supports these operations:</p> <ul> <li> <p>
-   * <code>CreateEnvironmentEC2</code>: Creates an Cloud9 development environment,
-   * launches an Amazon EC2 instance, and then connects from the instance to the
-   * environment.</p> </li> <li> <p> <code>CreateEnvironmentMembership</code>: Adds
-   * an environment member to an environment.</p> </li> <li> <p>
-   * <code>DeleteEnvironment</code>: Deletes an environment. If an Amazon EC2
-   * instance is connected to the environment, also terminates the instance.</p>
-   * </li> <li> <p> <code>DeleteEnvironmentMembership</code>: Deletes an environment
-   * member from an environment.</p> </li> <li> <p>
-   * <code>DescribeEnvironmentMemberships</code>: Gets information about environment
-   * members for an environment.</p> </li> <li> <p>
-   * <code>DescribeEnvironments</code>: Gets information about environments.</p>
+   * Guide</a>.</p>  <p>Cloud9 is no longer available to new customers.
+   * Existing customers of Cloud9 can continue to use the service as normal. <a
+   * href="http://aws.amazon.com/blogs/devops/how-to-migrate-from-aws-cloud9-to-aws-ide-toolkits-or-aws-cloudshell/">Learn
+   * more"</a> </p>  <p>Cloud9 supports these operations:</p> <ul> <li>
+   * <p> <code>CreateEnvironmentEC2</code>: Creates an Cloud9 development
+   * environment, launches an Amazon EC2 instance, and then connects from the
+   * instance to the environment.</p> </li> <li> <p>
+   * <code>CreateEnvironmentMembership</code>: Adds an environment member to an
+   * environment.</p> </li> <li> <p> <code>DeleteEnvironment</code>: Deletes an
+   * environment. If an Amazon EC2 instance is connected to the environment, also
+   * terminates the instance.</p> </li> <li> <p>
+   * <code>DeleteEnvironmentMembership</code>: Deletes an environment member from an
+   * environment.</p> </li> <li> <p> <code>DescribeEnvironmentMemberships</code>:
+   * Gets information about environment members for an environment.</p> </li> <li>
+   * <p> <code>DescribeEnvironments</code>: Gets information about environments.</p>
    * </li> <li> <p> <code>DescribeEnvironmentStatus</code>: Gets status information
    * for an environment.</p> </li> <li> <p> <code>ListEnvironments</code>: Gets a
    * list of environment identifiers.</p> </li> <li> <p>
@@ -43,12 +50,20 @@ namespace Cloud9
    * Changes the settings of an existing environment member for an environment.</p>
    * </li> </ul>
    */
-  class AWS_CLOUD9_API Cloud9Client : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<Cloud9Client>
+  class AWS_CLOUD9_API Cloud9Client : smithy::client::AwsSmithyClientT<Aws::Cloud9::SERVICE_NAME,
+      Aws::Cloud9::Cloud9ClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      Cloud9EndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::Cloud9ErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<Cloud9Client>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Cloud9"; }
 
       typedef Cloud9ClientConfiguration ClientConfigurationType;
       typedef Cloud9EndpointProvider EndpointProviderType;
@@ -104,7 +119,10 @@ namespace Cloud9
         /**
          * <p>Creates an Cloud9 development environment, launches an Amazon Elastic Compute
          * Cloud (Amazon EC2) instance, and then connects from the instance to the
-         * environment.</p><p><h3>See Also:</h3>   <a
+         * environment.</p>  <p>Cloud9 is no longer available to new customers.
+         * Existing customers of Cloud9 can continue to use the service as normal. <a
+         * href="http://aws.amazon.com/blogs/devops/how-to-migrate-from-aws-cloud9-to-aws-ide-toolkits-or-aws-cloudshell/">Learn
+         * more"</a> </p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloud9-2017-09-23/CreateEnvironmentEC2">AWS
          * API Reference</a></p>
          */
@@ -129,8 +147,11 @@ namespace Cloud9
         }
 
         /**
-         * <p>Adds an environment member to an Cloud9 development
-         * environment.</p><p><h3>See Also:</h3>   <a
+         * <p>Adds an environment member to an Cloud9 development environment.</p>
+         *  <p>Cloud9 is no longer available to new customers. Existing
+         * customers of Cloud9 can continue to use the service as normal. <a
+         * href="http://aws.amazon.com/blogs/devops/how-to-migrate-from-aws-cloud9-to-aws-ide-toolkits-or-aws-cloudshell/">Learn
+         * more"</a> </p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloud9-2017-09-23/CreateEnvironmentMembership">AWS
          * API Reference</a></p>
          */
@@ -156,8 +177,11 @@ namespace Cloud9
 
         /**
          * <p>Deletes an Cloud9 development environment. If an Amazon EC2 instance is
-         * connected to the environment, also terminates the instance.</p><p><h3>See
-         * Also:</h3>   <a
+         * connected to the environment, also terminates the instance.</p> 
+         * <p>Cloud9 is no longer available to new customers. Existing customers of Cloud9
+         * can continue to use the service as normal. <a
+         * href="http://aws.amazon.com/blogs/devops/how-to-migrate-from-aws-cloud9-to-aws-ide-toolkits-or-aws-cloudshell/">Learn
+         * more"</a> </p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloud9-2017-09-23/DeleteEnvironment">AWS
          * API Reference</a></p>
          */
@@ -182,8 +206,11 @@ namespace Cloud9
         }
 
         /**
-         * <p>Deletes an environment member from a development environment.</p><p><h3>See
-         * Also:</h3>   <a
+         * <p>Deletes an environment member from a development environment.</p> 
+         * <p>Cloud9 is no longer available to new customers. Existing customers of Cloud9
+         * can continue to use the service as normal. <a
+         * href="http://aws.amazon.com/blogs/devops/how-to-migrate-from-aws-cloud9-to-aws-ide-toolkits-or-aws-cloudshell/">Learn
+         * more"</a> </p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloud9-2017-09-23/DeleteEnvironmentMembership">AWS
          * API Reference</a></p>
          */
@@ -209,17 +236,20 @@ namespace Cloud9
 
         /**
          * <p>Gets information about environment members for an Cloud9 development
-         * environment.</p><p><h3>See Also:</h3>   <a
+         * environment.</p>  <p>Cloud9 is no longer available to new customers.
+         * Existing customers of Cloud9 can continue to use the service as normal. <a
+         * href="http://aws.amazon.com/blogs/devops/how-to-migrate-from-aws-cloud9-to-aws-ide-toolkits-or-aws-cloudshell/">Learn
+         * more"</a> </p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloud9-2017-09-23/DescribeEnvironmentMemberships">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeEnvironmentMembershipsOutcome DescribeEnvironmentMemberships(const Model::DescribeEnvironmentMembershipsRequest& request) const;
+        virtual Model::DescribeEnvironmentMembershipsOutcome DescribeEnvironmentMemberships(const Model::DescribeEnvironmentMembershipsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeEnvironmentMemberships that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeEnvironmentMembershipsRequestT = Model::DescribeEnvironmentMembershipsRequest>
-        Model::DescribeEnvironmentMembershipsOutcomeCallable DescribeEnvironmentMembershipsCallable(const DescribeEnvironmentMembershipsRequestT& request) const
+        Model::DescribeEnvironmentMembershipsOutcomeCallable DescribeEnvironmentMembershipsCallable(const DescribeEnvironmentMembershipsRequestT& request = {}) const
         {
             return SubmitCallable(&Cloud9Client::DescribeEnvironmentMemberships, request);
         }
@@ -228,14 +258,17 @@ namespace Cloud9
          * An Async wrapper for DescribeEnvironmentMemberships that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeEnvironmentMembershipsRequestT = Model::DescribeEnvironmentMembershipsRequest>
-        void DescribeEnvironmentMembershipsAsync(const DescribeEnvironmentMembershipsRequestT& request, const DescribeEnvironmentMembershipsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeEnvironmentMembershipsAsync(const DescribeEnvironmentMembershipsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeEnvironmentMembershipsRequestT& request = {}) const
         {
             return SubmitAsync(&Cloud9Client::DescribeEnvironmentMemberships, request, handler, context);
         }
 
         /**
-         * <p>Gets status information for an Cloud9 development environment.</p><p><h3>See
-         * Also:</h3>   <a
+         * <p>Gets status information for an Cloud9 development environment.</p>
+         *  <p>Cloud9 is no longer available to new customers. Existing
+         * customers of Cloud9 can continue to use the service as normal. <a
+         * href="http://aws.amazon.com/blogs/devops/how-to-migrate-from-aws-cloud9-to-aws-ide-toolkits-or-aws-cloudshell/">Learn
+         * more"</a> </p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloud9-2017-09-23/DescribeEnvironmentStatus">AWS
          * API Reference</a></p>
          */
@@ -260,8 +293,11 @@ namespace Cloud9
         }
 
         /**
-         * <p>Gets information about Cloud9 development environments.</p><p><h3>See
-         * Also:</h3>   <a
+         * <p>Gets information about Cloud9 development environments.</p> 
+         * <p>Cloud9 is no longer available to new customers. Existing customers of Cloud9
+         * can continue to use the service as normal. <a
+         * href="http://aws.amazon.com/blogs/devops/how-to-migrate-from-aws-cloud9-to-aws-ide-toolkits-or-aws-cloudshell/">Learn
+         * more"</a> </p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloud9-2017-09-23/DescribeEnvironments">AWS
          * API Reference</a></p>
          */
@@ -286,18 +322,25 @@ namespace Cloud9
         }
 
         /**
-         * <p>Gets a list of Cloud9 development environment identifiers.</p><p><h3>See
-         * Also:</h3>   <a
+         * <p>Gets a list of Cloud9 development environment identifiers.</p> 
+         * <p>Cloud9 is no longer available to new customers. Existing customers of Cloud9
+         * can continue to use the service as normal. <a
+         * href="http://aws.amazon.com/blogs/devops/how-to-migrate-from-aws-cloud9-to-aws-ide-toolkits-or-aws-cloudshell/">Learn
+         * more"</a> </p>   <p>Cloud9 is no longer available to new
+         * customers. Existing customers of Cloud9 can continue to use the service as
+         * normal. <a
+         * href="http://aws.amazon.com/blogs/devops/how-to-migrate-from-aws-cloud9-to-aws-ide-toolkits-or-aws-cloudshell/">Learn
+         * more"</a> </p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloud9-2017-09-23/ListEnvironments">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListEnvironmentsOutcome ListEnvironments(const Model::ListEnvironmentsRequest& request) const;
+        virtual Model::ListEnvironmentsOutcome ListEnvironments(const Model::ListEnvironmentsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListEnvironments that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListEnvironmentsRequestT = Model::ListEnvironmentsRequest>
-        Model::ListEnvironmentsOutcomeCallable ListEnvironmentsCallable(const ListEnvironmentsRequestT& request) const
+        Model::ListEnvironmentsOutcomeCallable ListEnvironmentsCallable(const ListEnvironmentsRequestT& request = {}) const
         {
             return SubmitCallable(&Cloud9Client::ListEnvironments, request);
         }
@@ -306,14 +349,17 @@ namespace Cloud9
          * An Async wrapper for ListEnvironments that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListEnvironmentsRequestT = Model::ListEnvironmentsRequest>
-        void ListEnvironmentsAsync(const ListEnvironmentsRequestT& request, const ListEnvironmentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListEnvironmentsAsync(const ListEnvironmentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListEnvironmentsRequestT& request = {}) const
         {
             return SubmitAsync(&Cloud9Client::ListEnvironments, request, handler, context);
         }
 
         /**
          * <p>Gets a list of the tags associated with an Cloud9 development
-         * environment.</p><p><h3>See Also:</h3>   <a
+         * environment.</p>  <p>Cloud9 is no longer available to new customers.
+         * Existing customers of Cloud9 can continue to use the service as normal. <a
+         * href="http://aws.amazon.com/blogs/devops/how-to-migrate-from-aws-cloud9-to-aws-ide-toolkits-or-aws-cloudshell/">Learn
+         * more"</a> </p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloud9-2017-09-23/ListTagsForResource">AWS
          * API Reference</a></p>
          */
@@ -338,9 +384,13 @@ namespace Cloud9
         }
 
         /**
-         * <p>Adds tags to an Cloud9 development environment.</p>  <p>Tags that
-         * you add to an Cloud9 environment by using this method will NOT be automatically
-         * propagated to underlying resources.</p> <p><h3>See Also:</h3>   <a
+         * <p>Adds tags to an Cloud9 development environment.</p>  <p>Cloud9 is
+         * no longer available to new customers. Existing customers of Cloud9 can continue
+         * to use the service as normal. <a
+         * href="http://aws.amazon.com/blogs/devops/how-to-migrate-from-aws-cloud9-to-aws-ide-toolkits-or-aws-cloudshell/">Learn
+         * more"</a> </p>   <p>Tags that you add to an Cloud9
+         * environment by using this method will NOT be automatically propagated to
+         * underlying resources.</p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloud9-2017-09-23/TagResource">AWS
          * API Reference</a></p>
          */
@@ -365,8 +415,11 @@ namespace Cloud9
         }
 
         /**
-         * <p>Removes tags from an Cloud9 development environment.</p><p><h3>See Also:</h3>
-         * <a
+         * <p>Removes tags from an Cloud9 development environment.</p> 
+         * <p>Cloud9 is no longer available to new customers. Existing customers of Cloud9
+         * can continue to use the service as normal. <a
+         * href="http://aws.amazon.com/blogs/devops/how-to-migrate-from-aws-cloud9-to-aws-ide-toolkits-or-aws-cloudshell/">Learn
+         * more"</a> </p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloud9-2017-09-23/UntagResource">AWS
          * API Reference</a></p>
          */
@@ -391,8 +444,11 @@ namespace Cloud9
         }
 
         /**
-         * <p>Changes the settings of an existing Cloud9 development
-         * environment.</p><p><h3>See Also:</h3>   <a
+         * <p>Changes the settings of an existing Cloud9 development environment.</p>
+         *  <p>Cloud9 is no longer available to new customers. Existing
+         * customers of Cloud9 can continue to use the service as normal. <a
+         * href="http://aws.amazon.com/blogs/devops/how-to-migrate-from-aws-cloud9-to-aws-ide-toolkits-or-aws-cloudshell/">Learn
+         * more"</a> </p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloud9-2017-09-23/UpdateEnvironment">AWS
          * API Reference</a></p>
          */
@@ -418,7 +474,11 @@ namespace Cloud9
 
         /**
          * <p>Changes the settings of an existing environment member for an Cloud9
-         * development environment.</p><p><h3>See Also:</h3>   <a
+         * development environment.</p>  <p>Cloud9 is no longer available to new
+         * customers. Existing customers of Cloud9 can continue to use the service as
+         * normal. <a
+         * href="http://aws.amazon.com/blogs/devops/how-to-migrate-from-aws-cloud9-to-aws-ide-toolkits-or-aws-cloudshell/">Learn
+         * more"</a> </p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloud9-2017-09-23/UpdateEnvironmentMembership">AWS
          * API Reference</a></p>
          */
@@ -447,11 +507,7 @@ namespace Cloud9
       std::shared_ptr<Cloud9EndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<Cloud9Client>;
-      void init(const Cloud9ClientConfiguration& clientConfiguration);
 
-      Cloud9ClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<Cloud9EndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Cloud9

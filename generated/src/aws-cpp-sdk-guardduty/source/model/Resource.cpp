@@ -29,24 +29,14 @@ Resource::Resource() :
     m_ecsClusterDetailsHasBeenSet(false),
     m_containerDetailsHasBeenSet(false),
     m_rdsDbInstanceDetailsHasBeenSet(false),
+    m_rdsLimitlessDbDetailsHasBeenSet(false),
     m_rdsDbUserDetailsHasBeenSet(false),
     m_lambdaDetailsHasBeenSet(false)
 {
 }
 
-Resource::Resource(JsonView jsonValue) : 
-    m_accessKeyDetailsHasBeenSet(false),
-    m_s3BucketDetailsHasBeenSet(false),
-    m_instanceDetailsHasBeenSet(false),
-    m_eksClusterDetailsHasBeenSet(false),
-    m_kubernetesDetailsHasBeenSet(false),
-    m_resourceTypeHasBeenSet(false),
-    m_ebsVolumeDetailsHasBeenSet(false),
-    m_ecsClusterDetailsHasBeenSet(false),
-    m_containerDetailsHasBeenSet(false),
-    m_rdsDbInstanceDetailsHasBeenSet(false),
-    m_rdsDbUserDetailsHasBeenSet(false),
-    m_lambdaDetailsHasBeenSet(false)
+Resource::Resource(JsonView jsonValue)
+  : Resource()
 {
   *this = jsonValue;
 }
@@ -124,6 +114,13 @@ Resource& Resource::operator =(JsonView jsonValue)
     m_rdsDbInstanceDetails = jsonValue.GetObject("rdsDbInstanceDetails");
 
     m_rdsDbInstanceDetailsHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("rdsLimitlessDbDetails"))
+  {
+    m_rdsLimitlessDbDetails = jsonValue.GetObject("rdsLimitlessDbDetails");
+
+    m_rdsLimitlessDbDetailsHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("rdsDbUserDetails"))
@@ -209,6 +206,12 @@ JsonValue Resource::Jsonize() const
   if(m_rdsDbInstanceDetailsHasBeenSet)
   {
    payload.WithObject("rdsDbInstanceDetails", m_rdsDbInstanceDetails.Jsonize());
+
+  }
+
+  if(m_rdsLimitlessDbDetailsHasBeenSet)
+  {
+   payload.WithObject("rdsLimitlessDbDetails", m_rdsLimitlessDbDetails.Jsonize());
 
   }
 

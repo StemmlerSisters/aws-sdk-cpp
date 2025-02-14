@@ -32,106 +32,58 @@ namespace Model
     AWS_S3CONTROL_API CreateAccessPointResult& operator=(const Aws::AmazonWebServiceResult<Aws::Utils::Xml::XmlDocument>& result);
 
 
+    ///@{
     /**
      * <p>The ARN of the access point.</p>  <p>This is only supported by Amazon
      * S3 on Outposts.</p> 
      */
     inline const Aws::String& GetAccessPointArn() const{ return m_accessPointArn; }
-
-    /**
-     * <p>The ARN of the access point.</p>  <p>This is only supported by Amazon
-     * S3 on Outposts.</p> 
-     */
     inline void SetAccessPointArn(const Aws::String& value) { m_accessPointArn = value; }
-
-    /**
-     * <p>The ARN of the access point.</p>  <p>This is only supported by Amazon
-     * S3 on Outposts.</p> 
-     */
     inline void SetAccessPointArn(Aws::String&& value) { m_accessPointArn = std::move(value); }
-
-    /**
-     * <p>The ARN of the access point.</p>  <p>This is only supported by Amazon
-     * S3 on Outposts.</p> 
-     */
     inline void SetAccessPointArn(const char* value) { m_accessPointArn.assign(value); }
-
-    /**
-     * <p>The ARN of the access point.</p>  <p>This is only supported by Amazon
-     * S3 on Outposts.</p> 
-     */
     inline CreateAccessPointResult& WithAccessPointArn(const Aws::String& value) { SetAccessPointArn(value); return *this;}
-
-    /**
-     * <p>The ARN of the access point.</p>  <p>This is only supported by Amazon
-     * S3 on Outposts.</p> 
-     */
     inline CreateAccessPointResult& WithAccessPointArn(Aws::String&& value) { SetAccessPointArn(std::move(value)); return *this;}
-
-    /**
-     * <p>The ARN of the access point.</p>  <p>This is only supported by Amazon
-     * S3 on Outposts.</p> 
-     */
     inline CreateAccessPointResult& WithAccessPointArn(const char* value) { SetAccessPointArn(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The name or alias of the access point.</p>
      */
     inline const Aws::String& GetAlias() const{ return m_alias; }
-
-    /**
-     * <p>The name or alias of the access point.</p>
-     */
     inline void SetAlias(const Aws::String& value) { m_alias = value; }
-
-    /**
-     * <p>The name or alias of the access point.</p>
-     */
     inline void SetAlias(Aws::String&& value) { m_alias = std::move(value); }
-
-    /**
-     * <p>The name or alias of the access point.</p>
-     */
     inline void SetAlias(const char* value) { m_alias.assign(value); }
-
-    /**
-     * <p>The name or alias of the access point.</p>
-     */
     inline CreateAccessPointResult& WithAlias(const Aws::String& value) { SetAlias(value); return *this;}
-
-    /**
-     * <p>The name or alias of the access point.</p>
-     */
     inline CreateAccessPointResult& WithAlias(Aws::String&& value) { SetAlias(std::move(value)); return *this;}
-
-    /**
-     * <p>The name or alias of the access point.</p>
-     */
     inline CreateAccessPointResult& WithAlias(const char* value) { SetAlias(value); return *this;}
+    ///@}
 
-
-    
+    ///@{
+    /**
+     * AWS Request Id value
+     */
     inline const Aws::String& GetRequestId() const{ return m_requestId; }
-
-    
     inline void SetRequestId(const Aws::String& value) { m_requestId = value; }
-
-    
     inline void SetRequestId(Aws::String&& value) { m_requestId = std::move(value); }
-
-    
     inline void SetRequestId(const char* value) { m_requestId.assign(value); }
-
-    
     inline CreateAccessPointResult& WithRequestId(const Aws::String& value) { SetRequestId(value); return *this;}
-
-    
     inline CreateAccessPointResult& WithRequestId(Aws::String&& value) { SetRequestId(std::move(value)); return *this;}
-
-    
     inline CreateAccessPointResult& WithRequestId(const char* value) { SetRequestId(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * x-amz-id-2 header value, also known as Host Id
+     */
+    inline const Aws::String& GetHostId() const{ return m_hostId; }
+    inline void SetHostId(const Aws::String& value) { m_hostId = value; }
+    inline void SetHostId(Aws::String&& value) { m_hostId = std::move(value); }
+    inline void SetHostId(const char* value) { m_hostId.assign(value); }
+    inline CreateAccessPointResult& WithHostId(const Aws::String& value) { SetHostId(value); return *this;}
+    inline CreateAccessPointResult& WithHostId(Aws::String&& value) { SetHostId(std::move(value)); return *this;}
+    inline CreateAccessPointResult& WithHostId(const char* value) { SetHostId(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_accessPointArn;
@@ -139,6 +91,8 @@ namespace Model
     Aws::String m_alias;
 
     Aws::String m_requestId;
+
+    Aws::String m_hostId;
   };
 
 } // namespace Model

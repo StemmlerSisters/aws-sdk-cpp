@@ -18,12 +18,13 @@ using namespace Aws::Utils;
 using namespace Aws;
 
 RejectDataShareResult::RejectDataShareResult() : 
-    m_allowPubliclyAccessibleConsumers(false)
+    m_allowPubliclyAccessibleConsumers(false),
+    m_dataShareType(DataShareType::NOT_SET)
 {
 }
 
-RejectDataShareResult::RejectDataShareResult(const Aws::AmazonWebServiceResult<XmlDocument>& result) : 
-    m_allowPubliclyAccessibleConsumers(false)
+RejectDataShareResult::RejectDataShareResult(const Aws::AmazonWebServiceResult<XmlDocument>& result)
+  : RejectDataShareResult()
 {
   *this = result;
 }
@@ -70,6 +71,11 @@ RejectDataShareResult& RejectDataShareResult::operator =(const Aws::AmazonWebSer
     if(!managedByNode.IsNull())
     {
       m_managedBy = Aws::Utils::Xml::DecodeEscapedXmlText(managedByNode.GetText());
+    }
+    XmlNode dataShareTypeNode = resultNode.FirstChild("DataShareType");
+    if(!dataShareTypeNode.IsNull())
+    {
+      m_dataShareType = DataShareTypeMapper::GetDataShareTypeForName(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(dataShareTypeNode.GetText()).c_str()).c_str());
     }
   }
 

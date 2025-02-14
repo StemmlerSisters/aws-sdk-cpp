@@ -23,16 +23,13 @@ ListUsersFilters::ListUsersFilters() :
     m_displayNamePrefixHasBeenSet(false),
     m_primaryEmailPrefixHasBeenSet(false),
     m_state(EntityState::NOT_SET),
-    m_stateHasBeenSet(false)
+    m_stateHasBeenSet(false),
+    m_identityProviderUserIdPrefixHasBeenSet(false)
 {
 }
 
-ListUsersFilters::ListUsersFilters(JsonView jsonValue) : 
-    m_usernamePrefixHasBeenSet(false),
-    m_displayNamePrefixHasBeenSet(false),
-    m_primaryEmailPrefixHasBeenSet(false),
-    m_state(EntityState::NOT_SET),
-    m_stateHasBeenSet(false)
+ListUsersFilters::ListUsersFilters(JsonView jsonValue)
+  : ListUsersFilters()
 {
   *this = jsonValue;
 }
@@ -67,6 +64,13 @@ ListUsersFilters& ListUsersFilters::operator =(JsonView jsonValue)
     m_stateHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("IdentityProviderUserIdPrefix"))
+  {
+    m_identityProviderUserIdPrefix = jsonValue.GetString("IdentityProviderUserIdPrefix");
+
+    m_identityProviderUserIdPrefixHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -95,6 +99,12 @@ JsonValue ListUsersFilters::Jsonize() const
   if(m_stateHasBeenSet)
   {
    payload.WithString("State", EntityStateMapper::GetNameForEntityState(m_state));
+  }
+
+  if(m_identityProviderUserIdPrefixHasBeenSet)
+  {
+   payload.WithString("IdentityProviderUserIdPrefix", m_identityProviderUserIdPrefix);
+
   }
 
   return payload;

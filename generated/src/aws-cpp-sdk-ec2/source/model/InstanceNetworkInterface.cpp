@@ -41,32 +41,13 @@ InstanceNetworkInterface::InstanceNetworkInterface() :
     m_interfaceTypeHasBeenSet(false),
     m_ipv4PrefixesHasBeenSet(false),
     m_ipv6PrefixesHasBeenSet(false),
-    m_connectionTrackingConfigurationHasBeenSet(false)
+    m_connectionTrackingConfigurationHasBeenSet(false),
+    m_operatorHasBeenSet(false)
 {
 }
 
-InstanceNetworkInterface::InstanceNetworkInterface(const XmlNode& xmlNode) : 
-    m_associationHasBeenSet(false),
-    m_attachmentHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_groupsHasBeenSet(false),
-    m_ipv6AddressesHasBeenSet(false),
-    m_macAddressHasBeenSet(false),
-    m_networkInterfaceIdHasBeenSet(false),
-    m_ownerIdHasBeenSet(false),
-    m_privateDnsNameHasBeenSet(false),
-    m_privateIpAddressHasBeenSet(false),
-    m_privateIpAddressesHasBeenSet(false),
-    m_sourceDestCheck(false),
-    m_sourceDestCheckHasBeenSet(false),
-    m_status(NetworkInterfaceStatus::NOT_SET),
-    m_statusHasBeenSet(false),
-    m_subnetIdHasBeenSet(false),
-    m_vpcIdHasBeenSet(false),
-    m_interfaceTypeHasBeenSet(false),
-    m_ipv4PrefixesHasBeenSet(false),
-    m_ipv6PrefixesHasBeenSet(false),
-    m_connectionTrackingConfigurationHasBeenSet(false)
+InstanceNetworkInterface::InstanceNetworkInterface(const XmlNode& xmlNode)
+  : InstanceNetworkInterface()
 {
   *this = xmlNode;
 }
@@ -221,6 +202,12 @@ InstanceNetworkInterface& InstanceNetworkInterface::operator =(const XmlNode& xm
       m_connectionTrackingConfiguration = connectionTrackingConfigurationNode;
       m_connectionTrackingConfigurationHasBeenSet = true;
     }
+    XmlNode operatorNode = resultNode.FirstChild("operator");
+    if(!operatorNode.IsNull())
+    {
+      m_operator = operatorNode;
+      m_operatorHasBeenSet = true;
+    }
   }
 
   return *this;
@@ -359,6 +346,13 @@ void InstanceNetworkInterface::OutputToStream(Aws::OStream& oStream, const char*
       m_connectionTrackingConfiguration.OutputToStream(oStream, connectionTrackingConfigurationLocationAndMemberSs.str().c_str());
   }
 
+  if(m_operatorHasBeenSet)
+  {
+      Aws::StringStream operatorLocationAndMemberSs;
+      operatorLocationAndMemberSs << location << index << locationValue << ".Operator";
+      m_operator.OutputToStream(oStream, operatorLocationAndMemberSs.str().c_str());
+  }
+
 }
 
 void InstanceNetworkInterface::OutputToStream(Aws::OStream& oStream, const char* location) const
@@ -474,6 +468,12 @@ void InstanceNetworkInterface::OutputToStream(Aws::OStream& oStream, const char*
       Aws::String connectionTrackingConfigurationLocationAndMember(location);
       connectionTrackingConfigurationLocationAndMember += ".ConnectionTrackingConfiguration";
       m_connectionTrackingConfiguration.OutputToStream(oStream, connectionTrackingConfigurationLocationAndMember.c_str());
+  }
+  if(m_operatorHasBeenSet)
+  {
+      Aws::String operatorLocationAndMember(location);
+      operatorLocationAndMember += ".Operator";
+      m_operator.OutputToStream(oStream, operatorLocationAndMember.c_str());
   }
 }
 

@@ -36,19 +36,8 @@ DBEngineVersion::DBEngineVersion() :
 {
 }
 
-DBEngineVersion::DBEngineVersion(const XmlNode& xmlNode) : 
-    m_engineHasBeenSet(false),
-    m_engineVersionHasBeenSet(false),
-    m_dBParameterGroupFamilyHasBeenSet(false),
-    m_dBEngineDescriptionHasBeenSet(false),
-    m_dBEngineVersionDescriptionHasBeenSet(false),
-    m_validUpgradeTargetHasBeenSet(false),
-    m_exportableLogTypesHasBeenSet(false),
-    m_supportsLogExportsToCloudwatchLogs(false),
-    m_supportsLogExportsToCloudwatchLogsHasBeenSet(false),
-    m_supportedCACertificateIdentifiersHasBeenSet(false),
-    m_supportsCertificateRotationWithoutRestart(false),
-    m_supportsCertificateRotationWithoutRestartHasBeenSet(false)
+DBEngineVersion::DBEngineVersion(const XmlNode& xmlNode)
+  : DBEngineVersion()
 {
   *this = xmlNode;
 }
@@ -175,7 +164,7 @@ void DBEngineVersion::OutputToStream(Aws::OStream& oStream, const char* location
       for(auto& item : m_validUpgradeTarget)
       {
         Aws::StringStream validUpgradeTargetSs;
-        validUpgradeTargetSs << location << index << locationValue << ".UpgradeTarget." << validUpgradeTargetIdx++;
+        validUpgradeTargetSs << location << index << locationValue << ".ValidUpgradeTarget.UpgradeTarget." << validUpgradeTargetIdx++;
         item.OutputToStream(oStream, validUpgradeTargetSs.str().c_str());
       }
   }

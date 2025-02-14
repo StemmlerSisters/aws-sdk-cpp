@@ -22,7 +22,9 @@ namespace Model
     LambdaFunction,
     NotApplicable,
     EcsService,
-    License
+    License,
+    RdsDBInstance,
+    Idle
   };
 
 namespace ResourceTypeMapper

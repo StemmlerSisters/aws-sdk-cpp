@@ -6,24 +6,36 @@
 #pragma once
 #include <aws/resourcegroupstaggingapi/ResourceGroupsTaggingAPI_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/resourcegroupstaggingapi/ResourceGroupsTaggingAPIServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/resourcegroupstaggingapi/ResourceGroupsTaggingAPIErrorMarshaller.h>
 
 namespace Aws
 {
 namespace ResourceGroupsTaggingAPI
 {
+  AWS_RESOURCEGROUPSTAGGINGAPI_API extern const char SERVICE_NAME[];
   /**
    * <fullname>Resource Groups Tagging API</fullname>
    */
-  class AWS_RESOURCEGROUPSTAGGINGAPI_API ResourceGroupsTaggingAPIClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<ResourceGroupsTaggingAPIClient>
+  class AWS_RESOURCEGROUPSTAGGINGAPI_API ResourceGroupsTaggingAPIClient : smithy::client::AwsSmithyClientT<Aws::ResourceGroupsTaggingAPI::SERVICE_NAME,
+      Aws::ResourceGroupsTaggingAPI::ResourceGroupsTaggingAPIClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      ResourceGroupsTaggingAPIEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::ResourceGroupsTaggingAPIErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<ResourceGroupsTaggingAPIClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Resource Groups Tagging API"; }
 
       typedef ResourceGroupsTaggingAPIClientConfiguration ClientConfigurationType;
       typedef ResourceGroupsTaggingAPIEndpointProvider EndpointProviderType;
@@ -83,13 +95,13 @@ namespace ResourceGroupsTaggingAPI
          * href="http://docs.aws.amazon.com/goto/WebAPI/resourcegroupstaggingapi-2017-01-26/DescribeReportCreation">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeReportCreationOutcome DescribeReportCreation(const Model::DescribeReportCreationRequest& request) const;
+        virtual Model::DescribeReportCreationOutcome DescribeReportCreation(const Model::DescribeReportCreationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeReportCreation that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeReportCreationRequestT = Model::DescribeReportCreationRequest>
-        Model::DescribeReportCreationOutcomeCallable DescribeReportCreationCallable(const DescribeReportCreationRequestT& request) const
+        Model::DescribeReportCreationOutcomeCallable DescribeReportCreationCallable(const DescribeReportCreationRequestT& request = {}) const
         {
             return SubmitCallable(&ResourceGroupsTaggingAPIClient::DescribeReportCreation, request);
         }
@@ -98,7 +110,7 @@ namespace ResourceGroupsTaggingAPI
          * An Async wrapper for DescribeReportCreation that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeReportCreationRequestT = Model::DescribeReportCreationRequest>
-        void DescribeReportCreationAsync(const DescribeReportCreationRequestT& request, const DescribeReportCreationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeReportCreationAsync(const DescribeReportCreationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeReportCreationRequestT& request = {}) const
         {
             return SubmitAsync(&ResourceGroupsTaggingAPIClient::DescribeReportCreation, request, handler, context);
         }
@@ -120,13 +132,13 @@ namespace ResourceGroupsTaggingAPI
          * href="http://docs.aws.amazon.com/goto/WebAPI/resourcegroupstaggingapi-2017-01-26/GetComplianceSummary">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetComplianceSummaryOutcome GetComplianceSummary(const Model::GetComplianceSummaryRequest& request) const;
+        virtual Model::GetComplianceSummaryOutcome GetComplianceSummary(const Model::GetComplianceSummaryRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetComplianceSummary that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetComplianceSummaryRequestT = Model::GetComplianceSummaryRequest>
-        Model::GetComplianceSummaryOutcomeCallable GetComplianceSummaryCallable(const GetComplianceSummaryRequestT& request) const
+        Model::GetComplianceSummaryOutcomeCallable GetComplianceSummaryCallable(const GetComplianceSummaryRequestT& request = {}) const
         {
             return SubmitCallable(&ResourceGroupsTaggingAPIClient::GetComplianceSummary, request);
         }
@@ -135,7 +147,7 @@ namespace ResourceGroupsTaggingAPI
          * An Async wrapper for GetComplianceSummary that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetComplianceSummaryRequestT = Model::GetComplianceSummaryRequest>
-        void GetComplianceSummaryAsync(const GetComplianceSummaryRequestT& request, const GetComplianceSummaryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetComplianceSummaryAsync(const GetComplianceSummaryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetComplianceSummaryRequestT& request = {}) const
         {
             return SubmitAsync(&ResourceGroupsTaggingAPIClient::GetComplianceSummary, request, handler, context);
         }
@@ -160,13 +172,13 @@ namespace ResourceGroupsTaggingAPI
          * href="http://docs.aws.amazon.com/goto/WebAPI/resourcegroupstaggingapi-2017-01-26/GetResources">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetResourcesOutcome GetResources(const Model::GetResourcesRequest& request) const;
+        virtual Model::GetResourcesOutcome GetResources(const Model::GetResourcesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetResources that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetResourcesRequestT = Model::GetResourcesRequest>
-        Model::GetResourcesOutcomeCallable GetResourcesCallable(const GetResourcesRequestT& request) const
+        Model::GetResourcesOutcomeCallable GetResourcesCallable(const GetResourcesRequestT& request = {}) const
         {
             return SubmitCallable(&ResourceGroupsTaggingAPIClient::GetResources, request);
         }
@@ -175,7 +187,7 @@ namespace ResourceGroupsTaggingAPI
          * An Async wrapper for GetResources that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetResourcesRequestT = Model::GetResourcesRequest>
-        void GetResourcesAsync(const GetResourcesRequestT& request, const GetResourcesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetResourcesAsync(const GetResourcesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetResourcesRequestT& request = {}) const
         {
             return SubmitAsync(&ResourceGroupsTaggingAPIClient::GetResources, request, handler, context);
         }
@@ -193,13 +205,13 @@ namespace ResourceGroupsTaggingAPI
          * href="http://docs.aws.amazon.com/goto/WebAPI/resourcegroupstaggingapi-2017-01-26/GetTagKeys">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetTagKeysOutcome GetTagKeys(const Model::GetTagKeysRequest& request) const;
+        virtual Model::GetTagKeysOutcome GetTagKeys(const Model::GetTagKeysRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetTagKeys that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetTagKeysRequestT = Model::GetTagKeysRequest>
-        Model::GetTagKeysOutcomeCallable GetTagKeysCallable(const GetTagKeysRequestT& request) const
+        Model::GetTagKeysOutcomeCallable GetTagKeysCallable(const GetTagKeysRequestT& request = {}) const
         {
             return SubmitCallable(&ResourceGroupsTaggingAPIClient::GetTagKeys, request);
         }
@@ -208,7 +220,7 @@ namespace ResourceGroupsTaggingAPI
          * An Async wrapper for GetTagKeys that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetTagKeysRequestT = Model::GetTagKeysRequest>
-        void GetTagKeysAsync(const GetTagKeysRequestT& request, const GetTagKeysResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetTagKeysAsync(const GetTagKeysResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetTagKeysRequestT& request = {}) const
         {
             return SubmitAsync(&ResourceGroupsTaggingAPIClient::GetTagKeys, request, handler, context);
         }
@@ -374,11 +386,7 @@ namespace ResourceGroupsTaggingAPI
       std::shared_ptr<ResourceGroupsTaggingAPIEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<ResourceGroupsTaggingAPIClient>;
-      void init(const ResourceGroupsTaggingAPIClientConfiguration& clientConfiguration);
 
-      ResourceGroupsTaggingAPIClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<ResourceGroupsTaggingAPIEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace ResourceGroupsTaggingAPI

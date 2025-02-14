@@ -6,6 +6,7 @@
 #include <aws/s3-crt/model/AbortMultipartUploadRequest.h>
 #include <aws/core/utils/xml/XmlSerializer.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
+#include <aws/core/utils/UnreferencedParam.h>
 #include <aws/core/http/URI.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 
@@ -23,8 +24,28 @@ AbortMultipartUploadRequest::AbortMultipartUploadRequest() :
     m_requestPayer(RequestPayer::NOT_SET),
     m_requestPayerHasBeenSet(false),
     m_expectedBucketOwnerHasBeenSet(false),
+    m_ifMatchInitiatedTimeHasBeenSet(false),
     m_customizedAccessLogTagHasBeenSet(false)
 {
+}
+
+bool AbortMultipartUploadRequest::HasEmbeddedError(Aws::IOStream &body,
+  const Aws::Http::HeaderValueCollection &header) const
+{
+  // Header is unused
+  AWS_UNREFERENCED_PARAM(header);
+
+  auto readPointer = body.tellg();
+  Utils::Xml::XmlDocument doc = XmlDocument::CreateFromXmlStream(body);
+  body.seekg(readPointer);
+  if (!doc.WasParseSuccessful()) {
+    return false;
+  }
+
+  if (!doc.GetRootElement().IsNull() && doc.GetRootElement().GetName() == Aws::String("Error")) {
+    return true;
+  }
+  return false;
 }
 
 Aws::String AbortMultipartUploadRequest::SerializePayload() const
@@ -75,6 +96,11 @@ Aws::Http::HeaderValueCollection AbortMultipartUploadRequest::GetRequestSpecific
     ss << m_expectedBucketOwner;
     headers.emplace("x-amz-expected-bucket-owner",  ss.str());
     ss.str("");
+  }
+
+  if(m_ifMatchInitiatedTimeHasBeenSet)
+  {
+    headers.emplace("x-amz-if-match-initiated-time", m_ifMatchInitiatedTime.ToGmtString(Aws::Utils::DateFormat::RFC822));
   }
 
   return headers;

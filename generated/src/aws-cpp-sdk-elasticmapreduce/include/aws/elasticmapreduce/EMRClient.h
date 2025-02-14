@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/elasticmapreduce/EMR_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/elasticmapreduce/EMRServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/elasticmapreduce/EMRErrorMarshaller.h>
 
 namespace Aws
 {
 namespace EMR
 {
+  AWS_EMR_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon EMR is a web service that makes it easier to process large amounts of
    * data efficiently. Amazon EMR uses Hadoop processing combined with several Amazon
@@ -22,12 +26,20 @@ namespace EMR
    * analysis, machine learning, scientific simulation, and data warehouse
    * management.</p>
    */
-  class AWS_EMR_API EMRClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<EMRClient>
+  class AWS_EMR_API EMRClient : smithy::client::AwsSmithyClientT<Aws::EMR::SERVICE_NAME,
+      Aws::EMR::EMRClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      EMREndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::EMRErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<EMRClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "EMR"; }
 
       typedef EMRClientConfiguration ClientConfigurationType;
       typedef EMREndpointProvider EndpointProviderType;
@@ -456,13 +468,13 @@ namespace EMR
          * href="http://docs.aws.amazon.com/goto/WebAPI/elasticmapreduce-2009-03-31/DescribeReleaseLabel">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeReleaseLabelOutcome DescribeReleaseLabel(const Model::DescribeReleaseLabelRequest& request) const;
+        virtual Model::DescribeReleaseLabelOutcome DescribeReleaseLabel(const Model::DescribeReleaseLabelRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeReleaseLabel that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeReleaseLabelRequestT = Model::DescribeReleaseLabelRequest>
-        Model::DescribeReleaseLabelOutcomeCallable DescribeReleaseLabelCallable(const DescribeReleaseLabelRequestT& request) const
+        Model::DescribeReleaseLabelOutcomeCallable DescribeReleaseLabelCallable(const DescribeReleaseLabelRequestT& request = {}) const
         {
             return SubmitCallable(&EMRClient::DescribeReleaseLabel, request);
         }
@@ -471,7 +483,7 @@ namespace EMR
          * An Async wrapper for DescribeReleaseLabel that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeReleaseLabelRequestT = Model::DescribeReleaseLabelRequest>
-        void DescribeReleaseLabelAsync(const DescribeReleaseLabelRequestT& request, const DescribeReleaseLabelResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeReleaseLabelAsync(const DescribeReleaseLabelResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeReleaseLabelRequestT& request = {}) const
         {
             return SubmitAsync(&EMRClient::DescribeReleaseLabel, request, handler, context);
         }
@@ -588,13 +600,13 @@ namespace EMR
          * href="http://docs.aws.amazon.com/goto/WebAPI/elasticmapreduce-2009-03-31/GetBlockPublicAccessConfiguration">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetBlockPublicAccessConfigurationOutcome GetBlockPublicAccessConfiguration(const Model::GetBlockPublicAccessConfigurationRequest& request) const;
+        virtual Model::GetBlockPublicAccessConfigurationOutcome GetBlockPublicAccessConfiguration(const Model::GetBlockPublicAccessConfigurationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetBlockPublicAccessConfiguration that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetBlockPublicAccessConfigurationRequestT = Model::GetBlockPublicAccessConfigurationRequest>
-        Model::GetBlockPublicAccessConfigurationOutcomeCallable GetBlockPublicAccessConfigurationCallable(const GetBlockPublicAccessConfigurationRequestT& request) const
+        Model::GetBlockPublicAccessConfigurationOutcomeCallable GetBlockPublicAccessConfigurationCallable(const GetBlockPublicAccessConfigurationRequestT& request = {}) const
         {
             return SubmitCallable(&EMRClient::GetBlockPublicAccessConfiguration, request);
         }
@@ -603,7 +615,7 @@ namespace EMR
          * An Async wrapper for GetBlockPublicAccessConfiguration that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetBlockPublicAccessConfigurationRequestT = Model::GetBlockPublicAccessConfigurationRequest>
-        void GetBlockPublicAccessConfigurationAsync(const GetBlockPublicAccessConfigurationRequestT& request, const GetBlockPublicAccessConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetBlockPublicAccessConfigurationAsync(const GetBlockPublicAccessConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetBlockPublicAccessConfigurationRequestT& request = {}) const
         {
             return SubmitAsync(&EMRClient::GetBlockPublicAccessConfiguration, request, handler, context);
         }
@@ -724,13 +736,13 @@ namespace EMR
          * href="http://docs.aws.amazon.com/goto/WebAPI/elasticmapreduce-2009-03-31/ListClusters">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListClustersOutcome ListClusters(const Model::ListClustersRequest& request) const;
+        virtual Model::ListClustersOutcome ListClusters(const Model::ListClustersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListClusters that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListClustersRequestT = Model::ListClustersRequest>
-        Model::ListClustersOutcomeCallable ListClustersCallable(const ListClustersRequestT& request) const
+        Model::ListClustersOutcomeCallable ListClustersCallable(const ListClustersRequestT& request = {}) const
         {
             return SubmitCallable(&EMRClient::ListClusters, request);
         }
@@ -739,7 +751,7 @@ namespace EMR
          * An Async wrapper for ListClusters that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListClustersRequestT = Model::ListClustersRequest>
-        void ListClustersAsync(const ListClustersRequestT& request, const ListClustersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListClustersAsync(const ListClustersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListClustersRequestT& request = {}) const
         {
             return SubmitAsync(&EMRClient::ListClusters, request, handler, context);
         }
@@ -836,13 +848,13 @@ namespace EMR
          * href="http://docs.aws.amazon.com/goto/WebAPI/elasticmapreduce-2009-03-31/ListNotebookExecutions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListNotebookExecutionsOutcome ListNotebookExecutions(const Model::ListNotebookExecutionsRequest& request) const;
+        virtual Model::ListNotebookExecutionsOutcome ListNotebookExecutions(const Model::ListNotebookExecutionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListNotebookExecutions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListNotebookExecutionsRequestT = Model::ListNotebookExecutionsRequest>
-        Model::ListNotebookExecutionsOutcomeCallable ListNotebookExecutionsCallable(const ListNotebookExecutionsRequestT& request) const
+        Model::ListNotebookExecutionsOutcomeCallable ListNotebookExecutionsCallable(const ListNotebookExecutionsRequestT& request = {}) const
         {
             return SubmitCallable(&EMRClient::ListNotebookExecutions, request);
         }
@@ -851,7 +863,7 @@ namespace EMR
          * An Async wrapper for ListNotebookExecutions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListNotebookExecutionsRequestT = Model::ListNotebookExecutionsRequest>
-        void ListNotebookExecutionsAsync(const ListNotebookExecutionsRequestT& request, const ListNotebookExecutionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListNotebookExecutionsAsync(const ListNotebookExecutionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListNotebookExecutionsRequestT& request = {}) const
         {
             return SubmitAsync(&EMRClient::ListNotebookExecutions, request, handler, context);
         }
@@ -862,13 +874,13 @@ namespace EMR
          * href="http://docs.aws.amazon.com/goto/WebAPI/elasticmapreduce-2009-03-31/ListReleaseLabels">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListReleaseLabelsOutcome ListReleaseLabels(const Model::ListReleaseLabelsRequest& request) const;
+        virtual Model::ListReleaseLabelsOutcome ListReleaseLabels(const Model::ListReleaseLabelsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListReleaseLabels that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListReleaseLabelsRequestT = Model::ListReleaseLabelsRequest>
-        Model::ListReleaseLabelsOutcomeCallable ListReleaseLabelsCallable(const ListReleaseLabelsRequestT& request) const
+        Model::ListReleaseLabelsOutcomeCallable ListReleaseLabelsCallable(const ListReleaseLabelsRequestT& request = {}) const
         {
             return SubmitCallable(&EMRClient::ListReleaseLabels, request);
         }
@@ -877,7 +889,7 @@ namespace EMR
          * An Async wrapper for ListReleaseLabels that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListReleaseLabelsRequestT = Model::ListReleaseLabelsRequest>
-        void ListReleaseLabelsAsync(const ListReleaseLabelsRequestT& request, const ListReleaseLabelsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListReleaseLabelsAsync(const ListReleaseLabelsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListReleaseLabelsRequestT& request = {}) const
         {
             return SubmitAsync(&EMRClient::ListReleaseLabels, request, handler, context);
         }
@@ -891,13 +903,13 @@ namespace EMR
          * href="http://docs.aws.amazon.com/goto/WebAPI/elasticmapreduce-2009-03-31/ListSecurityConfigurations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListSecurityConfigurationsOutcome ListSecurityConfigurations(const Model::ListSecurityConfigurationsRequest& request) const;
+        virtual Model::ListSecurityConfigurationsOutcome ListSecurityConfigurations(const Model::ListSecurityConfigurationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListSecurityConfigurations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListSecurityConfigurationsRequestT = Model::ListSecurityConfigurationsRequest>
-        Model::ListSecurityConfigurationsOutcomeCallable ListSecurityConfigurationsCallable(const ListSecurityConfigurationsRequestT& request) const
+        Model::ListSecurityConfigurationsOutcomeCallable ListSecurityConfigurationsCallable(const ListSecurityConfigurationsRequestT& request = {}) const
         {
             return SubmitCallable(&EMRClient::ListSecurityConfigurations, request);
         }
@@ -906,7 +918,7 @@ namespace EMR
          * An Async wrapper for ListSecurityConfigurations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListSecurityConfigurationsRequestT = Model::ListSecurityConfigurationsRequest>
-        void ListSecurityConfigurationsAsync(const ListSecurityConfigurationsRequestT& request, const ListSecurityConfigurationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListSecurityConfigurationsAsync(const ListSecurityConfigurationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListSecurityConfigurationsRequestT& request = {}) const
         {
             return SubmitAsync(&EMRClient::ListSecurityConfigurations, request, handler, context);
         }
@@ -947,13 +959,13 @@ namespace EMR
          * href="http://docs.aws.amazon.com/goto/WebAPI/elasticmapreduce-2009-03-31/ListStudioSessionMappings">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListStudioSessionMappingsOutcome ListStudioSessionMappings(const Model::ListStudioSessionMappingsRequest& request) const;
+        virtual Model::ListStudioSessionMappingsOutcome ListStudioSessionMappings(const Model::ListStudioSessionMappingsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListStudioSessionMappings that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListStudioSessionMappingsRequestT = Model::ListStudioSessionMappingsRequest>
-        Model::ListStudioSessionMappingsOutcomeCallable ListStudioSessionMappingsCallable(const ListStudioSessionMappingsRequestT& request) const
+        Model::ListStudioSessionMappingsOutcomeCallable ListStudioSessionMappingsCallable(const ListStudioSessionMappingsRequestT& request = {}) const
         {
             return SubmitCallable(&EMRClient::ListStudioSessionMappings, request);
         }
@@ -962,7 +974,7 @@ namespace EMR
          * An Async wrapper for ListStudioSessionMappings that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListStudioSessionMappingsRequestT = Model::ListStudioSessionMappingsRequest>
-        void ListStudioSessionMappingsAsync(const ListStudioSessionMappingsRequestT& request, const ListStudioSessionMappingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListStudioSessionMappingsAsync(const ListStudioSessionMappingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListStudioSessionMappingsRequestT& request = {}) const
         {
             return SubmitAsync(&EMRClient::ListStudioSessionMappings, request, handler, context);
         }
@@ -974,13 +986,13 @@ namespace EMR
          * href="http://docs.aws.amazon.com/goto/WebAPI/elasticmapreduce-2009-03-31/ListStudios">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListStudiosOutcome ListStudios(const Model::ListStudiosRequest& request) const;
+        virtual Model::ListStudiosOutcome ListStudios(const Model::ListStudiosRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListStudios that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListStudiosRequestT = Model::ListStudiosRequest>
-        Model::ListStudiosOutcomeCallable ListStudiosCallable(const ListStudiosRequestT& request) const
+        Model::ListStudiosOutcomeCallable ListStudiosCallable(const ListStudiosRequestT& request = {}) const
         {
             return SubmitCallable(&EMRClient::ListStudios, request);
         }
@@ -989,7 +1001,7 @@ namespace EMR
          * An Async wrapper for ListStudios that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListStudiosRequestT = Model::ListStudiosRequest>
-        void ListStudiosAsync(const ListStudiosRequestT& request, const ListStudiosResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListStudiosAsync(const ListStudiosResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListStudiosRequestT& request = {}) const
         {
             return SubmitAsync(&EMRClient::ListStudios, request, handler, context);
         }
@@ -1084,13 +1096,13 @@ namespace EMR
          * href="http://docs.aws.amazon.com/goto/WebAPI/elasticmapreduce-2009-03-31/ModifyInstanceGroups">AWS
          * API Reference</a></p>
          */
-        virtual Model::ModifyInstanceGroupsOutcome ModifyInstanceGroups(const Model::ModifyInstanceGroupsRequest& request) const;
+        virtual Model::ModifyInstanceGroupsOutcome ModifyInstanceGroups(const Model::ModifyInstanceGroupsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ModifyInstanceGroups that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ModifyInstanceGroupsRequestT = Model::ModifyInstanceGroupsRequest>
-        Model::ModifyInstanceGroupsOutcomeCallable ModifyInstanceGroupsCallable(const ModifyInstanceGroupsRequestT& request) const
+        Model::ModifyInstanceGroupsOutcomeCallable ModifyInstanceGroupsCallable(const ModifyInstanceGroupsRequestT& request = {}) const
         {
             return SubmitCallable(&EMRClient::ModifyInstanceGroups, request);
         }
@@ -1099,7 +1111,7 @@ namespace EMR
          * An Async wrapper for ModifyInstanceGroups that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ModifyInstanceGroupsRequestT = Model::ModifyInstanceGroupsRequest>
-        void ModifyInstanceGroupsAsync(const ModifyInstanceGroupsRequestT& request, const ModifyInstanceGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ModifyInstanceGroupsAsync(const ModifyInstanceGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ModifyInstanceGroupsRequestT& request = {}) const
         {
             return SubmitAsync(&EMRClient::ModifyInstanceGroups, request, handler, context);
         }
@@ -1671,11 +1683,7 @@ namespace EMR
       std::shared_ptr<EMREndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<EMRClient>;
-      void init(const EMRClientConfiguration& clientConfiguration);
 
-      EMRClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<EMREndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace EMR

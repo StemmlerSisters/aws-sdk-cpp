@@ -6,38 +6,43 @@
 #pragma once
 #include <aws/pinpoint-sms-voice-v2/PinpointSMSVoiceV2_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/pinpoint-sms-voice-v2/PinpointSMSVoiceV2ServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/pinpoint-sms-voice-v2/PinpointSMSVoiceV2ErrorMarshaller.h>
 
 namespace Aws
 {
 namespace PinpointSMSVoiceV2
 {
+  AWS_PINPOINTSMSVOICEV2_API extern const char SERVICE_NAME[];
   /**
-   * <p>Welcome to the <i>Amazon Pinpoint SMS and Voice, version 2 API Reference</i>.
-   * This guide provides information about Amazon Pinpoint SMS and Voice, version 2
-   * API resources, including supported HTTP methods, parameters, and schemas.</p>
-   * <p>Amazon Pinpoint is an Amazon Web Services service that you can use to engage
-   * with your recipients across multiple messaging channels. The Amazon Pinpoint SMS
-   * and Voice, version 2 API provides programmatic access to options that are unique
-   * to the SMS and voice channels. Amazon Pinpoint SMS and Voice, version 2
-   * resources such as phone numbers, sender IDs, and opt-out lists can be used by
-   * the Amazon Pinpoint API.</p> <p>If you're new to Amazon Pinpoint SMS, it's also
+   * <p>Welcome to the <i>AWS End User Messaging SMS and Voice, version 2 API
+   * Reference</i>. This guide provides information about AWS End User Messaging SMS
+   * and Voice, version 2 API resources, including supported HTTP methods,
+   * parameters, and schemas.</p> <p>Amazon Pinpoint is an Amazon Web Services
+   * service that you can use to engage with your recipients across multiple
+   * messaging channels. The AWS End User Messaging SMS and Voice, version 2 API
+   * provides programmatic access to options that are unique to the SMS and voice
+   * channels. AWS End User Messaging SMS and Voice, version 2 resources such as
+   * phone numbers, sender IDs, and opt-out lists can be used by the Amazon Pinpoint
+   * API.</p> <p>If you're new to AWS End User Messaging SMS and Voice, it's also
    * helpful to review the <a
    * href="https://docs.aws.amazon.com/sms-voice/latest/userguide/what-is-service.html">
-   * Amazon Pinpoint SMS User Guide</a>. The <i>Amazon Pinpoint Developer Guide</i>
-   * provides tutorials, code samples, and procedures that demonstrate how to use
-   * Amazon Pinpoint SMS features programmatically and how to integrate Amazon
-   * Pinpoint functionality into mobile apps and other types of applications. The
-   * guide also provides key information, such as Amazon Pinpoint integration with
-   * other Amazon Web Services services, and the quotas that apply to use of the
-   * service.</p> <p> <b>Regional availability</b> </p> <p>The <i>Amazon Pinpoint SMS
-   * and Voice, version 2 API Reference</i> is available in several Amazon Web
-   * Services Regions and it provides an endpoint for each of these Regions. For a
-   * list of all the Regions and endpoints where the API is currently available, see
-   * <a
+   * AWS End User Messaging SMS User Guide</a>. The <i>AWS End User Messaging SMS
+   * User Guide </i> provides tutorials, code samples, and procedures that
+   * demonstrate how to use AWS End User Messaging SMS and Voice features
+   * programmatically and how to integrate functionality into mobile apps and other
+   * types of applications. The guide also provides key information, such as AWS End
+   * User Messaging SMS and Voice integration with other Amazon Web Services
+   * services, and the quotas that apply to use of the service.</p> <p> <b>Regional
+   * availability</b> </p> <p>The <i>AWS End User Messaging SMS and Voice version 2
+   * API Reference</i> is available in several Amazon Web Services Regions and it
+   * provides an endpoint for each of these Regions. For a list of all the Regions
+   * and endpoints where the API is currently available, see <a
    * href="https://docs.aws.amazon.com/general/latest/gr/rande.html#pinpoint_region">Amazon
    * Web Services Service Endpoints</a> and <a
    * href="https://docs.aws.amazon.com/general/latest/gr/pinpoint.html">Amazon
@@ -55,12 +60,20 @@ namespace PinpointSMSVoiceV2
    * href="https://aws.amazon.com/about-aws/global-infrastructure/">Amazon Web
    * Services Global Infrastructure.</a> </p>
    */
-  class AWS_PINPOINTSMSVOICEV2_API PinpointSMSVoiceV2Client : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<PinpointSMSVoiceV2Client>
+  class AWS_PINPOINTSMSVOICEV2_API PinpointSMSVoiceV2Client : smithy::client::AwsSmithyClientT<Aws::PinpointSMSVoiceV2::SERVICE_NAME,
+      Aws::PinpointSMSVoiceV2::PinpointSMSVoiceV2ClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      PinpointSMSVoiceV2EndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::PinpointSMSVoiceV2ErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<PinpointSMSVoiceV2Client>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Pinpoint SMS Voice V2"; }
 
       typedef PinpointSMSVoiceV2ClientConfiguration ClientConfigurationType;
       typedef PinpointSMSVoiceV2EndpointProvider EndpointProviderType;
@@ -203,13 +216,13 @@ namespace PinpointSMSVoiceV2
         /**
          * <p>Creates a new event destination in a configuration set.</p> <p>An event
          * destination is a location where you send message events. The event options are
-         * Amazon CloudWatch, Amazon Kinesis Data Firehose, or Amazon SNS. For example,
-         * when a message is delivered successfully, you can send information about that
-         * event to an event destination, or send notifications to endpoints that are
-         * subscribed to an Amazon SNS topic.</p> <p>Each configuration set can contain
-         * between 0 and 5 event destinations. Each event destination can contain a
-         * reference to a single destination, such as a CloudWatch or Kinesis Data Firehose
-         * destination.</p><p><h3>See Also:</h3>   <a
+         * Amazon CloudWatch, Amazon Data Firehose, or Amazon SNS. For example, when a
+         * message is delivered successfully, you can send information about that event to
+         * an event destination, or send notifications to endpoints that are subscribed to
+         * an Amazon SNS topic.</p> <p>Each configuration set can contain between 0 and 5
+         * event destinations. Each event destination can contain a reference to a single
+         * destination, such as a CloudWatch or Firehose destination.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/CreateEventDestination">AWS
          * API Reference</a></p>
          */
@@ -242,8 +255,8 @@ namespace PinpointSMSVoiceV2
          * keyword, such as CANCEL or OPTOUT. For a list of supported opt-out keywords, see
          * <a
          * href="https://docs.aws.amazon.com/pinpoint/latest/userguide/channels-sms-manage.html#channels-sms-manage-optout">
-         * SMS opt out </a> in the <i>Amazon Pinpoint User Guide</i>.</p><p><h3>See
-         * Also:</h3>   <a
+         * SMS opt out </a> in the <i>AWS End User Messaging SMS User
+         * Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/CreateOptOutList">AWS
          * API Reference</a></p>
          */
@@ -309,13 +322,13 @@ namespace PinpointSMSVoiceV2
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/CreateProtectConfiguration">AWS
          * API Reference</a></p>
          */
-        virtual Model::CreateProtectConfigurationOutcome CreateProtectConfiguration(const Model::CreateProtectConfigurationRequest& request) const;
+        virtual Model::CreateProtectConfigurationOutcome CreateProtectConfiguration(const Model::CreateProtectConfigurationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for CreateProtectConfiguration that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename CreateProtectConfigurationRequestT = Model::CreateProtectConfigurationRequest>
-        Model::CreateProtectConfigurationOutcomeCallable CreateProtectConfigurationCallable(const CreateProtectConfigurationRequestT& request) const
+        Model::CreateProtectConfigurationOutcomeCallable CreateProtectConfigurationCallable(const CreateProtectConfigurationRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointSMSVoiceV2Client::CreateProtectConfiguration, request);
         }
@@ -324,7 +337,7 @@ namespace PinpointSMSVoiceV2
          * An Async wrapper for CreateProtectConfiguration that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename CreateProtectConfigurationRequestT = Model::CreateProtectConfigurationRequest>
-        void CreateProtectConfigurationAsync(const CreateProtectConfigurationRequestT& request, const CreateProtectConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void CreateProtectConfigurationAsync(const CreateProtectConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const CreateProtectConfigurationRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::CreateProtectConfiguration, request, handler, context);
         }
@@ -383,19 +396,22 @@ namespace PinpointSMSVoiceV2
 
         /**
          * <p>Create a new registration attachment to use for uploading a file or a URL to
-         * a file. The maximum file size is 1MiB and valid file extensions are PDF, JPEG
+         * a file. The maximum file size is 500KB and valid file extensions are PDF, JPEG
          * and PNG. For example, many sender ID registrations require a signed “letter of
-         * authorization” (LOA) to be submitted.</p><p><h3>See Also:</h3>   <a
+         * authorization” (LOA) to be submitted.</p> <p>Use either
+         * <code>AttachmentUrl</code> or <code>AttachmentBody</code> to upload your
+         * attachment. If both are specified then an exception is returned.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/CreateRegistrationAttachment">AWS
          * API Reference</a></p>
          */
-        virtual Model::CreateRegistrationAttachmentOutcome CreateRegistrationAttachment(const Model::CreateRegistrationAttachmentRequest& request) const;
+        virtual Model::CreateRegistrationAttachmentOutcome CreateRegistrationAttachment(const Model::CreateRegistrationAttachmentRequest& request = {}) const;
 
         /**
          * A Callable wrapper for CreateRegistrationAttachment that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename CreateRegistrationAttachmentRequestT = Model::CreateRegistrationAttachmentRequest>
-        Model::CreateRegistrationAttachmentOutcomeCallable CreateRegistrationAttachmentCallable(const CreateRegistrationAttachmentRequestT& request) const
+        Model::CreateRegistrationAttachmentOutcomeCallable CreateRegistrationAttachmentCallable(const CreateRegistrationAttachmentRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointSMSVoiceV2Client::CreateRegistrationAttachment, request);
         }
@@ -404,7 +420,7 @@ namespace PinpointSMSVoiceV2
          * An Async wrapper for CreateRegistrationAttachment that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename CreateRegistrationAttachmentRequestT = Model::CreateRegistrationAttachmentRequest>
-        void CreateRegistrationAttachmentAsync(const CreateRegistrationAttachmentRequestT& request, const CreateRegistrationAttachmentResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void CreateRegistrationAttachmentAsync(const CreateRegistrationAttachmentResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const CreateRegistrationAttachmentRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::CreateRegistrationAttachment, request, handler, context);
         }
@@ -469,13 +485,13 @@ namespace PinpointSMSVoiceV2
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DeleteAccountDefaultProtectConfiguration">AWS
          * API Reference</a></p>
          */
-        virtual Model::DeleteAccountDefaultProtectConfigurationOutcome DeleteAccountDefaultProtectConfiguration(const Model::DeleteAccountDefaultProtectConfigurationRequest& request) const;
+        virtual Model::DeleteAccountDefaultProtectConfigurationOutcome DeleteAccountDefaultProtectConfiguration(const Model::DeleteAccountDefaultProtectConfigurationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DeleteAccountDefaultProtectConfiguration that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DeleteAccountDefaultProtectConfigurationRequestT = Model::DeleteAccountDefaultProtectConfigurationRequest>
-        Model::DeleteAccountDefaultProtectConfigurationOutcomeCallable DeleteAccountDefaultProtectConfigurationCallable(const DeleteAccountDefaultProtectConfigurationRequestT& request) const
+        Model::DeleteAccountDefaultProtectConfigurationOutcomeCallable DeleteAccountDefaultProtectConfigurationCallable(const DeleteAccountDefaultProtectConfigurationRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointSMSVoiceV2Client::DeleteAccountDefaultProtectConfiguration, request);
         }
@@ -484,7 +500,7 @@ namespace PinpointSMSVoiceV2
          * An Async wrapper for DeleteAccountDefaultProtectConfiguration that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DeleteAccountDefaultProtectConfigurationRequestT = Model::DeleteAccountDefaultProtectConfigurationRequest>
-        void DeleteAccountDefaultProtectConfigurationAsync(const DeleteAccountDefaultProtectConfigurationRequestT& request, const DeleteAccountDefaultProtectConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DeleteAccountDefaultProtectConfigurationAsync(const DeleteAccountDefaultProtectConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DeleteAccountDefaultProtectConfigurationRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::DeleteAccountDefaultProtectConfiguration, request, handler, context);
         }
@@ -611,9 +627,10 @@ namespace PinpointSMSVoiceV2
          * <p>A keyword is a word that you can search for on a particular phone number or
          * pool. It is also a specific word or phrase that an end user can send to your
          * number to elicit a response, such as an informational message or a special
-         * offer. When your number receives a message that begins with a keyword, Amazon
-         * Pinpoint responds with a customizable message.</p> <p>Keywords "HELP" and "STOP"
-         * can't be deleted or modified.</p><p><h3>See Also:</h3>   <a
+         * offer. When your number receives a message that begins with a keyword, AWS End
+         * User Messaging SMS and Voice responds with a customizable message.</p>
+         * <p>Keywords "HELP" and "STOP" can't be deleted or modified.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DeleteKeyword">AWS
          * API Reference</a></p>
          */
@@ -649,13 +666,13 @@ namespace PinpointSMSVoiceV2
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DeleteMediaMessageSpendLimitOverride">AWS
          * API Reference</a></p>
          */
-        virtual Model::DeleteMediaMessageSpendLimitOverrideOutcome DeleteMediaMessageSpendLimitOverride(const Model::DeleteMediaMessageSpendLimitOverrideRequest& request) const;
+        virtual Model::DeleteMediaMessageSpendLimitOverrideOutcome DeleteMediaMessageSpendLimitOverride(const Model::DeleteMediaMessageSpendLimitOverrideRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DeleteMediaMessageSpendLimitOverride that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DeleteMediaMessageSpendLimitOverrideRequestT = Model::DeleteMediaMessageSpendLimitOverrideRequest>
-        Model::DeleteMediaMessageSpendLimitOverrideOutcomeCallable DeleteMediaMessageSpendLimitOverrideCallable(const DeleteMediaMessageSpendLimitOverrideRequestT& request) const
+        Model::DeleteMediaMessageSpendLimitOverrideOutcomeCallable DeleteMediaMessageSpendLimitOverrideCallable(const DeleteMediaMessageSpendLimitOverrideRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointSMSVoiceV2Client::DeleteMediaMessageSpendLimitOverride, request);
         }
@@ -664,7 +681,7 @@ namespace PinpointSMSVoiceV2
          * An Async wrapper for DeleteMediaMessageSpendLimitOverride that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DeleteMediaMessageSpendLimitOverrideRequestT = Model::DeleteMediaMessageSpendLimitOverrideRequest>
-        void DeleteMediaMessageSpendLimitOverrideAsync(const DeleteMediaMessageSpendLimitOverrideRequestT& request, const DeleteMediaMessageSpendLimitOverrideResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DeleteMediaMessageSpendLimitOverrideAsync(const DeleteMediaMessageSpendLimitOverrideResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DeleteMediaMessageSpendLimitOverrideRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::DeleteMediaMessageSpendLimitOverride, request, handler, context);
         }
@@ -785,6 +802,32 @@ namespace PinpointSMSVoiceV2
         }
 
         /**
+         * <p>Permanently delete the protect configuration rule set number
+         * override.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DeleteProtectConfigurationRuleSetNumberOverride">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteProtectConfigurationRuleSetNumberOverrideOutcome DeleteProtectConfigurationRuleSetNumberOverride(const Model::DeleteProtectConfigurationRuleSetNumberOverrideRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteProtectConfigurationRuleSetNumberOverride that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteProtectConfigurationRuleSetNumberOverrideRequestT = Model::DeleteProtectConfigurationRuleSetNumberOverrideRequest>
+        Model::DeleteProtectConfigurationRuleSetNumberOverrideOutcomeCallable DeleteProtectConfigurationRuleSetNumberOverrideCallable(const DeleteProtectConfigurationRuleSetNumberOverrideRequestT& request) const
+        {
+            return SubmitCallable(&PinpointSMSVoiceV2Client::DeleteProtectConfigurationRuleSetNumberOverride, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteProtectConfigurationRuleSetNumberOverride that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteProtectConfigurationRuleSetNumberOverrideRequestT = Model::DeleteProtectConfigurationRuleSetNumberOverrideRequest>
+        void DeleteProtectConfigurationRuleSetNumberOverrideAsync(const DeleteProtectConfigurationRuleSetNumberOverrideRequestT& request, const DeleteProtectConfigurationRuleSetNumberOverrideResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&PinpointSMSVoiceV2Client::DeleteProtectConfigurationRuleSetNumberOverride, request, handler, context);
+        }
+
+        /**
          * <p>Permanently delete an existing registration from your account.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DeleteRegistration">AWS
@@ -862,24 +905,51 @@ namespace PinpointSMSVoiceV2
         }
 
         /**
+         * <p>Deletes the resource-based policy document attached to the AWS End User
+         * Messaging SMS and Voice resource. A shared resource can be a Pool, Opt-out list,
+         * Sender Id, or Phone number.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DeleteResourcePolicy">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteResourcePolicyOutcome DeleteResourcePolicy(const Model::DeleteResourcePolicyRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteResourcePolicy that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteResourcePolicyRequestT = Model::DeleteResourcePolicyRequest>
+        Model::DeleteResourcePolicyOutcomeCallable DeleteResourcePolicyCallable(const DeleteResourcePolicyRequestT& request) const
+        {
+            return SubmitCallable(&PinpointSMSVoiceV2Client::DeleteResourcePolicy, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteResourcePolicy that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteResourcePolicyRequestT = Model::DeleteResourcePolicyRequest>
+        void DeleteResourcePolicyAsync(const DeleteResourcePolicyRequestT& request, const DeleteResourcePolicyResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&PinpointSMSVoiceV2Client::DeleteResourcePolicy, request, handler, context);
+        }
+
+        /**
          * <p>Deletes an account-level monthly spending limit override for sending text
          * messages. Deleting a spend limit override will set the
          * <code>EnforcedLimit</code> to equal the <code>MaxLimit</code>, which is
          * controlled by Amazon Web Services. For more information on spend limits (quotas)
          * see <a
-         * href="https://docs.aws.amazon.com/pinpoint/latest/developerguide/quotas.html">Amazon
-         * Pinpoint quotas </a> in the <i>Amazon Pinpoint Developer
-         * Guide</i>.</p><p><h3>See Also:</h3>   <a
+         * href="https://docs.aws.amazon.com/sms-voice/latest/userguide/quotas.html">Quotas
+         * </a> in the <i>AWS End User Messaging SMS User Guide</i>.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DeleteTextMessageSpendLimitOverride">AWS
          * API Reference</a></p>
          */
-        virtual Model::DeleteTextMessageSpendLimitOverrideOutcome DeleteTextMessageSpendLimitOverride(const Model::DeleteTextMessageSpendLimitOverrideRequest& request) const;
+        virtual Model::DeleteTextMessageSpendLimitOverrideOutcome DeleteTextMessageSpendLimitOverride(const Model::DeleteTextMessageSpendLimitOverrideRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DeleteTextMessageSpendLimitOverride that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DeleteTextMessageSpendLimitOverrideRequestT = Model::DeleteTextMessageSpendLimitOverrideRequest>
-        Model::DeleteTextMessageSpendLimitOverrideOutcomeCallable DeleteTextMessageSpendLimitOverrideCallable(const DeleteTextMessageSpendLimitOverrideRequestT& request) const
+        Model::DeleteTextMessageSpendLimitOverrideOutcomeCallable DeleteTextMessageSpendLimitOverrideCallable(const DeleteTextMessageSpendLimitOverrideRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointSMSVoiceV2Client::DeleteTextMessageSpendLimitOverride, request);
         }
@@ -888,7 +958,7 @@ namespace PinpointSMSVoiceV2
          * An Async wrapper for DeleteTextMessageSpendLimitOverride that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DeleteTextMessageSpendLimitOverrideRequestT = Model::DeleteTextMessageSpendLimitOverrideRequest>
-        void DeleteTextMessageSpendLimitOverrideAsync(const DeleteTextMessageSpendLimitOverrideRequestT& request, const DeleteTextMessageSpendLimitOverrideResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DeleteTextMessageSpendLimitOverrideAsync(const DeleteTextMessageSpendLimitOverrideResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DeleteTextMessageSpendLimitOverrideRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::DeleteTextMessageSpendLimitOverride, request, handler, context);
         }
@@ -923,19 +993,19 @@ namespace PinpointSMSVoiceV2
          * messages. Deleting a spend limit override sets the <code>EnforcedLimit</code>
          * equal to the <code>MaxLimit</code>, which is controlled by Amazon Web Services.
          * For more information on spending limits (quotas) see <a
-         * href="https://docs.aws.amazon.com/pinpoint/latest/developerguide/quotas.html">Amazon
-         * Pinpoint quotas</a> in the <i>Amazon Pinpoint Developer Guide</i>.</p><p><h3>See
+         * href="https://docs.aws.amazon.com/sms-voice/latest/userguide/quotas.html">Quotas
+         * </a> in the <i>AWS End User Messaging SMS User Guide</i>.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DeleteVoiceMessageSpendLimitOverride">AWS
          * API Reference</a></p>
          */
-        virtual Model::DeleteVoiceMessageSpendLimitOverrideOutcome DeleteVoiceMessageSpendLimitOverride(const Model::DeleteVoiceMessageSpendLimitOverrideRequest& request) const;
+        virtual Model::DeleteVoiceMessageSpendLimitOverrideOutcome DeleteVoiceMessageSpendLimitOverride(const Model::DeleteVoiceMessageSpendLimitOverrideRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DeleteVoiceMessageSpendLimitOverride that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DeleteVoiceMessageSpendLimitOverrideRequestT = Model::DeleteVoiceMessageSpendLimitOverrideRequest>
-        Model::DeleteVoiceMessageSpendLimitOverrideOutcomeCallable DeleteVoiceMessageSpendLimitOverrideCallable(const DeleteVoiceMessageSpendLimitOverrideRequestT& request) const
+        Model::DeleteVoiceMessageSpendLimitOverrideOutcomeCallable DeleteVoiceMessageSpendLimitOverrideCallable(const DeleteVoiceMessageSpendLimitOverrideRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointSMSVoiceV2Client::DeleteVoiceMessageSpendLimitOverride, request);
         }
@@ -944,7 +1014,7 @@ namespace PinpointSMSVoiceV2
          * An Async wrapper for DeleteVoiceMessageSpendLimitOverride that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DeleteVoiceMessageSpendLimitOverrideRequestT = Model::DeleteVoiceMessageSpendLimitOverrideRequest>
-        void DeleteVoiceMessageSpendLimitOverrideAsync(const DeleteVoiceMessageSpendLimitOverrideRequestT& request, const DeleteVoiceMessageSpendLimitOverrideResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DeleteVoiceMessageSpendLimitOverrideAsync(const DeleteVoiceMessageSpendLimitOverrideResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DeleteVoiceMessageSpendLimitOverrideRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::DeleteVoiceMessageSpendLimitOverride, request, handler, context);
         }
@@ -954,20 +1024,19 @@ namespace PinpointSMSVoiceV2
          * account attributes include account tier, which indicates whether your account is
          * in the sandbox or production environment. When you're ready to move your account
          * out of the sandbox, create an Amazon Web Services Support case for a service
-         * limit increase request.</p> <p>New Amazon Pinpoint accounts are placed into an
-         * SMS or voice sandbox. The sandbox protects both Amazon Web Services end
-         * recipients and SMS or voice recipients from fraud and abuse. </p><p><h3>See
-         * Also:</h3>   <a
+         * limit increase request.</p> <p>New accounts are placed into an SMS or voice
+         * sandbox. The sandbox protects both Amazon Web Services end recipients and SMS or
+         * voice recipients from fraud and abuse. </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DescribeAccountAttributes">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeAccountAttributesOutcome DescribeAccountAttributes(const Model::DescribeAccountAttributesRequest& request) const;
+        virtual Model::DescribeAccountAttributesOutcome DescribeAccountAttributes(const Model::DescribeAccountAttributesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeAccountAttributes that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeAccountAttributesRequestT = Model::DescribeAccountAttributesRequest>
-        Model::DescribeAccountAttributesOutcomeCallable DescribeAccountAttributesCallable(const DescribeAccountAttributesRequestT& request) const
+        Model::DescribeAccountAttributesOutcomeCallable DescribeAccountAttributesCallable(const DescribeAccountAttributesRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointSMSVoiceV2Client::DescribeAccountAttributes, request);
         }
@@ -976,31 +1045,32 @@ namespace PinpointSMSVoiceV2
          * An Async wrapper for DescribeAccountAttributes that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeAccountAttributesRequestT = Model::DescribeAccountAttributesRequest>
-        void DescribeAccountAttributesAsync(const DescribeAccountAttributesRequestT& request, const DescribeAccountAttributesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeAccountAttributesAsync(const DescribeAccountAttributesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeAccountAttributesRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::DescribeAccountAttributes, request, handler, context);
         }
 
         /**
-         * <p>Describes the current Amazon Pinpoint SMS Voice V2 resource quotas for your
-         * account. The description for a quota includes the quota name, current usage
-         * toward that quota, and the quota's maximum value.</p> <p>When you establish an
-         * Amazon Web Services account, the account has initial quotas on the maximum
-         * number of configuration sets, opt-out lists, phone numbers, and pools that you
-         * can create in a given Region. For more information see <a
-         * href="https://docs.aws.amazon.com/pinpoint/latest/developerguide/quotas.html">
-         * Amazon Pinpoint quotas </a> in the <i>Amazon Pinpoint Developer
-         * Guide</i>.</p><p><h3>See Also:</h3>   <a
+         * <p>Describes the current AWS End User Messaging SMS and Voice SMS Voice V2
+         * resource quotas for your account. The description for a quota includes the quota
+         * name, current usage toward that quota, and the quota's maximum value.</p>
+         * <p>When you establish an Amazon Web Services account, the account has initial
+         * quotas on the maximum number of configuration sets, opt-out lists, phone
+         * numbers, and pools that you can create in a given Region. For more information
+         * see <a
+         * href="https://docs.aws.amazon.com/sms-voice/latest/userguide/quotas.html">Quotas
+         * </a> in the <i>AWS End User Messaging SMS User Guide</i>.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DescribeAccountLimits">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeAccountLimitsOutcome DescribeAccountLimits(const Model::DescribeAccountLimitsRequest& request) const;
+        virtual Model::DescribeAccountLimitsOutcome DescribeAccountLimits(const Model::DescribeAccountLimitsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeAccountLimits that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeAccountLimitsRequestT = Model::DescribeAccountLimitsRequest>
-        Model::DescribeAccountLimitsOutcomeCallable DescribeAccountLimitsCallable(const DescribeAccountLimitsRequestT& request) const
+        Model::DescribeAccountLimitsOutcomeCallable DescribeAccountLimitsCallable(const DescribeAccountLimitsRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointSMSVoiceV2Client::DescribeAccountLimits, request);
         }
@@ -1009,7 +1079,7 @@ namespace PinpointSMSVoiceV2
          * An Async wrapper for DescribeAccountLimits that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeAccountLimitsRequestT = Model::DescribeAccountLimitsRequest>
-        void DescribeAccountLimitsAsync(const DescribeAccountLimitsRequestT& request, const DescribeAccountLimitsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeAccountLimitsAsync(const DescribeAccountLimitsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeAccountLimitsRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::DescribeAccountLimits, request, handler, context);
         }
@@ -1025,13 +1095,13 @@ namespace PinpointSMSVoiceV2
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DescribeConfigurationSets">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeConfigurationSetsOutcome DescribeConfigurationSets(const Model::DescribeConfigurationSetsRequest& request) const;
+        virtual Model::DescribeConfigurationSetsOutcome DescribeConfigurationSets(const Model::DescribeConfigurationSetsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeConfigurationSets that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeConfigurationSetsRequestT = Model::DescribeConfigurationSetsRequest>
-        Model::DescribeConfigurationSetsOutcomeCallable DescribeConfigurationSetsCallable(const DescribeConfigurationSetsRequestT& request) const
+        Model::DescribeConfigurationSetsOutcomeCallable DescribeConfigurationSetsCallable(const DescribeConfigurationSetsRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointSMSVoiceV2Client::DescribeConfigurationSets, request);
         }
@@ -1040,7 +1110,7 @@ namespace PinpointSMSVoiceV2
          * An Async wrapper for DescribeConfigurationSets that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeConfigurationSetsRequestT = Model::DescribeConfigurationSetsRequest>
-        void DescribeConfigurationSetsAsync(const DescribeConfigurationSetsRequestT& request, const DescribeConfigurationSetsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeConfigurationSetsAsync(const DescribeConfigurationSetsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeConfigurationSetsRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::DescribeConfigurationSets, request, handler, context);
         }
@@ -1051,9 +1121,9 @@ namespace PinpointSMSVoiceV2
          * particular phone number or pool. It is also a specific word or phrase that an
          * end user can send to your number to elicit a response, such as an informational
          * message or a special offer. When your number receives a message that begins with
-         * a keyword, Amazon Pinpoint responds with a customizable message.</p> <p>If you
-         * specify a keyword that isn't valid, an error is returned.</p><p><h3>See
-         * Also:</h3>   <a
+         * a keyword, AWS End User Messaging SMS and Voice responds with a customizable
+         * message.</p> <p>If you specify a keyword that isn't valid, an error is
+         * returned.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DescribeKeywords">AWS
          * API Reference</a></p>
          */
@@ -1088,13 +1158,13 @@ namespace PinpointSMSVoiceV2
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DescribeOptOutLists">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeOptOutListsOutcome DescribeOptOutLists(const Model::DescribeOptOutListsRequest& request) const;
+        virtual Model::DescribeOptOutListsOutcome DescribeOptOutLists(const Model::DescribeOptOutListsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeOptOutLists that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeOptOutListsRequestT = Model::DescribeOptOutListsRequest>
-        Model::DescribeOptOutListsOutcomeCallable DescribeOptOutListsCallable(const DescribeOptOutListsRequestT& request) const
+        Model::DescribeOptOutListsOutcomeCallable DescribeOptOutListsCallable(const DescribeOptOutListsRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointSMSVoiceV2Client::DescribeOptOutLists, request);
         }
@@ -1103,7 +1173,7 @@ namespace PinpointSMSVoiceV2
          * An Async wrapper for DescribeOptOutLists that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeOptOutListsRequestT = Model::DescribeOptOutListsRequest>
-        void DescribeOptOutListsAsync(const DescribeOptOutListsRequestT& request, const DescribeOptOutListsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeOptOutListsAsync(const DescribeOptOutListsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeOptOutListsRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::DescribeOptOutLists, request, handler, context);
         }
@@ -1116,7 +1186,7 @@ namespace PinpointSMSVoiceV2
          * numbers that meet the filter criteria. If you don't specify opted out numbers or
          * filters, the output includes information for all opted out destination numbers
          * in your opt-out list.</p> <p>If you specify an opted out number that isn't
-         * valid, an error is returned.</p><p><h3>See Also:</h3>   <a
+         * valid, an exception is returned.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DescribeOptedOutNumbers">AWS
          * API Reference</a></p>
          */
@@ -1151,13 +1221,13 @@ namespace PinpointSMSVoiceV2
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DescribePhoneNumbers">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribePhoneNumbersOutcome DescribePhoneNumbers(const Model::DescribePhoneNumbersRequest& request) const;
+        virtual Model::DescribePhoneNumbersOutcome DescribePhoneNumbers(const Model::DescribePhoneNumbersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribePhoneNumbers that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribePhoneNumbersRequestT = Model::DescribePhoneNumbersRequest>
-        Model::DescribePhoneNumbersOutcomeCallable DescribePhoneNumbersCallable(const DescribePhoneNumbersRequestT& request) const
+        Model::DescribePhoneNumbersOutcomeCallable DescribePhoneNumbersCallable(const DescribePhoneNumbersRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointSMSVoiceV2Client::DescribePhoneNumbers, request);
         }
@@ -1166,7 +1236,7 @@ namespace PinpointSMSVoiceV2
          * An Async wrapper for DescribePhoneNumbers that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribePhoneNumbersRequestT = Model::DescribePhoneNumbersRequest>
-        void DescribePhoneNumbersAsync(const DescribePhoneNumbersRequestT& request, const DescribePhoneNumbersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribePhoneNumbersAsync(const DescribePhoneNumbersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribePhoneNumbersRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::DescribePhoneNumbers, request, handler, context);
         }
@@ -1184,13 +1254,13 @@ namespace PinpointSMSVoiceV2
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DescribePools">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribePoolsOutcome DescribePools(const Model::DescribePoolsRequest& request) const;
+        virtual Model::DescribePoolsOutcome DescribePools(const Model::DescribePoolsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribePools that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribePoolsRequestT = Model::DescribePoolsRequest>
-        Model::DescribePoolsOutcomeCallable DescribePoolsCallable(const DescribePoolsRequestT& request) const
+        Model::DescribePoolsOutcomeCallable DescribePoolsCallable(const DescribePoolsRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointSMSVoiceV2Client::DescribePools, request);
         }
@@ -1199,7 +1269,7 @@ namespace PinpointSMSVoiceV2
          * An Async wrapper for DescribePools that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribePoolsRequestT = Model::DescribePoolsRequest>
-        void DescribePoolsAsync(const DescribePoolsRequestT& request, const DescribePoolsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribePoolsAsync(const DescribePoolsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribePoolsRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::DescribePools, request, handler, context);
         }
@@ -1211,13 +1281,13 @@ namespace PinpointSMSVoiceV2
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DescribeProtectConfigurations">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeProtectConfigurationsOutcome DescribeProtectConfigurations(const Model::DescribeProtectConfigurationsRequest& request) const;
+        virtual Model::DescribeProtectConfigurationsOutcome DescribeProtectConfigurations(const Model::DescribeProtectConfigurationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeProtectConfigurations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeProtectConfigurationsRequestT = Model::DescribeProtectConfigurationsRequest>
-        Model::DescribeProtectConfigurationsOutcomeCallable DescribeProtectConfigurationsCallable(const DescribeProtectConfigurationsRequestT& request) const
+        Model::DescribeProtectConfigurationsOutcomeCallable DescribeProtectConfigurationsCallable(const DescribeProtectConfigurationsRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointSMSVoiceV2Client::DescribeProtectConfigurations, request);
         }
@@ -1226,7 +1296,7 @@ namespace PinpointSMSVoiceV2
          * An Async wrapper for DescribeProtectConfigurations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeProtectConfigurationsRequestT = Model::DescribeProtectConfigurationsRequest>
-        void DescribeProtectConfigurationsAsync(const DescribeProtectConfigurationsRequestT& request, const DescribeProtectConfigurationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeProtectConfigurationsAsync(const DescribeProtectConfigurationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeProtectConfigurationsRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::DescribeProtectConfigurations, request, handler, context);
         }
@@ -1238,13 +1308,13 @@ namespace PinpointSMSVoiceV2
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DescribeRegistrationAttachments">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeRegistrationAttachmentsOutcome DescribeRegistrationAttachments(const Model::DescribeRegistrationAttachmentsRequest& request) const;
+        virtual Model::DescribeRegistrationAttachmentsOutcome DescribeRegistrationAttachments(const Model::DescribeRegistrationAttachmentsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeRegistrationAttachments that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeRegistrationAttachmentsRequestT = Model::DescribeRegistrationAttachmentsRequest>
-        Model::DescribeRegistrationAttachmentsOutcomeCallable DescribeRegistrationAttachmentsCallable(const DescribeRegistrationAttachmentsRequestT& request) const
+        Model::DescribeRegistrationAttachmentsOutcomeCallable DescribeRegistrationAttachmentsCallable(const DescribeRegistrationAttachmentsRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointSMSVoiceV2Client::DescribeRegistrationAttachments, request);
         }
@@ -1253,7 +1323,7 @@ namespace PinpointSMSVoiceV2
          * An Async wrapper for DescribeRegistrationAttachments that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeRegistrationAttachmentsRequestT = Model::DescribeRegistrationAttachmentsRequest>
-        void DescribeRegistrationAttachmentsAsync(const DescribeRegistrationAttachmentsRequestT& request, const DescribeRegistrationAttachmentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeRegistrationAttachmentsAsync(const DescribeRegistrationAttachmentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeRegistrationAttachmentsRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::DescribeRegistrationAttachments, request, handler, context);
         }
@@ -1348,13 +1418,13 @@ namespace PinpointSMSVoiceV2
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DescribeRegistrationTypeDefinitions">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeRegistrationTypeDefinitionsOutcome DescribeRegistrationTypeDefinitions(const Model::DescribeRegistrationTypeDefinitionsRequest& request) const;
+        virtual Model::DescribeRegistrationTypeDefinitionsOutcome DescribeRegistrationTypeDefinitions(const Model::DescribeRegistrationTypeDefinitionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeRegistrationTypeDefinitions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeRegistrationTypeDefinitionsRequestT = Model::DescribeRegistrationTypeDefinitionsRequest>
-        Model::DescribeRegistrationTypeDefinitionsOutcomeCallable DescribeRegistrationTypeDefinitionsCallable(const DescribeRegistrationTypeDefinitionsRequestT& request) const
+        Model::DescribeRegistrationTypeDefinitionsOutcomeCallable DescribeRegistrationTypeDefinitionsCallable(const DescribeRegistrationTypeDefinitionsRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointSMSVoiceV2Client::DescribeRegistrationTypeDefinitions, request);
         }
@@ -1363,7 +1433,7 @@ namespace PinpointSMSVoiceV2
          * An Async wrapper for DescribeRegistrationTypeDefinitions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeRegistrationTypeDefinitionsRequestT = Model::DescribeRegistrationTypeDefinitionsRequest>
-        void DescribeRegistrationTypeDefinitionsAsync(const DescribeRegistrationTypeDefinitionsRequestT& request, const DescribeRegistrationTypeDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeRegistrationTypeDefinitionsAsync(const DescribeRegistrationTypeDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeRegistrationTypeDefinitionsRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::DescribeRegistrationTypeDefinitions, request, handler, context);
         }
@@ -1398,13 +1468,13 @@ namespace PinpointSMSVoiceV2
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DescribeRegistrations">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeRegistrationsOutcome DescribeRegistrations(const Model::DescribeRegistrationsRequest& request) const;
+        virtual Model::DescribeRegistrationsOutcome DescribeRegistrations(const Model::DescribeRegistrationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeRegistrations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeRegistrationsRequestT = Model::DescribeRegistrationsRequest>
-        Model::DescribeRegistrationsOutcomeCallable DescribeRegistrationsCallable(const DescribeRegistrationsRequestT& request) const
+        Model::DescribeRegistrationsOutcomeCallable DescribeRegistrationsCallable(const DescribeRegistrationsRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointSMSVoiceV2Client::DescribeRegistrations, request);
         }
@@ -1413,7 +1483,7 @@ namespace PinpointSMSVoiceV2
          * An Async wrapper for DescribeRegistrations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeRegistrationsRequestT = Model::DescribeRegistrationsRequest>
-        void DescribeRegistrationsAsync(const DescribeRegistrationsRequestT& request, const DescribeRegistrationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeRegistrationsAsync(const DescribeRegistrationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeRegistrationsRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::DescribeRegistrations, request, handler, context);
         }
@@ -1429,13 +1499,13 @@ namespace PinpointSMSVoiceV2
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DescribeSenderIds">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeSenderIdsOutcome DescribeSenderIds(const Model::DescribeSenderIdsRequest& request) const;
+        virtual Model::DescribeSenderIdsOutcome DescribeSenderIds(const Model::DescribeSenderIdsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeSenderIds that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeSenderIdsRequestT = Model::DescribeSenderIdsRequest>
-        Model::DescribeSenderIdsOutcomeCallable DescribeSenderIdsCallable(const DescribeSenderIdsRequestT& request) const
+        Model::DescribeSenderIdsOutcomeCallable DescribeSenderIdsCallable(const DescribeSenderIdsRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointSMSVoiceV2Client::DescribeSenderIds, request);
         }
@@ -1444,29 +1514,29 @@ namespace PinpointSMSVoiceV2
          * An Async wrapper for DescribeSenderIds that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeSenderIdsRequestT = Model::DescribeSenderIdsRequest>
-        void DescribeSenderIdsAsync(const DescribeSenderIdsRequestT& request, const DescribeSenderIdsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeSenderIdsAsync(const DescribeSenderIdsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeSenderIdsRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::DescribeSenderIds, request, handler, context);
         }
 
         /**
-         * <p>Describes the current Amazon Pinpoint monthly spend limits for sending voice
-         * and text messages.</p> <p>When you establish an Amazon Web Services account, the
-         * account has initial monthly spend limit in a given Region. For more information
-         * on increasing your monthly spend limit, see <a
-         * href="https://docs.aws.amazon.com/pinpoint/latest/userguide/channels-sms-awssupport-spend-threshold.html">
-         * Requesting increases to your monthly SMS spending quota for Amazon Pinpoint </a>
-         * in the <i>Amazon Pinpoint User Guide</i>.</p><p><h3>See Also:</h3>   <a
+         * <p>Describes the current monthly spend limits for sending voice and text
+         * messages.</p> <p>When you establish an Amazon Web Services account, the account
+         * has initial monthly spend limit in a given Region. For more information on
+         * increasing your monthly spend limit, see <a
+         * href="https://docs.aws.amazon.com/sms-voice/latest/userguide/awssupport-spend-threshold.html">
+         * Requesting increases to your monthly SMS, MMS, or Voice spending quota </a> in
+         * the <i>AWS End User Messaging SMS User Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DescribeSpendLimits">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeSpendLimitsOutcome DescribeSpendLimits(const Model::DescribeSpendLimitsRequest& request) const;
+        virtual Model::DescribeSpendLimitsOutcome DescribeSpendLimits(const Model::DescribeSpendLimitsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeSpendLimits that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeSpendLimitsRequestT = Model::DescribeSpendLimitsRequest>
-        Model::DescribeSpendLimitsOutcomeCallable DescribeSpendLimitsCallable(const DescribeSpendLimitsRequestT& request) const
+        Model::DescribeSpendLimitsOutcomeCallable DescribeSpendLimitsCallable(const DescribeSpendLimitsRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointSMSVoiceV2Client::DescribeSpendLimits, request);
         }
@@ -1475,24 +1545,24 @@ namespace PinpointSMSVoiceV2
          * An Async wrapper for DescribeSpendLimits that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeSpendLimitsRequestT = Model::DescribeSpendLimitsRequest>
-        void DescribeSpendLimitsAsync(const DescribeSpendLimitsRequestT& request, const DescribeSpendLimitsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeSpendLimitsAsync(const DescribeSpendLimitsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeSpendLimitsRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::DescribeSpendLimits, request, handler, context);
         }
 
         /**
-         * <p>Retrieves the specified verified destiona numbers.</p><p><h3>See Also:</h3>  
-         * <a
+         * <p>Retrieves the specified verified destination numbers.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/DescribeVerifiedDestinationNumbers">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeVerifiedDestinationNumbersOutcome DescribeVerifiedDestinationNumbers(const Model::DescribeVerifiedDestinationNumbersRequest& request) const;
+        virtual Model::DescribeVerifiedDestinationNumbersOutcome DescribeVerifiedDestinationNumbers(const Model::DescribeVerifiedDestinationNumbersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeVerifiedDestinationNumbers that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeVerifiedDestinationNumbersRequestT = Model::DescribeVerifiedDestinationNumbersRequest>
-        Model::DescribeVerifiedDestinationNumbersOutcomeCallable DescribeVerifiedDestinationNumbersCallable(const DescribeVerifiedDestinationNumbersRequestT& request) const
+        Model::DescribeVerifiedDestinationNumbersOutcomeCallable DescribeVerifiedDestinationNumbersCallable(const DescribeVerifiedDestinationNumbersRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointSMSVoiceV2Client::DescribeVerifiedDestinationNumbers, request);
         }
@@ -1501,7 +1571,7 @@ namespace PinpointSMSVoiceV2
          * An Async wrapper for DescribeVerifiedDestinationNumbers that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeVerifiedDestinationNumbersRequestT = Model::DescribeVerifiedDestinationNumbersRequest>
-        void DescribeVerifiedDestinationNumbersAsync(const DescribeVerifiedDestinationNumbersRequestT& request, const DescribeVerifiedDestinationNumbersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeVerifiedDestinationNumbersAsync(const DescribeVerifiedDestinationNumbersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeVerifiedDestinationNumbersRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::DescribeVerifiedDestinationNumbers, request, handler, context);
         }
@@ -1612,6 +1682,33 @@ namespace PinpointSMSVoiceV2
         }
 
         /**
+         * <p>Retrieves the JSON text of the resource-based policy document attached to the
+         * AWS End User Messaging SMS and Voice resource. A shared resource can be a Pool,
+         * Opt-out list, Sender Id, or Phone number.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/GetResourcePolicy">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetResourcePolicyOutcome GetResourcePolicy(const Model::GetResourcePolicyRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetResourcePolicy that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetResourcePolicyRequestT = Model::GetResourcePolicyRequest>
+        Model::GetResourcePolicyOutcomeCallable GetResourcePolicyCallable(const GetResourcePolicyRequestT& request) const
+        {
+            return SubmitCallable(&PinpointSMSVoiceV2Client::GetResourcePolicy, request);
+        }
+
+        /**
+         * An Async wrapper for GetResourcePolicy that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetResourcePolicyRequestT = Model::GetResourcePolicyRequest>
+        void GetResourcePolicyAsync(const GetResourcePolicyRequestT& request, const GetResourcePolicyResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&PinpointSMSVoiceV2Client::GetResourcePolicy, request, handler, context);
+        }
+
+        /**
          * <p>Lists all associated origination identities in your pool.</p> <p>If you
          * specify filters, the output includes information for only those origination
          * identities that meet the filter criteria.</p><p><h3>See Also:</h3>   <a
@@ -1639,7 +1736,33 @@ namespace PinpointSMSVoiceV2
         }
 
         /**
-         * <p>Retreive all of the origination identies that are associated with a
+         * <p>Retrieve all of the protect configuration rule set number overrides that
+         * match the filters.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/ListProtectConfigurationRuleSetNumberOverrides">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListProtectConfigurationRuleSetNumberOverridesOutcome ListProtectConfigurationRuleSetNumberOverrides(const Model::ListProtectConfigurationRuleSetNumberOverridesRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListProtectConfigurationRuleSetNumberOverrides that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListProtectConfigurationRuleSetNumberOverridesRequestT = Model::ListProtectConfigurationRuleSetNumberOverridesRequest>
+        Model::ListProtectConfigurationRuleSetNumberOverridesOutcomeCallable ListProtectConfigurationRuleSetNumberOverridesCallable(const ListProtectConfigurationRuleSetNumberOverridesRequestT& request) const
+        {
+            return SubmitCallable(&PinpointSMSVoiceV2Client::ListProtectConfigurationRuleSetNumberOverrides, request);
+        }
+
+        /**
+         * An Async wrapper for ListProtectConfigurationRuleSetNumberOverrides that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListProtectConfigurationRuleSetNumberOverridesRequestT = Model::ListProtectConfigurationRuleSetNumberOverridesRequest>
+        void ListProtectConfigurationRuleSetNumberOverridesAsync(const ListProtectConfigurationRuleSetNumberOverridesRequestT& request, const ListProtectConfigurationRuleSetNumberOverridesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&PinpointSMSVoiceV2Client::ListProtectConfigurationRuleSetNumberOverrides, request, handler, context);
+        }
+
+        /**
+         * <p>Retrieve all of the origination identities that are associated with a
          * registration.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/ListRegistrationAssociations">AWS
          * API Reference</a></p>
@@ -1695,8 +1818,9 @@ namespace PinpointSMSVoiceV2
          * number or pool. It is also a specific word or phrase that an end user can send
          * to your number to elicit a response, such as an informational message or a
          * special offer. When your number receives a message that begins with a keyword,
-         * Amazon Pinpoint responds with a customizable message.</p> <p>If you specify a
-         * keyword that isn't valid, an error is returned.</p><p><h3>See Also:</h3>   <a
+         * AWS End User Messaging SMS and Voice responds with a customizable message.</p>
+         * <p>If you specify a keyword that isn't valid, an error is
+         * returned.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/PutKeyword">AWS
          * API Reference</a></p>
          */
@@ -1718,6 +1842,37 @@ namespace PinpointSMSVoiceV2
         void PutKeywordAsync(const PutKeywordRequestT& request, const PutKeywordResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::PutKeyword, request, handler, context);
+        }
+
+        /**
+         * <p>Set the MessageFeedbackStatus as <code>RECEIVED</code> or <code>FAILED</code>
+         * for the passed in MessageId. </p> <p>If you use message feedback then you must
+         * update message feedback record. When you receive a signal that a user has
+         * received the message you must use <code>PutMessageFeedback</code> to set the
+         * message feedback record as <code>RECEIVED</code>; Otherwise, an hour after the
+         * message feedback record is set to <code>FAILED</code>.</p><p><h3>See Also:</h3> 
+         * <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/PutMessageFeedback">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::PutMessageFeedbackOutcome PutMessageFeedback(const Model::PutMessageFeedbackRequest& request) const;
+
+        /**
+         * A Callable wrapper for PutMessageFeedback that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename PutMessageFeedbackRequestT = Model::PutMessageFeedbackRequest>
+        Model::PutMessageFeedbackOutcomeCallable PutMessageFeedbackCallable(const PutMessageFeedbackRequestT& request) const
+        {
+            return SubmitCallable(&PinpointSMSVoiceV2Client::PutMessageFeedback, request);
+        }
+
+        /**
+         * An Async wrapper for PutMessageFeedback that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename PutMessageFeedbackRequestT = Model::PutMessageFeedbackRequest>
+        void PutMessageFeedbackAsync(const PutMessageFeedbackRequestT& request, const PutMessageFeedbackResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&PinpointSMSVoiceV2Client::PutMessageFeedback, request, handler, context);
         }
 
         /**
@@ -1748,6 +1903,32 @@ namespace PinpointSMSVoiceV2
         }
 
         /**
+         * <p>Create or update a RuleSetNumberOverride and associate it with a protect
+         * configuration.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/PutProtectConfigurationRuleSetNumberOverride">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::PutProtectConfigurationRuleSetNumberOverrideOutcome PutProtectConfigurationRuleSetNumberOverride(const Model::PutProtectConfigurationRuleSetNumberOverrideRequest& request) const;
+
+        /**
+         * A Callable wrapper for PutProtectConfigurationRuleSetNumberOverride that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename PutProtectConfigurationRuleSetNumberOverrideRequestT = Model::PutProtectConfigurationRuleSetNumberOverrideRequest>
+        Model::PutProtectConfigurationRuleSetNumberOverrideOutcomeCallable PutProtectConfigurationRuleSetNumberOverrideCallable(const PutProtectConfigurationRuleSetNumberOverrideRequestT& request) const
+        {
+            return SubmitCallable(&PinpointSMSVoiceV2Client::PutProtectConfigurationRuleSetNumberOverride, request);
+        }
+
+        /**
+         * An Async wrapper for PutProtectConfigurationRuleSetNumberOverride that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename PutProtectConfigurationRuleSetNumberOverrideRequestT = Model::PutProtectConfigurationRuleSetNumberOverrideRequest>
+        void PutProtectConfigurationRuleSetNumberOverrideAsync(const PutProtectConfigurationRuleSetNumberOverrideRequestT& request, const PutProtectConfigurationRuleSetNumberOverrideResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&PinpointSMSVoiceV2Client::PutProtectConfigurationRuleSetNumberOverride, request, handler, context);
+        }
+
+        /**
          * <p>Creates or updates a field value for a registration.</p><p><h3>See Also:</h3>
          * <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/PutRegistrationFieldValue">AWS
@@ -1771,6 +1952,37 @@ namespace PinpointSMSVoiceV2
         void PutRegistrationFieldValueAsync(const PutRegistrationFieldValueRequestT& request, const PutRegistrationFieldValueResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::PutRegistrationFieldValue, request, handler, context);
+        }
+
+        /**
+         * <p>Attaches a resource-based policy to a AWS End User Messaging SMS and Voice
+         * resource(phone number, sender Id, phone poll, or opt-out list) that is used for
+         * sharing the resource. A shared resource can be a Pool, Opt-out list, Sender Id,
+         * or Phone number. For more information about resource-based policies, see <a
+         * href="https://docs.aws.amazon.com/sms-voice/latest/userguide/shared-resources.html">Working
+         * with shared resources</a> in the <i>AWS End User Messaging SMS User Guide</i>.
+         * </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/PutResourcePolicy">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::PutResourcePolicyOutcome PutResourcePolicy(const Model::PutResourcePolicyRequest& request) const;
+
+        /**
+         * A Callable wrapper for PutResourcePolicy that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename PutResourcePolicyRequestT = Model::PutResourcePolicyRequest>
+        Model::PutResourcePolicyOutcomeCallable PutResourcePolicyCallable(const PutResourcePolicyRequestT& request) const
+        {
+            return SubmitCallable(&PinpointSMSVoiceV2Client::PutResourcePolicy, request);
+        }
+
+        /**
+         * An Async wrapper for PutResourcePolicy that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename PutResourcePolicyRequestT = Model::PutResourcePolicyRequest>
+        void PutResourcePolicyAsync(const PutResourcePolicyRequestT& request, const PutResourcePolicyResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&PinpointSMSVoiceV2Client::PutResourcePolicy, request, handler, context);
         }
 
         /**
@@ -1829,9 +2041,9 @@ namespace PinpointSMSVoiceV2
         /**
          * <p>Request an origination phone number for use in your account. For more
          * information on phone number request see <a
-         * href="https://docs.aws.amazon.com/pinpoint/latest/userguide/settings-sms-request-number.html">
-         * Requesting a number </a> in the <i>Amazon Pinpoint User Guide</i>.</p><p><h3>See
-         * Also:</h3>   <a
+         * href="https://docs.aws.amazon.com/sms-voice/latest/userguide/phone-numbers-request.html">Request
+         * a phone number</a> in the <i>AWS End User Messaging SMS User
+         * Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/RequestPhoneNumber">AWS
          * API Reference</a></p>
          */
@@ -1938,13 +2150,14 @@ namespace PinpointSMSVoiceV2
         }
 
         /**
-         * <p>Creates a new text message and sends it to a recipient's phone number.</p>
-         * <p>SMS throughput limits are measured in Message Parts per Second (MPS). Your
-         * MPS limit depends on the destination country of your messages, as well as the
-         * type of phone number (origination number) that you use to send the message. For
-         * more information, see <a
-         * href="https://docs.aws.amazon.com/pinpoint/latest/userguide/channels-sms-limitations-mps.html">Message
-         * Parts per Second (MPS) limits</a> in the <i>Amazon Pinpoint User
+         * <p>Creates a new text message and sends it to a recipient's phone number.
+         * SendTextMessage only sends an SMS message to one recipient each time it is
+         * invoked.</p> <p>SMS throughput limits are measured in Message Parts per Second
+         * (MPS). Your MPS limit depends on the destination country of your messages, as
+         * well as the type of phone number (origination number) that you use to send the
+         * message. For more information about MPS, see <a
+         * href="https://docs.aws.amazon.com/sms-voice/latest/userguide/sms-limitations-mps.html">Message
+         * Parts per Second (MPS) limits</a> in the <i>AWS End User Messaging SMS User
          * Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/SendTextMessage">AWS
          * API Reference</a></p>
@@ -1970,10 +2183,9 @@ namespace PinpointSMSVoiceV2
         }
 
         /**
-         * <p>Allows you to send a request that sends a voice message through Amazon
-         * Pinpoint. This operation uses <a href="http://aws.amazon.com/polly/">Amazon
-         * Polly</a> to convert a text script into a voice message.</p><p><h3>See
-         * Also:</h3>   <a
+         * <p>Allows you to send a request that sends a voice message. This operation uses
+         * <a href="http://aws.amazon.com/polly/">Amazon Polly</a> to convert a text script
+         * into a voice message.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/SendVoiceMessage">AWS
          * API Reference</a></p>
          */
@@ -2023,6 +2235,32 @@ namespace PinpointSMSVoiceV2
         void SetAccountDefaultProtectConfigurationAsync(const SetAccountDefaultProtectConfigurationRequestT& request, const SetAccountDefaultProtectConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&PinpointSMSVoiceV2Client::SetAccountDefaultProtectConfiguration, request, handler, context);
+        }
+
+        /**
+         * <p>Sets a configuration set's default for message feedback. </p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/SetDefaultMessageFeedbackEnabled">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::SetDefaultMessageFeedbackEnabledOutcome SetDefaultMessageFeedbackEnabled(const Model::SetDefaultMessageFeedbackEnabledRequest& request) const;
+
+        /**
+         * A Callable wrapper for SetDefaultMessageFeedbackEnabled that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename SetDefaultMessageFeedbackEnabledRequestT = Model::SetDefaultMessageFeedbackEnabledRequest>
+        Model::SetDefaultMessageFeedbackEnabledOutcomeCallable SetDefaultMessageFeedbackEnabledCallable(const SetDefaultMessageFeedbackEnabledRequestT& request) const
+        {
+            return SubmitCallable(&PinpointSMSVoiceV2Client::SetDefaultMessageFeedbackEnabled, request);
+        }
+
+        /**
+         * An Async wrapper for SetDefaultMessageFeedbackEnabled that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename SetDefaultMessageFeedbackEnabledRequestT = Model::SetDefaultMessageFeedbackEnabledRequest>
+        void SetDefaultMessageFeedbackEnabledAsync(const SetDefaultMessageFeedbackEnabledRequestT& request, const SetDefaultMessageFeedbackEnabledResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&PinpointSMSVoiceV2Client::SetDefaultMessageFeedbackEnabled, request, handler, context);
         }
 
         /**
@@ -2196,14 +2434,14 @@ namespace PinpointSMSVoiceV2
         }
 
         /**
-         * <p>Adds or overwrites only the specified tags for the specified Amazon Pinpoint
-         * SMS Voice, version 2 resource. When you specify an existing tag key, the value
-         * is overwritten with the new value. Each resource can have a maximum of 50 tags.
-         * Each tag consists of a key and an optional value. Tag keys must be unique per
-         * resource. For more information about tags, see <a
-         * href="https://docs.aws.amazon.com/pinpoint/latest/developerguide/tagging-resources.html">
-         * Tagging Amazon Pinpoint resources</a> in the <i>Amazon Pinpoint Developer
-         * Guide</i>.</p><p><h3>See Also:</h3>   <a
+         * <p>Adds or overwrites only the specified tags for the specified resource. When
+         * you specify an existing tag key, the value is overwritten with the new value.
+         * Each resource can have a maximum of 50 tags. Each tag consists of a key and an
+         * optional value. Tag keys must be unique per resource. For more information about
+         * tags, see <a
+         * href="https://docs.aws.amazon.com/sms-voice/latest/userguide/phone-numbers-tags.html">Tags
+         * </a> in the <i>AWS End User Messaging SMS User Guide</i>.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/TagResource">AWS
          * API Reference</a></p>
          */
@@ -2228,11 +2466,11 @@ namespace PinpointSMSVoiceV2
         }
 
         /**
-         * <p>Removes the association of the specified tags from an Amazon Pinpoint SMS
-         * Voice V2 resource. For more information on tags see <a
-         * href="https://docs.aws.amazon.com/pinpoint/latest/developerguide/tagging-resources.html">
-         * Tagging Amazon Pinpoint resources</a> in the <i>Amazon Pinpoint Developer
-         * Guide</i>. </p><p><h3>See Also:</h3>   <a
+         * <p>Removes the association of the specified tags from a resource. For more
+         * information on tags see <a
+         * href="https://docs.aws.amazon.com/sms-voice/latest/userguide/phone-numbers-tags.html">Tags
+         * </a> in the <i>AWS End User Messaging SMS User Guide</i>.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/UntagResource">AWS
          * API Reference</a></p>
          */
@@ -2258,11 +2496,11 @@ namespace PinpointSMSVoiceV2
 
         /**
          * <p>Updates an existing event destination in a configuration set. You can update
-         * the IAM role ARN for CloudWatch Logs and Kinesis Data Firehose. You can also
-         * enable or disable the event destination.</p> <p>You may want to update an event
+         * the IAM role ARN for CloudWatch Logs and Firehose. You can also enable or
+         * disable the event destination.</p> <p>You may want to update an event
          * destination to change its matching event types or updating the destination
          * resource ARN. You can't change an event destination's type between CloudWatch
-         * Logs, Kinesis Data Firehose, and Amazon SNS.</p><p><h3>See Also:</h3>   <a
+         * Logs, Firehose, and Amazon SNS.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-sms-voice-v2-2022-03-31/UpdateEventDestination">AWS
          * API Reference</a></p>
          */
@@ -2456,11 +2694,7 @@ namespace PinpointSMSVoiceV2
       std::shared_ptr<PinpointSMSVoiceV2EndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<PinpointSMSVoiceV2Client>;
-      void init(const PinpointSMSVoiceV2ClientConfiguration& clientConfiguration);
 
-      PinpointSMSVoiceV2ClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<PinpointSMSVoiceV2EndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace PinpointSMSVoiceV2

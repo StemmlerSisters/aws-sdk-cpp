@@ -6,6 +6,7 @@
 #pragma once
 #include <aws/verifiedpermissions/VerifiedPermissions_EXPORTS.h>
 #include <aws/core/utils/memory/stl/AWSVector.h>
+#include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/verifiedpermissions/model/EntityItem.h>
 #include <utility>
 
@@ -45,66 +46,48 @@ namespace Model
     AWS_VERIFIEDPERMISSIONS_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>An array of entities that are needed to successfully evaluate an
      * authorization request. Each entity in this array must include an identifier for
      * the entity, the attributes of the entity, and a list of any parent entities.</p>
+     *  <p>If you include multiple entities with the same
+     * <code>identifier</code>, only the last one is processed in the request.</p>
+     * 
      */
     inline const Aws::Vector<EntityItem>& GetEntityList() const{ return m_entityList; }
-
-    /**
-     * <p>An array of entities that are needed to successfully evaluate an
-     * authorization request. Each entity in this array must include an identifier for
-     * the entity, the attributes of the entity, and a list of any parent entities.</p>
-     */
     inline bool EntityListHasBeenSet() const { return m_entityListHasBeenSet; }
-
-    /**
-     * <p>An array of entities that are needed to successfully evaluate an
-     * authorization request. Each entity in this array must include an identifier for
-     * the entity, the attributes of the entity, and a list of any parent entities.</p>
-     */
     inline void SetEntityList(const Aws::Vector<EntityItem>& value) { m_entityListHasBeenSet = true; m_entityList = value; }
-
-    /**
-     * <p>An array of entities that are needed to successfully evaluate an
-     * authorization request. Each entity in this array must include an identifier for
-     * the entity, the attributes of the entity, and a list of any parent entities.</p>
-     */
     inline void SetEntityList(Aws::Vector<EntityItem>&& value) { m_entityListHasBeenSet = true; m_entityList = std::move(value); }
-
-    /**
-     * <p>An array of entities that are needed to successfully evaluate an
-     * authorization request. Each entity in this array must include an identifier for
-     * the entity, the attributes of the entity, and a list of any parent entities.</p>
-     */
     inline EntitiesDefinition& WithEntityList(const Aws::Vector<EntityItem>& value) { SetEntityList(value); return *this;}
-
-    /**
-     * <p>An array of entities that are needed to successfully evaluate an
-     * authorization request. Each entity in this array must include an identifier for
-     * the entity, the attributes of the entity, and a list of any parent entities.</p>
-     */
     inline EntitiesDefinition& WithEntityList(Aws::Vector<EntityItem>&& value) { SetEntityList(std::move(value)); return *this;}
-
-    /**
-     * <p>An array of entities that are needed to successfully evaluate an
-     * authorization request. Each entity in this array must include an identifier for
-     * the entity, the attributes of the entity, and a list of any parent entities.</p>
-     */
     inline EntitiesDefinition& AddEntityList(const EntityItem& value) { m_entityListHasBeenSet = true; m_entityList.push_back(value); return *this; }
-
-    /**
-     * <p>An array of entities that are needed to successfully evaluate an
-     * authorization request. Each entity in this array must include an identifier for
-     * the entity, the attributes of the entity, and a list of any parent entities.</p>
-     */
     inline EntitiesDefinition& AddEntityList(EntityItem&& value) { m_entityListHasBeenSet = true; m_entityList.push_back(std::move(value)); return *this; }
+    ///@}
 
+    ///@{
+    /**
+     * <p>A Cedar JSON string representation of the entities needed to successfully
+     * evaluate an authorization request.</p> <p>Example: <code>{"cedarJson":
+     * "[{\"uid\":{\"type\":\"Photo\",\"id\":\"VacationPhoto94.jpg\"},\"attrs\":{\"accessLevel\":\"public\"},\"parents\":[]}]"}</code>
+     * </p>
+     */
+    inline const Aws::String& GetCedarJson() const{ return m_cedarJson; }
+    inline bool CedarJsonHasBeenSet() const { return m_cedarJsonHasBeenSet; }
+    inline void SetCedarJson(const Aws::String& value) { m_cedarJsonHasBeenSet = true; m_cedarJson = value; }
+    inline void SetCedarJson(Aws::String&& value) { m_cedarJsonHasBeenSet = true; m_cedarJson = std::move(value); }
+    inline void SetCedarJson(const char* value) { m_cedarJsonHasBeenSet = true; m_cedarJson.assign(value); }
+    inline EntitiesDefinition& WithCedarJson(const Aws::String& value) { SetCedarJson(value); return *this;}
+    inline EntitiesDefinition& WithCedarJson(Aws::String&& value) { SetCedarJson(std::move(value)); return *this;}
+    inline EntitiesDefinition& WithCedarJson(const char* value) { SetCedarJson(value); return *this;}
+    ///@}
   private:
 
     Aws::Vector<EntityItem> m_entityList;
     bool m_entityListHasBeenSet = false;
+
+    Aws::String m_cedarJson;
+    bool m_cedarJsonHasBeenSet = false;
   };
 
 } // namespace Model

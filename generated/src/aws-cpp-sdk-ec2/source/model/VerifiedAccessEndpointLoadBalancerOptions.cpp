@@ -26,17 +26,13 @@ VerifiedAccessEndpointLoadBalancerOptions::VerifiedAccessEndpointLoadBalancerOpt
     m_port(0),
     m_portHasBeenSet(false),
     m_loadBalancerArnHasBeenSet(false),
-    m_subnetIdsHasBeenSet(false)
+    m_subnetIdsHasBeenSet(false),
+    m_portRangesHasBeenSet(false)
 {
 }
 
-VerifiedAccessEndpointLoadBalancerOptions::VerifiedAccessEndpointLoadBalancerOptions(const XmlNode& xmlNode) : 
-    m_protocol(VerifiedAccessEndpointProtocol::NOT_SET),
-    m_protocolHasBeenSet(false),
-    m_port(0),
-    m_portHasBeenSet(false),
-    m_loadBalancerArnHasBeenSet(false),
-    m_subnetIdsHasBeenSet(false)
+VerifiedAccessEndpointLoadBalancerOptions::VerifiedAccessEndpointLoadBalancerOptions(const XmlNode& xmlNode)
+  : VerifiedAccessEndpointLoadBalancerOptions()
 {
   *this = xmlNode;
 }
@@ -77,6 +73,18 @@ VerifiedAccessEndpointLoadBalancerOptions& VerifiedAccessEndpointLoadBalancerOpt
 
       m_subnetIdsHasBeenSet = true;
     }
+    XmlNode portRangesNode = resultNode.FirstChild("portRangeSet");
+    if(!portRangesNode.IsNull())
+    {
+      XmlNode portRangesMember = portRangesNode.FirstChild("item");
+      while(!portRangesMember.IsNull())
+      {
+        m_portRanges.push_back(portRangesMember);
+        portRangesMember = portRangesMember.NextNode("item");
+      }
+
+      m_portRangesHasBeenSet = true;
+    }
   }
 
   return *this;
@@ -108,6 +116,17 @@ void VerifiedAccessEndpointLoadBalancerOptions::OutputToStream(Aws::OStream& oSt
       }
   }
 
+  if(m_portRangesHasBeenSet)
+  {
+      unsigned portRangesIdx = 1;
+      for(auto& item : m_portRanges)
+      {
+        Aws::StringStream portRangesSs;
+        portRangesSs << location << index << locationValue << ".PortRangeSet." << portRangesIdx++;
+        item.OutputToStream(oStream, portRangesSs.str().c_str());
+      }
+  }
+
 }
 
 void VerifiedAccessEndpointLoadBalancerOptions::OutputToStream(Aws::OStream& oStream, const char* location) const
@@ -130,6 +149,16 @@ void VerifiedAccessEndpointLoadBalancerOptions::OutputToStream(Aws::OStream& oSt
       for(auto& item : m_subnetIds)
       {
         oStream << location << ".SubnetIdSet." << subnetIdsIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
+      }
+  }
+  if(m_portRangesHasBeenSet)
+  {
+      unsigned portRangesIdx = 1;
+      for(auto& item : m_portRanges)
+      {
+        Aws::StringStream portRangesSs;
+        portRangesSs << location <<  ".PortRangeSet." << portRangesIdx++;
+        item.OutputToStream(oStream, portRangesSs.str().c_str());
       }
   }
 }

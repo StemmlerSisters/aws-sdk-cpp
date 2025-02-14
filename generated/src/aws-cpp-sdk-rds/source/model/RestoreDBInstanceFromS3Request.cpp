@@ -58,6 +58,8 @@ RestoreDBInstanceFromS3Request::RestoreDBInstanceFromS3Request() :
     m_s3BucketNameHasBeenSet(false),
     m_s3PrefixHasBeenSet(false),
     m_s3IngestionRoleArnHasBeenSet(false),
+    m_databaseInsightsMode(DatabaseInsightsMode::NOT_SET),
+    m_databaseInsightsModeHasBeenSet(false),
     m_enablePerformanceInsights(false),
     m_enablePerformanceInsightsHasBeenSet(false),
     m_performanceInsightsKMSKeyIdHasBeenSet(false),
@@ -125,23 +127,37 @@ Aws::String RestoreDBInstanceFromS3Request::SerializePayload() const
 
   if(m_dBSecurityGroupsHasBeenSet)
   {
-    unsigned dBSecurityGroupsCount = 1;
-    for(auto& item : m_dBSecurityGroups)
+    if (m_dBSecurityGroups.empty())
     {
-      ss << "DBSecurityGroups.member." << dBSecurityGroupsCount << "="
-          << StringUtils::URLEncode(item.c_str()) << "&";
-      dBSecurityGroupsCount++;
+      ss << "DBSecurityGroups=&";
+    }
+    else
+    {
+      unsigned dBSecurityGroupsCount = 1;
+      for(auto& item : m_dBSecurityGroups)
+      {
+        ss << "DBSecurityGroups.DBSecurityGroupName." << dBSecurityGroupsCount << "="
+            << StringUtils::URLEncode(item.c_str()) << "&";
+        dBSecurityGroupsCount++;
+      }
     }
   }
 
   if(m_vpcSecurityGroupIdsHasBeenSet)
   {
-    unsigned vpcSecurityGroupIdsCount = 1;
-    for(auto& item : m_vpcSecurityGroupIds)
+    if (m_vpcSecurityGroupIds.empty())
     {
-      ss << "VpcSecurityGroupIds.member." << vpcSecurityGroupIdsCount << "="
-          << StringUtils::URLEncode(item.c_str()) << "&";
-      vpcSecurityGroupIdsCount++;
+      ss << "VpcSecurityGroupIds=&";
+    }
+    else
+    {
+      unsigned vpcSecurityGroupIdsCount = 1;
+      for(auto& item : m_vpcSecurityGroupIds)
+      {
+        ss << "VpcSecurityGroupIds.VpcSecurityGroupId." << vpcSecurityGroupIdsCount << "="
+            << StringUtils::URLEncode(item.c_str()) << "&";
+        vpcSecurityGroupIdsCount++;
+      }
     }
   }
 
@@ -217,11 +233,18 @@ Aws::String RestoreDBInstanceFromS3Request::SerializePayload() const
 
   if(m_tagsHasBeenSet)
   {
-    unsigned tagsCount = 1;
-    for(auto& item : m_tags)
+    if (m_tags.empty())
     {
-      item.OutputToStream(ss, "Tags.member.", tagsCount, "");
-      tagsCount++;
+      ss << "Tags=&";
+    }
+    else
+    {
+      unsigned tagsCount = 1;
+      for(auto& item : m_tags)
+      {
+        item.OutputToStream(ss, "Tags.Tag.", tagsCount, "");
+        tagsCount++;
+      }
     }
   }
 
@@ -285,6 +308,11 @@ Aws::String RestoreDBInstanceFromS3Request::SerializePayload() const
     ss << "S3IngestionRoleArn=" << StringUtils::URLEncode(m_s3IngestionRoleArn.c_str()) << "&";
   }
 
+  if(m_databaseInsightsModeHasBeenSet)
+  {
+    ss << "DatabaseInsightsMode=" << DatabaseInsightsModeMapper::GetNameForDatabaseInsightsMode(m_databaseInsightsMode) << "&";
+  }
+
   if(m_enablePerformanceInsightsHasBeenSet)
   {
     ss << "EnablePerformanceInsights=" << std::boolalpha << m_enablePerformanceInsights << "&";
@@ -302,22 +330,36 @@ Aws::String RestoreDBInstanceFromS3Request::SerializePayload() const
 
   if(m_enableCloudwatchLogsExportsHasBeenSet)
   {
-    unsigned enableCloudwatchLogsExportsCount = 1;
-    for(auto& item : m_enableCloudwatchLogsExports)
+    if (m_enableCloudwatchLogsExports.empty())
     {
-      ss << "EnableCloudwatchLogsExports.member." << enableCloudwatchLogsExportsCount << "="
-          << StringUtils::URLEncode(item.c_str()) << "&";
-      enableCloudwatchLogsExportsCount++;
+      ss << "EnableCloudwatchLogsExports=&";
+    }
+    else
+    {
+      unsigned enableCloudwatchLogsExportsCount = 1;
+      for(auto& item : m_enableCloudwatchLogsExports)
+      {
+        ss << "EnableCloudwatchLogsExports.member." << enableCloudwatchLogsExportsCount << "="
+            << StringUtils::URLEncode(item.c_str()) << "&";
+        enableCloudwatchLogsExportsCount++;
+      }
     }
   }
 
   if(m_processorFeaturesHasBeenSet)
   {
-    unsigned processorFeaturesCount = 1;
-    for(auto& item : m_processorFeatures)
+    if (m_processorFeatures.empty())
     {
-      item.OutputToStream(ss, "ProcessorFeatures.member.", processorFeaturesCount, "");
-      processorFeaturesCount++;
+      ss << "ProcessorFeatures=&";
+    }
+    else
+    {
+      unsigned processorFeaturesCount = 1;
+      for(auto& item : m_processorFeatures)
+      {
+        item.OutputToStream(ss, "ProcessorFeatures.ProcessorFeature.", processorFeaturesCount, "");
+        processorFeaturesCount++;
+      }
     }
   }
 

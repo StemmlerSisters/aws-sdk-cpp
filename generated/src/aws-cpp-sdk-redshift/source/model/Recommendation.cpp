@@ -37,20 +37,8 @@ Recommendation::Recommendation() :
 {
 }
 
-Recommendation::Recommendation(const XmlNode& xmlNode) : 
-    m_idHasBeenSet(false),
-    m_clusterIdentifierHasBeenSet(false),
-    m_namespaceArnHasBeenSet(false),
-    m_createdAtHasBeenSet(false),
-    m_recommendationTypeHasBeenSet(false),
-    m_titleHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_observationHasBeenSet(false),
-    m_impactRanking(ImpactRankingType::NOT_SET),
-    m_impactRankingHasBeenSet(false),
-    m_recommendationTextHasBeenSet(false),
-    m_recommendedActionsHasBeenSet(false),
-    m_referenceLinksHasBeenSet(false)
+Recommendation::Recommendation(const XmlNode& xmlNode)
+  : Recommendation()
 {
   *this = xmlNode;
 }
@@ -208,7 +196,7 @@ void Recommendation::OutputToStream(Aws::OStream& oStream, const char* location,
       for(auto& item : m_recommendedActions)
       {
         Aws::StringStream recommendedActionsSs;
-        recommendedActionsSs << location << index << locationValue << ".RecommendedAction." << recommendedActionsIdx++;
+        recommendedActionsSs << location << index << locationValue << ".RecommendedActions.RecommendedAction." << recommendedActionsIdx++;
         item.OutputToStream(oStream, recommendedActionsSs.str().c_str());
       }
   }
@@ -219,7 +207,7 @@ void Recommendation::OutputToStream(Aws::OStream& oStream, const char* location,
       for(auto& item : m_referenceLinks)
       {
         Aws::StringStream referenceLinksSs;
-        referenceLinksSs << location << index << locationValue << ".ReferenceLink." << referenceLinksIdx++;
+        referenceLinksSs << location << index << locationValue << ".ReferenceLinks.ReferenceLink." << referenceLinksIdx++;
         item.OutputToStream(oStream, referenceLinksSs.str().c_str());
       }
   }

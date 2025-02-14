@@ -45,12 +45,16 @@ namespace Model
     sa_east_1,
     ca_central_1,
     cn_north_1,
+    cn_northwest_1,
     af_south_1,
     eu_south_1,
     eu_south_2,
     ap_southeast_4,
     il_central_1,
-    ca_west_1
+    ca_west_1,
+    ap_southeast_5,
+    mx_central_1,
+    ap_southeast_7
   };
 
 namespace VPCRegionMapper

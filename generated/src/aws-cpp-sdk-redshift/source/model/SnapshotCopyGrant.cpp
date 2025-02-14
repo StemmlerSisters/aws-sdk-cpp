@@ -27,10 +27,8 @@ SnapshotCopyGrant::SnapshotCopyGrant() :
 {
 }
 
-SnapshotCopyGrant::SnapshotCopyGrant(const XmlNode& xmlNode) : 
-    m_snapshotCopyGrantNameHasBeenSet(false),
-    m_kmsKeyIdHasBeenSet(false),
-    m_tagsHasBeenSet(false)
+SnapshotCopyGrant::SnapshotCopyGrant(const XmlNode& xmlNode)
+  : SnapshotCopyGrant()
 {
   *this = xmlNode;
 }
@@ -88,7 +86,7 @@ void SnapshotCopyGrant::OutputToStream(Aws::OStream& oStream, const char* locati
       for(auto& item : m_tags)
       {
         Aws::StringStream tagsSs;
-        tagsSs << location << index << locationValue << ".Tag." << tagsIdx++;
+        tagsSs << location << index << locationValue << ".Tags.Tag." << tagsIdx++;
         item.OutputToStream(oStream, tagsSs.str().c_str());
       }
   }

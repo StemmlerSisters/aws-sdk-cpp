@@ -24,17 +24,13 @@ TreeMapVisual::TreeMapVisual() :
     m_subtitleHasBeenSet(false),
     m_chartConfigurationHasBeenSet(false),
     m_actionsHasBeenSet(false),
-    m_columnHierarchiesHasBeenSet(false)
+    m_columnHierarchiesHasBeenSet(false),
+    m_visualContentAltTextHasBeenSet(false)
 {
 }
 
-TreeMapVisual::TreeMapVisual(JsonView jsonValue) : 
-    m_visualIdHasBeenSet(false),
-    m_titleHasBeenSet(false),
-    m_subtitleHasBeenSet(false),
-    m_chartConfigurationHasBeenSet(false),
-    m_actionsHasBeenSet(false),
-    m_columnHierarchiesHasBeenSet(false)
+TreeMapVisual::TreeMapVisual(JsonView jsonValue)
+  : TreeMapVisual()
 {
   *this = jsonValue;
 }
@@ -89,6 +85,13 @@ TreeMapVisual& TreeMapVisual::operator =(JsonView jsonValue)
     m_columnHierarchiesHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("VisualContentAltText"))
+  {
+    m_visualContentAltText = jsonValue.GetString("VisualContentAltText");
+
+    m_visualContentAltTextHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -139,6 +142,12 @@ JsonValue TreeMapVisual::Jsonize() const
      columnHierarchiesJsonList[columnHierarchiesIndex].AsObject(m_columnHierarchies[columnHierarchiesIndex].Jsonize());
    }
    payload.WithArray("ColumnHierarchies", std::move(columnHierarchiesJsonList));
+
+  }
+
+  if(m_visualContentAltTextHasBeenSet)
+  {
+   payload.WithString("VisualContentAltText", m_visualContentAltText);
 
   }
 

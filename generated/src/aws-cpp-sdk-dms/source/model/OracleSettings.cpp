@@ -87,80 +87,14 @@ OracleSettings::OracleSettings() :
     m_convertTimestampWithZoneToUTC(false),
     m_convertTimestampWithZoneToUTCHasBeenSet(false),
     m_openTransactionWindow(0),
-    m_openTransactionWindowHasBeenSet(false)
+    m_openTransactionWindowHasBeenSet(false),
+    m_authenticationMethod(OracleAuthenticationMethod::NOT_SET),
+    m_authenticationMethodHasBeenSet(false)
 {
 }
 
-OracleSettings::OracleSettings(JsonView jsonValue) : 
-    m_addSupplementalLogging(false),
-    m_addSupplementalLoggingHasBeenSet(false),
-    m_archivedLogDestId(0),
-    m_archivedLogDestIdHasBeenSet(false),
-    m_additionalArchivedLogDestId(0),
-    m_additionalArchivedLogDestIdHasBeenSet(false),
-    m_extraArchivedLogDestIdsHasBeenSet(false),
-    m_allowSelectNestedTables(false),
-    m_allowSelectNestedTablesHasBeenSet(false),
-    m_parallelAsmReadThreads(0),
-    m_parallelAsmReadThreadsHasBeenSet(false),
-    m_readAheadBlocks(0),
-    m_readAheadBlocksHasBeenSet(false),
-    m_accessAlternateDirectly(false),
-    m_accessAlternateDirectlyHasBeenSet(false),
-    m_useAlternateFolderForOnline(false),
-    m_useAlternateFolderForOnlineHasBeenSet(false),
-    m_oraclePathPrefixHasBeenSet(false),
-    m_usePathPrefixHasBeenSet(false),
-    m_replacePathPrefix(false),
-    m_replacePathPrefixHasBeenSet(false),
-    m_enableHomogenousTablespace(false),
-    m_enableHomogenousTablespaceHasBeenSet(false),
-    m_directPathNoLog(false),
-    m_directPathNoLogHasBeenSet(false),
-    m_archivedLogsOnly(false),
-    m_archivedLogsOnlyHasBeenSet(false),
-    m_asmPasswordHasBeenSet(false),
-    m_asmServerHasBeenSet(false),
-    m_asmUserHasBeenSet(false),
-    m_charLengthSemantics(CharLengthSemantics::NOT_SET),
-    m_charLengthSemanticsHasBeenSet(false),
-    m_databaseNameHasBeenSet(false),
-    m_directPathParallelLoad(false),
-    m_directPathParallelLoadHasBeenSet(false),
-    m_failTasksOnLobTruncation(false),
-    m_failTasksOnLobTruncationHasBeenSet(false),
-    m_numberDatatypeScale(0),
-    m_numberDatatypeScaleHasBeenSet(false),
-    m_passwordHasBeenSet(false),
-    m_port(0),
-    m_portHasBeenSet(false),
-    m_readTableSpaceName(false),
-    m_readTableSpaceNameHasBeenSet(false),
-    m_retryInterval(0),
-    m_retryIntervalHasBeenSet(false),
-    m_securityDbEncryptionHasBeenSet(false),
-    m_securityDbEncryptionNameHasBeenSet(false),
-    m_serverNameHasBeenSet(false),
-    m_spatialDataOptionToGeoJsonFunctionNameHasBeenSet(false),
-    m_standbyDelayTime(0),
-    m_standbyDelayTimeHasBeenSet(false),
-    m_usernameHasBeenSet(false),
-    m_useBFile(false),
-    m_useBFileHasBeenSet(false),
-    m_useDirectPathFullLoad(false),
-    m_useDirectPathFullLoadHasBeenSet(false),
-    m_useLogminerReader(false),
-    m_useLogminerReaderHasBeenSet(false),
-    m_secretsManagerAccessRoleArnHasBeenSet(false),
-    m_secretsManagerSecretIdHasBeenSet(false),
-    m_secretsManagerOracleAsmAccessRoleArnHasBeenSet(false),
-    m_secretsManagerOracleAsmSecretIdHasBeenSet(false),
-    m_trimSpaceInChar(false),
-    m_trimSpaceInCharHasBeenSet(false),
-    m_convertTimestampWithZoneToUTC(false),
-    m_convertTimestampWithZoneToUTCHasBeenSet(false),
-    m_openTransactionWindow(0),
-    m_openTransactionWindowHasBeenSet(false)
+OracleSettings::OracleSettings(JsonView jsonValue)
+  : OracleSettings()
 {
   *this = jsonValue;
 }
@@ -471,6 +405,13 @@ OracleSettings& OracleSettings::operator =(JsonView jsonValue)
     m_openTransactionWindowHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("AuthenticationMethod"))
+  {
+    m_authenticationMethod = OracleAuthenticationMethodMapper::GetOracleAuthenticationMethodForName(jsonValue.GetString("AuthenticationMethod"));
+
+    m_authenticationMethodHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -738,6 +679,11 @@ JsonValue OracleSettings::Jsonize() const
   {
    payload.WithInteger("OpenTransactionWindow", m_openTransactionWindow);
 
+  }
+
+  if(m_authenticationMethodHasBeenSet)
+  {
+   payload.WithString("AuthenticationMethod", OracleAuthenticationMethodMapper::GetNameForOracleAuthenticationMethod(m_authenticationMethod));
   }
 
   return payload;

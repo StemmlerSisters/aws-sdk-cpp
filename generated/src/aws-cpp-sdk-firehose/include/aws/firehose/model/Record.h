@@ -24,7 +24,7 @@ namespace Model
 {
 
   /**
-   * <p>The unit of data in a delivery stream.</p><p><h3>See Also:</h3>   <a
+   * <p>The unit of data in a Firehose stream.</p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/firehose-2015-08-04/Record">AWS API
    * Reference</a></p>
    */
@@ -37,42 +37,18 @@ namespace Model
     AWS_FIREHOSE_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The data blob, which is base64-encoded when the blob is serialized. The
      * maximum size of the data blob, before base64-encoding, is 1,000 KiB.</p>
      */
     inline const Aws::Utils::ByteBuffer& GetData() const{ return m_data; }
-
-    /**
-     * <p>The data blob, which is base64-encoded when the blob is serialized. The
-     * maximum size of the data blob, before base64-encoding, is 1,000 KiB.</p>
-     */
     inline bool DataHasBeenSet() const { return m_dataHasBeenSet; }
-
-    /**
-     * <p>The data blob, which is base64-encoded when the blob is serialized. The
-     * maximum size of the data blob, before base64-encoding, is 1,000 KiB.</p>
-     */
     inline void SetData(const Aws::Utils::ByteBuffer& value) { m_dataHasBeenSet = true; m_data = value; }
-
-    /**
-     * <p>The data blob, which is base64-encoded when the blob is serialized. The
-     * maximum size of the data blob, before base64-encoding, is 1,000 KiB.</p>
-     */
     inline void SetData(Aws::Utils::ByteBuffer&& value) { m_dataHasBeenSet = true; m_data = std::move(value); }
-
-    /**
-     * <p>The data blob, which is base64-encoded when the blob is serialized. The
-     * maximum size of the data blob, before base64-encoding, is 1,000 KiB.</p>
-     */
     inline Record& WithData(const Aws::Utils::ByteBuffer& value) { SetData(value); return *this;}
-
-    /**
-     * <p>The data blob, which is base64-encoded when the blob is serialized. The
-     * maximum size of the data blob, before base64-encoding, is 1,000 KiB.</p>
-     */
     inline Record& WithData(Aws::Utils::ByteBuffer&& value) { SetData(std::move(value)); return *this;}
-
+    ///@}
   private:
 
     Aws::Utils::ByteBuffer m_data;

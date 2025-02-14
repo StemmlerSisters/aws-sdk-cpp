@@ -26,7 +26,7 @@ namespace Model
   /**
    * <p>A scrape configuration for a scraper, base 64 encoded. For more information,
    * see <a
-   * href="prometheus/latest/userguide/AMP-collector-how-to.html#AMP-collector-configuration">Scraper
+   * href="https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-collector-how-to.html#AMP-collector-configuration">Scraper
    * configuration</a> in the <i>Amazon Managed Service for Prometheus User
    * Guide</i>.</p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/amp-2020-08-01/ScrapeConfiguration">AWS
@@ -41,36 +41,17 @@ namespace Model
     AWS_PROMETHEUSSERVICE_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The base 64 encoded scrape configuration file.</p>
      */
     inline const Aws::Utils::ByteBuffer& GetConfigurationBlob() const{ return m_configurationBlob; }
-
-    /**
-     * <p>The base 64 encoded scrape configuration file.</p>
-     */
     inline bool ConfigurationBlobHasBeenSet() const { return m_configurationBlobHasBeenSet; }
-
-    /**
-     * <p>The base 64 encoded scrape configuration file.</p>
-     */
     inline void SetConfigurationBlob(const Aws::Utils::ByteBuffer& value) { m_configurationBlobHasBeenSet = true; m_configurationBlob = value; }
-
-    /**
-     * <p>The base 64 encoded scrape configuration file.</p>
-     */
     inline void SetConfigurationBlob(Aws::Utils::ByteBuffer&& value) { m_configurationBlobHasBeenSet = true; m_configurationBlob = std::move(value); }
-
-    /**
-     * <p>The base 64 encoded scrape configuration file.</p>
-     */
     inline ScrapeConfiguration& WithConfigurationBlob(const Aws::Utils::ByteBuffer& value) { SetConfigurationBlob(value); return *this;}
-
-    /**
-     * <p>The base 64 encoded scrape configuration file.</p>
-     */
     inline ScrapeConfiguration& WithConfigurationBlob(Aws::Utils::ByteBuffer&& value) { SetConfigurationBlob(std::move(value)); return *this;}
-
+    ///@}
   private:
 
     Aws::Utils::ByteBuffer m_configurationBlob;

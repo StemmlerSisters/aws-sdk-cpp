@@ -33,34 +33,18 @@ DomainConfig::DomainConfig() :
     m_logPublishingOptionsHasBeenSet(false),
     m_domainEndpointOptionsHasBeenSet(false),
     m_advancedSecurityOptionsHasBeenSet(false),
+    m_identityCenterOptionsHasBeenSet(false),
     m_autoTuneOptionsHasBeenSet(false),
     m_changeProgressDetailsHasBeenSet(false),
     m_offPeakWindowOptionsHasBeenSet(false),
     m_softwareUpdateOptionsHasBeenSet(false),
-    m_modifyingPropertiesHasBeenSet(false)
+    m_modifyingPropertiesHasBeenSet(false),
+    m_aIMLOptionsHasBeenSet(false)
 {
 }
 
-DomainConfig::DomainConfig(JsonView jsonValue) : 
-    m_engineVersionHasBeenSet(false),
-    m_clusterConfigHasBeenSet(false),
-    m_eBSOptionsHasBeenSet(false),
-    m_accessPoliciesHasBeenSet(false),
-    m_iPAddressTypeHasBeenSet(false),
-    m_snapshotOptionsHasBeenSet(false),
-    m_vPCOptionsHasBeenSet(false),
-    m_cognitoOptionsHasBeenSet(false),
-    m_encryptionAtRestOptionsHasBeenSet(false),
-    m_nodeToNodeEncryptionOptionsHasBeenSet(false),
-    m_advancedOptionsHasBeenSet(false),
-    m_logPublishingOptionsHasBeenSet(false),
-    m_domainEndpointOptionsHasBeenSet(false),
-    m_advancedSecurityOptionsHasBeenSet(false),
-    m_autoTuneOptionsHasBeenSet(false),
-    m_changeProgressDetailsHasBeenSet(false),
-    m_offPeakWindowOptionsHasBeenSet(false),
-    m_softwareUpdateOptionsHasBeenSet(false),
-    m_modifyingPropertiesHasBeenSet(false)
+DomainConfig::DomainConfig(JsonView jsonValue)
+  : DomainConfig()
 {
   *this = jsonValue;
 }
@@ -165,6 +149,13 @@ DomainConfig& DomainConfig::operator =(JsonView jsonValue)
     m_advancedSecurityOptionsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("IdentityCenterOptions"))
+  {
+    m_identityCenterOptions = jsonValue.GetObject("IdentityCenterOptions");
+
+    m_identityCenterOptionsHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("AutoTuneOptions"))
   {
     m_autoTuneOptions = jsonValue.GetObject("AutoTuneOptions");
@@ -201,6 +192,13 @@ DomainConfig& DomainConfig::operator =(JsonView jsonValue)
       m_modifyingProperties.push_back(modifyingPropertiesJsonList[modifyingPropertiesIndex].AsObject());
     }
     m_modifyingPropertiesHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("AIMLOptions"))
+  {
+    m_aIMLOptions = jsonValue.GetObject("AIMLOptions");
+
+    m_aIMLOptionsHasBeenSet = true;
   }
 
   return *this;
@@ -294,6 +292,12 @@ JsonValue DomainConfig::Jsonize() const
 
   }
 
+  if(m_identityCenterOptionsHasBeenSet)
+  {
+   payload.WithObject("IdentityCenterOptions", m_identityCenterOptions.Jsonize());
+
+  }
+
   if(m_autoTuneOptionsHasBeenSet)
   {
    payload.WithObject("AutoTuneOptions", m_autoTuneOptions.Jsonize());
@@ -326,6 +330,12 @@ JsonValue DomainConfig::Jsonize() const
      modifyingPropertiesJsonList[modifyingPropertiesIndex].AsObject(m_modifyingProperties[modifyingPropertiesIndex].Jsonize());
    }
    payload.WithArray("ModifyingProperties", std::move(modifyingPropertiesJsonList));
+
+  }
+
+  if(m_aIMLOptionsHasBeenSet)
+  {
+   payload.WithObject("AIMLOptions", m_aIMLOptions.Jsonize());
 
   }
 

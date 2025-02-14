@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/application-autoscaling/ApplicationAutoScaling_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/application-autoscaling/ApplicationAutoScalingServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/application-autoscaling/ApplicationAutoScalingErrorMarshaller.h>
 
 namespace Aws
 {
 namespace ApplicationAutoScaling
 {
+  AWS_APPLICATIONAUTOSCALING_API extern const char SERVICE_NAME[];
   /**
    * <p>With Application Auto Scaling, you can configure automatic scaling for the
    * following resources:</p> <ul> <li> <p>Amazon AppStream 2.0 fleets</p> </li> <li>
@@ -27,10 +31,11 @@ namespace ApplicationAutoScaling
    * function provisioned concurrency</p> </li> <li> <p>Amazon Managed Streaming for
    * Apache Kafka broker storage</p> </li> <li> <p>Amazon Neptune clusters</p> </li>
    * <li> <p>Amazon SageMaker endpoint variants</p> </li> <li> <p>Amazon SageMaker
-   * Serverless endpoint provisioned concurrency</p> </li> <li> <p>Amazon SageMaker
-   * inference components</p> </li> <li> <p>Spot Fleets (Amazon EC2)</p> </li> <li>
-   * <p>Custom resources provided by your own applications or services</p> </li>
-   * </ul> <p>To learn more about Application Auto Scaling, see the <a
+   * inference components</p> </li> <li> <p>Amazon SageMaker serverless endpoint
+   * provisioned concurrency</p> </li> <li> <p>Spot Fleets (Amazon EC2)</p> </li>
+   * <li> <p>Pool of WorkSpaces</p> </li> <li> <p>Custom resources provided by your
+   * own applications or services</p> </li> </ul> <p>To learn more about Application
+   * Auto Scaling, see the <a
    * href="https://docs.aws.amazon.com/autoscaling/application/userguide/what-is-application-auto-scaling.html">Application
    * Auto Scaling User Guide</a>.</p> <p> <b>API Summary</b> </p> <p>The Application
    * Auto Scaling service API includes three key sets of actions: </p> <ul> <li>
@@ -49,12 +54,20 @@ namespace ApplicationAutoScaling
    * by a scaling policy, scale-in activities that are triggered by a scaling policy,
    * and scheduled scaling.</p> </li> </ul>
    */
-  class AWS_APPLICATIONAUTOSCALING_API ApplicationAutoScalingClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<ApplicationAutoScalingClient>
+  class AWS_APPLICATIONAUTOSCALING_API ApplicationAutoScalingClient : smithy::client::AwsSmithyClientT<Aws::ApplicationAutoScaling::SERVICE_NAME,
+      Aws::ApplicationAutoScaling::ApplicationAutoScalingClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      ApplicationAutoScalingEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::ApplicationAutoScalingErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<ApplicationAutoScalingClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Application Auto Scaling"; }
 
       typedef ApplicationAutoScalingClientConfiguration ClientConfigurationType;
       typedef ApplicationAutoScalingEndpointProvider EndpointProviderType;
@@ -298,10 +311,8 @@ namespace ApplicationAutoScaling
          * <code>ScheduledActionNames</code> parameters.</p> <p>For more information, see
          * <a
          * href="https://docs.aws.amazon.com/autoscaling/application/userguide/application-auto-scaling-scheduled-scaling.html">Scheduled
-         * scaling</a> and <a
-         * href="https://docs.aws.amazon.com/autoscaling/application/userguide/scheduled-scaling-additional-cli-commands.html">Managing
-         * scheduled scaling</a> in the <i>Application Auto Scaling User
-         * Guide</i>.</p><p><h3>See Also:</h3>   <a
+         * scaling</a> in the <i>Application Auto Scaling User Guide</i>.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/application-autoscaling-2016-02-06/DescribeScheduledActions">AWS
          * API Reference</a></p>
          */
@@ -326,11 +337,43 @@ namespace ApplicationAutoScaling
         }
 
         /**
+         * <p>Retrieves the forecast data for a predictive scaling policy.</p> <p>Load
+         * forecasts are predictions of the hourly load values using historical load data
+         * from CloudWatch and an analysis of historical trends. Capacity forecasts are
+         * represented as predicted values for the minimum capacity that is needed on an
+         * hourly basis, based on the hourly load forecast.</p> <p>A minimum of 24 hours of
+         * data is required to create the initial forecasts. However, having a full 14 days
+         * of historical data results in more accurate forecasts.</p><p><h3>See Also:</h3> 
+         * <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/application-autoscaling-2016-02-06/GetPredictiveScalingForecast">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetPredictiveScalingForecastOutcome GetPredictiveScalingForecast(const Model::GetPredictiveScalingForecastRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetPredictiveScalingForecast that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetPredictiveScalingForecastRequestT = Model::GetPredictiveScalingForecastRequest>
+        Model::GetPredictiveScalingForecastOutcomeCallable GetPredictiveScalingForecastCallable(const GetPredictiveScalingForecastRequestT& request) const
+        {
+            return SubmitCallable(&ApplicationAutoScalingClient::GetPredictiveScalingForecast, request);
+        }
+
+        /**
+         * An Async wrapper for GetPredictiveScalingForecast that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetPredictiveScalingForecastRequestT = Model::GetPredictiveScalingForecastRequest>
+        void GetPredictiveScalingForecastAsync(const GetPredictiveScalingForecastRequestT& request, const GetPredictiveScalingForecastResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&ApplicationAutoScalingClient::GetPredictiveScalingForecast, request, handler, context);
+        }
+
+        /**
          * <p>Returns all the tags on the specified Application Auto Scaling scalable
          * target.</p> <p>For general information about tags, including the format and
          * syntax, see <a
          * href="https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html">Tagging
-         * Amazon Web Services resources</a> in the <i>Amazon Web Services General
+         * your Amazon Web Services resources</a> in the <i>Amazon Web Services General
          * Reference</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/application-autoscaling-2016-02-06/ListTagsForResource">AWS
          * API Reference</a></p>
@@ -518,7 +561,7 @@ namespace ApplicationAutoScaling
          * (<code>RegisterScalableTarget</code>).</p> <p>For general information about
          * tags, including the format and syntax, see <a
          * href="https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html">Tagging
-         * Amazon Web Services resources</a> in the <i>Amazon Web Services General
+         * your Amazon Web Services resources</a> in the <i>Amazon Web Services General
          * Reference</i>.</p> <p>Use tags to control access to a scalable target. For more
          * information, see <a
          * href="https://docs.aws.amazon.com/autoscaling/application/userguide/resource-tagging-support.html">Tagging
@@ -579,11 +622,7 @@ namespace ApplicationAutoScaling
       std::shared_ptr<ApplicationAutoScalingEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<ApplicationAutoScalingClient>;
-      void init(const ApplicationAutoScalingClientConfiguration& clientConfiguration);
 
-      ApplicationAutoScalingClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<ApplicationAutoScalingEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace ApplicationAutoScaling

@@ -22,15 +22,13 @@ NodeRangeProperty::NodeRangeProperty() :
     m_targetNodesHasBeenSet(false),
     m_containerHasBeenSet(false),
     m_instanceTypesHasBeenSet(false),
-    m_ecsPropertiesHasBeenSet(false)
+    m_ecsPropertiesHasBeenSet(false),
+    m_eksPropertiesHasBeenSet(false)
 {
 }
 
-NodeRangeProperty::NodeRangeProperty(JsonView jsonValue) : 
-    m_targetNodesHasBeenSet(false),
-    m_containerHasBeenSet(false),
-    m_instanceTypesHasBeenSet(false),
-    m_ecsPropertiesHasBeenSet(false)
+NodeRangeProperty::NodeRangeProperty(JsonView jsonValue)
+  : NodeRangeProperty()
 {
   *this = jsonValue;
 }
@@ -68,6 +66,13 @@ NodeRangeProperty& NodeRangeProperty::operator =(JsonView jsonValue)
     m_ecsPropertiesHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("eksProperties"))
+  {
+    m_eksProperties = jsonValue.GetObject("eksProperties");
+
+    m_eksPropertiesHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -101,6 +106,12 @@ JsonValue NodeRangeProperty::Jsonize() const
   if(m_ecsPropertiesHasBeenSet)
   {
    payload.WithObject("ecsProperties", m_ecsProperties.Jsonize());
+
+  }
+
+  if(m_eksPropertiesHasBeenSet)
+  {
+   payload.WithObject("eksProperties", m_eksProperties.Jsonize());
 
   }
 

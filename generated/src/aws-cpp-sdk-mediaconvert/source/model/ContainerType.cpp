@@ -21,6 +21,7 @@ namespace Aws
       {
 
         static const int F4V_HASH = HashingUtils::HashString("F4V");
+        static const int GIF_HASH = HashingUtils::HashString("GIF");
         static const int ISMV_HASH = HashingUtils::HashString("ISMV");
         static const int M2TS_HASH = HashingUtils::HashString("M2TS");
         static const int M3U8_HASH = HashingUtils::HashString("M3U8");
@@ -29,6 +30,7 @@ namespace Aws
         static const int MP4_HASH = HashingUtils::HashString("MP4");
         static const int MPD_HASH = HashingUtils::HashString("MPD");
         static const int MXF_HASH = HashingUtils::HashString("MXF");
+        static const int OGG_HASH = HashingUtils::HashString("OGG");
         static const int WEBM_HASH = HashingUtils::HashString("WEBM");
         static const int RAW_HASH = HashingUtils::HashString("RAW");
         static const int Y4M_HASH = HashingUtils::HashString("Y4M");
@@ -40,6 +42,10 @@ namespace Aws
           if (hashCode == F4V_HASH)
           {
             return ContainerType::F4V;
+          }
+          else if (hashCode == GIF_HASH)
+          {
+            return ContainerType::GIF;
           }
           else if (hashCode == ISMV_HASH)
           {
@@ -73,6 +79,10 @@ namespace Aws
           {
             return ContainerType::MXF;
           }
+          else if (hashCode == OGG_HASH)
+          {
+            return ContainerType::OGG;
+          }
           else if (hashCode == WEBM_HASH)
           {
             return ContainerType::WEBM;
@@ -103,6 +113,8 @@ namespace Aws
             return {};
           case ContainerType::F4V:
             return "F4V";
+          case ContainerType::GIF:
+            return "GIF";
           case ContainerType::ISMV:
             return "ISMV";
           case ContainerType::M2TS:
@@ -119,6 +131,8 @@ namespace Aws
             return "MPD";
           case ContainerType::MXF:
             return "MXF";
+          case ContainerType::OGG:
+            return "OGG";
           case ContainerType::WEBM:
             return "WEBM";
           case ContainerType::RAW:

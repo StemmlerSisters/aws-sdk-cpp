@@ -27,13 +27,8 @@ GetSpaceResult::GetSpaceResult() :
 {
 }
 
-GetSpaceResult::GetSpaceResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_configurationStatus(ConfigurationStatus::NOT_SET),
-    m_contentSize(0),
-    m_storageLimit(0),
-    m_tier(TierLevel::NOT_SET),
-    m_userCount(0),
-    m_vanityDomainStatus(VanityDomainStatus::NOT_SET)
+GetSpaceResult::GetSpaceResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetSpaceResult()
 {
   *this = result;
 }
@@ -89,15 +84,6 @@ GetSpaceResult& GetSpaceResult::operator =(const Aws::AmazonWebServiceResult<Jso
 
   }
 
-  if(jsonValue.ValueExists("groupAdmins"))
-  {
-    Aws::Utils::Array<JsonView> groupAdminsJsonList = jsonValue.GetArray("groupAdmins");
-    for(unsigned groupAdminsIndex = 0; groupAdminsIndex < groupAdminsJsonList.GetLength(); ++groupAdminsIndex)
-    {
-      m_groupAdmins.push_back(groupAdminsJsonList[groupAdminsIndex].AsString());
-    }
-  }
-
   if(jsonValue.ValueExists("name"))
   {
     m_name = jsonValue.GetString("name");
@@ -108,6 +94,22 @@ GetSpaceResult& GetSpaceResult::operator =(const Aws::AmazonWebServiceResult<Jso
   {
     m_randomDomain = jsonValue.GetString("randomDomain");
 
+  }
+
+  if(jsonValue.ValueExists("roles"))
+  {
+    Aws::Map<Aws::String, JsonView> rolesJsonMap = jsonValue.GetObject("roles").GetAllObjects();
+    for(auto& rolesItem : rolesJsonMap)
+    {
+      Aws::Utils::Array<JsonView> roleListJsonList = rolesItem.second.AsArray();
+      Aws::Vector<Role> roleListList;
+      roleListList.reserve((size_t)roleListJsonList.GetLength());
+      for(unsigned roleListIndex = 0; roleListIndex < roleListJsonList.GetLength(); ++roleListIndex)
+      {
+        roleListList.push_back(RoleMapper::GetRoleForName(roleListJsonList[roleListIndex].AsString()));
+      }
+      m_roles[rolesItem.first] = std::move(roleListList);
+    }
   }
 
   if(jsonValue.ValueExists("spaceId"))
@@ -132,15 +134,6 @@ GetSpaceResult& GetSpaceResult::operator =(const Aws::AmazonWebServiceResult<Jso
   {
     m_tier = TierLevelMapper::GetTierLevelForName(jsonValue.GetString("tier"));
 
-  }
-
-  if(jsonValue.ValueExists("userAdmins"))
-  {
-    Aws::Utils::Array<JsonView> userAdminsJsonList = jsonValue.GetArray("userAdmins");
-    for(unsigned userAdminsIndex = 0; userAdminsIndex < userAdminsJsonList.GetLength(); ++userAdminsIndex)
-    {
-      m_userAdmins.push_back(userAdminsJsonList[userAdminsIndex].AsString());
-    }
   }
 
   if(jsonValue.ValueExists("userCount"))

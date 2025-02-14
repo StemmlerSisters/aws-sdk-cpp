@@ -25,8 +25,8 @@ namespace Model
 {
 
   /**
-   * <p>An identifier for the StartBatchJob API to show that it is a restart
-   * operation.</p><p><h3>See Also:</h3>   <a
+   * <p>An identifier for the <code>StartBatchJob</code> API to show that it is a
+   * restart operation.</p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/m2-2021-04-28/RestartBatchJobIdentifier">AWS
    * API Reference</a></p>
    */
@@ -39,85 +39,32 @@ namespace Model
     AWS_MAINFRAMEMODERNIZATION_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
-     * <p>The executionId from the StartBatchJob response when the job ran for the
-     * first time.</p>
+     * <p>The <code>executionId</code> from the <code>StartBatchJob</code> response
+     * when the job ran for the first time.</p>
      */
     inline const Aws::String& GetExecutionId() const{ return m_executionId; }
-
-    /**
-     * <p>The executionId from the StartBatchJob response when the job ran for the
-     * first time.</p>
-     */
     inline bool ExecutionIdHasBeenSet() const { return m_executionIdHasBeenSet; }
-
-    /**
-     * <p>The executionId from the StartBatchJob response when the job ran for the
-     * first time.</p>
-     */
     inline void SetExecutionId(const Aws::String& value) { m_executionIdHasBeenSet = true; m_executionId = value; }
-
-    /**
-     * <p>The executionId from the StartBatchJob response when the job ran for the
-     * first time.</p>
-     */
     inline void SetExecutionId(Aws::String&& value) { m_executionIdHasBeenSet = true; m_executionId = std::move(value); }
-
-    /**
-     * <p>The executionId from the StartBatchJob response when the job ran for the
-     * first time.</p>
-     */
     inline void SetExecutionId(const char* value) { m_executionIdHasBeenSet = true; m_executionId.assign(value); }
-
-    /**
-     * <p>The executionId from the StartBatchJob response when the job ran for the
-     * first time.</p>
-     */
     inline RestartBatchJobIdentifier& WithExecutionId(const Aws::String& value) { SetExecutionId(value); return *this;}
-
-    /**
-     * <p>The executionId from the StartBatchJob response when the job ran for the
-     * first time.</p>
-     */
     inline RestartBatchJobIdentifier& WithExecutionId(Aws::String&& value) { SetExecutionId(std::move(value)); return *this;}
-
-    /**
-     * <p>The executionId from the StartBatchJob response when the job ran for the
-     * first time.</p>
-     */
     inline RestartBatchJobIdentifier& WithExecutionId(const char* value) { SetExecutionId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p>The restart step information for the most recent restart operation.</p>
+     * <p>The step/procedure step information for a restart batch job operation.</p>
      */
     inline const JobStepRestartMarker& GetJobStepRestartMarker() const{ return m_jobStepRestartMarker; }
-
-    /**
-     * <p>The restart step information for the most recent restart operation.</p>
-     */
     inline bool JobStepRestartMarkerHasBeenSet() const { return m_jobStepRestartMarkerHasBeenSet; }
-
-    /**
-     * <p>The restart step information for the most recent restart operation.</p>
-     */
     inline void SetJobStepRestartMarker(const JobStepRestartMarker& value) { m_jobStepRestartMarkerHasBeenSet = true; m_jobStepRestartMarker = value; }
-
-    /**
-     * <p>The restart step information for the most recent restart operation.</p>
-     */
     inline void SetJobStepRestartMarker(JobStepRestartMarker&& value) { m_jobStepRestartMarkerHasBeenSet = true; m_jobStepRestartMarker = std::move(value); }
-
-    /**
-     * <p>The restart step information for the most recent restart operation.</p>
-     */
     inline RestartBatchJobIdentifier& WithJobStepRestartMarker(const JobStepRestartMarker& value) { SetJobStepRestartMarker(value); return *this;}
-
-    /**
-     * <p>The restart step information for the most recent restart operation.</p>
-     */
     inline RestartBatchJobIdentifier& WithJobStepRestartMarker(JobStepRestartMarker&& value) { SetJobStepRestartMarker(std::move(value)); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_executionId;

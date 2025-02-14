@@ -19,7 +19,9 @@ namespace Model
 {
 
 PromptConfiguration::PromptConfiguration() : 
+    m_additionalModelRequestFieldsHasBeenSet(false),
     m_basePromptTemplateHasBeenSet(false),
+    m_foundationModelHasBeenSet(false),
     m_inferenceConfigurationHasBeenSet(false),
     m_parserMode(CreationMode::NOT_SET),
     m_parserModeHasBeenSet(false),
@@ -32,28 +34,33 @@ PromptConfiguration::PromptConfiguration() :
 {
 }
 
-PromptConfiguration::PromptConfiguration(JsonView jsonValue) : 
-    m_basePromptTemplateHasBeenSet(false),
-    m_inferenceConfigurationHasBeenSet(false),
-    m_parserMode(CreationMode::NOT_SET),
-    m_parserModeHasBeenSet(false),
-    m_promptCreationMode(CreationMode::NOT_SET),
-    m_promptCreationModeHasBeenSet(false),
-    m_promptState(PromptState::NOT_SET),
-    m_promptStateHasBeenSet(false),
-    m_promptType(PromptType::NOT_SET),
-    m_promptTypeHasBeenSet(false)
+PromptConfiguration::PromptConfiguration(JsonView jsonValue)
+  : PromptConfiguration()
 {
   *this = jsonValue;
 }
 
 PromptConfiguration& PromptConfiguration::operator =(JsonView jsonValue)
 {
+  if(jsonValue.ValueExists("additionalModelRequestFields"))
+  {
+    m_additionalModelRequestFields = jsonValue.GetObject("additionalModelRequestFields");
+
+    m_additionalModelRequestFieldsHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("basePromptTemplate"))
   {
     m_basePromptTemplate = jsonValue.GetString("basePromptTemplate");
 
     m_basePromptTemplateHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("foundationModel"))
+  {
+    m_foundationModel = jsonValue.GetString("foundationModel");
+
+    m_foundationModelHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("inferenceConfiguration"))
@@ -98,9 +105,23 @@ JsonValue PromptConfiguration::Jsonize() const
 {
   JsonValue payload;
 
+  if(m_additionalModelRequestFieldsHasBeenSet)
+  {
+    if(!m_additionalModelRequestFields.View().IsNull())
+    {
+       payload.WithObject("additionalModelRequestFields", JsonValue(m_additionalModelRequestFields.View()));
+    }
+  }
+
   if(m_basePromptTemplateHasBeenSet)
   {
    payload.WithString("basePromptTemplate", m_basePromptTemplate);
+
+  }
+
+  if(m_foundationModelHasBeenSet)
+  {
+   payload.WithString("foundationModel", m_foundationModel);
 
   }
 

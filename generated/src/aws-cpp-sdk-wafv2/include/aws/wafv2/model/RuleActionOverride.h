@@ -27,8 +27,11 @@ namespace Model
   /**
    * <p>Action setting to use in the place of a rule action that is configured inside
    * the rule group. You specify one override for each rule whose action you want to
-   * change. </p> <p>You can use overrides for testing, for example you can override
-   * all of rule actions to <code>Count</code> and then monitor the resulting count
+   * change. </p>  <p>Take care to verify the rule names in your overrides. If
+   * you provide a rule name that doesn't match the name of any rule in the rule
+   * group, WAF doesn't return an error and doesn't apply the override setting.</p>
+   *  <p>You can use overrides for testing, for example you can override all
+   * of rule actions to <code>Count</code> and then monitor the resulting count
    * metrics to understand how the rule group would handle your web traffic. You can
    * also permanently override some or all actions, to modify how the rule group
    * manages your web traffic.</p><p><h3>See Also:</h3>   <a
@@ -44,83 +47,35 @@ namespace Model
     AWS_WAFV2_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
-     * <p>The name of the rule to override.</p>
+     * <p>The name of the rule to override.</p>  <p>Take care to verify the rule
+     * names in your overrides. If you provide a rule name that doesn't match the name
+     * of any rule in the rule group, WAF doesn't return an error and doesn't apply the
+     * override setting.</p> 
      */
     inline const Aws::String& GetName() const{ return m_name; }
-
-    /**
-     * <p>The name of the rule to override.</p>
-     */
     inline bool NameHasBeenSet() const { return m_nameHasBeenSet; }
-
-    /**
-     * <p>The name of the rule to override.</p>
-     */
     inline void SetName(const Aws::String& value) { m_nameHasBeenSet = true; m_name = value; }
-
-    /**
-     * <p>The name of the rule to override.</p>
-     */
     inline void SetName(Aws::String&& value) { m_nameHasBeenSet = true; m_name = std::move(value); }
-
-    /**
-     * <p>The name of the rule to override.</p>
-     */
     inline void SetName(const char* value) { m_nameHasBeenSet = true; m_name.assign(value); }
-
-    /**
-     * <p>The name of the rule to override.</p>
-     */
     inline RuleActionOverride& WithName(const Aws::String& value) { SetName(value); return *this;}
-
-    /**
-     * <p>The name of the rule to override.</p>
-     */
     inline RuleActionOverride& WithName(Aws::String&& value) { SetName(std::move(value)); return *this;}
-
-    /**
-     * <p>The name of the rule to override.</p>
-     */
     inline RuleActionOverride& WithName(const char* value) { SetName(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The override action to use, in place of the configured action of the rule in
      * the rule group. </p>
      */
     inline const RuleAction& GetActionToUse() const{ return m_actionToUse; }
-
-    /**
-     * <p>The override action to use, in place of the configured action of the rule in
-     * the rule group. </p>
-     */
     inline bool ActionToUseHasBeenSet() const { return m_actionToUseHasBeenSet; }
-
-    /**
-     * <p>The override action to use, in place of the configured action of the rule in
-     * the rule group. </p>
-     */
     inline void SetActionToUse(const RuleAction& value) { m_actionToUseHasBeenSet = true; m_actionToUse = value; }
-
-    /**
-     * <p>The override action to use, in place of the configured action of the rule in
-     * the rule group. </p>
-     */
     inline void SetActionToUse(RuleAction&& value) { m_actionToUseHasBeenSet = true; m_actionToUse = std::move(value); }
-
-    /**
-     * <p>The override action to use, in place of the configured action of the rule in
-     * the rule group. </p>
-     */
     inline RuleActionOverride& WithActionToUse(const RuleAction& value) { SetActionToUse(value); return *this;}
-
-    /**
-     * <p>The override action to use, in place of the configured action of the rule in
-     * the rule group. </p>
-     */
     inline RuleActionOverride& WithActionToUse(RuleAction&& value) { SetActionToUse(std::move(value)); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_name;

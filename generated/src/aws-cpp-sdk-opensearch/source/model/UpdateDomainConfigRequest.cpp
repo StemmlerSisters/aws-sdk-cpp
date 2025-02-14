@@ -28,13 +28,15 @@ UpdateDomainConfigRequest::UpdateDomainConfigRequest() :
     m_domainEndpointOptionsHasBeenSet(false),
     m_nodeToNodeEncryptionOptionsHasBeenSet(false),
     m_advancedSecurityOptionsHasBeenSet(false),
+    m_identityCenterOptionsHasBeenSet(false),
     m_autoTuneOptionsHasBeenSet(false),
     m_dryRun(false),
     m_dryRunHasBeenSet(false),
     m_dryRunMode(DryRunMode::NOT_SET),
     m_dryRunModeHasBeenSet(false),
     m_offPeakWindowOptionsHasBeenSet(false),
-    m_softwareUpdateOptionsHasBeenSet(false)
+    m_softwareUpdateOptionsHasBeenSet(false),
+    m_aIMLOptionsHasBeenSet(false)
 {
 }
 
@@ -129,6 +131,12 @@ Aws::String UpdateDomainConfigRequest::SerializePayload() const
 
   }
 
+  if(m_identityCenterOptionsHasBeenSet)
+  {
+   payload.WithObject("IdentityCenterOptions", m_identityCenterOptions.Jsonize());
+
+  }
+
   if(m_autoTuneOptionsHasBeenSet)
   {
    payload.WithObject("AutoTuneOptions", m_autoTuneOptions.Jsonize());
@@ -155,6 +163,12 @@ Aws::String UpdateDomainConfigRequest::SerializePayload() const
   if(m_softwareUpdateOptionsHasBeenSet)
   {
    payload.WithObject("SoftwareUpdateOptions", m_softwareUpdateOptions.Jsonize());
+
+  }
+
+  if(m_aIMLOptionsHasBeenSet)
+  {
+   payload.WithObject("AIMLOptions", m_aIMLOptions.Jsonize());
 
   }
 

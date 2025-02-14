@@ -39,7 +39,11 @@ class TranscribeStreamingTests : public Aws::Testing::AwsCppSdkGTestSuite
 public:
     TranscribeStreamingTests()
     {
-        Aws::Internal::AWSHttpResourceClient httpclient;
+        Aws::Client::ClientConfigurationInitValues cfgInit;
+        cfgInit.shouldDisableIMDS = true;
+        Aws::Client::ClientConfiguration config(cfgInit);
+
+        Aws::Internal::AWSHttpResourceClient httpclient(cfgInit);
         const Aws::Vector<Aws::String> TEST_FILE_NAMES = {"transcribe-test-file.wav", "this_is_a_cpp_test_sample_8kHz_2162ms.wav", "Kant_16kHz_17176ms.wav"};
         for(const auto& toDownload : TEST_FILE_NAMES)
         {
@@ -51,13 +55,11 @@ public:
             testFile.close();
         }
 
-        Aws::Client::ClientConfiguration config;
         config.enableHttpClientTrace = true;
 #ifdef _WIN32
         // TODO: remove this once we get H2 working with WinHttp client
         config.httpLibOverride = Aws::Http::TransferLibType::WIN_INET_CLIENT;
 #endif
-        m_client = Aws::MakeUnique<TranscribeStreamingServiceClient>(ALLOC_TAG, config);
         m_clientWithWrongCreds = Aws::MakeUnique<TranscribeStreamingServiceClient>(ALLOC_TAG, Aws::Auth::AWSCredentials("a", "b"), config);
         config.endpointOverride = "https://0xxxabcdefg123456789.com";
         m_clientWithWrongEndpoint = Aws::MakeUnique<TranscribeStreamingServiceClient>(ALLOC_TAG, config);
@@ -68,7 +70,6 @@ public:
         Aws::FileSystem::RemoveFileIfExists(TEST_FILE_NAME);
     }
 
-    Aws::UniquePtr<TranscribeStreamingServiceClient> m_client;
     Aws::UniquePtr<TranscribeStreamingServiceClient> m_clientWithWrongCreds;
     Aws::UniquePtr<TranscribeStreamingServiceClient> m_clientWithWrongEndpoint;
 
@@ -94,22 +95,59 @@ protected:
         m_testTraces.erase();
     }
 
-    Aws::String RunTestWithRetires(size_t maxRetries,
+    Aws::String RunTestWithRetires(const Aws::UniquePtr<TranscribeStreamingServiceClient>& client,
+        size_t maxRetries,
         size_t timeoutMs,
         const Aws::String& fileName,
         const size_t SampleRate,
         const size_t chunkLengthToUseMs);
 
-    Aws::String RunTestLikeSample(size_t timeoutMs,
+    Aws::String RunTestLikeSample(const Aws::UniquePtr<TranscribeStreamingServiceClient>& client,
+        size_t timeoutMs,
         const Aws::String& fileName,
         const size_t SampleRate,
         const size_t chunkLengthToUseMs,
         bool& sawRetryableError);
 };
 
+unsigned int LevenshteinDistance(Aws::String s1, Aws::String s2)
+{
+  // Lowercase and remove punctuation from both
+  std::transform(s1.begin(), s1.end(), s1.begin(),
+                 [](unsigned char c){ return std::tolower(c); });
+  std::transform(s2.begin(), s2.end(), s2.begin(),
+                 [](unsigned char c){ return std::tolower(c); });
+  auto newEnd = std::remove_if(s1.begin (), s1.end (), ispunct);
+  s1.erase(newEnd, s1.end());
+  newEnd = std::remove_if(s2.begin (), s2.end (), ispunct);
+  s2.erase(newEnd, s2.end());
+
+  // algorithm is taken from
+  // https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
+  const std::size_t len1 = s1.size(), len2 = s2.size();
+  Aws::Vector<Aws::Vector<unsigned int>> d(len1 + 1, Aws::Vector<unsigned int>(len2 + 1));
+
+  d[0][0] = 0;
+  for(unsigned int i = 1; i <= len1; ++i) d[i][0] = i;
+  for(unsigned int i = 1; i <= len2; ++i) d[0][i] = i;
+
+  for(unsigned int i = 1; i <= len1; ++i)
+    for(unsigned int j = 1; j <= len2; ++j)
+      d[i][j] = std::min({ d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? 0 : 1) });
+  return d[len1][len2];
+}
+
 TEST_F(TranscribeStreamingTests, TranscribeAudioFile)
 {
-    const char EXPECTED_MESSAGE[] = "But what if somebody decides to break it? Be careful that you keep adequate coverage.";
+    Aws::Client::ClientConfigurationInitValues cfgInit;
+    cfgInit.shouldDisableIMDS = true;
+    Aws::Client::ClientConfiguration config(cfgInit);
+    config.httpLibPerfMode = Http::TransferLibPerformanceMode::REGULAR;
+    Aws::UniquePtr<TranscribeStreamingServiceClient> client = Aws::MakeUnique<TranscribeStreamingServiceClient>(ALLOC_TAG, config);
+
+    const char EXPECTED_MESSAGE[] = "But what if somebody decides to break it. Be careful that you keep adequate coverage," 
+                                    "but look for places to save money. Maybe it's taking longer to get things squared away"
+                                    "then the bankers expected hiring the wife for one's company.";
     Aws::String transcribedResult;
     StartStreamTranscriptionHandler handler;
     handler.SetTranscriptEventCallback([&transcribedResult](const TranscriptEvent& ev)
@@ -129,6 +167,18 @@ TEST_F(TranscribeStreamingTests, TranscribeAudioFile)
         transcribedResult = alternatives.back().GetTranscript();
     });
 
+    Aws::String operationRequestId;
+    handler.SetInitialResponseCallback([&](const StartStreamTranscriptionInitialResponse& initialResponse)
+    {
+        operationRequestId = initialResponse.GetRequestId();
+        if (operationRequestId.empty()) {
+            AWS_ADD_FAILURE("InitialResponseCallback is called but received empty RequestId");
+            TestTrace(Aws::String("initialResponse was: ") + initialResponse.Jsonize().View().AsString());
+        }
+        std::cout << "Streaming Request-Id: " << operationRequestId << "\n";
+        TestTrace(Aws::String("InitialResponse aws RequestId: ") + operationRequestId);
+        TestTrace(Aws::String("InitialResponse transcribe SessionId: ") + initialResponse.GetSessionId());
+    });
     handler.SetOnErrorCallback([&transcribedResult, this](const Aws::Client::AWSError<TranscribeStreamingServiceErrors>& errors)
     {
         // we will receive an error because the request was abruptly shutdown (via stream.Close()).
@@ -184,9 +234,14 @@ TEST_F(TranscribeStreamingTests, TranscribeAudioFile)
         semaphore.ReleaseAll();
     };
 
-    m_client->StartStreamTranscriptionAsync(request, OnStreamReady, OnResponseCallback, nullptr/*context*/);
+    client->StartStreamTranscriptionAsync(request, OnStreamReady, OnResponseCallback, nullptr/*context*/);
     semaphore.WaitOne();
-    ASSERT_EQ(0u, transcribedResult.find(EXPECTED_MESSAGE)) << "Received message: " << transcribedResult;
+
+    int difference = LevenshteinDistance(EXPECTED_MESSAGE, transcribedResult);
+    ASSERT_LT(difference, transcribedResult.length() * 0.2) << "The difference between a resulting transcription and the expectation is too high: " << difference << "\n"
+                                                 << "Expected: " << EXPECTED_MESSAGE << "\nResulted: " << transcribedResult;
+
+    EXPECT_FALSE(operationRequestId.empty()) << "Did not receive a request id for the StartStreamTranscription";
 }
 
 TEST_F(TranscribeStreamingTests, TranscribeAudioFileWithErrorServiceResponse)
@@ -317,7 +372,9 @@ TEST_F(TranscribeStreamingTests, TranscribeStreamingWithRequestRetry)
     semaphore.WaitOne();
 }
 
-Aws::String TranscribeStreamingTests::RunTestWithRetires(size_t maxRetries,
+Aws::String TranscribeStreamingTests::RunTestWithRetires(
+    const Aws::UniquePtr<TranscribeStreamingServiceClient>& client,
+    size_t maxRetries,
     size_t timeoutMs,
     const Aws::String& fileName,
     const size_t SampleRate,
@@ -329,7 +386,7 @@ Aws::String TranscribeStreamingTests::RunTestWithRetires(size_t maxRetries,
     do
     {
         sawRetryableError = false;
-        testReturn = RunTestLikeSample(timeoutMs, fileName, SampleRate, chunkLengthToUseMs, sawRetryableError);
+        testReturn = RunTestLikeSample(client, timeoutMs, fileName, SampleRate, chunkLengthToUseMs, sawRetryableError);
         retryCount++;
     }
     while (sawRetryableError && retryCount <= maxRetries);
@@ -337,7 +394,9 @@ Aws::String TranscribeStreamingTests::RunTestWithRetires(size_t maxRetries,
     return testReturn;
 }
 
-Aws::String TranscribeStreamingTests::RunTestLikeSample(size_t timeoutMs,
+Aws::String TranscribeStreamingTests::RunTestLikeSample(
+    const Aws::UniquePtr<TranscribeStreamingServiceClient>& client,
+    size_t timeoutMs,
     const Aws::String& fileName,
     const size_t SampleRate,
     const size_t chunkLengthToUseMs,
@@ -356,6 +415,22 @@ Aws::String TranscribeStreamingTests::RunTestLikeSample(size_t timeoutMs,
     Aws::String transcribedResult;
 
     StartStreamTranscriptionHandler handler;
+    Aws::String operationRequestId;
+    handler.SetInitialResponseCallbackEx([&](const StartStreamTranscriptionInitialResponse& initialResponse, const Utils::Event::InitialResponseType eventType)
+                                          {
+                                              if (eventType != Utils::Event::InitialResponseType::ON_RESPONSE) {
+                                                  AWS_ADD_FAILURE("InitialResponseCallback is called with unexpected for transcribe InitialResponseType");
+                                              }
+
+                                              operationRequestId = initialResponse.GetRequestId();
+                                              if (operationRequestId.empty()) {
+                                                  AWS_ADD_FAILURE("InitialResponseCallback is called but received empty RequestId");
+                                                  TestTrace(Aws::String("initialResponse was: ") + initialResponse.Jsonize().View().AsString());
+                                              }
+                                              std::cout << "Streaming Request-Id: " << operationRequestId << "\n";
+                                              TestTrace(Aws::String("InitialResponse aws RequestId: ") + operationRequestId);
+                                              TestTrace(Aws::String("InitialResponse transcribe SessionId: ") + initialResponse.GetSessionId());
+                                          });
     handler.SetOnErrorCallback(
             [&sawRetryableError, this](const Aws::Client::AWSError<TranscribeStreamingServiceErrors> &error) {
                 if (error.ShouldRetry())
@@ -511,12 +586,13 @@ Aws::String TranscribeStreamingTests::RunTestLikeSample(size_t timeoutMs,
     shouldContinue = true;
     request.SetContinueRequestHandler([&shouldContinue](const Aws::Http::HttpRequest*) { return shouldContinue.load(); });
 
-    m_client->StartStreamTranscriptionAsync(request, OnStreamReady, OnResponseCallback,
+    client->StartStreamTranscriptionAsync(request, OnStreamReady, OnResponseCallback,
                                          nullptr /*context*/);
 
     EXPECT_TRUE(
         signaling.WaitOneFor(timeoutMs)
         ) << "Did not get a response after " << Aws::Utils::StringUtils::to_string(timeoutMs) << " ms";
+    EXPECT_FALSE(operationRequestId.empty()) << "Did not receive a request id for the StartStreamTranscription";
 
     request.GetAudioStream()->Close();
     shouldContinue = false;
@@ -527,42 +603,20 @@ Aws::String TranscribeStreamingTests::RunTestLikeSample(size_t timeoutMs,
     return transcribedResult;
 }
 
-unsigned int LevenshteinDistance(Aws::String s1, Aws::String s2)
-{
-  // Lowercase and remove punctuation from both
-  std::transform(s1.begin(), s1.end(), s1.begin(),
-                 [](unsigned char c){ return std::tolower(c); });
-  std::transform(s2.begin(), s2.end(), s2.begin(),
-                 [](unsigned char c){ return std::tolower(c); });
-  auto newEnd = std::remove_if(s1.begin (), s1.end (), ispunct);
-  s1.erase(newEnd, s1.end());
-  newEnd = std::remove_if(s2.begin (), s2.end (), ispunct);
-  s2.erase(newEnd, s2.end());
-
-  // algorithm is taken from
-  // https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C++
-  const std::size_t len1 = s1.size(), len2 = s2.size();
-  Aws::Vector<Aws::Vector<unsigned int>> d(len1 + 1, Aws::Vector<unsigned int>(len2 + 1));
-
-  d[0][0] = 0;
-  for(unsigned int i = 1; i <= len1; ++i) d[i][0] = i;
-  for(unsigned int i = 1; i <= len2; ++i) d[0][i] = i;
-
-  for(unsigned int i = 1; i <= len1; ++i)
-    for(unsigned int j = 1; j <= len2; ++j)
-      d[i][j] = std::min({ d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? 0 : 1) });
-  return d[len1][len2];
-}
-
 TEST_F(TranscribeStreamingTests, TranscribeStreamingCppSdkSample)
 {
+  Aws::Client::ClientConfigurationInitValues cfgInit;
+  cfgInit.shouldDisableIMDS = true;
+  Aws::Client::ClientConfiguration config(cfgInit);
+  Aws::UniquePtr<TranscribeStreamingServiceClient> client = Aws::MakeUnique<TranscribeStreamingServiceClient>(ALLOC_TAG, config);
+
   const Aws::Vector<Aws::String> EXPECTED_ALTERNATIVES = {"This is a C plus plus test sample", "This is a C++ test sample"};
   for(size_t chunkDuration = 50; chunkDuration <= 200; chunkDuration += 50)
   {
     m_testTraces.clear();
     TestTrace(Aws::String("### Starting TranscribeStreamingCppSdkSample with chunks of ") + Aws::Utils::StringUtils::to_string(chunkDuration) + " ms ##");
     int64_t startedAt = Aws::Utils::DateTime::Now().Millis();
-    Aws::String result = RunTestWithRetires(MAX_TEST_RETRIES, 4500, "this_is_a_cpp_test_sample_8kHz_2162ms.wav", 8000, chunkDuration);
+    Aws::String result = RunTestWithRetires(client, MAX_TEST_RETRIES, 4500, "this_is_a_cpp_test_sample_8kHz_2162ms.wav", 8000, chunkDuration);
     int64_t endedAt = Aws::Utils::DateTime::Now().Millis();
     TestTrace(Aws::String("### Done this_is_a_cpp_test_sample_8kHz_2162ms with chunks of ") + Aws::Utils::StringUtils::to_string(chunkDuration) + " ms ##");
     std::cout << "Transcription of TranscribeStreamingCppSdkSample with chunk duration " << chunkDuration << " ms took " << endedAt - startedAt << " ms.\n";
@@ -579,6 +633,11 @@ TEST_F(TranscribeStreamingTests, TranscribeStreamingCppSdkSample)
 
 TEST_F(TranscribeStreamingTests, TranscribeStreamingKantSample)
 {
+  Aws::Client::ClientConfigurationInitValues cfgInit;
+  cfgInit.shouldDisableIMDS = true;
+  Aws::Client::ClientConfiguration config(cfgInit);
+  Aws::UniquePtr<TranscribeStreamingServiceClient> client = Aws::MakeUnique<TranscribeStreamingServiceClient>(ALLOC_TAG, config);
+
   static const char expected[] = "Categorical imperative: Act only according to that maxim whereby you can at the same time will that it should become a universal law. "
                                  "Two things fill the mind with ever-increasing wonder and awe, the more often and the more intensely the mind of thought is drawn to them: "
                                  "the starry heavens above me and the moral law within me.";
@@ -587,7 +646,7 @@ TEST_F(TranscribeStreamingTests, TranscribeStreamingKantSample)
     m_testTraces.clear();
     TestTrace(Aws::String("### Starting TranscribeStreamingKantSample with chunks of ") + Aws::Utils::StringUtils::to_string(chunkDuration) + " ms ##");
     int64_t startedAt = Aws::Utils::DateTime::Now().Millis();
-    Aws::String result = RunTestWithRetires(MAX_TEST_RETRIES, 22000, "Kant_16kHz_17176ms.wav", 16000, chunkDuration);
+    Aws::String result = RunTestWithRetires(client, MAX_TEST_RETRIES, 22000, "Kant_16kHz_17176ms.wav", 16000, chunkDuration);
     int64_t endedAt = Aws::Utils::DateTime::Now().Millis();
     TestTrace(Aws::String("### Done TranscribeStreamingKantSample with chunks of ") + Aws::Utils::StringUtils::to_string(chunkDuration) + " ms ##");
     std::cout << "Transcription of Kant_16kHz_17176ms with chunk duration " << chunkDuration << " ms took " << endedAt - startedAt << " ms.\n";

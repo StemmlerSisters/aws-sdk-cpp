@@ -19,27 +19,25 @@ namespace Model
 {
 
 VpcEndpointErrorDetail::VpcEndpointErrorDetail() : 
-    m_errorCodeHasBeenSet(false),
+    m_idHasBeenSet(false),
     m_errorMessageHasBeenSet(false),
-    m_idHasBeenSet(false)
+    m_errorCodeHasBeenSet(false)
 {
 }
 
-VpcEndpointErrorDetail::VpcEndpointErrorDetail(JsonView jsonValue) : 
-    m_errorCodeHasBeenSet(false),
-    m_errorMessageHasBeenSet(false),
-    m_idHasBeenSet(false)
+VpcEndpointErrorDetail::VpcEndpointErrorDetail(JsonView jsonValue)
+  : VpcEndpointErrorDetail()
 {
   *this = jsonValue;
 }
 
 VpcEndpointErrorDetail& VpcEndpointErrorDetail::operator =(JsonView jsonValue)
 {
-  if(jsonValue.ValueExists("errorCode"))
+  if(jsonValue.ValueExists("id"))
   {
-    m_errorCode = jsonValue.GetString("errorCode");
+    m_id = jsonValue.GetString("id");
 
-    m_errorCodeHasBeenSet = true;
+    m_idHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("errorMessage"))
@@ -49,11 +47,11 @@ VpcEndpointErrorDetail& VpcEndpointErrorDetail::operator =(JsonView jsonValue)
     m_errorMessageHasBeenSet = true;
   }
 
-  if(jsonValue.ValueExists("id"))
+  if(jsonValue.ValueExists("errorCode"))
   {
-    m_id = jsonValue.GetString("id");
+    m_errorCode = jsonValue.GetString("errorCode");
 
-    m_idHasBeenSet = true;
+    m_errorCodeHasBeenSet = true;
   }
 
   return *this;
@@ -63,9 +61,9 @@ JsonValue VpcEndpointErrorDetail::Jsonize() const
 {
   JsonValue payload;
 
-  if(m_errorCodeHasBeenSet)
+  if(m_idHasBeenSet)
   {
-   payload.WithString("errorCode", m_errorCode);
+   payload.WithString("id", m_id);
 
   }
 
@@ -75,9 +73,9 @@ JsonValue VpcEndpointErrorDetail::Jsonize() const
 
   }
 
-  if(m_idHasBeenSet)
+  if(m_errorCodeHasBeenSet)
   {
-   payload.WithString("id", m_id);
+   payload.WithString("errorCode", m_errorCode);
 
   }
 

@@ -23,6 +23,7 @@ ApplicationInfo::ApplicationInfo() :
     m_resourceGroupNameHasBeenSet(false),
     m_lifeCycleHasBeenSet(false),
     m_opsItemSNSTopicArnHasBeenSet(false),
+    m_sNSNotificationArnHasBeenSet(false),
     m_opsCenterEnabled(false),
     m_opsCenterEnabledHasBeenSet(false),
     m_cWEMonitorEnabled(false),
@@ -37,22 +38,8 @@ ApplicationInfo::ApplicationInfo() :
 {
 }
 
-ApplicationInfo::ApplicationInfo(JsonView jsonValue) : 
-    m_accountIdHasBeenSet(false),
-    m_resourceGroupNameHasBeenSet(false),
-    m_lifeCycleHasBeenSet(false),
-    m_opsItemSNSTopicArnHasBeenSet(false),
-    m_opsCenterEnabled(false),
-    m_opsCenterEnabledHasBeenSet(false),
-    m_cWEMonitorEnabled(false),
-    m_cWEMonitorEnabledHasBeenSet(false),
-    m_remarksHasBeenSet(false),
-    m_autoConfigEnabled(false),
-    m_autoConfigEnabledHasBeenSet(false),
-    m_discoveryType(DiscoveryType::NOT_SET),
-    m_discoveryTypeHasBeenSet(false),
-    m_attachMissingPermission(false),
-    m_attachMissingPermissionHasBeenSet(false)
+ApplicationInfo::ApplicationInfo(JsonView jsonValue)
+  : ApplicationInfo()
 {
   *this = jsonValue;
 }
@@ -85,6 +72,13 @@ ApplicationInfo& ApplicationInfo::operator =(JsonView jsonValue)
     m_opsItemSNSTopicArn = jsonValue.GetString("OpsItemSNSTopicArn");
 
     m_opsItemSNSTopicArnHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("SNSNotificationArn"))
+  {
+    m_sNSNotificationArn = jsonValue.GetString("SNSNotificationArn");
+
+    m_sNSNotificationArnHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("OpsCenterEnabled"))
@@ -157,6 +151,12 @@ JsonValue ApplicationInfo::Jsonize() const
   if(m_opsItemSNSTopicArnHasBeenSet)
   {
    payload.WithString("OpsItemSNSTopicArn", m_opsItemSNSTopicArn);
+
+  }
+
+  if(m_sNSNotificationArnHasBeenSet)
+  {
+   payload.WithString("SNSNotificationArn", m_sNSNotificationArn);
 
   }
 

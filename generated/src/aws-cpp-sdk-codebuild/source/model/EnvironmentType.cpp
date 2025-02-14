@@ -27,6 +27,10 @@ namespace Aws
         static const int WINDOWS_SERVER_2019_CONTAINER_HASH = HashingUtils::HashString("WINDOWS_SERVER_2019_CONTAINER");
         static const int LINUX_LAMBDA_CONTAINER_HASH = HashingUtils::HashString("LINUX_LAMBDA_CONTAINER");
         static const int ARM_LAMBDA_CONTAINER_HASH = HashingUtils::HashString("ARM_LAMBDA_CONTAINER");
+        static const int LINUX_EC2_HASH = HashingUtils::HashString("LINUX_EC2");
+        static const int ARM_EC2_HASH = HashingUtils::HashString("ARM_EC2");
+        static const int WINDOWS_EC2_HASH = HashingUtils::HashString("WINDOWS_EC2");
+        static const int MAC_ARM_HASH = HashingUtils::HashString("MAC_ARM");
 
 
         EnvironmentType GetEnvironmentTypeForName(const Aws::String& name)
@@ -60,6 +64,22 @@ namespace Aws
           {
             return EnvironmentType::ARM_LAMBDA_CONTAINER;
           }
+          else if (hashCode == LINUX_EC2_HASH)
+          {
+            return EnvironmentType::LINUX_EC2;
+          }
+          else if (hashCode == ARM_EC2_HASH)
+          {
+            return EnvironmentType::ARM_EC2;
+          }
+          else if (hashCode == WINDOWS_EC2_HASH)
+          {
+            return EnvironmentType::WINDOWS_EC2;
+          }
+          else if (hashCode == MAC_ARM_HASH)
+          {
+            return EnvironmentType::MAC_ARM;
+          }
           EnumParseOverflowContainer* overflowContainer = Aws::GetEnumOverflowContainer();
           if(overflowContainer)
           {
@@ -90,6 +110,14 @@ namespace Aws
             return "LINUX_LAMBDA_CONTAINER";
           case EnvironmentType::ARM_LAMBDA_CONTAINER:
             return "ARM_LAMBDA_CONTAINER";
+          case EnvironmentType::LINUX_EC2:
+            return "LINUX_EC2";
+          case EnvironmentType::ARM_EC2:
+            return "ARM_EC2";
+          case EnvironmentType::WINDOWS_EC2:
+            return "WINDOWS_EC2";
+          case EnvironmentType::MAC_ARM:
+            return "MAC_ARM";
           default:
             EnumParseOverflowContainer* overflowContainer = Aws::GetEnumOverflowContainer();
             if(overflowContainer)

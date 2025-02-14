@@ -22,8 +22,8 @@ AcceptSubscriptionRequestResult::AcceptSubscriptionRequestResult() :
 {
 }
 
-AcceptSubscriptionRequestResult::AcceptSubscriptionRequestResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_status(SubscriptionRequestStatus::NOT_SET)
+AcceptSubscriptionRequestResult::AcceptSubscriptionRequestResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : AcceptSubscriptionRequestResult()
 {
   *this = result;
 }
@@ -55,10 +55,25 @@ AcceptSubscriptionRequestResult& AcceptSubscriptionRequestResult::operator =(con
 
   }
 
+  if(jsonValue.ValueExists("existingSubscriptionId"))
+  {
+    m_existingSubscriptionId = jsonValue.GetString("existingSubscriptionId");
+
+  }
+
   if(jsonValue.ValueExists("id"))
   {
     m_id = jsonValue.GetString("id");
 
+  }
+
+  if(jsonValue.ValueExists("metadataForms"))
+  {
+    Aws::Utils::Array<JsonView> metadataFormsJsonList = jsonValue.GetArray("metadataForms");
+    for(unsigned metadataFormsIndex = 0; metadataFormsIndex < metadataFormsJsonList.GetLength(); ++metadataFormsIndex)
+    {
+      m_metadataForms.push_back(metadataFormsJsonList[metadataFormsIndex].AsObject());
+    }
   }
 
   if(jsonValue.ValueExists("requestReason"))

@@ -25,8 +25,8 @@ namespace Model
 
   /**
    * <p>Specifies the Network File System (NFS) protocol configuration that DataSync
-   * uses to access your Amazon FSx for OpenZFS or Amazon FSx for NetApp ONTAP file
-   * system.</p><p><h3>See Also:</h3>   <a
+   * uses to access your FSx for OpenZFS file system or FSx for ONTAP file system's
+   * storage virtual machine (SVM).</p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/datasync-2018-11-09/FsxProtocolNfs">AWS
    * API Reference</a></p>
    */
@@ -39,24 +39,15 @@ namespace Model
     AWS_DATASYNC_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     
     inline const NfsMountOptions& GetMountOptions() const{ return m_mountOptions; }
-
-    
     inline bool MountOptionsHasBeenSet() const { return m_mountOptionsHasBeenSet; }
-
-    
     inline void SetMountOptions(const NfsMountOptions& value) { m_mountOptionsHasBeenSet = true; m_mountOptions = value; }
-
-    
     inline void SetMountOptions(NfsMountOptions&& value) { m_mountOptionsHasBeenSet = true; m_mountOptions = std::move(value); }
-
-    
     inline FsxProtocolNfs& WithMountOptions(const NfsMountOptions& value) { SetMountOptions(value); return *this;}
-
-    
     inline FsxProtocolNfs& WithMountOptions(NfsMountOptions&& value) { SetMountOptions(std::move(value)); return *this;}
-
+    ///@}
   private:
 
     NfsMountOptions m_mountOptions;

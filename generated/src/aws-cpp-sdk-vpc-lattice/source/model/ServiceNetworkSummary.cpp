@@ -24,6 +24,8 @@ ServiceNetworkSummary::ServiceNetworkSummary() :
     m_idHasBeenSet(false),
     m_lastUpdatedAtHasBeenSet(false),
     m_nameHasBeenSet(false),
+    m_numberOfAssociatedResourceConfigurations(0),
+    m_numberOfAssociatedResourceConfigurationsHasBeenSet(false),
     m_numberOfAssociatedServices(0),
     m_numberOfAssociatedServicesHasBeenSet(false),
     m_numberOfAssociatedVPCs(0),
@@ -31,16 +33,8 @@ ServiceNetworkSummary::ServiceNetworkSummary() :
 {
 }
 
-ServiceNetworkSummary::ServiceNetworkSummary(JsonView jsonValue) : 
-    m_arnHasBeenSet(false),
-    m_createdAtHasBeenSet(false),
-    m_idHasBeenSet(false),
-    m_lastUpdatedAtHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_numberOfAssociatedServices(0),
-    m_numberOfAssociatedServicesHasBeenSet(false),
-    m_numberOfAssociatedVPCs(0),
-    m_numberOfAssociatedVPCsHasBeenSet(false)
+ServiceNetworkSummary::ServiceNetworkSummary(JsonView jsonValue)
+  : ServiceNetworkSummary()
 {
   *this = jsonValue;
 }
@@ -80,6 +74,13 @@ ServiceNetworkSummary& ServiceNetworkSummary::operator =(JsonView jsonValue)
     m_name = jsonValue.GetString("name");
 
     m_nameHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("numberOfAssociatedResourceConfigurations"))
+  {
+    m_numberOfAssociatedResourceConfigurations = jsonValue.GetInt64("numberOfAssociatedResourceConfigurations");
+
+    m_numberOfAssociatedResourceConfigurationsHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("numberOfAssociatedServices"))
@@ -128,6 +129,12 @@ JsonValue ServiceNetworkSummary::Jsonize() const
   if(m_nameHasBeenSet)
   {
    payload.WithString("name", m_name);
+
+  }
+
+  if(m_numberOfAssociatedResourceConfigurationsHasBeenSet)
+  {
+   payload.WithInt64("numberOfAssociatedResourceConfigurations", m_numberOfAssociatedResourceConfigurations);
 
   }
 

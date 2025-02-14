@@ -19,12 +19,13 @@ namespace Model
 {
 
 EvaluationInferenceConfig::EvaluationInferenceConfig() : 
-    m_modelsHasBeenSet(false)
+    m_modelsHasBeenSet(false),
+    m_ragConfigsHasBeenSet(false)
 {
 }
 
-EvaluationInferenceConfig::EvaluationInferenceConfig(JsonView jsonValue) : 
-    m_modelsHasBeenSet(false)
+EvaluationInferenceConfig::EvaluationInferenceConfig(JsonView jsonValue)
+  : EvaluationInferenceConfig()
 {
   *this = jsonValue;
 }
@@ -39,6 +40,16 @@ EvaluationInferenceConfig& EvaluationInferenceConfig::operator =(JsonView jsonVa
       m_models.push_back(modelsJsonList[modelsIndex].AsObject());
     }
     m_modelsHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("ragConfigs"))
+  {
+    Aws::Utils::Array<JsonView> ragConfigsJsonList = jsonValue.GetArray("ragConfigs");
+    for(unsigned ragConfigsIndex = 0; ragConfigsIndex < ragConfigsJsonList.GetLength(); ++ragConfigsIndex)
+    {
+      m_ragConfigs.push_back(ragConfigsJsonList[ragConfigsIndex].AsObject());
+    }
+    m_ragConfigsHasBeenSet = true;
   }
 
   return *this;
@@ -56,6 +67,17 @@ JsonValue EvaluationInferenceConfig::Jsonize() const
      modelsJsonList[modelsIndex].AsObject(m_models[modelsIndex].Jsonize());
    }
    payload.WithArray("models", std::move(modelsJsonList));
+
+  }
+
+  if(m_ragConfigsHasBeenSet)
+  {
+   Aws::Utils::Array<JsonValue> ragConfigsJsonList(m_ragConfigs.size());
+   for(unsigned ragConfigsIndex = 0; ragConfigsIndex < ragConfigsJsonList.GetLength(); ++ragConfigsIndex)
+   {
+     ragConfigsJsonList[ragConfigsIndex].AsObject(m_ragConfigs[ragConfigsIndex].Jsonize());
+   }
+   payload.WithArray("ragConfigs", std::move(ragConfigsJsonList));
 
   }
 

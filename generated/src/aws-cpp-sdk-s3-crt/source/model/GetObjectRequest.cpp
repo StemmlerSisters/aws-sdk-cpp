@@ -6,6 +6,7 @@
 #include <aws/s3-crt/model/GetObjectRequest.h>
 #include <aws/core/utils/xml/XmlSerializer.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
+#include <aws/core/utils/UnreferencedParam.h>
 #include <aws/core/http/URI.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 
@@ -224,6 +225,7 @@ bool GetObjectRequest::ShouldValidateResponseChecksum() const
 Aws::Vector<Aws::String> GetObjectRequest::GetResponseChecksumAlgorithmNames() const
 {
   Aws::Vector<Aws::String> responseChecksumAlgorithmNames;
+  responseChecksumAlgorithmNames.push_back("CRC64NVME");
   responseChecksumAlgorithmNames.push_back("CRC32");
   responseChecksumAlgorithmNames.push_back("CRC32C");
   responseChecksumAlgorithmNames.push_back("SHA256");

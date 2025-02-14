@@ -25,18 +25,14 @@ AccessLogSubscriptionSummary::AccessLogSubscriptionSummary() :
     m_idHasBeenSet(false),
     m_lastUpdatedAtHasBeenSet(false),
     m_resourceArnHasBeenSet(false),
-    m_resourceIdHasBeenSet(false)
+    m_resourceIdHasBeenSet(false),
+    m_serviceNetworkLogType(ServiceNetworkLogType::NOT_SET),
+    m_serviceNetworkLogTypeHasBeenSet(false)
 {
 }
 
-AccessLogSubscriptionSummary::AccessLogSubscriptionSummary(JsonView jsonValue) : 
-    m_arnHasBeenSet(false),
-    m_createdAtHasBeenSet(false),
-    m_destinationArnHasBeenSet(false),
-    m_idHasBeenSet(false),
-    m_lastUpdatedAtHasBeenSet(false),
-    m_resourceArnHasBeenSet(false),
-    m_resourceIdHasBeenSet(false)
+AccessLogSubscriptionSummary::AccessLogSubscriptionSummary(JsonView jsonValue)
+  : AccessLogSubscriptionSummary()
 {
   *this = jsonValue;
 }
@@ -92,6 +88,13 @@ AccessLogSubscriptionSummary& AccessLogSubscriptionSummary::operator =(JsonView 
     m_resourceIdHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("serviceNetworkLogType"))
+  {
+    m_serviceNetworkLogType = ServiceNetworkLogTypeMapper::GetServiceNetworkLogTypeForName(jsonValue.GetString("serviceNetworkLogType"));
+
+    m_serviceNetworkLogTypeHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -137,6 +140,11 @@ JsonValue AccessLogSubscriptionSummary::Jsonize() const
   {
    payload.WithString("resourceId", m_resourceId);
 
+  }
+
+  if(m_serviceNetworkLogTypeHasBeenSet)
+  {
+   payload.WithString("serviceNetworkLogType", ServiceNetworkLogTypeMapper::GetNameForServiceNetworkLogType(m_serviceNetworkLogType));
   }
 
   return payload;

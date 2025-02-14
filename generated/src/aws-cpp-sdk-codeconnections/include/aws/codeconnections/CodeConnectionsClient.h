@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/codeconnections/CodeConnections_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/codeconnections/CodeConnectionsServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/codeconnections/CodeConnectionsErrorMarshaller.h>
 
 namespace Aws
 {
 namespace CodeConnections
 {
+  AWS_CODECONNECTIONS_API extern const char SERVICE_NAME[];
   /**
    * <fullname>AWS CodeConnections</fullname> <p>This Amazon Web Services
    * CodeConnections API Reference provides descriptions and usage examples of the
@@ -57,12 +61,20 @@ namespace CodeConnections
    * href="https://docs.aws.amazon.com/dtconsole/latest/userguide/welcome-connections.html">Developer
    * Tools User Guide</a>.</p>
    */
-  class AWS_CODECONNECTIONS_API CodeConnectionsClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<CodeConnectionsClient>
+  class AWS_CODECONNECTIONS_API CodeConnectionsClient : smithy::client::AwsSmithyClientT<Aws::CodeConnections::SERVICE_NAME,
+      Aws::CodeConnections::CodeConnectionsClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      CodeConnectionsEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::CodeConnectionsErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<CodeConnectionsClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "CodeConnections"; }
 
       typedef CodeConnectionsClientConfiguration ClientConfigurationType;
       typedef CodeConnectionsEndpointProvider EndpointProviderType;
@@ -526,13 +538,13 @@ namespace CodeConnections
          * href="http://docs.aws.amazon.com/goto/WebAPI/codeconnections-2023-12-01/ListConnections">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListConnectionsOutcome ListConnections(const Model::ListConnectionsRequest& request) const;
+        virtual Model::ListConnectionsOutcome ListConnections(const Model::ListConnectionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListConnections that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListConnectionsRequestT = Model::ListConnectionsRequest>
-        Model::ListConnectionsOutcomeCallable ListConnectionsCallable(const ListConnectionsRequestT& request) const
+        Model::ListConnectionsOutcomeCallable ListConnectionsCallable(const ListConnectionsRequestT& request = {}) const
         {
             return SubmitCallable(&CodeConnectionsClient::ListConnections, request);
         }
@@ -541,7 +553,7 @@ namespace CodeConnections
          * An Async wrapper for ListConnections that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListConnectionsRequestT = Model::ListConnectionsRequest>
-        void ListConnectionsAsync(const ListConnectionsRequestT& request, const ListConnectionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListConnectionsAsync(const ListConnectionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListConnectionsRequestT& request = {}) const
         {
             return SubmitAsync(&CodeConnectionsClient::ListConnections, request, handler, context);
         }
@@ -551,13 +563,13 @@ namespace CodeConnections
          * href="http://docs.aws.amazon.com/goto/WebAPI/codeconnections-2023-12-01/ListHosts">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListHostsOutcome ListHosts(const Model::ListHostsRequest& request) const;
+        virtual Model::ListHostsOutcome ListHosts(const Model::ListHostsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListHosts that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListHostsRequestT = Model::ListHostsRequest>
-        Model::ListHostsOutcomeCallable ListHostsCallable(const ListHostsRequestT& request) const
+        Model::ListHostsOutcomeCallable ListHostsCallable(const ListHostsRequestT& request = {}) const
         {
             return SubmitCallable(&CodeConnectionsClient::ListHosts, request);
         }
@@ -566,7 +578,7 @@ namespace CodeConnections
          * An Async wrapper for ListHosts that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListHostsRequestT = Model::ListHostsRequest>
-        void ListHostsAsync(const ListHostsRequestT& request, const ListHostsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListHostsAsync(const ListHostsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListHostsRequestT& request = {}) const
         {
             return SubmitAsync(&CodeConnectionsClient::ListHosts, request, handler, context);
         }
@@ -577,13 +589,13 @@ namespace CodeConnections
          * href="http://docs.aws.amazon.com/goto/WebAPI/codeconnections-2023-12-01/ListRepositoryLinks">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListRepositoryLinksOutcome ListRepositoryLinks(const Model::ListRepositoryLinksRequest& request) const;
+        virtual Model::ListRepositoryLinksOutcome ListRepositoryLinks(const Model::ListRepositoryLinksRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListRepositoryLinks that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListRepositoryLinksRequestT = Model::ListRepositoryLinksRequest>
-        Model::ListRepositoryLinksOutcomeCallable ListRepositoryLinksCallable(const ListRepositoryLinksRequestT& request) const
+        Model::ListRepositoryLinksOutcomeCallable ListRepositoryLinksCallable(const ListRepositoryLinksRequestT& request = {}) const
         {
             return SubmitCallable(&CodeConnectionsClient::ListRepositoryLinks, request);
         }
@@ -592,7 +604,7 @@ namespace CodeConnections
          * An Async wrapper for ListRepositoryLinks that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListRepositoryLinksRequestT = Model::ListRepositoryLinksRequest>
-        void ListRepositoryLinksAsync(const ListRepositoryLinksRequestT& request, const ListRepositoryLinksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListRepositoryLinksAsync(const ListRepositoryLinksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListRepositoryLinksRequestT& request = {}) const
         {
             return SubmitAsync(&CodeConnectionsClient::ListRepositoryLinks, request, handler, context);
         }
@@ -837,11 +849,7 @@ namespace CodeConnections
       std::shared_ptr<CodeConnectionsEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<CodeConnectionsClient>;
-      void init(const CodeConnectionsClientConfiguration& clientConfiguration);
 
-      CodeConnectionsClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<CodeConnectionsEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace CodeConnections

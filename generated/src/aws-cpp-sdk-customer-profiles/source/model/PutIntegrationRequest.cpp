@@ -18,7 +18,9 @@ PutIntegrationRequest::PutIntegrationRequest() :
     m_objectTypeNameHasBeenSet(false),
     m_tagsHasBeenSet(false),
     m_flowDefinitionHasBeenSet(false),
-    m_objectTypeNamesHasBeenSet(false)
+    m_objectTypeNamesHasBeenSet(false),
+    m_roleArnHasBeenSet(false),
+    m_eventTriggerNamesHasBeenSet(false)
 {
 }
 
@@ -63,6 +65,23 @@ Aws::String PutIntegrationRequest::SerializePayload() const
      objectTypeNamesJsonMap.WithString(objectTypeNamesItem.first, objectTypeNamesItem.second);
    }
    payload.WithObject("ObjectTypeNames", std::move(objectTypeNamesJsonMap));
+
+  }
+
+  if(m_roleArnHasBeenSet)
+  {
+   payload.WithString("RoleArn", m_roleArn);
+
+  }
+
+  if(m_eventTriggerNamesHasBeenSet)
+  {
+   Aws::Utils::Array<JsonValue> eventTriggerNamesJsonList(m_eventTriggerNames.size());
+   for(unsigned eventTriggerNamesIndex = 0; eventTriggerNamesIndex < eventTriggerNamesJsonList.GetLength(); ++eventTriggerNamesIndex)
+   {
+     eventTriggerNamesJsonList[eventTriggerNamesIndex].AsString(m_eventTriggerNames[eventTriggerNamesIndex]);
+   }
+   payload.WithArray("EventTriggerNames", std::move(eventTriggerNamesJsonList));
 
   }
 

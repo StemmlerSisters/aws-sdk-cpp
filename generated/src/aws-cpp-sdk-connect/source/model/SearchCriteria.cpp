@@ -25,18 +25,13 @@ SearchCriteria::SearchCriteria() :
     m_contactAnalysisHasBeenSet(false),
     m_initiationMethodsHasBeenSet(false),
     m_queueIdsHasBeenSet(false),
-    m_searchableContactAttributesHasBeenSet(false)
+    m_searchableContactAttributesHasBeenSet(false),
+    m_searchableSegmentAttributesHasBeenSet(false)
 {
 }
 
-SearchCriteria::SearchCriteria(JsonView jsonValue) : 
-    m_agentIdsHasBeenSet(false),
-    m_agentHierarchyGroupsHasBeenSet(false),
-    m_channelsHasBeenSet(false),
-    m_contactAnalysisHasBeenSet(false),
-    m_initiationMethodsHasBeenSet(false),
-    m_queueIdsHasBeenSet(false),
-    m_searchableContactAttributesHasBeenSet(false)
+SearchCriteria::SearchCriteria(JsonView jsonValue)
+  : SearchCriteria()
 {
   *this = jsonValue;
 }
@@ -102,6 +97,13 @@ SearchCriteria& SearchCriteria::operator =(JsonView jsonValue)
     m_searchableContactAttributes = jsonValue.GetObject("SearchableContactAttributes");
 
     m_searchableContactAttributesHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("SearchableSegmentAttributes"))
+  {
+    m_searchableSegmentAttributes = jsonValue.GetObject("SearchableSegmentAttributes");
+
+    m_searchableSegmentAttributesHasBeenSet = true;
   }
 
   return *this;
@@ -170,6 +172,12 @@ JsonValue SearchCriteria::Jsonize() const
   if(m_searchableContactAttributesHasBeenSet)
   {
    payload.WithObject("SearchableContactAttributes", m_searchableContactAttributes.Jsonize());
+
+  }
+
+  if(m_searchableSegmentAttributesHasBeenSet)
+  {
+   payload.WithObject("SearchableSegmentAttributes", m_searchableSegmentAttributes.Jsonize());
 
   }
 

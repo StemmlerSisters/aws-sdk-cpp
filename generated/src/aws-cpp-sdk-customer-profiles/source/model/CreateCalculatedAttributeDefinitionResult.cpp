@@ -22,8 +22,8 @@ CreateCalculatedAttributeDefinitionResult::CreateCalculatedAttributeDefinitionRe
 {
 }
 
-CreateCalculatedAttributeDefinitionResult::CreateCalculatedAttributeDefinitionResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_statistic(Statistic::NOT_SET)
+CreateCalculatedAttributeDefinitionResult::CreateCalculatedAttributeDefinitionResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : CreateCalculatedAttributeDefinitionResult()
 {
   *this = result;
 }
@@ -58,6 +58,12 @@ CreateCalculatedAttributeDefinitionResult& CreateCalculatedAttributeDefinitionRe
   if(jsonValue.ValueExists("Conditions"))
   {
     m_conditions = jsonValue.GetObject("Conditions");
+
+  }
+
+  if(jsonValue.ValueExists("Filter"))
+  {
+    m_filter = jsonValue.GetObject("Filter");
 
   }
 

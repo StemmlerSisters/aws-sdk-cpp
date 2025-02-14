@@ -6,16 +6,19 @@
 #pragma once
 #include <aws/config/ConfigService_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/config/ConfigServiceServiceClientModel.h>
-#include <aws/config/model/GetComplianceSummaryByConfigRuleRequest.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/config/ConfigServiceErrorMarshaller.h>
 
 namespace Aws
 {
 namespace ConfigService
 {
+  AWS_CONFIGSERVICE_API extern const char SERVICE_NAME[];
   /**
    * <fullname>Config</fullname> <p>Config provides a way to keep track of the
    * configurations of all the Amazon Web Services resources associated with your
@@ -41,12 +44,20 @@ namespace ConfigService
    * href="https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html">What
    * Is Config</a> in the <i>Config Developer Guide</i>.</p>
    */
-  class AWS_CONFIGSERVICE_API ConfigServiceClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<ConfigServiceClient>
+  class AWS_CONFIGSERVICE_API ConfigServiceClient : smithy::client::AwsSmithyClientT<Aws::ConfigService::SERVICE_NAME,
+      Aws::ConfigService::ConfigServiceClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      ConfigServiceEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::ConfigServiceErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<ConfigServiceClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Config Service"; }
 
       typedef ConfigServiceClientConfiguration ClientConfigurationType;
       typedef ConfigServiceEndpointProvider EndpointProviderType;
@@ -98,6 +109,39 @@ namespace ConfigService
 
         /* End of legacy constructors due deprecation */
         virtual ~ConfigServiceClient();
+
+        /**
+         * <p>Adds all resource types specified in the <code>ResourceTypes</code> list to
+         * the <a
+         * href="https://docs.aws.amazon.com/config/latest/APIReference/API_RecordingGroup.html">RecordingGroup</a>
+         * of specified configuration recorder and includes those resource types when
+         * recording.</p> <p>For this operation, the specified configuration recorder must
+         * use a <a
+         * href="https://docs.aws.amazon.com/config/latest/APIReference/API_RecordingStrategy.html">RecordingStrategy</a>
+         * that is either <code>INCLUSION_BY_RESOURCE_TYPES</code> or
+         * <code>EXCLUSION_BY_RESOURCE_TYPES</code>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/AssociateResourceTypes">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::AssociateResourceTypesOutcome AssociateResourceTypes(const Model::AssociateResourceTypesRequest& request) const;
+
+        /**
+         * A Callable wrapper for AssociateResourceTypes that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename AssociateResourceTypesRequestT = Model::AssociateResourceTypesRequest>
+        Model::AssociateResourceTypesOutcomeCallable AssociateResourceTypesCallable(const AssociateResourceTypesRequestT& request) const
+        {
+            return SubmitCallable(&ConfigServiceClient::AssociateResourceTypes, request);
+        }
+
+        /**
+         * An Async wrapper for AssociateResourceTypes that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename AssociateResourceTypesRequestT = Model::AssociateResourceTypesRequest>
+        void AssociateResourceTypesAsync(const AssociateResourceTypesRequestT& request, const AssociateResourceTypesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&ConfigServiceClient::AssociateResourceTypes, request, handler, context);
+        }
 
         /**
          * <p>Returns the current configuration items for resources that are present in
@@ -195,7 +239,19 @@ namespace ConfigService
          * <code>PutConfigRule</code> or <code>DeleteConfigRule</code> request for the
          * rule, you will receive a <code>ResourceInUseException</code>.</p> <p>You can
          * check the state of a rule by using the <code>DescribeConfigRules</code>
-         * request.</p><p><h3>See Also:</h3>   <a
+         * request.</p>  <p> <b>Recommendation: Stop recording resource compliance
+         * before deleting rules</b> </p> <p>It is highly recommended that you stop
+         * recording for the <code>AWS::Config::ResourceCompliance</code> resource type
+         * before you delete rules in your account. Deleting rules creates CIs for
+         * <code>AWS::Config::ResourceCompliance</code> and can affect your Config <a
+         * href="https://docs.aws.amazon.com/config/latest/developerguide/stop-start-recorder.html">configuration
+         * recorder</a> costs. If you are deleting rules which evaluate a large number of
+         * resource types, this can lead to a spike in the number of CIs recorded.</p>
+         * <p>Best practice:</p> <ol> <li> <p>Stop recording
+         * <code>AWS::Config::ResourceCompliance</code> </p> </li> <li> <p>Delete
+         * rule(s)</p> </li> <li> <p>Turn on recording for
+         * <code>AWS::Config::ResourceCompliance</code> </p> </li> </ol> <p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DeleteConfigRule">AWS
          * API Reference</a></p>
          */
@@ -246,13 +302,12 @@ namespace ConfigService
         }
 
         /**
-         * <p>Deletes the configuration recorder.</p> <p>After the configuration recorder
-         * is deleted, Config will not record resource configuration changes until you
-         * create a new configuration recorder.</p> <p>This action does not delete the
-         * configuration information that was previously recorded. You will be able to
-         * access the previously recorded information by using the
-         * <code>GetResourceConfigHistory</code> action, but you will not be able to access
-         * this information in the Config console until you create a new configuration
+         * <p>Deletes the customer managed configuration recorder.</p> <p>This operation
+         * does not delete the configuration information that was previously recorded. You
+         * will be able to access the previously recorded information by using the <a
+         * href="https://docs.aws.amazon.com/config/latest/APIReference/API_GetResourceConfigHistory.html">GetResourceConfigHistory</a>
+         * operation, but you will not be able to access this information in the Config
+         * console until you have created a new customer managed configuration
          * recorder.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DeleteConfigurationRecorder">AWS
          * API Reference</a></p>
@@ -308,8 +363,9 @@ namespace ConfigService
 
         /**
          * <p>Deletes the delivery channel.</p> <p>Before you can delete the delivery
-         * channel, you must stop the configuration recorder by using the
-         * <a>StopConfigurationRecorder</a> action.</p><p><h3>See Also:</h3>   <a
+         * channel, you must stop the customer managed configuration recorder. You can use
+         * the <a>StopConfigurationRecorder</a> operation to stop the customer managed
+         * configuration recorder.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DeleteDeliveryChannel">AWS
          * API Reference</a></p>
          */
@@ -560,6 +616,43 @@ namespace ConfigService
         }
 
         /**
+         * <p>Deletes an existing service-linked configuration recorder.</p> <p>This
+         * operation does not delete the configuration information that was previously
+         * recorded. You will be able to access the previously recorded information by
+         * using the <a
+         * href="https://docs.aws.amazon.com/config/latest/APIReference/API_GetResourceConfigHistory.html">GetResourceConfigHistory</a>
+         * operation, but you will not be able to access this information in the Config
+         * console until you have created a new service-linked configuration recorder for
+         * the same service.</p>  <p> <b>The recording scope determines if you
+         * receive configuration items</b> </p> <p>The recording scope is set by the
+         * service that is linked to the configuration recorder and determines whether you
+         * receive configuration items (CIs) in the delivery channel. If the recording
+         * scope is internal, you will not receive CIs in the delivery channel.</p>
+         * <p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DeleteServiceLinkedConfigurationRecorder">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteServiceLinkedConfigurationRecorderOutcome DeleteServiceLinkedConfigurationRecorder(const Model::DeleteServiceLinkedConfigurationRecorderRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteServiceLinkedConfigurationRecorder that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteServiceLinkedConfigurationRecorderRequestT = Model::DeleteServiceLinkedConfigurationRecorderRequest>
+        Model::DeleteServiceLinkedConfigurationRecorderOutcomeCallable DeleteServiceLinkedConfigurationRecorderCallable(const DeleteServiceLinkedConfigurationRecorderRequestT& request) const
+        {
+            return SubmitCallable(&ConfigServiceClient::DeleteServiceLinkedConfigurationRecorder, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteServiceLinkedConfigurationRecorder that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteServiceLinkedConfigurationRecorderRequestT = Model::DeleteServiceLinkedConfigurationRecorderRequest>
+        void DeleteServiceLinkedConfigurationRecorderAsync(const DeleteServiceLinkedConfigurationRecorderRequestT& request, const DeleteServiceLinkedConfigurationRecorderResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&ConfigServiceClient::DeleteServiceLinkedConfigurationRecorder, request, handler, context);
+        }
+
+        /**
          * <p>Deletes the stored query for a single Amazon Web Services account and a
          * single Amazon Web Services Region.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DeleteStoredQuery">AWS
@@ -646,13 +739,13 @@ namespace ConfigService
         }
 
         /**
-         * <p>Returns a list of the conformance packs and their associated compliance
-         * status with the count of compliant and noncompliant Config rules within each
-         * conformance pack. Also returns the total rule count which includes compliant
-         * rules, noncompliant rules, and rules that cannot be evaluated due to
-         * insufficient data.</p>  <p>The results can return an empty result page,
-         * but if you have a <code>nextToken</code>, the results are displayed on the next
-         * page.</p> <p><h3>See Also:</h3>   <a
+         * <p>Returns a list of the existing and deleted conformance packs and their
+         * associated compliance status with the count of compliant and noncompliant Config
+         * rules within each conformance pack. Also returns the total rule count which
+         * includes compliant rules, noncompliant rules, and rules that cannot be evaluated
+         * due to insufficient data.</p>  <p>The results can return an empty result
+         * page, but if you have a <code>nextToken</code>, the results are displayed on the
+         * next page.</p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DescribeAggregateComplianceByConformancePacks">AWS
          * API Reference</a></p>
          */
@@ -682,13 +775,13 @@ namespace ConfigService
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DescribeAggregationAuthorizations">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeAggregationAuthorizationsOutcome DescribeAggregationAuthorizations(const Model::DescribeAggregationAuthorizationsRequest& request) const;
+        virtual Model::DescribeAggregationAuthorizationsOutcome DescribeAggregationAuthorizations(const Model::DescribeAggregationAuthorizationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeAggregationAuthorizations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeAggregationAuthorizationsRequestT = Model::DescribeAggregationAuthorizationsRequest>
-        Model::DescribeAggregationAuthorizationsOutcomeCallable DescribeAggregationAuthorizationsCallable(const DescribeAggregationAuthorizationsRequestT& request) const
+        Model::DescribeAggregationAuthorizationsOutcomeCallable DescribeAggregationAuthorizationsCallable(const DescribeAggregationAuthorizationsRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::DescribeAggregationAuthorizations, request);
         }
@@ -697,14 +790,14 @@ namespace ConfigService
          * An Async wrapper for DescribeAggregationAuthorizations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeAggregationAuthorizationsRequestT = Model::DescribeAggregationAuthorizationsRequest>
-        void DescribeAggregationAuthorizationsAsync(const DescribeAggregationAuthorizationsRequestT& request, const DescribeAggregationAuthorizationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeAggregationAuthorizationsAsync(const DescribeAggregationAuthorizationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeAggregationAuthorizationsRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::DescribeAggregationAuthorizations, request, handler, context);
         }
 
         /**
          * <p>Indicates whether the specified Config rules are compliant. If a rule is
-         * noncompliant, this action returns the number of Amazon Web Services resources
+         * noncompliant, this operation returns the number of Amazon Web Services resources
          * that do not comply with the rule.</p> <p>A rule is compliant if all of the
          * evaluated resources comply with it. It is noncompliant if any of these resources
          * do not comply.</p> <p>If Config has no current evaluation results for the rule,
@@ -725,13 +818,13 @@ namespace ConfigService
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DescribeComplianceByConfigRule">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeComplianceByConfigRuleOutcome DescribeComplianceByConfigRule(const Model::DescribeComplianceByConfigRuleRequest& request) const;
+        virtual Model::DescribeComplianceByConfigRuleOutcome DescribeComplianceByConfigRule(const Model::DescribeComplianceByConfigRuleRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeComplianceByConfigRule that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeComplianceByConfigRuleRequestT = Model::DescribeComplianceByConfigRuleRequest>
-        Model::DescribeComplianceByConfigRuleOutcomeCallable DescribeComplianceByConfigRuleCallable(const DescribeComplianceByConfigRuleRequestT& request) const
+        Model::DescribeComplianceByConfigRuleOutcomeCallable DescribeComplianceByConfigRuleCallable(const DescribeComplianceByConfigRuleRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::DescribeComplianceByConfigRule, request);
         }
@@ -740,14 +833,14 @@ namespace ConfigService
          * An Async wrapper for DescribeComplianceByConfigRule that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeComplianceByConfigRuleRequestT = Model::DescribeComplianceByConfigRuleRequest>
-        void DescribeComplianceByConfigRuleAsync(const DescribeComplianceByConfigRuleRequestT& request, const DescribeComplianceByConfigRuleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeComplianceByConfigRuleAsync(const DescribeComplianceByConfigRuleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeComplianceByConfigRuleRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::DescribeComplianceByConfigRule, request, handler, context);
         }
 
         /**
          * <p>Indicates whether the specified Amazon Web Services resources are compliant.
-         * If a resource is noncompliant, this action returns the number of Config rules
+         * If a resource is noncompliant, this operation returns the number of Config rules
          * that the resource does not comply with.</p> <p>A resource is compliant if it
          * complies with all the Config rules that evaluate it. It is noncompliant if it
          * does not comply with one or more of these rules.</p> <p>If Config has no current
@@ -769,13 +862,13 @@ namespace ConfigService
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DescribeComplianceByResource">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeComplianceByResourceOutcome DescribeComplianceByResource(const Model::DescribeComplianceByResourceRequest& request) const;
+        virtual Model::DescribeComplianceByResourceOutcome DescribeComplianceByResource(const Model::DescribeComplianceByResourceRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeComplianceByResource that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeComplianceByResourceRequestT = Model::DescribeComplianceByResourceRequest>
-        Model::DescribeComplianceByResourceOutcomeCallable DescribeComplianceByResourceCallable(const DescribeComplianceByResourceRequestT& request) const
+        Model::DescribeComplianceByResourceOutcomeCallable DescribeComplianceByResourceCallable(const DescribeComplianceByResourceRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::DescribeComplianceByResource, request);
         }
@@ -784,7 +877,7 @@ namespace ConfigService
          * An Async wrapper for DescribeComplianceByResource that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeComplianceByResourceRequestT = Model::DescribeComplianceByResourceRequest>
-        void DescribeComplianceByResourceAsync(const DescribeComplianceByResourceRequestT& request, const DescribeComplianceByResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeComplianceByResourceAsync(const DescribeComplianceByResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeComplianceByResourceRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::DescribeComplianceByResource, request, handler, context);
         }
@@ -797,13 +890,13 @@ namespace ConfigService
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DescribeConfigRuleEvaluationStatus">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeConfigRuleEvaluationStatusOutcome DescribeConfigRuleEvaluationStatus(const Model::DescribeConfigRuleEvaluationStatusRequest& request) const;
+        virtual Model::DescribeConfigRuleEvaluationStatusOutcome DescribeConfigRuleEvaluationStatus(const Model::DescribeConfigRuleEvaluationStatusRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeConfigRuleEvaluationStatus that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeConfigRuleEvaluationStatusRequestT = Model::DescribeConfigRuleEvaluationStatusRequest>
-        Model::DescribeConfigRuleEvaluationStatusOutcomeCallable DescribeConfigRuleEvaluationStatusCallable(const DescribeConfigRuleEvaluationStatusRequestT& request) const
+        Model::DescribeConfigRuleEvaluationStatusOutcomeCallable DescribeConfigRuleEvaluationStatusCallable(const DescribeConfigRuleEvaluationStatusRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::DescribeConfigRuleEvaluationStatus, request);
         }
@@ -812,7 +905,7 @@ namespace ConfigService
          * An Async wrapper for DescribeConfigRuleEvaluationStatus that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeConfigRuleEvaluationStatusRequestT = Model::DescribeConfigRuleEvaluationStatusRequest>
-        void DescribeConfigRuleEvaluationStatusAsync(const DescribeConfigRuleEvaluationStatusRequestT& request, const DescribeConfigRuleEvaluationStatusResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeConfigRuleEvaluationStatusAsync(const DescribeConfigRuleEvaluationStatusResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeConfigRuleEvaluationStatusRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::DescribeConfigRuleEvaluationStatus, request, handler, context);
         }
@@ -822,13 +915,13 @@ namespace ConfigService
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DescribeConfigRules">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeConfigRulesOutcome DescribeConfigRules(const Model::DescribeConfigRulesRequest& request) const;
+        virtual Model::DescribeConfigRulesOutcome DescribeConfigRules(const Model::DescribeConfigRulesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeConfigRules that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeConfigRulesRequestT = Model::DescribeConfigRulesRequest>
-        Model::DescribeConfigRulesOutcomeCallable DescribeConfigRulesCallable(const DescribeConfigRulesRequestT& request) const
+        Model::DescribeConfigRulesOutcomeCallable DescribeConfigRulesCallable(const DescribeConfigRulesRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::DescribeConfigRules, request);
         }
@@ -837,7 +930,7 @@ namespace ConfigService
          * An Async wrapper for DescribeConfigRules that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeConfigRulesRequestT = Model::DescribeConfigRulesRequest>
-        void DescribeConfigRulesAsync(const DescribeConfigRulesRequestT& request, const DescribeConfigRulesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeConfigRulesAsync(const DescribeConfigRulesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeConfigRulesRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::DescribeConfigRules, request, handler, context);
         }
@@ -872,19 +965,19 @@ namespace ConfigService
 
         /**
          * <p>Returns the details of one or more configuration aggregators. If the
-         * configuration aggregator is not specified, this action returns the details for
-         * all the configuration aggregators associated with the account. </p><p><h3>See
-         * Also:</h3>   <a
+         * configuration aggregator is not specified, this operation returns the details
+         * for all the configuration aggregators associated with the account.
+         * </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DescribeConfigurationAggregators">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeConfigurationAggregatorsOutcome DescribeConfigurationAggregators(const Model::DescribeConfigurationAggregatorsRequest& request) const;
+        virtual Model::DescribeConfigurationAggregatorsOutcome DescribeConfigurationAggregators(const Model::DescribeConfigurationAggregatorsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeConfigurationAggregators that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeConfigurationAggregatorsRequestT = Model::DescribeConfigurationAggregatorsRequest>
-        Model::DescribeConfigurationAggregatorsOutcomeCallable DescribeConfigurationAggregatorsCallable(const DescribeConfigurationAggregatorsRequestT& request) const
+        Model::DescribeConfigurationAggregatorsOutcomeCallable DescribeConfigurationAggregatorsCallable(const DescribeConfigurationAggregatorsRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::DescribeConfigurationAggregators, request);
         }
@@ -893,30 +986,30 @@ namespace ConfigService
          * An Async wrapper for DescribeConfigurationAggregators that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeConfigurationAggregatorsRequestT = Model::DescribeConfigurationAggregatorsRequest>
-        void DescribeConfigurationAggregatorsAsync(const DescribeConfigurationAggregatorsRequestT& request, const DescribeConfigurationAggregatorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeConfigurationAggregatorsAsync(const DescribeConfigurationAggregatorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeConfigurationAggregatorsRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::DescribeConfigurationAggregators, request, handler, context);
         }
 
         /**
-         * <p>Returns the current status of the specified configuration recorder as well as
-         * the status of the last recording event for the recorder. If a configuration
-         * recorder is not specified, this action returns the status of all configuration
-         * recorders associated with the account.</p>  <p>&gt;You can specify only
-         * one configuration recorder for each Amazon Web Services Region for each account.
-         * For a detailed status of recording events over time, add your Config events to
-         * Amazon CloudWatch metrics and use CloudWatch metrics.</p> <p><h3>See
-         * Also:</h3>   <a
+         * <p>Returns the current status of the configuration recorder you specify as well
+         * as the status of the last recording event for the configuration recorders.</p>
+         * <p>For a detailed status of recording events over time, add your Config events
+         * to Amazon CloudWatch metrics and use CloudWatch metrics.</p> <p>If a
+         * configuration recorder is not specified, this operation returns the status for
+         * the customer managed configuration recorder configured for the account, if
+         * applicable.</p>  <p>When making a request to this operation, you can only
+         * specify one configuration recorder.</p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DescribeConfigurationRecorderStatus">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeConfigurationRecorderStatusOutcome DescribeConfigurationRecorderStatus(const Model::DescribeConfigurationRecorderStatusRequest& request) const;
+        virtual Model::DescribeConfigurationRecorderStatusOutcome DescribeConfigurationRecorderStatus(const Model::DescribeConfigurationRecorderStatusRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeConfigurationRecorderStatus that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeConfigurationRecorderStatusRequestT = Model::DescribeConfigurationRecorderStatusRequest>
-        Model::DescribeConfigurationRecorderStatusOutcomeCallable DescribeConfigurationRecorderStatusCallable(const DescribeConfigurationRecorderStatusRequestT& request) const
+        Model::DescribeConfigurationRecorderStatusOutcomeCallable DescribeConfigurationRecorderStatusCallable(const DescribeConfigurationRecorderStatusRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::DescribeConfigurationRecorderStatus, request);
         }
@@ -925,27 +1018,27 @@ namespace ConfigService
          * An Async wrapper for DescribeConfigurationRecorderStatus that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeConfigurationRecorderStatusRequestT = Model::DescribeConfigurationRecorderStatusRequest>
-        void DescribeConfigurationRecorderStatusAsync(const DescribeConfigurationRecorderStatusRequestT& request, const DescribeConfigurationRecorderStatusResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeConfigurationRecorderStatusAsync(const DescribeConfigurationRecorderStatusResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeConfigurationRecorderStatusRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::DescribeConfigurationRecorderStatus, request, handler, context);
         }
 
         /**
-         * <p>Returns the details for the specified configuration recorders. If the
-         * configuration recorder is not specified, this action returns the details for all
-         * configuration recorders associated with the account.</p>  <p>You can
-         * specify only one configuration recorder for each Amazon Web Services Region for
-         * each account.</p> <p><h3>See Also:</h3>   <a
+         * <p>Returns details for the configuration recorder you specify.</p> <p>If a
+         * configuration recorder is not specified, this operation returns details for the
+         * customer managed configuration recorder configured for the account, if
+         * applicable.</p>  <p>When making a request to this operation, you can only
+         * specify one configuration recorder.</p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DescribeConfigurationRecorders">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeConfigurationRecordersOutcome DescribeConfigurationRecorders(const Model::DescribeConfigurationRecordersRequest& request) const;
+        virtual Model::DescribeConfigurationRecordersOutcome DescribeConfigurationRecorders(const Model::DescribeConfigurationRecordersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeConfigurationRecorders that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeConfigurationRecordersRequestT = Model::DescribeConfigurationRecordersRequest>
-        Model::DescribeConfigurationRecordersOutcomeCallable DescribeConfigurationRecordersCallable(const DescribeConfigurationRecordersRequestT& request) const
+        Model::DescribeConfigurationRecordersOutcomeCallable DescribeConfigurationRecordersCallable(const DescribeConfigurationRecordersRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::DescribeConfigurationRecorders, request);
         }
@@ -954,7 +1047,7 @@ namespace ConfigService
          * An Async wrapper for DescribeConfigurationRecorders that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeConfigurationRecordersRequestT = Model::DescribeConfigurationRecordersRequest>
-        void DescribeConfigurationRecordersAsync(const DescribeConfigurationRecordersRequestT& request, const DescribeConfigurationRecordersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeConfigurationRecordersAsync(const DescribeConfigurationRecordersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeConfigurationRecordersRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::DescribeConfigurationRecorders, request, handler, context);
         }
@@ -992,13 +1085,13 @@ namespace ConfigService
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DescribeConformancePackStatus">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeConformancePackStatusOutcome DescribeConformancePackStatus(const Model::DescribeConformancePackStatusRequest& request) const;
+        virtual Model::DescribeConformancePackStatusOutcome DescribeConformancePackStatus(const Model::DescribeConformancePackStatusRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeConformancePackStatus that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeConformancePackStatusRequestT = Model::DescribeConformancePackStatusRequest>
-        Model::DescribeConformancePackStatusOutcomeCallable DescribeConformancePackStatusCallable(const DescribeConformancePackStatusRequestT& request) const
+        Model::DescribeConformancePackStatusOutcomeCallable DescribeConformancePackStatusCallable(const DescribeConformancePackStatusRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::DescribeConformancePackStatus, request);
         }
@@ -1007,7 +1100,7 @@ namespace ConfigService
          * An Async wrapper for DescribeConformancePackStatus that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeConformancePackStatusRequestT = Model::DescribeConformancePackStatusRequest>
-        void DescribeConformancePackStatusAsync(const DescribeConformancePackStatusRequestT& request, const DescribeConformancePackStatusResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeConformancePackStatusAsync(const DescribeConformancePackStatusResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeConformancePackStatusRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::DescribeConformancePackStatus, request, handler, context);
         }
@@ -1018,13 +1111,13 @@ namespace ConfigService
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DescribeConformancePacks">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeConformancePacksOutcome DescribeConformancePacks(const Model::DescribeConformancePacksRequest& request) const;
+        virtual Model::DescribeConformancePacksOutcome DescribeConformancePacks(const Model::DescribeConformancePacksRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeConformancePacks that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeConformancePacksRequestT = Model::DescribeConformancePacksRequest>
-        Model::DescribeConformancePacksOutcomeCallable DescribeConformancePacksCallable(const DescribeConformancePacksRequestT& request) const
+        Model::DescribeConformancePacksOutcomeCallable DescribeConformancePacksCallable(const DescribeConformancePacksRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::DescribeConformancePacks, request);
         }
@@ -1033,27 +1126,27 @@ namespace ConfigService
          * An Async wrapper for DescribeConformancePacks that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeConformancePacksRequestT = Model::DescribeConformancePacksRequest>
-        void DescribeConformancePacksAsync(const DescribeConformancePacksRequestT& request, const DescribeConformancePacksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeConformancePacksAsync(const DescribeConformancePacksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeConformancePacksRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::DescribeConformancePacks, request, handler, context);
         }
 
         /**
          * <p>Returns the current status of the specified delivery channel. If a delivery
-         * channel is not specified, this action returns the current status of all delivery
-         * channels associated with the account.</p>  <p>Currently, you can specify
-         * only one delivery channel per region in your account.</p> <p><h3>See
-         * Also:</h3>   <a
+         * channel is not specified, this operation returns the current status of all
+         * delivery channels associated with the account.</p>  <p>Currently, you can
+         * specify only one delivery channel per region in your account.</p>
+         * <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DescribeDeliveryChannelStatus">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeDeliveryChannelStatusOutcome DescribeDeliveryChannelStatus(const Model::DescribeDeliveryChannelStatusRequest& request) const;
+        virtual Model::DescribeDeliveryChannelStatusOutcome DescribeDeliveryChannelStatus(const Model::DescribeDeliveryChannelStatusRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeDeliveryChannelStatus that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeDeliveryChannelStatusRequestT = Model::DescribeDeliveryChannelStatusRequest>
-        Model::DescribeDeliveryChannelStatusOutcomeCallable DescribeDeliveryChannelStatusCallable(const DescribeDeliveryChannelStatusRequestT& request) const
+        Model::DescribeDeliveryChannelStatusOutcomeCallable DescribeDeliveryChannelStatusCallable(const DescribeDeliveryChannelStatusRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::DescribeDeliveryChannelStatus, request);
         }
@@ -1062,27 +1155,27 @@ namespace ConfigService
          * An Async wrapper for DescribeDeliveryChannelStatus that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeDeliveryChannelStatusRequestT = Model::DescribeDeliveryChannelStatusRequest>
-        void DescribeDeliveryChannelStatusAsync(const DescribeDeliveryChannelStatusRequestT& request, const DescribeDeliveryChannelStatusResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeDeliveryChannelStatusAsync(const DescribeDeliveryChannelStatusResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeDeliveryChannelStatusRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::DescribeDeliveryChannelStatus, request, handler, context);
         }
 
         /**
          * <p>Returns details about the specified delivery channel. If a delivery channel
-         * is not specified, this action returns the details of all delivery channels
+         * is not specified, this operation returns the details of all delivery channels
          * associated with the account.</p>  <p>Currently, you can specify only one
          * delivery channel per region in your account.</p> <p><h3>See Also:</h3>  
          * <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DescribeDeliveryChannels">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeDeliveryChannelsOutcome DescribeDeliveryChannels(const Model::DescribeDeliveryChannelsRequest& request) const;
+        virtual Model::DescribeDeliveryChannelsOutcome DescribeDeliveryChannels(const Model::DescribeDeliveryChannelsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeDeliveryChannels that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeDeliveryChannelsRequestT = Model::DescribeDeliveryChannelsRequest>
-        Model::DescribeDeliveryChannelsOutcomeCallable DescribeDeliveryChannelsCallable(const DescribeDeliveryChannelsRequestT& request) const
+        Model::DescribeDeliveryChannelsOutcomeCallable DescribeDeliveryChannelsCallable(const DescribeDeliveryChannelsRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::DescribeDeliveryChannels, request);
         }
@@ -1091,7 +1184,7 @@ namespace ConfigService
          * An Async wrapper for DescribeDeliveryChannels that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeDeliveryChannelsRequestT = Model::DescribeDeliveryChannelsRequest>
-        void DescribeDeliveryChannelsAsync(const DescribeDeliveryChannelsRequestT& request, const DescribeDeliveryChannelsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeDeliveryChannelsAsync(const DescribeDeliveryChannelsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeDeliveryChannelsRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::DescribeDeliveryChannels, request, handler, context);
         }
@@ -1107,13 +1200,13 @@ namespace ConfigService
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DescribeOrganizationConfigRuleStatuses">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeOrganizationConfigRuleStatusesOutcome DescribeOrganizationConfigRuleStatuses(const Model::DescribeOrganizationConfigRuleStatusesRequest& request) const;
+        virtual Model::DescribeOrganizationConfigRuleStatusesOutcome DescribeOrganizationConfigRuleStatuses(const Model::DescribeOrganizationConfigRuleStatusesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeOrganizationConfigRuleStatuses that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeOrganizationConfigRuleStatusesRequestT = Model::DescribeOrganizationConfigRuleStatusesRequest>
-        Model::DescribeOrganizationConfigRuleStatusesOutcomeCallable DescribeOrganizationConfigRuleStatusesCallable(const DescribeOrganizationConfigRuleStatusesRequestT& request) const
+        Model::DescribeOrganizationConfigRuleStatusesOutcomeCallable DescribeOrganizationConfigRuleStatusesCallable(const DescribeOrganizationConfigRuleStatusesRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::DescribeOrganizationConfigRuleStatuses, request);
         }
@@ -1122,7 +1215,7 @@ namespace ConfigService
          * An Async wrapper for DescribeOrganizationConfigRuleStatuses that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeOrganizationConfigRuleStatusesRequestT = Model::DescribeOrganizationConfigRuleStatusesRequest>
-        void DescribeOrganizationConfigRuleStatusesAsync(const DescribeOrganizationConfigRuleStatusesRequestT& request, const DescribeOrganizationConfigRuleStatusesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeOrganizationConfigRuleStatusesAsync(const DescribeOrganizationConfigRuleStatusesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeOrganizationConfigRuleStatusesRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::DescribeOrganizationConfigRuleStatuses, request, handler, context);
         }
@@ -1147,13 +1240,13 @@ namespace ConfigService
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DescribeOrganizationConfigRules">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeOrganizationConfigRulesOutcome DescribeOrganizationConfigRules(const Model::DescribeOrganizationConfigRulesRequest& request) const;
+        virtual Model::DescribeOrganizationConfigRulesOutcome DescribeOrganizationConfigRules(const Model::DescribeOrganizationConfigRulesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeOrganizationConfigRules that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeOrganizationConfigRulesRequestT = Model::DescribeOrganizationConfigRulesRequest>
-        Model::DescribeOrganizationConfigRulesOutcomeCallable DescribeOrganizationConfigRulesCallable(const DescribeOrganizationConfigRulesRequestT& request) const
+        Model::DescribeOrganizationConfigRulesOutcomeCallable DescribeOrganizationConfigRulesCallable(const DescribeOrganizationConfigRulesRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::DescribeOrganizationConfigRules, request);
         }
@@ -1162,7 +1255,7 @@ namespace ConfigService
          * An Async wrapper for DescribeOrganizationConfigRules that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeOrganizationConfigRulesRequestT = Model::DescribeOrganizationConfigRulesRequest>
-        void DescribeOrganizationConfigRulesAsync(const DescribeOrganizationConfigRulesRequestT& request, const DescribeOrganizationConfigRulesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeOrganizationConfigRulesAsync(const DescribeOrganizationConfigRulesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeOrganizationConfigRulesRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::DescribeOrganizationConfigRules, request, handler, context);
         }
@@ -1179,13 +1272,13 @@ namespace ConfigService
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DescribeOrganizationConformancePackStatuses">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeOrganizationConformancePackStatusesOutcome DescribeOrganizationConformancePackStatuses(const Model::DescribeOrganizationConformancePackStatusesRequest& request) const;
+        virtual Model::DescribeOrganizationConformancePackStatusesOutcome DescribeOrganizationConformancePackStatuses(const Model::DescribeOrganizationConformancePackStatusesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeOrganizationConformancePackStatuses that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeOrganizationConformancePackStatusesRequestT = Model::DescribeOrganizationConformancePackStatusesRequest>
-        Model::DescribeOrganizationConformancePackStatusesOutcomeCallable DescribeOrganizationConformancePackStatusesCallable(const DescribeOrganizationConformancePackStatusesRequestT& request) const
+        Model::DescribeOrganizationConformancePackStatusesOutcomeCallable DescribeOrganizationConformancePackStatusesCallable(const DescribeOrganizationConformancePackStatusesRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::DescribeOrganizationConformancePackStatuses, request);
         }
@@ -1194,7 +1287,7 @@ namespace ConfigService
          * An Async wrapper for DescribeOrganizationConformancePackStatuses that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeOrganizationConformancePackStatusesRequestT = Model::DescribeOrganizationConformancePackStatusesRequest>
-        void DescribeOrganizationConformancePackStatusesAsync(const DescribeOrganizationConformancePackStatusesRequestT& request, const DescribeOrganizationConformancePackStatusesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeOrganizationConformancePackStatusesAsync(const DescribeOrganizationConformancePackStatusesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeOrganizationConformancePackStatusesRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::DescribeOrganizationConformancePackStatuses, request, handler, context);
         }
@@ -1219,13 +1312,13 @@ namespace ConfigService
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DescribeOrganizationConformancePacks">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeOrganizationConformancePacksOutcome DescribeOrganizationConformancePacks(const Model::DescribeOrganizationConformancePacksRequest& request) const;
+        virtual Model::DescribeOrganizationConformancePacksOutcome DescribeOrganizationConformancePacks(const Model::DescribeOrganizationConformancePacksRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeOrganizationConformancePacks that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeOrganizationConformancePacksRequestT = Model::DescribeOrganizationConformancePacksRequest>
-        Model::DescribeOrganizationConformancePacksOutcomeCallable DescribeOrganizationConformancePacksCallable(const DescribeOrganizationConformancePacksRequestT& request) const
+        Model::DescribeOrganizationConformancePacksOutcomeCallable DescribeOrganizationConformancePacksCallable(const DescribeOrganizationConformancePacksRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::DescribeOrganizationConformancePacks, request);
         }
@@ -1234,7 +1327,7 @@ namespace ConfigService
          * An Async wrapper for DescribeOrganizationConformancePacks that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeOrganizationConformancePacksRequestT = Model::DescribeOrganizationConformancePacksRequest>
-        void DescribeOrganizationConformancePacksAsync(const DescribeOrganizationConformancePacksRequestT& request, const DescribeOrganizationConformancePacksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeOrganizationConformancePacksAsync(const DescribeOrganizationConformancePacksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeOrganizationConformancePacksRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::DescribeOrganizationConformancePacks, request, handler, context);
         }
@@ -1245,13 +1338,13 @@ namespace ConfigService
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DescribePendingAggregationRequests">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribePendingAggregationRequestsOutcome DescribePendingAggregationRequests(const Model::DescribePendingAggregationRequestsRequest& request) const;
+        virtual Model::DescribePendingAggregationRequestsOutcome DescribePendingAggregationRequests(const Model::DescribePendingAggregationRequestsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribePendingAggregationRequests that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribePendingAggregationRequestsRequestT = Model::DescribePendingAggregationRequestsRequest>
-        Model::DescribePendingAggregationRequestsOutcomeCallable DescribePendingAggregationRequestsCallable(const DescribePendingAggregationRequestsRequestT& request) const
+        Model::DescribePendingAggregationRequestsOutcomeCallable DescribePendingAggregationRequestsCallable(const DescribePendingAggregationRequestsRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::DescribePendingAggregationRequests, request);
         }
@@ -1260,7 +1353,7 @@ namespace ConfigService
          * An Async wrapper for DescribePendingAggregationRequests that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribePendingAggregationRequestsRequestT = Model::DescribePendingAggregationRequestsRequest>
-        void DescribePendingAggregationRequestsAsync(const DescribePendingAggregationRequestsRequestT& request, const DescribePendingAggregationRequestsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribePendingAggregationRequestsAsync(const DescribePendingAggregationRequestsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribePendingAggregationRequestsRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::DescribePendingAggregationRequests, request, handler, context);
         }
@@ -1357,20 +1450,20 @@ namespace ConfigService
 
         /**
          * <p>Returns the details of one or more retention configurations. If the retention
-         * configuration name is not specified, this action returns the details for all the
-         * retention configurations for that account.</p>  <p>Currently, Config
+         * configuration name is not specified, this operation returns the details for all
+         * the retention configurations for that account.</p>  <p>Currently, Config
          * supports only one retention configuration per region in your account.</p>
          * <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DescribeRetentionConfigurations">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeRetentionConfigurationsOutcome DescribeRetentionConfigurations(const Model::DescribeRetentionConfigurationsRequest& request) const;
+        virtual Model::DescribeRetentionConfigurationsOutcome DescribeRetentionConfigurations(const Model::DescribeRetentionConfigurationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeRetentionConfigurations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeRetentionConfigurationsRequestT = Model::DescribeRetentionConfigurationsRequest>
-        Model::DescribeRetentionConfigurationsOutcomeCallable DescribeRetentionConfigurationsCallable(const DescribeRetentionConfigurationsRequestT& request) const
+        Model::DescribeRetentionConfigurationsOutcomeCallable DescribeRetentionConfigurationsCallable(const DescribeRetentionConfigurationsRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::DescribeRetentionConfigurations, request);
         }
@@ -1379,9 +1472,41 @@ namespace ConfigService
          * An Async wrapper for DescribeRetentionConfigurations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeRetentionConfigurationsRequestT = Model::DescribeRetentionConfigurationsRequest>
-        void DescribeRetentionConfigurationsAsync(const DescribeRetentionConfigurationsRequestT& request, const DescribeRetentionConfigurationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeRetentionConfigurationsAsync(const DescribeRetentionConfigurationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeRetentionConfigurationsRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::DescribeRetentionConfigurations, request, handler, context);
+        }
+
+        /**
+         * <p>Removes all resource types specified in the <code>ResourceTypes</code> list
+         * from the <a
+         * href="https://docs.aws.amazon.com/config/latest/APIReference/API_RecordingGroup.html">RecordingGroup</a>
+         * of configuration recorder and excludes these resource types when recording.</p>
+         * <p>For this operation, the configuration recorder must use a <a
+         * href="https://docs.aws.amazon.com/config/latest/APIReference/API_RecordingStrategy.html">RecordingStrategy</a>
+         * that is either <code>INCLUSION_BY_RESOURCE_TYPES</code> or
+         * <code>EXCLUSION_BY_RESOURCE_TYPES</code>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/DisassociateResourceTypes">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DisassociateResourceTypesOutcome DisassociateResourceTypes(const Model::DisassociateResourceTypesRequest& request) const;
+
+        /**
+         * A Callable wrapper for DisassociateResourceTypes that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DisassociateResourceTypesRequestT = Model::DisassociateResourceTypesRequest>
+        Model::DisassociateResourceTypesOutcomeCallable DisassociateResourceTypesCallable(const DisassociateResourceTypesRequestT& request) const
+        {
+            return SubmitCallable(&ConfigServiceClient::DisassociateResourceTypes, request);
+        }
+
+        /**
+         * An Async wrapper for DisassociateResourceTypes that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DisassociateResourceTypesRequestT = Model::DisassociateResourceTypesRequest>
+        void DisassociateResourceTypesAsync(const DisassociateResourceTypesRequestT& request, const DisassociateResourceTypesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&ConfigServiceClient::DisassociateResourceTypes, request, handler, context);
         }
 
         /**
@@ -1505,7 +1630,8 @@ namespace ConfigService
 
         /**
          * <p>Returns configuration item that is aggregated for your specific resource in a
-         * specific source account and region.</p><p><h3>See Also:</h3>   <a
+         * specific source account and region.</p>  <p>The API does not return
+         * results for deleted resources.</p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/GetAggregateResourceConfig">AWS
          * API Reference</a></p>
          */
@@ -1565,13 +1691,13 @@ namespace ConfigService
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/GetComplianceDetailsByResource">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetComplianceDetailsByResourceOutcome GetComplianceDetailsByResource(const Model::GetComplianceDetailsByResourceRequest& request) const;
+        virtual Model::GetComplianceDetailsByResourceOutcome GetComplianceDetailsByResource(const Model::GetComplianceDetailsByResourceRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetComplianceDetailsByResource that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetComplianceDetailsByResourceRequestT = Model::GetComplianceDetailsByResourceRequest>
-        Model::GetComplianceDetailsByResourceOutcomeCallable GetComplianceDetailsByResourceCallable(const GetComplianceDetailsByResourceRequestT& request) const
+        Model::GetComplianceDetailsByResourceOutcomeCallable GetComplianceDetailsByResourceCallable(const GetComplianceDetailsByResourceRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::GetComplianceDetailsByResource, request);
         }
@@ -1580,7 +1706,7 @@ namespace ConfigService
          * An Async wrapper for GetComplianceDetailsByResource that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetComplianceDetailsByResourceRequestT = Model::GetComplianceDetailsByResourceRequest>
-        void GetComplianceDetailsByResourceAsync(const GetComplianceDetailsByResourceRequestT& request, const GetComplianceDetailsByResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetComplianceDetailsByResourceAsync(const GetComplianceDetailsByResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetComplianceDetailsByResourceRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::GetComplianceDetailsByResource, request, handler, context);
         }
@@ -1619,13 +1745,13 @@ namespace ConfigService
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/GetComplianceSummaryByResourceType">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetComplianceSummaryByResourceTypeOutcome GetComplianceSummaryByResourceType(const Model::GetComplianceSummaryByResourceTypeRequest& request) const;
+        virtual Model::GetComplianceSummaryByResourceTypeOutcome GetComplianceSummaryByResourceType(const Model::GetComplianceSummaryByResourceTypeRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetComplianceSummaryByResourceType that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetComplianceSummaryByResourceTypeRequestT = Model::GetComplianceSummaryByResourceTypeRequest>
-        Model::GetComplianceSummaryByResourceTypeOutcomeCallable GetComplianceSummaryByResourceTypeCallable(const GetComplianceSummaryByResourceTypeRequestT& request) const
+        Model::GetComplianceSummaryByResourceTypeOutcomeCallable GetComplianceSummaryByResourceTypeCallable(const GetComplianceSummaryByResourceTypeRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::GetComplianceSummaryByResourceType, request);
         }
@@ -1634,7 +1760,7 @@ namespace ConfigService
          * An Async wrapper for GetComplianceSummaryByResourceType that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetComplianceSummaryByResourceTypeRequestT = Model::GetComplianceSummaryByResourceTypeRequest>
-        void GetComplianceSummaryByResourceTypeAsync(const GetComplianceSummaryByResourceTypeRequestT& request, const GetComplianceSummaryByResourceTypeResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetComplianceSummaryByResourceTypeAsync(const GetComplianceSummaryByResourceTypeResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetComplianceSummaryByResourceTypeRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::GetComplianceSummaryByResourceType, request, handler, context);
         }
@@ -1698,13 +1824,13 @@ namespace ConfigService
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/GetCustomRulePolicy">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetCustomRulePolicyOutcome GetCustomRulePolicy(const Model::GetCustomRulePolicyRequest& request) const;
+        virtual Model::GetCustomRulePolicyOutcome GetCustomRulePolicy(const Model::GetCustomRulePolicyRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetCustomRulePolicy that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetCustomRulePolicyRequestT = Model::GetCustomRulePolicyRequest>
-        Model::GetCustomRulePolicyOutcomeCallable GetCustomRulePolicyCallable(const GetCustomRulePolicyRequestT& request) const
+        Model::GetCustomRulePolicyOutcomeCallable GetCustomRulePolicyCallable(const GetCustomRulePolicyRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::GetCustomRulePolicy, request);
         }
@@ -1713,7 +1839,7 @@ namespace ConfigService
          * An Async wrapper for GetCustomRulePolicy that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetCustomRulePolicyRequestT = Model::GetCustomRulePolicyRequest>
-        void GetCustomRulePolicyAsync(const GetCustomRulePolicyRequestT& request, const GetCustomRulePolicyResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetCustomRulePolicyAsync(const GetCustomRulePolicyResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetCustomRulePolicyRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::GetCustomRulePolicy, request, handler, context);
         }
@@ -1744,13 +1870,13 @@ namespace ConfigService
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/GetDiscoveredResourceCounts">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetDiscoveredResourceCountsOutcome GetDiscoveredResourceCounts(const Model::GetDiscoveredResourceCountsRequest& request) const;
+        virtual Model::GetDiscoveredResourceCountsOutcome GetDiscoveredResourceCounts(const Model::GetDiscoveredResourceCountsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetDiscoveredResourceCounts that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetDiscoveredResourceCountsRequestT = Model::GetDiscoveredResourceCountsRequest>
-        Model::GetDiscoveredResourceCountsOutcomeCallable GetDiscoveredResourceCountsCallable(const GetDiscoveredResourceCountsRequestT& request) const
+        Model::GetDiscoveredResourceCountsOutcomeCallable GetDiscoveredResourceCountsCallable(const GetDiscoveredResourceCountsRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::GetDiscoveredResourceCounts, request);
         }
@@ -1759,7 +1885,7 @@ namespace ConfigService
          * An Async wrapper for GetDiscoveredResourceCounts that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetDiscoveredResourceCountsRequestT = Model::GetDiscoveredResourceCountsRequest>
-        void GetDiscoveredResourceCountsAsync(const GetDiscoveredResourceCountsRequestT& request, const GetDiscoveredResourceCountsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetDiscoveredResourceCountsAsync(const GetDiscoveredResourceCountsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetDiscoveredResourceCountsRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::GetDiscoveredResourceCounts, request, handler, context);
         }
@@ -1980,6 +2106,32 @@ namespace ConfigService
         }
 
         /**
+         * <p>Returns a list of configuration recorders depending on the filters you
+         * specify.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/ListConfigurationRecorders">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListConfigurationRecordersOutcome ListConfigurationRecorders(const Model::ListConfigurationRecordersRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for ListConfigurationRecorders that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListConfigurationRecordersRequestT = Model::ListConfigurationRecordersRequest>
+        Model::ListConfigurationRecordersOutcomeCallable ListConfigurationRecordersCallable(const ListConfigurationRecordersRequestT& request = {}) const
+        {
+            return SubmitCallable(&ConfigServiceClient::ListConfigurationRecorders, request);
+        }
+
+        /**
+         * An Async wrapper for ListConfigurationRecorders that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListConfigurationRecordersRequestT = Model::ListConfigurationRecordersRequest>
+        void ListConfigurationRecordersAsync(const ListConfigurationRecordersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListConfigurationRecordersRequestT& request = {}) const
+        {
+            return SubmitAsync(&ConfigServiceClient::ListConfigurationRecorders, request, handler, context);
+        }
+
+        /**
          * <p>Returns a list of conformance pack compliance scores. A compliance score is
          * the percentage of the number of compliant rule-resource combinations in a
          * conformance pack compared to the number of total possible rule-resource
@@ -1992,13 +2144,13 @@ namespace ConfigService
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/ListConformancePackComplianceScores">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListConformancePackComplianceScoresOutcome ListConformancePackComplianceScores(const Model::ListConformancePackComplianceScoresRequest& request) const;
+        virtual Model::ListConformancePackComplianceScoresOutcome ListConformancePackComplianceScores(const Model::ListConformancePackComplianceScoresRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListConformancePackComplianceScores that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListConformancePackComplianceScoresRequestT = Model::ListConformancePackComplianceScoresRequest>
-        Model::ListConformancePackComplianceScoresOutcomeCallable ListConformancePackComplianceScoresCallable(const ListConformancePackComplianceScoresRequestT& request) const
+        Model::ListConformancePackComplianceScoresOutcomeCallable ListConformancePackComplianceScoresCallable(const ListConformancePackComplianceScoresRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::ListConformancePackComplianceScores, request);
         }
@@ -2007,7 +2159,7 @@ namespace ConfigService
          * An Async wrapper for ListConformancePackComplianceScores that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListConformancePackComplianceScoresRequestT = Model::ListConformancePackComplianceScoresRequest>
-        void ListConformancePackComplianceScoresAsync(const ListConformancePackComplianceScoresRequestT& request, const ListConformancePackComplianceScoresResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListConformancePackComplianceScoresAsync(const ListConformancePackComplianceScoresResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListConformancePackComplianceScoresRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::ListConformancePackComplianceScores, request, handler, context);
         }
@@ -2054,13 +2206,13 @@ namespace ConfigService
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/ListResourceEvaluations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListResourceEvaluationsOutcome ListResourceEvaluations(const Model::ListResourceEvaluationsRequest& request) const;
+        virtual Model::ListResourceEvaluationsOutcome ListResourceEvaluations(const Model::ListResourceEvaluationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListResourceEvaluations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListResourceEvaluationsRequestT = Model::ListResourceEvaluationsRequest>
-        Model::ListResourceEvaluationsOutcomeCallable ListResourceEvaluationsCallable(const ListResourceEvaluationsRequestT& request) const
+        Model::ListResourceEvaluationsOutcomeCallable ListResourceEvaluationsCallable(const ListResourceEvaluationsRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::ListResourceEvaluations, request);
         }
@@ -2069,7 +2221,7 @@ namespace ConfigService
          * An Async wrapper for ListResourceEvaluations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListResourceEvaluationsRequestT = Model::ListResourceEvaluationsRequest>
-        void ListResourceEvaluationsAsync(const ListResourceEvaluationsRequestT& request, const ListResourceEvaluationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListResourceEvaluationsAsync(const ListResourceEvaluationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListResourceEvaluationsRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::ListResourceEvaluations, request, handler, context);
         }
@@ -2081,13 +2233,13 @@ namespace ConfigService
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/ListStoredQueries">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListStoredQueriesOutcome ListStoredQueries(const Model::ListStoredQueriesRequest& request) const;
+        virtual Model::ListStoredQueriesOutcome ListStoredQueries(const Model::ListStoredQueriesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListStoredQueries that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListStoredQueriesRequestT = Model::ListStoredQueriesRequest>
-        Model::ListStoredQueriesOutcomeCallable ListStoredQueriesCallable(const ListStoredQueriesRequestT& request) const
+        Model::ListStoredQueriesOutcomeCallable ListStoredQueriesCallable(const ListStoredQueriesRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::ListStoredQueries, request);
         }
@@ -2096,7 +2248,7 @@ namespace ConfigService
          * An Async wrapper for ListStoredQueries that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListStoredQueriesRequestT = Model::ListStoredQueriesRequest>
-        void ListStoredQueriesAsync(const ListStoredQueriesRequestT& request, const ListStoredQueriesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListStoredQueriesAsync(const ListStoredQueriesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListStoredQueriesRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::ListStoredQueries, request, handler, context);
         }
@@ -2128,12 +2280,18 @@ namespace ConfigService
 
         /**
          * <p>Authorizes the aggregator account and region to collect data from the source
-         * account and region. </p>  <p> <code>PutAggregationAuthorization</code> is
-         * an idempotent API. Subsequent requests won’t create a duplicate resource if one
-         * was already created. If a following request has different <code>tags</code>
-         * values, Config will ignore these differences and treat it as an idempotent
-         * request of the previous. In this case, <code>tags</code> will not be updated,
-         * even if they are different.</p> <p><h3>See Also:</h3>   <a
+         * account and region. </p>  <p> <b>Tags are added at creation and cannot be
+         * updated with this operation</b> </p> <p>
+         * <code>PutAggregationAuthorization</code> is an idempotent API. Subsequent
+         * requests won’t create a duplicate resource if one was already created. If a
+         * following request has different <code>tags</code> values, Config will ignore
+         * these differences and treat it as an idempotent request of the previous. In this
+         * case, <code>tags</code> will not be updated, even if they are different.</p>
+         * <p>Use <a
+         * href="https://docs.aws.amazon.com/config/latest/APIReference/API_TagResource.html">TagResource</a>
+         * and <a
+         * href="https://docs.aws.amazon.com/config/latest/APIReference/API_UntagResource.html">UntagResource</a>
+         * to update tags after creation.</p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/PutAggregationAuthorization">AWS
          * API Reference</a></p>
          */
@@ -2195,12 +2353,16 @@ namespace ConfigService
          * rules, see <a
          * href="https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config.html">Evaluating
          * Resources with Config Rules</a> in the <i>Config Developer Guide</i>.</p> 
-         * <p> <code>PutConfigRule</code> is an idempotent API. Subsequent requests won’t
-         * create a duplicate resource if one was already created. If a following request
-         * has different <code>tags</code> values, Config will ignore these differences and
-         * treat it as an idempotent request of the previous. In this case,
-         * <code>tags</code> will not be updated, even if they are different.</p>
-         * <p><h3>See Also:</h3>   <a
+         * <p> <b>Tags are added at creation and cannot be updated with this operation</b>
+         * </p> <p> <code>PutConfigRule</code> is an idempotent API. Subsequent requests
+         * won’t create a duplicate resource if one was already created. If a following
+         * request has different <code>tags</code> values, Config will ignore these
+         * differences and treat it as an idempotent request of the previous. In this case,
+         * <code>tags</code> will not be updated, even if they are different.</p> <p>Use <a
+         * href="https://docs.aws.amazon.com/config/latest/APIReference/API_TagResource.html">TagResource</a>
+         * and <a
+         * href="https://docs.aws.amazon.com/config/latest/APIReference/API_UntagResource.html">UntagResource</a>
+         * to update tags after creation.</p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/PutConfigRule">AWS
          * API Reference</a></p>
          */
@@ -2242,12 +2404,17 @@ namespace ConfigService
          * administrator, see <a
          * href="https://docs.aws.amazon.com/config/latest/developerguide/set-up-aggregator-cli.html#register-a-delegated-administrator-cli">Register
          * a Delegated Administrator</a> in the <i>Config developer guide</i>. </p> 
-         *  <p> <code>PutConfigurationAggregator</code> is an idempotent API.
-         * Subsequent requests won’t create a duplicate resource if one was already
+         *  <p> <b>Tags are added at creation and cannot be updated with this
+         * operation</b> </p> <p> <code>PutConfigurationAggregator</code> is an idempotent
+         * API. Subsequent requests won’t create a duplicate resource if one was already
          * created. If a following request has different <code>tags</code> values, Config
          * will ignore these differences and treat it as an idempotent request of the
          * previous. In this case, <code>tags</code> will not be updated, even if they are
-         * different.</p> <p><h3>See Also:</h3>   <a
+         * different.</p> <p>Use <a
+         * href="https://docs.aws.amazon.com/config/latest/APIReference/API_TagResource.html">TagResource</a>
+         * and <a
+         * href="https://docs.aws.amazon.com/config/latest/APIReference/API_UntagResource.html">UntagResource</a>
+         * to update tags after creation.</p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/PutConfigurationAggregator">AWS
          * API Reference</a></p>
          */
@@ -2272,17 +2439,35 @@ namespace ConfigService
         }
 
         /**
-         * <p>Creates a new configuration recorder to record configuration changes for
-         * specified resource types.</p> <p>You can also use this action to change the
-         * <code>roleARN</code> or the <code>recordingGroup</code> of an existing recorder.
-         * For more information, see <a
+         * <p>Creates or updates the customer managed configuration recorder.</p> <p>You
+         * can use this operation to create a new customer managed configuration recorder
+         * or to update the <code>roleARN</code> and the <code>recordingGroup</code> for an
+         * existing customer managed configuration recorder.</p> <p>To start the customer
+         * managed configuration recorder and begin recording configuration changes for the
+         * resource types you specify, use the <a
+         * href="https://docs.aws.amazon.com/config/latest/APIReference/API_StartConfigurationRecorder.html">StartConfigurationRecorder</a>
+         * operation.</p> <p>For more information, see <a
          * href="https://docs.aws.amazon.com/config/latest/developerguide/stop-start-recorder.html">
-         * <b>Managing the Configuration Recorder</b> </a> in the <i>Config Developer
-         * Guide</i>.</p>  <p>You can specify only one configuration recorder for
-         * each Amazon Web Services Region for each account.</p> <p>If the configuration
-         * recorder does not have the <code>recordingGroup</code> field specified, the
-         * default is to record all supported resource types.</p> <p><h3>See
-         * Also:</h3>   <a
+         * <b>Working with the Configuration Recorder</b> </a> in the <i>Config Developer
+         * Guide</i>.</p>  <p> <b>One customer managed configuration recorder per
+         * account per Region</b> </p> <p>You can create only one customer managed
+         * configuration recorder for each account for each Amazon Web Services Region.</p>
+         * <p> <b>Default is to record all supported resource types, excluding the global
+         * IAM resource types</b> </p> <p>If you have not specified values for the
+         * <code>recordingGroup</code> field, the default for the customer managed
+         * configuration recorder is to record all supported resource types, excluding the
+         * global IAM resource types: <code>AWS::IAM::Group</code>,
+         * <code>AWS::IAM::Policy</code>, <code>AWS::IAM::Role</code>, and
+         * <code>AWS::IAM::User</code>.</p> <p> <b>Tags are added at creation and cannot be
+         * updated</b> </p> <p> <code>PutConfigurationRecorder</code> is an idempotent API.
+         * Subsequent requests won’t create a duplicate resource if one was already
+         * created. If a following request has different tags values, Config will ignore
+         * these differences and treat it as an idempotent request of the previous. In this
+         * case, tags will not be updated, even if they are different.</p> <p>Use <a
+         * href="https://docs.aws.amazon.com/config/latest/APIReference/API_TagResource.html">TagResource</a>
+         * and <a
+         * href="https://docs.aws.amazon.com/config/latest/APIReference/API_UntagResource.html">UntagResource</a>
+         * to update tags after creation.</p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/PutConfigurationRecorder">AWS
          * API Reference</a></p>
          */
@@ -2342,19 +2527,15 @@ namespace ConfigService
         }
 
         /**
-         * <p>Creates a delivery channel object to deliver configuration information and
-         * other compliance information to an Amazon S3 bucket and Amazon SNS topic. For
-         * more information, see <a
-         * href="https://docs.aws.amazon.com/config/latest/developerguide/notifications-for-AWS-Config.html">Notifications
-         * that Config Sends to an Amazon SNS topic</a>.</p> <p>Before you can create a
-         * delivery channel, you must create a configuration recorder.</p> <p>You can use
-         * this action to change the Amazon S3 bucket or an Amazon SNS topic of the
-         * existing delivery channel. To change the Amazon S3 bucket or an Amazon SNS
-         * topic, call this action and specify the changed values for the S3 bucket and the
-         * SNS topic. If you specify a different value for either the S3 bucket or the SNS
-         * topic, this action will keep the existing value for the parameter that is not
-         * changed.</p>  <p>You can have only one delivery channel per region in your
-         * account.</p> <p><h3>See Also:</h3>   <a
+         * <p>Creates or updates a delivery channel to deliver configuration information
+         * and other compliance information.</p> <p>You can use this operation to create a
+         * new delivery channel or to update the Amazon S3 bucket and the Amazon SNS topic
+         * of an existing delivery channel.</p> <p>For more information, see <a
+         * href="https://docs.aws.amazon.com/config/latest/developerguide/manage-delivery-channel.html">
+         * <b>Working with the Delivery Channel</b> </a> in the <i>Config Developer
+         * Guide.</i> </p>  <p> <b>One delivery channel per account per Region</b>
+         * </p> <p>You can have only one delivery channel for each account for each Amazon
+         * Web Services Region.</p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/PutDeliveryChannel">AWS
          * API Reference</a></p>
          */
@@ -2380,7 +2561,7 @@ namespace ConfigService
 
         /**
          * <p>Used by an Lambda function to deliver evaluation results to Config. This
-         * action is required in every Lambda function that is invoked by an Config
+         * operation is required in every Lambda function that is invoked by an Config
          * rule.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/PutEvaluations">AWS
          * API Reference</a></p>
@@ -2630,8 +2811,11 @@ namespace ConfigService
          * initiate the possible Config evaluation results, see <a
          * href="https://docs.aws.amazon.com/config/latest/developerguide/config-concepts.html#aws-config-rules">Concepts
          * | Config Rules</a> in the <i>Config Developer Guide</i>.</p>   <p>
-         * <b>Auto remediation can be initiated even for compliant resources</b> </p> <p>If
-         * you enable auto remediation for a specific Config rule using the <a
+         * <b>Exceptions cannot be placed on service-linked remediation actions</b> </p>
+         * <p>You cannot place an exception on service-linked remediation actions, such as
+         * remediation actions put by an organizational conformance pack.</p> 
+         *  <p> <b>Auto remediation can be initiated even for compliant resources</b>
+         * </p> <p>If you enable auto remediation for a specific Config rule using the <a
          * href="https://docs.aws.amazon.com/config/latest/APIReference/emAPI_PutRemediationConfigurations.html">PutRemediationConfigurations</a>
          * API or the Config console, it initiates the remediation process for all
          * non-compliant resources for that specific rule. The auto remediation process
@@ -2732,14 +2916,60 @@ namespace ConfigService
         }
 
         /**
+         * <p>Creates a service-linked configuration recorder that is linked to a specific
+         * Amazon Web Services service based on the <code>ServicePrincipal</code> you
+         * specify.</p> <p>The configuration recorder's <code>name</code>,
+         * <code>recordingGroup</code>, <code>recordingMode</code>, and
+         * <code>recordingScope</code> is set by the service that is linked to the
+         * configuration recorder.</p> <p>For more information, see <a
+         * href="https://docs.aws.amazon.com/config/latest/developerguide/stop-start-recorder.html">
+         * <b>Working with the Configuration Recorder</b> </a> in the <i>Config Developer
+         * Guide</i>.</p> <p>This API creates a service-linked role
+         * <code>AWSServiceRoleForConfig</code> in your account. The service-linked role is
+         * created only when the role does not exist in your account.</p>  <p> <b>The
+         * recording scope determines if you receive configuration items</b> </p> <p>The
+         * recording scope is set by the service that is linked to the configuration
+         * recorder and determines whether you receive configuration items (CIs) in the
+         * delivery channel. If the recording scope is internal, you will not receive CIs
+         * in the delivery channel.</p> <p> <b>Tags are added at creation and cannot be
+         * updated with this operation</b> </p> <p>Use <a
+         * href="https://docs.aws.amazon.com/config/latest/APIReference/API_TagResource.html">TagResource</a>
+         * and <a
+         * href="https://docs.aws.amazon.com/config/latest/APIReference/API_UntagResource.html">UntagResource</a>
+         * to update tags after creation.</p> <p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/PutServiceLinkedConfigurationRecorder">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::PutServiceLinkedConfigurationRecorderOutcome PutServiceLinkedConfigurationRecorder(const Model::PutServiceLinkedConfigurationRecorderRequest& request) const;
+
+        /**
+         * A Callable wrapper for PutServiceLinkedConfigurationRecorder that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename PutServiceLinkedConfigurationRecorderRequestT = Model::PutServiceLinkedConfigurationRecorderRequest>
+        Model::PutServiceLinkedConfigurationRecorderOutcomeCallable PutServiceLinkedConfigurationRecorderCallable(const PutServiceLinkedConfigurationRecorderRequestT& request) const
+        {
+            return SubmitCallable(&ConfigServiceClient::PutServiceLinkedConfigurationRecorder, request);
+        }
+
+        /**
+         * An Async wrapper for PutServiceLinkedConfigurationRecorder that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename PutServiceLinkedConfigurationRecorderRequestT = Model::PutServiceLinkedConfigurationRecorderRequest>
+        void PutServiceLinkedConfigurationRecorderAsync(const PutServiceLinkedConfigurationRecorderRequestT& request, const PutServiceLinkedConfigurationRecorderResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&ConfigServiceClient::PutServiceLinkedConfigurationRecorder, request, handler, context);
+        }
+
+        /**
          * <p>Saves a new query or updates an existing saved query. The
          * <code>QueryName</code> must be unique for a single Amazon Web Services account
          * and a single Amazon Web Services Region. You can create upto 300 queries in a
          * single Amazon Web Services account and a single Amazon Web Services Region.</p>
-         *  <p> <code>PutStoredQuery</code> is an idempotent API. Subsequent requests
-         * won’t create a duplicate resource if one was already created. If a following
-         * request has different <code>tags</code> values, Config will ignore these
-         * differences and treat it as an idempotent request of the previous. In this case,
+         *  <p> <b>Tags are added at creation and cannot be updated</b> </p> <p>
+         * <code>PutStoredQuery</code> is an idempotent API. Subsequent requests won’t
+         * create a duplicate resource if one was already created. If a following request
+         * has different <code>tags</code> values, Config will ignore these differences and
+         * treat it as an idempotent request of the previous. In this case,
          * <code>tags</code> will not be updated, even if they are different.</p>
          * <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/PutStoredQuery">AWS
@@ -2864,13 +3094,13 @@ namespace ConfigService
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/StartConfigRulesEvaluation">AWS
          * API Reference</a></p>
          */
-        virtual Model::StartConfigRulesEvaluationOutcome StartConfigRulesEvaluation(const Model::StartConfigRulesEvaluationRequest& request) const;
+        virtual Model::StartConfigRulesEvaluationOutcome StartConfigRulesEvaluation(const Model::StartConfigRulesEvaluationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for StartConfigRulesEvaluation that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename StartConfigRulesEvaluationRequestT = Model::StartConfigRulesEvaluationRequest>
-        Model::StartConfigRulesEvaluationOutcomeCallable StartConfigRulesEvaluationCallable(const StartConfigRulesEvaluationRequestT& request) const
+        Model::StartConfigRulesEvaluationOutcomeCallable StartConfigRulesEvaluationCallable(const StartConfigRulesEvaluationRequestT& request = {}) const
         {
             return SubmitCallable(&ConfigServiceClient::StartConfigRulesEvaluation, request);
         }
@@ -2879,16 +3109,19 @@ namespace ConfigService
          * An Async wrapper for StartConfigRulesEvaluation that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename StartConfigRulesEvaluationRequestT = Model::StartConfigRulesEvaluationRequest>
-        void StartConfigRulesEvaluationAsync(const StartConfigRulesEvaluationRequestT& request, const StartConfigRulesEvaluationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void StartConfigRulesEvaluationAsync(const StartConfigRulesEvaluationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const StartConfigRulesEvaluationRequestT& request = {}) const
         {
             return SubmitAsync(&ConfigServiceClient::StartConfigRulesEvaluation, request, handler, context);
         }
 
         /**
-         * <p>Starts recording configurations of the Amazon Web Services resources you have
-         * selected to record in your Amazon Web Services account.</p> <p>You must have
-         * created at least one delivery channel to successfully start the configuration
-         * recorder.</p><p><h3>See Also:</h3>   <a
+         * <p>Starts the customer managed configuration recorder. The customer managed
+         * configuration recorder will begin recording configuration changes for the
+         * resource types you specify.</p> <p>You must have created a delivery channel to
+         * successfully start the customer managed configuration recorder. You can use the
+         * <a
+         * href="https://docs.aws.amazon.com/config/latest/APIReference/API_PutDeliveryChannel.html">PutDeliveryChannel</a>
+         * operation to create a delivery channel.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/StartConfigurationRecorder">AWS
          * API Reference</a></p>
          */
@@ -2984,9 +3217,9 @@ namespace ConfigService
         }
 
         /**
-         * <p>Stops recording configurations of the Amazon Web Services resources you have
-         * selected to record in your Amazon Web Services account.</p><p><h3>See Also:</h3>
-         * <a
+         * <p>Stops the customer managed configuration recorder. The customer managed
+         * configuration recorder will stop recording configuration changes for the
+         * resource types you have specified.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/StopConfigurationRecorder">AWS
          * API Reference</a></p>
          */
@@ -3011,11 +3244,11 @@ namespace ConfigService
         }
 
         /**
-         * <p>Associates the specified tags to a resource with the specified resourceArn.
-         * If existing tags on a resource are not specified in the request parameters, they
-         * are not changed. If existing tags are specified, however, then their values will
-         * be updated. When a resource is deleted, the tags associated with that resource
-         * are deleted as well.</p><p><h3>See Also:</h3>   <a
+         * <p>Associates the specified tags to a resource with the specified
+         * <code>ResourceArn</code>. If existing tags on a resource are not specified in
+         * the request parameters, they are not changed. If existing tags are specified,
+         * however, then their values will be updated. When a resource is deleted, the tags
+         * associated with that resource are deleted as well.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/config-2014-11-12/TagResource">AWS
          * API Reference</a></p>
          */
@@ -3069,11 +3302,7 @@ namespace ConfigService
       std::shared_ptr<ConfigServiceEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<ConfigServiceClient>;
-      void init(const ConfigServiceClientConfiguration& clientConfiguration);
 
-      ConfigServiceClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<ConfigServiceEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace ConfigService

@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/servicediscovery/ServiceDiscovery_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/servicediscovery/ServiceDiscoveryServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/servicediscovery/ServiceDiscoveryErrorMarshaller.h>
 
 namespace Aws
 {
 namespace ServiceDiscovery
 {
+  AWS_SERVICEDISCOVERY_API extern const char SERVICE_NAME[];
   /**
    * <fullname>Cloud Map</fullname> <p>With Cloud Map, you can configure public DNS,
    * private DNS, or HTTP namespaces that your microservice applications run in. When
@@ -24,12 +28,20 @@ namespace ServiceDiscovery
    * submit public or private DNS queries, or HTTP requests, for the service receive
    * an answer that contains up to eight healthy records. </p>
    */
-  class AWS_SERVICEDISCOVERY_API ServiceDiscoveryClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<ServiceDiscoveryClient>
+  class AWS_SERVICEDISCOVERY_API ServiceDiscoveryClient : smithy::client::AwsSmithyClientT<Aws::ServiceDiscovery::SERVICE_NAME,
+      Aws::ServiceDiscovery::ServiceDiscoveryClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      ServiceDiscoveryEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::ServiceDiscoveryErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<ServiceDiscoveryClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "ServiceDiscovery"; }
 
       typedef ServiceDiscoveryClientConfiguration ClientConfigurationType;
       typedef ServiceDiscoveryEndpointProvider EndpointProviderType;
@@ -253,8 +265,9 @@ namespace ServiceDiscovery
         }
 
         /**
-         * <p>Deletes a specified service. If the service still contains one or more
-         * registered instances, the request fails.</p><p><h3>See Also:</h3>   <a
+         * <p>Deletes a specified service and all associated service attributes. If the
+         * service still contains one or more registered instances, the request
+         * fails.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/servicediscovery-2017-03-14/DeleteService">AWS
          * API Reference</a></p>
          */
@@ -276,6 +289,32 @@ namespace ServiceDiscovery
         void DeleteServiceAsync(const DeleteServiceRequestT& request, const DeleteServiceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&ServiceDiscoveryClient::DeleteService, request, handler, context);
+        }
+
+        /**
+         * <p>Deletes specific attributes associated with a service.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/servicediscovery-2017-03-14/DeleteServiceAttributes">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteServiceAttributesOutcome DeleteServiceAttributes(const Model::DeleteServiceAttributesRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteServiceAttributes that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteServiceAttributesRequestT = Model::DeleteServiceAttributesRequest>
+        Model::DeleteServiceAttributesOutcomeCallable DeleteServiceAttributesCallable(const DeleteServiceAttributesRequestT& request) const
+        {
+            return SubmitCallable(&ServiceDiscoveryClient::DeleteServiceAttributes, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteServiceAttributes that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteServiceAttributesRequestT = Model::DeleteServiceAttributesRequest>
+        void DeleteServiceAttributesAsync(const DeleteServiceAttributesRequestT& request, const DeleteServiceAttributesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&ServiceDiscoveryClient::DeleteServiceAttributes, request, handler, context);
         }
 
         /**
@@ -494,6 +533,32 @@ namespace ServiceDiscovery
         }
 
         /**
+         * <p>Returns the attributes associated with a specified service.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/servicediscovery-2017-03-14/GetServiceAttributes">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetServiceAttributesOutcome GetServiceAttributes(const Model::GetServiceAttributesRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetServiceAttributes that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetServiceAttributesRequestT = Model::GetServiceAttributesRequest>
+        Model::GetServiceAttributesOutcomeCallable GetServiceAttributesCallable(const GetServiceAttributesRequestT& request) const
+        {
+            return SubmitCallable(&ServiceDiscoveryClient::GetServiceAttributes, request);
+        }
+
+        /**
+         * An Async wrapper for GetServiceAttributes that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetServiceAttributesRequestT = Model::GetServiceAttributesRequest>
+        void GetServiceAttributesAsync(const GetServiceAttributesRequestT& request, const GetServiceAttributesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&ServiceDiscoveryClient::GetServiceAttributes, request, handler, context);
+        }
+
+        /**
          * <p>Lists summary information about the instances that you registered by using a
          * specified service.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/servicediscovery-2017-03-14/ListInstances">AWS
@@ -525,13 +590,13 @@ namespace ServiceDiscovery
          * href="http://docs.aws.amazon.com/goto/WebAPI/servicediscovery-2017-03-14/ListNamespaces">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListNamespacesOutcome ListNamespaces(const Model::ListNamespacesRequest& request) const;
+        virtual Model::ListNamespacesOutcome ListNamespaces(const Model::ListNamespacesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListNamespaces that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListNamespacesRequestT = Model::ListNamespacesRequest>
-        Model::ListNamespacesOutcomeCallable ListNamespacesCallable(const ListNamespacesRequestT& request) const
+        Model::ListNamespacesOutcomeCallable ListNamespacesCallable(const ListNamespacesRequestT& request = {}) const
         {
             return SubmitCallable(&ServiceDiscoveryClient::ListNamespaces, request);
         }
@@ -540,7 +605,7 @@ namespace ServiceDiscovery
          * An Async wrapper for ListNamespaces that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListNamespacesRequestT = Model::ListNamespacesRequest>
-        void ListNamespacesAsync(const ListNamespacesRequestT& request, const ListNamespacesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListNamespacesAsync(const ListNamespacesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListNamespacesRequestT& request = {}) const
         {
             return SubmitAsync(&ServiceDiscoveryClient::ListNamespaces, request, handler, context);
         }
@@ -551,13 +616,13 @@ namespace ServiceDiscovery
          * href="http://docs.aws.amazon.com/goto/WebAPI/servicediscovery-2017-03-14/ListOperations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListOperationsOutcome ListOperations(const Model::ListOperationsRequest& request) const;
+        virtual Model::ListOperationsOutcome ListOperations(const Model::ListOperationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListOperations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListOperationsRequestT = Model::ListOperationsRequest>
-        Model::ListOperationsOutcomeCallable ListOperationsCallable(const ListOperationsRequestT& request) const
+        Model::ListOperationsOutcomeCallable ListOperationsCallable(const ListOperationsRequestT& request = {}) const
         {
             return SubmitCallable(&ServiceDiscoveryClient::ListOperations, request);
         }
@@ -566,7 +631,7 @@ namespace ServiceDiscovery
          * An Async wrapper for ListOperations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListOperationsRequestT = Model::ListOperationsRequest>
-        void ListOperationsAsync(const ListOperationsRequestT& request, const ListOperationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListOperationsAsync(const ListOperationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListOperationsRequestT& request = {}) const
         {
             return SubmitAsync(&ServiceDiscoveryClient::ListOperations, request, handler, context);
         }
@@ -577,13 +642,13 @@ namespace ServiceDiscovery
          * href="http://docs.aws.amazon.com/goto/WebAPI/servicediscovery-2017-03-14/ListServices">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListServicesOutcome ListServices(const Model::ListServicesRequest& request) const;
+        virtual Model::ListServicesOutcome ListServices(const Model::ListServicesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListServices that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListServicesRequestT = Model::ListServicesRequest>
-        Model::ListServicesOutcomeCallable ListServicesCallable(const ListServicesRequestT& request) const
+        Model::ListServicesOutcomeCallable ListServicesCallable(const ListServicesRequestT& request = {}) const
         {
             return SubmitCallable(&ServiceDiscoveryClient::ListServices, request);
         }
@@ -592,7 +657,7 @@ namespace ServiceDiscovery
          * An Async wrapper for ListServices that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListServicesRequestT = Model::ListServicesRequest>
-        void ListServicesAsync(const ListServicesRequestT& request, const ListServicesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListServicesAsync(const ListServicesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListServicesRequestT& request = {}) const
         {
             return SubmitAsync(&ServiceDiscoveryClient::ListServices, request, handler, context);
         }
@@ -868,16 +933,38 @@ namespace ServiceDiscovery
             return SubmitAsync(&ServiceDiscoveryClient::UpdateService, request, handler, context);
         }
 
+        /**
+         * <p>Submits a request to update a specified service to add service-level
+         * attributes.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/servicediscovery-2017-03-14/UpdateServiceAttributes">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateServiceAttributesOutcome UpdateServiceAttributes(const Model::UpdateServiceAttributesRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateServiceAttributes that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateServiceAttributesRequestT = Model::UpdateServiceAttributesRequest>
+        Model::UpdateServiceAttributesOutcomeCallable UpdateServiceAttributesCallable(const UpdateServiceAttributesRequestT& request) const
+        {
+            return SubmitCallable(&ServiceDiscoveryClient::UpdateServiceAttributes, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateServiceAttributes that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateServiceAttributesRequestT = Model::UpdateServiceAttributesRequest>
+        void UpdateServiceAttributesAsync(const UpdateServiceAttributesRequestT& request, const UpdateServiceAttributesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&ServiceDiscoveryClient::UpdateServiceAttributes, request, handler, context);
+        }
+
 
       void OverrideEndpoint(const Aws::String& endpoint);
       std::shared_ptr<ServiceDiscoveryEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<ServiceDiscoveryClient>;
-      void init(const ServiceDiscoveryClientConfiguration& clientConfiguration);
 
-      ServiceDiscoveryClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<ServiceDiscoveryEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace ServiceDiscovery

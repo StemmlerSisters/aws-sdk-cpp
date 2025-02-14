@@ -6,6 +6,7 @@
 #include <aws/s3-crt/model/DeleteObjectRequest.h>
 #include <aws/core/utils/xml/XmlSerializer.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
+#include <aws/core/utils/UnreferencedParam.h>
 #include <aws/core/http/URI.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 
@@ -26,8 +27,31 @@ DeleteObjectRequest::DeleteObjectRequest() :
     m_bypassGovernanceRetention(false),
     m_bypassGovernanceRetentionHasBeenSet(false),
     m_expectedBucketOwnerHasBeenSet(false),
+    m_ifMatchHasBeenSet(false),
+    m_ifMatchLastModifiedTimeHasBeenSet(false),
+    m_ifMatchSize(0),
+    m_ifMatchSizeHasBeenSet(false),
     m_customizedAccessLogTagHasBeenSet(false)
 {
+}
+
+bool DeleteObjectRequest::HasEmbeddedError(Aws::IOStream &body,
+  const Aws::Http::HeaderValueCollection &header) const
+{
+  // Header is unused
+  AWS_UNREFERENCED_PARAM(header);
+
+  auto readPointer = body.tellg();
+  Utils::Xml::XmlDocument doc = XmlDocument::CreateFromXmlStream(body);
+  body.seekg(readPointer);
+  if (!doc.WasParseSuccessful()) {
+    return false;
+  }
+
+  if (!doc.GetRootElement().IsNull() && doc.GetRootElement().GetName() == Aws::String("Error")) {
+    return true;
+  }
+  return false;
 }
 
 Aws::String DeleteObjectRequest::SerializePayload() const
@@ -91,6 +115,25 @@ Aws::Http::HeaderValueCollection DeleteObjectRequest::GetRequestSpecificHeaders(
   {
     ss << m_expectedBucketOwner;
     headers.emplace("x-amz-expected-bucket-owner",  ss.str());
+    ss.str("");
+  }
+
+  if(m_ifMatchHasBeenSet)
+  {
+    ss << m_ifMatch;
+    headers.emplace("if-match",  ss.str());
+    ss.str("");
+  }
+
+  if(m_ifMatchLastModifiedTimeHasBeenSet)
+  {
+    headers.emplace("x-amz-if-match-last-modified-time", m_ifMatchLastModifiedTime.ToGmtString(Aws::Utils::DateFormat::RFC822));
+  }
+
+  if(m_ifMatchSizeHasBeenSet)
+  {
+    ss << m_ifMatchSize;
+    headers.emplace("x-amz-if-match-size",  ss.str());
     ss.str("");
   }
 

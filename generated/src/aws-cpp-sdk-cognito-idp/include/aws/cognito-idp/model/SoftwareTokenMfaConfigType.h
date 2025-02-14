@@ -22,8 +22,13 @@ namespace Model
 {
 
   /**
-   * <p>The type used for enabling software token MFA at the user pool
-   * level.</p><p><h3>See Also:</h3>   <a
+   * <p>Settings for time-based one-time password (TOTP) multi-factor authentication
+   * (MFA) in a user pool. Enables and disables availability of this feature.</p>
+   * <p>This data type is a request parameter of <a
+   * href="https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_SetUserPoolMfaConfig.html">SetUserPoolMfaConfig</a>
+   * and a response parameter of <a
+   * href="https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_GetUserPoolMfaConfig.html">GetUserPoolMfaConfig</a>.
+   * </p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/cognito-idp-2016-04-18/SoftwareTokenMfaConfigType">AWS
    * API Reference</a></p>
    */
@@ -36,26 +41,15 @@ namespace Model
     AWS_COGNITOIDENTITYPROVIDER_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
-     * <p>Specifies whether software token MFA is activated.</p>
+     * <p>The activation state of TOTP MFA.</p>
      */
     inline bool GetEnabled() const{ return m_enabled; }
-
-    /**
-     * <p>Specifies whether software token MFA is activated.</p>
-     */
     inline bool EnabledHasBeenSet() const { return m_enabledHasBeenSet; }
-
-    /**
-     * <p>Specifies whether software token MFA is activated.</p>
-     */
     inline void SetEnabled(bool value) { m_enabledHasBeenSet = true; m_enabled = value; }
-
-    /**
-     * <p>Specifies whether software token MFA is activated.</p>
-     */
     inline SoftwareTokenMfaConfigType& WithEnabled(bool value) { SetEnabled(value); return *this;}
-
+    ///@}
   private:
 
     bool m_enabled;

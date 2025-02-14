@@ -18,12 +18,13 @@ using namespace Aws::Utils;
 using namespace Aws;
 
 GetDomainResult::GetDomainResult() : 
+    m_domainVersion(DomainVersion::NOT_SET),
     m_status(DomainStatus::NOT_SET)
 {
 }
 
-GetDomainResult::GetDomainResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_status(DomainStatus::NOT_SET)
+GetDomainResult::GetDomainResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetDomainResult()
 {
   *this = result;
 }
@@ -55,6 +56,12 @@ GetDomainResult& GetDomainResult::operator =(const Aws::AmazonWebServiceResult<J
 
   }
 
+  if(jsonValue.ValueExists("domainVersion"))
+  {
+    m_domainVersion = DomainVersionMapper::GetDomainVersionForName(jsonValue.GetString("domainVersion"));
+
+  }
+
   if(jsonValue.ValueExists("id"))
   {
     m_id = jsonValue.GetString("id");
@@ -82,6 +89,18 @@ GetDomainResult& GetDomainResult::operator =(const Aws::AmazonWebServiceResult<J
   if(jsonValue.ValueExists("portalUrl"))
   {
     m_portalUrl = jsonValue.GetString("portalUrl");
+
+  }
+
+  if(jsonValue.ValueExists("rootDomainUnitId"))
+  {
+    m_rootDomainUnitId = jsonValue.GetString("rootDomainUnitId");
+
+  }
+
+  if(jsonValue.ValueExists("serviceRole"))
+  {
+    m_serviceRole = jsonValue.GetString("serviceRole");
 
   }
 

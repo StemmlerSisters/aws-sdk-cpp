@@ -7,6 +7,7 @@
 #include <aws/bedrock-agent/BedrockAgent_EXPORTS.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/core/utils/memory/stl/AWSMap.h>
+#include <aws/bedrock-agent/model/RequireConfirmation.h>
 #include <aws/bedrock-agent/model/ParameterDetail.h>
 #include <utility>
 
@@ -51,160 +52,65 @@ namespace Model
     AWS_BEDROCKAGENT_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>A description of the function and its purpose.</p>
      */
     inline const Aws::String& GetDescription() const{ return m_description; }
-
-    /**
-     * <p>A description of the function and its purpose.</p>
-     */
     inline bool DescriptionHasBeenSet() const { return m_descriptionHasBeenSet; }
-
-    /**
-     * <p>A description of the function and its purpose.</p>
-     */
     inline void SetDescription(const Aws::String& value) { m_descriptionHasBeenSet = true; m_description = value; }
-
-    /**
-     * <p>A description of the function and its purpose.</p>
-     */
     inline void SetDescription(Aws::String&& value) { m_descriptionHasBeenSet = true; m_description = std::move(value); }
-
-    /**
-     * <p>A description of the function and its purpose.</p>
-     */
     inline void SetDescription(const char* value) { m_descriptionHasBeenSet = true; m_description.assign(value); }
-
-    /**
-     * <p>A description of the function and its purpose.</p>
-     */
     inline Function& WithDescription(const Aws::String& value) { SetDescription(value); return *this;}
-
-    /**
-     * <p>A description of the function and its purpose.</p>
-     */
     inline Function& WithDescription(Aws::String&& value) { SetDescription(std::move(value)); return *this;}
-
-    /**
-     * <p>A description of the function and its purpose.</p>
-     */
     inline Function& WithDescription(const char* value) { SetDescription(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>A name for the function.</p>
      */
     inline const Aws::String& GetName() const{ return m_name; }
-
-    /**
-     * <p>A name for the function.</p>
-     */
     inline bool NameHasBeenSet() const { return m_nameHasBeenSet; }
-
-    /**
-     * <p>A name for the function.</p>
-     */
     inline void SetName(const Aws::String& value) { m_nameHasBeenSet = true; m_name = value; }
-
-    /**
-     * <p>A name for the function.</p>
-     */
     inline void SetName(Aws::String&& value) { m_nameHasBeenSet = true; m_name = std::move(value); }
-
-    /**
-     * <p>A name for the function.</p>
-     */
     inline void SetName(const char* value) { m_nameHasBeenSet = true; m_name.assign(value); }
-
-    /**
-     * <p>A name for the function.</p>
-     */
     inline Function& WithName(const Aws::String& value) { SetName(value); return *this;}
-
-    /**
-     * <p>A name for the function.</p>
-     */
     inline Function& WithName(Aws::String&& value) { SetName(std::move(value)); return *this;}
-
-    /**
-     * <p>A name for the function.</p>
-     */
     inline Function& WithName(const char* value) { SetName(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The parameters that the agent elicits from the user to fulfill the
      * function.</p>
      */
     inline const Aws::Map<Aws::String, ParameterDetail>& GetParameters() const{ return m_parameters; }
-
-    /**
-     * <p>The parameters that the agent elicits from the user to fulfill the
-     * function.</p>
-     */
     inline bool ParametersHasBeenSet() const { return m_parametersHasBeenSet; }
-
-    /**
-     * <p>The parameters that the agent elicits from the user to fulfill the
-     * function.</p>
-     */
     inline void SetParameters(const Aws::Map<Aws::String, ParameterDetail>& value) { m_parametersHasBeenSet = true; m_parameters = value; }
-
-    /**
-     * <p>The parameters that the agent elicits from the user to fulfill the
-     * function.</p>
-     */
     inline void SetParameters(Aws::Map<Aws::String, ParameterDetail>&& value) { m_parametersHasBeenSet = true; m_parameters = std::move(value); }
-
-    /**
-     * <p>The parameters that the agent elicits from the user to fulfill the
-     * function.</p>
-     */
     inline Function& WithParameters(const Aws::Map<Aws::String, ParameterDetail>& value) { SetParameters(value); return *this;}
-
-    /**
-     * <p>The parameters that the agent elicits from the user to fulfill the
-     * function.</p>
-     */
     inline Function& WithParameters(Aws::Map<Aws::String, ParameterDetail>&& value) { SetParameters(std::move(value)); return *this;}
-
-    /**
-     * <p>The parameters that the agent elicits from the user to fulfill the
-     * function.</p>
-     */
     inline Function& AddParameters(const Aws::String& key, const ParameterDetail& value) { m_parametersHasBeenSet = true; m_parameters.emplace(key, value); return *this; }
-
-    /**
-     * <p>The parameters that the agent elicits from the user to fulfill the
-     * function.</p>
-     */
     inline Function& AddParameters(Aws::String&& key, const ParameterDetail& value) { m_parametersHasBeenSet = true; m_parameters.emplace(std::move(key), value); return *this; }
-
-    /**
-     * <p>The parameters that the agent elicits from the user to fulfill the
-     * function.</p>
-     */
     inline Function& AddParameters(const Aws::String& key, ParameterDetail&& value) { m_parametersHasBeenSet = true; m_parameters.emplace(key, std::move(value)); return *this; }
-
-    /**
-     * <p>The parameters that the agent elicits from the user to fulfill the
-     * function.</p>
-     */
     inline Function& AddParameters(Aws::String&& key, ParameterDetail&& value) { m_parametersHasBeenSet = true; m_parameters.emplace(std::move(key), std::move(value)); return *this; }
-
-    /**
-     * <p>The parameters that the agent elicits from the user to fulfill the
-     * function.</p>
-     */
     inline Function& AddParameters(const char* key, ParameterDetail&& value) { m_parametersHasBeenSet = true; m_parameters.emplace(key, std::move(value)); return *this; }
+    inline Function& AddParameters(const char* key, const ParameterDetail& value) { m_parametersHasBeenSet = true; m_parameters.emplace(key, value); return *this; }
+    ///@}
 
+    ///@{
     /**
-     * <p>The parameters that the agent elicits from the user to fulfill the
+     * <p>Contains information if user confirmation is required to invoke the
      * function.</p>
      */
-    inline Function& AddParameters(const char* key, const ParameterDetail& value) { m_parametersHasBeenSet = true; m_parameters.emplace(key, value); return *this; }
-
+    inline const RequireConfirmation& GetRequireConfirmation() const{ return m_requireConfirmation; }
+    inline bool RequireConfirmationHasBeenSet() const { return m_requireConfirmationHasBeenSet; }
+    inline void SetRequireConfirmation(const RequireConfirmation& value) { m_requireConfirmationHasBeenSet = true; m_requireConfirmation = value; }
+    inline void SetRequireConfirmation(RequireConfirmation&& value) { m_requireConfirmationHasBeenSet = true; m_requireConfirmation = std::move(value); }
+    inline Function& WithRequireConfirmation(const RequireConfirmation& value) { SetRequireConfirmation(value); return *this;}
+    inline Function& WithRequireConfirmation(RequireConfirmation&& value) { SetRequireConfirmation(std::move(value)); return *this;}
+    ///@}
   private:
 
     Aws::String m_description;
@@ -215,6 +121,9 @@ namespace Model
 
     Aws::Map<Aws::String, ParameterDetail> m_parameters;
     bool m_parametersHasBeenSet = false;
+
+    RequireConfirmation m_requireConfirmation;
+    bool m_requireConfirmationHasBeenSet = false;
   };
 
 } // namespace Model

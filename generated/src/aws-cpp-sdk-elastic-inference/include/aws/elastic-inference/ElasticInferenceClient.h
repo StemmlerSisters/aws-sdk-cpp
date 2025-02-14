@@ -6,31 +6,37 @@
 #pragma once
 #include <aws/elastic-inference/ElasticInference_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/elastic-inference/ElasticInferenceServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/elastic-inference/ElasticInferenceErrorMarshaller.h>
 
 namespace Aws
 {
 namespace ElasticInference
 {
+  AWS_ELASTICINFERENCE_API extern const char SERVICE_NAME[];
   /**
-   * <p> Elastic Inference public APIs. </p> <p> February 15, 2023: Starting April
-   * 15, 2023, AWS will not onboard new customers to Amazon Elastic Inference (EI),
-   * and will help current customers migrate their workloads to options that offer
-   * better price and performance. After April 15, 2023, new customers will not be
-   * able to launch instances with Amazon EI accelerators in Amazon SageMaker, Amazon
-   * ECS, or Amazon EC2. However, customers who have used Amazon EI at least once
-   * during the past 30-day period are considered current customers and will be able
-   * to continue using the service. </p>
+   *  <p>Amazon Elastic Inference is no longer available.</p>  <p>
+   * Elastic Inference public APIs. </p>
    */
-  class AWS_ELASTICINFERENCE_API ElasticInferenceClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<ElasticInferenceClient>
+  class AWS_ELASTICINFERENCE_API ElasticInferenceClient : smithy::client::AwsSmithyClientT<Aws::ElasticInference::SERVICE_NAME,
+      Aws::ElasticInference::ElasticInferenceClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      ElasticInferenceEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::ElasticInferenceErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<ElasticInferenceClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Elastic Inference"; }
 
       typedef ElasticInferenceClientConfiguration ClientConfigurationType;
       typedef ElasticInferenceEndpointProvider EndpointProviderType;
@@ -84,15 +90,9 @@ namespace ElasticInference
         virtual ~ElasticInferenceClient();
 
         /**
-         * <p> Describes the locations in which a given accelerator type or set of types is
-         * present in a given region. </p> <p> February 15, 2023: Starting April 15, 2023,
-         * AWS will not onboard new customers to Amazon Elastic Inference (EI), and will
-         * help current customers migrate their workloads to options that offer better
-         * price and performance. After April 15, 2023, new customers will not be able to
-         * launch instances with Amazon EI accelerators in Amazon SageMaker, Amazon ECS, or
-         * Amazon EC2. However, customers who have used Amazon EI at least once during the
-         * past 30-day period are considered current customers and will be able to continue
-         * using the service. </p><p><h3>See Also:</h3>   <a
+         *  <p>Amazon Elastic Inference is no longer available.</p>  <p>
+         * Describes the locations in which a given accelerator type or set of types is
+         * present in a given region. </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/elastic-inference-2017-07-25/DescribeAcceleratorOfferings">AWS
          * API Reference</a></p>
          */
@@ -117,26 +117,19 @@ namespace ElasticInference
         }
 
         /**
-         * <p> Describes the accelerator types available in a given region, as well as
-         * their characteristics, such as memory and throughput. </p> <p> February 15,
-         * 2023: Starting April 15, 2023, AWS will not onboard new customers to Amazon
-         * Elastic Inference (EI), and will help current customers migrate their workloads
-         * to options that offer better price and performance. After April 15, 2023, new
-         * customers will not be able to launch instances with Amazon EI accelerators in
-         * Amazon SageMaker, Amazon ECS, or Amazon EC2. However, customers who have used
-         * Amazon EI at least once during the past 30-day period are considered current
-         * customers and will be able to continue using the service. </p><p><h3>See
-         * Also:</h3>   <a
+         *  <p>Amazon Elastic Inference is no longer available.</p>  <p>
+         * Describes the accelerator types available in a given region, as well as their
+         * characteristics, such as memory and throughput. </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/elastic-inference-2017-07-25/DescribeAcceleratorTypes">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeAcceleratorTypesOutcome DescribeAcceleratorTypes(const Model::DescribeAcceleratorTypesRequest& request) const;
+        virtual Model::DescribeAcceleratorTypesOutcome DescribeAcceleratorTypes(const Model::DescribeAcceleratorTypesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeAcceleratorTypes that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeAcceleratorTypesRequestT = Model::DescribeAcceleratorTypesRequest>
-        Model::DescribeAcceleratorTypesOutcomeCallable DescribeAcceleratorTypesCallable(const DescribeAcceleratorTypesRequestT& request) const
+        Model::DescribeAcceleratorTypesOutcomeCallable DescribeAcceleratorTypesCallable(const DescribeAcceleratorTypesRequestT& request = {}) const
         {
             return SubmitCallable(&ElasticInferenceClient::DescribeAcceleratorTypes, request);
         }
@@ -145,31 +138,25 @@ namespace ElasticInference
          * An Async wrapper for DescribeAcceleratorTypes that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeAcceleratorTypesRequestT = Model::DescribeAcceleratorTypesRequest>
-        void DescribeAcceleratorTypesAsync(const DescribeAcceleratorTypesRequestT& request, const DescribeAcceleratorTypesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeAcceleratorTypesAsync(const DescribeAcceleratorTypesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeAcceleratorTypesRequestT& request = {}) const
         {
             return SubmitAsync(&ElasticInferenceClient::DescribeAcceleratorTypes, request, handler, context);
         }
 
         /**
-         * <p> Describes information over a provided set of accelerators belonging to an
-         * account. </p> <p> February 15, 2023: Starting April 15, 2023, AWS will not
-         * onboard new customers to Amazon Elastic Inference (EI), and will help current
-         * customers migrate their workloads to options that offer better price and
-         * performance. After April 15, 2023, new customers will not be able to launch
-         * instances with Amazon EI accelerators in Amazon SageMaker, Amazon ECS, or Amazon
-         * EC2. However, customers who have used Amazon EI at least once during the past
-         * 30-day period are considered current customers and will be able to continue
-         * using the service. </p><p><h3>See Also:</h3>   <a
+         *  <p>Amazon Elastic Inference is no longer available.</p>  <p>
+         * Describes information over a provided set of accelerators belonging to an
+         * account. </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/elastic-inference-2017-07-25/DescribeAccelerators">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeAcceleratorsOutcome DescribeAccelerators(const Model::DescribeAcceleratorsRequest& request) const;
+        virtual Model::DescribeAcceleratorsOutcome DescribeAccelerators(const Model::DescribeAcceleratorsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeAccelerators that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeAcceleratorsRequestT = Model::DescribeAcceleratorsRequest>
-        Model::DescribeAcceleratorsOutcomeCallable DescribeAcceleratorsCallable(const DescribeAcceleratorsRequestT& request) const
+        Model::DescribeAcceleratorsOutcomeCallable DescribeAcceleratorsCallable(const DescribeAcceleratorsRequestT& request = {}) const
         {
             return SubmitCallable(&ElasticInferenceClient::DescribeAccelerators, request);
         }
@@ -178,21 +165,15 @@ namespace ElasticInference
          * An Async wrapper for DescribeAccelerators that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeAcceleratorsRequestT = Model::DescribeAcceleratorsRequest>
-        void DescribeAcceleratorsAsync(const DescribeAcceleratorsRequestT& request, const DescribeAcceleratorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeAcceleratorsAsync(const DescribeAcceleratorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeAcceleratorsRequestT& request = {}) const
         {
             return SubmitAsync(&ElasticInferenceClient::DescribeAccelerators, request, handler, context);
         }
 
         /**
-         * <p> Returns all tags of an Elastic Inference Accelerator. </p> <p> February 15,
-         * 2023: Starting April 15, 2023, AWS will not onboard new customers to Amazon
-         * Elastic Inference (EI), and will help current customers migrate their workloads
-         * to options that offer better price and performance. After April 15, 2023, new
-         * customers will not be able to launch instances with Amazon EI accelerators in
-         * Amazon SageMaker, Amazon ECS, or Amazon EC2. However, customers who have used
-         * Amazon EI at least once during the past 30-day period are considered current
-         * customers and will be able to continue using the service. </p><p><h3>See
-         * Also:</h3>   <a
+         *  <p>Amazon Elastic Inference is no longer available.</p>  <p>
+         * Returns all tags of an Elastic Inference Accelerator. </p><p><h3>See Also:</h3> 
+         * <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/elastic-inference-2017-07-25/ListTagsForResource">AWS
          * API Reference</a></p>
          */
@@ -217,15 +198,9 @@ namespace ElasticInference
         }
 
         /**
-         * <p> Adds the specified tags to an Elastic Inference Accelerator. </p> <p>
-         * February 15, 2023: Starting April 15, 2023, AWS will not onboard new customers
-         * to Amazon Elastic Inference (EI), and will help current customers migrate their
-         * workloads to options that offer better price and performance. After April 15,
-         * 2023, new customers will not be able to launch instances with Amazon EI
-         * accelerators in Amazon SageMaker, Amazon ECS, or Amazon EC2. However, customers
-         * who have used Amazon EI at least once during the past 30-day period are
-         * considered current customers and will be able to continue using the service.
-         * </p><p><h3>See Also:</h3>   <a
+         *  <p>Amazon Elastic Inference is no longer available.</p>  <p> Adds
+         * the specified tags to an Elastic Inference Accelerator. </p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/elastic-inference-2017-07-25/TagResource">AWS
          * API Reference</a></p>
          */
@@ -250,15 +225,9 @@ namespace ElasticInference
         }
 
         /**
-         * <p> Removes the specified tags from an Elastic Inference Accelerator. </p> <p>
-         * February 15, 2023: Starting April 15, 2023, AWS will not onboard new customers
-         * to Amazon Elastic Inference (EI), and will help current customers migrate their
-         * workloads to options that offer better price and performance. After April 15,
-         * 2023, new customers will not be able to launch instances with Amazon EI
-         * accelerators in Amazon SageMaker, Amazon ECS, or Amazon EC2. However, customers
-         * who have used Amazon EI at least once during the past 30-day period are
-         * considered current customers and will be able to continue using the service.
-         * </p><p><h3>See Also:</h3>   <a
+         *  <p>Amazon Elastic Inference is no longer available.</p>  <p>
+         * Removes the specified tags from an Elastic Inference Accelerator. </p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/elastic-inference-2017-07-25/UntagResource">AWS
          * API Reference</a></p>
          */
@@ -287,11 +256,7 @@ namespace ElasticInference
       std::shared_ptr<ElasticInferenceEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<ElasticInferenceClient>;
-      void init(const ElasticInferenceClientConfiguration& clientConfiguration);
 
-      ElasticInferenceClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<ElasticInferenceEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace ElasticInference

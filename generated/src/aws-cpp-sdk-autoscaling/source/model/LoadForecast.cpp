@@ -27,10 +27,8 @@ LoadForecast::LoadForecast() :
 {
 }
 
-LoadForecast::LoadForecast(const XmlNode& xmlNode) : 
-    m_timestampsHasBeenSet(false),
-    m_valuesHasBeenSet(false),
-    m_metricSpecificationHasBeenSet(false)
+LoadForecast::LoadForecast(const XmlNode& xmlNode)
+  : LoadForecast()
 {
   *this = xmlNode;
 }
@@ -59,7 +57,7 @@ LoadForecast& LoadForecast::operator =(const XmlNode& xmlNode)
       XmlNode valuesMember = valuesNode.FirstChild("member");
       while(!valuesMember.IsNull())
       {
-         m_values.push_back(StringUtils::ConvertToDouble(StringUtils::Trim(valuesMember.GetText().c_str()).c_str()));
+        m_values.push_back(StringUtils::ConvertToDouble(StringUtils::Trim(valuesMember.GetText().c_str()).c_str()));
         valuesMember = valuesMember.NextNode("member");
       }
 

@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/outposts/Outposts_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/outposts/OutpostsServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/outposts/OutpostsErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Outposts
 {
+  AWS_OUTPOSTS_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon Web Services Outposts is a fully managed service that extends Amazon
    * Web Services infrastructure, APIs, and tools to customer premises. By providing
@@ -24,12 +28,20 @@ namespace Outposts
    * compute and storage resources for lower latency and local data processing
    * needs.</p>
    */
-  class AWS_OUTPOSTS_API OutpostsClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<OutpostsClient>
+  class AWS_OUTPOSTS_API OutpostsClient : smithy::client::AwsSmithyClientT<Aws::Outposts::SERVICE_NAME,
+      Aws::Outposts::OutpostsClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      OutpostsEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::OutpostsErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<OutpostsClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Outposts"; }
 
       typedef OutpostsClientConfiguration ClientConfigurationType;
       typedef OutpostsEndpointProvider EndpointProviderType;
@@ -498,6 +510,33 @@ namespace Outposts
         }
 
         /**
+         * <p>A list of Amazon EC2 instances, belonging to all accounts, running on the
+         * specified Outpost. Does not include Amazon EBS or Amazon S3
+         * instances.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/outposts-2019-12-03/ListAssetInstances">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListAssetInstancesOutcome ListAssetInstances(const Model::ListAssetInstancesRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListAssetInstances that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListAssetInstancesRequestT = Model::ListAssetInstancesRequest>
+        Model::ListAssetInstancesOutcomeCallable ListAssetInstancesCallable(const ListAssetInstancesRequestT& request) const
+        {
+            return SubmitCallable(&OutpostsClient::ListAssetInstances, request);
+        }
+
+        /**
+         * An Async wrapper for ListAssetInstances that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListAssetInstancesRequestT = Model::ListAssetInstancesRequest>
+        void ListAssetInstancesAsync(const ListAssetInstancesRequestT& request, const ListAssetInstancesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&OutpostsClient::ListAssetInstances, request, handler, context);
+        }
+
+        /**
          * <p>Lists the hardware assets for the specified Outpost.</p> <p>Use filters to
          * return specific results. If you specify multiple filters, the results include
          * only the resources that match all of the specified filters. For a filter where
@@ -527,6 +566,34 @@ namespace Outposts
         }
 
         /**
+         * <p>A list of Amazon EC2 instances running on the Outpost and belonging to the
+         * account that initiated the capacity task. Use this list to specify the instances
+         * you cannot stop to free up capacity to run the capacity task.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/outposts-2019-12-03/ListBlockingInstancesForCapacityTask">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListBlockingInstancesForCapacityTaskOutcome ListBlockingInstancesForCapacityTask(const Model::ListBlockingInstancesForCapacityTaskRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListBlockingInstancesForCapacityTask that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListBlockingInstancesForCapacityTaskRequestT = Model::ListBlockingInstancesForCapacityTaskRequest>
+        Model::ListBlockingInstancesForCapacityTaskOutcomeCallable ListBlockingInstancesForCapacityTaskCallable(const ListBlockingInstancesForCapacityTaskRequestT& request) const
+        {
+            return SubmitCallable(&OutpostsClient::ListBlockingInstancesForCapacityTask, request);
+        }
+
+        /**
+         * An Async wrapper for ListBlockingInstancesForCapacityTask that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListBlockingInstancesForCapacityTaskRequestT = Model::ListBlockingInstancesForCapacityTaskRequest>
+        void ListBlockingInstancesForCapacityTaskAsync(const ListBlockingInstancesForCapacityTaskRequestT& request, const ListBlockingInstancesForCapacityTaskResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&OutpostsClient::ListBlockingInstancesForCapacityTask, request, handler, context);
+        }
+
+        /**
          * <p>Lists the capacity tasks for your Amazon Web Services account.</p> <p>Use
          * filters to return specific results. If you specify multiple filters, the results
          * include only the resources that match all of the specified filters. For a filter
@@ -535,13 +602,13 @@ namespace Outposts
          * href="http://docs.aws.amazon.com/goto/WebAPI/outposts-2019-12-03/ListCapacityTasks">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListCapacityTasksOutcome ListCapacityTasks(const Model::ListCapacityTasksRequest& request) const;
+        virtual Model::ListCapacityTasksOutcome ListCapacityTasks(const Model::ListCapacityTasksRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListCapacityTasks that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListCapacityTasksRequestT = Model::ListCapacityTasksRequest>
-        Model::ListCapacityTasksOutcomeCallable ListCapacityTasksCallable(const ListCapacityTasksRequestT& request) const
+        Model::ListCapacityTasksOutcomeCallable ListCapacityTasksCallable(const ListCapacityTasksRequestT& request = {}) const
         {
             return SubmitCallable(&OutpostsClient::ListCapacityTasks, request);
         }
@@ -550,7 +617,7 @@ namespace Outposts
          * An Async wrapper for ListCapacityTasks that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListCapacityTasksRequestT = Model::ListCapacityTasksRequest>
-        void ListCapacityTasksAsync(const ListCapacityTasksRequestT& request, const ListCapacityTasksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListCapacityTasksAsync(const ListCapacityTasksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListCapacityTasksRequestT& request = {}) const
         {
             return SubmitAsync(&OutpostsClient::ListCapacityTasks, request, handler, context);
         }
@@ -564,13 +631,13 @@ namespace Outposts
          * href="http://docs.aws.amazon.com/goto/WebAPI/outposts-2019-12-03/ListCatalogItems">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListCatalogItemsOutcome ListCatalogItems(const Model::ListCatalogItemsRequest& request) const;
+        virtual Model::ListCatalogItemsOutcome ListCatalogItems(const Model::ListCatalogItemsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListCatalogItems that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListCatalogItemsRequestT = Model::ListCatalogItemsRequest>
-        Model::ListCatalogItemsOutcomeCallable ListCatalogItemsCallable(const ListCatalogItemsRequestT& request) const
+        Model::ListCatalogItemsOutcomeCallable ListCatalogItemsCallable(const ListCatalogItemsRequestT& request = {}) const
         {
             return SubmitCallable(&OutpostsClient::ListCatalogItems, request);
         }
@@ -579,7 +646,7 @@ namespace Outposts
          * An Async wrapper for ListCatalogItems that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListCatalogItemsRequestT = Model::ListCatalogItemsRequest>
-        void ListCatalogItemsAsync(const ListCatalogItemsRequestT& request, const ListCatalogItemsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListCatalogItemsAsync(const ListCatalogItemsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListCatalogItemsRequestT& request = {}) const
         {
             return SubmitAsync(&OutpostsClient::ListCatalogItems, request, handler, context);
         }
@@ -590,13 +657,13 @@ namespace Outposts
          * href="http://docs.aws.amazon.com/goto/WebAPI/outposts-2019-12-03/ListOrders">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListOrdersOutcome ListOrders(const Model::ListOrdersRequest& request) const;
+        virtual Model::ListOrdersOutcome ListOrders(const Model::ListOrdersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListOrders that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListOrdersRequestT = Model::ListOrdersRequest>
-        Model::ListOrdersOutcomeCallable ListOrdersCallable(const ListOrdersRequestT& request) const
+        Model::ListOrdersOutcomeCallable ListOrdersCallable(const ListOrdersRequestT& request = {}) const
         {
             return SubmitCallable(&OutpostsClient::ListOrders, request);
         }
@@ -605,7 +672,7 @@ namespace Outposts
          * An Async wrapper for ListOrders that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListOrdersRequestT = Model::ListOrdersRequest>
-        void ListOrdersAsync(const ListOrdersRequestT& request, const ListOrdersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListOrdersAsync(const ListOrdersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListOrdersRequestT& request = {}) const
         {
             return SubmitAsync(&OutpostsClient::ListOrders, request, handler, context);
         }
@@ -619,13 +686,13 @@ namespace Outposts
          * href="http://docs.aws.amazon.com/goto/WebAPI/outposts-2019-12-03/ListOutposts">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListOutpostsOutcome ListOutposts(const Model::ListOutpostsRequest& request) const;
+        virtual Model::ListOutpostsOutcome ListOutposts(const Model::ListOutpostsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListOutposts that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListOutpostsRequestT = Model::ListOutpostsRequest>
-        Model::ListOutpostsOutcomeCallable ListOutpostsCallable(const ListOutpostsRequestT& request) const
+        Model::ListOutpostsOutcomeCallable ListOutpostsCallable(const ListOutpostsRequestT& request = {}) const
         {
             return SubmitCallable(&OutpostsClient::ListOutposts, request);
         }
@@ -634,7 +701,7 @@ namespace Outposts
          * An Async wrapper for ListOutposts that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListOutpostsRequestT = Model::ListOutpostsRequest>
-        void ListOutpostsAsync(const ListOutpostsRequestT& request, const ListOutpostsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListOutpostsAsync(const ListOutpostsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListOutpostsRequestT& request = {}) const
         {
             return SubmitAsync(&OutpostsClient::ListOutposts, request, handler, context);
         }
@@ -649,13 +716,13 @@ namespace Outposts
          * href="http://docs.aws.amazon.com/goto/WebAPI/outposts-2019-12-03/ListSites">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListSitesOutcome ListSites(const Model::ListSitesRequest& request) const;
+        virtual Model::ListSitesOutcome ListSites(const Model::ListSitesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListSites that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListSitesRequestT = Model::ListSitesRequest>
-        Model::ListSitesOutcomeCallable ListSitesCallable(const ListSitesRequestT& request) const
+        Model::ListSitesOutcomeCallable ListSitesCallable(const ListSitesRequestT& request = {}) const
         {
             return SubmitCallable(&OutpostsClient::ListSites, request);
         }
@@ -664,7 +731,7 @@ namespace Outposts
          * An Async wrapper for ListSites that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListSitesRequestT = Model::ListSitesRequest>
-        void ListSitesAsync(const ListSitesRequestT& request, const ListSitesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListSitesAsync(const ListSitesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListSitesRequestT& request = {}) const
         {
             return SubmitAsync(&OutpostsClient::ListSites, request, handler, context);
         }
@@ -696,7 +763,7 @@ namespace Outposts
 
         /**
          * <p>Starts the specified capacity task. You can have one active capacity task for
-         * an order.</p><p><h3>See Also:</h3>   <a
+         * each order and each Outpost.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/outposts-2019-12-03/StartCapacityTask">AWS
          * API Reference</a></p>
          */
@@ -919,11 +986,7 @@ namespace Outposts
       std::shared_ptr<OutpostsEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<OutpostsClient>;
-      void init(const OutpostsClientConfiguration& clientConfiguration);
 
-      OutpostsClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<OutpostsEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Outposts

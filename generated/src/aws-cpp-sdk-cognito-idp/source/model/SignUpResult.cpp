@@ -22,8 +22,8 @@ SignUpResult::SignUpResult() :
 {
 }
 
-SignUpResult::SignUpResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_userConfirmed(false)
+SignUpResult::SignUpResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : SignUpResult()
 {
   *this = result;
 }
@@ -46,6 +46,12 @@ SignUpResult& SignUpResult::operator =(const Aws::AmazonWebServiceResult<JsonVal
   if(jsonValue.ValueExists("UserSub"))
   {
     m_userSub = jsonValue.GetString("UserSub");
+
+  }
+
+  if(jsonValue.ValueExists("Session"))
+  {
+    m_session = jsonValue.GetString("Session");
 
   }
 

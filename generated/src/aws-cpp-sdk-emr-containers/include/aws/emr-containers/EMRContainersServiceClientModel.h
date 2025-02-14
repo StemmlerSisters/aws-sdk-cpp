@@ -41,6 +41,9 @@
 #include <aws/emr-containers/model/StartJobRunResult.h>
 #include <aws/emr-containers/model/TagResourceResult.h>
 #include <aws/emr-containers/model/UntagResourceResult.h>
+#include <aws/emr-containers/model/ListJobTemplatesRequest.h>
+#include <aws/emr-containers/model/ListSecurityConfigurationsRequest.h>
+#include <aws/emr-containers/model/ListVirtualClustersRequest.h>
 /* End of service model headers required in EMRContainersClient header */
 
 namespace Aws
@@ -74,7 +77,7 @@ namespace Aws
 
   namespace EMRContainers
   {
-    using EMRContainersClientConfiguration = Aws::Client::GenericClientConfiguration<false>;
+    using EMRContainersClientConfiguration = Aws::Client::GenericClientConfiguration;
     using EMRContainersEndpointProviderBase = Aws::EMRContainers::Endpoint::EMRContainersEndpointProviderBase;
     using EMRContainersEndpointProvider = Aws::EMRContainers::Endpoint::EMRContainersEndpointProvider;
 

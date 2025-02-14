@@ -29,7 +29,10 @@ ${typeInfo.className}::${typeInfo.className}()$initializers
 {
 }
 
-${typeInfo.className}::${typeInfo.className}(const XmlNode& xmlNode)$initializers
+${typeInfo.className}::${typeInfo.className}(const XmlNode& xmlNode)
+#if($initializers)
+  : ${typeInfo.className}()
+#end
 {
   *this = xmlNode;
 }
@@ -97,7 +100,7 @@ void ${typeInfo.className}::OutputToStream(Aws::OStream& oStream, const char* lo
 #end
 #else
 #if($member.shape.listMember.locationName)
-#set($location = $member.shape.listMember.locationName)
+#set($location = $memberName + "." + $member.shape.listMember.locationName)
 #else
 #set($location = $memberName + ".member")
 #end

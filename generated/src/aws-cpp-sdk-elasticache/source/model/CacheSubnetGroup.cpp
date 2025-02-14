@@ -30,13 +30,8 @@ CacheSubnetGroup::CacheSubnetGroup() :
 {
 }
 
-CacheSubnetGroup::CacheSubnetGroup(const XmlNode& xmlNode) : 
-    m_cacheSubnetGroupNameHasBeenSet(false),
-    m_cacheSubnetGroupDescriptionHasBeenSet(false),
-    m_vpcIdHasBeenSet(false),
-    m_subnetsHasBeenSet(false),
-    m_aRNHasBeenSet(false),
-    m_supportedNetworkTypesHasBeenSet(false)
+CacheSubnetGroup::CacheSubnetGroup(const XmlNode& xmlNode)
+  : CacheSubnetGroup()
 {
   *this = xmlNode;
 }
@@ -123,7 +118,7 @@ void CacheSubnetGroup::OutputToStream(Aws::OStream& oStream, const char* locatio
       for(auto& item : m_subnets)
       {
         Aws::StringStream subnetsSs;
-        subnetsSs << location << index << locationValue << ".Subnet." << subnetsIdx++;
+        subnetsSs << location << index << locationValue << ".Subnets.Subnet." << subnetsIdx++;
         item.OutputToStream(oStream, subnetsSs.str().c_str());
       }
   }

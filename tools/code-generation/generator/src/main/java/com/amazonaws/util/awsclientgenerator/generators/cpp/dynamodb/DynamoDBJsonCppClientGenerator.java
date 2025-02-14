@@ -8,14 +8,21 @@ package com.amazonaws.util.awsclientgenerator.generators.cpp.dynamodb;
 import com.amazonaws.util.awsclientgenerator.domainmodels.SdkFileEntry;
 import com.amazonaws.util.awsclientgenerator.domainmodels.codegeneration.ServiceModel;
 import com.amazonaws.util.awsclientgenerator.domainmodels.codegeneration.Shape;
+import com.amazonaws.util.awsclientgenerator.domainmodels.codegeneration.cpp.CppViewHelper;
 import com.amazonaws.util.awsclientgenerator.generators.cpp.JsonCppClientGenerator;
 import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
 public class DynamoDBJsonCppClientGenerator extends JsonCppClientGenerator {
 
@@ -33,6 +40,32 @@ public class DynamoDBJsonCppClientGenerator extends JsonCppClientGenerator {
         serviceModel.getShapes().put(attributeValueShape.getName(), attributeValueShape);
 
         return super.generateSourceFiles(serviceModel);
+    }
+
+    @Override
+    protected SdkFileEntry generateClientHeaderFile(ServiceModel serviceModel) throws Exception {
+        if (!serviceModel.isUseSmithyClient()) {
+            return super.generateClientHeaderFile(serviceModel);
+        }
+        return super.generateClientSmithyHeaderFile(serviceModel);
+    }
+
+    @Override
+    protected List<SdkFileEntry> generateClientSourceFile(List<ServiceModel> serviceModels) throws Exception {
+        final List<SdkFileEntry> awsClients = super.generateClientSourceFile(serviceModels.stream()
+                .filter(serviceModel -> !serviceModel.isUseSmithyClient())
+                .collect(Collectors.toList()));
+
+        List<Integer> serviceModelsIndices = IntStream.range(0, serviceModels.size()).boxed().collect(Collectors.toList());
+
+        final List<SdkFileEntry> smithyClients = new ArrayList<>();
+        serviceModelsIndices.stream().forEach(index -> {
+            if(serviceModels.get(index).isUseSmithyClient())
+            {
+                smithyClients.add(GenerateSmithyClientSourceFile(serviceModels.get(index), index));
+            }
+        });
+        return Stream.concat(awsClients.stream(), smithyClients.stream()).collect(Collectors.toList());
     }
 
     @Override

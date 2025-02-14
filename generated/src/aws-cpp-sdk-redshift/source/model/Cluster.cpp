@@ -93,76 +93,8 @@ Cluster::Cluster() :
 {
 }
 
-Cluster::Cluster(const XmlNode& xmlNode) : 
-    m_clusterIdentifierHasBeenSet(false),
-    m_nodeTypeHasBeenSet(false),
-    m_clusterStatusHasBeenSet(false),
-    m_clusterAvailabilityStatusHasBeenSet(false),
-    m_modifyStatusHasBeenSet(false),
-    m_masterUsernameHasBeenSet(false),
-    m_dBNameHasBeenSet(false),
-    m_endpointHasBeenSet(false),
-    m_clusterCreateTimeHasBeenSet(false),
-    m_automatedSnapshotRetentionPeriod(0),
-    m_automatedSnapshotRetentionPeriodHasBeenSet(false),
-    m_manualSnapshotRetentionPeriod(0),
-    m_manualSnapshotRetentionPeriodHasBeenSet(false),
-    m_clusterSecurityGroupsHasBeenSet(false),
-    m_vpcSecurityGroupsHasBeenSet(false),
-    m_clusterParameterGroupsHasBeenSet(false),
-    m_clusterSubnetGroupNameHasBeenSet(false),
-    m_vpcIdHasBeenSet(false),
-    m_availabilityZoneHasBeenSet(false),
-    m_preferredMaintenanceWindowHasBeenSet(false),
-    m_pendingModifiedValuesHasBeenSet(false),
-    m_clusterVersionHasBeenSet(false),
-    m_allowVersionUpgrade(false),
-    m_allowVersionUpgradeHasBeenSet(false),
-    m_numberOfNodes(0),
-    m_numberOfNodesHasBeenSet(false),
-    m_publiclyAccessible(false),
-    m_publiclyAccessibleHasBeenSet(false),
-    m_encrypted(false),
-    m_encryptedHasBeenSet(false),
-    m_restoreStatusHasBeenSet(false),
-    m_dataTransferProgressHasBeenSet(false),
-    m_hsmStatusHasBeenSet(false),
-    m_clusterSnapshotCopyStatusHasBeenSet(false),
-    m_clusterPublicKeyHasBeenSet(false),
-    m_clusterNodesHasBeenSet(false),
-    m_elasticIpStatusHasBeenSet(false),
-    m_clusterRevisionNumberHasBeenSet(false),
-    m_tagsHasBeenSet(false),
-    m_kmsKeyIdHasBeenSet(false),
-    m_enhancedVpcRouting(false),
-    m_enhancedVpcRoutingHasBeenSet(false),
-    m_iamRolesHasBeenSet(false),
-    m_pendingActionsHasBeenSet(false),
-    m_maintenanceTrackNameHasBeenSet(false),
-    m_elasticResizeNumberOfNodeOptionsHasBeenSet(false),
-    m_deferredMaintenanceWindowsHasBeenSet(false),
-    m_snapshotScheduleIdentifierHasBeenSet(false),
-    m_snapshotScheduleState(ScheduleState::NOT_SET),
-    m_snapshotScheduleStateHasBeenSet(false),
-    m_expectedNextSnapshotScheduleTimeHasBeenSet(false),
-    m_expectedNextSnapshotScheduleTimeStatusHasBeenSet(false),
-    m_nextMaintenanceWindowStartTimeHasBeenSet(false),
-    m_resizeInfoHasBeenSet(false),
-    m_availabilityZoneRelocationStatusHasBeenSet(false),
-    m_clusterNamespaceArnHasBeenSet(false),
-    m_totalStorageCapacityInMegaBytes(0),
-    m_totalStorageCapacityInMegaBytesHasBeenSet(false),
-    m_aquaConfigurationHasBeenSet(false),
-    m_defaultIamRoleArnHasBeenSet(false),
-    m_reservedNodeExchangeStatusHasBeenSet(false),
-    m_customDomainNameHasBeenSet(false),
-    m_customDomainCertificateArnHasBeenSet(false),
-    m_customDomainCertificateExpiryDateHasBeenSet(false),
-    m_masterPasswordSecretArnHasBeenSet(false),
-    m_masterPasswordSecretKmsKeyIdHasBeenSet(false),
-    m_ipAddressTypeHasBeenSet(false),
-    m_multiAZHasBeenSet(false),
-    m_multiAZSecondaryHasBeenSet(false)
+Cluster::Cluster(const XmlNode& xmlNode)
+  : Cluster()
 {
   *this = xmlNode;
 }
@@ -651,7 +583,7 @@ void Cluster::OutputToStream(Aws::OStream& oStream, const char* location, unsign
       for(auto& item : m_clusterSecurityGroups)
       {
         Aws::StringStream clusterSecurityGroupsSs;
-        clusterSecurityGroupsSs << location << index << locationValue << ".ClusterSecurityGroup." << clusterSecurityGroupsIdx++;
+        clusterSecurityGroupsSs << location << index << locationValue << ".ClusterSecurityGroups.ClusterSecurityGroup." << clusterSecurityGroupsIdx++;
         item.OutputToStream(oStream, clusterSecurityGroupsSs.str().c_str());
       }
   }
@@ -662,7 +594,7 @@ void Cluster::OutputToStream(Aws::OStream& oStream, const char* location, unsign
       for(auto& item : m_vpcSecurityGroups)
       {
         Aws::StringStream vpcSecurityGroupsSs;
-        vpcSecurityGroupsSs << location << index << locationValue << ".VpcSecurityGroup." << vpcSecurityGroupsIdx++;
+        vpcSecurityGroupsSs << location << index << locationValue << ".VpcSecurityGroups.VpcSecurityGroup." << vpcSecurityGroupsIdx++;
         item.OutputToStream(oStream, vpcSecurityGroupsSs.str().c_str());
       }
   }
@@ -673,7 +605,7 @@ void Cluster::OutputToStream(Aws::OStream& oStream, const char* location, unsign
       for(auto& item : m_clusterParameterGroups)
       {
         Aws::StringStream clusterParameterGroupsSs;
-        clusterParameterGroupsSs << location << index << locationValue << ".ClusterParameterGroup." << clusterParameterGroupsIdx++;
+        clusterParameterGroupsSs << location << index << locationValue << ".ClusterParameterGroups.ClusterParameterGroup." << clusterParameterGroupsIdx++;
         item.OutputToStream(oStream, clusterParameterGroupsSs.str().c_str());
       }
   }
@@ -792,7 +724,7 @@ void Cluster::OutputToStream(Aws::OStream& oStream, const char* location, unsign
       for(auto& item : m_tags)
       {
         Aws::StringStream tagsSs;
-        tagsSs << location << index << locationValue << ".Tag." << tagsIdx++;
+        tagsSs << location << index << locationValue << ".Tags.Tag." << tagsIdx++;
         item.OutputToStream(oStream, tagsSs.str().c_str());
       }
   }
@@ -813,7 +745,7 @@ void Cluster::OutputToStream(Aws::OStream& oStream, const char* location, unsign
       for(auto& item : m_iamRoles)
       {
         Aws::StringStream iamRolesSs;
-        iamRolesSs << location << index << locationValue << ".ClusterIamRole." << iamRolesIdx++;
+        iamRolesSs << location << index << locationValue << ".IamRoles.ClusterIamRole." << iamRolesIdx++;
         item.OutputToStream(oStream, iamRolesSs.str().c_str());
       }
   }
@@ -843,7 +775,7 @@ void Cluster::OutputToStream(Aws::OStream& oStream, const char* location, unsign
       for(auto& item : m_deferredMaintenanceWindows)
       {
         Aws::StringStream deferredMaintenanceWindowsSs;
-        deferredMaintenanceWindowsSs << location << index << locationValue << ".DeferredMaintenanceWindow." << deferredMaintenanceWindowsIdx++;
+        deferredMaintenanceWindowsSs << location << index << locationValue << ".DeferredMaintenanceWindows.DeferredMaintenanceWindow." << deferredMaintenanceWindowsIdx++;
         item.OutputToStream(oStream, deferredMaintenanceWindowsSs.str().c_str());
       }
   }

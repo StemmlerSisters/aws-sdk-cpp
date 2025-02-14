@@ -505,9 +505,10 @@ namespace Route53
          * resource policy for all the log groups that you create for query logging.</p>
          * </li> </ul> </li> <li> <p>Create a CloudWatch Logs resource policy, and give it
          * the permissions that Route 53 needs to create log streams and to send query logs
-         * to log streams. For the value of <code>Resource</code>, specify the ARN for the
-         * log group that you created in the previous step. To use the same resource policy
-         * for all the CloudWatch Logs log groups that you created for query logging
+         * to log streams. You must create the CloudWatch Logs resource policy in the
+         * us-east-1 region. For the value of <code>Resource</code>, specify the ARN for
+         * the log group that you created in the previous step. To use the same resource
+         * policy for all the CloudWatch Logs log groups that you created for query logging
          * configurations, replace the hosted zone name with <code>*</code>, for
          * example:</p> <p>
          * <code>arn:aws:logs:us-east-1:123412341234:log-group:/aws/route53/ *</code> </p>
@@ -1299,13 +1300,13 @@ namespace Route53
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-2013-04-01/GetCheckerIpRanges">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetCheckerIpRangesOutcome GetCheckerIpRanges(const Model::GetCheckerIpRangesRequest& request) const;
+        virtual Model::GetCheckerIpRangesOutcome GetCheckerIpRanges(const Model::GetCheckerIpRangesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetCheckerIpRanges that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetCheckerIpRangesRequestT = Model::GetCheckerIpRangesRequest>
-        Model::GetCheckerIpRangesOutcomeCallable GetCheckerIpRangesCallable(const GetCheckerIpRangesRequestT& request) const
+        Model::GetCheckerIpRangesOutcomeCallable GetCheckerIpRangesCallable(const GetCheckerIpRangesRequestT& request = {}) const
         {
             return SubmitCallable(&Route53Client::GetCheckerIpRanges, request);
         }
@@ -1314,7 +1315,7 @@ namespace Route53
          * An Async wrapper for GetCheckerIpRanges that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetCheckerIpRangesRequestT = Model::GetCheckerIpRangesRequest>
-        void GetCheckerIpRangesAsync(const GetCheckerIpRangesRequestT& request, const GetCheckerIpRangesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetCheckerIpRangesAsync(const GetCheckerIpRangesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetCheckerIpRangesRequestT& request = {}) const
         {
             return SubmitAsync(&Route53Client::GetCheckerIpRanges, request, handler, context);
         }
@@ -1363,13 +1364,13 @@ namespace Route53
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-2013-04-01/GetGeoLocation">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetGeoLocationOutcome GetGeoLocation(const Model::GetGeoLocationRequest& request) const;
+        virtual Model::GetGeoLocationOutcome GetGeoLocation(const Model::GetGeoLocationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetGeoLocation that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetGeoLocationRequestT = Model::GetGeoLocationRequest>
-        Model::GetGeoLocationOutcomeCallable GetGeoLocationCallable(const GetGeoLocationRequestT& request) const
+        Model::GetGeoLocationOutcomeCallable GetGeoLocationCallable(const GetGeoLocationRequestT& request = {}) const
         {
             return SubmitCallable(&Route53Client::GetGeoLocation, request);
         }
@@ -1378,7 +1379,7 @@ namespace Route53
          * An Async wrapper for GetGeoLocation that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetGeoLocationRequestT = Model::GetGeoLocationRequest>
-        void GetGeoLocationAsync(const GetGeoLocationRequestT& request, const GetGeoLocationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetGeoLocationAsync(const GetGeoLocationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetGeoLocationRequestT& request = {}) const
         {
             return SubmitAsync(&Route53Client::GetGeoLocation, request, handler, context);
         }
@@ -1415,13 +1416,13 @@ namespace Route53
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-2013-04-01/GetHealthCheckCount">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetHealthCheckCountOutcome GetHealthCheckCount(const Model::GetHealthCheckCountRequest& request) const;
+        virtual Model::GetHealthCheckCountOutcome GetHealthCheckCount(const Model::GetHealthCheckCountRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetHealthCheckCount that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetHealthCheckCountRequestT = Model::GetHealthCheckCountRequest>
-        Model::GetHealthCheckCountOutcomeCallable GetHealthCheckCountCallable(const GetHealthCheckCountRequestT& request) const
+        Model::GetHealthCheckCountOutcomeCallable GetHealthCheckCountCallable(const GetHealthCheckCountRequestT& request = {}) const
         {
             return SubmitCallable(&Route53Client::GetHealthCheckCount, request);
         }
@@ -1430,7 +1431,7 @@ namespace Route53
          * An Async wrapper for GetHealthCheckCount that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetHealthCheckCountRequestT = Model::GetHealthCheckCountRequest>
-        void GetHealthCheckCountAsync(const GetHealthCheckCountRequestT& request, const GetHealthCheckCountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetHealthCheckCountAsync(const GetHealthCheckCountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetHealthCheckCountRequestT& request = {}) const
         {
             return SubmitAsync(&Route53Client::GetHealthCheckCount, request, handler, context);
         }
@@ -1491,7 +1492,11 @@ namespace Route53
 
         /**
          * <p>Gets information about a specified hosted zone including the four name
-         * servers assigned to the hosted zone.</p><p><h3>See Also:</h3>   <a
+         * servers assigned to the hosted zone.</p> <p> <code/> returns the VPCs associated
+         * with the specified hosted zone and does not reflect the VPC associations by
+         * Route 53 Profiles. To get the associations to a Profile, call the <a
+         * href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53profiles_ListProfileAssociations.html">ListProfileAssociations</a>
+         * API.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-2013-04-01/GetHostedZone">AWS
          * API Reference</a></p>
          */
@@ -1521,13 +1526,13 @@ namespace Route53
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-2013-04-01/GetHostedZoneCount">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetHostedZoneCountOutcome GetHostedZoneCount(const Model::GetHostedZoneCountRequest& request) const;
+        virtual Model::GetHostedZoneCountOutcome GetHostedZoneCount(const Model::GetHostedZoneCountRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetHostedZoneCount that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetHostedZoneCountRequestT = Model::GetHostedZoneCountRequest>
-        Model::GetHostedZoneCountOutcomeCallable GetHostedZoneCountCallable(const GetHostedZoneCountRequestT& request) const
+        Model::GetHostedZoneCountOutcomeCallable GetHostedZoneCountCallable(const GetHostedZoneCountRequestT& request = {}) const
         {
             return SubmitCallable(&Route53Client::GetHostedZoneCount, request);
         }
@@ -1536,7 +1541,7 @@ namespace Route53
          * An Async wrapper for GetHostedZoneCount that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetHostedZoneCountRequestT = Model::GetHostedZoneCountRequest>
-        void GetHostedZoneCountAsync(const GetHostedZoneCountRequestT& request, const GetHostedZoneCountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetHostedZoneCountAsync(const GetHostedZoneCountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetHostedZoneCountRequestT& request = {}) const
         {
             return SubmitAsync(&Route53Client::GetHostedZoneCount, request, handler, context);
         }
@@ -1726,13 +1731,13 @@ namespace Route53
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-2013-04-01/GetTrafficPolicyInstanceCount">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetTrafficPolicyInstanceCountOutcome GetTrafficPolicyInstanceCount(const Model::GetTrafficPolicyInstanceCountRequest& request) const;
+        virtual Model::GetTrafficPolicyInstanceCountOutcome GetTrafficPolicyInstanceCount(const Model::GetTrafficPolicyInstanceCountRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetTrafficPolicyInstanceCount that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetTrafficPolicyInstanceCountRequestT = Model::GetTrafficPolicyInstanceCountRequest>
-        Model::GetTrafficPolicyInstanceCountOutcomeCallable GetTrafficPolicyInstanceCountCallable(const GetTrafficPolicyInstanceCountRequestT& request) const
+        Model::GetTrafficPolicyInstanceCountOutcomeCallable GetTrafficPolicyInstanceCountCallable(const GetTrafficPolicyInstanceCountRequestT& request = {}) const
         {
             return SubmitCallable(&Route53Client::GetTrafficPolicyInstanceCount, request);
         }
@@ -1741,7 +1746,7 @@ namespace Route53
          * An Async wrapper for GetTrafficPolicyInstanceCount that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetTrafficPolicyInstanceCountRequestT = Model::GetTrafficPolicyInstanceCountRequest>
-        void GetTrafficPolicyInstanceCountAsync(const GetTrafficPolicyInstanceCountRequestT& request, const GetTrafficPolicyInstanceCountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetTrafficPolicyInstanceCountAsync(const GetTrafficPolicyInstanceCountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetTrafficPolicyInstanceCountRequestT& request = {}) const
         {
             return SubmitAsync(&Route53Client::GetTrafficPolicyInstanceCount, request, handler, context);
         }
@@ -1778,13 +1783,13 @@ namespace Route53
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-2013-04-01/ListCidrCollections">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListCidrCollectionsOutcome ListCidrCollections(const Model::ListCidrCollectionsRequest& request) const;
+        virtual Model::ListCidrCollectionsOutcome ListCidrCollections(const Model::ListCidrCollectionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListCidrCollections that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListCidrCollectionsRequestT = Model::ListCidrCollectionsRequest>
-        Model::ListCidrCollectionsOutcomeCallable ListCidrCollectionsCallable(const ListCidrCollectionsRequestT& request) const
+        Model::ListCidrCollectionsOutcomeCallable ListCidrCollectionsCallable(const ListCidrCollectionsRequestT& request = {}) const
         {
             return SubmitCallable(&Route53Client::ListCidrCollections, request);
         }
@@ -1793,7 +1798,7 @@ namespace Route53
          * An Async wrapper for ListCidrCollections that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListCidrCollectionsRequestT = Model::ListCidrCollectionsRequest>
-        void ListCidrCollectionsAsync(const ListCidrCollectionsRequestT& request, const ListCidrCollectionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListCidrCollectionsAsync(const ListCidrCollectionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListCidrCollectionsRequestT& request = {}) const
         {
             return SubmitAsync(&Route53Client::ListCidrCollections, request, handler, context);
         }
@@ -1837,13 +1842,13 @@ namespace Route53
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-2013-04-01/ListGeoLocations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListGeoLocationsOutcome ListGeoLocations(const Model::ListGeoLocationsRequest& request) const;
+        virtual Model::ListGeoLocationsOutcome ListGeoLocations(const Model::ListGeoLocationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListGeoLocations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListGeoLocationsRequestT = Model::ListGeoLocationsRequest>
-        Model::ListGeoLocationsOutcomeCallable ListGeoLocationsCallable(const ListGeoLocationsRequestT& request) const
+        Model::ListGeoLocationsOutcomeCallable ListGeoLocationsCallable(const ListGeoLocationsRequestT& request = {}) const
         {
             return SubmitCallable(&Route53Client::ListGeoLocations, request);
         }
@@ -1852,7 +1857,7 @@ namespace Route53
          * An Async wrapper for ListGeoLocations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListGeoLocationsRequestT = Model::ListGeoLocationsRequest>
-        void ListGeoLocationsAsync(const ListGeoLocationsRequestT& request, const ListGeoLocationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListGeoLocationsAsync(const ListGeoLocationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListGeoLocationsRequestT& request = {}) const
         {
             return SubmitAsync(&Route53Client::ListGeoLocations, request, handler, context);
         }
@@ -1863,13 +1868,13 @@ namespace Route53
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-2013-04-01/ListHealthChecks">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListHealthChecksOutcome ListHealthChecks(const Model::ListHealthChecksRequest& request) const;
+        virtual Model::ListHealthChecksOutcome ListHealthChecks(const Model::ListHealthChecksRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListHealthChecks that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListHealthChecksRequestT = Model::ListHealthChecksRequest>
-        Model::ListHealthChecksOutcomeCallable ListHealthChecksCallable(const ListHealthChecksRequestT& request) const
+        Model::ListHealthChecksOutcomeCallable ListHealthChecksCallable(const ListHealthChecksRequestT& request = {}) const
         {
             return SubmitCallable(&Route53Client::ListHealthChecks, request);
         }
@@ -1878,7 +1883,7 @@ namespace Route53
          * An Async wrapper for ListHealthChecks that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListHealthChecksRequestT = Model::ListHealthChecksRequest>
-        void ListHealthChecksAsync(const ListHealthChecksRequestT& request, const ListHealthChecksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListHealthChecksAsync(const ListHealthChecksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListHealthChecksRequestT& request = {}) const
         {
             return SubmitAsync(&Route53Client::ListHealthChecks, request, handler, context);
         }
@@ -1893,13 +1898,13 @@ namespace Route53
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-2013-04-01/ListHostedZones">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListHostedZonesOutcome ListHostedZones(const Model::ListHostedZonesRequest& request) const;
+        virtual Model::ListHostedZonesOutcome ListHostedZones(const Model::ListHostedZonesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListHostedZones that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListHostedZonesRequestT = Model::ListHostedZonesRequest>
-        Model::ListHostedZonesOutcomeCallable ListHostedZonesCallable(const ListHostedZonesRequestT& request) const
+        Model::ListHostedZonesOutcomeCallable ListHostedZonesCallable(const ListHostedZonesRequestT& request = {}) const
         {
             return SubmitCallable(&Route53Client::ListHostedZones, request);
         }
@@ -1908,7 +1913,7 @@ namespace Route53
          * An Async wrapper for ListHostedZones that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListHostedZonesRequestT = Model::ListHostedZonesRequest>
-        void ListHostedZonesAsync(const ListHostedZonesRequestT& request, const ListHostedZonesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListHostedZonesAsync(const ListHostedZonesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListHostedZonesRequestT& request = {}) const
         {
             return SubmitAsync(&Route53Client::ListHostedZones, request, handler, context);
         }
@@ -1956,13 +1961,13 @@ namespace Route53
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-2013-04-01/ListHostedZonesByName">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListHostedZonesByNameOutcome ListHostedZonesByName(const Model::ListHostedZonesByNameRequest& request) const;
+        virtual Model::ListHostedZonesByNameOutcome ListHostedZonesByName(const Model::ListHostedZonesByNameRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListHostedZonesByName that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListHostedZonesByNameRequestT = Model::ListHostedZonesByNameRequest>
-        Model::ListHostedZonesByNameOutcomeCallable ListHostedZonesByNameCallable(const ListHostedZonesByNameRequestT& request) const
+        Model::ListHostedZonesByNameOutcomeCallable ListHostedZonesByNameCallable(const ListHostedZonesByNameRequestT& request = {}) const
         {
             return SubmitCallable(&Route53Client::ListHostedZonesByName, request);
         }
@@ -1971,7 +1976,7 @@ namespace Route53
          * An Async wrapper for ListHostedZonesByName that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListHostedZonesByNameRequestT = Model::ListHostedZonesByNameRequest>
-        void ListHostedZonesByNameAsync(const ListHostedZonesByNameRequestT& request, const ListHostedZonesByNameResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListHostedZonesByNameAsync(const ListHostedZonesByNameResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListHostedZonesByNameRequestT& request = {}) const
         {
             return SubmitAsync(&Route53Client::ListHostedZonesByName, request, handler, context);
         }
@@ -1988,13 +1993,17 @@ namespace Route53
          * Amazon Web Services service that created and owns the hosted zone. For example,
          * if a hosted zone was created by Amazon Elastic File System (Amazon EFS), the
          * value of <code>Owner</code> is <code>efs.amazonaws.com</code>. </p> </li> </ul>
-         *  <p>When listing private hosted zones, the hosted zone and the Amazon VPC
-         * must belong to the same partition where the hosted zones were created. A
-         * partition is a group of Amazon Web Services Regions. Each Amazon Web Services
-         * account is scoped to one partition.</p> <p>The following are the supported
-         * partitions:</p> <ul> <li> <p> <code>aws</code> - Amazon Web Services Regions</p>
-         * </li> <li> <p> <code>aws-cn</code> - China Regions</p> </li> <li> <p>
-         * <code>aws-us-gov</code> - Amazon Web Services GovCloud (US) Region</p> </li>
+         * <p> <code>ListHostedZonesByVPC</code> returns the hosted zones associated with
+         * the specified VPC and does not reflect the hosted zone associations to VPCs via
+         * Route 53 Profiles. To get the associations to a Profile, call the <a
+         * href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53profiles_ListProfileResourceAssociations.html">ListProfileResourceAssociations</a>
+         * API.</p>  <p>When listing private hosted zones, the hosted zone and the
+         * Amazon VPC must belong to the same partition where the hosted zones were
+         * created. A partition is a group of Amazon Web Services Regions. Each Amazon Web
+         * Services account is scoped to one partition.</p> <p>The following are the
+         * supported partitions:</p> <ul> <li> <p> <code>aws</code> - Amazon Web Services
+         * Regions</p> </li> <li> <p> <code>aws-cn</code> - China Regions</p> </li> <li>
+         * <p> <code>aws-us-gov</code> - Amazon Web Services GovCloud (US) Region</p> </li>
          * </ul> <p>For more information, see <a
          * href="https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html">Access
          * Management</a> in the <i>Amazon Web Services General Reference</i>.</p>
@@ -2035,13 +2044,13 @@ namespace Route53
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-2013-04-01/ListQueryLoggingConfigs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListQueryLoggingConfigsOutcome ListQueryLoggingConfigs(const Model::ListQueryLoggingConfigsRequest& request) const;
+        virtual Model::ListQueryLoggingConfigsOutcome ListQueryLoggingConfigs(const Model::ListQueryLoggingConfigsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListQueryLoggingConfigs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListQueryLoggingConfigsRequestT = Model::ListQueryLoggingConfigsRequest>
-        Model::ListQueryLoggingConfigsOutcomeCallable ListQueryLoggingConfigsCallable(const ListQueryLoggingConfigsRequestT& request) const
+        Model::ListQueryLoggingConfigsOutcomeCallable ListQueryLoggingConfigsCallable(const ListQueryLoggingConfigsRequestT& request = {}) const
         {
             return SubmitCallable(&Route53Client::ListQueryLoggingConfigs, request);
         }
@@ -2050,7 +2059,7 @@ namespace Route53
          * An Async wrapper for ListQueryLoggingConfigs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListQueryLoggingConfigsRequestT = Model::ListQueryLoggingConfigsRequest>
-        void ListQueryLoggingConfigsAsync(const ListQueryLoggingConfigsRequestT& request, const ListQueryLoggingConfigsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListQueryLoggingConfigsAsync(const ListQueryLoggingConfigsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListQueryLoggingConfigsRequestT& request = {}) const
         {
             return SubmitAsync(&Route53Client::ListQueryLoggingConfigs, request, handler, context);
         }
@@ -2125,13 +2134,13 @@ namespace Route53
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-2013-04-01/ListReusableDelegationSets">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListReusableDelegationSetsOutcome ListReusableDelegationSets(const Model::ListReusableDelegationSetsRequest& request) const;
+        virtual Model::ListReusableDelegationSetsOutcome ListReusableDelegationSets(const Model::ListReusableDelegationSetsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListReusableDelegationSets that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListReusableDelegationSetsRequestT = Model::ListReusableDelegationSetsRequest>
-        Model::ListReusableDelegationSetsOutcomeCallable ListReusableDelegationSetsCallable(const ListReusableDelegationSetsRequestT& request) const
+        Model::ListReusableDelegationSetsOutcomeCallable ListReusableDelegationSetsCallable(const ListReusableDelegationSetsRequestT& request = {}) const
         {
             return SubmitCallable(&Route53Client::ListReusableDelegationSets, request);
         }
@@ -2140,7 +2149,7 @@ namespace Route53
          * An Async wrapper for ListReusableDelegationSets that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListReusableDelegationSetsRequestT = Model::ListReusableDelegationSetsRequest>
-        void ListReusableDelegationSetsAsync(const ListReusableDelegationSetsRequestT& request, const ListReusableDelegationSetsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListReusableDelegationSetsAsync(const ListReusableDelegationSetsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListReusableDelegationSetsRequestT& request = {}) const
         {
             return SubmitAsync(&Route53Client::ListReusableDelegationSets, request, handler, context);
         }
@@ -2214,13 +2223,13 @@ namespace Route53
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-2013-04-01/ListTrafficPolicies">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListTrafficPoliciesOutcome ListTrafficPolicies(const Model::ListTrafficPoliciesRequest& request) const;
+        virtual Model::ListTrafficPoliciesOutcome ListTrafficPolicies(const Model::ListTrafficPoliciesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListTrafficPolicies that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListTrafficPoliciesRequestT = Model::ListTrafficPoliciesRequest>
-        Model::ListTrafficPoliciesOutcomeCallable ListTrafficPoliciesCallable(const ListTrafficPoliciesRequestT& request) const
+        Model::ListTrafficPoliciesOutcomeCallable ListTrafficPoliciesCallable(const ListTrafficPoliciesRequestT& request = {}) const
         {
             return SubmitCallable(&Route53Client::ListTrafficPolicies, request);
         }
@@ -2229,7 +2238,7 @@ namespace Route53
          * An Async wrapper for ListTrafficPolicies that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListTrafficPoliciesRequestT = Model::ListTrafficPoliciesRequest>
-        void ListTrafficPoliciesAsync(const ListTrafficPoliciesRequestT& request, const ListTrafficPoliciesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListTrafficPoliciesAsync(const ListTrafficPoliciesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListTrafficPoliciesRequestT& request = {}) const
         {
             return SubmitAsync(&Route53Client::ListTrafficPolicies, request, handler, context);
         }
@@ -2247,13 +2256,13 @@ namespace Route53
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-2013-04-01/ListTrafficPolicyInstances">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListTrafficPolicyInstancesOutcome ListTrafficPolicyInstances(const Model::ListTrafficPolicyInstancesRequest& request) const;
+        virtual Model::ListTrafficPolicyInstancesOutcome ListTrafficPolicyInstances(const Model::ListTrafficPolicyInstancesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListTrafficPolicyInstances that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListTrafficPolicyInstancesRequestT = Model::ListTrafficPolicyInstancesRequest>
-        Model::ListTrafficPolicyInstancesOutcomeCallable ListTrafficPolicyInstancesCallable(const ListTrafficPolicyInstancesRequestT& request) const
+        Model::ListTrafficPolicyInstancesOutcomeCallable ListTrafficPolicyInstancesCallable(const ListTrafficPolicyInstancesRequestT& request = {}) const
         {
             return SubmitCallable(&Route53Client::ListTrafficPolicyInstances, request);
         }
@@ -2262,7 +2271,7 @@ namespace Route53
          * An Async wrapper for ListTrafficPolicyInstances that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListTrafficPolicyInstancesRequestT = Model::ListTrafficPolicyInstancesRequest>
-        void ListTrafficPolicyInstancesAsync(const ListTrafficPolicyInstancesRequestT& request, const ListTrafficPolicyInstancesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListTrafficPolicyInstancesAsync(const ListTrafficPolicyInstancesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListTrafficPolicyInstancesRequestT& request = {}) const
         {
             return SubmitAsync(&Route53Client::ListTrafficPolicyInstances, request, handler, context);
         }
@@ -2558,7 +2567,6 @@ namespace Route53
         void init(const Route53ClientConfiguration& clientConfiguration);
 
         Route53ClientConfiguration m_clientConfiguration;
-        std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
         std::shared_ptr<Route53EndpointProviderBase> m_endpointProvider;
   };
 

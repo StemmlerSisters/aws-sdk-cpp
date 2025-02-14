@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/iot1click-devices/IoT1ClickDevicesService_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/iot1click-devices/IoT1ClickDevicesServiceServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/iot1click-devices/IoT1ClickDevicesServiceErrorMarshaller.h>
 
 namespace Aws
 {
 namespace IoT1ClickDevicesService
 {
+  AWS_IOT1CLICKDEVICESSERVICE_API extern const char SERVICE_NAME[];
   /**
    * <p>Describes all of the AWS IoT 1-Click device-related API operations for the
    * service.
@@ -22,12 +26,20 @@ namespace IoT1ClickDevicesService
    * web services
  protocols.</p>
    */
-  class AWS_IOT1CLICKDEVICESSERVICE_API IoT1ClickDevicesServiceClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<IoT1ClickDevicesServiceClient>
+  class AWS_IOT1CLICKDEVICESSERVICE_API IoT1ClickDevicesServiceClient : smithy::client::AwsSmithyClientT<Aws::IoT1ClickDevicesService::SERVICE_NAME,
+      Aws::IoT1ClickDevicesService::IoT1ClickDevicesServiceClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      IoT1ClickDevicesServiceEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::IoT1ClickDevicesServiceErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<IoT1ClickDevicesServiceClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "IoT 1Click Devices Service"; }
 
       typedef IoT1ClickDevicesServiceClientConfiguration ClientConfigurationType;
       typedef IoT1ClickDevicesServiceEndpointProvider EndpointProviderType;
@@ -287,13 +299,13 @@ namespace IoT1ClickDevicesService
          * href="http://docs.aws.amazon.com/goto/WebAPI/devices-2018-05-14/ListDevices">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDevicesOutcome ListDevices(const Model::ListDevicesRequest& request) const;
+        virtual Model::ListDevicesOutcome ListDevices(const Model::ListDevicesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDevices that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDevicesRequestT = Model::ListDevicesRequest>
-        Model::ListDevicesOutcomeCallable ListDevicesCallable(const ListDevicesRequestT& request) const
+        Model::ListDevicesOutcomeCallable ListDevicesCallable(const ListDevicesRequestT& request = {}) const
         {
             return SubmitCallable(&IoT1ClickDevicesServiceClient::ListDevices, request);
         }
@@ -302,7 +314,7 @@ namespace IoT1ClickDevicesService
          * An Async wrapper for ListDevices that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDevicesRequestT = Model::ListDevicesRequest>
-        void ListDevicesAsync(const ListDevicesRequestT& request, const ListDevicesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDevicesAsync(const ListDevicesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDevicesRequestT& request = {}) const
         {
             return SubmitAsync(&IoT1ClickDevicesServiceClient::ListDevices, request, handler, context);
         }
@@ -447,11 +459,7 @@ namespace IoT1ClickDevicesService
       std::shared_ptr<IoT1ClickDevicesServiceEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<IoT1ClickDevicesServiceClient>;
-      void init(const IoT1ClickDevicesServiceClientConfiguration& clientConfiguration);
 
-      IoT1ClickDevicesServiceClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<IoT1ClickDevicesServiceEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace IoT1ClickDevicesService

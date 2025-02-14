@@ -23,9 +23,8 @@ GetWebExperienceResult::GetWebExperienceResult() :
 {
 }
 
-GetWebExperienceResult::GetWebExperienceResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_status(WebExperienceStatus::NOT_SET),
-    m_samplePromptsControlMode(WebExperienceSamplePromptsControlMode::NOT_SET)
+GetWebExperienceResult::GetWebExperienceResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetWebExperienceResult()
 {
   *this = result;
 }
@@ -99,15 +98,42 @@ GetWebExperienceResult& GetWebExperienceResult::operator =(const Aws::AmazonWebS
 
   }
 
+  if(jsonValue.ValueExists("origins"))
+  {
+    Aws::Utils::Array<JsonView> originsJsonList = jsonValue.GetArray("origins");
+    for(unsigned originsIndex = 0; originsIndex < originsJsonList.GetLength(); ++originsIndex)
+    {
+      m_origins.push_back(originsJsonList[originsIndex].AsString());
+    }
+  }
+
   if(jsonValue.ValueExists("roleArn"))
   {
     m_roleArn = jsonValue.GetString("roleArn");
 
   }
 
+  if(jsonValue.ValueExists("identityProviderConfiguration"))
+  {
+    m_identityProviderConfiguration = jsonValue.GetObject("identityProviderConfiguration");
+
+  }
+
   if(jsonValue.ValueExists("error"))
   {
     m_error = jsonValue.GetObject("error");
+
+  }
+
+  if(jsonValue.ValueExists("browserExtensionConfiguration"))
+  {
+    m_browserExtensionConfiguration = jsonValue.GetObject("browserExtensionConfiguration");
+
+  }
+
+  if(jsonValue.ValueExists("customizationConfiguration"))
+  {
+    m_customizationConfiguration = jsonValue.GetObject("customizationConfiguration");
 
   }
 

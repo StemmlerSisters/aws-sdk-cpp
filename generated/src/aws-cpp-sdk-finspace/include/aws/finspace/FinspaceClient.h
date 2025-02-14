@@ -6,25 +6,37 @@
 #pragma once
 #include <aws/finspace/Finspace_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/finspace/FinspaceServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/finspace/FinspaceErrorMarshaller.h>
 
 namespace Aws
 {
 namespace finspace
 {
+  AWS_FINSPACE_API extern const char SERVICE_NAME[];
   /**
    * <p>The FinSpace management service provides the APIs for managing FinSpace
    * environments.</p>
    */
-  class AWS_FINSPACE_API FinspaceClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<FinspaceClient>
+  class AWS_FINSPACE_API FinspaceClient : smithy::client::AwsSmithyClientT<Aws::finspace::SERVICE_NAME,
+      Aws::finspace::FinspaceClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      FinspaceEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::FinspaceErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<FinspaceClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "finspace"; }
 
       typedef FinspaceClientConfiguration ClientConfigurationType;
       typedef FinspaceEndpointProvider EndpointProviderType;
@@ -859,13 +871,13 @@ namespace finspace
          * href="http://docs.aws.amazon.com/goto/WebAPI/finspace-2021-03-12/ListKxEnvironments">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListKxEnvironmentsOutcome ListKxEnvironments(const Model::ListKxEnvironmentsRequest& request) const;
+        virtual Model::ListKxEnvironmentsOutcome ListKxEnvironments(const Model::ListKxEnvironmentsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListKxEnvironments that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListKxEnvironmentsRequestT = Model::ListKxEnvironmentsRequest>
-        Model::ListKxEnvironmentsOutcomeCallable ListKxEnvironmentsCallable(const ListKxEnvironmentsRequestT& request) const
+        Model::ListKxEnvironmentsOutcomeCallable ListKxEnvironmentsCallable(const ListKxEnvironmentsRequestT& request = {}) const
         {
             return SubmitCallable(&FinspaceClient::ListKxEnvironments, request);
         }
@@ -874,7 +886,7 @@ namespace finspace
          * An Async wrapper for ListKxEnvironments that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListKxEnvironmentsRequestT = Model::ListKxEnvironmentsRequest>
-        void ListKxEnvironmentsAsync(const ListKxEnvironmentsRequestT& request, const ListKxEnvironmentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListKxEnvironmentsAsync(const ListKxEnvironmentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListKxEnvironmentsRequestT& request = {}) const
         {
             return SubmitAsync(&FinspaceClient::ListKxEnvironments, request, handler, context);
         }
@@ -1256,11 +1268,7 @@ namespace finspace
       std::shared_ptr<FinspaceEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<FinspaceClient>;
-      void init(const FinspaceClientConfiguration& clientConfiguration);
 
-      FinspaceClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<FinspaceEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace finspace

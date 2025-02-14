@@ -23,9 +23,8 @@ GetModelCustomizationJobResult::GetModelCustomizationJobResult() :
 {
 }
 
-GetModelCustomizationJobResult::GetModelCustomizationJobResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_status(ModelCustomizationJobStatus::NOT_SET),
-    m_customizationType(CustomizationType::NOT_SET)
+GetModelCustomizationJobResult::GetModelCustomizationJobResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetModelCustomizationJobResult()
 {
   *this = result;
 }
@@ -162,6 +161,12 @@ GetModelCustomizationJobResult& GetModelCustomizationJobResult::operator =(const
   if(jsonValue.ValueExists("vpcConfig"))
   {
     m_vpcConfig = jsonValue.GetObject("vpcConfig");
+
+  }
+
+  if(jsonValue.ValueExists("customizationConfig"))
+  {
+    m_customizationConfig = jsonValue.GetObject("customizationConfig");
 
   }
 

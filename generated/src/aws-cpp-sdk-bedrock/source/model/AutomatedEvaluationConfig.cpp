@@ -19,12 +19,13 @@ namespace Model
 {
 
 AutomatedEvaluationConfig::AutomatedEvaluationConfig() : 
-    m_datasetMetricConfigsHasBeenSet(false)
+    m_datasetMetricConfigsHasBeenSet(false),
+    m_evaluatorModelConfigHasBeenSet(false)
 {
 }
 
-AutomatedEvaluationConfig::AutomatedEvaluationConfig(JsonView jsonValue) : 
-    m_datasetMetricConfigsHasBeenSet(false)
+AutomatedEvaluationConfig::AutomatedEvaluationConfig(JsonView jsonValue)
+  : AutomatedEvaluationConfig()
 {
   *this = jsonValue;
 }
@@ -39,6 +40,13 @@ AutomatedEvaluationConfig& AutomatedEvaluationConfig::operator =(JsonView jsonVa
       m_datasetMetricConfigs.push_back(datasetMetricConfigsJsonList[datasetMetricConfigsIndex].AsObject());
     }
     m_datasetMetricConfigsHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("evaluatorModelConfig"))
+  {
+    m_evaluatorModelConfig = jsonValue.GetObject("evaluatorModelConfig");
+
+    m_evaluatorModelConfigHasBeenSet = true;
   }
 
   return *this;
@@ -56,6 +64,12 @@ JsonValue AutomatedEvaluationConfig::Jsonize() const
      datasetMetricConfigsJsonList[datasetMetricConfigsIndex].AsObject(m_datasetMetricConfigs[datasetMetricConfigsIndex].Jsonize());
    }
    payload.WithArray("datasetMetricConfigs", std::move(datasetMetricConfigsJsonList));
+
+  }
+
+  if(m_evaluatorModelConfigHasBeenSet)
+  {
+   payload.WithObject("evaluatorModelConfig", m_evaluatorModelConfig.Jsonize());
 
   }
 

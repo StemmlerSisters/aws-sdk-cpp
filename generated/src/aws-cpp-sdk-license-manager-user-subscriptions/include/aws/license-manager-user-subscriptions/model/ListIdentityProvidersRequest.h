@@ -6,7 +6,9 @@
 #pragma once
 #include <aws/license-manager-user-subscriptions/LicenseManagerUserSubscriptions_EXPORTS.h>
 #include <aws/license-manager-user-subscriptions/LicenseManagerUserSubscriptionsRequest.h>
+#include <aws/core/utils/memory/stl/AWSVector.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
+#include <aws/license-manager-user-subscriptions/model/Filter.h>
 #include <utility>
 
 namespace Aws
@@ -32,68 +34,49 @@ namespace Model
     AWS_LICENSEMANAGERUSERSUBSCRIPTIONS_API Aws::String SerializePayload() const override;
 
 
+    ///@{
     /**
-     * <p>Maximum number of results to return in a single call.</p>
+     * <p>You can use the following filters to streamline results:</p> <ul> <li>
+     * <p>Product</p> </li> <li> <p>DirectoryId</p> </li> </ul>
+     */
+    inline const Aws::Vector<Filter>& GetFilters() const{ return m_filters; }
+    inline bool FiltersHasBeenSet() const { return m_filtersHasBeenSet; }
+    inline void SetFilters(const Aws::Vector<Filter>& value) { m_filtersHasBeenSet = true; m_filters = value; }
+    inline void SetFilters(Aws::Vector<Filter>&& value) { m_filtersHasBeenSet = true; m_filters = std::move(value); }
+    inline ListIdentityProvidersRequest& WithFilters(const Aws::Vector<Filter>& value) { SetFilters(value); return *this;}
+    inline ListIdentityProvidersRequest& WithFilters(Aws::Vector<Filter>&& value) { SetFilters(std::move(value)); return *this;}
+    inline ListIdentityProvidersRequest& AddFilters(const Filter& value) { m_filtersHasBeenSet = true; m_filters.push_back(value); return *this; }
+    inline ListIdentityProvidersRequest& AddFilters(Filter&& value) { m_filtersHasBeenSet = true; m_filters.push_back(std::move(value)); return *this; }
+    ///@}
+
+    ///@{
+    /**
+     * <p>The maximum number of results to return from a single request.</p>
      */
     inline int GetMaxResults() const{ return m_maxResults; }
-
-    /**
-     * <p>Maximum number of results to return in a single call.</p>
-     */
     inline bool MaxResultsHasBeenSet() const { return m_maxResultsHasBeenSet; }
-
-    /**
-     * <p>Maximum number of results to return in a single call.</p>
-     */
     inline void SetMaxResults(int value) { m_maxResultsHasBeenSet = true; m_maxResults = value; }
-
-    /**
-     * <p>Maximum number of results to return in a single call.</p>
-     */
     inline ListIdentityProvidersRequest& WithMaxResults(int value) { SetMaxResults(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p>Token for the next set of results.</p>
+     * <p>A token to specify where to start paginating. This is the nextToken from a
+     * previously truncated response.</p>
      */
     inline const Aws::String& GetNextToken() const{ return m_nextToken; }
-
-    /**
-     * <p>Token for the next set of results.</p>
-     */
     inline bool NextTokenHasBeenSet() const { return m_nextTokenHasBeenSet; }
-
-    /**
-     * <p>Token for the next set of results.</p>
-     */
     inline void SetNextToken(const Aws::String& value) { m_nextTokenHasBeenSet = true; m_nextToken = value; }
-
-    /**
-     * <p>Token for the next set of results.</p>
-     */
     inline void SetNextToken(Aws::String&& value) { m_nextTokenHasBeenSet = true; m_nextToken = std::move(value); }
-
-    /**
-     * <p>Token for the next set of results.</p>
-     */
     inline void SetNextToken(const char* value) { m_nextTokenHasBeenSet = true; m_nextToken.assign(value); }
-
-    /**
-     * <p>Token for the next set of results.</p>
-     */
     inline ListIdentityProvidersRequest& WithNextToken(const Aws::String& value) { SetNextToken(value); return *this;}
-
-    /**
-     * <p>Token for the next set of results.</p>
-     */
     inline ListIdentityProvidersRequest& WithNextToken(Aws::String&& value) { SetNextToken(std::move(value)); return *this;}
-
-    /**
-     * <p>Token for the next set of results.</p>
-     */
     inline ListIdentityProvidersRequest& WithNextToken(const char* value) { SetNextToken(value); return *this;}
-
+    ///@}
   private:
+
+    Aws::Vector<Filter> m_filters;
+    bool m_filtersHasBeenSet = false;
 
     int m_maxResults;
     bool m_maxResultsHasBeenSet = false;

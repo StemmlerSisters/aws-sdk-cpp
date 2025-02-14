@@ -27,13 +27,8 @@ GetCampaignResult::GetCampaignResult() :
 {
 }
 
-GetCampaignResult::GetCampaignResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_status(CampaignStatus::NOT_SET),
-    m_postTriggerCollectionDuration(0),
-    m_diagnosticsMode(DiagnosticsMode::NOT_SET),
-    m_spoolingMode(SpoolingMode::NOT_SET),
-    m_compression(Compression::NOT_SET),
-    m_priority(0)
+GetCampaignResult::GetCampaignResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetCampaignResult()
 {
   *this = result;
 }
@@ -161,6 +156,24 @@ GetCampaignResult& GetCampaignResult::operator =(const Aws::AmazonWebServiceResu
     for(unsigned dataDestinationConfigsIndex = 0; dataDestinationConfigsIndex < dataDestinationConfigsJsonList.GetLength(); ++dataDestinationConfigsIndex)
     {
       m_dataDestinationConfigs.push_back(dataDestinationConfigsJsonList[dataDestinationConfigsIndex].AsObject());
+    }
+  }
+
+  if(jsonValue.ValueExists("dataPartitions"))
+  {
+    Aws::Utils::Array<JsonView> dataPartitionsJsonList = jsonValue.GetArray("dataPartitions");
+    for(unsigned dataPartitionsIndex = 0; dataPartitionsIndex < dataPartitionsJsonList.GetLength(); ++dataPartitionsIndex)
+    {
+      m_dataPartitions.push_back(dataPartitionsJsonList[dataPartitionsIndex].AsObject());
+    }
+  }
+
+  if(jsonValue.ValueExists("signalsToFetch"))
+  {
+    Aws::Utils::Array<JsonView> signalsToFetchJsonList = jsonValue.GetArray("signalsToFetch");
+    for(unsigned signalsToFetchIndex = 0; signalsToFetchIndex < signalsToFetchJsonList.GetLength(); ++signalsToFetchIndex)
+    {
+      m_signalsToFetch.push_back(signalsToFetchJsonList[signalsToFetchIndex].AsObject());
     }
   }
 

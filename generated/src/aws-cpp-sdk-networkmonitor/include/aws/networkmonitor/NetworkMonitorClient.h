@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/networkmonitor/NetworkMonitor_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/networkmonitor/NetworkMonitorServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/networkmonitor/NetworkMonitorErrorMarshaller.h>
 
 namespace Aws
 {
 namespace NetworkMonitor
 {
+  AWS_NETWORKMONITOR_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon CloudWatch Network Monitor is an Amazon Web Services active network
    * monitoring service that identifies if a network issues exists within the Amazon
@@ -34,12 +38,20 @@ namespace NetworkMonitor
    * Amazon CloudWatch Network Monitor</a> in the <i>Amazon CloudWatch User
    * Guide</i>.</p>
    */
-  class AWS_NETWORKMONITOR_API NetworkMonitorClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<NetworkMonitorClient>
+  class AWS_NETWORKMONITOR_API NetworkMonitorClient : smithy::client::AwsSmithyClientT<Aws::NetworkMonitor::SERVICE_NAME,
+      Aws::NetworkMonitor::NetworkMonitorClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      NetworkMonitorEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::NetworkMonitorErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<NetworkMonitorClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "NetworkMonitor"; }
 
       typedef NetworkMonitorClientConfiguration ClientConfigurationType;
       typedef NetworkMonitorEndpointProvider EndpointProviderType;
@@ -281,13 +293,13 @@ namespace NetworkMonitor
          * href="http://docs.aws.amazon.com/goto/WebAPI/networkmonitor-2023-08-01/ListMonitors">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListMonitorsOutcome ListMonitors(const Model::ListMonitorsRequest& request) const;
+        virtual Model::ListMonitorsOutcome ListMonitors(const Model::ListMonitorsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListMonitors that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListMonitorsRequestT = Model::ListMonitorsRequest>
-        Model::ListMonitorsOutcomeCallable ListMonitorsCallable(const ListMonitorsRequestT& request) const
+        Model::ListMonitorsOutcomeCallable ListMonitorsCallable(const ListMonitorsRequestT& request = {}) const
         {
             return SubmitCallable(&NetworkMonitorClient::ListMonitors, request);
         }
@@ -296,7 +308,7 @@ namespace NetworkMonitor
          * An Async wrapper for ListMonitors that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListMonitorsRequestT = Model::ListMonitorsRequest>
-        void ListMonitorsAsync(const ListMonitorsRequestT& request, const ListMonitorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListMonitorsAsync(const ListMonitorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListMonitorsRequestT& request = {}) const
         {
             return SubmitAsync(&NetworkMonitorClient::ListMonitors, request, handler, context);
         }
@@ -451,11 +463,7 @@ namespace NetworkMonitor
       std::shared_ptr<NetworkMonitorEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<NetworkMonitorClient>;
-      void init(const NetworkMonitorClientConfiguration& clientConfiguration);
 
-      NetworkMonitorClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<NetworkMonitorEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace NetworkMonitor

@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/iotdeviceadvisor/IoTDeviceAdvisor_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/iotdeviceadvisor/IoTDeviceAdvisorServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/iotdeviceadvisor/IoTDeviceAdvisorErrorMarshaller.h>
 
 namespace Aws
 {
 namespace IoTDeviceAdvisor
 {
+  AWS_IOTDEVICEADVISOR_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon Web Services IoT Core Device Advisor is a cloud-based, fully managed
    * test capability for validating IoT devices during device software development.
@@ -28,12 +32,20 @@ namespace IoTDeviceAdvisor
    * Web Services Partner Device Catalog without the need to send your device in and
    * wait for it to be tested.</p>
    */
-  class AWS_IOTDEVICEADVISOR_API IoTDeviceAdvisorClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<IoTDeviceAdvisorClient>
+  class AWS_IOTDEVICEADVISOR_API IoTDeviceAdvisorClient : smithy::client::AwsSmithyClientT<Aws::IoTDeviceAdvisor::SERVICE_NAME,
+      Aws::IoTDeviceAdvisor::IoTDeviceAdvisorClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      IoTDeviceAdvisorEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::IoTDeviceAdvisorErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<IoTDeviceAdvisorClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "IotDeviceAdvisor"; }
 
       typedef IoTDeviceAdvisorClientConfiguration ClientConfigurationType;
       typedef IoTDeviceAdvisorEndpointProvider EndpointProviderType;
@@ -148,13 +160,13 @@ namespace IoTDeviceAdvisor
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotdeviceadvisor-2020-09-18/GetEndpoint">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetEndpointOutcome GetEndpoint(const Model::GetEndpointRequest& request) const;
+        virtual Model::GetEndpointOutcome GetEndpoint(const Model::GetEndpointRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetEndpoint that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetEndpointRequestT = Model::GetEndpointRequest>
-        Model::GetEndpointOutcomeCallable GetEndpointCallable(const GetEndpointRequestT& request) const
+        Model::GetEndpointOutcomeCallable GetEndpointCallable(const GetEndpointRequestT& request = {}) const
         {
             return SubmitCallable(&IoTDeviceAdvisorClient::GetEndpoint, request);
         }
@@ -163,7 +175,7 @@ namespace IoTDeviceAdvisor
          * An Async wrapper for GetEndpoint that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetEndpointRequestT = Model::GetEndpointRequest>
-        void GetEndpointAsync(const GetEndpointRequestT& request, const GetEndpointResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetEndpointAsync(const GetEndpointResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetEndpointRequestT& request = {}) const
         {
             return SubmitAsync(&IoTDeviceAdvisorClient::GetEndpoint, request, handler, context);
         }
@@ -260,13 +272,13 @@ namespace IoTDeviceAdvisor
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotdeviceadvisor-2020-09-18/ListSuiteDefinitions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListSuiteDefinitionsOutcome ListSuiteDefinitions(const Model::ListSuiteDefinitionsRequest& request) const;
+        virtual Model::ListSuiteDefinitionsOutcome ListSuiteDefinitions(const Model::ListSuiteDefinitionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListSuiteDefinitions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListSuiteDefinitionsRequestT = Model::ListSuiteDefinitionsRequest>
-        Model::ListSuiteDefinitionsOutcomeCallable ListSuiteDefinitionsCallable(const ListSuiteDefinitionsRequestT& request) const
+        Model::ListSuiteDefinitionsOutcomeCallable ListSuiteDefinitionsCallable(const ListSuiteDefinitionsRequestT& request = {}) const
         {
             return SubmitCallable(&IoTDeviceAdvisorClient::ListSuiteDefinitions, request);
         }
@@ -275,7 +287,7 @@ namespace IoTDeviceAdvisor
          * An Async wrapper for ListSuiteDefinitions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListSuiteDefinitionsRequestT = Model::ListSuiteDefinitionsRequest>
-        void ListSuiteDefinitionsAsync(const ListSuiteDefinitionsRequestT& request, const ListSuiteDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListSuiteDefinitionsAsync(const ListSuiteDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListSuiteDefinitionsRequestT& request = {}) const
         {
             return SubmitAsync(&IoTDeviceAdvisorClient::ListSuiteDefinitions, request, handler, context);
         }
@@ -289,13 +301,13 @@ namespace IoTDeviceAdvisor
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotdeviceadvisor-2020-09-18/ListSuiteRuns">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListSuiteRunsOutcome ListSuiteRuns(const Model::ListSuiteRunsRequest& request) const;
+        virtual Model::ListSuiteRunsOutcome ListSuiteRuns(const Model::ListSuiteRunsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListSuiteRuns that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListSuiteRunsRequestT = Model::ListSuiteRunsRequest>
-        Model::ListSuiteRunsOutcomeCallable ListSuiteRunsCallable(const ListSuiteRunsRequestT& request) const
+        Model::ListSuiteRunsOutcomeCallable ListSuiteRunsCallable(const ListSuiteRunsRequestT& request = {}) const
         {
             return SubmitCallable(&IoTDeviceAdvisorClient::ListSuiteRuns, request);
         }
@@ -304,7 +316,7 @@ namespace IoTDeviceAdvisor
          * An Async wrapper for ListSuiteRuns that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListSuiteRunsRequestT = Model::ListSuiteRunsRequest>
-        void ListSuiteRunsAsync(const ListSuiteRunsRequestT& request, const ListSuiteRunsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListSuiteRunsAsync(const ListSuiteRunsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListSuiteRunsRequestT& request = {}) const
         {
             return SubmitAsync(&IoTDeviceAdvisorClient::ListSuiteRuns, request, handler, context);
         }
@@ -482,11 +494,7 @@ namespace IoTDeviceAdvisor
       std::shared_ptr<IoTDeviceAdvisorEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<IoTDeviceAdvisorClient>;
-      void init(const IoTDeviceAdvisorClientConfiguration& clientConfiguration);
 
-      IoTDeviceAdvisorClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<IoTDeviceAdvisorEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace IoTDeviceAdvisor

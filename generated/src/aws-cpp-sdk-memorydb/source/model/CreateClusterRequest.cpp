@@ -15,6 +15,7 @@ using namespace Aws::Utils;
 CreateClusterRequest::CreateClusterRequest() : 
     m_clusterNameHasBeenSet(false),
     m_nodeTypeHasBeenSet(false),
+    m_multiRegionClusterNameHasBeenSet(false),
     m_parameterGroupNameHasBeenSet(false),
     m_descriptionHasBeenSet(false),
     m_numShards(0),
@@ -37,6 +38,7 @@ CreateClusterRequest::CreateClusterRequest() :
     m_tagsHasBeenSet(false),
     m_snapshotWindowHasBeenSet(false),
     m_aCLNameHasBeenSet(false),
+    m_engineHasBeenSet(false),
     m_engineVersionHasBeenSet(false),
     m_autoMinorVersionUpgrade(false),
     m_autoMinorVersionUpgradeHasBeenSet(false),
@@ -58,6 +60,12 @@ Aws::String CreateClusterRequest::SerializePayload() const
   if(m_nodeTypeHasBeenSet)
   {
    payload.WithString("NodeType", m_nodeType);
+
+  }
+
+  if(m_multiRegionClusterNameHasBeenSet)
+  {
+   payload.WithString("MultiRegionClusterName", m_multiRegionClusterName);
 
   }
 
@@ -175,6 +183,12 @@ Aws::String CreateClusterRequest::SerializePayload() const
   if(m_aCLNameHasBeenSet)
   {
    payload.WithString("ACLName", m_aCLName);
+
+  }
+
+  if(m_engineHasBeenSet)
+  {
+   payload.WithString("Engine", m_engine);
 
   }
 

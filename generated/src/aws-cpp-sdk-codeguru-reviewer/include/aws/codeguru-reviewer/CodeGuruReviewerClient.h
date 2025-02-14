@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/codeguru-reviewer/CodeGuruReviewer_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/codeguru-reviewer/CodeGuruReviewerServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/codeguru-reviewer/CodeGuruReviewerErrorMarshaller.h>
 
 namespace Aws
 {
 namespace CodeGuruReviewer
 {
+  AWS_CODEGURUREVIEWER_API extern const char SERVICE_NAME[];
   /**
    * <p>This section provides documentation for the Amazon CodeGuru Reviewer API
    * operations. CodeGuru Reviewer is a service that uses program analysis and
@@ -33,12 +37,20 @@ namespace CodeGuruReviewer
    * Reviewer and interface VPC endpoints (Amazon Web Services PrivateLink)</a> in
    * the <i>Amazon CodeGuru Reviewer User Guide</i>.</p>
    */
-  class AWS_CODEGURUREVIEWER_API CodeGuruReviewerClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<CodeGuruReviewerClient>
+  class AWS_CODEGURUREVIEWER_API CodeGuruReviewerClient : smithy::client::AwsSmithyClientT<Aws::CodeGuruReviewer::SERVICE_NAME,
+      Aws::CodeGuruReviewer::CodeGuruReviewerClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      CodeGuruReviewerEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::CodeGuruReviewerErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<CodeGuruReviewerClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "CodeGuru Reviewer"; }
 
       typedef CodeGuruReviewerClientConfiguration ClientConfigurationType;
       typedef CodeGuruReviewerEndpointProvider EndpointProviderType;
@@ -368,13 +380,13 @@ namespace CodeGuruReviewer
          * href="http://docs.aws.amazon.com/goto/WebAPI/codeguru-reviewer-2019-09-19/ListRepositoryAssociations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListRepositoryAssociationsOutcome ListRepositoryAssociations(const Model::ListRepositoryAssociationsRequest& request) const;
+        virtual Model::ListRepositoryAssociationsOutcome ListRepositoryAssociations(const Model::ListRepositoryAssociationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListRepositoryAssociations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListRepositoryAssociationsRequestT = Model::ListRepositoryAssociationsRequest>
-        Model::ListRepositoryAssociationsOutcomeCallable ListRepositoryAssociationsCallable(const ListRepositoryAssociationsRequestT& request) const
+        Model::ListRepositoryAssociationsOutcomeCallable ListRepositoryAssociationsCallable(const ListRepositoryAssociationsRequestT& request = {}) const
         {
             return SubmitCallable(&CodeGuruReviewerClient::ListRepositoryAssociations, request);
         }
@@ -383,7 +395,7 @@ namespace CodeGuruReviewer
          * An Async wrapper for ListRepositoryAssociations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListRepositoryAssociationsRequestT = Model::ListRepositoryAssociationsRequest>
-        void ListRepositoryAssociationsAsync(const ListRepositoryAssociationsRequestT& request, const ListRepositoryAssociationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListRepositoryAssociationsAsync(const ListRepositoryAssociationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListRepositoryAssociationsRequestT& request = {}) const
         {
             return SubmitAsync(&CodeGuruReviewerClient::ListRepositoryAssociations, request, handler, context);
         }
@@ -497,11 +509,7 @@ namespace CodeGuruReviewer
       std::shared_ptr<CodeGuruReviewerEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<CodeGuruReviewerClient>;
-      void init(const CodeGuruReviewerClientConfiguration& clientConfiguration);
 
-      CodeGuruReviewerClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<CodeGuruReviewerEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace CodeGuruReviewer

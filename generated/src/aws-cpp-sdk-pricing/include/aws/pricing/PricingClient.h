@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/pricing/Pricing_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/pricing/PricingServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/pricing/PricingErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Pricing
 {
+  AWS_PRICING_API extern const char SERVICE_NAME[];
   /**
    * <p>The Amazon Web Services Price List API is a centralized and convenient way to
    * programmatically query Amazon Web Services for services, products, and pricing
@@ -26,10 +30,10 @@ namespace Pricing
    * data</p> </li> <li> <p>Forecast future spend for budgeting purposes</p> </li>
    * <li> <p>Provide cost benefit analysis that compare your internal workloads with
    * Amazon Web Services</p> </li> </ul> <p>Use <code>GetServices</code> without a
-   * service code to retrieve the service codes for all Amazon Web Services, then
-   * <code>GetServices</code> with a service code to retrieve the attribute names for
-   * that service. After you have the service code and attribute names, you can use
-   * <code>GetAttributeValues</code> to see what values are available for an
+   * service code to retrieve the service codes for all Amazon Web Services services,
+   * then <code>GetServices</code> with a service code to retrieve the attribute
+   * names for that service. After you have the service code and attribute names, you
+   * can use <code>GetAttributeValues</code> to see what values are available for an
    * attribute. With the service code and an attribute name and value, you can use
    * <code>GetProducts</code> to find specific products that you're interested in,
    * such as an <code>AmazonEC2</code> instance, with a <code>Provisioned IOPS</code>
@@ -37,12 +41,20 @@ namespace Pricing
    * href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/price-changes.html">Using
    * the Amazon Web Services Price List API</a> in the <i>Billing User Guide</i>.</p>
    */
-  class AWS_PRICING_API PricingClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<PricingClient>
+  class AWS_PRICING_API PricingClient : smithy::client::AwsSmithyClientT<Aws::Pricing::SERVICE_NAME,
+      Aws::Pricing::PricingClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      PricingEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::PricingErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<PricingClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Pricing"; }
 
       typedef PricingClientConfiguration ClientConfigurationType;
       typedef PricingEndpointProvider EndpointProviderType;
@@ -107,13 +119,13 @@ namespace Pricing
          * href="http://docs.aws.amazon.com/goto/WebAPI/pricing-2017-10-15/DescribeServices">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeServicesOutcome DescribeServices(const Model::DescribeServicesRequest& request) const;
+        virtual Model::DescribeServicesOutcome DescribeServices(const Model::DescribeServicesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeServices that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeServicesRequestT = Model::DescribeServicesRequest>
-        Model::DescribeServicesOutcomeCallable DescribeServicesCallable(const DescribeServicesRequestT& request) const
+        Model::DescribeServicesOutcomeCallable DescribeServicesCallable(const DescribeServicesRequestT& request = {}) const
         {
             return SubmitCallable(&PricingClient::DescribeServices, request);
         }
@@ -122,7 +134,7 @@ namespace Pricing
          * An Async wrapper for DescribeServices that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeServicesRequestT = Model::DescribeServicesRequest>
-        void DescribeServicesAsync(const DescribeServicesRequestT& request, const DescribeServicesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeServicesAsync(const DescribeServicesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeServicesRequestT& request = {}) const
         {
             return SubmitAsync(&PricingClient::DescribeServices, request, handler, context);
         }
@@ -261,11 +273,7 @@ namespace Pricing
       std::shared_ptr<PricingEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<PricingClient>;
-      void init(const PricingClientConfiguration& clientConfiguration);
 
-      PricingClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<PricingEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Pricing

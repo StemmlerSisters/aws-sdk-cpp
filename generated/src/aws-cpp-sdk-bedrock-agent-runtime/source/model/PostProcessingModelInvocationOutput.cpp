@@ -19,25 +19,40 @@ namespace Model
 {
 
 PostProcessingModelInvocationOutput::PostProcessingModelInvocationOutput() : 
+    m_metadataHasBeenSet(false),
     m_parsedResponseHasBeenSet(false),
+    m_rawResponseHasBeenSet(false),
     m_traceIdHasBeenSet(false)
 {
 }
 
-PostProcessingModelInvocationOutput::PostProcessingModelInvocationOutput(JsonView jsonValue) : 
-    m_parsedResponseHasBeenSet(false),
-    m_traceIdHasBeenSet(false)
+PostProcessingModelInvocationOutput::PostProcessingModelInvocationOutput(JsonView jsonValue)
+  : PostProcessingModelInvocationOutput()
 {
   *this = jsonValue;
 }
 
 PostProcessingModelInvocationOutput& PostProcessingModelInvocationOutput::operator =(JsonView jsonValue)
 {
+  if(jsonValue.ValueExists("metadata"))
+  {
+    m_metadata = jsonValue.GetObject("metadata");
+
+    m_metadataHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("parsedResponse"))
   {
     m_parsedResponse = jsonValue.GetObject("parsedResponse");
 
     m_parsedResponseHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("rawResponse"))
+  {
+    m_rawResponse = jsonValue.GetObject("rawResponse");
+
+    m_rawResponseHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("traceId"))
@@ -54,9 +69,21 @@ JsonValue PostProcessingModelInvocationOutput::Jsonize() const
 {
   JsonValue payload;
 
+  if(m_metadataHasBeenSet)
+  {
+   payload.WithObject("metadata", m_metadata.Jsonize());
+
+  }
+
   if(m_parsedResponseHasBeenSet)
   {
    payload.WithObject("parsedResponse", m_parsedResponse.Jsonize());
+
+  }
+
+  if(m_rawResponseHasBeenSet)
+  {
+   payload.WithObject("rawResponse", m_rawResponse.Jsonize());
 
   }
 

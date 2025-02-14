@@ -40,47 +40,21 @@ namespace Model
     AWS_GREENGRASSV2_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The name of the core device. This is also the name of the IoT thing.</p>
      */
     inline const Aws::String& GetCoreDeviceThingName() const{ return m_coreDeviceThingName; }
-
-    /**
-     * <p>The name of the core device. This is also the name of the IoT thing.</p>
-     */
     inline bool CoreDeviceThingNameHasBeenSet() const { return m_coreDeviceThingNameHasBeenSet; }
-
-    /**
-     * <p>The name of the core device. This is also the name of the IoT thing.</p>
-     */
     inline void SetCoreDeviceThingName(const Aws::String& value) { m_coreDeviceThingNameHasBeenSet = true; m_coreDeviceThingName = value; }
-
-    /**
-     * <p>The name of the core device. This is also the name of the IoT thing.</p>
-     */
     inline void SetCoreDeviceThingName(Aws::String&& value) { m_coreDeviceThingNameHasBeenSet = true; m_coreDeviceThingName = std::move(value); }
-
-    /**
-     * <p>The name of the core device. This is also the name of the IoT thing.</p>
-     */
     inline void SetCoreDeviceThingName(const char* value) { m_coreDeviceThingNameHasBeenSet = true; m_coreDeviceThingName.assign(value); }
-
-    /**
-     * <p>The name of the core device. This is also the name of the IoT thing.</p>
-     */
     inline CoreDevice& WithCoreDeviceThingName(const Aws::String& value) { SetCoreDeviceThingName(value); return *this;}
-
-    /**
-     * <p>The name of the core device. This is also the name of the IoT thing.</p>
-     */
     inline CoreDevice& WithCoreDeviceThingName(Aws::String&& value) { SetCoreDeviceThingName(std::move(value)); return *this;}
-
-    /**
-     * <p>The name of the core device. This is also the name of the IoT thing.</p>
-     */
     inline CoreDevice& WithCoreDeviceThingName(const char* value) { SetCoreDeviceThingName(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The status of the core device. Core devices can have the following
      * statuses:</p> <ul> <li> <p> <code>HEALTHY</code> – The IoT Greengrass Core
@@ -89,89 +63,69 @@ namespace Model
      * in a failed state on the core device.</p> </li> </ul>
      */
     inline const CoreDeviceStatus& GetStatus() const{ return m_status; }
-
-    /**
-     * <p>The status of the core device. Core devices can have the following
-     * statuses:</p> <ul> <li> <p> <code>HEALTHY</code> – The IoT Greengrass Core
-     * software and all components run on the core device without issue.</p> </li> <li>
-     * <p> <code>UNHEALTHY</code> – The IoT Greengrass Core software or a component is
-     * in a failed state on the core device.</p> </li> </ul>
-     */
     inline bool StatusHasBeenSet() const { return m_statusHasBeenSet; }
-
-    /**
-     * <p>The status of the core device. Core devices can have the following
-     * statuses:</p> <ul> <li> <p> <code>HEALTHY</code> – The IoT Greengrass Core
-     * software and all components run on the core device without issue.</p> </li> <li>
-     * <p> <code>UNHEALTHY</code> – The IoT Greengrass Core software or a component is
-     * in a failed state on the core device.</p> </li> </ul>
-     */
     inline void SetStatus(const CoreDeviceStatus& value) { m_statusHasBeenSet = true; m_status = value; }
-
-    /**
-     * <p>The status of the core device. Core devices can have the following
-     * statuses:</p> <ul> <li> <p> <code>HEALTHY</code> – The IoT Greengrass Core
-     * software and all components run on the core device without issue.</p> </li> <li>
-     * <p> <code>UNHEALTHY</code> – The IoT Greengrass Core software or a component is
-     * in a failed state on the core device.</p> </li> </ul>
-     */
     inline void SetStatus(CoreDeviceStatus&& value) { m_statusHasBeenSet = true; m_status = std::move(value); }
-
-    /**
-     * <p>The status of the core device. Core devices can have the following
-     * statuses:</p> <ul> <li> <p> <code>HEALTHY</code> – The IoT Greengrass Core
-     * software and all components run on the core device without issue.</p> </li> <li>
-     * <p> <code>UNHEALTHY</code> – The IoT Greengrass Core software or a component is
-     * in a failed state on the core device.</p> </li> </ul>
-     */
     inline CoreDevice& WithStatus(const CoreDeviceStatus& value) { SetStatus(value); return *this;}
-
-    /**
-     * <p>The status of the core device. Core devices can have the following
-     * statuses:</p> <ul> <li> <p> <code>HEALTHY</code> – The IoT Greengrass Core
-     * software and all components run on the core device without issue.</p> </li> <li>
-     * <p> <code>UNHEALTHY</code> – The IoT Greengrass Core software or a component is
-     * in a failed state on the core device.</p> </li> </ul>
-     */
     inline CoreDevice& WithStatus(CoreDeviceStatus&& value) { SetStatus(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The time at which the core device's status last updated, expressed in ISO
      * 8601 format.</p>
      */
     inline const Aws::Utils::DateTime& GetLastStatusUpdateTimestamp() const{ return m_lastStatusUpdateTimestamp; }
-
-    /**
-     * <p>The time at which the core device's status last updated, expressed in ISO
-     * 8601 format.</p>
-     */
     inline bool LastStatusUpdateTimestampHasBeenSet() const { return m_lastStatusUpdateTimestampHasBeenSet; }
-
-    /**
-     * <p>The time at which the core device's status last updated, expressed in ISO
-     * 8601 format.</p>
-     */
     inline void SetLastStatusUpdateTimestamp(const Aws::Utils::DateTime& value) { m_lastStatusUpdateTimestampHasBeenSet = true; m_lastStatusUpdateTimestamp = value; }
-
-    /**
-     * <p>The time at which the core device's status last updated, expressed in ISO
-     * 8601 format.</p>
-     */
     inline void SetLastStatusUpdateTimestamp(Aws::Utils::DateTime&& value) { m_lastStatusUpdateTimestampHasBeenSet = true; m_lastStatusUpdateTimestamp = std::move(value); }
-
-    /**
-     * <p>The time at which the core device's status last updated, expressed in ISO
-     * 8601 format.</p>
-     */
     inline CoreDevice& WithLastStatusUpdateTimestamp(const Aws::Utils::DateTime& value) { SetLastStatusUpdateTimestamp(value); return *this;}
-
-    /**
-     * <p>The time at which the core device's status last updated, expressed in ISO
-     * 8601 format.</p>
-     */
     inline CoreDevice& WithLastStatusUpdateTimestamp(Aws::Utils::DateTime&& value) { SetLastStatusUpdateTimestamp(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The operating system platform that the core device runs.</p>
+     */
+    inline const Aws::String& GetPlatform() const{ return m_platform; }
+    inline bool PlatformHasBeenSet() const { return m_platformHasBeenSet; }
+    inline void SetPlatform(const Aws::String& value) { m_platformHasBeenSet = true; m_platform = value; }
+    inline void SetPlatform(Aws::String&& value) { m_platformHasBeenSet = true; m_platform = std::move(value); }
+    inline void SetPlatform(const char* value) { m_platformHasBeenSet = true; m_platform.assign(value); }
+    inline CoreDevice& WithPlatform(const Aws::String& value) { SetPlatform(value); return *this;}
+    inline CoreDevice& WithPlatform(Aws::String&& value) { SetPlatform(std::move(value)); return *this;}
+    inline CoreDevice& WithPlatform(const char* value) { SetPlatform(value); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>The computer architecture of the core device.</p>
+     */
+    inline const Aws::String& GetArchitecture() const{ return m_architecture; }
+    inline bool ArchitectureHasBeenSet() const { return m_architectureHasBeenSet; }
+    inline void SetArchitecture(const Aws::String& value) { m_architectureHasBeenSet = true; m_architecture = value; }
+    inline void SetArchitecture(Aws::String&& value) { m_architectureHasBeenSet = true; m_architecture = std::move(value); }
+    inline void SetArchitecture(const char* value) { m_architectureHasBeenSet = true; m_architecture.assign(value); }
+    inline CoreDevice& WithArchitecture(const Aws::String& value) { SetArchitecture(value); return *this;}
+    inline CoreDevice& WithArchitecture(Aws::String&& value) { SetArchitecture(std::move(value)); return *this;}
+    inline CoreDevice& WithArchitecture(const char* value) { SetArchitecture(value); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>The runtime for the core device. The runtime can be:</p> <ul> <li> <p>
+     * <code>aws_nucleus_classic</code> </p> </li> <li> <p>
+     * <code>aws_nucleus_lite</code> </p> </li> </ul>
+     */
+    inline const Aws::String& GetRuntime() const{ return m_runtime; }
+    inline bool RuntimeHasBeenSet() const { return m_runtimeHasBeenSet; }
+    inline void SetRuntime(const Aws::String& value) { m_runtimeHasBeenSet = true; m_runtime = value; }
+    inline void SetRuntime(Aws::String&& value) { m_runtimeHasBeenSet = true; m_runtime = std::move(value); }
+    inline void SetRuntime(const char* value) { m_runtimeHasBeenSet = true; m_runtime.assign(value); }
+    inline CoreDevice& WithRuntime(const Aws::String& value) { SetRuntime(value); return *this;}
+    inline CoreDevice& WithRuntime(Aws::String&& value) { SetRuntime(std::move(value)); return *this;}
+    inline CoreDevice& WithRuntime(const char* value) { SetRuntime(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_coreDeviceThingName;
@@ -182,6 +136,15 @@ namespace Model
 
     Aws::Utils::DateTime m_lastStatusUpdateTimestamp;
     bool m_lastStatusUpdateTimestampHasBeenSet = false;
+
+    Aws::String m_platform;
+    bool m_platformHasBeenSet = false;
+
+    Aws::String m_architecture;
+    bool m_architectureHasBeenSet = false;
+
+    Aws::String m_runtime;
+    bool m_runtimeHasBeenSet = false;
   };
 
 } // namespace Model

@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/swf/SWF_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/swf/SWFServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/swf/SWFErrorMarshaller.h>
 
 namespace Aws
 {
 namespace SWF
 {
+  AWS_SWF_API extern const char SERVICE_NAME[];
   /**
    * <fullname>Amazon Simple Workflow Service</fullname> <p>The Amazon Simple
    * Workflow Service (Amazon SWF) makes it easy to build applications that use
@@ -30,12 +34,20 @@ namespace SWF
    * href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/">Amazon SWF
    * Developer Guide</a> </i>.</p>
    */
-  class AWS_SWF_API SWFClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<SWFClient>
+  class AWS_SWF_API SWFClient : smithy::client::AwsSmithyClientT<Aws::SWF::SERVICE_NAME,
+      Aws::SWF::SWFClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      SWFEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::SWFErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<SWFClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "SWF"; }
 
       typedef SWFClientConfiguration ClientConfigurationType;
       typedef SWFEndpointProvider EndpointProviderType;
@@ -269,13 +281,103 @@ namespace SWF
         }
 
         /**
+         * <p>Deletes the specified <i>activity type</i>.</p> <p>Note: Prior to deletion,
+         * activity types must first be <b>deprecated</b>. </p> <p> After an activity type
+         * has been deleted, you cannot schedule new activities of that type. Activities
+         * that started before the type was deleted will continue to run. </p> <p>
+         * <b>Access Control</b> </p> <p>You can use IAM policies to control this action's
+         * access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a
+         * <code>Resource</code> element with the domain name to limit the action to only
+         * specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow
+         * or deny permission to call this action.</p> </li> <li> <p>Constrain the
+         * following parameters by using a <code>Condition</code> element with the
+         * appropriate keys.</p> <ul> <li> <p> <code>activityType.name</code>: String
+         * constraint. The key is <code>swf:activityType.name</code>.</p> </li> <li> <p>
+         * <code>activityType.version</code>: String constraint. The key is
+         * <code>swf:activityType.version</code>.</p> </li> </ul> </li> </ul> <p>If the
+         * caller doesn't have sufficient permissions to invoke the action, or the
+         * parameter values fall outside the specified constraints, the action fails. The
+         * associated event attribute's <code>cause</code> parameter is set to
+         * <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see
+         * <a
+         * href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using
+         * IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer
+         * Guide</i>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/swf-2012-01-25/DeleteActivityType">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteActivityTypeOutcome DeleteActivityType(const Model::DeleteActivityTypeRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteActivityType that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteActivityTypeRequestT = Model::DeleteActivityTypeRequest>
+        Model::DeleteActivityTypeOutcomeCallable DeleteActivityTypeCallable(const DeleteActivityTypeRequestT& request) const
+        {
+            return SubmitCallable(&SWFClient::DeleteActivityType, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteActivityType that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteActivityTypeRequestT = Model::DeleteActivityTypeRequest>
+        void DeleteActivityTypeAsync(const DeleteActivityTypeRequestT& request, const DeleteActivityTypeResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SWFClient::DeleteActivityType, request, handler, context);
+        }
+
+        /**
+         * <p>Deletes the specified <i>workflow type</i>.</p> <p>Note: Prior to deletion,
+         * workflow types must first be <b>deprecated</b>.</p> <p> After a workflow type
+         * has been deleted, you cannot create new executions of that type. Executions that
+         * started before the type was deleted will continue to run. </p> <p> <b>Access
+         * Control</b> </p> <p>You can use IAM policies to control this action's access to
+         * Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code>
+         * element with the domain name to limit the action to only specified domains.</p>
+         * </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to
+         * call this action.</p> </li> <li> <p>Constrain the following parameters by using
+         * a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p>
+         * <code>workflowType.name</code>: String constraint. The key is
+         * <code>swf:workflowType.name</code>.</p> </li> <li> <p>
+         * <code>workflowType.version</code>: String constraint. The key is
+         * <code>swf:workflowType.version</code>.</p> </li> </ul> </li> </ul> <p>If the
+         * caller doesn't have sufficient permissions to invoke the action, or the
+         * parameter values fall outside the specified constraints, the action fails. The
+         * associated event attribute's <code>cause</code> parameter is set to
+         * <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see
+         * <a
+         * href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using
+         * IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer
+         * Guide</i>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/swf-2012-01-25/DeleteWorkflowType">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteWorkflowTypeOutcome DeleteWorkflowType(const Model::DeleteWorkflowTypeRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteWorkflowType that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteWorkflowTypeRequestT = Model::DeleteWorkflowTypeRequest>
+        Model::DeleteWorkflowTypeOutcomeCallable DeleteWorkflowTypeCallable(const DeleteWorkflowTypeRequestT& request) const
+        {
+            return SubmitCallable(&SWFClient::DeleteWorkflowType, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteWorkflowType that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteWorkflowTypeRequestT = Model::DeleteWorkflowTypeRequest>
+        void DeleteWorkflowTypeAsync(const DeleteWorkflowTypeRequestT& request, const DeleteWorkflowTypeResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SWFClient::DeleteWorkflowType, request, handler, context);
+        }
+
+        /**
          * <p>Deprecates the specified <i>activity type</i>. After an activity type has
          * been deprecated, you cannot create new tasks of that activity type. Tasks of
          * this type that were scheduled before the type was deprecated continue to
-         * run.</p>  <p>This operation is eventually consistent. The results are best
-         * effort and may not exactly reflect recent updates and changes.</p>  <p>
-         * <b>Access Control</b> </p> <p>You can use IAM policies to control this action's
-         * access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a
+         * run.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control
+         * this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a
          * <code>Resource</code> element with the domain name to limit the action to only
          * specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow
          * or deny permission to call this action.</p> </li> <li> <p>Constrain the
@@ -1757,11 +1859,7 @@ namespace SWF
       std::shared_ptr<SWFEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<SWFClient>;
-      void init(const SWFClientConfiguration& clientConfiguration);
 
-      SWFClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<SWFEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace SWF

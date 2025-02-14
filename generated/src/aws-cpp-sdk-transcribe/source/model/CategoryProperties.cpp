@@ -23,18 +23,14 @@ CategoryProperties::CategoryProperties() :
     m_rulesHasBeenSet(false),
     m_createTimeHasBeenSet(false),
     m_lastUpdateTimeHasBeenSet(false),
+    m_tagsHasBeenSet(false),
     m_inputType(InputType::NOT_SET),
     m_inputTypeHasBeenSet(false)
 {
 }
 
-CategoryProperties::CategoryProperties(JsonView jsonValue) : 
-    m_categoryNameHasBeenSet(false),
-    m_rulesHasBeenSet(false),
-    m_createTimeHasBeenSet(false),
-    m_lastUpdateTimeHasBeenSet(false),
-    m_inputType(InputType::NOT_SET),
-    m_inputTypeHasBeenSet(false)
+CategoryProperties::CategoryProperties(JsonView jsonValue)
+  : CategoryProperties()
 {
   *this = jsonValue;
 }
@@ -70,6 +66,16 @@ CategoryProperties& CategoryProperties::operator =(JsonView jsonValue)
     m_lastUpdateTime = jsonValue.GetDouble("LastUpdateTime");
 
     m_lastUpdateTimeHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("Tags"))
+  {
+    Aws::Utils::Array<JsonView> tagsJsonList = jsonValue.GetArray("Tags");
+    for(unsigned tagsIndex = 0; tagsIndex < tagsJsonList.GetLength(); ++tagsIndex)
+    {
+      m_tags.push_back(tagsJsonList[tagsIndex].AsObject());
+    }
+    m_tagsHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("InputType"))
@@ -111,6 +117,17 @@ JsonValue CategoryProperties::Jsonize() const
   if(m_lastUpdateTimeHasBeenSet)
   {
    payload.WithDouble("LastUpdateTime", m_lastUpdateTime.SecondsWithMSPrecision());
+  }
+
+  if(m_tagsHasBeenSet)
+  {
+   Aws::Utils::Array<JsonValue> tagsJsonList(m_tags.size());
+   for(unsigned tagsIndex = 0; tagsIndex < tagsJsonList.GetLength(); ++tagsIndex)
+   {
+     tagsJsonList[tagsIndex].AsObject(m_tags[tagsIndex].Jsonize());
+   }
+   payload.WithArray("Tags", std::move(tagsJsonList));
+
   }
 
   if(m_inputTypeHasBeenSet)

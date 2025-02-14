@@ -23,9 +23,8 @@ GetPlaybackConfigurationResult::GetPlaybackConfigurationResult() :
 {
 }
 
-GetPlaybackConfigurationResult::GetPlaybackConfigurationResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_insertionMode(InsertionMode::NOT_SET),
-    m_personalizationThresholdSeconds(0)
+GetPlaybackConfigurationResult::GetPlaybackConfigurationResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetPlaybackConfigurationResult()
 {
   *this = result;
 }
@@ -162,6 +161,12 @@ GetPlaybackConfigurationResult& GetPlaybackConfigurationResult::operator =(const
   if(jsonValue.ValueExists("VideoContentSourceUrl"))
   {
     m_videoContentSourceUrl = jsonValue.GetString("VideoContentSourceUrl");
+
+  }
+
+  if(jsonValue.ValueExists("AdConditioningConfiguration"))
+  {
+    m_adConditioningConfiguration = jsonValue.GetObject("AdConditioningConfiguration");
 
   }
 

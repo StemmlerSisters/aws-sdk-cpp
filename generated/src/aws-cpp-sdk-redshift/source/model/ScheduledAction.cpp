@@ -34,17 +34,8 @@ ScheduledAction::ScheduledAction() :
 {
 }
 
-ScheduledAction::ScheduledAction(const XmlNode& xmlNode) : 
-    m_scheduledActionNameHasBeenSet(false),
-    m_targetActionHasBeenSet(false),
-    m_scheduleHasBeenSet(false),
-    m_iamRoleHasBeenSet(false),
-    m_scheduledActionDescriptionHasBeenSet(false),
-    m_state(ScheduledActionState::NOT_SET),
-    m_stateHasBeenSet(false),
-    m_nextInvocationsHasBeenSet(false),
-    m_startTimeHasBeenSet(false),
-    m_endTimeHasBeenSet(false)
+ScheduledAction::ScheduledAction(const XmlNode& xmlNode)
+  : ScheduledAction()
 {
   *this = xmlNode;
 }
@@ -159,7 +150,7 @@ void ScheduledAction::OutputToStream(Aws::OStream& oStream, const char* location
       unsigned nextInvocationsIdx = 1;
       for(auto& item : m_nextInvocations)
       {
-        oStream << location << index << locationValue << ".ScheduledActionTime." << nextInvocationsIdx++ << "=" << StringUtils::URLEncode(item.ToGmtString(Aws::Utils::DateFormat::ISO_8601).c_str()) << "&";
+        oStream << location << index << locationValue << ".NextInvocations.ScheduledActionTime." << nextInvocationsIdx++ << "=" << StringUtils::URLEncode(item.ToGmtString(Aws::Utils::DateFormat::ISO_8601).c_str()) << "&";
       }
   }
 

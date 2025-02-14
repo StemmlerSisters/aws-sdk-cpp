@@ -9,9 +9,11 @@
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/codebuild/model/EnvironmentType.h>
 #include <aws/codebuild/model/ComputeType.h>
+#include <aws/codebuild/model/ComputeConfiguration.h>
 #include <aws/codebuild/model/ScalingConfigurationInput.h>
 #include <aws/codebuild/model/FleetOverflowBehavior.h>
 #include <aws/codebuild/model/VpcConfig.h>
+#include <aws/codebuild/model/ProxyConfiguration.h>
 #include <aws/core/utils/memory/stl/AWSVector.h>
 #include <aws/codebuild/model/Tag.h>
 #include <utility>
@@ -41,447 +43,166 @@ namespace Model
     AWS_CODEBUILD_API Aws::Http::HeaderValueCollection GetRequestSpecificHeaders() const override;
 
 
+    ///@{
     /**
      * <p>The name of the compute fleet.</p>
      */
     inline const Aws::String& GetName() const{ return m_name; }
-
-    /**
-     * <p>The name of the compute fleet.</p>
-     */
     inline bool NameHasBeenSet() const { return m_nameHasBeenSet; }
-
-    /**
-     * <p>The name of the compute fleet.</p>
-     */
     inline void SetName(const Aws::String& value) { m_nameHasBeenSet = true; m_name = value; }
-
-    /**
-     * <p>The name of the compute fleet.</p>
-     */
     inline void SetName(Aws::String&& value) { m_nameHasBeenSet = true; m_name = std::move(value); }
-
-    /**
-     * <p>The name of the compute fleet.</p>
-     */
     inline void SetName(const char* value) { m_nameHasBeenSet = true; m_name.assign(value); }
-
-    /**
-     * <p>The name of the compute fleet.</p>
-     */
     inline CreateFleetRequest& WithName(const Aws::String& value) { SetName(value); return *this;}
-
-    /**
-     * <p>The name of the compute fleet.</p>
-     */
     inline CreateFleetRequest& WithName(Aws::String&& value) { SetName(std::move(value)); return *this;}
-
-    /**
-     * <p>The name of the compute fleet.</p>
-     */
     inline CreateFleetRequest& WithName(const char* value) { SetName(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The initial number of machines allocated to the ﬂeet, which deﬁnes the number
      * of builds that can run in parallel.</p>
      */
     inline int GetBaseCapacity() const{ return m_baseCapacity; }
-
-    /**
-     * <p>The initial number of machines allocated to the ﬂeet, which deﬁnes the number
-     * of builds that can run in parallel.</p>
-     */
     inline bool BaseCapacityHasBeenSet() const { return m_baseCapacityHasBeenSet; }
-
-    /**
-     * <p>The initial number of machines allocated to the ﬂeet, which deﬁnes the number
-     * of builds that can run in parallel.</p>
-     */
     inline void SetBaseCapacity(int value) { m_baseCapacityHasBeenSet = true; m_baseCapacity = value; }
-
-    /**
-     * <p>The initial number of machines allocated to the ﬂeet, which deﬁnes the number
-     * of builds that can run in parallel.</p>
-     */
     inline CreateFleetRequest& WithBaseCapacity(int value) { SetBaseCapacity(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The environment type of the compute fleet.</p> <ul> <li> <p>The environment
      * type <code>ARM_CONTAINER</code> is available only in regions US East (N.
      * Virginia), US East (Ohio), US West (Oregon), EU (Ireland), Asia Pacific
      * (Mumbai), Asia Pacific (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney),
      * EU (Frankfurt), and South America (São Paulo).</p> </li> <li> <p>The environment
-     * type <code>LINUX_CONTAINER</code> is available only in regions US East (N.
-     * Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia
-     * Pacific (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney), South America
-     * (São Paulo), and Asia Pacific (Mumbai).</p> </li> <li> <p>The environment type
+     * type <code>ARM_EC2</code> is available only in regions US East (N. Virginia), US
+     * East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia Pacific
+     * (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney), South America (São
+     * Paulo), and Asia Pacific (Mumbai).</p> </li> <li> <p>The environment type
+     * <code>LINUX_CONTAINER</code> is available only in regions US East (N. Virginia),
+     * US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia Pacific
+     * (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney), South America (São
+     * Paulo), and Asia Pacific (Mumbai).</p> </li> <li> <p>The environment type
+     * <code>LINUX_EC2</code> is available only in regions US East (N. Virginia), US
+     * East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia Pacific
+     * (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney), South America (São
+     * Paulo), and Asia Pacific (Mumbai).</p> </li> <li> <p>The environment type
      * <code>LINUX_GPU_CONTAINER</code> is available only in regions US East (N.
      * Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia
      * Pacific (Tokyo), and Asia Pacific (Sydney).</p> </li> <li> <p>The environment
-     * type <code>WINDOWS_SERVER_2019_CONTAINER</code> is available only in regions US
-     * East (N. Virginia), US East (Ohio), US West (Oregon), Asia Pacific (Sydney),
-     * Asia Pacific (Tokyo), Asia Pacific (Mumbai) and EU (Ireland).</p> </li> <li>
-     * <p>The environment type <code>WINDOWS_SERVER_2022_CONTAINER</code> is available
-     * only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU
-     * (Ireland), EU (Frankfurt), Asia Pacific (Sydney), Asia Pacific (Singapore), Asia
-     * Pacific (Tokyo), South America (São Paulo) and Asia Pacific (Mumbai).</p> </li>
-     * </ul> <p>For more information, see <a
+     * type <code>MAC_ARM</code> is available for Medium fleets only in regions US East
+     * (N. Virginia), US East (Ohio), US West (Oregon), Asia Pacific (Sydney), and EU
+     * (Frankfurt)</p> </li> <li> <p>The environment type <code>MAC_ARM</code> is
+     * available for Large fleets only in regions US East (N. Virginia), US East
+     * (Ohio), US West (Oregon), and Asia Pacific (Sydney).</p> </li> <li> <p>The
+     * environment type <code>WINDOWS_EC2</code> is available only in regions US East
+     * (N. Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt),
+     * Asia Pacific (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney), South
+     * America (São Paulo), and Asia Pacific (Mumbai).</p> </li> <li> <p>The
+     * environment type <code>WINDOWS_SERVER_2019_CONTAINER</code> is available only in
+     * regions US East (N. Virginia), US East (Ohio), US West (Oregon), Asia Pacific
+     * (Sydney), Asia Pacific (Tokyo), Asia Pacific (Mumbai) and EU (Ireland).</p>
+     * </li> <li> <p>The environment type <code>WINDOWS_SERVER_2022_CONTAINER</code> is
+     * available only in regions US East (N. Virginia), US East (Ohio), US West
+     * (Oregon), EU (Ireland), EU (Frankfurt), Asia Pacific (Sydney), Asia Pacific
+     * (Singapore), Asia Pacific (Tokyo), South America (São Paulo) and Asia Pacific
+     * (Mumbai).</p> </li> </ul> <p>For more information, see <a
      * href="https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-compute-types.html">Build
      * environment compute types</a> in the <i>CodeBuild user guide</i>.</p>
      */
     inline const EnvironmentType& GetEnvironmentType() const{ return m_environmentType; }
-
-    /**
-     * <p>The environment type of the compute fleet.</p> <ul> <li> <p>The environment
-     * type <code>ARM_CONTAINER</code> is available only in regions US East (N.
-     * Virginia), US East (Ohio), US West (Oregon), EU (Ireland), Asia Pacific
-     * (Mumbai), Asia Pacific (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney),
-     * EU (Frankfurt), and South America (São Paulo).</p> </li> <li> <p>The environment
-     * type <code>LINUX_CONTAINER</code> is available only in regions US East (N.
-     * Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia
-     * Pacific (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney), South America
-     * (São Paulo), and Asia Pacific (Mumbai).</p> </li> <li> <p>The environment type
-     * <code>LINUX_GPU_CONTAINER</code> is available only in regions US East (N.
-     * Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia
-     * Pacific (Tokyo), and Asia Pacific (Sydney).</p> </li> <li> <p>The environment
-     * type <code>WINDOWS_SERVER_2019_CONTAINER</code> is available only in regions US
-     * East (N. Virginia), US East (Ohio), US West (Oregon), Asia Pacific (Sydney),
-     * Asia Pacific (Tokyo), Asia Pacific (Mumbai) and EU (Ireland).</p> </li> <li>
-     * <p>The environment type <code>WINDOWS_SERVER_2022_CONTAINER</code> is available
-     * only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU
-     * (Ireland), EU (Frankfurt), Asia Pacific (Sydney), Asia Pacific (Singapore), Asia
-     * Pacific (Tokyo), South America (São Paulo) and Asia Pacific (Mumbai).</p> </li>
-     * </ul> <p>For more information, see <a
-     * href="https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-compute-types.html">Build
-     * environment compute types</a> in the <i>CodeBuild user guide</i>.</p>
-     */
     inline bool EnvironmentTypeHasBeenSet() const { return m_environmentTypeHasBeenSet; }
-
-    /**
-     * <p>The environment type of the compute fleet.</p> <ul> <li> <p>The environment
-     * type <code>ARM_CONTAINER</code> is available only in regions US East (N.
-     * Virginia), US East (Ohio), US West (Oregon), EU (Ireland), Asia Pacific
-     * (Mumbai), Asia Pacific (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney),
-     * EU (Frankfurt), and South America (São Paulo).</p> </li> <li> <p>The environment
-     * type <code>LINUX_CONTAINER</code> is available only in regions US East (N.
-     * Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia
-     * Pacific (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney), South America
-     * (São Paulo), and Asia Pacific (Mumbai).</p> </li> <li> <p>The environment type
-     * <code>LINUX_GPU_CONTAINER</code> is available only in regions US East (N.
-     * Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia
-     * Pacific (Tokyo), and Asia Pacific (Sydney).</p> </li> <li> <p>The environment
-     * type <code>WINDOWS_SERVER_2019_CONTAINER</code> is available only in regions US
-     * East (N. Virginia), US East (Ohio), US West (Oregon), Asia Pacific (Sydney),
-     * Asia Pacific (Tokyo), Asia Pacific (Mumbai) and EU (Ireland).</p> </li> <li>
-     * <p>The environment type <code>WINDOWS_SERVER_2022_CONTAINER</code> is available
-     * only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU
-     * (Ireland), EU (Frankfurt), Asia Pacific (Sydney), Asia Pacific (Singapore), Asia
-     * Pacific (Tokyo), South America (São Paulo) and Asia Pacific (Mumbai).</p> </li>
-     * </ul> <p>For more information, see <a
-     * href="https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-compute-types.html">Build
-     * environment compute types</a> in the <i>CodeBuild user guide</i>.</p>
-     */
     inline void SetEnvironmentType(const EnvironmentType& value) { m_environmentTypeHasBeenSet = true; m_environmentType = value; }
-
-    /**
-     * <p>The environment type of the compute fleet.</p> <ul> <li> <p>The environment
-     * type <code>ARM_CONTAINER</code> is available only in regions US East (N.
-     * Virginia), US East (Ohio), US West (Oregon), EU (Ireland), Asia Pacific
-     * (Mumbai), Asia Pacific (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney),
-     * EU (Frankfurt), and South America (São Paulo).</p> </li> <li> <p>The environment
-     * type <code>LINUX_CONTAINER</code> is available only in regions US East (N.
-     * Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia
-     * Pacific (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney), South America
-     * (São Paulo), and Asia Pacific (Mumbai).</p> </li> <li> <p>The environment type
-     * <code>LINUX_GPU_CONTAINER</code> is available only in regions US East (N.
-     * Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia
-     * Pacific (Tokyo), and Asia Pacific (Sydney).</p> </li> <li> <p>The environment
-     * type <code>WINDOWS_SERVER_2019_CONTAINER</code> is available only in regions US
-     * East (N. Virginia), US East (Ohio), US West (Oregon), Asia Pacific (Sydney),
-     * Asia Pacific (Tokyo), Asia Pacific (Mumbai) and EU (Ireland).</p> </li> <li>
-     * <p>The environment type <code>WINDOWS_SERVER_2022_CONTAINER</code> is available
-     * only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU
-     * (Ireland), EU (Frankfurt), Asia Pacific (Sydney), Asia Pacific (Singapore), Asia
-     * Pacific (Tokyo), South America (São Paulo) and Asia Pacific (Mumbai).</p> </li>
-     * </ul> <p>For more information, see <a
-     * href="https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-compute-types.html">Build
-     * environment compute types</a> in the <i>CodeBuild user guide</i>.</p>
-     */
     inline void SetEnvironmentType(EnvironmentType&& value) { m_environmentTypeHasBeenSet = true; m_environmentType = std::move(value); }
-
-    /**
-     * <p>The environment type of the compute fleet.</p> <ul> <li> <p>The environment
-     * type <code>ARM_CONTAINER</code> is available only in regions US East (N.
-     * Virginia), US East (Ohio), US West (Oregon), EU (Ireland), Asia Pacific
-     * (Mumbai), Asia Pacific (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney),
-     * EU (Frankfurt), and South America (São Paulo).</p> </li> <li> <p>The environment
-     * type <code>LINUX_CONTAINER</code> is available only in regions US East (N.
-     * Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia
-     * Pacific (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney), South America
-     * (São Paulo), and Asia Pacific (Mumbai).</p> </li> <li> <p>The environment type
-     * <code>LINUX_GPU_CONTAINER</code> is available only in regions US East (N.
-     * Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia
-     * Pacific (Tokyo), and Asia Pacific (Sydney).</p> </li> <li> <p>The environment
-     * type <code>WINDOWS_SERVER_2019_CONTAINER</code> is available only in regions US
-     * East (N. Virginia), US East (Ohio), US West (Oregon), Asia Pacific (Sydney),
-     * Asia Pacific (Tokyo), Asia Pacific (Mumbai) and EU (Ireland).</p> </li> <li>
-     * <p>The environment type <code>WINDOWS_SERVER_2022_CONTAINER</code> is available
-     * only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU
-     * (Ireland), EU (Frankfurt), Asia Pacific (Sydney), Asia Pacific (Singapore), Asia
-     * Pacific (Tokyo), South America (São Paulo) and Asia Pacific (Mumbai).</p> </li>
-     * </ul> <p>For more information, see <a
-     * href="https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-compute-types.html">Build
-     * environment compute types</a> in the <i>CodeBuild user guide</i>.</p>
-     */
     inline CreateFleetRequest& WithEnvironmentType(const EnvironmentType& value) { SetEnvironmentType(value); return *this;}
-
-    /**
-     * <p>The environment type of the compute fleet.</p> <ul> <li> <p>The environment
-     * type <code>ARM_CONTAINER</code> is available only in regions US East (N.
-     * Virginia), US East (Ohio), US West (Oregon), EU (Ireland), Asia Pacific
-     * (Mumbai), Asia Pacific (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney),
-     * EU (Frankfurt), and South America (São Paulo).</p> </li> <li> <p>The environment
-     * type <code>LINUX_CONTAINER</code> is available only in regions US East (N.
-     * Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia
-     * Pacific (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney), South America
-     * (São Paulo), and Asia Pacific (Mumbai).</p> </li> <li> <p>The environment type
-     * <code>LINUX_GPU_CONTAINER</code> is available only in regions US East (N.
-     * Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia
-     * Pacific (Tokyo), and Asia Pacific (Sydney).</p> </li> <li> <p>The environment
-     * type <code>WINDOWS_SERVER_2019_CONTAINER</code> is available only in regions US
-     * East (N. Virginia), US East (Ohio), US West (Oregon), Asia Pacific (Sydney),
-     * Asia Pacific (Tokyo), Asia Pacific (Mumbai) and EU (Ireland).</p> </li> <li>
-     * <p>The environment type <code>WINDOWS_SERVER_2022_CONTAINER</code> is available
-     * only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU
-     * (Ireland), EU (Frankfurt), Asia Pacific (Sydney), Asia Pacific (Singapore), Asia
-     * Pacific (Tokyo), South America (São Paulo) and Asia Pacific (Mumbai).</p> </li>
-     * </ul> <p>For more information, see <a
-     * href="https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-compute-types.html">Build
-     * environment compute types</a> in the <i>CodeBuild user guide</i>.</p>
-     */
     inline CreateFleetRequest& WithEnvironmentType(EnvironmentType&& value) { SetEnvironmentType(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Information about the compute resources the compute fleet uses. Available
-     * values include:</p> <ul> <li> <p> <code>BUILD_GENERAL1_SMALL</code>: Use up to 3
-     * GB memory and 2 vCPUs for builds.</p> </li> <li> <p>
-     * <code>BUILD_GENERAL1_MEDIUM</code>: Use up to 7 GB memory and 4 vCPUs for
-     * builds.</p> </li> <li> <p> <code>BUILD_GENERAL1_LARGE</code>: Use up to 16 GB
-     * memory and 8 vCPUs for builds, depending on your environment type.</p> </li>
-     * <li> <p> <code>BUILD_GENERAL1_XLARGE</code>: Use up to 70 GB memory and 36 vCPUs
-     * for builds, depending on your environment type.</p> </li> <li> <p>
-     * <code>BUILD_GENERAL1_2XLARGE</code>: Use up to 145 GB memory, 72 vCPUs, and 824
+     * values include:</p> <ul> <li> <p> <code>ATTRIBUTE_BASED_COMPUTE</code>: Specify
+     * the amount of vCPUs, memory, disk space, and the type of machine.</p>  <p>
+     * If you use <code>ATTRIBUTE_BASED_COMPUTE</code>, you must define your attributes
+     * by using <code>computeConfiguration</code>. CodeBuild will select the cheapest
+     * instance that satisfies your specified attributes. For more information, see <a
+     * href="https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-compute-types.html#environment-reserved-capacity.types">Reserved
+     * capacity environment types</a> in the <i>CodeBuild User Guide</i>.</p> 
+     * </li> <li> <p> <code>BUILD_GENERAL1_SMALL</code>: Use up to 4 GiB memory and 2
+     * vCPUs for builds.</p> </li> <li> <p> <code>BUILD_GENERAL1_MEDIUM</code>: Use up
+     * to 8 GiB memory and 4 vCPUs for builds.</p> </li> <li> <p>
+     * <code>BUILD_GENERAL1_LARGE</code>: Use up to 16 GiB memory and 8 vCPUs for
+     * builds, depending on your environment type.</p> </li> <li> <p>
+     * <code>BUILD_GENERAL1_XLARGE</code>: Use up to 72 GiB memory and 36 vCPUs for
+     * builds, depending on your environment type.</p> </li> <li> <p>
+     * <code>BUILD_GENERAL1_2XLARGE</code>: Use up to 144 GiB memory, 72 vCPUs, and 824
      * GB of SSD storage for builds. This compute type supports Docker images up to 100
-     * GB uncompressed.</p> </li> </ul> <p> If you use
+     * GB uncompressed.</p> </li> <li> <p> <code>BUILD_LAMBDA_1GB</code>: Use up to 1
+     * GiB memory for builds. Only available for environment type
+     * <code>LINUX_LAMBDA_CONTAINER</code> and <code>ARM_LAMBDA_CONTAINER</code>.</p>
+     * </li> <li> <p> <code>BUILD_LAMBDA_2GB</code>: Use up to 2 GiB memory for builds.
+     * Only available for environment type <code>LINUX_LAMBDA_CONTAINER</code> and
+     * <code>ARM_LAMBDA_CONTAINER</code>.</p> </li> <li> <p>
+     * <code>BUILD_LAMBDA_4GB</code>: Use up to 4 GiB memory for builds. Only available
+     * for environment type <code>LINUX_LAMBDA_CONTAINER</code> and
+     * <code>ARM_LAMBDA_CONTAINER</code>.</p> </li> <li> <p>
+     * <code>BUILD_LAMBDA_8GB</code>: Use up to 8 GiB memory for builds. Only available
+     * for environment type <code>LINUX_LAMBDA_CONTAINER</code> and
+     * <code>ARM_LAMBDA_CONTAINER</code>.</p> </li> <li> <p>
+     * <code>BUILD_LAMBDA_10GB</code>: Use up to 10 GiB memory for builds. Only
+     * available for environment type <code>LINUX_LAMBDA_CONTAINER</code> and
+     * <code>ARM_LAMBDA_CONTAINER</code>.</p> </li> </ul> <p> If you use
      * <code>BUILD_GENERAL1_SMALL</code>: </p> <ul> <li> <p> For environment type
-     * <code>LINUX_CONTAINER</code>, you can use up to 3 GB memory and 2 vCPUs for
+     * <code>LINUX_CONTAINER</code>, you can use up to 4 GiB memory and 2 vCPUs for
      * builds. </p> </li> <li> <p> For environment type
-     * <code>LINUX_GPU_CONTAINER</code>, you can use up to 16 GB memory, 4 vCPUs, and 1
-     * NVIDIA A10G Tensor Core GPU for builds.</p> </li> <li> <p> For environment type
-     * <code>ARM_CONTAINER</code>, you can use up to 4 GB memory and 2 vCPUs on
+     * <code>LINUX_GPU_CONTAINER</code>, you can use up to 16 GiB memory, 4 vCPUs, and
+     * 1 NVIDIA A10G Tensor Core GPU for builds.</p> </li> <li> <p> For environment
+     * type <code>ARM_CONTAINER</code>, you can use up to 4 GiB memory and 2 vCPUs on
      * ARM-based processors for builds.</p> </li> </ul> <p> If you use
      * <code>BUILD_GENERAL1_LARGE</code>: </p> <ul> <li> <p> For environment type
-     * <code>LINUX_CONTAINER</code>, you can use up to 15 GB memory and 8 vCPUs for
+     * <code>LINUX_CONTAINER</code>, you can use up to 16 GiB memory and 8 vCPUs for
      * builds. </p> </li> <li> <p> For environment type
-     * <code>LINUX_GPU_CONTAINER</code>, you can use up to 255 GB memory, 32 vCPUs, and
-     * 4 NVIDIA Tesla V100 GPUs for builds.</p> </li> <li> <p> For environment type
-     * <code>ARM_CONTAINER</code>, you can use up to 16 GB memory and 8 vCPUs on
+     * <code>LINUX_GPU_CONTAINER</code>, you can use up to 255 GiB memory, 32 vCPUs,
+     * and 4 NVIDIA Tesla V100 GPUs for builds.</p> </li> <li> <p> For environment type
+     * <code>ARM_CONTAINER</code>, you can use up to 16 GiB memory and 8 vCPUs on
      * ARM-based processors for builds.</p> </li> </ul> <p>For more information, see <a
-     * href="https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-compute-types.html">Build
-     * environment compute types</a> in the <i>CodeBuild User Guide.</i> </p>
+     * href="https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-compute-types.html#environment.types">On-demand
+     * environment types</a> in the <i>CodeBuild User Guide.</i> </p>
      */
     inline const ComputeType& GetComputeType() const{ return m_computeType; }
-
-    /**
-     * <p>Information about the compute resources the compute fleet uses. Available
-     * values include:</p> <ul> <li> <p> <code>BUILD_GENERAL1_SMALL</code>: Use up to 3
-     * GB memory and 2 vCPUs for builds.</p> </li> <li> <p>
-     * <code>BUILD_GENERAL1_MEDIUM</code>: Use up to 7 GB memory and 4 vCPUs for
-     * builds.</p> </li> <li> <p> <code>BUILD_GENERAL1_LARGE</code>: Use up to 16 GB
-     * memory and 8 vCPUs for builds, depending on your environment type.</p> </li>
-     * <li> <p> <code>BUILD_GENERAL1_XLARGE</code>: Use up to 70 GB memory and 36 vCPUs
-     * for builds, depending on your environment type.</p> </li> <li> <p>
-     * <code>BUILD_GENERAL1_2XLARGE</code>: Use up to 145 GB memory, 72 vCPUs, and 824
-     * GB of SSD storage for builds. This compute type supports Docker images up to 100
-     * GB uncompressed.</p> </li> </ul> <p> If you use
-     * <code>BUILD_GENERAL1_SMALL</code>: </p> <ul> <li> <p> For environment type
-     * <code>LINUX_CONTAINER</code>, you can use up to 3 GB memory and 2 vCPUs for
-     * builds. </p> </li> <li> <p> For environment type
-     * <code>LINUX_GPU_CONTAINER</code>, you can use up to 16 GB memory, 4 vCPUs, and 1
-     * NVIDIA A10G Tensor Core GPU for builds.</p> </li> <li> <p> For environment type
-     * <code>ARM_CONTAINER</code>, you can use up to 4 GB memory and 2 vCPUs on
-     * ARM-based processors for builds.</p> </li> </ul> <p> If you use
-     * <code>BUILD_GENERAL1_LARGE</code>: </p> <ul> <li> <p> For environment type
-     * <code>LINUX_CONTAINER</code>, you can use up to 15 GB memory and 8 vCPUs for
-     * builds. </p> </li> <li> <p> For environment type
-     * <code>LINUX_GPU_CONTAINER</code>, you can use up to 255 GB memory, 32 vCPUs, and
-     * 4 NVIDIA Tesla V100 GPUs for builds.</p> </li> <li> <p> For environment type
-     * <code>ARM_CONTAINER</code>, you can use up to 16 GB memory and 8 vCPUs on
-     * ARM-based processors for builds.</p> </li> </ul> <p>For more information, see <a
-     * href="https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-compute-types.html">Build
-     * environment compute types</a> in the <i>CodeBuild User Guide.</i> </p>
-     */
     inline bool ComputeTypeHasBeenSet() const { return m_computeTypeHasBeenSet; }
-
-    /**
-     * <p>Information about the compute resources the compute fleet uses. Available
-     * values include:</p> <ul> <li> <p> <code>BUILD_GENERAL1_SMALL</code>: Use up to 3
-     * GB memory and 2 vCPUs for builds.</p> </li> <li> <p>
-     * <code>BUILD_GENERAL1_MEDIUM</code>: Use up to 7 GB memory and 4 vCPUs for
-     * builds.</p> </li> <li> <p> <code>BUILD_GENERAL1_LARGE</code>: Use up to 16 GB
-     * memory and 8 vCPUs for builds, depending on your environment type.</p> </li>
-     * <li> <p> <code>BUILD_GENERAL1_XLARGE</code>: Use up to 70 GB memory and 36 vCPUs
-     * for builds, depending on your environment type.</p> </li> <li> <p>
-     * <code>BUILD_GENERAL1_2XLARGE</code>: Use up to 145 GB memory, 72 vCPUs, and 824
-     * GB of SSD storage for builds. This compute type supports Docker images up to 100
-     * GB uncompressed.</p> </li> </ul> <p> If you use
-     * <code>BUILD_GENERAL1_SMALL</code>: </p> <ul> <li> <p> For environment type
-     * <code>LINUX_CONTAINER</code>, you can use up to 3 GB memory and 2 vCPUs for
-     * builds. </p> </li> <li> <p> For environment type
-     * <code>LINUX_GPU_CONTAINER</code>, you can use up to 16 GB memory, 4 vCPUs, and 1
-     * NVIDIA A10G Tensor Core GPU for builds.</p> </li> <li> <p> For environment type
-     * <code>ARM_CONTAINER</code>, you can use up to 4 GB memory and 2 vCPUs on
-     * ARM-based processors for builds.</p> </li> </ul> <p> If you use
-     * <code>BUILD_GENERAL1_LARGE</code>: </p> <ul> <li> <p> For environment type
-     * <code>LINUX_CONTAINER</code>, you can use up to 15 GB memory and 8 vCPUs for
-     * builds. </p> </li> <li> <p> For environment type
-     * <code>LINUX_GPU_CONTAINER</code>, you can use up to 255 GB memory, 32 vCPUs, and
-     * 4 NVIDIA Tesla V100 GPUs for builds.</p> </li> <li> <p> For environment type
-     * <code>ARM_CONTAINER</code>, you can use up to 16 GB memory and 8 vCPUs on
-     * ARM-based processors for builds.</p> </li> </ul> <p>For more information, see <a
-     * href="https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-compute-types.html">Build
-     * environment compute types</a> in the <i>CodeBuild User Guide.</i> </p>
-     */
     inline void SetComputeType(const ComputeType& value) { m_computeTypeHasBeenSet = true; m_computeType = value; }
-
-    /**
-     * <p>Information about the compute resources the compute fleet uses. Available
-     * values include:</p> <ul> <li> <p> <code>BUILD_GENERAL1_SMALL</code>: Use up to 3
-     * GB memory and 2 vCPUs for builds.</p> </li> <li> <p>
-     * <code>BUILD_GENERAL1_MEDIUM</code>: Use up to 7 GB memory and 4 vCPUs for
-     * builds.</p> </li> <li> <p> <code>BUILD_GENERAL1_LARGE</code>: Use up to 16 GB
-     * memory and 8 vCPUs for builds, depending on your environment type.</p> </li>
-     * <li> <p> <code>BUILD_GENERAL1_XLARGE</code>: Use up to 70 GB memory and 36 vCPUs
-     * for builds, depending on your environment type.</p> </li> <li> <p>
-     * <code>BUILD_GENERAL1_2XLARGE</code>: Use up to 145 GB memory, 72 vCPUs, and 824
-     * GB of SSD storage for builds. This compute type supports Docker images up to 100
-     * GB uncompressed.</p> </li> </ul> <p> If you use
-     * <code>BUILD_GENERAL1_SMALL</code>: </p> <ul> <li> <p> For environment type
-     * <code>LINUX_CONTAINER</code>, you can use up to 3 GB memory and 2 vCPUs for
-     * builds. </p> </li> <li> <p> For environment type
-     * <code>LINUX_GPU_CONTAINER</code>, you can use up to 16 GB memory, 4 vCPUs, and 1
-     * NVIDIA A10G Tensor Core GPU for builds.</p> </li> <li> <p> For environment type
-     * <code>ARM_CONTAINER</code>, you can use up to 4 GB memory and 2 vCPUs on
-     * ARM-based processors for builds.</p> </li> </ul> <p> If you use
-     * <code>BUILD_GENERAL1_LARGE</code>: </p> <ul> <li> <p> For environment type
-     * <code>LINUX_CONTAINER</code>, you can use up to 15 GB memory and 8 vCPUs for
-     * builds. </p> </li> <li> <p> For environment type
-     * <code>LINUX_GPU_CONTAINER</code>, you can use up to 255 GB memory, 32 vCPUs, and
-     * 4 NVIDIA Tesla V100 GPUs for builds.</p> </li> <li> <p> For environment type
-     * <code>ARM_CONTAINER</code>, you can use up to 16 GB memory and 8 vCPUs on
-     * ARM-based processors for builds.</p> </li> </ul> <p>For more information, see <a
-     * href="https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-compute-types.html">Build
-     * environment compute types</a> in the <i>CodeBuild User Guide.</i> </p>
-     */
     inline void SetComputeType(ComputeType&& value) { m_computeTypeHasBeenSet = true; m_computeType = std::move(value); }
-
-    /**
-     * <p>Information about the compute resources the compute fleet uses. Available
-     * values include:</p> <ul> <li> <p> <code>BUILD_GENERAL1_SMALL</code>: Use up to 3
-     * GB memory and 2 vCPUs for builds.</p> </li> <li> <p>
-     * <code>BUILD_GENERAL1_MEDIUM</code>: Use up to 7 GB memory and 4 vCPUs for
-     * builds.</p> </li> <li> <p> <code>BUILD_GENERAL1_LARGE</code>: Use up to 16 GB
-     * memory and 8 vCPUs for builds, depending on your environment type.</p> </li>
-     * <li> <p> <code>BUILD_GENERAL1_XLARGE</code>: Use up to 70 GB memory and 36 vCPUs
-     * for builds, depending on your environment type.</p> </li> <li> <p>
-     * <code>BUILD_GENERAL1_2XLARGE</code>: Use up to 145 GB memory, 72 vCPUs, and 824
-     * GB of SSD storage for builds. This compute type supports Docker images up to 100
-     * GB uncompressed.</p> </li> </ul> <p> If you use
-     * <code>BUILD_GENERAL1_SMALL</code>: </p> <ul> <li> <p> For environment type
-     * <code>LINUX_CONTAINER</code>, you can use up to 3 GB memory and 2 vCPUs for
-     * builds. </p> </li> <li> <p> For environment type
-     * <code>LINUX_GPU_CONTAINER</code>, you can use up to 16 GB memory, 4 vCPUs, and 1
-     * NVIDIA A10G Tensor Core GPU for builds.</p> </li> <li> <p> For environment type
-     * <code>ARM_CONTAINER</code>, you can use up to 4 GB memory and 2 vCPUs on
-     * ARM-based processors for builds.</p> </li> </ul> <p> If you use
-     * <code>BUILD_GENERAL1_LARGE</code>: </p> <ul> <li> <p> For environment type
-     * <code>LINUX_CONTAINER</code>, you can use up to 15 GB memory and 8 vCPUs for
-     * builds. </p> </li> <li> <p> For environment type
-     * <code>LINUX_GPU_CONTAINER</code>, you can use up to 255 GB memory, 32 vCPUs, and
-     * 4 NVIDIA Tesla V100 GPUs for builds.</p> </li> <li> <p> For environment type
-     * <code>ARM_CONTAINER</code>, you can use up to 16 GB memory and 8 vCPUs on
-     * ARM-based processors for builds.</p> </li> </ul> <p>For more information, see <a
-     * href="https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-compute-types.html">Build
-     * environment compute types</a> in the <i>CodeBuild User Guide.</i> </p>
-     */
     inline CreateFleetRequest& WithComputeType(const ComputeType& value) { SetComputeType(value); return *this;}
-
-    /**
-     * <p>Information about the compute resources the compute fleet uses. Available
-     * values include:</p> <ul> <li> <p> <code>BUILD_GENERAL1_SMALL</code>: Use up to 3
-     * GB memory and 2 vCPUs for builds.</p> </li> <li> <p>
-     * <code>BUILD_GENERAL1_MEDIUM</code>: Use up to 7 GB memory and 4 vCPUs for
-     * builds.</p> </li> <li> <p> <code>BUILD_GENERAL1_LARGE</code>: Use up to 16 GB
-     * memory and 8 vCPUs for builds, depending on your environment type.</p> </li>
-     * <li> <p> <code>BUILD_GENERAL1_XLARGE</code>: Use up to 70 GB memory and 36 vCPUs
-     * for builds, depending on your environment type.</p> </li> <li> <p>
-     * <code>BUILD_GENERAL1_2XLARGE</code>: Use up to 145 GB memory, 72 vCPUs, and 824
-     * GB of SSD storage for builds. This compute type supports Docker images up to 100
-     * GB uncompressed.</p> </li> </ul> <p> If you use
-     * <code>BUILD_GENERAL1_SMALL</code>: </p> <ul> <li> <p> For environment type
-     * <code>LINUX_CONTAINER</code>, you can use up to 3 GB memory and 2 vCPUs for
-     * builds. </p> </li> <li> <p> For environment type
-     * <code>LINUX_GPU_CONTAINER</code>, you can use up to 16 GB memory, 4 vCPUs, and 1
-     * NVIDIA A10G Tensor Core GPU for builds.</p> </li> <li> <p> For environment type
-     * <code>ARM_CONTAINER</code>, you can use up to 4 GB memory and 2 vCPUs on
-     * ARM-based processors for builds.</p> </li> </ul> <p> If you use
-     * <code>BUILD_GENERAL1_LARGE</code>: </p> <ul> <li> <p> For environment type
-     * <code>LINUX_CONTAINER</code>, you can use up to 15 GB memory and 8 vCPUs for
-     * builds. </p> </li> <li> <p> For environment type
-     * <code>LINUX_GPU_CONTAINER</code>, you can use up to 255 GB memory, 32 vCPUs, and
-     * 4 NVIDIA Tesla V100 GPUs for builds.</p> </li> <li> <p> For environment type
-     * <code>ARM_CONTAINER</code>, you can use up to 16 GB memory and 8 vCPUs on
-     * ARM-based processors for builds.</p> </li> </ul> <p>For more information, see <a
-     * href="https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-compute-types.html">Build
-     * environment compute types</a> in the <i>CodeBuild User Guide.</i> </p>
-     */
     inline CreateFleetRequest& WithComputeType(ComputeType&& value) { SetComputeType(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The compute configuration of the compute fleet. This is only required if
+     * <code>computeType</code> is set to <code>ATTRIBUTE_BASED_COMPUTE</code>.</p>
+     */
+    inline const ComputeConfiguration& GetComputeConfiguration() const{ return m_computeConfiguration; }
+    inline bool ComputeConfigurationHasBeenSet() const { return m_computeConfigurationHasBeenSet; }
+    inline void SetComputeConfiguration(const ComputeConfiguration& value) { m_computeConfigurationHasBeenSet = true; m_computeConfiguration = value; }
+    inline void SetComputeConfiguration(ComputeConfiguration&& value) { m_computeConfigurationHasBeenSet = true; m_computeConfiguration = std::move(value); }
+    inline CreateFleetRequest& WithComputeConfiguration(const ComputeConfiguration& value) { SetComputeConfiguration(value); return *this;}
+    inline CreateFleetRequest& WithComputeConfiguration(ComputeConfiguration&& value) { SetComputeConfiguration(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
     /**
      * <p>The scaling configuration of the compute fleet.</p>
      */
     inline const ScalingConfigurationInput& GetScalingConfiguration() const{ return m_scalingConfiguration; }
-
-    /**
-     * <p>The scaling configuration of the compute fleet.</p>
-     */
     inline bool ScalingConfigurationHasBeenSet() const { return m_scalingConfigurationHasBeenSet; }
-
-    /**
-     * <p>The scaling configuration of the compute fleet.</p>
-     */
     inline void SetScalingConfiguration(const ScalingConfigurationInput& value) { m_scalingConfigurationHasBeenSet = true; m_scalingConfiguration = value; }
-
-    /**
-     * <p>The scaling configuration of the compute fleet.</p>
-     */
     inline void SetScalingConfiguration(ScalingConfigurationInput&& value) { m_scalingConfigurationHasBeenSet = true; m_scalingConfiguration = std::move(value); }
-
-    /**
-     * <p>The scaling configuration of the compute fleet.</p>
-     */
     inline CreateFleetRequest& WithScalingConfiguration(const ScalingConfigurationInput& value) { SetScalingConfiguration(value); return *this;}
-
-    /**
-     * <p>The scaling configuration of the compute fleet.</p>
-     */
     inline CreateFleetRequest& WithScalingConfiguration(ScalingConfigurationInput&& value) { SetScalingConfiguration(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The compute fleet overflow behavior.</p> <ul> <li> <p>For overflow behavior
      * <code>QUEUE</code>, your overflow builds need to wait on the existing fleet
@@ -495,194 +216,82 @@ namespace Model
      * required to create a VPC network interface</a>.</p>  </li> </ul>
      */
     inline const FleetOverflowBehavior& GetOverflowBehavior() const{ return m_overflowBehavior; }
-
-    /**
-     * <p>The compute fleet overflow behavior.</p> <ul> <li> <p>For overflow behavior
-     * <code>QUEUE</code>, your overflow builds need to wait on the existing fleet
-     * instance to become available.</p> </li> <li> <p>For overflow behavior
-     * <code>ON_DEMAND</code>, your overflow builds run on CodeBuild on-demand.</p>
-     *  <p>If you choose to set your overflow behavior to on-demand while
-     * creating a VPC-connected fleet, make sure that you add the required VPC
-     * permissions to your project service role. For more information, see <a
-     * href="https://docs.aws.amazon.com/codebuild/latest/userguide/auth-and-access-control-iam-identity-based-access-control.html#customer-managed-policies-example-create-vpc-network-interface">Example
-     * policy statement to allow CodeBuild access to Amazon Web Services services
-     * required to create a VPC network interface</a>.</p>  </li> </ul>
-     */
     inline bool OverflowBehaviorHasBeenSet() const { return m_overflowBehaviorHasBeenSet; }
-
-    /**
-     * <p>The compute fleet overflow behavior.</p> <ul> <li> <p>For overflow behavior
-     * <code>QUEUE</code>, your overflow builds need to wait on the existing fleet
-     * instance to become available.</p> </li> <li> <p>For overflow behavior
-     * <code>ON_DEMAND</code>, your overflow builds run on CodeBuild on-demand.</p>
-     *  <p>If you choose to set your overflow behavior to on-demand while
-     * creating a VPC-connected fleet, make sure that you add the required VPC
-     * permissions to your project service role. For more information, see <a
-     * href="https://docs.aws.amazon.com/codebuild/latest/userguide/auth-and-access-control-iam-identity-based-access-control.html#customer-managed-policies-example-create-vpc-network-interface">Example
-     * policy statement to allow CodeBuild access to Amazon Web Services services
-     * required to create a VPC network interface</a>.</p>  </li> </ul>
-     */
     inline void SetOverflowBehavior(const FleetOverflowBehavior& value) { m_overflowBehaviorHasBeenSet = true; m_overflowBehavior = value; }
-
-    /**
-     * <p>The compute fleet overflow behavior.</p> <ul> <li> <p>For overflow behavior
-     * <code>QUEUE</code>, your overflow builds need to wait on the existing fleet
-     * instance to become available.</p> </li> <li> <p>For overflow behavior
-     * <code>ON_DEMAND</code>, your overflow builds run on CodeBuild on-demand.</p>
-     *  <p>If you choose to set your overflow behavior to on-demand while
-     * creating a VPC-connected fleet, make sure that you add the required VPC
-     * permissions to your project service role. For more information, see <a
-     * href="https://docs.aws.amazon.com/codebuild/latest/userguide/auth-and-access-control-iam-identity-based-access-control.html#customer-managed-policies-example-create-vpc-network-interface">Example
-     * policy statement to allow CodeBuild access to Amazon Web Services services
-     * required to create a VPC network interface</a>.</p>  </li> </ul>
-     */
     inline void SetOverflowBehavior(FleetOverflowBehavior&& value) { m_overflowBehaviorHasBeenSet = true; m_overflowBehavior = std::move(value); }
-
-    /**
-     * <p>The compute fleet overflow behavior.</p> <ul> <li> <p>For overflow behavior
-     * <code>QUEUE</code>, your overflow builds need to wait on the existing fleet
-     * instance to become available.</p> </li> <li> <p>For overflow behavior
-     * <code>ON_DEMAND</code>, your overflow builds run on CodeBuild on-demand.</p>
-     *  <p>If you choose to set your overflow behavior to on-demand while
-     * creating a VPC-connected fleet, make sure that you add the required VPC
-     * permissions to your project service role. For more information, see <a
-     * href="https://docs.aws.amazon.com/codebuild/latest/userguide/auth-and-access-control-iam-identity-based-access-control.html#customer-managed-policies-example-create-vpc-network-interface">Example
-     * policy statement to allow CodeBuild access to Amazon Web Services services
-     * required to create a VPC network interface</a>.</p>  </li> </ul>
-     */
     inline CreateFleetRequest& WithOverflowBehavior(const FleetOverflowBehavior& value) { SetOverflowBehavior(value); return *this;}
-
-    /**
-     * <p>The compute fleet overflow behavior.</p> <ul> <li> <p>For overflow behavior
-     * <code>QUEUE</code>, your overflow builds need to wait on the existing fleet
-     * instance to become available.</p> </li> <li> <p>For overflow behavior
-     * <code>ON_DEMAND</code>, your overflow builds run on CodeBuild on-demand.</p>
-     *  <p>If you choose to set your overflow behavior to on-demand while
-     * creating a VPC-connected fleet, make sure that you add the required VPC
-     * permissions to your project service role. For more information, see <a
-     * href="https://docs.aws.amazon.com/codebuild/latest/userguide/auth-and-access-control-iam-identity-based-access-control.html#customer-managed-policies-example-create-vpc-network-interface">Example
-     * policy statement to allow CodeBuild access to Amazon Web Services services
-     * required to create a VPC network interface</a>.</p>  </li> </ul>
-     */
     inline CreateFleetRequest& WithOverflowBehavior(FleetOverflowBehavior&& value) { SetOverflowBehavior(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     
     inline const VpcConfig& GetVpcConfig() const{ return m_vpcConfig; }
-
-    
     inline bool VpcConfigHasBeenSet() const { return m_vpcConfigHasBeenSet; }
-
-    
     inline void SetVpcConfig(const VpcConfig& value) { m_vpcConfigHasBeenSet = true; m_vpcConfig = value; }
-
-    
     inline void SetVpcConfig(VpcConfig&& value) { m_vpcConfigHasBeenSet = true; m_vpcConfig = std::move(value); }
-
-    
     inline CreateFleetRequest& WithVpcConfig(const VpcConfig& value) { SetVpcConfig(value); return *this;}
-
-    
     inline CreateFleetRequest& WithVpcConfig(VpcConfig&& value) { SetVpcConfig(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p>The service role associated with the compute fleet.</p>
+     * <p>The proxy configuration of the compute fleet.</p>
+     */
+    inline const ProxyConfiguration& GetProxyConfiguration() const{ return m_proxyConfiguration; }
+    inline bool ProxyConfigurationHasBeenSet() const { return m_proxyConfigurationHasBeenSet; }
+    inline void SetProxyConfiguration(const ProxyConfiguration& value) { m_proxyConfigurationHasBeenSet = true; m_proxyConfiguration = value; }
+    inline void SetProxyConfiguration(ProxyConfiguration&& value) { m_proxyConfigurationHasBeenSet = true; m_proxyConfiguration = std::move(value); }
+    inline CreateFleetRequest& WithProxyConfiguration(const ProxyConfiguration& value) { SetProxyConfiguration(value); return *this;}
+    inline CreateFleetRequest& WithProxyConfiguration(ProxyConfiguration&& value) { SetProxyConfiguration(std::move(value)); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>The Amazon Machine Image (AMI) of the compute fleet.</p>
+     */
+    inline const Aws::String& GetImageId() const{ return m_imageId; }
+    inline bool ImageIdHasBeenSet() const { return m_imageIdHasBeenSet; }
+    inline void SetImageId(const Aws::String& value) { m_imageIdHasBeenSet = true; m_imageId = value; }
+    inline void SetImageId(Aws::String&& value) { m_imageIdHasBeenSet = true; m_imageId = std::move(value); }
+    inline void SetImageId(const char* value) { m_imageIdHasBeenSet = true; m_imageId.assign(value); }
+    inline CreateFleetRequest& WithImageId(const Aws::String& value) { SetImageId(value); return *this;}
+    inline CreateFleetRequest& WithImageId(Aws::String&& value) { SetImageId(std::move(value)); return *this;}
+    inline CreateFleetRequest& WithImageId(const char* value) { SetImageId(value); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>The service role associated with the compute fleet. For more information, see
+     * <a
+     * href="https://docs.aws.amazon.com/codebuild/latest/userguide/auth-and-access-control-iam-identity-based-access-control.html#customer-managed-policies-example-permission-policy-fleet-service-role.html">
+     * Allow a user to add a permission policy for a fleet service role</a> in the
+     * <i>CodeBuild User Guide</i>.</p>
      */
     inline const Aws::String& GetFleetServiceRole() const{ return m_fleetServiceRole; }
-
-    /**
-     * <p>The service role associated with the compute fleet.</p>
-     */
     inline bool FleetServiceRoleHasBeenSet() const { return m_fleetServiceRoleHasBeenSet; }
-
-    /**
-     * <p>The service role associated with the compute fleet.</p>
-     */
     inline void SetFleetServiceRole(const Aws::String& value) { m_fleetServiceRoleHasBeenSet = true; m_fleetServiceRole = value; }
-
-    /**
-     * <p>The service role associated with the compute fleet.</p>
-     */
     inline void SetFleetServiceRole(Aws::String&& value) { m_fleetServiceRoleHasBeenSet = true; m_fleetServiceRole = std::move(value); }
-
-    /**
-     * <p>The service role associated with the compute fleet.</p>
-     */
     inline void SetFleetServiceRole(const char* value) { m_fleetServiceRoleHasBeenSet = true; m_fleetServiceRole.assign(value); }
-
-    /**
-     * <p>The service role associated with the compute fleet.</p>
-     */
     inline CreateFleetRequest& WithFleetServiceRole(const Aws::String& value) { SetFleetServiceRole(value); return *this;}
-
-    /**
-     * <p>The service role associated with the compute fleet.</p>
-     */
     inline CreateFleetRequest& WithFleetServiceRole(Aws::String&& value) { SetFleetServiceRole(std::move(value)); return *this;}
-
-    /**
-     * <p>The service role associated with the compute fleet.</p>
-     */
     inline CreateFleetRequest& WithFleetServiceRole(const char* value) { SetFleetServiceRole(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>A list of tag key and value pairs associated with this compute fleet.</p>
      * <p>These tags are available for use by Amazon Web Services services that support
      * CodeBuild build project tags.</p>
      */
     inline const Aws::Vector<Tag>& GetTags() const{ return m_tags; }
-
-    /**
-     * <p>A list of tag key and value pairs associated with this compute fleet.</p>
-     * <p>These tags are available for use by Amazon Web Services services that support
-     * CodeBuild build project tags.</p>
-     */
     inline bool TagsHasBeenSet() const { return m_tagsHasBeenSet; }
-
-    /**
-     * <p>A list of tag key and value pairs associated with this compute fleet.</p>
-     * <p>These tags are available for use by Amazon Web Services services that support
-     * CodeBuild build project tags.</p>
-     */
     inline void SetTags(const Aws::Vector<Tag>& value) { m_tagsHasBeenSet = true; m_tags = value; }
-
-    /**
-     * <p>A list of tag key and value pairs associated with this compute fleet.</p>
-     * <p>These tags are available for use by Amazon Web Services services that support
-     * CodeBuild build project tags.</p>
-     */
     inline void SetTags(Aws::Vector<Tag>&& value) { m_tagsHasBeenSet = true; m_tags = std::move(value); }
-
-    /**
-     * <p>A list of tag key and value pairs associated with this compute fleet.</p>
-     * <p>These tags are available for use by Amazon Web Services services that support
-     * CodeBuild build project tags.</p>
-     */
     inline CreateFleetRequest& WithTags(const Aws::Vector<Tag>& value) { SetTags(value); return *this;}
-
-    /**
-     * <p>A list of tag key and value pairs associated with this compute fleet.</p>
-     * <p>These tags are available for use by Amazon Web Services services that support
-     * CodeBuild build project tags.</p>
-     */
     inline CreateFleetRequest& WithTags(Aws::Vector<Tag>&& value) { SetTags(std::move(value)); return *this;}
-
-    /**
-     * <p>A list of tag key and value pairs associated with this compute fleet.</p>
-     * <p>These tags are available for use by Amazon Web Services services that support
-     * CodeBuild build project tags.</p>
-     */
     inline CreateFleetRequest& AddTags(const Tag& value) { m_tagsHasBeenSet = true; m_tags.push_back(value); return *this; }
-
-    /**
-     * <p>A list of tag key and value pairs associated with this compute fleet.</p>
-     * <p>These tags are available for use by Amazon Web Services services that support
-     * CodeBuild build project tags.</p>
-     */
     inline CreateFleetRequest& AddTags(Tag&& value) { m_tagsHasBeenSet = true; m_tags.push_back(std::move(value)); return *this; }
-
+    ///@}
   private:
 
     Aws::String m_name;
@@ -697,6 +306,9 @@ namespace Model
     ComputeType m_computeType;
     bool m_computeTypeHasBeenSet = false;
 
+    ComputeConfiguration m_computeConfiguration;
+    bool m_computeConfigurationHasBeenSet = false;
+
     ScalingConfigurationInput m_scalingConfiguration;
     bool m_scalingConfigurationHasBeenSet = false;
 
@@ -705,6 +317,12 @@ namespace Model
 
     VpcConfig m_vpcConfig;
     bool m_vpcConfigHasBeenSet = false;
+
+    ProxyConfiguration m_proxyConfiguration;
+    bool m_proxyConfigurationHasBeenSet = false;
+
+    Aws::String m_imageId;
+    bool m_imageIdHasBeenSet = false;
 
     Aws::String m_fleetServiceRole;
     bool m_fleetServiceRoleHasBeenSet = false;

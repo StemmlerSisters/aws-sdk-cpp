@@ -38,29 +38,13 @@ CacheBehavior::CacheBehavior() :
     m_realtimeLogConfigArnHasBeenSet(false),
     m_cachePolicyIdHasBeenSet(false),
     m_originRequestPolicyIdHasBeenSet(false),
-    m_responseHeadersPolicyIdHasBeenSet(false)
+    m_responseHeadersPolicyIdHasBeenSet(false),
+    m_grpcConfigHasBeenSet(false)
 {
 }
 
-CacheBehavior::CacheBehavior(const XmlNode& xmlNode) : 
-    m_pathPatternHasBeenSet(false),
-    m_targetOriginIdHasBeenSet(false),
-    m_trustedSignersHasBeenSet(false),
-    m_trustedKeyGroupsHasBeenSet(false),
-    m_viewerProtocolPolicy(ViewerProtocolPolicy::NOT_SET),
-    m_viewerProtocolPolicyHasBeenSet(false),
-    m_allowedMethodsHasBeenSet(false),
-    m_smoothStreaming(false),
-    m_smoothStreamingHasBeenSet(false),
-    m_compress(false),
-    m_compressHasBeenSet(false),
-    m_lambdaFunctionAssociationsHasBeenSet(false),
-    m_functionAssociationsHasBeenSet(false),
-    m_fieldLevelEncryptionIdHasBeenSet(false),
-    m_realtimeLogConfigArnHasBeenSet(false),
-    m_cachePolicyIdHasBeenSet(false),
-    m_originRequestPolicyIdHasBeenSet(false),
-    m_responseHeadersPolicyIdHasBeenSet(false)
+CacheBehavior::CacheBehavior(const XmlNode& xmlNode)
+  : CacheBehavior()
 {
   *this = xmlNode;
 }
@@ -160,6 +144,12 @@ CacheBehavior& CacheBehavior::operator =(const XmlNode& xmlNode)
     {
       m_responseHeadersPolicyId = Aws::Utils::Xml::DecodeEscapedXmlText(responseHeadersPolicyIdNode.GetText());
       m_responseHeadersPolicyIdHasBeenSet = true;
+    }
+    XmlNode grpcConfigNode = resultNode.FirstChild("GrpcConfig");
+    if(!grpcConfigNode.IsNull())
+    {
+      m_grpcConfig = grpcConfigNode;
+      m_grpcConfigHasBeenSet = true;
     }
   }
 
@@ -261,6 +251,12 @@ void CacheBehavior::AddToNode(XmlNode& parentNode) const
   {
    XmlNode responseHeadersPolicyIdNode = parentNode.CreateChildElement("ResponseHeadersPolicyId");
    responseHeadersPolicyIdNode.SetText(m_responseHeadersPolicyId);
+  }
+
+  if(m_grpcConfigHasBeenSet)
+  {
+   XmlNode grpcConfigNode = parentNode.CreateChildElement("GrpcConfig");
+   m_grpcConfig.AddToNode(grpcConfigNode);
   }
 
 }

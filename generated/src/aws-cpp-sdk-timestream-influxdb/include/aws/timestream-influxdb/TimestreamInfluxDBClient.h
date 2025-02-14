@@ -6,29 +6,41 @@
 #pragma once
 #include <aws/timestream-influxdb/TimestreamInfluxDB_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/timestream-influxdb/TimestreamInfluxDBServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/timestream-influxdb/TimestreamInfluxDBErrorMarshaller.h>
 
 namespace Aws
 {
 namespace TimestreamInfluxDB
 {
+  AWS_TIMESTREAMINFLUXDB_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon Timestream for InfluxDB is a managed time-series database engine that
    * makes it easy for application developers and DevOps teams to run InfluxDB
-   * databases on AWS for near real-time time-series applications using open-source
-   * APIs. With Amazon Timestream for InfluxDB, it is easy to set up, operate, and
-   * scale time-series workloads that can answer queries with single-digit
-   * millisecond query response time.</p>
+   * databases on Amazon Web Services for near real-time time-series applications
+   * using open-source APIs. With Amazon Timestream for InfluxDB, it is easy to set
+   * up, operate, and scale time-series workloads that can answer queries with
+   * single-digit millisecond query response time.</p>
    */
-  class AWS_TIMESTREAMINFLUXDB_API TimestreamInfluxDBClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<TimestreamInfluxDBClient>
+  class AWS_TIMESTREAMINFLUXDB_API TimestreamInfluxDBClient : smithy::client::AwsSmithyClientT<Aws::TimestreamInfluxDB::SERVICE_NAME,
+      Aws::TimestreamInfluxDB::TimestreamInfluxDBClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      TimestreamInfluxDBEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::TimestreamInfluxDBErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<TimestreamInfluxDBClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Timestream InfluxDB"; }
 
       typedef TimestreamInfluxDBClientConfiguration ClientConfigurationType;
       typedef TimestreamInfluxDBEndpointProvider EndpointProviderType;
@@ -215,13 +227,13 @@ namespace TimestreamInfluxDB
          * href="http://docs.aws.amazon.com/goto/WebAPI/timestream-influxdb-2023-01-27/ListDbInstances">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDbInstancesOutcome ListDbInstances(const Model::ListDbInstancesRequest& request) const;
+        virtual Model::ListDbInstancesOutcome ListDbInstances(const Model::ListDbInstancesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDbInstances that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDbInstancesRequestT = Model::ListDbInstancesRequest>
-        Model::ListDbInstancesOutcomeCallable ListDbInstancesCallable(const ListDbInstancesRequestT& request) const
+        Model::ListDbInstancesOutcomeCallable ListDbInstancesCallable(const ListDbInstancesRequestT& request = {}) const
         {
             return SubmitCallable(&TimestreamInfluxDBClient::ListDbInstances, request);
         }
@@ -230,7 +242,7 @@ namespace TimestreamInfluxDB
          * An Async wrapper for ListDbInstances that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDbInstancesRequestT = Model::ListDbInstancesRequest>
-        void ListDbInstancesAsync(const ListDbInstancesRequestT& request, const ListDbInstancesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDbInstancesAsync(const ListDbInstancesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDbInstancesRequestT& request = {}) const
         {
             return SubmitAsync(&TimestreamInfluxDBClient::ListDbInstances, request, handler, context);
         }
@@ -241,13 +253,13 @@ namespace TimestreamInfluxDB
          * href="http://docs.aws.amazon.com/goto/WebAPI/timestream-influxdb-2023-01-27/ListDbParameterGroups">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDbParameterGroupsOutcome ListDbParameterGroups(const Model::ListDbParameterGroupsRequest& request) const;
+        virtual Model::ListDbParameterGroupsOutcome ListDbParameterGroups(const Model::ListDbParameterGroupsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDbParameterGroups that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDbParameterGroupsRequestT = Model::ListDbParameterGroupsRequest>
-        Model::ListDbParameterGroupsOutcomeCallable ListDbParameterGroupsCallable(const ListDbParameterGroupsRequestT& request) const
+        Model::ListDbParameterGroupsOutcomeCallable ListDbParameterGroupsCallable(const ListDbParameterGroupsRequestT& request = {}) const
         {
             return SubmitCallable(&TimestreamInfluxDBClient::ListDbParameterGroups, request);
         }
@@ -256,7 +268,7 @@ namespace TimestreamInfluxDB
          * An Async wrapper for ListDbParameterGroups that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDbParameterGroupsRequestT = Model::ListDbParameterGroupsRequest>
-        void ListDbParameterGroupsAsync(const ListDbParameterGroupsRequestT& request, const ListDbParameterGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDbParameterGroupsAsync(const ListDbParameterGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDbParameterGroupsRequestT& request = {}) const
         {
             return SubmitAsync(&TimestreamInfluxDBClient::ListDbParameterGroups, request, handler, context);
         }
@@ -367,11 +379,7 @@ namespace TimestreamInfluxDB
       std::shared_ptr<TimestreamInfluxDBEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<TimestreamInfluxDBClient>;
-      void init(const TimestreamInfluxDBClientConfiguration& clientConfiguration);
 
-      TimestreamInfluxDBClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<TimestreamInfluxDBEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace TimestreamInfluxDB

@@ -6,24 +6,36 @@
 #pragma once
 #include <aws/macie2/Macie2_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/macie2/Macie2ServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/macie2/Macie2ErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Macie2
 {
+  AWS_MACIE2_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon Macie</p>
    */
-  class AWS_MACIE2_API Macie2Client : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<Macie2Client>
+  class AWS_MACIE2_API Macie2Client : smithy::client::AwsSmithyClientT<Aws::Macie2::SERVICE_NAME,
+      Aws::Macie2::Macie2ClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      Macie2EndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::Macie2ErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<Macie2Client>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Macie2"; }
 
       typedef Macie2ClientConfiguration ClientConfigurationType;
       typedef Macie2EndpointProvider EndpointProviderType;
@@ -108,13 +120,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/BatchGetCustomDataIdentifiers">AWS
          * API Reference</a></p>
          */
-        virtual Model::BatchGetCustomDataIdentifiersOutcome BatchGetCustomDataIdentifiers(const Model::BatchGetCustomDataIdentifiersRequest& request) const;
+        virtual Model::BatchGetCustomDataIdentifiersOutcome BatchGetCustomDataIdentifiers(const Model::BatchGetCustomDataIdentifiersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for BatchGetCustomDataIdentifiers that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename BatchGetCustomDataIdentifiersRequestT = Model::BatchGetCustomDataIdentifiersRequest>
-        Model::BatchGetCustomDataIdentifiersOutcomeCallable BatchGetCustomDataIdentifiersCallable(const BatchGetCustomDataIdentifiersRequestT& request) const
+        Model::BatchGetCustomDataIdentifiersOutcomeCallable BatchGetCustomDataIdentifiersCallable(const BatchGetCustomDataIdentifiersRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::BatchGetCustomDataIdentifiers, request);
         }
@@ -123,9 +135,35 @@ namespace Macie2
          * An Async wrapper for BatchGetCustomDataIdentifiers that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename BatchGetCustomDataIdentifiersRequestT = Model::BatchGetCustomDataIdentifiersRequest>
-        void BatchGetCustomDataIdentifiersAsync(const BatchGetCustomDataIdentifiersRequestT& request, const BatchGetCustomDataIdentifiersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void BatchGetCustomDataIdentifiersAsync(const BatchGetCustomDataIdentifiersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const BatchGetCustomDataIdentifiersRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::BatchGetCustomDataIdentifiers, request, handler, context);
+        }
+
+        /**
+         * <p>Changes the status of automated sensitive data discovery for one or more
+         * accounts.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/BatchUpdateAutomatedDiscoveryAccounts">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::BatchUpdateAutomatedDiscoveryAccountsOutcome BatchUpdateAutomatedDiscoveryAccounts(const Model::BatchUpdateAutomatedDiscoveryAccountsRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for BatchUpdateAutomatedDiscoveryAccounts that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename BatchUpdateAutomatedDiscoveryAccountsRequestT = Model::BatchUpdateAutomatedDiscoveryAccountsRequest>
+        Model::BatchUpdateAutomatedDiscoveryAccountsOutcomeCallable BatchUpdateAutomatedDiscoveryAccountsCallable(const BatchUpdateAutomatedDiscoveryAccountsRequestT& request = {}) const
+        {
+            return SubmitCallable(&Macie2Client::BatchUpdateAutomatedDiscoveryAccounts, request);
+        }
+
+        /**
+         * An Async wrapper for BatchUpdateAutomatedDiscoveryAccounts that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename BatchUpdateAutomatedDiscoveryAccountsRequestT = Model::BatchUpdateAutomatedDiscoveryAccountsRequest>
+        void BatchUpdateAutomatedDiscoveryAccountsAsync(const BatchUpdateAutomatedDiscoveryAccountsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const BatchUpdateAutomatedDiscoveryAccountsRequestT& request = {}) const
+        {
+            return SubmitAsync(&Macie2Client::BatchUpdateAutomatedDiscoveryAccounts, request, handler, context);
         }
 
         /**
@@ -289,13 +327,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/CreateSampleFindings">AWS
          * API Reference</a></p>
          */
-        virtual Model::CreateSampleFindingsOutcome CreateSampleFindings(const Model::CreateSampleFindingsRequest& request) const;
+        virtual Model::CreateSampleFindingsOutcome CreateSampleFindings(const Model::CreateSampleFindingsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for CreateSampleFindings that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename CreateSampleFindingsRequestT = Model::CreateSampleFindingsRequest>
-        Model::CreateSampleFindingsOutcomeCallable CreateSampleFindingsCallable(const CreateSampleFindingsRequestT& request) const
+        Model::CreateSampleFindingsOutcomeCallable CreateSampleFindingsCallable(const CreateSampleFindingsRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::CreateSampleFindings, request);
         }
@@ -304,7 +342,7 @@ namespace Macie2
          * An Async wrapper for CreateSampleFindings that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename CreateSampleFindingsRequestT = Model::CreateSampleFindingsRequest>
-        void CreateSampleFindingsAsync(const CreateSampleFindingsRequestT& request, const CreateSampleFindingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void CreateSampleFindingsAsync(const CreateSampleFindingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const CreateSampleFindingsRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::CreateSampleFindings, request, handler, context);
         }
@@ -469,13 +507,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/DescribeBuckets">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeBucketsOutcome DescribeBuckets(const Model::DescribeBucketsRequest& request) const;
+        virtual Model::DescribeBucketsOutcome DescribeBuckets(const Model::DescribeBucketsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeBuckets that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeBucketsRequestT = Model::DescribeBucketsRequest>
-        Model::DescribeBucketsOutcomeCallable DescribeBucketsCallable(const DescribeBucketsRequestT& request) const
+        Model::DescribeBucketsOutcomeCallable DescribeBucketsCallable(const DescribeBucketsRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::DescribeBuckets, request);
         }
@@ -484,7 +522,7 @@ namespace Macie2
          * An Async wrapper for DescribeBuckets that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeBucketsRequestT = Model::DescribeBucketsRequest>
-        void DescribeBucketsAsync(const DescribeBucketsRequestT& request, const DescribeBucketsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeBucketsAsync(const DescribeBucketsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeBucketsRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::DescribeBuckets, request, handler, context);
         }
@@ -521,13 +559,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/DescribeOrganizationConfiguration">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeOrganizationConfigurationOutcome DescribeOrganizationConfiguration(const Model::DescribeOrganizationConfigurationRequest& request) const;
+        virtual Model::DescribeOrganizationConfigurationOutcome DescribeOrganizationConfiguration(const Model::DescribeOrganizationConfigurationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeOrganizationConfiguration that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeOrganizationConfigurationRequestT = Model::DescribeOrganizationConfigurationRequest>
-        Model::DescribeOrganizationConfigurationOutcomeCallable DescribeOrganizationConfigurationCallable(const DescribeOrganizationConfigurationRequestT& request) const
+        Model::DescribeOrganizationConfigurationOutcomeCallable DescribeOrganizationConfigurationCallable(const DescribeOrganizationConfigurationRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::DescribeOrganizationConfiguration, request);
         }
@@ -536,7 +574,7 @@ namespace Macie2
          * An Async wrapper for DescribeOrganizationConfiguration that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeOrganizationConfigurationRequestT = Model::DescribeOrganizationConfigurationRequest>
-        void DescribeOrganizationConfigurationAsync(const DescribeOrganizationConfigurationRequestT& request, const DescribeOrganizationConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeOrganizationConfigurationAsync(const DescribeOrganizationConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeOrganizationConfigurationRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::DescribeOrganizationConfiguration, request, handler, context);
         }
@@ -547,13 +585,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/DisableMacie">AWS
          * API Reference</a></p>
          */
-        virtual Model::DisableMacieOutcome DisableMacie(const Model::DisableMacieRequest& request) const;
+        virtual Model::DisableMacieOutcome DisableMacie(const Model::DisableMacieRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DisableMacie that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DisableMacieRequestT = Model::DisableMacieRequest>
-        Model::DisableMacieOutcomeCallable DisableMacieCallable(const DisableMacieRequestT& request) const
+        Model::DisableMacieOutcomeCallable DisableMacieCallable(const DisableMacieRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::DisableMacie, request);
         }
@@ -562,7 +600,7 @@ namespace Macie2
          * An Async wrapper for DisableMacie that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DisableMacieRequestT = Model::DisableMacieRequest>
-        void DisableMacieAsync(const DisableMacieRequestT& request, const DisableMacieResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DisableMacieAsync(const DisableMacieResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DisableMacieRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::DisableMacie, request, handler, context);
         }
@@ -599,13 +637,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/DisassociateFromAdministratorAccount">AWS
          * API Reference</a></p>
          */
-        virtual Model::DisassociateFromAdministratorAccountOutcome DisassociateFromAdministratorAccount(const Model::DisassociateFromAdministratorAccountRequest& request) const;
+        virtual Model::DisassociateFromAdministratorAccountOutcome DisassociateFromAdministratorAccount(const Model::DisassociateFromAdministratorAccountRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DisassociateFromAdministratorAccount that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DisassociateFromAdministratorAccountRequestT = Model::DisassociateFromAdministratorAccountRequest>
-        Model::DisassociateFromAdministratorAccountOutcomeCallable DisassociateFromAdministratorAccountCallable(const DisassociateFromAdministratorAccountRequestT& request) const
+        Model::DisassociateFromAdministratorAccountOutcomeCallable DisassociateFromAdministratorAccountCallable(const DisassociateFromAdministratorAccountRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::DisassociateFromAdministratorAccount, request);
         }
@@ -614,7 +652,7 @@ namespace Macie2
          * An Async wrapper for DisassociateFromAdministratorAccount that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DisassociateFromAdministratorAccountRequestT = Model::DisassociateFromAdministratorAccountRequest>
-        void DisassociateFromAdministratorAccountAsync(const DisassociateFromAdministratorAccountRequestT& request, const DisassociateFromAdministratorAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DisassociateFromAdministratorAccountAsync(const DisassociateFromAdministratorAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DisassociateFromAdministratorAccountRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::DisassociateFromAdministratorAccount, request, handler, context);
         }
@@ -627,13 +665,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/DisassociateFromMasterAccount">AWS
          * API Reference</a></p>
          */
-        virtual Model::DisassociateFromMasterAccountOutcome DisassociateFromMasterAccount(const Model::DisassociateFromMasterAccountRequest& request) const;
+        virtual Model::DisassociateFromMasterAccountOutcome DisassociateFromMasterAccount(const Model::DisassociateFromMasterAccountRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DisassociateFromMasterAccount that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DisassociateFromMasterAccountRequestT = Model::DisassociateFromMasterAccountRequest>
-        Model::DisassociateFromMasterAccountOutcomeCallable DisassociateFromMasterAccountCallable(const DisassociateFromMasterAccountRequestT& request) const
+        Model::DisassociateFromMasterAccountOutcomeCallable DisassociateFromMasterAccountCallable(const DisassociateFromMasterAccountRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::DisassociateFromMasterAccount, request);
         }
@@ -642,7 +680,7 @@ namespace Macie2
          * An Async wrapper for DisassociateFromMasterAccount that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DisassociateFromMasterAccountRequestT = Model::DisassociateFromMasterAccountRequest>
-        void DisassociateFromMasterAccountAsync(const DisassociateFromMasterAccountRequestT& request, const DisassociateFromMasterAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DisassociateFromMasterAccountAsync(const DisassociateFromMasterAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DisassociateFromMasterAccountRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::DisassociateFromMasterAccount, request, handler, context);
         }
@@ -679,13 +717,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/EnableMacie">AWS
          * API Reference</a></p>
          */
-        virtual Model::EnableMacieOutcome EnableMacie(const Model::EnableMacieRequest& request) const;
+        virtual Model::EnableMacieOutcome EnableMacie(const Model::EnableMacieRequest& request = {}) const;
 
         /**
          * A Callable wrapper for EnableMacie that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename EnableMacieRequestT = Model::EnableMacieRequest>
-        Model::EnableMacieOutcomeCallable EnableMacieCallable(const EnableMacieRequestT& request) const
+        Model::EnableMacieOutcomeCallable EnableMacieCallable(const EnableMacieRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::EnableMacie, request);
         }
@@ -694,7 +732,7 @@ namespace Macie2
          * An Async wrapper for EnableMacie that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename EnableMacieRequestT = Model::EnableMacieRequest>
-        void EnableMacieAsync(const EnableMacieRequestT& request, const EnableMacieResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void EnableMacieAsync(const EnableMacieResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const EnableMacieRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::EnableMacie, request, handler, context);
         }
@@ -731,13 +769,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/GetAdministratorAccount">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetAdministratorAccountOutcome GetAdministratorAccount(const Model::GetAdministratorAccountRequest& request) const;
+        virtual Model::GetAdministratorAccountOutcome GetAdministratorAccount(const Model::GetAdministratorAccountRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetAdministratorAccount that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetAdministratorAccountRequestT = Model::GetAdministratorAccountRequest>
-        Model::GetAdministratorAccountOutcomeCallable GetAdministratorAccountCallable(const GetAdministratorAccountRequestT& request) const
+        Model::GetAdministratorAccountOutcomeCallable GetAdministratorAccountCallable(const GetAdministratorAccountRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::GetAdministratorAccount, request);
         }
@@ -746,7 +784,7 @@ namespace Macie2
          * An Async wrapper for GetAdministratorAccount that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetAdministratorAccountRequestT = Model::GetAdministratorAccountRequest>
-        void GetAdministratorAccountAsync(const GetAdministratorAccountRequestT& request, const GetAdministratorAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetAdministratorAccountAsync(const GetAdministratorAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetAdministratorAccountRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::GetAdministratorAccount, request, handler, context);
         }
@@ -779,17 +817,18 @@ namespace Macie2
 
         /**
          * <p>Retrieves the configuration settings and status of automated sensitive data
-         * discovery for an account.</p><p><h3>See Also:</h3>   <a
+         * discovery for an organization or standalone account.</p><p><h3>See Also:</h3>  
+         * <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/GetAutomatedDiscoveryConfiguration">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetAutomatedDiscoveryConfigurationOutcome GetAutomatedDiscoveryConfiguration(const Model::GetAutomatedDiscoveryConfigurationRequest& request) const;
+        virtual Model::GetAutomatedDiscoveryConfigurationOutcome GetAutomatedDiscoveryConfiguration(const Model::GetAutomatedDiscoveryConfigurationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetAutomatedDiscoveryConfiguration that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetAutomatedDiscoveryConfigurationRequestT = Model::GetAutomatedDiscoveryConfigurationRequest>
-        Model::GetAutomatedDiscoveryConfigurationOutcomeCallable GetAutomatedDiscoveryConfigurationCallable(const GetAutomatedDiscoveryConfigurationRequestT& request) const
+        Model::GetAutomatedDiscoveryConfigurationOutcomeCallable GetAutomatedDiscoveryConfigurationCallable(const GetAutomatedDiscoveryConfigurationRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::GetAutomatedDiscoveryConfiguration, request);
         }
@@ -798,7 +837,7 @@ namespace Macie2
          * An Async wrapper for GetAutomatedDiscoveryConfiguration that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetAutomatedDiscoveryConfigurationRequestT = Model::GetAutomatedDiscoveryConfigurationRequest>
-        void GetAutomatedDiscoveryConfigurationAsync(const GetAutomatedDiscoveryConfigurationRequestT& request, const GetAutomatedDiscoveryConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetAutomatedDiscoveryConfigurationAsync(const GetAutomatedDiscoveryConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetAutomatedDiscoveryConfigurationRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::GetAutomatedDiscoveryConfiguration, request, handler, context);
         }
@@ -809,13 +848,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/GetBucketStatistics">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetBucketStatisticsOutcome GetBucketStatistics(const Model::GetBucketStatisticsRequest& request) const;
+        virtual Model::GetBucketStatisticsOutcome GetBucketStatistics(const Model::GetBucketStatisticsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetBucketStatistics that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetBucketStatisticsRequestT = Model::GetBucketStatisticsRequest>
-        Model::GetBucketStatisticsOutcomeCallable GetBucketStatisticsCallable(const GetBucketStatisticsRequestT& request) const
+        Model::GetBucketStatisticsOutcomeCallable GetBucketStatisticsCallable(const GetBucketStatisticsRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::GetBucketStatistics, request);
         }
@@ -824,7 +863,7 @@ namespace Macie2
          * An Async wrapper for GetBucketStatistics that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetBucketStatisticsRequestT = Model::GetBucketStatisticsRequest>
-        void GetBucketStatisticsAsync(const GetBucketStatisticsRequestT& request, const GetBucketStatisticsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetBucketStatisticsAsync(const GetBucketStatisticsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetBucketStatisticsRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::GetBucketStatistics, request, handler, context);
         }
@@ -835,13 +874,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/GetClassificationExportConfiguration">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetClassificationExportConfigurationOutcome GetClassificationExportConfiguration(const Model::GetClassificationExportConfigurationRequest& request) const;
+        virtual Model::GetClassificationExportConfigurationOutcome GetClassificationExportConfiguration(const Model::GetClassificationExportConfigurationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetClassificationExportConfiguration that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetClassificationExportConfigurationRequestT = Model::GetClassificationExportConfigurationRequest>
-        Model::GetClassificationExportConfigurationOutcomeCallable GetClassificationExportConfigurationCallable(const GetClassificationExportConfigurationRequestT& request) const
+        Model::GetClassificationExportConfigurationOutcomeCallable GetClassificationExportConfigurationCallable(const GetClassificationExportConfigurationRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::GetClassificationExportConfiguration, request);
         }
@@ -850,7 +889,7 @@ namespace Macie2
          * An Async wrapper for GetClassificationExportConfiguration that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetClassificationExportConfigurationRequestT = Model::GetClassificationExportConfigurationRequest>
-        void GetClassificationExportConfigurationAsync(const GetClassificationExportConfigurationRequestT& request, const GetClassificationExportConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetClassificationExportConfigurationAsync(const GetClassificationExportConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetClassificationExportConfigurationRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::GetClassificationExportConfiguration, request, handler, context);
         }
@@ -990,13 +1029,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/GetFindingsPublicationConfiguration">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetFindingsPublicationConfigurationOutcome GetFindingsPublicationConfiguration(const Model::GetFindingsPublicationConfigurationRequest& request) const;
+        virtual Model::GetFindingsPublicationConfigurationOutcome GetFindingsPublicationConfiguration(const Model::GetFindingsPublicationConfigurationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetFindingsPublicationConfiguration that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetFindingsPublicationConfigurationRequestT = Model::GetFindingsPublicationConfigurationRequest>
-        Model::GetFindingsPublicationConfigurationOutcomeCallable GetFindingsPublicationConfigurationCallable(const GetFindingsPublicationConfigurationRequestT& request) const
+        Model::GetFindingsPublicationConfigurationOutcomeCallable GetFindingsPublicationConfigurationCallable(const GetFindingsPublicationConfigurationRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::GetFindingsPublicationConfiguration, request);
         }
@@ -1005,7 +1044,7 @@ namespace Macie2
          * An Async wrapper for GetFindingsPublicationConfiguration that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetFindingsPublicationConfigurationRequestT = Model::GetFindingsPublicationConfigurationRequest>
-        void GetFindingsPublicationConfigurationAsync(const GetFindingsPublicationConfigurationRequestT& request, const GetFindingsPublicationConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetFindingsPublicationConfigurationAsync(const GetFindingsPublicationConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetFindingsPublicationConfigurationRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::GetFindingsPublicationConfiguration, request, handler, context);
         }
@@ -1016,13 +1055,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/GetInvitationsCount">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetInvitationsCountOutcome GetInvitationsCount(const Model::GetInvitationsCountRequest& request) const;
+        virtual Model::GetInvitationsCountOutcome GetInvitationsCount(const Model::GetInvitationsCountRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetInvitationsCount that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetInvitationsCountRequestT = Model::GetInvitationsCountRequest>
-        Model::GetInvitationsCountOutcomeCallable GetInvitationsCountCallable(const GetInvitationsCountRequestT& request) const
+        Model::GetInvitationsCountOutcomeCallable GetInvitationsCountCallable(const GetInvitationsCountRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::GetInvitationsCount, request);
         }
@@ -1031,7 +1070,7 @@ namespace Macie2
          * An Async wrapper for GetInvitationsCount that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetInvitationsCountRequestT = Model::GetInvitationsCountRequest>
-        void GetInvitationsCountAsync(const GetInvitationsCountRequestT& request, const GetInvitationsCountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetInvitationsCountAsync(const GetInvitationsCountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetInvitationsCountRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::GetInvitationsCount, request, handler, context);
         }
@@ -1042,13 +1081,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/GetMacieSession">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetMacieSessionOutcome GetMacieSession(const Model::GetMacieSessionRequest& request) const;
+        virtual Model::GetMacieSessionOutcome GetMacieSession(const Model::GetMacieSessionRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetMacieSession that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetMacieSessionRequestT = Model::GetMacieSessionRequest>
-        Model::GetMacieSessionOutcomeCallable GetMacieSessionCallable(const GetMacieSessionRequestT& request) const
+        Model::GetMacieSessionOutcomeCallable GetMacieSessionCallable(const GetMacieSessionRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::GetMacieSession, request);
         }
@@ -1057,7 +1096,7 @@ namespace Macie2
          * An Async wrapper for GetMacieSession that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetMacieSessionRequestT = Model::GetMacieSessionRequest>
-        void GetMacieSessionAsync(const GetMacieSessionRequestT& request, const GetMacieSessionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetMacieSessionAsync(const GetMacieSessionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetMacieSessionRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::GetMacieSession, request, handler, context);
         }
@@ -1070,13 +1109,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/GetMasterAccount">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetMasterAccountOutcome GetMasterAccount(const Model::GetMasterAccountRequest& request) const;
+        virtual Model::GetMasterAccountOutcome GetMasterAccount(const Model::GetMasterAccountRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetMasterAccount that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetMasterAccountRequestT = Model::GetMasterAccountRequest>
-        Model::GetMasterAccountOutcomeCallable GetMasterAccountCallable(const GetMasterAccountRequestT& request) const
+        Model::GetMasterAccountOutcomeCallable GetMasterAccountCallable(const GetMasterAccountRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::GetMasterAccount, request);
         }
@@ -1085,7 +1124,7 @@ namespace Macie2
          * An Async wrapper for GetMasterAccount that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetMasterAccountRequestT = Model::GetMasterAccountRequest>
-        void GetMasterAccountAsync(const GetMasterAccountRequestT& request, const GetMasterAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetMasterAccountAsync(const GetMasterAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetMasterAccountRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::GetMasterAccount, request, handler, context);
         }
@@ -1148,13 +1187,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/GetRevealConfiguration">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetRevealConfigurationOutcome GetRevealConfiguration(const Model::GetRevealConfigurationRequest& request) const;
+        virtual Model::GetRevealConfigurationOutcome GetRevealConfiguration(const Model::GetRevealConfigurationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetRevealConfiguration that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetRevealConfigurationRequestT = Model::GetRevealConfigurationRequest>
-        Model::GetRevealConfigurationOutcomeCallable GetRevealConfigurationCallable(const GetRevealConfigurationRequestT& request) const
+        Model::GetRevealConfigurationOutcomeCallable GetRevealConfigurationCallable(const GetRevealConfigurationRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::GetRevealConfiguration, request);
         }
@@ -1163,7 +1202,7 @@ namespace Macie2
          * An Async wrapper for GetRevealConfiguration that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetRevealConfigurationRequestT = Model::GetRevealConfigurationRequest>
-        void GetRevealConfigurationAsync(const GetRevealConfigurationRequestT& request, const GetRevealConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetRevealConfigurationAsync(const GetRevealConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetRevealConfigurationRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::GetRevealConfiguration, request, handler, context);
         }
@@ -1252,13 +1291,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/GetUsageStatistics">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetUsageStatisticsOutcome GetUsageStatistics(const Model::GetUsageStatisticsRequest& request) const;
+        virtual Model::GetUsageStatisticsOutcome GetUsageStatistics(const Model::GetUsageStatisticsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetUsageStatistics that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetUsageStatisticsRequestT = Model::GetUsageStatisticsRequest>
-        Model::GetUsageStatisticsOutcomeCallable GetUsageStatisticsCallable(const GetUsageStatisticsRequestT& request) const
+        Model::GetUsageStatisticsOutcomeCallable GetUsageStatisticsCallable(const GetUsageStatisticsRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::GetUsageStatistics, request);
         }
@@ -1267,7 +1306,7 @@ namespace Macie2
          * An Async wrapper for GetUsageStatistics that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetUsageStatisticsRequestT = Model::GetUsageStatisticsRequest>
-        void GetUsageStatisticsAsync(const GetUsageStatisticsRequestT& request, const GetUsageStatisticsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetUsageStatisticsAsync(const GetUsageStatisticsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetUsageStatisticsRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::GetUsageStatistics, request, handler, context);
         }
@@ -1278,13 +1317,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/GetUsageTotals">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetUsageTotalsOutcome GetUsageTotals(const Model::GetUsageTotalsRequest& request) const;
+        virtual Model::GetUsageTotalsOutcome GetUsageTotals(const Model::GetUsageTotalsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetUsageTotals that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetUsageTotalsRequestT = Model::GetUsageTotalsRequest>
-        Model::GetUsageTotalsOutcomeCallable GetUsageTotalsCallable(const GetUsageTotalsRequestT& request) const
+        Model::GetUsageTotalsOutcomeCallable GetUsageTotalsCallable(const GetUsageTotalsRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::GetUsageTotals, request);
         }
@@ -1293,7 +1332,7 @@ namespace Macie2
          * An Async wrapper for GetUsageTotals that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetUsageTotalsRequestT = Model::GetUsageTotalsRequest>
-        void GetUsageTotalsAsync(const GetUsageTotalsRequestT& request, const GetUsageTotalsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetUsageTotalsAsync(const GetUsageTotalsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetUsageTotalsRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::GetUsageTotals, request, handler, context);
         }
@@ -1304,13 +1343,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/ListAllowLists">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAllowListsOutcome ListAllowLists(const Model::ListAllowListsRequest& request) const;
+        virtual Model::ListAllowListsOutcome ListAllowLists(const Model::ListAllowListsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAllowLists that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAllowListsRequestT = Model::ListAllowListsRequest>
-        Model::ListAllowListsOutcomeCallable ListAllowListsCallable(const ListAllowListsRequestT& request) const
+        Model::ListAllowListsOutcomeCallable ListAllowListsCallable(const ListAllowListsRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::ListAllowLists, request);
         }
@@ -1319,9 +1358,35 @@ namespace Macie2
          * An Async wrapper for ListAllowLists that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAllowListsRequestT = Model::ListAllowListsRequest>
-        void ListAllowListsAsync(const ListAllowListsRequestT& request, const ListAllowListsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAllowListsAsync(const ListAllowListsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAllowListsRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::ListAllowLists, request, handler, context);
+        }
+
+        /**
+         * <p>Retrieves the status of automated sensitive data discovery for one or more
+         * accounts.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/ListAutomatedDiscoveryAccounts">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListAutomatedDiscoveryAccountsOutcome ListAutomatedDiscoveryAccounts(const Model::ListAutomatedDiscoveryAccountsRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for ListAutomatedDiscoveryAccounts that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListAutomatedDiscoveryAccountsRequestT = Model::ListAutomatedDiscoveryAccountsRequest>
+        Model::ListAutomatedDiscoveryAccountsOutcomeCallable ListAutomatedDiscoveryAccountsCallable(const ListAutomatedDiscoveryAccountsRequestT& request = {}) const
+        {
+            return SubmitCallable(&Macie2Client::ListAutomatedDiscoveryAccounts, request);
+        }
+
+        /**
+         * An Async wrapper for ListAutomatedDiscoveryAccounts that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListAutomatedDiscoveryAccountsRequestT = Model::ListAutomatedDiscoveryAccountsRequest>
+        void ListAutomatedDiscoveryAccountsAsync(const ListAutomatedDiscoveryAccountsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAutomatedDiscoveryAccountsRequestT& request = {}) const
+        {
+            return SubmitAsync(&Macie2Client::ListAutomatedDiscoveryAccounts, request, handler, context);
         }
 
         /**
@@ -1330,13 +1395,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/ListClassificationJobs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListClassificationJobsOutcome ListClassificationJobs(const Model::ListClassificationJobsRequest& request) const;
+        virtual Model::ListClassificationJobsOutcome ListClassificationJobs(const Model::ListClassificationJobsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListClassificationJobs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListClassificationJobsRequestT = Model::ListClassificationJobsRequest>
-        Model::ListClassificationJobsOutcomeCallable ListClassificationJobsCallable(const ListClassificationJobsRequestT& request) const
+        Model::ListClassificationJobsOutcomeCallable ListClassificationJobsCallable(const ListClassificationJobsRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::ListClassificationJobs, request);
         }
@@ -1345,7 +1410,7 @@ namespace Macie2
          * An Async wrapper for ListClassificationJobs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListClassificationJobsRequestT = Model::ListClassificationJobsRequest>
-        void ListClassificationJobsAsync(const ListClassificationJobsRequestT& request, const ListClassificationJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListClassificationJobsAsync(const ListClassificationJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListClassificationJobsRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::ListClassificationJobs, request, handler, context);
         }
@@ -1356,13 +1421,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/ListClassificationScopes">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListClassificationScopesOutcome ListClassificationScopes(const Model::ListClassificationScopesRequest& request) const;
+        virtual Model::ListClassificationScopesOutcome ListClassificationScopes(const Model::ListClassificationScopesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListClassificationScopes that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListClassificationScopesRequestT = Model::ListClassificationScopesRequest>
-        Model::ListClassificationScopesOutcomeCallable ListClassificationScopesCallable(const ListClassificationScopesRequestT& request) const
+        Model::ListClassificationScopesOutcomeCallable ListClassificationScopesCallable(const ListClassificationScopesRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::ListClassificationScopes, request);
         }
@@ -1371,24 +1436,24 @@ namespace Macie2
          * An Async wrapper for ListClassificationScopes that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListClassificationScopesRequestT = Model::ListClassificationScopesRequest>
-        void ListClassificationScopesAsync(const ListClassificationScopesRequestT& request, const ListClassificationScopesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListClassificationScopesAsync(const ListClassificationScopesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListClassificationScopesRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::ListClassificationScopes, request, handler, context);
         }
 
         /**
-         * <p>Retrieves a subset of information about all the custom data identifiers for
-         * an account.</p><p><h3>See Also:</h3>   <a
+         * <p>Retrieves a subset of information about the custom data identifiers for an
+         * account.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/ListCustomDataIdentifiers">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListCustomDataIdentifiersOutcome ListCustomDataIdentifiers(const Model::ListCustomDataIdentifiersRequest& request) const;
+        virtual Model::ListCustomDataIdentifiersOutcome ListCustomDataIdentifiers(const Model::ListCustomDataIdentifiersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListCustomDataIdentifiers that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListCustomDataIdentifiersRequestT = Model::ListCustomDataIdentifiersRequest>
-        Model::ListCustomDataIdentifiersOutcomeCallable ListCustomDataIdentifiersCallable(const ListCustomDataIdentifiersRequestT& request) const
+        Model::ListCustomDataIdentifiersOutcomeCallable ListCustomDataIdentifiersCallable(const ListCustomDataIdentifiersRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::ListCustomDataIdentifiers, request);
         }
@@ -1397,7 +1462,7 @@ namespace Macie2
          * An Async wrapper for ListCustomDataIdentifiers that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListCustomDataIdentifiersRequestT = Model::ListCustomDataIdentifiersRequest>
-        void ListCustomDataIdentifiersAsync(const ListCustomDataIdentifiersRequestT& request, const ListCustomDataIdentifiersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListCustomDataIdentifiersAsync(const ListCustomDataIdentifiersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListCustomDataIdentifiersRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::ListCustomDataIdentifiers, request, handler, context);
         }
@@ -1408,13 +1473,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/ListFindings">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListFindingsOutcome ListFindings(const Model::ListFindingsRequest& request) const;
+        virtual Model::ListFindingsOutcome ListFindings(const Model::ListFindingsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListFindings that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListFindingsRequestT = Model::ListFindingsRequest>
-        Model::ListFindingsOutcomeCallable ListFindingsCallable(const ListFindingsRequestT& request) const
+        Model::ListFindingsOutcomeCallable ListFindingsCallable(const ListFindingsRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::ListFindings, request);
         }
@@ -1423,7 +1488,7 @@ namespace Macie2
          * An Async wrapper for ListFindings that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListFindingsRequestT = Model::ListFindingsRequest>
-        void ListFindingsAsync(const ListFindingsRequestT& request, const ListFindingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListFindingsAsync(const ListFindingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListFindingsRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::ListFindings, request, handler, context);
         }
@@ -1434,13 +1499,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/ListFindingsFilters">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListFindingsFiltersOutcome ListFindingsFilters(const Model::ListFindingsFiltersRequest& request) const;
+        virtual Model::ListFindingsFiltersOutcome ListFindingsFilters(const Model::ListFindingsFiltersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListFindingsFilters that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListFindingsFiltersRequestT = Model::ListFindingsFiltersRequest>
-        Model::ListFindingsFiltersOutcomeCallable ListFindingsFiltersCallable(const ListFindingsFiltersRequestT& request) const
+        Model::ListFindingsFiltersOutcomeCallable ListFindingsFiltersCallable(const ListFindingsFiltersRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::ListFindingsFilters, request);
         }
@@ -1449,24 +1514,24 @@ namespace Macie2
          * An Async wrapper for ListFindingsFilters that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListFindingsFiltersRequestT = Model::ListFindingsFiltersRequest>
-        void ListFindingsFiltersAsync(const ListFindingsFiltersRequestT& request, const ListFindingsFiltersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListFindingsFiltersAsync(const ListFindingsFiltersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListFindingsFiltersRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::ListFindingsFilters, request, handler, context);
         }
 
         /**
-         * <p>Retrieves information about the Amazon Macie membership invitations that were
+         * <p>Retrieves information about Amazon Macie membership invitations that were
          * received by an account.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/ListInvitations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListInvitationsOutcome ListInvitations(const Model::ListInvitationsRequest& request) const;
+        virtual Model::ListInvitationsOutcome ListInvitations(const Model::ListInvitationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListInvitations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListInvitationsRequestT = Model::ListInvitationsRequest>
-        Model::ListInvitationsOutcomeCallable ListInvitationsCallable(const ListInvitationsRequestT& request) const
+        Model::ListInvitationsOutcomeCallable ListInvitationsCallable(const ListInvitationsRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::ListInvitations, request);
         }
@@ -1475,7 +1540,7 @@ namespace Macie2
          * An Async wrapper for ListInvitations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListInvitationsRequestT = Model::ListInvitationsRequest>
-        void ListInvitationsAsync(const ListInvitationsRequestT& request, const ListInvitationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListInvitationsAsync(const ListInvitationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListInvitationsRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::ListInvitations, request, handler, context);
         }
@@ -1486,13 +1551,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/ListManagedDataIdentifiers">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListManagedDataIdentifiersOutcome ListManagedDataIdentifiers(const Model::ListManagedDataIdentifiersRequest& request) const;
+        virtual Model::ListManagedDataIdentifiersOutcome ListManagedDataIdentifiers(const Model::ListManagedDataIdentifiersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListManagedDataIdentifiers that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListManagedDataIdentifiersRequestT = Model::ListManagedDataIdentifiersRequest>
-        Model::ListManagedDataIdentifiersOutcomeCallable ListManagedDataIdentifiersCallable(const ListManagedDataIdentifiersRequestT& request) const
+        Model::ListManagedDataIdentifiersOutcomeCallable ListManagedDataIdentifiersCallable(const ListManagedDataIdentifiersRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::ListManagedDataIdentifiers, request);
         }
@@ -1501,7 +1566,7 @@ namespace Macie2
          * An Async wrapper for ListManagedDataIdentifiers that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListManagedDataIdentifiersRequestT = Model::ListManagedDataIdentifiersRequest>
-        void ListManagedDataIdentifiersAsync(const ListManagedDataIdentifiersRequestT& request, const ListManagedDataIdentifiersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListManagedDataIdentifiersAsync(const ListManagedDataIdentifiersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListManagedDataIdentifiersRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::ListManagedDataIdentifiers, request, handler, context);
         }
@@ -1512,13 +1577,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/ListMembers">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListMembersOutcome ListMembers(const Model::ListMembersRequest& request) const;
+        virtual Model::ListMembersOutcome ListMembers(const Model::ListMembersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListMembers that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListMembersRequestT = Model::ListMembersRequest>
-        Model::ListMembersOutcomeCallable ListMembersCallable(const ListMembersRequestT& request) const
+        Model::ListMembersOutcomeCallable ListMembersCallable(const ListMembersRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::ListMembers, request);
         }
@@ -1527,7 +1592,7 @@ namespace Macie2
          * An Async wrapper for ListMembers that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListMembersRequestT = Model::ListMembersRequest>
-        void ListMembersAsync(const ListMembersRequestT& request, const ListMembersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListMembersAsync(const ListMembersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListMembersRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::ListMembers, request, handler, context);
         }
@@ -1538,13 +1603,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/ListOrganizationAdminAccounts">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListOrganizationAdminAccountsOutcome ListOrganizationAdminAccounts(const Model::ListOrganizationAdminAccountsRequest& request) const;
+        virtual Model::ListOrganizationAdminAccountsOutcome ListOrganizationAdminAccounts(const Model::ListOrganizationAdminAccountsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListOrganizationAdminAccounts that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListOrganizationAdminAccountsRequestT = Model::ListOrganizationAdminAccountsRequest>
-        Model::ListOrganizationAdminAccountsOutcomeCallable ListOrganizationAdminAccountsCallable(const ListOrganizationAdminAccountsRequestT& request) const
+        Model::ListOrganizationAdminAccountsOutcomeCallable ListOrganizationAdminAccountsCallable(const ListOrganizationAdminAccountsRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::ListOrganizationAdminAccounts, request);
         }
@@ -1553,14 +1618,14 @@ namespace Macie2
          * An Async wrapper for ListOrganizationAdminAccounts that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListOrganizationAdminAccountsRequestT = Model::ListOrganizationAdminAccountsRequest>
-        void ListOrganizationAdminAccountsAsync(const ListOrganizationAdminAccountsRequestT& request, const ListOrganizationAdminAccountsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListOrganizationAdminAccountsAsync(const ListOrganizationAdminAccountsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListOrganizationAdminAccountsRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::ListOrganizationAdminAccounts, request, handler, context);
         }
 
         /**
-         * <p>Retrieves information about objects that were selected from an S3 bucket for
-         * automated sensitive data discovery.</p><p><h3>See Also:</h3>   <a
+         * <p>Retrieves information about objects that Amazon Macie selected from an S3
+         * bucket for automated sensitive data discovery.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/ListResourceProfileArtifacts">AWS
          * API Reference</a></p>
          */
@@ -1616,13 +1681,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/ListSensitivityInspectionTemplates">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListSensitivityInspectionTemplatesOutcome ListSensitivityInspectionTemplates(const Model::ListSensitivityInspectionTemplatesRequest& request) const;
+        virtual Model::ListSensitivityInspectionTemplatesOutcome ListSensitivityInspectionTemplates(const Model::ListSensitivityInspectionTemplatesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListSensitivityInspectionTemplates that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListSensitivityInspectionTemplatesRequestT = Model::ListSensitivityInspectionTemplatesRequest>
-        Model::ListSensitivityInspectionTemplatesOutcomeCallable ListSensitivityInspectionTemplatesCallable(const ListSensitivityInspectionTemplatesRequestT& request) const
+        Model::ListSensitivityInspectionTemplatesOutcomeCallable ListSensitivityInspectionTemplatesCallable(const ListSensitivityInspectionTemplatesRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::ListSensitivityInspectionTemplates, request);
         }
@@ -1631,7 +1696,7 @@ namespace Macie2
          * An Async wrapper for ListSensitivityInspectionTemplates that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListSensitivityInspectionTemplatesRequestT = Model::ListSensitivityInspectionTemplatesRequest>
-        void ListSensitivityInspectionTemplatesAsync(const ListSensitivityInspectionTemplatesRequestT& request, const ListSensitivityInspectionTemplatesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListSensitivityInspectionTemplatesAsync(const ListSensitivityInspectionTemplatesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListSensitivityInspectionTemplatesRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::ListSensitivityInspectionTemplates, request, handler, context);
         }
@@ -1663,7 +1728,7 @@ namespace Macie2
         }
 
         /**
-         * <p>Creates or updates the configuration settings for storing data classification
+         * <p>Adds or updates the configuration settings for storing data classification
          * results.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/PutClassificationExportConfiguration">AWS
          * API Reference</a></p>
@@ -1694,13 +1759,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/PutFindingsPublicationConfiguration">AWS
          * API Reference</a></p>
          */
-        virtual Model::PutFindingsPublicationConfigurationOutcome PutFindingsPublicationConfiguration(const Model::PutFindingsPublicationConfigurationRequest& request) const;
+        virtual Model::PutFindingsPublicationConfigurationOutcome PutFindingsPublicationConfiguration(const Model::PutFindingsPublicationConfigurationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for PutFindingsPublicationConfiguration that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename PutFindingsPublicationConfigurationRequestT = Model::PutFindingsPublicationConfigurationRequest>
-        Model::PutFindingsPublicationConfigurationOutcomeCallable PutFindingsPublicationConfigurationCallable(const PutFindingsPublicationConfigurationRequestT& request) const
+        Model::PutFindingsPublicationConfigurationOutcomeCallable PutFindingsPublicationConfigurationCallable(const PutFindingsPublicationConfigurationRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::PutFindingsPublicationConfiguration, request);
         }
@@ -1709,25 +1774,25 @@ namespace Macie2
          * An Async wrapper for PutFindingsPublicationConfiguration that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename PutFindingsPublicationConfigurationRequestT = Model::PutFindingsPublicationConfigurationRequest>
-        void PutFindingsPublicationConfigurationAsync(const PutFindingsPublicationConfigurationRequestT& request, const PutFindingsPublicationConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void PutFindingsPublicationConfigurationAsync(const PutFindingsPublicationConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const PutFindingsPublicationConfigurationRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::PutFindingsPublicationConfiguration, request, handler, context);
         }
 
         /**
          * <p>Retrieves (queries) statistical data and other information about Amazon Web
-         * Services resources that Amazon Macie monitors and analyzes.</p><p><h3>See
-         * Also:</h3>   <a
+         * Services resources that Amazon Macie monitors and analyzes for an
+         * account.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/SearchResources">AWS
          * API Reference</a></p>
          */
-        virtual Model::SearchResourcesOutcome SearchResources(const Model::SearchResourcesRequest& request) const;
+        virtual Model::SearchResourcesOutcome SearchResources(const Model::SearchResourcesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for SearchResources that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename SearchResourcesRequestT = Model::SearchResourcesRequest>
-        Model::SearchResourcesOutcomeCallable SearchResourcesCallable(const SearchResourcesRequestT& request) const
+        Model::SearchResourcesOutcomeCallable SearchResourcesCallable(const SearchResourcesRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::SearchResources, request);
         }
@@ -1736,7 +1801,7 @@ namespace Macie2
          * An Async wrapper for SearchResources that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename SearchResourcesRequestT = Model::SearchResourcesRequest>
-        void SearchResourcesAsync(const SearchResourcesRequestT& request, const SearchResourcesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void SearchResourcesAsync(const SearchResourcesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const SearchResourcesRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::SearchResources, request, handler, context);
         }
@@ -1768,7 +1833,7 @@ namespace Macie2
         }
 
         /**
-         * <p>Tests a custom data identifier.</p><p><h3>See Also:</h3>   <a
+         * <p>Tests criteria for a custom data identifier.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/TestCustomDataIdentifier">AWS
          * API Reference</a></p>
          */
@@ -1844,8 +1909,9 @@ namespace Macie2
         }
 
         /**
-         * <p>Enables or disables automated sensitive data discovery for an
-         * account.</p><p><h3>See Also:</h3>   <a
+         * <p>Changes the configuration settings and status of automated sensitive data
+         * discovery for an organization or standalone account.</p><p><h3>See Also:</h3>  
+         * <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/UpdateAutomatedDiscoveryConfiguration">AWS
          * API Reference</a></p>
          */
@@ -1952,13 +2018,13 @@ namespace Macie2
          * href="http://docs.aws.amazon.com/goto/WebAPI/macie2-2020-01-01/UpdateMacieSession">AWS
          * API Reference</a></p>
          */
-        virtual Model::UpdateMacieSessionOutcome UpdateMacieSession(const Model::UpdateMacieSessionRequest& request) const;
+        virtual Model::UpdateMacieSessionOutcome UpdateMacieSession(const Model::UpdateMacieSessionRequest& request = {}) const;
 
         /**
          * A Callable wrapper for UpdateMacieSession that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename UpdateMacieSessionRequestT = Model::UpdateMacieSessionRequest>
-        Model::UpdateMacieSessionOutcomeCallable UpdateMacieSessionCallable(const UpdateMacieSessionRequestT& request) const
+        Model::UpdateMacieSessionOutcomeCallable UpdateMacieSessionCallable(const UpdateMacieSessionRequestT& request = {}) const
         {
             return SubmitCallable(&Macie2Client::UpdateMacieSession, request);
         }
@@ -1967,7 +2033,7 @@ namespace Macie2
          * An Async wrapper for UpdateMacieSession that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename UpdateMacieSessionRequestT = Model::UpdateMacieSessionRequest>
-        void UpdateMacieSessionAsync(const UpdateMacieSessionRequestT& request, const UpdateMacieSessionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void UpdateMacieSessionAsync(const UpdateMacieSessionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const UpdateMacieSessionRequestT& request = {}) const
         {
             return SubmitAsync(&Macie2Client::UpdateMacieSession, request, handler, context);
         }
@@ -2132,11 +2198,7 @@ namespace Macie2
       std::shared_ptr<Macie2EndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<Macie2Client>;
-      void init(const Macie2ClientConfiguration& clientConfiguration);
 
-      Macie2ClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<Macie2EndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Macie2

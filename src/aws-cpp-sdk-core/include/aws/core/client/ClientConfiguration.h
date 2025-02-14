@@ -14,7 +14,6 @@
 #include <aws/core/utils/Array.h>
 #include <aws/crt/Optional.h>
 #include <smithy/tracing/TelemetryProvider.h>
-#include <smithy/tracing/NoopTelemetryProvider.h>
 #include <memory>
 
 namespace Aws
@@ -57,6 +56,26 @@ namespace Aws
           ENABLE,
         };
 
+        /**
+         * Setting on whether to calculate a checksum for a payload only when it is required.
+         * i.e. when setting WHEN_REQUIRED the SDK will NOT calculate a checksum for an endpoint
+         * where it is supported but is NOT required.
+         */
+        enum class RequestChecksumCalculation {
+          WHEN_SUPPORTED,
+          WHEN_REQUIRED,
+        };
+
+        /**
+         * Setting on whether to client side response validate a content body that had a checksum
+         * associated with it. Response validation right now cannot be modeled as required but rely
+         * on an associated model configuration.
+         */
+        enum class ResponseChecksumValidation {
+          WHEN_SUPPORTED,
+          WHEN_REQUIRED,
+        };
+
         struct RequestCompressionConfig {
           UseRequestCompression useRequestCompression=UseRequestCompression::ENABLE;
           size_t requestMinCompressionSizeBytes = 10240;
@@ -75,6 +94,34 @@ namespace Aws
          */
         struct AWS_CORE_API ClientConfiguration
         {
+            struct ProviderFactories
+            {
+                /**
+                 * Retry Strategy factory method. Default is DefaultRetryStrategy (i.e. exponential backoff).
+                 */
+                std::function<std::shared_ptr<RetryStrategy>()> retryStrategyCreateFn;
+                /**
+                 * Threading Executor factory method. Default creates a factory that creates DefaultExecutor
+                 *  (i.e. spawn a separate thread for each task) for backward compatibility reasons.
+                 *  Please switch to a better executor such as PooledThreadExecutor.
+                 */
+                std::function<std::shared_ptr<Utils::Threading::Executor>()> executorCreateFn;
+                /**
+                 * Rate Limiter factory for outgoing bandwidth. Default is wide-open.
+                 */
+                std::function<std::shared_ptr<Utils::RateLimits::RateLimiterInterface>()> writeRateLimiterCreateFn;
+                /**
+                 * Rate Limiter factory for incoming bandwidth. Default is wide-open.
+                 */
+                std::function<std::shared_ptr<Utils::RateLimits::RateLimiterInterface>()> readRateLimiterCreateFn;
+                /**
+                 * TelemetryProvider factory. Defaults to Noop provider.
+                 */
+                std::function<std::shared_ptr<smithy::components::tracing::TelemetryProvider>()> telemetryProviderCreateFn;
+
+                static ProviderFactories defaultFactories;
+            };
+
             ClientConfiguration();
 
             /**
@@ -103,6 +150,11 @@ namespace Aws
              * Add virtual method to allow use of dynamic_cast under inheritance.
              */
             virtual ~ClientConfiguration() = default;
+
+            /**
+             * Client configuration factory methods to init client utility classes such as Executor, Retry Strategy
+             */
+            ProviderFactories configFactories = ProviderFactories::defaultFactories;
 
             /**
              * User Agent string user for http calls. This is filled in for you in the constructor. Don't override this unless you have a really good reason.
@@ -165,9 +217,10 @@ namespace Aws
              */
             unsigned long lowSpeedLimit = 1;
             /**
-             * Strategy to use in case of failed requests. Default is DefaultRetryStrategy (i.e. exponential backoff)
+             * Strategy to use in case of failed requests. Default is DefaultRetryStrategy (i.e. exponential backoff).
+             * Provide retry strategy here or via a factory method.
              */
-            std::shared_ptr<RetryStrategy> retryStrategy;
+            std::shared_ptr<RetryStrategy> retryStrategy = nullptr;
             /**
              * Override the http endpoint used to talk to a service.
              */
@@ -227,9 +280,10 @@ namespace Aws
             */
             Aws::Utils::Array<Aws::String> nonProxyHosts;
             /**
-            * Threading Executor implementation. Default uses std::thread::detach()
-            */
-            std::shared_ptr<Aws::Utils::Threading::Executor> executor;
+             * Threading Executor implementation. Default uses std::thread::detach()
+             * Provide executor here or via a factory method.
+             */
+            std::shared_ptr<Aws::Utils::Threading::Executor> executor = nullptr;
             /**
              * If you need to test and want to get around TLS validation errors, do that here.
              * You probably shouldn't use this flag in a production scenario.
@@ -263,16 +317,23 @@ namespace Aws
             Aws::String proxyCaFile;
             /**
              * Rate Limiter implementation for outgoing bandwidth. Default is wide-open.
+             * Provide limiter here or via a factory method.
              */
-            std::shared_ptr<Aws::Utils::RateLimits::RateLimiterInterface> writeRateLimiter;
+            std::shared_ptr<Aws::Utils::RateLimits::RateLimiterInterface> writeRateLimiter = nullptr;
             /**
             * Rate Limiter implementation for incoming bandwidth. Default is wide-open.
+            * Provide limiter here or via a factory method.
             */
-            std::shared_ptr<Aws::Utils::RateLimits::RateLimiterInterface> readRateLimiter;
+            std::shared_ptr<Aws::Utils::RateLimits::RateLimiterInterface> readRateLimiter = nullptr;
             /**
              * Override the http implementation the default factory returns.
              */
             Aws::Http::TransferLibType httpLibOverride;
+            /**
+             * Configure low latency or low cpu consumption http client operation mode.
+             * Currently applies only to streaming APIs and libCurl. Defaults to LOW_LATENCY
+             */
+            Aws::Http::TransferLibPerformanceMode httpLibPerfMode = Http::TransferLibPerformanceMode::LOW_LATENCY;
             /**
              * Sets the behavior how http stack handles 30x redirect codes.
              */
@@ -364,20 +425,34 @@ namespace Aws
              */
             Aws::String appId;
 
+            struct {
+              /**
+               * Setting on whether to calculate a checksum for a payload only when it is required.
+               * i.e. when setting WHEN_REQUIRED the SDK will NOT calculate a checksum for an endpoint
+               * where it is supported but is NOT required.
+               */
+              RequestChecksumCalculation requestChecksumCalculation = RequestChecksumCalculation::WHEN_SUPPORTED;
+
+              /**
+               * Setting on whether to client side response validate a content body that had a checksum
+               * associated with it. Response validation right now cannot be modeled as required but rely
+               * on an associated model configuration.
+               */
+              ResponseChecksumValidation responseChecksumValidation = ResponseChecksumValidation::WHEN_SUPPORTED;
+            } checksumConfig;
+
             /**
              * A helper function to read config value from env variable or aws profile config
              */
-            static Aws::String LoadConfigFromEnvOrProfile(const Aws::String& envKey,
-                                                          const Aws::String& profile,
-                                                          const Aws::String& profileProperty,
-                                                          const Aws::Vector<Aws::String>& allowedValues,
+            static Aws::String LoadConfigFromEnvOrProfile(const Aws::String& envKey, const Aws::String& profile,
+                                                          const Aws::String& profileProperty, const Aws::Vector<Aws::String>& allowedValues,
                                                           const Aws::String& defaultValue);
 
             /**
-             * A wrapper for interfacing with telemetry functionality.
+             * A wrapper for interfacing with telemetry functionality. Defaults to Noop provider.
+             * Provide TelemetryProvider here or via a factory method.
              */
-            std::shared_ptr<smithy::components::tracing::TelemetryProvider> telemetryProvider =
-                smithy::components::tracing::NoopTelemetryProvider::CreateProvider();
+            std::shared_ptr<smithy::components::tracing::TelemetryProvider> telemetryProvider;
         };
 
         /**

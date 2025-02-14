@@ -8,6 +8,7 @@
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/dynamodb/model/ProvisionedThroughputOverride.h>
 #include <aws/dynamodb/model/OnDemandThroughputOverride.h>
+#include <aws/dynamodb/model/GlobalSecondaryIndexWarmThroughputDescription.h>
 #include <utility>
 
 namespace Aws
@@ -40,114 +41,57 @@ namespace Model
     AWS_DYNAMODB_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The name of the global secondary index.</p>
      */
     inline const Aws::String& GetIndexName() const{ return m_indexName; }
-
-    /**
-     * <p>The name of the global secondary index.</p>
-     */
     inline bool IndexNameHasBeenSet() const { return m_indexNameHasBeenSet; }
-
-    /**
-     * <p>The name of the global secondary index.</p>
-     */
     inline void SetIndexName(const Aws::String& value) { m_indexNameHasBeenSet = true; m_indexName = value; }
-
-    /**
-     * <p>The name of the global secondary index.</p>
-     */
     inline void SetIndexName(Aws::String&& value) { m_indexNameHasBeenSet = true; m_indexName = std::move(value); }
-
-    /**
-     * <p>The name of the global secondary index.</p>
-     */
     inline void SetIndexName(const char* value) { m_indexNameHasBeenSet = true; m_indexName.assign(value); }
-
-    /**
-     * <p>The name of the global secondary index.</p>
-     */
     inline ReplicaGlobalSecondaryIndexDescription& WithIndexName(const Aws::String& value) { SetIndexName(value); return *this;}
-
-    /**
-     * <p>The name of the global secondary index.</p>
-     */
     inline ReplicaGlobalSecondaryIndexDescription& WithIndexName(Aws::String&& value) { SetIndexName(std::move(value)); return *this;}
-
-    /**
-     * <p>The name of the global secondary index.</p>
-     */
     inline ReplicaGlobalSecondaryIndexDescription& WithIndexName(const char* value) { SetIndexName(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>If not described, uses the source table GSI's read capacity settings.</p>
      */
     inline const ProvisionedThroughputOverride& GetProvisionedThroughputOverride() const{ return m_provisionedThroughputOverride; }
-
-    /**
-     * <p>If not described, uses the source table GSI's read capacity settings.</p>
-     */
     inline bool ProvisionedThroughputOverrideHasBeenSet() const { return m_provisionedThroughputOverrideHasBeenSet; }
-
-    /**
-     * <p>If not described, uses the source table GSI's read capacity settings.</p>
-     */
     inline void SetProvisionedThroughputOverride(const ProvisionedThroughputOverride& value) { m_provisionedThroughputOverrideHasBeenSet = true; m_provisionedThroughputOverride = value; }
-
-    /**
-     * <p>If not described, uses the source table GSI's read capacity settings.</p>
-     */
     inline void SetProvisionedThroughputOverride(ProvisionedThroughputOverride&& value) { m_provisionedThroughputOverrideHasBeenSet = true; m_provisionedThroughputOverride = std::move(value); }
-
-    /**
-     * <p>If not described, uses the source table GSI's read capacity settings.</p>
-     */
     inline ReplicaGlobalSecondaryIndexDescription& WithProvisionedThroughputOverride(const ProvisionedThroughputOverride& value) { SetProvisionedThroughputOverride(value); return *this;}
-
-    /**
-     * <p>If not described, uses the source table GSI's read capacity settings.</p>
-     */
     inline ReplicaGlobalSecondaryIndexDescription& WithProvisionedThroughputOverride(ProvisionedThroughputOverride&& value) { SetProvisionedThroughputOverride(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Overrides the maximum on-demand throughput for the specified global secondary
      * index in the specified replica table.</p>
      */
     inline const OnDemandThroughputOverride& GetOnDemandThroughputOverride() const{ return m_onDemandThroughputOverride; }
-
-    /**
-     * <p>Overrides the maximum on-demand throughput for the specified global secondary
-     * index in the specified replica table.</p>
-     */
     inline bool OnDemandThroughputOverrideHasBeenSet() const { return m_onDemandThroughputOverrideHasBeenSet; }
-
-    /**
-     * <p>Overrides the maximum on-demand throughput for the specified global secondary
-     * index in the specified replica table.</p>
-     */
     inline void SetOnDemandThroughputOverride(const OnDemandThroughputOverride& value) { m_onDemandThroughputOverrideHasBeenSet = true; m_onDemandThroughputOverride = value; }
-
-    /**
-     * <p>Overrides the maximum on-demand throughput for the specified global secondary
-     * index in the specified replica table.</p>
-     */
     inline void SetOnDemandThroughputOverride(OnDemandThroughputOverride&& value) { m_onDemandThroughputOverrideHasBeenSet = true; m_onDemandThroughputOverride = std::move(value); }
-
-    /**
-     * <p>Overrides the maximum on-demand throughput for the specified global secondary
-     * index in the specified replica table.</p>
-     */
     inline ReplicaGlobalSecondaryIndexDescription& WithOnDemandThroughputOverride(const OnDemandThroughputOverride& value) { SetOnDemandThroughputOverride(value); return *this;}
-
-    /**
-     * <p>Overrides the maximum on-demand throughput for the specified global secondary
-     * index in the specified replica table.</p>
-     */
     inline ReplicaGlobalSecondaryIndexDescription& WithOnDemandThroughputOverride(OnDemandThroughputOverride&& value) { SetOnDemandThroughputOverride(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>Represents the warm throughput of the global secondary index for this
+     * replica.</p>
+     */
+    inline const GlobalSecondaryIndexWarmThroughputDescription& GetWarmThroughput() const{ return m_warmThroughput; }
+    inline bool WarmThroughputHasBeenSet() const { return m_warmThroughputHasBeenSet; }
+    inline void SetWarmThroughput(const GlobalSecondaryIndexWarmThroughputDescription& value) { m_warmThroughputHasBeenSet = true; m_warmThroughput = value; }
+    inline void SetWarmThroughput(GlobalSecondaryIndexWarmThroughputDescription&& value) { m_warmThroughputHasBeenSet = true; m_warmThroughput = std::move(value); }
+    inline ReplicaGlobalSecondaryIndexDescription& WithWarmThroughput(const GlobalSecondaryIndexWarmThroughputDescription& value) { SetWarmThroughput(value); return *this;}
+    inline ReplicaGlobalSecondaryIndexDescription& WithWarmThroughput(GlobalSecondaryIndexWarmThroughputDescription&& value) { SetWarmThroughput(std::move(value)); return *this;}
+    ///@}
   private:
 
     Aws::String m_indexName;
@@ -158,6 +102,9 @@ namespace Model
 
     OnDemandThroughputOverride m_onDemandThroughputOverride;
     bool m_onDemandThroughputOverrideHasBeenSet = false;
+
+    GlobalSecondaryIndexWarmThroughputDescription m_warmThroughput;
+    bool m_warmThroughputHasBeenSet = false;
   };
 
 } // namespace Model

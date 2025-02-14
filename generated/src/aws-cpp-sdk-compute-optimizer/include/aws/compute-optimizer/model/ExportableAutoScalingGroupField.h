@@ -39,6 +39,9 @@ namespace Model
     CurrentConfigurationDesiredCapacity,
     CurrentConfigurationMinSize,
     CurrentConfigurationMaxSize,
+    CurrentConfigurationAllocationStrategy,
+    CurrentConfigurationMixedInstanceTypes,
+    CurrentConfigurationType,
     CurrentOnDemandPrice,
     CurrentStandardOneYearNoUpfrontReservedPrice,
     CurrentStandardThreeYearNoUpfrontReservedPrice,
@@ -50,6 +53,10 @@ namespace Model
     RecommendationOptionsConfigurationDesiredCapacity,
     RecommendationOptionsConfigurationMinSize,
     RecommendationOptionsConfigurationMaxSize,
+    RecommendationOptionsConfigurationEstimatedInstanceHourReductionPercentage,
+    RecommendationOptionsConfigurationAllocationStrategy,
+    RecommendationOptionsConfigurationMixedInstanceTypes,
+    RecommendationOptionsConfigurationType,
     RecommendationOptionsProjectedUtilizationMetricsCpuMaximum,
     RecommendationOptionsProjectedUtilizationMetricsMemoryMaximum,
     RecommendationOptionsPerformanceRisk,
@@ -68,6 +75,8 @@ namespace Model
     EffectiveRecommendationPreferencesCpuVendorArchitectures,
     EffectiveRecommendationPreferencesEnhancedInfrastructureMetrics,
     EffectiveRecommendationPreferencesInferredWorkloadTypes,
+    EffectiveRecommendationPreferencesPreferredResources,
+    EffectiveRecommendationPreferencesLookBackPeriod,
     InferredWorkloadTypes,
     RecommendationOptionsMigrationEffort,
     CurrentInstanceGpuInfo,
@@ -79,9 +88,7 @@ namespace Model
     EffectiveRecommendationPreferencesSavingsEstimationMode,
     RecommendationOptionsSavingsOpportunityAfterDiscountsPercentage,
     RecommendationOptionsEstimatedMonthlySavingsCurrencyAfterDiscounts,
-    RecommendationOptionsEstimatedMonthlySavingsValueAfterDiscounts,
-    EffectiveRecommendationPreferencesPreferredResources,
-    EffectiveRecommendationPreferencesLookBackPeriod
+    RecommendationOptionsEstimatedMonthlySavingsValueAfterDiscounts
   };
 
 namespace ExportableAutoScalingGroupFieldMapper

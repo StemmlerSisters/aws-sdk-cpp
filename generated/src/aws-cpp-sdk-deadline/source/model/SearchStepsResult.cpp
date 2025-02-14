@@ -23,9 +23,8 @@ SearchStepsResult::SearchStepsResult() :
 {
 }
 
-SearchStepsResult::SearchStepsResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_nextItemOffset(0),
-    m_totalResults(0)
+SearchStepsResult::SearchStepsResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : SearchStepsResult()
 {
   *this = result;
 }
@@ -33,12 +32,6 @@ SearchStepsResult::SearchStepsResult(const Aws::AmazonWebServiceResult<JsonValue
 SearchStepsResult& SearchStepsResult::operator =(const Aws::AmazonWebServiceResult<JsonValue>& result)
 {
   JsonView jsonValue = result.GetPayload().View();
-  if(jsonValue.ValueExists("nextItemOffset"))
-  {
-    m_nextItemOffset = jsonValue.GetInteger("nextItemOffset");
-
-  }
-
   if(jsonValue.ValueExists("steps"))
   {
     Aws::Utils::Array<JsonView> stepsJsonList = jsonValue.GetArray("steps");
@@ -46,6 +39,12 @@ SearchStepsResult& SearchStepsResult::operator =(const Aws::AmazonWebServiceResu
     {
       m_steps.push_back(stepsJsonList[stepsIndex].AsObject());
     }
+  }
+
+  if(jsonValue.ValueExists("nextItemOffset"))
+  {
+    m_nextItemOffset = jsonValue.GetInteger("nextItemOffset");
+
   }
 
   if(jsonValue.ValueExists("totalResults"))

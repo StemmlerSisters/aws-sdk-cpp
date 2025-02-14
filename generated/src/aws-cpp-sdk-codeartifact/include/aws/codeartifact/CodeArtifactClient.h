@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/codeartifact/CodeArtifact_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/codeartifact/CodeArtifactServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/codeartifact/CodeArtifactErrorMarshaller.h>
 
 namespace Aws
 {
 namespace CodeArtifact
 {
+  AWS_CODEARTIFACT_API extern const char SERVICE_NAME[];
   /**
    * <p> CodeArtifact is a fully managed artifact repository compatible with
    * language-native package managers and build tools such as npm, Apache Maven, pip,
@@ -47,7 +51,7 @@ namespace CodeArtifact
    * published artifacts so that teams can find and share packages across their
    * organization.</p> </li> <li> <p> <b>Package</b>: A <i>package</i> is a bundle of
    * software and the metadata required to resolve dependencies and install the
-   * software. CodeArtifact supports npm, PyPI, Maven, NuGet, Swift, Ruby, and
+   * software. CodeArtifact supports npm, PyPI, Maven, NuGet, Swift, Ruby, Cargo, and
    * generic package formats. For more information about the supported package
    * formats and how to use CodeArtifact with them, see the <a
    * href="https://docs.aws.amazon.com/codeartifact/latest/ug/welcome.html">CodeArtifact
@@ -129,12 +133,13 @@ namespace CodeArtifact
    * Gets the readme file or descriptive text for a package version.</p> </li> <li>
    * <p> <code>GetRepositoryEndpoint</code>: Returns the endpoint of a repository for
    * a specific package format. A repository has one endpoint for each package
-   * format: </p> <ul> <li> <p> <code>generic</code> </p> </li> <li> <p>
-   * <code>maven</code> </p> </li> <li> <p> <code>npm</code> </p> </li> <li> <p>
-   * <code>nuget</code> </p> </li> <li> <p> <code>pypi</code> </p> </li> <li> <p>
-   * <code>ruby</code> </p> </li> <li> <p> <code>swift</code> </p> </li> </ul> </li>
-   * <li> <p> <code>GetRepositoryPermissionsPolicy</code>: Returns the resource
-   * policy that is set on a repository. </p> </li> <li> <p>
+   * format: </p> <ul> <li> <p> <code>cargo</code> </p> </li> <li> <p>
+   * <code>generic</code> </p> </li> <li> <p> <code>maven</code> </p> </li> <li> <p>
+   * <code>npm</code> </p> </li> <li> <p> <code>nuget</code> </p> </li> <li> <p>
+   * <code>pypi</code> </p> </li> <li> <p> <code>ruby</code> </p> </li> <li> <p>
+   * <code>swift</code> </p> </li> </ul> </li> <li> <p>
+   * <code>GetRepositoryPermissionsPolicy</code>: Returns the resource policy that is
+   * set on a repository. </p> </li> <li> <p>
    * <code>ListAllowedRepositoriesForGroup</code>: Lists the allowed repositories for
    * a package group that has origin configuration set to
    * <code>ALLOW_SPECIFIC_REPOSITORIES</code>.</p> </li> <li> <p>
@@ -171,12 +176,20 @@ namespace CodeArtifact
    * versions of a package.</p> </li> <li> <p> <code>UpdateRepository</code>: Updates
    * the properties of a repository.</p> </li> </ul>
    */
-  class AWS_CODEARTIFACT_API CodeArtifactClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<CodeArtifactClient>
+  class AWS_CODEARTIFACT_API CodeArtifactClient : smithy::client::AwsSmithyClientT<Aws::CodeArtifact::SERVICE_NAME,
+      Aws::CodeArtifact::CodeArtifactClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      CodeArtifactEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::CodeArtifactErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<CodeArtifactClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "codeartifact"; }
 
       typedef CodeArtifactClientConfiguration ClientConfigurationType;
       typedef CodeArtifactEndpointProvider EndpointProviderType;
@@ -937,10 +950,11 @@ namespace CodeArtifact
         /**
          * <p> Returns the endpoint of a repository for a specific package format. A
          * repository has one endpoint for each package format: </p> <ul> <li> <p>
-         * <code>generic</code> </p> </li> <li> <p> <code>maven</code> </p> </li> <li> <p>
-         * <code>npm</code> </p> </li> <li> <p> <code>nuget</code> </p> </li> <li> <p>
-         * <code>pypi</code> </p> </li> <li> <p> <code>ruby</code> </p> </li> <li> <p>
-         * <code>swift</code> </p> </li> </ul><p><h3>See Also:</h3>   <a
+         * <code>cargo</code> </p> </li> <li> <p> <code>generic</code> </p> </li> <li> <p>
+         * <code>maven</code> </p> </li> <li> <p> <code>npm</code> </p> </li> <li> <p>
+         * <code>nuget</code> </p> </li> <li> <p> <code>pypi</code> </p> </li> <li> <p>
+         * <code>ruby</code> </p> </li> <li> <p> <code>swift</code> </p> </li>
+         * </ul><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/codeartifact-2018-09-22/GetRepositoryEndpoint">AWS
          * API Reference</a></p>
          */
@@ -1058,13 +1072,13 @@ namespace CodeArtifact
          * href="http://docs.aws.amazon.com/goto/WebAPI/codeartifact-2018-09-22/ListDomains">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDomainsOutcome ListDomains(const Model::ListDomainsRequest& request) const;
+        virtual Model::ListDomainsOutcome ListDomains(const Model::ListDomainsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDomains that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDomainsRequestT = Model::ListDomainsRequest>
-        Model::ListDomainsOutcomeCallable ListDomainsCallable(const ListDomainsRequestT& request) const
+        Model::ListDomainsOutcomeCallable ListDomainsCallable(const ListDomainsRequestT& request = {}) const
         {
             return SubmitCallable(&CodeArtifactClient::ListDomains, request);
         }
@@ -1073,7 +1087,7 @@ namespace CodeArtifact
          * An Async wrapper for ListDomains that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDomainsRequestT = Model::ListDomainsRequest>
-        void ListDomainsAsync(const ListDomainsRequestT& request, const ListDomainsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDomainsAsync(const ListDomainsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDomainsRequestT& request = {}) const
         {
             return SubmitAsync(&CodeArtifactClient::ListDomains, request, handler, context);
         }
@@ -1230,13 +1244,13 @@ namespace CodeArtifact
          * href="http://docs.aws.amazon.com/goto/WebAPI/codeartifact-2018-09-22/ListRepositories">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListRepositoriesOutcome ListRepositories(const Model::ListRepositoriesRequest& request) const;
+        virtual Model::ListRepositoriesOutcome ListRepositories(const Model::ListRepositoriesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListRepositories that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListRepositoriesRequestT = Model::ListRepositoriesRequest>
-        Model::ListRepositoriesOutcomeCallable ListRepositoriesCallable(const ListRepositoriesRequestT& request) const
+        Model::ListRepositoriesOutcomeCallable ListRepositoriesCallable(const ListRepositoriesRequestT& request = {}) const
         {
             return SubmitCallable(&CodeArtifactClient::ListRepositories, request);
         }
@@ -1245,7 +1259,7 @@ namespace CodeArtifact
          * An Async wrapper for ListRepositories that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListRepositoriesRequestT = Model::ListRepositoriesRequest>
-        void ListRepositoriesAsync(const ListRepositoriesRequestT& request, const ListRepositoriesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListRepositoriesAsync(const ListRepositoriesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListRepositoriesRequestT& request = {}) const
         {
             return SubmitAsync(&CodeArtifactClient::ListRepositories, request, handler, context);
         }
@@ -1647,11 +1661,7 @@ namespace CodeArtifact
       std::shared_ptr<CodeArtifactEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<CodeArtifactClient>;
-      void init(const CodeArtifactClientConfiguration& clientConfiguration);
 
-      CodeArtifactClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<CodeArtifactEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace CodeArtifact

@@ -27,6 +27,9 @@
 #include <aws/trustedadvisor/model/ListOrganizationRecommendationsResult.h>
 #include <aws/trustedadvisor/model/ListRecommendationResourcesResult.h>
 #include <aws/trustedadvisor/model/ListRecommendationsResult.h>
+#include <aws/trustedadvisor/model/ListRecommendationsRequest.h>
+#include <aws/trustedadvisor/model/ListOrganizationRecommendationsRequest.h>
+#include <aws/trustedadvisor/model/ListChecksRequest.h>
 #include <aws/core/NoResult.h>
 /* End of service model headers required in TrustedAdvisorClient header */
 
@@ -61,7 +64,7 @@ namespace Aws
 
   namespace TrustedAdvisor
   {
-    using TrustedAdvisorClientConfiguration = Aws::Client::GenericClientConfiguration<false>;
+    using TrustedAdvisorClientConfiguration = Aws::Client::GenericClientConfiguration;
     using TrustedAdvisorEndpointProviderBase = Aws::TrustedAdvisor::Endpoint::TrustedAdvisorEndpointProviderBase;
     using TrustedAdvisorEndpointProvider = Aws::TrustedAdvisor::Endpoint::TrustedAdvisorEndpointProvider;
 

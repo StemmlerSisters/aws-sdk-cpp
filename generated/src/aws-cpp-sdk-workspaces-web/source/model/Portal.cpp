@@ -27,6 +27,7 @@ Portal::Portal() :
     m_browserTypeHasBeenSet(false),
     m_creationDateHasBeenSet(false),
     m_customerManagedKeyHasBeenSet(false),
+    m_dataProtectionSettingsArnHasBeenSet(false),
     m_displayNameHasBeenSet(false),
     m_instanceType(InstanceType::NOT_SET),
     m_instanceTypeHasBeenSet(false),
@@ -47,32 +48,8 @@ Portal::Portal() :
 {
 }
 
-Portal::Portal(JsonView jsonValue) : 
-    m_additionalEncryptionContextHasBeenSet(false),
-    m_authenticationType(AuthenticationType::NOT_SET),
-    m_authenticationTypeHasBeenSet(false),
-    m_browserSettingsArnHasBeenSet(false),
-    m_browserType(BrowserType::NOT_SET),
-    m_browserTypeHasBeenSet(false),
-    m_creationDateHasBeenSet(false),
-    m_customerManagedKeyHasBeenSet(false),
-    m_displayNameHasBeenSet(false),
-    m_instanceType(InstanceType::NOT_SET),
-    m_instanceTypeHasBeenSet(false),
-    m_ipAccessSettingsArnHasBeenSet(false),
-    m_maxConcurrentSessions(0),
-    m_maxConcurrentSessionsHasBeenSet(false),
-    m_networkSettingsArnHasBeenSet(false),
-    m_portalArnHasBeenSet(false),
-    m_portalEndpointHasBeenSet(false),
-    m_portalStatus(PortalStatus::NOT_SET),
-    m_portalStatusHasBeenSet(false),
-    m_rendererType(RendererType::NOT_SET),
-    m_rendererTypeHasBeenSet(false),
-    m_statusReasonHasBeenSet(false),
-    m_trustStoreArnHasBeenSet(false),
-    m_userAccessLoggingSettingsArnHasBeenSet(false),
-    m_userSettingsArnHasBeenSet(false)
+Portal::Portal(JsonView jsonValue)
+  : Portal()
 {
   *this = jsonValue;
 }
@@ -122,6 +99,13 @@ Portal& Portal::operator =(JsonView jsonValue)
     m_customerManagedKey = jsonValue.GetString("customerManagedKey");
 
     m_customerManagedKeyHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("dataProtectionSettingsArn"))
+  {
+    m_dataProtectionSettingsArn = jsonValue.GetString("dataProtectionSettingsArn");
+
+    m_dataProtectionSettingsArnHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("displayName"))
@@ -257,6 +241,12 @@ JsonValue Portal::Jsonize() const
   if(m_customerManagedKeyHasBeenSet)
   {
    payload.WithString("customerManagedKey", m_customerManagedKey);
+
+  }
+
+  if(m_dataProtectionSettingsArnHasBeenSet)
+  {
+   payload.WithString("dataProtectionSettingsArn", m_dataProtectionSettingsArn);
 
   }
 

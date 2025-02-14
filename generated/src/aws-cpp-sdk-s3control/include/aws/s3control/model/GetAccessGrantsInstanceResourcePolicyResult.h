@@ -33,130 +33,69 @@ namespace Model
     AWS_S3CONTROL_API GetAccessGrantsInstanceResourcePolicyResult& operator=(const Aws::AmazonWebServiceResult<Aws::Utils::Xml::XmlDocument>& result);
 
 
+    ///@{
     /**
      * <p>The resource policy of the S3 Access Grants instance.</p>
      */
     inline const Aws::String& GetPolicy() const{ return m_policy; }
-
-    /**
-     * <p>The resource policy of the S3 Access Grants instance.</p>
-     */
     inline void SetPolicy(const Aws::String& value) { m_policy = value; }
-
-    /**
-     * <p>The resource policy of the S3 Access Grants instance.</p>
-     */
     inline void SetPolicy(Aws::String&& value) { m_policy = std::move(value); }
-
-    /**
-     * <p>The resource policy of the S3 Access Grants instance.</p>
-     */
     inline void SetPolicy(const char* value) { m_policy.assign(value); }
-
-    /**
-     * <p>The resource policy of the S3 Access Grants instance.</p>
-     */
     inline GetAccessGrantsInstanceResourcePolicyResult& WithPolicy(const Aws::String& value) { SetPolicy(value); return *this;}
-
-    /**
-     * <p>The resource policy of the S3 Access Grants instance.</p>
-     */
     inline GetAccessGrantsInstanceResourcePolicyResult& WithPolicy(Aws::String&& value) { SetPolicy(std::move(value)); return *this;}
-
-    /**
-     * <p>The resource policy of the S3 Access Grants instance.</p>
-     */
     inline GetAccessGrantsInstanceResourcePolicyResult& WithPolicy(const char* value) { SetPolicy(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The Organization of the resource policy of the S3 Access Grants instance.</p>
      */
     inline const Aws::String& GetOrganization() const{ return m_organization; }
-
-    /**
-     * <p>The Organization of the resource policy of the S3 Access Grants instance.</p>
-     */
     inline void SetOrganization(const Aws::String& value) { m_organization = value; }
-
-    /**
-     * <p>The Organization of the resource policy of the S3 Access Grants instance.</p>
-     */
     inline void SetOrganization(Aws::String&& value) { m_organization = std::move(value); }
-
-    /**
-     * <p>The Organization of the resource policy of the S3 Access Grants instance.</p>
-     */
     inline void SetOrganization(const char* value) { m_organization.assign(value); }
-
-    /**
-     * <p>The Organization of the resource policy of the S3 Access Grants instance.</p>
-     */
     inline GetAccessGrantsInstanceResourcePolicyResult& WithOrganization(const Aws::String& value) { SetOrganization(value); return *this;}
-
-    /**
-     * <p>The Organization of the resource policy of the S3 Access Grants instance.</p>
-     */
     inline GetAccessGrantsInstanceResourcePolicyResult& WithOrganization(Aws::String&& value) { SetOrganization(std::move(value)); return *this;}
-
-    /**
-     * <p>The Organization of the resource policy of the S3 Access Grants instance.</p>
-     */
     inline GetAccessGrantsInstanceResourcePolicyResult& WithOrganization(const char* value) { SetOrganization(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The date and time when you created the S3 Access Grants instance resource
      * policy. </p>
      */
     inline const Aws::Utils::DateTime& GetCreatedAt() const{ return m_createdAt; }
-
-    /**
-     * <p>The date and time when you created the S3 Access Grants instance resource
-     * policy. </p>
-     */
     inline void SetCreatedAt(const Aws::Utils::DateTime& value) { m_createdAt = value; }
-
-    /**
-     * <p>The date and time when you created the S3 Access Grants instance resource
-     * policy. </p>
-     */
     inline void SetCreatedAt(Aws::Utils::DateTime&& value) { m_createdAt = std::move(value); }
-
-    /**
-     * <p>The date and time when you created the S3 Access Grants instance resource
-     * policy. </p>
-     */
     inline GetAccessGrantsInstanceResourcePolicyResult& WithCreatedAt(const Aws::Utils::DateTime& value) { SetCreatedAt(value); return *this;}
-
-    /**
-     * <p>The date and time when you created the S3 Access Grants instance resource
-     * policy. </p>
-     */
     inline GetAccessGrantsInstanceResourcePolicyResult& WithCreatedAt(Aws::Utils::DateTime&& value) { SetCreatedAt(std::move(value)); return *this;}
+    ///@}
 
-
-    
+    ///@{
+    /**
+     * AWS Request Id value
+     */
     inline const Aws::String& GetRequestId() const{ return m_requestId; }
-
-    
     inline void SetRequestId(const Aws::String& value) { m_requestId = value; }
-
-    
     inline void SetRequestId(Aws::String&& value) { m_requestId = std::move(value); }
-
-    
     inline void SetRequestId(const char* value) { m_requestId.assign(value); }
-
-    
     inline GetAccessGrantsInstanceResourcePolicyResult& WithRequestId(const Aws::String& value) { SetRequestId(value); return *this;}
-
-    
     inline GetAccessGrantsInstanceResourcePolicyResult& WithRequestId(Aws::String&& value) { SetRequestId(std::move(value)); return *this;}
-
-    
     inline GetAccessGrantsInstanceResourcePolicyResult& WithRequestId(const char* value) { SetRequestId(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * x-amz-id-2 header value, also known as Host Id
+     */
+    inline const Aws::String& GetHostId() const{ return m_hostId; }
+    inline void SetHostId(const Aws::String& value) { m_hostId = value; }
+    inline void SetHostId(Aws::String&& value) { m_hostId = std::move(value); }
+    inline void SetHostId(const char* value) { m_hostId.assign(value); }
+    inline GetAccessGrantsInstanceResourcePolicyResult& WithHostId(const Aws::String& value) { SetHostId(value); return *this;}
+    inline GetAccessGrantsInstanceResourcePolicyResult& WithHostId(Aws::String&& value) { SetHostId(std::move(value)); return *this;}
+    inline GetAccessGrantsInstanceResourcePolicyResult& WithHostId(const char* value) { SetHostId(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_policy;
@@ -166,6 +105,8 @@ namespace Model
     Aws::Utils::DateTime m_createdAt;
 
     Aws::String m_requestId;
+
+    Aws::String m_hostId;
   };
 
 } // namespace Model

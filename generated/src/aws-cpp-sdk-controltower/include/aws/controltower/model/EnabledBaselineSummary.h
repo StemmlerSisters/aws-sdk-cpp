@@ -39,196 +39,87 @@ namespace Model
     AWS_CONTROLTOWER_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The ARN of the <code>EnabledBaseline</code> resource</p>
      */
     inline const Aws::String& GetArn() const{ return m_arn; }
-
-    /**
-     * <p>The ARN of the <code>EnabledBaseline</code> resource</p>
-     */
     inline bool ArnHasBeenSet() const { return m_arnHasBeenSet; }
-
-    /**
-     * <p>The ARN of the <code>EnabledBaseline</code> resource</p>
-     */
     inline void SetArn(const Aws::String& value) { m_arnHasBeenSet = true; m_arn = value; }
-
-    /**
-     * <p>The ARN of the <code>EnabledBaseline</code> resource</p>
-     */
     inline void SetArn(Aws::String&& value) { m_arnHasBeenSet = true; m_arn = std::move(value); }
-
-    /**
-     * <p>The ARN of the <code>EnabledBaseline</code> resource</p>
-     */
     inline void SetArn(const char* value) { m_arnHasBeenSet = true; m_arn.assign(value); }
-
-    /**
-     * <p>The ARN of the <code>EnabledBaseline</code> resource</p>
-     */
     inline EnabledBaselineSummary& WithArn(const Aws::String& value) { SetArn(value); return *this;}
-
-    /**
-     * <p>The ARN of the <code>EnabledBaseline</code> resource</p>
-     */
     inline EnabledBaselineSummary& WithArn(Aws::String&& value) { SetArn(std::move(value)); return *this;}
-
-    /**
-     * <p>The ARN of the <code>EnabledBaseline</code> resource</p>
-     */
     inline EnabledBaselineSummary& WithArn(const char* value) { SetArn(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The specific baseline that is enabled as part of the
      * <code>EnabledBaseline</code> resource.</p>
      */
     inline const Aws::String& GetBaselineIdentifier() const{ return m_baselineIdentifier; }
-
-    /**
-     * <p>The specific baseline that is enabled as part of the
-     * <code>EnabledBaseline</code> resource.</p>
-     */
     inline bool BaselineIdentifierHasBeenSet() const { return m_baselineIdentifierHasBeenSet; }
-
-    /**
-     * <p>The specific baseline that is enabled as part of the
-     * <code>EnabledBaseline</code> resource.</p>
-     */
     inline void SetBaselineIdentifier(const Aws::String& value) { m_baselineIdentifierHasBeenSet = true; m_baselineIdentifier = value; }
-
-    /**
-     * <p>The specific baseline that is enabled as part of the
-     * <code>EnabledBaseline</code> resource.</p>
-     */
     inline void SetBaselineIdentifier(Aws::String&& value) { m_baselineIdentifierHasBeenSet = true; m_baselineIdentifier = std::move(value); }
-
-    /**
-     * <p>The specific baseline that is enabled as part of the
-     * <code>EnabledBaseline</code> resource.</p>
-     */
     inline void SetBaselineIdentifier(const char* value) { m_baselineIdentifierHasBeenSet = true; m_baselineIdentifier.assign(value); }
-
-    /**
-     * <p>The specific baseline that is enabled as part of the
-     * <code>EnabledBaseline</code> resource.</p>
-     */
     inline EnabledBaselineSummary& WithBaselineIdentifier(const Aws::String& value) { SetBaselineIdentifier(value); return *this;}
-
-    /**
-     * <p>The specific baseline that is enabled as part of the
-     * <code>EnabledBaseline</code> resource.</p>
-     */
     inline EnabledBaselineSummary& WithBaselineIdentifier(Aws::String&& value) { SetBaselineIdentifier(std::move(value)); return *this;}
-
-    /**
-     * <p>The specific baseline that is enabled as part of the
-     * <code>EnabledBaseline</code> resource.</p>
-     */
     inline EnabledBaselineSummary& WithBaselineIdentifier(const char* value) { SetBaselineIdentifier(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The enabled version of the baseline.</p>
      */
     inline const Aws::String& GetBaselineVersion() const{ return m_baselineVersion; }
-
-    /**
-     * <p>The enabled version of the baseline.</p>
-     */
     inline bool BaselineVersionHasBeenSet() const { return m_baselineVersionHasBeenSet; }
-
-    /**
-     * <p>The enabled version of the baseline.</p>
-     */
     inline void SetBaselineVersion(const Aws::String& value) { m_baselineVersionHasBeenSet = true; m_baselineVersion = value; }
-
-    /**
-     * <p>The enabled version of the baseline.</p>
-     */
     inline void SetBaselineVersion(Aws::String&& value) { m_baselineVersionHasBeenSet = true; m_baselineVersion = std::move(value); }
-
-    /**
-     * <p>The enabled version of the baseline.</p>
-     */
     inline void SetBaselineVersion(const char* value) { m_baselineVersionHasBeenSet = true; m_baselineVersion.assign(value); }
-
-    /**
-     * <p>The enabled version of the baseline.</p>
-     */
     inline EnabledBaselineSummary& WithBaselineVersion(const Aws::String& value) { SetBaselineVersion(value); return *this;}
-
-    /**
-     * <p>The enabled version of the baseline.</p>
-     */
     inline EnabledBaselineSummary& WithBaselineVersion(Aws::String&& value) { SetBaselineVersion(std::move(value)); return *this;}
-
-    /**
-     * <p>The enabled version of the baseline.</p>
-     */
     inline EnabledBaselineSummary& WithBaselineVersion(const char* value) { SetBaselineVersion(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>An ARN that represents an object returned by
+     * <code>ListEnabledBaseline</code>, to describe an enabled baseline.</p>
+     */
+    inline const Aws::String& GetParentIdentifier() const{ return m_parentIdentifier; }
+    inline bool ParentIdentifierHasBeenSet() const { return m_parentIdentifierHasBeenSet; }
+    inline void SetParentIdentifier(const Aws::String& value) { m_parentIdentifierHasBeenSet = true; m_parentIdentifier = value; }
+    inline void SetParentIdentifier(Aws::String&& value) { m_parentIdentifierHasBeenSet = true; m_parentIdentifier = std::move(value); }
+    inline void SetParentIdentifier(const char* value) { m_parentIdentifierHasBeenSet = true; m_parentIdentifier.assign(value); }
+    inline EnabledBaselineSummary& WithParentIdentifier(const Aws::String& value) { SetParentIdentifier(value); return *this;}
+    inline EnabledBaselineSummary& WithParentIdentifier(Aws::String&& value) { SetParentIdentifier(std::move(value)); return *this;}
+    inline EnabledBaselineSummary& WithParentIdentifier(const char* value) { SetParentIdentifier(value); return *this;}
+    ///@}
 
+    ///@{
     
     inline const EnablementStatusSummary& GetStatusSummary() const{ return m_statusSummary; }
-
-    
     inline bool StatusSummaryHasBeenSet() const { return m_statusSummaryHasBeenSet; }
-
-    
     inline void SetStatusSummary(const EnablementStatusSummary& value) { m_statusSummaryHasBeenSet = true; m_statusSummary = value; }
-
-    
     inline void SetStatusSummary(EnablementStatusSummary&& value) { m_statusSummaryHasBeenSet = true; m_statusSummary = std::move(value); }
-
-    
     inline EnabledBaselineSummary& WithStatusSummary(const EnablementStatusSummary& value) { SetStatusSummary(value); return *this;}
-
-    
     inline EnabledBaselineSummary& WithStatusSummary(EnablementStatusSummary&& value) { SetStatusSummary(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The target upon which the baseline is enabled.</p>
      */
     inline const Aws::String& GetTargetIdentifier() const{ return m_targetIdentifier; }
-
-    /**
-     * <p>The target upon which the baseline is enabled.</p>
-     */
     inline bool TargetIdentifierHasBeenSet() const { return m_targetIdentifierHasBeenSet; }
-
-    /**
-     * <p>The target upon which the baseline is enabled.</p>
-     */
     inline void SetTargetIdentifier(const Aws::String& value) { m_targetIdentifierHasBeenSet = true; m_targetIdentifier = value; }
-
-    /**
-     * <p>The target upon which the baseline is enabled.</p>
-     */
     inline void SetTargetIdentifier(Aws::String&& value) { m_targetIdentifierHasBeenSet = true; m_targetIdentifier = std::move(value); }
-
-    /**
-     * <p>The target upon which the baseline is enabled.</p>
-     */
     inline void SetTargetIdentifier(const char* value) { m_targetIdentifierHasBeenSet = true; m_targetIdentifier.assign(value); }
-
-    /**
-     * <p>The target upon which the baseline is enabled.</p>
-     */
     inline EnabledBaselineSummary& WithTargetIdentifier(const Aws::String& value) { SetTargetIdentifier(value); return *this;}
-
-    /**
-     * <p>The target upon which the baseline is enabled.</p>
-     */
     inline EnabledBaselineSummary& WithTargetIdentifier(Aws::String&& value) { SetTargetIdentifier(std::move(value)); return *this;}
-
-    /**
-     * <p>The target upon which the baseline is enabled.</p>
-     */
     inline EnabledBaselineSummary& WithTargetIdentifier(const char* value) { SetTargetIdentifier(value); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_arn;
@@ -239,6 +130,9 @@ namespace Model
 
     Aws::String m_baselineVersion;
     bool m_baselineVersionHasBeenSet = false;
+
+    Aws::String m_parentIdentifier;
+    bool m_parentIdentifierHasBeenSet = false;
 
     EnablementStatusSummary m_statusSummary;
     bool m_statusSummaryHasBeenSet = false;

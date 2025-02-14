@@ -23,16 +23,15 @@ Destination::Destination() :
     m_statusHasBeenSet(false),
     m_fileSystemIdHasBeenSet(false),
     m_regionHasBeenSet(false),
-    m_lastReplicatedTimestampHasBeenSet(false)
+    m_lastReplicatedTimestampHasBeenSet(false),
+    m_ownerIdHasBeenSet(false),
+    m_statusMessageHasBeenSet(false),
+    m_roleArnHasBeenSet(false)
 {
 }
 
-Destination::Destination(JsonView jsonValue) : 
-    m_status(ReplicationStatus::NOT_SET),
-    m_statusHasBeenSet(false),
-    m_fileSystemIdHasBeenSet(false),
-    m_regionHasBeenSet(false),
-    m_lastReplicatedTimestampHasBeenSet(false)
+Destination::Destination(JsonView jsonValue)
+  : Destination()
 {
   *this = jsonValue;
 }
@@ -67,6 +66,27 @@ Destination& Destination::operator =(JsonView jsonValue)
     m_lastReplicatedTimestampHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("OwnerId"))
+  {
+    m_ownerId = jsonValue.GetString("OwnerId");
+
+    m_ownerIdHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("StatusMessage"))
+  {
+    m_statusMessage = jsonValue.GetString("StatusMessage");
+
+    m_statusMessageHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("RoleArn"))
+  {
+    m_roleArn = jsonValue.GetString("RoleArn");
+
+    m_roleArnHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -94,6 +114,24 @@ JsonValue Destination::Jsonize() const
   if(m_lastReplicatedTimestampHasBeenSet)
   {
    payload.WithDouble("LastReplicatedTimestamp", m_lastReplicatedTimestamp.SecondsWithMSPrecision());
+  }
+
+  if(m_ownerIdHasBeenSet)
+  {
+   payload.WithString("OwnerId", m_ownerId);
+
+  }
+
+  if(m_statusMessageHasBeenSet)
+  {
+   payload.WithString("StatusMessage", m_statusMessage);
+
+  }
+
+  if(m_roleArnHasBeenSet)
+  {
+   payload.WithString("RoleArn", m_roleArn);
+
   }
 
   return payload;

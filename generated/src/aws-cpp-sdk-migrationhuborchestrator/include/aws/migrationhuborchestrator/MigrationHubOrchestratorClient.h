@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/migrationhuborchestrator/MigrationHubOrchestrator_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/migrationhuborchestrator/MigrationHubOrchestratorServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/migrationhuborchestrator/MigrationHubOrchestratorErrorMarshaller.h>
 
 namespace Aws
 {
 namespace MigrationHubOrchestrator
 {
+  AWS_MIGRATIONHUBORCHESTRATOR_API extern const char SERVICE_NAME[];
   /**
    * <p>This API reference provides descriptions, syntax, and other details about
    * each of the actions and data types for AWS Migration Hub Orchestrator. The topic
@@ -22,12 +26,20 @@ namespace MigrationHubOrchestrator
    * you can use one of the AWS SDKs to access an API that is tailored to the
    * programming language or platform that you're using.</p>
    */
-  class AWS_MIGRATIONHUBORCHESTRATOR_API MigrationHubOrchestratorClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<MigrationHubOrchestratorClient>
+  class AWS_MIGRATIONHUBORCHESTRATOR_API MigrationHubOrchestratorClient : smithy::client::AwsSmithyClientT<Aws::MigrationHubOrchestrator::SERVICE_NAME,
+      Aws::MigrationHubOrchestrator::MigrationHubOrchestratorClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      MigrationHubOrchestratorEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::MigrationHubOrchestratorErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<MigrationHubOrchestratorClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "MigrationHubOrchestrator"; }
 
       typedef MigrationHubOrchestratorClientConfiguration ClientConfigurationType;
       typedef MigrationHubOrchestratorEndpointProvider EndpointProviderType;
@@ -439,13 +451,13 @@ namespace MigrationHubOrchestrator
          * href="http://docs.aws.amazon.com/goto/WebAPI/migrationhuborchestrator-2021-08-28/ListPlugins">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListPluginsOutcome ListPlugins(const Model::ListPluginsRequest& request) const;
+        virtual Model::ListPluginsOutcome ListPlugins(const Model::ListPluginsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListPlugins that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListPluginsRequestT = Model::ListPluginsRequest>
-        Model::ListPluginsOutcomeCallable ListPluginsCallable(const ListPluginsRequestT& request) const
+        Model::ListPluginsOutcomeCallable ListPluginsCallable(const ListPluginsRequestT& request = {}) const
         {
             return SubmitCallable(&MigrationHubOrchestratorClient::ListPlugins, request);
         }
@@ -454,7 +466,7 @@ namespace MigrationHubOrchestrator
          * An Async wrapper for ListPlugins that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListPluginsRequestT = Model::ListPluginsRequest>
-        void ListPluginsAsync(const ListPluginsRequestT& request, const ListPluginsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListPluginsAsync(const ListPluginsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListPluginsRequestT& request = {}) const
         {
             return SubmitAsync(&MigrationHubOrchestratorClient::ListPlugins, request, handler, context);
         }
@@ -540,13 +552,13 @@ namespace MigrationHubOrchestrator
          * href="http://docs.aws.amazon.com/goto/WebAPI/migrationhuborchestrator-2021-08-28/ListTemplates">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListTemplatesOutcome ListTemplates(const Model::ListTemplatesRequest& request) const;
+        virtual Model::ListTemplatesOutcome ListTemplates(const Model::ListTemplatesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListTemplates that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListTemplatesRequestT = Model::ListTemplatesRequest>
-        Model::ListTemplatesOutcomeCallable ListTemplatesCallable(const ListTemplatesRequestT& request) const
+        Model::ListTemplatesOutcomeCallable ListTemplatesCallable(const ListTemplatesRequestT& request = {}) const
         {
             return SubmitCallable(&MigrationHubOrchestratorClient::ListTemplates, request);
         }
@@ -555,7 +567,7 @@ namespace MigrationHubOrchestrator
          * An Async wrapper for ListTemplates that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListTemplatesRequestT = Model::ListTemplatesRequest>
-        void ListTemplatesAsync(const ListTemplatesRequestT& request, const ListTemplatesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListTemplatesAsync(const ListTemplatesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListTemplatesRequestT& request = {}) const
         {
             return SubmitAsync(&MigrationHubOrchestratorClient::ListTemplates, request, handler, context);
         }
@@ -615,13 +627,13 @@ namespace MigrationHubOrchestrator
          * href="http://docs.aws.amazon.com/goto/WebAPI/migrationhuborchestrator-2021-08-28/ListWorkflows">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListWorkflowsOutcome ListWorkflows(const Model::ListWorkflowsRequest& request) const;
+        virtual Model::ListWorkflowsOutcome ListWorkflows(const Model::ListWorkflowsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListWorkflows that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListWorkflowsRequestT = Model::ListWorkflowsRequest>
-        Model::ListWorkflowsOutcomeCallable ListWorkflowsCallable(const ListWorkflowsRequestT& request) const
+        Model::ListWorkflowsOutcomeCallable ListWorkflowsCallable(const ListWorkflowsRequestT& request = {}) const
         {
             return SubmitCallable(&MigrationHubOrchestratorClient::ListWorkflows, request);
         }
@@ -630,7 +642,7 @@ namespace MigrationHubOrchestrator
          * An Async wrapper for ListWorkflows that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListWorkflowsRequestT = Model::ListWorkflowsRequest>
-        void ListWorkflowsAsync(const ListWorkflowsRequestT& request, const ListWorkflowsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListWorkflowsAsync(const ListWorkflowsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListWorkflowsRequestT& request = {}) const
         {
             return SubmitAsync(&MigrationHubOrchestratorClient::ListWorkflows, request, handler, context);
         }
@@ -866,11 +878,7 @@ namespace MigrationHubOrchestrator
       std::shared_ptr<MigrationHubOrchestratorEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<MigrationHubOrchestratorClient>;
-      void init(const MigrationHubOrchestratorClientConfiguration& clientConfiguration);
 
-      MigrationHubOrchestratorClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<MigrationHubOrchestratorEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace MigrationHubOrchestrator

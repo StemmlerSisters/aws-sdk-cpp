@@ -22,15 +22,13 @@ KubernetesNetworkConfigResponse::KubernetesNetworkConfigResponse() :
     m_serviceIpv4CidrHasBeenSet(false),
     m_serviceIpv6CidrHasBeenSet(false),
     m_ipFamily(IpFamily::NOT_SET),
-    m_ipFamilyHasBeenSet(false)
+    m_ipFamilyHasBeenSet(false),
+    m_elasticLoadBalancingHasBeenSet(false)
 {
 }
 
-KubernetesNetworkConfigResponse::KubernetesNetworkConfigResponse(JsonView jsonValue) : 
-    m_serviceIpv4CidrHasBeenSet(false),
-    m_serviceIpv6CidrHasBeenSet(false),
-    m_ipFamily(IpFamily::NOT_SET),
-    m_ipFamilyHasBeenSet(false)
+KubernetesNetworkConfigResponse::KubernetesNetworkConfigResponse(JsonView jsonValue)
+  : KubernetesNetworkConfigResponse()
 {
   *this = jsonValue;
 }
@@ -58,6 +56,13 @@ KubernetesNetworkConfigResponse& KubernetesNetworkConfigResponse::operator =(Jso
     m_ipFamilyHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("elasticLoadBalancing"))
+  {
+    m_elasticLoadBalancing = jsonValue.GetObject("elasticLoadBalancing");
+
+    m_elasticLoadBalancingHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -80,6 +85,12 @@ JsonValue KubernetesNetworkConfigResponse::Jsonize() const
   if(m_ipFamilyHasBeenSet)
   {
    payload.WithString("ipFamily", IpFamilyMapper::GetNameForIpFamily(m_ipFamily));
+  }
+
+  if(m_elasticLoadBalancingHasBeenSet)
+  {
+   payload.WithObject("elasticLoadBalancing", m_elasticLoadBalancing.Jsonize());
+
   }
 
   return payload;

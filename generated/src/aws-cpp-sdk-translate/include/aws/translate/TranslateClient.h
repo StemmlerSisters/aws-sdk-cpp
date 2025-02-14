@@ -6,25 +6,37 @@
 #pragma once
 #include <aws/translate/Translate_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/translate/TranslateServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/translate/TranslateErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Translate
 {
+  AWS_TRANSLATE_API extern const char SERVICE_NAME[];
   /**
    * <p>Provides translation of the input content from the source language to the
    * target language.</p>
    */
-  class AWS_TRANSLATE_API TranslateClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<TranslateClient>
+  class AWS_TRANSLATE_API TranslateClient : smithy::client::AwsSmithyClientT<Aws::Translate::SERVICE_NAME,
+      Aws::Translate::TranslateClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      TranslateEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::TranslateErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<TranslateClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Translate"; }
 
       typedef TranslateClientConfiguration ClientConfigurationType;
       typedef TranslateEndpointProvider EndpointProviderType;
@@ -274,13 +286,13 @@ namespace Translate
          * href="http://docs.aws.amazon.com/goto/WebAPI/translate-2017-07-01/ListLanguages">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListLanguagesOutcome ListLanguages(const Model::ListLanguagesRequest& request) const;
+        virtual Model::ListLanguagesOutcome ListLanguages(const Model::ListLanguagesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListLanguages that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListLanguagesRequestT = Model::ListLanguagesRequest>
-        Model::ListLanguagesOutcomeCallable ListLanguagesCallable(const ListLanguagesRequestT& request) const
+        Model::ListLanguagesOutcomeCallable ListLanguagesCallable(const ListLanguagesRequestT& request = {}) const
         {
             return SubmitCallable(&TranslateClient::ListLanguages, request);
         }
@@ -289,7 +301,7 @@ namespace Translate
          * An Async wrapper for ListLanguages that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListLanguagesRequestT = Model::ListLanguagesRequest>
-        void ListLanguagesAsync(const ListLanguagesRequestT& request, const ListLanguagesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListLanguagesAsync(const ListLanguagesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListLanguagesRequestT& request = {}) const
         {
             return SubmitAsync(&TranslateClient::ListLanguages, request, handler, context);
         }
@@ -300,13 +312,13 @@ namespace Translate
          * href="http://docs.aws.amazon.com/goto/WebAPI/translate-2017-07-01/ListParallelData">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListParallelDataOutcome ListParallelData(const Model::ListParallelDataRequest& request) const;
+        virtual Model::ListParallelDataOutcome ListParallelData(const Model::ListParallelDataRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListParallelData that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListParallelDataRequestT = Model::ListParallelDataRequest>
-        Model::ListParallelDataOutcomeCallable ListParallelDataCallable(const ListParallelDataRequestT& request) const
+        Model::ListParallelDataOutcomeCallable ListParallelDataCallable(const ListParallelDataRequestT& request = {}) const
         {
             return SubmitCallable(&TranslateClient::ListParallelData, request);
         }
@@ -315,7 +327,7 @@ namespace Translate
          * An Async wrapper for ListParallelData that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListParallelDataRequestT = Model::ListParallelDataRequest>
-        void ListParallelDataAsync(const ListParallelDataRequestT& request, const ListParallelDataResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListParallelDataAsync(const ListParallelDataResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListParallelDataRequestT& request = {}) const
         {
             return SubmitAsync(&TranslateClient::ListParallelData, request, handler, context);
         }
@@ -354,13 +366,13 @@ namespace Translate
          * href="http://docs.aws.amazon.com/goto/WebAPI/translate-2017-07-01/ListTerminologies">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListTerminologiesOutcome ListTerminologies(const Model::ListTerminologiesRequest& request) const;
+        virtual Model::ListTerminologiesOutcome ListTerminologies(const Model::ListTerminologiesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListTerminologies that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListTerminologiesRequestT = Model::ListTerminologiesRequest>
-        Model::ListTerminologiesOutcomeCallable ListTerminologiesCallable(const ListTerminologiesRequestT& request) const
+        Model::ListTerminologiesOutcomeCallable ListTerminologiesCallable(const ListTerminologiesRequestT& request = {}) const
         {
             return SubmitCallable(&TranslateClient::ListTerminologies, request);
         }
@@ -369,7 +381,7 @@ namespace Translate
          * An Async wrapper for ListTerminologies that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListTerminologiesRequestT = Model::ListTerminologiesRequest>
-        void ListTerminologiesAsync(const ListTerminologiesRequestT& request, const ListTerminologiesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListTerminologiesAsync(const ListTerminologiesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListTerminologiesRequestT& request = {}) const
         {
             return SubmitAsync(&TranslateClient::ListTerminologies, request, handler, context);
         }
@@ -380,13 +392,13 @@ namespace Translate
          * href="http://docs.aws.amazon.com/goto/WebAPI/translate-2017-07-01/ListTextTranslationJobs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListTextTranslationJobsOutcome ListTextTranslationJobs(const Model::ListTextTranslationJobsRequest& request) const;
+        virtual Model::ListTextTranslationJobsOutcome ListTextTranslationJobs(const Model::ListTextTranslationJobsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListTextTranslationJobs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListTextTranslationJobsRequestT = Model::ListTextTranslationJobsRequest>
-        Model::ListTextTranslationJobsOutcomeCallable ListTextTranslationJobsCallable(const ListTextTranslationJobsRequestT& request) const
+        Model::ListTextTranslationJobsOutcomeCallable ListTextTranslationJobsCallable(const ListTextTranslationJobsRequestT& request = {}) const
         {
             return SubmitCallable(&TranslateClient::ListTextTranslationJobs, request);
         }
@@ -395,7 +407,7 @@ namespace Translate
          * An Async wrapper for ListTextTranslationJobs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListTextTranslationJobsRequestT = Model::ListTextTranslationJobsRequest>
-        void ListTextTranslationJobsAsync(const ListTextTranslationJobsRequestT& request, const ListTextTranslationJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListTextTranslationJobsAsync(const ListTextTranslationJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListTextTranslationJobsRequestT& request = {}) const
         {
             return SubmitAsync(&TranslateClient::ListTextTranslationJobs, request, handler, context);
         }
@@ -618,11 +630,7 @@ namespace Translate
       std::shared_ptr<TranslateEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<TranslateClient>;
-      void init(const TranslateClientConfiguration& clientConfiguration);
 
-      TranslateClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<TranslateEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Translate

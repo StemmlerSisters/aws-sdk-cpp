@@ -31,24 +31,14 @@ SlackChannelConfiguration::SlackChannelConfiguration() :
     m_guardrailPolicyArnsHasBeenSet(false),
     m_userAuthorizationRequired(false),
     m_userAuthorizationRequiredHasBeenSet(false),
-    m_tagsHasBeenSet(false)
+    m_tagsHasBeenSet(false),
+    m_stateHasBeenSet(false),
+    m_stateReasonHasBeenSet(false)
 {
 }
 
-SlackChannelConfiguration::SlackChannelConfiguration(JsonView jsonValue) : 
-    m_slackTeamNameHasBeenSet(false),
-    m_slackTeamIdHasBeenSet(false),
-    m_slackChannelIdHasBeenSet(false),
-    m_slackChannelNameHasBeenSet(false),
-    m_chatConfigurationArnHasBeenSet(false),
-    m_iamRoleArnHasBeenSet(false),
-    m_snsTopicArnsHasBeenSet(false),
-    m_configurationNameHasBeenSet(false),
-    m_loggingLevelHasBeenSet(false),
-    m_guardrailPolicyArnsHasBeenSet(false),
-    m_userAuthorizationRequired(false),
-    m_userAuthorizationRequiredHasBeenSet(false),
-    m_tagsHasBeenSet(false)
+SlackChannelConfiguration::SlackChannelConfiguration(JsonView jsonValue)
+  : SlackChannelConfiguration()
 {
   *this = jsonValue;
 }
@@ -148,6 +138,20 @@ SlackChannelConfiguration& SlackChannelConfiguration::operator =(JsonView jsonVa
     m_tagsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("State"))
+  {
+    m_state = jsonValue.GetString("State");
+
+    m_stateHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("StateReason"))
+  {
+    m_stateReason = jsonValue.GetString("StateReason");
+
+    m_stateReasonHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -239,6 +243,18 @@ JsonValue SlackChannelConfiguration::Jsonize() const
      tagsJsonList[tagsIndex].AsObject(m_tags[tagsIndex].Jsonize());
    }
    payload.WithArray("Tags", std::move(tagsJsonList));
+
+  }
+
+  if(m_stateHasBeenSet)
+  {
+   payload.WithString("State", m_state);
+
+  }
+
+  if(m_stateReasonHasBeenSet)
+  {
+   payload.WithString("StateReason", m_stateReason);
 
   }
 

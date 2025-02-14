@@ -38,31 +38,15 @@ ChannelSummary::ChannelSummary() :
     m_state(ChannelState::NOT_SET),
     m_stateHasBeenSet(false),
     m_tagsHasBeenSet(false),
-    m_vpcHasBeenSet(false)
+    m_vpcHasBeenSet(false),
+    m_anywhereSettingsHasBeenSet(false),
+    m_channelEngineVersionHasBeenSet(false),
+    m_usedChannelEngineVersionsHasBeenSet(false)
 {
 }
 
-ChannelSummary::ChannelSummary(JsonView jsonValue) : 
-    m_arnHasBeenSet(false),
-    m_cdiInputSpecificationHasBeenSet(false),
-    m_channelClass(ChannelClass::NOT_SET),
-    m_channelClassHasBeenSet(false),
-    m_destinationsHasBeenSet(false),
-    m_egressEndpointsHasBeenSet(false),
-    m_idHasBeenSet(false),
-    m_inputAttachmentsHasBeenSet(false),
-    m_inputSpecificationHasBeenSet(false),
-    m_logLevel(LogLevel::NOT_SET),
-    m_logLevelHasBeenSet(false),
-    m_maintenanceHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_pipelinesRunningCount(0),
-    m_pipelinesRunningCountHasBeenSet(false),
-    m_roleArnHasBeenSet(false),
-    m_state(ChannelState::NOT_SET),
-    m_stateHasBeenSet(false),
-    m_tagsHasBeenSet(false),
-    m_vpcHasBeenSet(false)
+ChannelSummary::ChannelSummary(JsonView jsonValue)
+  : ChannelSummary()
 {
   *this = jsonValue;
 }
@@ -193,6 +177,30 @@ ChannelSummary& ChannelSummary::operator =(JsonView jsonValue)
     m_vpcHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("anywhereSettings"))
+  {
+    m_anywhereSettings = jsonValue.GetObject("anywhereSettings");
+
+    m_anywhereSettingsHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("channelEngineVersion"))
+  {
+    m_channelEngineVersion = jsonValue.GetObject("channelEngineVersion");
+
+    m_channelEngineVersionHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("usedChannelEngineVersions"))
+  {
+    Aws::Utils::Array<JsonView> usedChannelEngineVersionsJsonList = jsonValue.GetArray("usedChannelEngineVersions");
+    for(unsigned usedChannelEngineVersionsIndex = 0; usedChannelEngineVersionsIndex < usedChannelEngineVersionsJsonList.GetLength(); ++usedChannelEngineVersionsIndex)
+    {
+      m_usedChannelEngineVersions.push_back(usedChannelEngineVersionsJsonList[usedChannelEngineVersionsIndex].AsObject());
+    }
+    m_usedChannelEngineVersionsHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -310,6 +318,29 @@ JsonValue ChannelSummary::Jsonize() const
   if(m_vpcHasBeenSet)
   {
    payload.WithObject("vpc", m_vpc.Jsonize());
+
+  }
+
+  if(m_anywhereSettingsHasBeenSet)
+  {
+   payload.WithObject("anywhereSettings", m_anywhereSettings.Jsonize());
+
+  }
+
+  if(m_channelEngineVersionHasBeenSet)
+  {
+   payload.WithObject("channelEngineVersion", m_channelEngineVersion.Jsonize());
+
+  }
+
+  if(m_usedChannelEngineVersionsHasBeenSet)
+  {
+   Aws::Utils::Array<JsonValue> usedChannelEngineVersionsJsonList(m_usedChannelEngineVersions.size());
+   for(unsigned usedChannelEngineVersionsIndex = 0; usedChannelEngineVersionsIndex < usedChannelEngineVersionsJsonList.GetLength(); ++usedChannelEngineVersionsIndex)
+   {
+     usedChannelEngineVersionsJsonList[usedChannelEngineVersionsIndex].AsObject(m_usedChannelEngineVersions[usedChannelEngineVersionsIndex].Jsonize());
+   }
+   payload.WithArray("usedChannelEngineVersions", std::move(usedChannelEngineVersionsJsonList));
 
   }
 

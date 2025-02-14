@@ -31,14 +31,8 @@ InboundIntegration::InboundIntegration() :
 {
 }
 
-InboundIntegration::InboundIntegration(const XmlNode& xmlNode) : 
-    m_integrationArnHasBeenSet(false),
-    m_sourceArnHasBeenSet(false),
-    m_targetArnHasBeenSet(false),
-    m_status(ZeroETLIntegrationStatus::NOT_SET),
-    m_statusHasBeenSet(false),
-    m_errorsHasBeenSet(false),
-    m_createTimeHasBeenSet(false)
+InboundIntegration::InboundIntegration(const XmlNode& xmlNode)
+  : InboundIntegration()
 {
   *this = xmlNode;
 }
@@ -124,7 +118,7 @@ void InboundIntegration::OutputToStream(Aws::OStream& oStream, const char* locat
       for(auto& item : m_errors)
       {
         Aws::StringStream errorsSs;
-        errorsSs << location << index << locationValue << ".IntegrationError." << errorsIdx++;
+        errorsSs << location << index << locationValue << ".Errors.IntegrationError." << errorsIdx++;
         item.OutputToStream(oStream, errorsSs.str().c_str());
       }
   }

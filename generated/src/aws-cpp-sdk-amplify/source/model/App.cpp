@@ -48,41 +48,15 @@ App::App() :
     m_autoBranchCreationPatternsHasBeenSet(false),
     m_autoBranchCreationConfigHasBeenSet(false),
     m_repositoryCloneMethod(RepositoryCloneMethod::NOT_SET),
-    m_repositoryCloneMethodHasBeenSet(false)
+    m_repositoryCloneMethodHasBeenSet(false),
+    m_cacheConfigHasBeenSet(false),
+    m_webhookCreateTimeHasBeenSet(false),
+    m_wafConfigurationHasBeenSet(false)
 {
 }
 
-App::App(JsonView jsonValue) : 
-    m_appIdHasBeenSet(false),
-    m_appArnHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_tagsHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_repositoryHasBeenSet(false),
-    m_platform(Platform::NOT_SET),
-    m_platformHasBeenSet(false),
-    m_createTimeHasBeenSet(false),
-    m_updateTimeHasBeenSet(false),
-    m_iamServiceRoleArnHasBeenSet(false),
-    m_environmentVariablesHasBeenSet(false),
-    m_defaultDomainHasBeenSet(false),
-    m_enableBranchAutoBuild(false),
-    m_enableBranchAutoBuildHasBeenSet(false),
-    m_enableBranchAutoDeletion(false),
-    m_enableBranchAutoDeletionHasBeenSet(false),
-    m_enableBasicAuth(false),
-    m_enableBasicAuthHasBeenSet(false),
-    m_basicAuthCredentialsHasBeenSet(false),
-    m_customRulesHasBeenSet(false),
-    m_productionBranchHasBeenSet(false),
-    m_buildSpecHasBeenSet(false),
-    m_customHeadersHasBeenSet(false),
-    m_enableAutoBranchCreation(false),
-    m_enableAutoBranchCreationHasBeenSet(false),
-    m_autoBranchCreationPatternsHasBeenSet(false),
-    m_autoBranchCreationConfigHasBeenSet(false),
-    m_repositoryCloneMethod(RepositoryCloneMethod::NOT_SET),
-    m_repositoryCloneMethodHasBeenSet(false)
+App::App(JsonView jsonValue)
+  : App()
 {
   *this = jsonValue;
 }
@@ -269,6 +243,27 @@ App& App::operator =(JsonView jsonValue)
     m_repositoryCloneMethodHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("cacheConfig"))
+  {
+    m_cacheConfig = jsonValue.GetObject("cacheConfig");
+
+    m_cacheConfigHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("webhookCreateTime"))
+  {
+    m_webhookCreateTime = jsonValue.GetDouble("webhookCreateTime");
+
+    m_webhookCreateTimeHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("wafConfiguration"))
+  {
+    m_wafConfiguration = jsonValue.GetObject("wafConfiguration");
+
+    m_wafConfigurationHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -434,6 +429,23 @@ JsonValue App::Jsonize() const
   if(m_repositoryCloneMethodHasBeenSet)
   {
    payload.WithString("repositoryCloneMethod", RepositoryCloneMethodMapper::GetNameForRepositoryCloneMethod(m_repositoryCloneMethod));
+  }
+
+  if(m_cacheConfigHasBeenSet)
+  {
+   payload.WithObject("cacheConfig", m_cacheConfig.Jsonize());
+
+  }
+
+  if(m_webhookCreateTimeHasBeenSet)
+  {
+   payload.WithDouble("webhookCreateTime", m_webhookCreateTime.SecondsWithMSPrecision());
+  }
+
+  if(m_wafConfigurationHasBeenSet)
+  {
+   payload.WithObject("wafConfiguration", m_wafConfiguration.Jsonize());
+
   }
 
   return payload;

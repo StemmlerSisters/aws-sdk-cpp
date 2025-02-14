@@ -25,18 +25,13 @@ SignalDecoder::SignalDecoder() :
     m_interfaceIdHasBeenSet(false),
     m_canSignalHasBeenSet(false),
     m_obdSignalHasBeenSet(false),
-    m_messageSignalHasBeenSet(false)
+    m_messageSignalHasBeenSet(false),
+    m_customDecodingSignalHasBeenSet(false)
 {
 }
 
-SignalDecoder::SignalDecoder(JsonView jsonValue) : 
-    m_fullyQualifiedNameHasBeenSet(false),
-    m_type(SignalDecoderType::NOT_SET),
-    m_typeHasBeenSet(false),
-    m_interfaceIdHasBeenSet(false),
-    m_canSignalHasBeenSet(false),
-    m_obdSignalHasBeenSet(false),
-    m_messageSignalHasBeenSet(false)
+SignalDecoder::SignalDecoder(JsonView jsonValue)
+  : SignalDecoder()
 {
   *this = jsonValue;
 }
@@ -85,6 +80,13 @@ SignalDecoder& SignalDecoder::operator =(JsonView jsonValue)
     m_messageSignalHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("customDecodingSignal"))
+  {
+    m_customDecodingSignal = jsonValue.GetObject("customDecodingSignal");
+
+    m_customDecodingSignalHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -124,6 +126,12 @@ JsonValue SignalDecoder::Jsonize() const
   if(m_messageSignalHasBeenSet)
   {
    payload.WithObject("messageSignal", m_messageSignal.Jsonize());
+
+  }
+
+  if(m_customDecodingSignalHasBeenSet)
+  {
+   payload.WithObject("customDecodingSignal", m_customDecodingSignal.Jsonize());
 
   }
 

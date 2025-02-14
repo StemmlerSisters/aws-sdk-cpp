@@ -24,8 +24,8 @@ namespace Model
 {
 
   /**
-   * <p>Contains the client response parameters for the connection when OAuth is
-   * specified as the authorization type.</p><p><h3>See Also:</h3>   <a
+   * <p>The client response parameters for the connection when OAuth is specified as
+   * the authorization type.</p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/eventbridge-2015-10-07/ConnectionOAuthClientResponseParameters">AWS
    * API Reference</a></p>
    */
@@ -38,46 +38,19 @@ namespace Model
     AWS_EVENTBRIDGE_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The client ID associated with the response to the connection request.</p>
      */
     inline const Aws::String& GetClientID() const{ return m_clientID; }
-
-    /**
-     * <p>The client ID associated with the response to the connection request.</p>
-     */
     inline bool ClientIDHasBeenSet() const { return m_clientIDHasBeenSet; }
-
-    /**
-     * <p>The client ID associated with the response to the connection request.</p>
-     */
     inline void SetClientID(const Aws::String& value) { m_clientIDHasBeenSet = true; m_clientID = value; }
-
-    /**
-     * <p>The client ID associated with the response to the connection request.</p>
-     */
     inline void SetClientID(Aws::String&& value) { m_clientIDHasBeenSet = true; m_clientID = std::move(value); }
-
-    /**
-     * <p>The client ID associated with the response to the connection request.</p>
-     */
     inline void SetClientID(const char* value) { m_clientIDHasBeenSet = true; m_clientID.assign(value); }
-
-    /**
-     * <p>The client ID associated with the response to the connection request.</p>
-     */
     inline ConnectionOAuthClientResponseParameters& WithClientID(const Aws::String& value) { SetClientID(value); return *this;}
-
-    /**
-     * <p>The client ID associated with the response to the connection request.</p>
-     */
     inline ConnectionOAuthClientResponseParameters& WithClientID(Aws::String&& value) { SetClientID(std::move(value)); return *this;}
-
-    /**
-     * <p>The client ID associated with the response to the connection request.</p>
-     */
     inline ConnectionOAuthClientResponseParameters& WithClientID(const char* value) { SetClientID(value); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_clientID;

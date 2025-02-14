@@ -46,37 +46,13 @@ DistributionSummary::DistributionSummary() :
     m_isIPV6EnabledHasBeenSet(false),
     m_aliasICPRecordalsHasBeenSet(false),
     m_staging(false),
-    m_stagingHasBeenSet(false)
+    m_stagingHasBeenSet(false),
+    m_anycastIpListIdHasBeenSet(false)
 {
 }
 
-DistributionSummary::DistributionSummary(const XmlNode& xmlNode) : 
-    m_idHasBeenSet(false),
-    m_aRNHasBeenSet(false),
-    m_statusHasBeenSet(false),
-    m_lastModifiedTimeHasBeenSet(false),
-    m_domainNameHasBeenSet(false),
-    m_aliasesHasBeenSet(false),
-    m_originsHasBeenSet(false),
-    m_originGroupsHasBeenSet(false),
-    m_defaultCacheBehaviorHasBeenSet(false),
-    m_cacheBehaviorsHasBeenSet(false),
-    m_customErrorResponsesHasBeenSet(false),
-    m_commentHasBeenSet(false),
-    m_priceClass(PriceClass::NOT_SET),
-    m_priceClassHasBeenSet(false),
-    m_enabled(false),
-    m_enabledHasBeenSet(false),
-    m_viewerCertificateHasBeenSet(false),
-    m_restrictionsHasBeenSet(false),
-    m_webACLIdHasBeenSet(false),
-    m_httpVersion(HttpVersion::NOT_SET),
-    m_httpVersionHasBeenSet(false),
-    m_isIPV6Enabled(false),
-    m_isIPV6EnabledHasBeenSet(false),
-    m_aliasICPRecordalsHasBeenSet(false),
-    m_staging(false),
-    m_stagingHasBeenSet(false)
+DistributionSummary::DistributionSummary(const XmlNode& xmlNode)
+  : DistributionSummary()
 {
   *this = xmlNode;
 }
@@ -218,6 +194,12 @@ DistributionSummary& DistributionSummary::operator =(const XmlNode& xmlNode)
     {
       m_staging = StringUtils::ConvertToBool(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(stagingNode.GetText()).c_str()).c_str());
       m_stagingHasBeenSet = true;
+    }
+    XmlNode anycastIpListIdNode = resultNode.FirstChild("AnycastIpListId");
+    if(!anycastIpListIdNode.IsNull())
+    {
+      m_anycastIpListId = Aws::Utils::Xml::DecodeEscapedXmlText(anycastIpListIdNode.GetText());
+      m_anycastIpListIdHasBeenSet = true;
     }
   }
 
@@ -361,6 +343,12 @@ void DistributionSummary::AddToNode(XmlNode& parentNode) const
    ss << std::boolalpha << m_staging;
    stagingNode.SetText(ss.str());
    ss.str("");
+  }
+
+  if(m_anycastIpListIdHasBeenSet)
+  {
+   XmlNode anycastIpListIdNode = parentNode.CreateChildElement("AnycastIpListId");
+   anycastIpListIdNode.SetText(m_anycastIpListId);
   }
 
 }

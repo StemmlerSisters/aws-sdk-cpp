@@ -21,8 +21,8 @@ CreateAccessGrantResult::CreateAccessGrantResult() :
 {
 }
 
-CreateAccessGrantResult::CreateAccessGrantResult(const Aws::AmazonWebServiceResult<XmlDocument>& result) : 
-    m_permission(Permission::NOT_SET)
+CreateAccessGrantResult::CreateAccessGrantResult(const Aws::AmazonWebServiceResult<XmlDocument>& result)
+  : CreateAccessGrantResult()
 {
   *this = result;
 }
@@ -82,10 +82,16 @@ CreateAccessGrantResult& CreateAccessGrantResult::operator =(const Aws::AmazonWe
   }
 
   const auto& headers = result.GetHeaderValueCollection();
-  const auto& requestIdIter = headers.find("x-amzn-requestid");
+  const auto& requestIdIter = headers.find("x-amz-request-id");
   if(requestIdIter != headers.end())
   {
     m_requestId = requestIdIter->second;
+  }
+
+  const auto& hostIdIter = headers.find("x-amz-id-2");
+  if(hostIdIter != headers.end())
+  {
+    m_hostId = hostIdIter->second;
   }
 
   return *this;

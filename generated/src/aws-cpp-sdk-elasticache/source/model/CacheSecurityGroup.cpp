@@ -29,12 +29,8 @@ CacheSecurityGroup::CacheSecurityGroup() :
 {
 }
 
-CacheSecurityGroup::CacheSecurityGroup(const XmlNode& xmlNode) : 
-    m_ownerIdHasBeenSet(false),
-    m_cacheSecurityGroupNameHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_eC2SecurityGroupsHasBeenSet(false),
-    m_aRNHasBeenSet(false)
+CacheSecurityGroup::CacheSecurityGroup(const XmlNode& xmlNode)
+  : CacheSecurityGroup()
 {
   *this = xmlNode;
 }
@@ -109,7 +105,7 @@ void CacheSecurityGroup::OutputToStream(Aws::OStream& oStream, const char* locat
       for(auto& item : m_eC2SecurityGroups)
       {
         Aws::StringStream eC2SecurityGroupsSs;
-        eC2SecurityGroupsSs << location << index << locationValue << ".EC2SecurityGroup." << eC2SecurityGroupsIdx++;
+        eC2SecurityGroupsSs << location << index << locationValue << ".EC2SecurityGroups.EC2SecurityGroup." << eC2SecurityGroupsIdx++;
         item.OutputToStream(oStream, eC2SecurityGroupsSs.str().c_str());
       }
   }

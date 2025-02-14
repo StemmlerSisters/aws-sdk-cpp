@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/keyspaces/Keyspaces_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/keyspaces/KeyspacesServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/keyspaces/KeyspacesErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Keyspaces
 {
+  AWS_KEYSPACES_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon Keyspaces (for Apache Cassandra) is a scalable, highly available, and
    * managed Apache Cassandra-compatible database service. Amazon Keyspaces makes it
@@ -40,12 +44,20 @@ namespace Keyspaces
    * href="https://docs.aws.amazon.com/general/latest/gr/aws-apis.html">Amazon Web
    * Services APIs</a> in the <i>General Reference</i>.</p>
    */
-  class AWS_KEYSPACES_API KeyspacesClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<KeyspacesClient>
+  class AWS_KEYSPACES_API KeyspacesClient : smithy::client::AwsSmithyClientT<Aws::Keyspaces::SERVICE_NAME,
+      Aws::Keyspaces::KeyspacesClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      KeyspacesEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::KeyspacesErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<KeyspacesClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Keyspaces"; }
 
       typedef KeyspacesClientConfiguration ClientConfigurationType;
       typedef KeyspacesEndpointProvider EndpointProviderType;
@@ -104,8 +116,8 @@ namespace Keyspaces
          * each Region.</p> <p> <code>CreateKeyspace</code> is an asynchronous operation.
          * You can monitor the creation status of the new keyspace by using the
          * <code>GetKeyspace</code> operation.</p> <p>For more information, see <a
-         * href="https://docs.aws.amazon.com/keyspaces/latest/devguide/working-with-keyspaces.html#keyspaces-create">Creating
-         * keyspaces</a> in the <i>Amazon Keyspaces Developer Guide</i>.</p><p><h3>See
+         * href="https://docs.aws.amazon.com/keyspaces/latest/devguide/getting-started.keyspaces.html">Create
+         * a keyspace</a> in the <i>Amazon Keyspaces Developer Guide</i>.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/keyspaces-2022-02-10/CreateKeyspace">AWS
          * API Reference</a></p>
@@ -139,8 +151,8 @@ namespace Keyspaces
          * operation, which returns the current <code>status</code> of the table. You can
          * start using a table when the status is <code>ACTIVE</code>.</p> <p>For more
          * information, see <a
-         * href="https://docs.aws.amazon.com/keyspaces/latest/devguide/working-with-tables.html#tables-create">Creating
-         * tables</a> in the <i>Amazon Keyspaces Developer Guide</i>.</p><p><h3>See
+         * href="https://docs.aws.amazon.com/keyspaces/latest/devguide/getting-started.tables.html">Create
+         * a table</a> in the <i>Amazon Keyspaces Developer Guide</i>.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/keyspaces-2022-02-10/CreateTable">AWS
          * API Reference</a></p>
@@ -163,6 +175,38 @@ namespace Keyspaces
         void CreateTableAsync(const CreateTableRequestT& request, const CreateTableResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&KeyspacesClient::CreateTable, request, handler, context);
+        }
+
+        /**
+         * <p> The <code>CreateType</code> operation creates a new user-defined type in the
+         * specified keyspace. </p> <p>To configure the required permissions, see <a
+         * href="https://docs.aws.amazon.com/keyspaces/latest/devguide/configure-udt-permissions.html#udt-permissions-create">Permissions
+         * to create a UDT</a> in the <i>Amazon Keyspaces Developer Guide</i>.</p> <p>For
+         * more information, see <a
+         * href="https://docs.aws.amazon.com/keyspaces/latest/devguide/udts.html">User-defined
+         * types (UDTs)</a> in the <i>Amazon Keyspaces Developer Guide</i>. </p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/keyspaces-2022-02-10/CreateType">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateTypeOutcome CreateType(const Model::CreateTypeRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateType that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateTypeRequestT = Model::CreateTypeRequest>
+        Model::CreateTypeOutcomeCallable CreateTypeCallable(const CreateTypeRequestT& request) const
+        {
+            return SubmitCallable(&KeyspacesClient::CreateType, request);
+        }
+
+        /**
+         * An Async wrapper for CreateType that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateTypeRequestT = Model::CreateTypeRequest>
+        void CreateTypeAsync(const CreateTypeRequestT& request, const CreateTypeResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&KeyspacesClient::CreateType, request, handler, context);
         }
 
         /**
@@ -225,8 +269,40 @@ namespace Keyspaces
         }
 
         /**
-         * <p>Returns the name and the Amazon Resource Name (ARN) of the specified
-         * table.</p><p><h3>See Also:</h3>   <a
+         * <p> The <code>DeleteType</code> operation deletes a user-defined type (UDT). You
+         * can only delete a type that is not used in a table or another UDT. </p> <p>To
+         * configure the required permissions, see <a
+         * href="https://docs.aws.amazon.com/keyspaces/latest/devguide/configure-udt-permissions.html#udt-permissions-drop">Permissions
+         * to delete a UDT</a> in the <i>Amazon Keyspaces Developer
+         * Guide</i>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/keyspaces-2022-02-10/DeleteType">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteTypeOutcome DeleteType(const Model::DeleteTypeRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteType that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteTypeRequestT = Model::DeleteTypeRequest>
+        Model::DeleteTypeOutcomeCallable DeleteTypeCallable(const DeleteTypeRequestT& request) const
+        {
+            return SubmitCallable(&KeyspacesClient::DeleteType, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteType that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteTypeRequestT = Model::DeleteTypeRequest>
+        void DeleteTypeAsync(const DeleteTypeRequestT& request, const DeleteTypeResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&KeyspacesClient::DeleteType, request, handler, context);
+        }
+
+        /**
+         * <p>Returns the name of the specified keyspace, the Amazon Resource Name (ARN),
+         * the replication strategy, the Amazon Web Services Regions of a multi-Region
+         * keyspace, and the status of newly added Regions after an
+         * <code>UpdateKeyspace</code> operation.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/keyspaces-2022-02-10/GetKeyspace">AWS
          * API Reference</a></p>
          */
@@ -253,9 +329,9 @@ namespace Keyspaces
         /**
          * <p>Returns information about the table, including the table's name and current
          * status, the keyspace name, configuration settings, and metadata.</p> <p>To read
-         * table metadata using <code>GetTable</code>, <code>Select</code> action
-         * permissions for the table and system tables are required to complete the
-         * operation.</p><p><h3>See Also:</h3>   <a
+         * table metadata using <code>GetTable</code>, the IAM principal needs
+         * <code>Select</code> action permissions for the table and the system
+         * keyspace.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/keyspaces-2022-02-10/GetTable">AWS
          * API Reference</a></p>
          */
@@ -320,17 +396,51 @@ namespace Keyspaces
         }
 
         /**
-         * <p>Returns a list of keyspaces.</p><p><h3>See Also:</h3>   <a
+         * <p> The <code>GetType</code> operation returns information about the type, for
+         * example the field definitions, the timestamp when the type was last modified,
+         * the level of nesting, the status, and details about if the type is used in other
+         * types and tables. </p> <p>To read keyspace metadata using <code>GetType</code>,
+         * the IAM principal needs <code>Select</code> action permissions for the system
+         * keyspace. To configure the required permissions, see <a
+         * href="https://docs.aws.amazon.com/keyspaces/latest/devguide/configure-udt-permissions.html#udt-permissions-view">Permissions
+         * to view a UDT</a> in the <i>Amazon Keyspaces Developer Guide</i>.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/keyspaces-2022-02-10/GetType">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetTypeOutcome GetType(const Model::GetTypeRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetType that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetTypeRequestT = Model::GetTypeRequest>
+        Model::GetTypeOutcomeCallable GetTypeCallable(const GetTypeRequestT& request) const
+        {
+            return SubmitCallable(&KeyspacesClient::GetType, request);
+        }
+
+        /**
+         * An Async wrapper for GetType that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetTypeRequestT = Model::GetTypeRequest>
+        void GetTypeAsync(const GetTypeRequestT& request, const GetTypeResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&KeyspacesClient::GetType, request, handler, context);
+        }
+
+        /**
+         * <p>The <code>ListKeyspaces</code> operation returns a list of
+         * keyspaces.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/keyspaces-2022-02-10/ListKeyspaces">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListKeyspacesOutcome ListKeyspaces(const Model::ListKeyspacesRequest& request) const;
+        virtual Model::ListKeyspacesOutcome ListKeyspaces(const Model::ListKeyspacesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListKeyspaces that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListKeyspacesRequestT = Model::ListKeyspacesRequest>
-        Model::ListKeyspacesOutcomeCallable ListKeyspacesCallable(const ListKeyspacesRequestT& request) const
+        Model::ListKeyspacesOutcomeCallable ListKeyspacesCallable(const ListKeyspacesRequestT& request = {}) const
         {
             return SubmitCallable(&KeyspacesClient::ListKeyspaces, request);
         }
@@ -339,14 +449,16 @@ namespace Keyspaces
          * An Async wrapper for ListKeyspaces that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListKeyspacesRequestT = Model::ListKeyspacesRequest>
-        void ListKeyspacesAsync(const ListKeyspacesRequestT& request, const ListKeyspacesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListKeyspacesAsync(const ListKeyspacesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListKeyspacesRequestT& request = {}) const
         {
             return SubmitAsync(&KeyspacesClient::ListKeyspaces, request, handler, context);
         }
 
         /**
-         * <p>Returns a list of tables for a specified keyspace.</p><p><h3>See Also:</h3>  
-         * <a
+         * <p>The <code>ListTables</code> operation returns a list of tables for a
+         * specified keyspace.</p> <p>To read keyspace metadata using
+         * <code>ListTables</code>, the IAM principal needs <code>Select</code> action
+         * permissions for the system keyspace.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/keyspaces-2022-02-10/ListTables">AWS
          * API Reference</a></p>
          */
@@ -372,7 +484,10 @@ namespace Keyspaces
 
         /**
          * <p>Returns a list of all tags associated with the specified Amazon Keyspaces
-         * resource.</p><p><h3>See Also:</h3>   <a
+         * resource.</p> <p>To read keyspace metadata using
+         * <code>ListTagsForResource</code>, the IAM principal needs <code>Select</code>
+         * action permissions for the specified resource and the system
+         * keyspace.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/keyspaces-2022-02-10/ListTagsForResource">AWS
          * API Reference</a></p>
          */
@@ -394,6 +509,37 @@ namespace Keyspaces
         void ListTagsForResourceAsync(const ListTagsForResourceRequestT& request, const ListTagsForResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&KeyspacesClient::ListTagsForResource, request, handler, context);
+        }
+
+        /**
+         * <p> The <code>ListTypes</code> operation returns a list of types for a specified
+         * keyspace. </p> <p>To read keyspace metadata using <code>ListTypes</code>, the
+         * IAM principal needs <code>Select</code> action permissions for the system
+         * keyspace. To configure the required permissions, see <a
+         * href="https://docs.aws.amazon.com/keyspaces/latest/devguide/configure-udt-permissions.html#udt-permissions-view">Permissions
+         * to view a UDT</a> in the <i>Amazon Keyspaces Developer Guide</i>.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/keyspaces-2022-02-10/ListTypes">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListTypesOutcome ListTypes(const Model::ListTypesRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListTypes that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListTypesRequestT = Model::ListTypesRequest>
+        Model::ListTypesOutcomeCallable ListTypesCallable(const ListTypesRequestT& request) const
+        {
+            return SubmitCallable(&KeyspacesClient::ListTypes, request);
+        }
+
+        /**
+         * An Async wrapper for ListTypes that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListTypesRequestT = Model::ListTypesRequest>
+        void ListTypesAsync(const ListTypesRequestT& request, const ListTypesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&KeyspacesClient::ListTypes, request, handler, context);
         }
 
         /**
@@ -508,6 +654,69 @@ namespace Keyspaces
         }
 
         /**
+         * <p> Adds a new Amazon Web Services Region to the keyspace. You can add a new
+         * Region to a keyspace that is either a single or a multi-Region keyspace. Amazon
+         * Keyspaces is going to replicate all tables in the keyspace to the new Region. To
+         * successfully replicate all tables to the new Region, they must use client-side
+         * timestamps for conflict resolution. To enable client-side timestamps, specify
+         * <code>clientSideTimestamps.status = enabled</code> when invoking the API. For
+         * more information about client-side timestamps, see <a
+         * href="https://docs.aws.amazon.com/keyspaces/latest/devguide/client-side-timestamps.html">Client-side
+         * timestamps in Amazon Keyspaces</a> in the <i>Amazon Keyspaces Developer
+         * Guide</i>.</p> <p>To add a Region to a keyspace using the
+         * <code>UpdateKeyspace</code> API, the IAM principal needs permissions for the
+         * following IAM actions:</p> <ul> <li> <p> <code>cassandra:Alter</code> </p> </li>
+         * <li> <p> <code>cassandra:AlterMultiRegionResource</code> </p> </li> <li> <p>
+         * <code>cassandra:Create</code> </p> </li> <li> <p>
+         * <code>cassandra:CreateMultiRegionResource</code> </p> </li> <li> <p>
+         * <code>cassandra:Select</code> </p> </li> <li> <p>
+         * <code>cassandra:SelectMultiRegionResource</code> </p> </li> <li> <p>
+         * <code>cassandra:Modify</code> </p> </li> <li> <p>
+         * <code>cassandra:ModifyMultiRegionResource</code> </p> </li> </ul> <p>If the
+         * keyspace contains a table that is configured in provisioned mode with auto
+         * scaling enabled, the following additional IAM actions need to be allowed.</p>
+         * <ul> <li> <p> <code>application-autoscaling:RegisterScalableTarget</code> </p>
+         * </li> <li> <p> <code>application-autoscaling:DeregisterScalableTarget</code>
+         * </p> </li> <li> <p> <code>application-autoscaling:DescribeScalableTargets</code>
+         * </p> </li> <li> <p> <code>application-autoscaling:PutScalingPolicy</code> </p>
+         * </li> <li> <p> <code>application-autoscaling:DescribeScalingPolicies</code> </p>
+         * </li> </ul> <p>To use the <code>UpdateKeyspace</code> API, the IAM principal
+         * also needs permissions to create a service-linked role with the following
+         * elements:</p> <ul> <li> <p> <code>iam:CreateServiceLinkedRole</code> - The
+         * <b>action</b> the principal can perform.</p> </li> <li> <p>
+         * <code>arn:aws:iam::*:role/aws-service-role/replication.cassandra.amazonaws.com/AWSServiceRoleForKeyspacesReplication</code>
+         * - The <b>resource</b> that the action can be performed on. </p> </li> <li> <p>
+         * <code>iam:AWSServiceName: replication.cassandra.amazonaws.com</code> - The only
+         * Amazon Web Services service that this role can be attached to is Amazon
+         * Keyspaces.</p> </li> </ul> <p>For more information, see <a
+         * href="https://docs.aws.amazon.com/keyspaces/latest/devguide/howitworks_replication_permissions_addReplica.html">Configure
+         * the IAM permissions required to add an Amazon Web Services Region to a
+         * keyspace</a> in the <i>Amazon Keyspaces Developer Guide</i>.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/keyspaces-2022-02-10/UpdateKeyspace">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateKeyspaceOutcome UpdateKeyspace(const Model::UpdateKeyspaceRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateKeyspace that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateKeyspaceRequestT = Model::UpdateKeyspaceRequest>
+        Model::UpdateKeyspaceOutcomeCallable UpdateKeyspaceCallable(const UpdateKeyspaceRequestT& request) const
+        {
+            return SubmitCallable(&KeyspacesClient::UpdateKeyspace, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateKeyspace that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateKeyspaceRequestT = Model::UpdateKeyspaceRequest>
+        void UpdateKeyspaceAsync(const UpdateKeyspaceRequestT& request, const UpdateKeyspaceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&KeyspacesClient::UpdateKeyspace, request, handler, context);
+        }
+
+        /**
          * <p>Adds new columns to the table or updates one of the table's settings, for
          * example capacity mode, auto scaling, encryption, point-in-time recovery, or ttl
          * settings. Note that you can only update one specific table setting per update
@@ -540,11 +749,7 @@ namespace Keyspaces
       std::shared_ptr<KeyspacesEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<KeyspacesClient>;
-      void init(const KeyspacesClientConfiguration& clientConfiguration);
 
-      KeyspacesClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<KeyspacesEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Keyspaces

@@ -22,8 +22,8 @@ namespace Model
 {
 
   /**
-   * <p>Provides statistical information about the FAQ questions and answers
-   * contained in an index.</p><p><h3>See Also:</h3>   <a
+   * <p>Provides statistical information about the FAQ questions and answers for an
+   * index.</p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/kendra-2019-02-03/FaqStatistics">AWS
    * API Reference</a></p>
    */
@@ -36,26 +36,15 @@ namespace Model
     AWS_KENDRA_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
-     * <p>The total number of FAQ questions and answers contained in the index.</p>
+     * <p>The total number of FAQ questions and answers for an index.</p>
      */
     inline int GetIndexedQuestionAnswersCount() const{ return m_indexedQuestionAnswersCount; }
-
-    /**
-     * <p>The total number of FAQ questions and answers contained in the index.</p>
-     */
     inline bool IndexedQuestionAnswersCountHasBeenSet() const { return m_indexedQuestionAnswersCountHasBeenSet; }
-
-    /**
-     * <p>The total number of FAQ questions and answers contained in the index.</p>
-     */
     inline void SetIndexedQuestionAnswersCount(int value) { m_indexedQuestionAnswersCountHasBeenSet = true; m_indexedQuestionAnswersCount = value; }
-
-    /**
-     * <p>The total number of FAQ questions and answers contained in the index.</p>
-     */
     inline FaqStatistics& WithIndexedQuestionAnswersCount(int value) { SetIndexedQuestionAnswersCount(value); return *this;}
-
+    ///@}
   private:
 
     int m_indexedQuestionAnswersCount;

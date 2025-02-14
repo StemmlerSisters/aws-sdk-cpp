@@ -27,10 +27,8 @@ MaintenanceTrack::MaintenanceTrack() :
 {
 }
 
-MaintenanceTrack::MaintenanceTrack(const XmlNode& xmlNode) : 
-    m_maintenanceTrackNameHasBeenSet(false),
-    m_databaseVersionHasBeenSet(false),
-    m_updateTargetsHasBeenSet(false)
+MaintenanceTrack::MaintenanceTrack(const XmlNode& xmlNode)
+  : MaintenanceTrack()
 {
   *this = xmlNode;
 }
@@ -88,7 +86,7 @@ void MaintenanceTrack::OutputToStream(Aws::OStream& oStream, const char* locatio
       for(auto& item : m_updateTargets)
       {
         Aws::StringStream updateTargetsSs;
-        updateTargetsSs << location << index << locationValue << ".UpdateTarget." << updateTargetsIdx++;
+        updateTargetsSs << location << index << locationValue << ".UpdateTargets.UpdateTarget." << updateTargetsIdx++;
         item.OutputToStream(oStream, updateTargetsSs.str().c_str());
       }
   }

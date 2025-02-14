@@ -3,23 +3,24 @@
  * SPDX-License-Identifier: Apache-2.0.
  */
 
-#include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/config/defaults/ClientConfigurationDefaults.h>
+#include <aws/core/Version.h>
 #include <aws/core/auth/AWSCredentialsProvider.h>
-#include <aws/core/client/DefaultRetryStrategy.h>
 #include <aws/core/client/AdaptiveRetryStrategy.h>
+#include <aws/core/client/ClientConfiguration.h>
+#include <aws/core/client/DefaultRetryStrategy.h>
+#include <aws/core/config/AWSProfileConfigLoader.h>
+#include <aws/core/config/defaults/ClientConfigurationDefaults.h>
 #include <aws/core/platform/Environment.h>
 #include <aws/core/platform/OSVersionInfo.h>
-#include <aws/core/utils/memory/AWSMemory.h>
 #include <aws/core/utils/StringUtils.h>
-#include <aws/core/utils/threading/Executor.h>
-#include <aws/core/utils/memory/stl/AWSStringStream.h>
-#include <aws/core/Version.h>
-#include <aws/core/config/AWSProfileConfigLoader.h>
 #include <aws/core/utils/logging/LogMacros.h>
-
+#include <aws/core/utils/memory/AWSMemory.h>
+#include <aws/core/utils/memory/stl/AWSStringStream.h>
+#include <aws/core/utils/threading/Executor.h>
 #include <aws/crt/Config.h>
+#include <smithy/tracing/NoopTelemetryProvider.h>
 
+#include <array>
 
 namespace Aws
 {
@@ -38,6 +39,40 @@ static const char* REQUEST_MIN_COMPRESSION_SIZE_BYTES_CONFIG_VAR = "request_min_
 static const char* AWS_EXECUTION_ENV = "AWS_EXECUTION_ENV";
 static const char* DISABLE_IMDSV1_CONFIG_VAR = "AWS_EC2_METADATA_V1_DISABLED";
 static const char* DISABLE_IMDSV1_ENV_VAR = "ec2_metadata_v1_disabled";
+
+using RequestChecksumConfigurationEnumMapping = std::pair<const char*, RequestChecksumCalculation>;
+static const std::array<RequestChecksumConfigurationEnumMapping, 2> REQUEST_CHECKSUM_CONFIG_MAPPING = {{
+    {"when_supported", RequestChecksumCalculation::WHEN_SUPPORTED},
+    {"when_required", RequestChecksumCalculation::WHEN_REQUIRED},
+}};
+
+using ResponseChecksumConfigurationEnumMapping = std::pair<const char*, ResponseChecksumValidation>;
+static const std::array<ResponseChecksumConfigurationEnumMapping, 2> RESPONSE_CHECKSUM_CONFIG_MAPPING = {
+    {{"when_supported", ResponseChecksumValidation::WHEN_SUPPORTED}, {"when_required", ResponseChecksumValidation::WHEN_REQUIRED}}};
+
+template <typename T, size_t N>
+static T LoadEnumFromString(const std::array<std::pair<const char*, T>, N>& mappings, const char* value, const T& defaultValue) {
+  static_assert(std::is_enum<T>::value, "enum type is required");
+  const auto mapping = std::find_if(std::begin(mappings), std::end(mappings),
+                                    [&value](const std::pair<const char*, T>& entry) -> bool { return strcmp(entry.first, value) == 0; });
+  if (mapping == std::end(mappings)) {
+    return defaultValue;
+  }
+  return mapping->second;
+}
+
+ClientConfiguration::ProviderFactories ClientConfiguration::ProviderFactories::defaultFactories = []()
+{
+    ProviderFactories factories;
+
+    factories.retryStrategyCreateFn = [](){return InitRetryStrategy();};
+    factories.executorCreateFn = [](){return Aws::MakeShared<Aws::Utils::Threading::DefaultExecutor>(CLIENT_CONFIG_TAG);};
+    factories.writeRateLimiterCreateFn = [](){return nullptr;};
+    factories.readRateLimiterCreateFn = [](){return nullptr;};
+    factories.telemetryProviderCreateFn = [](){return smithy::components::tracing::NoopTelemetryProvider::CreateProvider();};
+
+    return factories;
+}();
 
 Aws::String FilterUserAgentToken(char const * const source)
 {
@@ -96,7 +131,7 @@ Aws::String ComputeUserAgentString(ClientConfiguration const * const pConfig)
 #if defined(AWS_USER_AGENT_CUSTOMIZATION)
 #define XSTR(V) STR(V)
 #define STR(V) #V
-  ss << FilterUserAgentToken(" " XSTR(AWS_USER_AGENT_CUSTOMIZATION));
+  ss << " " << FilterUserAgentToken(XSTR(AWS_USER_AGENT_CUSTOMIZATION));
 #undef STR
 #undef XSTR
 #endif
@@ -117,6 +152,28 @@ Aws::String ComputeUserAgentString(ClientConfiguration const * const pConfig)
   return ss.str();
 }
 
+Aws::String calculateRegion() {
+  // Automatically determine the AWS region from environment variables, configuration file and EC2 metadata.
+  auto region = Aws::Environment::GetEnv("AWS_DEFAULT_REGION");
+  if (!region.empty())
+  {
+    return region;
+  }
+
+  region = Aws::Environment::GetEnv("AWS_REGION");
+  if (!region.empty())
+  {
+    return region;
+  }
+
+  region = Aws::Config::GetCachedConfigValue("region");
+  if (!region.empty())
+  {
+    return region;
+  }
+  return "";
+}
+
 void setLegacyClientConfigurationParameters(ClientConfiguration& clientConfig)
 {
     clientConfig.scheme = Aws::Http::Scheme::HTTPS;
@@ -131,7 +188,6 @@ void setLegacyClientConfigurationParameters(ClientConfiguration& clientConfig)
     clientConfig.lowSpeedLimit = 1;
     clientConfig.proxyScheme = Aws::Http::Scheme::HTTP;
     clientConfig.proxyPort = 0;
-    clientConfig.executor = Aws::MakeShared<Aws::Utils::Threading::DefaultExecutor>(CLIENT_CONFIG_TAG);
     clientConfig.verifySSL = true;
     clientConfig.writeRateLimiter = nullptr;
     clientConfig.readRateLimiter = nullptr;
@@ -179,24 +235,7 @@ void setLegacyClientConfigurationParameters(ClientConfiguration& clientConfig)
 
     AWS_LOGSTREAM_DEBUG(CLIENT_CONFIG_TAG, "ClientConfiguration will use SDK Auto Resolved profile: [" << clientConfig.profileName << "] if not specified by users.");
 
-    // Automatically determine the AWS region from environment variables, configuration file and EC2 metadata.
-    clientConfig.region = Aws::Environment::GetEnv("AWS_DEFAULT_REGION");
-    if (!clientConfig.region.empty())
-    {
-        return;
-    }
-
-    clientConfig.region = Aws::Environment::GetEnv("AWS_REGION");
-    if (!clientConfig.region.empty())
-    {
-        return;
-    }
-
-    clientConfig.region = Aws::Config::GetCachedConfigValue("region");
-    if (!clientConfig.region.empty())
-    {
-        return;
-    }
+    clientConfig.region = calculateRegion();
 
     // Set the endpoint to interact with EC2 instance's metadata service
     Aws::String ec2MetadataServiceEndpoint = Aws::Environment::GetEnv("AWS_EC2_METADATA_SERVICE_ENDPOINT");
@@ -206,17 +245,27 @@ void setLegacyClientConfigurationParameters(ClientConfiguration& clientConfig)
         auto client = Aws::Internal::GetEC2MetadataClient();
         if (client != nullptr)
         {
-            client->SetEndpoint(ec2MetadataServiceEndpoint);
+          client->SetEndpoint(ec2MetadataServiceEndpoint);
         }
     }
 
-    clientConfig.appId = clientConfig.LoadConfigFromEnvOrProfile(
-            "AWS_SDK_UA_APP_ID",
-            clientConfig.profileName,
-            "sdk_ua_app_id",
-            {},
-            ""
-    );
+    clientConfig.appId = clientConfig.LoadConfigFromEnvOrProfile("AWS_SDK_UA_APP_ID", clientConfig.profileName, "sdk_ua_app_id", {}, "");
+
+    clientConfig.checksumConfig.requestChecksumCalculation =
+        LoadEnumFromString(REQUEST_CHECKSUM_CONFIG_MAPPING,
+                           ClientConfiguration::LoadConfigFromEnvOrProfile("AWS_REQUEST_CHECKSUM_CALCULATION", clientConfig.profileName,
+                                                                           "request_checksum_calculation",
+                                                                           {"when_supported", "when_required"}, "when_supported")
+                               .c_str(),
+                           RequestChecksumCalculation::WHEN_SUPPORTED);
+
+    clientConfig.checksumConfig.responseChecksumValidation =
+        LoadEnumFromString(RESPONSE_CHECKSUM_CONFIG_MAPPING,
+                           ClientConfiguration::LoadConfigFromEnvOrProfile("AWS_RESPONSE_CHECKSUM_VALIDATION", clientConfig.profileName,
+                                                                           "response_checksum_validation",
+                                                                           {"when_supported", "when_required"}, "when_supported")
+                               .c_str(),
+                           ResponseChecksumValidation::WHEN_SUPPORTED);
 }
 
 void setConfigFromEnvOrProfile(ClientConfiguration &config)
@@ -235,7 +284,6 @@ ClientConfiguration::ClientConfiguration()
 {
     this->disableIMDS = false;
     setLegacyClientConfigurationParameters(*this);
-    retryStrategy = InitRetryStrategy();
 
     if (!this->disableIMDS &&
         region.empty() &&
@@ -259,7 +307,6 @@ ClientConfiguration::ClientConfiguration(const ClientConfigurationInitValues &co
 {
     this->disableIMDS = configuration.shouldDisableIMDS;
     setLegacyClientConfigurationParameters(*this);
-    retryStrategy = InitRetryStrategy();
 
     if (!this->disableIMDS &&
         region.empty() &&
@@ -318,10 +365,6 @@ ClientConfiguration::ClientConfiguration(const char* profile, bool shouldDisable
         Aws::Config::Defaults::SetSmartDefaultsConfigurationParameters(*this, profileDefaultsMode,
                                                                        hasEc2MetadataRegion, ec2MetadataRegion);
         return;
-    }
-    if (!retryStrategy)
-    {
-        retryStrategy = InitRetryStrategy();
     }
 
     AWS_LOGSTREAM_WARN(CLIENT_CONFIG_TAG, "User specified profile: [" << profile << "] is not found, will use the SDK resolved one.");

@@ -18,12 +18,13 @@ using namespace Aws::Utils;
 using namespace Aws;
 
 DeauthorizeDataShareResult::DeauthorizeDataShareResult() : 
-    m_allowPubliclyAccessibleConsumers(false)
+    m_allowPubliclyAccessibleConsumers(false),
+    m_dataShareType(DataShareType::NOT_SET)
 {
 }
 
-DeauthorizeDataShareResult::DeauthorizeDataShareResult(const Aws::AmazonWebServiceResult<XmlDocument>& result) : 
-    m_allowPubliclyAccessibleConsumers(false)
+DeauthorizeDataShareResult::DeauthorizeDataShareResult(const Aws::AmazonWebServiceResult<XmlDocument>& result)
+  : DeauthorizeDataShareResult()
 {
   *this = result;
 }
@@ -70,6 +71,11 @@ DeauthorizeDataShareResult& DeauthorizeDataShareResult::operator =(const Aws::Am
     if(!managedByNode.IsNull())
     {
       m_managedBy = Aws::Utils::Xml::DecodeEscapedXmlText(managedByNode.GetText());
+    }
+    XmlNode dataShareTypeNode = resultNode.FirstChild("DataShareType");
+    if(!dataShareTypeNode.IsNull())
+    {
+      m_dataShareType = DataShareTypeMapper::GetDataShareTypeForName(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(dataShareTypeNode.GetText()).c_str()).c_str());
     }
   }
 

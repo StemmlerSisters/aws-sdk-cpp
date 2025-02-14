@@ -26,19 +26,14 @@ DataProviderSettings::DataProviderSettings() :
     m_microsoftSqlServerSettingsHasBeenSet(false),
     m_docDbSettingsHasBeenSet(false),
     m_mariaDbSettingsHasBeenSet(false),
+    m_ibmDb2LuwSettingsHasBeenSet(false),
+    m_ibmDb2zOsSettingsHasBeenSet(false),
     m_mongoDbSettingsHasBeenSet(false)
 {
 }
 
-DataProviderSettings::DataProviderSettings(JsonView jsonValue) : 
-    m_redshiftSettingsHasBeenSet(false),
-    m_postgreSqlSettingsHasBeenSet(false),
-    m_mySqlSettingsHasBeenSet(false),
-    m_oracleSettingsHasBeenSet(false),
-    m_microsoftSqlServerSettingsHasBeenSet(false),
-    m_docDbSettingsHasBeenSet(false),
-    m_mariaDbSettingsHasBeenSet(false),
-    m_mongoDbSettingsHasBeenSet(false)
+DataProviderSettings::DataProviderSettings(JsonView jsonValue)
+  : DataProviderSettings()
 {
   *this = jsonValue;
 }
@@ -94,6 +89,20 @@ DataProviderSettings& DataProviderSettings::operator =(JsonView jsonValue)
     m_mariaDbSettingsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("IbmDb2LuwSettings"))
+  {
+    m_ibmDb2LuwSettings = jsonValue.GetObject("IbmDb2LuwSettings");
+
+    m_ibmDb2LuwSettingsHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("IbmDb2zOsSettings"))
+  {
+    m_ibmDb2zOsSettings = jsonValue.GetObject("IbmDb2zOsSettings");
+
+    m_ibmDb2zOsSettingsHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("MongoDbSettings"))
   {
     m_mongoDbSettings = jsonValue.GetObject("MongoDbSettings");
@@ -147,6 +156,18 @@ JsonValue DataProviderSettings::Jsonize() const
   if(m_mariaDbSettingsHasBeenSet)
   {
    payload.WithObject("MariaDbSettings", m_mariaDbSettings.Jsonize());
+
+  }
+
+  if(m_ibmDb2LuwSettingsHasBeenSet)
+  {
+   payload.WithObject("IbmDb2LuwSettings", m_ibmDb2LuwSettings.Jsonize());
+
+  }
+
+  if(m_ibmDb2zOsSettingsHasBeenSet)
+  {
+   payload.WithObject("IbmDb2zOsSettings", m_ibmDb2zOsSettings.Jsonize());
 
   }
 

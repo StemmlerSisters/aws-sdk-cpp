@@ -27,10 +27,8 @@ HsmClientCertificate::HsmClientCertificate() :
 {
 }
 
-HsmClientCertificate::HsmClientCertificate(const XmlNode& xmlNode) : 
-    m_hsmClientCertificateIdentifierHasBeenSet(false),
-    m_hsmClientCertificatePublicKeyHasBeenSet(false),
-    m_tagsHasBeenSet(false)
+HsmClientCertificate::HsmClientCertificate(const XmlNode& xmlNode)
+  : HsmClientCertificate()
 {
   *this = xmlNode;
 }
@@ -88,7 +86,7 @@ void HsmClientCertificate::OutputToStream(Aws::OStream& oStream, const char* loc
       for(auto& item : m_tags)
       {
         Aws::StringStream tagsSs;
-        tagsSs << location << index << locationValue << ".Tag." << tagsIdx++;
+        tagsSs << location << index << locationValue << ".Tags.Tag." << tagsIdx++;
         item.OutputToStream(oStream, tagsSs.str().c_str());
       }
   }

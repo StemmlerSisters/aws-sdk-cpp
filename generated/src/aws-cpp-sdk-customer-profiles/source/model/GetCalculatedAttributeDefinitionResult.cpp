@@ -22,8 +22,8 @@ GetCalculatedAttributeDefinitionResult::GetCalculatedAttributeDefinitionResult()
 {
 }
 
-GetCalculatedAttributeDefinitionResult::GetCalculatedAttributeDefinitionResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_statistic(Statistic::NOT_SET)
+GetCalculatedAttributeDefinitionResult::GetCalculatedAttributeDefinitionResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetCalculatedAttributeDefinitionResult()
 {
   *this = result;
 }
@@ -64,6 +64,12 @@ GetCalculatedAttributeDefinitionResult& GetCalculatedAttributeDefinitionResult::
   if(jsonValue.ValueExists("Statistic"))
   {
     m_statistic = StatisticMapper::GetStatisticForName(jsonValue.GetString("Statistic"));
+
+  }
+
+  if(jsonValue.ValueExists("Filter"))
+  {
+    m_filter = jsonValue.GetObject("Filter");
 
   }
 

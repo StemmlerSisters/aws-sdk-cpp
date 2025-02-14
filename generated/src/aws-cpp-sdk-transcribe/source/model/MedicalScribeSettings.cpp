@@ -28,21 +28,13 @@ MedicalScribeSettings::MedicalScribeSettings() :
     m_vocabularyNameHasBeenSet(false),
     m_vocabularyFilterNameHasBeenSet(false),
     m_vocabularyFilterMethod(VocabularyFilterMethod::NOT_SET),
-    m_vocabularyFilterMethodHasBeenSet(false)
+    m_vocabularyFilterMethodHasBeenSet(false),
+    m_clinicalNoteGenerationSettingsHasBeenSet(false)
 {
 }
 
-MedicalScribeSettings::MedicalScribeSettings(JsonView jsonValue) : 
-    m_showSpeakerLabels(false),
-    m_showSpeakerLabelsHasBeenSet(false),
-    m_maxSpeakerLabels(0),
-    m_maxSpeakerLabelsHasBeenSet(false),
-    m_channelIdentification(false),
-    m_channelIdentificationHasBeenSet(false),
-    m_vocabularyNameHasBeenSet(false),
-    m_vocabularyFilterNameHasBeenSet(false),
-    m_vocabularyFilterMethod(VocabularyFilterMethod::NOT_SET),
-    m_vocabularyFilterMethodHasBeenSet(false)
+MedicalScribeSettings::MedicalScribeSettings(JsonView jsonValue)
+  : MedicalScribeSettings()
 {
   *this = jsonValue;
 }
@@ -91,6 +83,13 @@ MedicalScribeSettings& MedicalScribeSettings::operator =(JsonView jsonValue)
     m_vocabularyFilterMethodHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("ClinicalNoteGenerationSettings"))
+  {
+    m_clinicalNoteGenerationSettings = jsonValue.GetObject("ClinicalNoteGenerationSettings");
+
+    m_clinicalNoteGenerationSettingsHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -131,6 +130,12 @@ JsonValue MedicalScribeSettings::Jsonize() const
   if(m_vocabularyFilterMethodHasBeenSet)
   {
    payload.WithString("VocabularyFilterMethod", VocabularyFilterMethodMapper::GetNameForVocabularyFilterMethod(m_vocabularyFilterMethod));
+  }
+
+  if(m_clinicalNoteGenerationSettingsHasBeenSet)
+  {
+   payload.WithObject("ClinicalNoteGenerationSettings", m_clinicalNoteGenerationSettings.Jsonize());
+
   }
 
   return payload;

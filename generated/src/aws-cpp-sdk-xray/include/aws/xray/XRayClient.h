@@ -6,25 +6,37 @@
 #pragma once
 #include <aws/xray/XRay_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/xray/XRayServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/xray/XRayErrorMarshaller.h>
 
 namespace Aws
 {
 namespace XRay
 {
+  AWS_XRAY_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon Web Services X-Ray provides APIs for managing debug traces and
    * retrieving service maps and other data created by processing those traces.</p>
    */
-  class AWS_XRAY_API XRayClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<XRayClient>
+  class AWS_XRAY_API XRayClient : smithy::client::AwsSmithyClientT<Aws::XRay::SERVICE_NAME,
+      Aws::XRay::XRayClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      XRayEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::XRayErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<XRayClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "XRay"; }
 
       typedef XRayClientConfiguration ClientConfigurationType;
       typedef XRayEndpointProvider EndpointProviderType;
@@ -78,10 +90,11 @@ namespace XRay
         virtual ~XRayClient();
 
         /**
-         * <p>Retrieves a list of traces specified by ID. Each trace is a collection of
-         * segment documents that originates from a single request. Use
-         * <code>GetTraceSummaries</code> to get a list of trace IDs.</p><p><h3>See
-         * Also:</h3>   <a
+         *  <p>You cannot find traces through this API if Transaction Search is
+         * enabled since trace is not indexed in X-Ray.</p>  <p>Retrieves a list of
+         * traces specified by ID. Each trace is a collection of segment documents that
+         * originates from a single request. Use <code>GetTraceSummaries</code> to get a
+         * list of trace IDs.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/BatchGetTraces">AWS
          * API Reference</a></p>
          */
@@ -103,6 +116,34 @@ namespace XRay
         void BatchGetTracesAsync(const BatchGetTracesRequestT& request, const BatchGetTracesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&XRayClient::BatchGetTraces, request, handler, context);
+        }
+
+        /**
+         * <p> Cancels an ongoing trace retrieval job initiated by
+         * <code>StartTraceRetrieval</code> using the provided <code>RetrievalToken</code>.
+         * A successful cancellation will return an HTTP 200 response. </p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/CancelTraceRetrieval">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CancelTraceRetrievalOutcome CancelTraceRetrieval(const Model::CancelTraceRetrievalRequest& request) const;
+
+        /**
+         * A Callable wrapper for CancelTraceRetrieval that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CancelTraceRetrievalRequestT = Model::CancelTraceRetrievalRequest>
+        Model::CancelTraceRetrievalOutcomeCallable CancelTraceRetrievalCallable(const CancelTraceRetrievalRequestT& request) const
+        {
+            return SubmitCallable(&XRayClient::CancelTraceRetrieval, request);
+        }
+
+        /**
+         * An Async wrapper for CancelTraceRetrieval that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CancelTraceRetrievalRequestT = Model::CancelTraceRetrievalRequest>
+        void CancelTraceRetrievalAsync(const CancelTraceRetrievalRequestT& request, const CancelTraceRetrievalResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&XRayClient::CancelTraceRetrieval, request, handler, context);
         }
 
         /**
@@ -170,13 +211,13 @@ namespace XRay
          * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/DeleteGroup">AWS
          * API Reference</a></p>
          */
-        virtual Model::DeleteGroupOutcome DeleteGroup(const Model::DeleteGroupRequest& request) const;
+        virtual Model::DeleteGroupOutcome DeleteGroup(const Model::DeleteGroupRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DeleteGroup that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DeleteGroupRequestT = Model::DeleteGroupRequest>
-        Model::DeleteGroupOutcomeCallable DeleteGroupCallable(const DeleteGroupRequestT& request) const
+        Model::DeleteGroupOutcomeCallable DeleteGroupCallable(const DeleteGroupRequestT& request = {}) const
         {
             return SubmitCallable(&XRayClient::DeleteGroup, request);
         }
@@ -185,7 +226,7 @@ namespace XRay
          * An Async wrapper for DeleteGroup that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DeleteGroupRequestT = Model::DeleteGroupRequest>
-        void DeleteGroupAsync(const DeleteGroupRequestT& request, const DeleteGroupResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DeleteGroupAsync(const DeleteGroupResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DeleteGroupRequestT& request = {}) const
         {
             return SubmitAsync(&XRayClient::DeleteGroup, request, handler, context);
         }
@@ -221,13 +262,13 @@ namespace XRay
          * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/DeleteSamplingRule">AWS
          * API Reference</a></p>
          */
-        virtual Model::DeleteSamplingRuleOutcome DeleteSamplingRule(const Model::DeleteSamplingRuleRequest& request) const;
+        virtual Model::DeleteSamplingRuleOutcome DeleteSamplingRule(const Model::DeleteSamplingRuleRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DeleteSamplingRule that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DeleteSamplingRuleRequestT = Model::DeleteSamplingRuleRequest>
-        Model::DeleteSamplingRuleOutcomeCallable DeleteSamplingRuleCallable(const DeleteSamplingRuleRequestT& request) const
+        Model::DeleteSamplingRuleOutcomeCallable DeleteSamplingRuleCallable(const DeleteSamplingRuleRequestT& request = {}) const
         {
             return SubmitCallable(&XRayClient::DeleteSamplingRule, request);
         }
@@ -236,7 +277,7 @@ namespace XRay
          * An Async wrapper for DeleteSamplingRule that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DeleteSamplingRuleRequestT = Model::DeleteSamplingRuleRequest>
-        void DeleteSamplingRuleAsync(const DeleteSamplingRuleRequestT& request, const DeleteSamplingRuleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DeleteSamplingRuleAsync(const DeleteSamplingRuleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DeleteSamplingRuleRequestT& request = {}) const
         {
             return SubmitAsync(&XRayClient::DeleteSamplingRule, request, handler, context);
         }
@@ -247,13 +288,13 @@ namespace XRay
          * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/GetEncryptionConfig">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetEncryptionConfigOutcome GetEncryptionConfig(const Model::GetEncryptionConfigRequest& request) const;
+        virtual Model::GetEncryptionConfigOutcome GetEncryptionConfig(const Model::GetEncryptionConfigRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetEncryptionConfig that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetEncryptionConfigRequestT = Model::GetEncryptionConfigRequest>
-        Model::GetEncryptionConfigOutcomeCallable GetEncryptionConfigCallable(const GetEncryptionConfigRequestT& request) const
+        Model::GetEncryptionConfigOutcomeCallable GetEncryptionConfigCallable(const GetEncryptionConfigRequestT& request = {}) const
         {
             return SubmitCallable(&XRayClient::GetEncryptionConfig, request);
         }
@@ -262,7 +303,7 @@ namespace XRay
          * An Async wrapper for GetEncryptionConfig that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetEncryptionConfigRequestT = Model::GetEncryptionConfigRequest>
-        void GetEncryptionConfigAsync(const GetEncryptionConfigRequestT& request, const GetEncryptionConfigResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetEncryptionConfigAsync(const GetEncryptionConfigResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetEncryptionConfigRequestT& request = {}) const
         {
             return SubmitAsync(&XRayClient::GetEncryptionConfig, request, handler, context);
         }
@@ -272,13 +313,13 @@ namespace XRay
          * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/GetGroup">AWS API
          * Reference</a></p>
          */
-        virtual Model::GetGroupOutcome GetGroup(const Model::GetGroupRequest& request) const;
+        virtual Model::GetGroupOutcome GetGroup(const Model::GetGroupRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetGroup that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetGroupRequestT = Model::GetGroupRequest>
-        Model::GetGroupOutcomeCallable GetGroupCallable(const GetGroupRequestT& request) const
+        Model::GetGroupOutcomeCallable GetGroupCallable(const GetGroupRequestT& request = {}) const
         {
             return SubmitCallable(&XRayClient::GetGroup, request);
         }
@@ -287,7 +328,7 @@ namespace XRay
          * An Async wrapper for GetGroup that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetGroupRequestT = Model::GetGroupRequest>
-        void GetGroupAsync(const GetGroupRequestT& request, const GetGroupResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetGroupAsync(const GetGroupResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetGroupRequestT& request = {}) const
         {
             return SubmitAsync(&XRayClient::GetGroup, request, handler, context);
         }
@@ -297,13 +338,13 @@ namespace XRay
          * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/GetGroups">AWS API
          * Reference</a></p>
          */
-        virtual Model::GetGroupsOutcome GetGroups(const Model::GetGroupsRequest& request) const;
+        virtual Model::GetGroupsOutcome GetGroups(const Model::GetGroupsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetGroups that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetGroupsRequestT = Model::GetGroupsRequest>
-        Model::GetGroupsOutcomeCallable GetGroupsCallable(const GetGroupsRequestT& request) const
+        Model::GetGroupsOutcomeCallable GetGroupsCallable(const GetGroupsRequestT& request = {}) const
         {
             return SubmitCallable(&XRayClient::GetGroups, request);
         }
@@ -312,9 +353,38 @@ namespace XRay
          * An Async wrapper for GetGroups that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetGroupsRequestT = Model::GetGroupsRequest>
-        void GetGroupsAsync(const GetGroupsRequestT& request, const GetGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetGroupsAsync(const GetGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetGroupsRequestT& request = {}) const
         {
             return SubmitAsync(&XRayClient::GetGroups, request, handler, context);
+        }
+
+        /**
+         * <p> Retrieves all indexing rules.</p> <p>Indexing rules are used to determine
+         * the server-side sampling rate for spans ingested through the CloudWatchLogs
+         * destination and indexed by X-Ray. For more information, see <a
+         * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Transaction-Search.html">Transaction
+         * Search</a>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/GetIndexingRules">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetIndexingRulesOutcome GetIndexingRules(const Model::GetIndexingRulesRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for GetIndexingRules that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetIndexingRulesRequestT = Model::GetIndexingRulesRequest>
+        Model::GetIndexingRulesOutcomeCallable GetIndexingRulesCallable(const GetIndexingRulesRequestT& request = {}) const
+        {
+            return SubmitCallable(&XRayClient::GetIndexingRules, request);
+        }
+
+        /**
+         * An Async wrapper for GetIndexingRules that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetIndexingRulesRequestT = Model::GetIndexingRulesRequest>
+        void GetIndexingRulesAsync(const GetIndexingRulesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetIndexingRulesRequestT& request = {}) const
+        {
+            return SubmitAsync(&XRayClient::GetIndexingRules, request, handler, context);
         }
 
         /**
@@ -427,17 +497,57 @@ namespace XRay
         }
 
         /**
+         * <p> Retrieves a service graph for traces based on the specified
+         * <code>RetrievalToken</code> from the CloudWatch log group generated by
+         * Transaction Search. This API does not initiate a retrieval job. You must first
+         * execute <code>StartTraceRetrieval</code> to obtain the required
+         * <code>RetrievalToken</code>. </p> <p>The trace graph describes services that
+         * process incoming requests and any downstream services they call, which may
+         * include Amazon Web Services resources, external APIs, or databases.</p> <p>The
+         * response is empty until the <code>RetrievalStatus</code> is <i>COMPLETE</i>.
+         * Retry the request after the status changes from <i>RUNNING</i> or
+         * <i>SCHEDULED</i> to <i>COMPLETE</i> to access the full service graph.</p> <p>
+         * When CloudWatch log is the destination, this API can support cross-account
+         * observability and service graph retrieval across linked accounts.</p> <p>For
+         * retrieving graphs from X-Ray directly as opposed to the Transaction-Search Log
+         * group, see <a
+         * href="https://docs.aws.amazon.com/xray/latest/api/API_GetTraceGraph.html">GetTraceGraph</a>.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/GetRetrievedTracesGraph">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetRetrievedTracesGraphOutcome GetRetrievedTracesGraph(const Model::GetRetrievedTracesGraphRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetRetrievedTracesGraph that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetRetrievedTracesGraphRequestT = Model::GetRetrievedTracesGraphRequest>
+        Model::GetRetrievedTracesGraphOutcomeCallable GetRetrievedTracesGraphCallable(const GetRetrievedTracesGraphRequestT& request) const
+        {
+            return SubmitCallable(&XRayClient::GetRetrievedTracesGraph, request);
+        }
+
+        /**
+         * An Async wrapper for GetRetrievedTracesGraph that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetRetrievedTracesGraphRequestT = Model::GetRetrievedTracesGraphRequest>
+        void GetRetrievedTracesGraphAsync(const GetRetrievedTracesGraphRequestT& request, const GetRetrievedTracesGraphResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&XRayClient::GetRetrievedTracesGraph, request, handler, context);
+        }
+
+        /**
          * <p>Retrieves all sampling rules.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/GetSamplingRules">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetSamplingRulesOutcome GetSamplingRules(const Model::GetSamplingRulesRequest& request) const;
+        virtual Model::GetSamplingRulesOutcome GetSamplingRules(const Model::GetSamplingRulesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetSamplingRules that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetSamplingRulesRequestT = Model::GetSamplingRulesRequest>
-        Model::GetSamplingRulesOutcomeCallable GetSamplingRulesCallable(const GetSamplingRulesRequestT& request) const
+        Model::GetSamplingRulesOutcomeCallable GetSamplingRulesCallable(const GetSamplingRulesRequestT& request = {}) const
         {
             return SubmitCallable(&XRayClient::GetSamplingRules, request);
         }
@@ -446,7 +556,7 @@ namespace XRay
          * An Async wrapper for GetSamplingRules that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetSamplingRulesRequestT = Model::GetSamplingRulesRequest>
-        void GetSamplingRulesAsync(const GetSamplingRulesRequestT& request, const GetSamplingRulesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetSamplingRulesAsync(const GetSamplingRulesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetSamplingRulesRequestT& request = {}) const
         {
             return SubmitAsync(&XRayClient::GetSamplingRules, request, handler, context);
         }
@@ -457,13 +567,13 @@ namespace XRay
          * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/GetSamplingStatisticSummaries">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetSamplingStatisticSummariesOutcome GetSamplingStatisticSummaries(const Model::GetSamplingStatisticSummariesRequest& request) const;
+        virtual Model::GetSamplingStatisticSummariesOutcome GetSamplingStatisticSummaries(const Model::GetSamplingStatisticSummariesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetSamplingStatisticSummaries that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetSamplingStatisticSummariesRequestT = Model::GetSamplingStatisticSummariesRequest>
-        Model::GetSamplingStatisticSummariesOutcomeCallable GetSamplingStatisticSummariesCallable(const GetSamplingStatisticSummariesRequestT& request) const
+        Model::GetSamplingStatisticSummariesOutcomeCallable GetSamplingStatisticSummariesCallable(const GetSamplingStatisticSummariesRequestT& request = {}) const
         {
             return SubmitCallable(&XRayClient::GetSamplingStatisticSummaries, request);
         }
@@ -472,7 +582,7 @@ namespace XRay
          * An Async wrapper for GetSamplingStatisticSummaries that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetSamplingStatisticSummariesRequestT = Model::GetSamplingStatisticSummariesRequest>
-        void GetSamplingStatisticSummariesAsync(const GetSamplingStatisticSummariesRequestT& request, const GetSamplingStatisticSummariesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetSamplingStatisticSummariesAsync(const GetSamplingStatisticSummariesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetSamplingStatisticSummariesRequestT& request = {}) const
         {
             return SubmitAsync(&XRayClient::GetSamplingStatisticSummaries, request, handler, context);
         }
@@ -587,6 +697,38 @@ namespace XRay
         }
 
         /**
+         * <p> Retrieves the current destination of data sent to
+         * <code>PutTraceSegments</code> and <i>OpenTelemetry</i> API. The Transaction
+         * Search feature requires a CloudWatchLogs destination. For more information, see
+         * <a
+         * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Transaction-Search.html">Transaction
+         * Search</a> and <a
+         * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-OpenTelemetry-Sections.html">OpenTelemetry</a>.
+         * </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/GetTraceSegmentDestination">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetTraceSegmentDestinationOutcome GetTraceSegmentDestination(const Model::GetTraceSegmentDestinationRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for GetTraceSegmentDestination that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetTraceSegmentDestinationRequestT = Model::GetTraceSegmentDestinationRequest>
+        Model::GetTraceSegmentDestinationOutcomeCallable GetTraceSegmentDestinationCallable(const GetTraceSegmentDestinationRequestT& request = {}) const
+        {
+            return SubmitCallable(&XRayClient::GetTraceSegmentDestination, request);
+        }
+
+        /**
+         * An Async wrapper for GetTraceSegmentDestination that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetTraceSegmentDestinationRequestT = Model::GetTraceSegmentDestinationRequest>
+        void GetTraceSegmentDestinationAsync(const GetTraceSegmentDestinationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetTraceSegmentDestinationRequestT& request = {}) const
+        {
+            return SubmitAsync(&XRayClient::GetTraceSegmentDestination, request, handler, context);
+        }
+
+        /**
          * <p>Retrieves IDs and annotations for traces available for a specified time frame
          * using an optional filter. To get the full traces, pass the trace IDs to
          * <code>BatchGetTraces</code>.</p> <p>A filter expression can target traced
@@ -598,8 +740,8 @@ namespace XRay
          * <code>12345</code>:</p> <p> <code>annotation.account = "12345"</code> </p>
          * <p>For a full list of indexed fields and keywords that you can use in filter
          * expressions, see <a
-         * href="https://docs.aws.amazon.com/xray/latest/devguide/xray-console-filters.html">Using
-         * Filter Expressions</a> in the <i>Amazon Web Services X-Ray Developer
+         * href="https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-console.html#xray-console-filters">Use
+         * filter expressions</a> in the <i>Amazon Web Services X-Ray Developer
          * Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/GetTraceSummaries">AWS
          * API Reference</a></p>
@@ -630,13 +772,13 @@ namespace XRay
          * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/ListResourcePolicies">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListResourcePoliciesOutcome ListResourcePolicies(const Model::ListResourcePoliciesRequest& request) const;
+        virtual Model::ListResourcePoliciesOutcome ListResourcePolicies(const Model::ListResourcePoliciesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListResourcePolicies that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListResourcePoliciesRequestT = Model::ListResourcePoliciesRequest>
-        Model::ListResourcePoliciesOutcomeCallable ListResourcePoliciesCallable(const ListResourcePoliciesRequestT& request) const
+        Model::ListResourcePoliciesOutcomeCallable ListResourcePoliciesCallable(const ListResourcePoliciesRequestT& request = {}) const
         {
             return SubmitCallable(&XRayClient::ListResourcePolicies, request);
         }
@@ -645,9 +787,50 @@ namespace XRay
          * An Async wrapper for ListResourcePolicies that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListResourcePoliciesRequestT = Model::ListResourcePoliciesRequest>
-        void ListResourcePoliciesAsync(const ListResourcePoliciesRequestT& request, const ListResourcePoliciesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListResourcePoliciesAsync(const ListResourcePoliciesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListResourcePoliciesRequestT& request = {}) const
         {
             return SubmitAsync(&XRayClient::ListResourcePolicies, request, handler, context);
+        }
+
+        /**
+         * <p> Retrieves a list of traces for a given <code>RetrievalToken</code> from the
+         * CloudWatch log group generated by Transaction Search. For information on what
+         * each trace returns, see <a
+         * href="https://docs.aws.amazon.com/xray/latest/api/API_BatchGetTraces.html">BatchGetTraces</a>.
+         * </p> <p>This API does not initiate a retrieval job. To start a trace retrieval,
+         * use <code>StartTraceRetrieval</code>, which generates the required
+         * <code>RetrievalToken</code>.</p> <p> When the <code>RetrievalStatus</code> is
+         * not <i>COMPLETE</i>, the API will return an empty response. Retry the request
+         * once the retrieval has completed to access the full list of traces.</p> <p>For
+         * cross-account observability, this API can retrieve traces from linked accounts
+         * when CloudWatch log is the destination across relevant accounts. For more
+         * details, see <a
+         * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Unified-Cross-Account.html">CloudWatch
+         * cross-account observability</a>.</p> <p>For retrieving data from X-Ray directly
+         * as opposed to the Transaction-Search Log group, see <a
+         * href="https://docs.aws.amazon.com/xray/latest/api/API_BatchGetTraces.html">BatchGetTraces</a>.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/ListRetrievedTraces">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListRetrievedTracesOutcome ListRetrievedTraces(const Model::ListRetrievedTracesRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListRetrievedTraces that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListRetrievedTracesRequestT = Model::ListRetrievedTracesRequest>
+        Model::ListRetrievedTracesOutcomeCallable ListRetrievedTracesCallable(const ListRetrievedTracesRequestT& request) const
+        {
+            return SubmitCallable(&XRayClient::ListRetrievedTraces, request);
+        }
+
+        /**
+         * An Async wrapper for ListRetrievedTraces that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListRetrievedTracesRequestT = Model::ListRetrievedTracesRequest>
+        void ListRetrievedTracesAsync(const ListRetrievedTracesRequestT& request, const ListRetrievedTracesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&XRayClient::ListRetrievedTraces, request, handler, context);
         }
 
         /**
@@ -759,13 +942,11 @@ namespace XRay
         }
 
         /**
-         * <p>Uploads segment documents to Amazon Web Services X-Ray. The <a
-         * href="https://docs.aws.amazon.com/xray/index.html">X-Ray SDK</a> generates
-         * segment documents and sends them to the X-Ray daemon, which uploads them in
-         * batches. A segment document can be a completed segment, an in-progress segment,
-         * or an array of subsegments.</p> <p>Segments must include the following fields.
-         * For the full segment document schema, see <a
-         * href="https://docs.aws.amazon.com/xray/latest/devguide/xray-api-segmentdocuments.html">Amazon
+         * <p>Uploads segment documents to Amazon Web Services X-Ray. A segment document
+         * can be a completed segment, an in-progress segment, or an array of
+         * subsegments.</p> <p>Segments must include the following fields. For the full
+         * segment document schema, see <a
+         * href="https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-api.html#xray-api-segmentdocuments.html">Amazon
          * Web Services X-Ray Segment Documents</a> in the <i>Amazon Web Services X-Ray
          * Developer Guide</i>.</p> <p class="title"> <b>Required segment document
          * fields</b> </p> <ul> <li> <p> <code>name</code> - The name of the service that
@@ -786,13 +967,21 @@ namespace XRay
          * trace that the request was received. When the response is sent, send the
          * complete segment to overwrite the in-progress segment.</p> </li> </ul> <p>A
          * <code>trace_id</code> consists of three numbers separated by hyphens. For
-         * example, 1-58406520-a006649127e371903a2de979. This includes:</p> <p
-         * class="title"> <b>Trace ID Format</b> </p> <ul> <li> <p>The version number, for
-         * instance, <code>1</code>.</p> </li> <li> <p>The time of the original request, in
-         * Unix epoch time, in 8 hexadecimal digits. For example, 10:00AM December 2nd,
-         * 2016 PST in epoch time is <code>1480615200</code> seconds, or
-         * <code>58406520</code> in hexadecimal.</p> </li> <li> <p>A 96-bit identifier for
-         * the trace, globally unique, in 24 hexadecimal digits.</p> </li> </ul><p><h3>See
+         * example, 1-58406520-a006649127e371903a2de979. For trace IDs created by an X-Ray
+         * SDK, or by Amazon Web Services services integrated with X-Ray, a trace ID
+         * includes:</p> <p class="title"> <b>Trace ID Format</b> </p> <ul> <li> <p>The
+         * version number, for instance, <code>1</code>.</p> </li> <li> <p>The time of the
+         * original request, in Unix epoch time, in 8 hexadecimal digits. For example,
+         * 10:00AM December 2nd, 2016 PST in epoch time is <code>1480615200</code> seconds,
+         * or <code>58406520</code> in hexadecimal.</p> </li> <li> <p>A 96-bit identifier
+         * for the trace, globally unique, in 24 hexadecimal digits.</p> </li> </ul> 
+         * <p>Trace IDs created via OpenTelemetry have a different format based on the <a
+         * href="https://www.w3.org/TR/trace-context/">W3C Trace Context specification</a>.
+         * A W3C trace ID must be formatted in the X-Ray trace ID format when sending to
+         * X-Ray. For example, a W3C trace ID <code>4efaaf4d1e8720b39541901950019ee5</code>
+         * should be formatted as <code>1-4efaaf4d-1e8720b39541901950019ee5</code> when
+         * sending to X-Ray. While X-Ray trace IDs include the original request timestamp
+         * in Unix epoch time, this is not required or validated. </p> <p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/PutTraceSegments">AWS
          * API Reference</a></p>
@@ -815,6 +1004,45 @@ namespace XRay
         void PutTraceSegmentsAsync(const PutTraceSegmentsRequestT& request, const PutTraceSegmentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&XRayClient::PutTraceSegments, request, handler, context);
+        }
+
+        /**
+         * <p> Initiates a trace retrieval process using the specified time range and for
+         * the give trace IDs on Transaction Search generated by the CloudWatch log group.
+         * For more information, see <a
+         * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Transaction-Search.html">Transaction
+         * Search</a>. </p> <p>API returns a <code>RetrievalToken</code>, which can be used
+         * with <code>ListRetrievedTraces</code> or <code>GetRetrievedTracesGraph</code> to
+         * fetch results. Retrievals will time out after 60 minutes. To execute long time
+         * ranges, consider segmenting into multiple retrievals.</p> <p>If you are using <a
+         * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Unified-Cross-Account.html">CloudWatch
+         * cross-account observability</a>, you can use this operation in a monitoring
+         * account to retrieve data from a linked source account, as long as both accounts
+         * have transaction search enabled.</p> <p>For retrieving data from X-Ray directly
+         * as opposed to the Transaction-Search Log group, see <a
+         * href="https://docs.aws.amazon.com/xray/latest/api/API_BatchGetTraces.html">BatchGetTraces</a>.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/StartTraceRetrieval">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::StartTraceRetrievalOutcome StartTraceRetrieval(const Model::StartTraceRetrievalRequest& request) const;
+
+        /**
+         * A Callable wrapper for StartTraceRetrieval that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename StartTraceRetrievalRequestT = Model::StartTraceRetrievalRequest>
+        Model::StartTraceRetrievalOutcomeCallable StartTraceRetrievalCallable(const StartTraceRetrievalRequestT& request) const
+        {
+            return SubmitCallable(&XRayClient::StartTraceRetrieval, request);
+        }
+
+        /**
+         * An Async wrapper for StartTraceRetrieval that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename StartTraceRetrievalRequestT = Model::StartTraceRetrievalRequest>
+        void StartTraceRetrievalAsync(const StartTraceRetrievalRequestT& request, const StartTraceRetrievalResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&XRayClient::StartTraceRetrieval, request, handler, context);
         }
 
         /**
@@ -875,13 +1103,13 @@ namespace XRay
          * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/UpdateGroup">AWS
          * API Reference</a></p>
          */
-        virtual Model::UpdateGroupOutcome UpdateGroup(const Model::UpdateGroupRequest& request) const;
+        virtual Model::UpdateGroupOutcome UpdateGroup(const Model::UpdateGroupRequest& request = {}) const;
 
         /**
          * A Callable wrapper for UpdateGroup that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename UpdateGroupRequestT = Model::UpdateGroupRequest>
-        Model::UpdateGroupOutcomeCallable UpdateGroupCallable(const UpdateGroupRequestT& request) const
+        Model::UpdateGroupOutcomeCallable UpdateGroupCallable(const UpdateGroupRequestT& request = {}) const
         {
             return SubmitCallable(&XRayClient::UpdateGroup, request);
         }
@@ -890,9 +1118,38 @@ namespace XRay
          * An Async wrapper for UpdateGroup that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename UpdateGroupRequestT = Model::UpdateGroupRequest>
-        void UpdateGroupAsync(const UpdateGroupRequestT& request, const UpdateGroupResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void UpdateGroupAsync(const UpdateGroupResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const UpdateGroupRequestT& request = {}) const
         {
             return SubmitAsync(&XRayClient::UpdateGroup, request, handler, context);
+        }
+
+        /**
+         * <p> Modifies an indexing rule’s configuration. </p> <p>Indexing rules are used
+         * for determining the sampling rate for spans indexed from CloudWatch Logs. For
+         * more information, see <a
+         * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Transaction-Search.html">Transaction
+         * Search</a>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/UpdateIndexingRule">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateIndexingRuleOutcome UpdateIndexingRule(const Model::UpdateIndexingRuleRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateIndexingRule that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateIndexingRuleRequestT = Model::UpdateIndexingRuleRequest>
+        Model::UpdateIndexingRuleOutcomeCallable UpdateIndexingRuleCallable(const UpdateIndexingRuleRequestT& request) const
+        {
+            return SubmitCallable(&XRayClient::UpdateIndexingRule, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateIndexingRule that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateIndexingRuleRequestT = Model::UpdateIndexingRuleRequest>
+        void UpdateIndexingRuleAsync(const UpdateIndexingRuleRequestT& request, const UpdateIndexingRuleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&XRayClient::UpdateIndexingRule, request, handler, context);
         }
 
         /**
@@ -920,16 +1177,41 @@ namespace XRay
             return SubmitAsync(&XRayClient::UpdateSamplingRule, request, handler, context);
         }
 
+        /**
+         * <p> Modifies the destination of data sent to <code>PutTraceSegments</code>. The
+         * Transaction Search feature requires the CloudWatchLogs destination. For more
+         * information, see <a
+         * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Transaction-Search.html">Transaction
+         * Search</a>. </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/UpdateTraceSegmentDestination">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateTraceSegmentDestinationOutcome UpdateTraceSegmentDestination(const Model::UpdateTraceSegmentDestinationRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for UpdateTraceSegmentDestination that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateTraceSegmentDestinationRequestT = Model::UpdateTraceSegmentDestinationRequest>
+        Model::UpdateTraceSegmentDestinationOutcomeCallable UpdateTraceSegmentDestinationCallable(const UpdateTraceSegmentDestinationRequestT& request = {}) const
+        {
+            return SubmitCallable(&XRayClient::UpdateTraceSegmentDestination, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateTraceSegmentDestination that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateTraceSegmentDestinationRequestT = Model::UpdateTraceSegmentDestinationRequest>
+        void UpdateTraceSegmentDestinationAsync(const UpdateTraceSegmentDestinationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const UpdateTraceSegmentDestinationRequestT& request = {}) const
+        {
+            return SubmitAsync(&XRayClient::UpdateTraceSegmentDestination, request, handler, context);
+        }
+
 
       void OverrideEndpoint(const Aws::String& endpoint);
       std::shared_ptr<XRayEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<XRayClient>;
-      void init(const XRayClientConfiguration& clientConfiguration);
 
-      XRayClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<XRayEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace XRay

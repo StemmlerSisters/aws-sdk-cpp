@@ -31,14 +31,8 @@ DBSubnetGroup::DBSubnetGroup() :
 {
 }
 
-DBSubnetGroup::DBSubnetGroup(const XmlNode& xmlNode) : 
-    m_dBSubnetGroupNameHasBeenSet(false),
-    m_dBSubnetGroupDescriptionHasBeenSet(false),
-    m_vpcIdHasBeenSet(false),
-    m_subnetGroupStatusHasBeenSet(false),
-    m_subnetsHasBeenSet(false),
-    m_dBSubnetGroupArnHasBeenSet(false),
-    m_supportedNetworkTypesHasBeenSet(false)
+DBSubnetGroup::DBSubnetGroup(const XmlNode& xmlNode)
+  : DBSubnetGroup()
 {
   *this = xmlNode;
 }
@@ -136,7 +130,7 @@ void DBSubnetGroup::OutputToStream(Aws::OStream& oStream, const char* location, 
       for(auto& item : m_subnets)
       {
         Aws::StringStream subnetsSs;
-        subnetsSs << location << index << locationValue << ".Subnet." << subnetsIdx++;
+        subnetsSs << location << index << locationValue << ".Subnets.Subnet." << subnetsIdx++;
         item.OutputToStream(oStream, subnetsSs.str().c_str());
       }
   }

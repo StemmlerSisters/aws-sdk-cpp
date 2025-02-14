@@ -29,10 +29,12 @@ CreateDomainRequest::CreateDomainRequest() :
     m_logPublishingOptionsHasBeenSet(false),
     m_domainEndpointOptionsHasBeenSet(false),
     m_advancedSecurityOptionsHasBeenSet(false),
+    m_identityCenterOptionsHasBeenSet(false),
     m_tagListHasBeenSet(false),
     m_autoTuneOptionsHasBeenSet(false),
     m_offPeakWindowOptionsHasBeenSet(false),
-    m_softwareUpdateOptionsHasBeenSet(false)
+    m_softwareUpdateOptionsHasBeenSet(false),
+    m_aIMLOptionsHasBeenSet(false)
 {
 }
 
@@ -139,6 +141,12 @@ Aws::String CreateDomainRequest::SerializePayload() const
 
   }
 
+  if(m_identityCenterOptionsHasBeenSet)
+  {
+   payload.WithObject("IdentityCenterOptions", m_identityCenterOptions.Jsonize());
+
+  }
+
   if(m_tagListHasBeenSet)
   {
    Aws::Utils::Array<JsonValue> tagListJsonList(m_tagList.size());
@@ -165,6 +173,12 @@ Aws::String CreateDomainRequest::SerializePayload() const
   if(m_softwareUpdateOptionsHasBeenSet)
   {
    payload.WithObject("SoftwareUpdateOptions", m_softwareUpdateOptions.Jsonize());
+
+  }
+
+  if(m_aIMLOptionsHasBeenSet)
+  {
+   payload.WithObject("AIMLOptions", m_aIMLOptions.Jsonize());
 
   }
 

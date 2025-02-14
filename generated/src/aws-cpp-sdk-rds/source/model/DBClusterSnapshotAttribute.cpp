@@ -26,9 +26,8 @@ DBClusterSnapshotAttribute::DBClusterSnapshotAttribute() :
 {
 }
 
-DBClusterSnapshotAttribute::DBClusterSnapshotAttribute(const XmlNode& xmlNode) : 
-    m_attributeNameHasBeenSet(false),
-    m_attributeValuesHasBeenSet(false)
+DBClusterSnapshotAttribute::DBClusterSnapshotAttribute(const XmlNode& xmlNode)
+  : DBClusterSnapshotAttribute()
 {
   *this = xmlNode;
 }
@@ -74,7 +73,7 @@ void DBClusterSnapshotAttribute::OutputToStream(Aws::OStream& oStream, const cha
       unsigned attributeValuesIdx = 1;
       for(auto& item : m_attributeValues)
       {
-        oStream << location << index << locationValue << ".AttributeValue." << attributeValuesIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
+        oStream << location << index << locationValue << ".AttributeValues.AttributeValue." << attributeValuesIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
       }
   }
 

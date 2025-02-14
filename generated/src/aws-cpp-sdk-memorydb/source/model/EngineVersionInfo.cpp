@@ -19,22 +19,28 @@ namespace Model
 {
 
 EngineVersionInfo::EngineVersionInfo() : 
+    m_engineHasBeenSet(false),
     m_engineVersionHasBeenSet(false),
     m_enginePatchVersionHasBeenSet(false),
     m_parameterGroupFamilyHasBeenSet(false)
 {
 }
 
-EngineVersionInfo::EngineVersionInfo(JsonView jsonValue) : 
-    m_engineVersionHasBeenSet(false),
-    m_enginePatchVersionHasBeenSet(false),
-    m_parameterGroupFamilyHasBeenSet(false)
+EngineVersionInfo::EngineVersionInfo(JsonView jsonValue)
+  : EngineVersionInfo()
 {
   *this = jsonValue;
 }
 
 EngineVersionInfo& EngineVersionInfo::operator =(JsonView jsonValue)
 {
+  if(jsonValue.ValueExists("Engine"))
+  {
+    m_engine = jsonValue.GetString("Engine");
+
+    m_engineHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("EngineVersion"))
   {
     m_engineVersion = jsonValue.GetString("EngineVersion");
@@ -62,6 +68,12 @@ EngineVersionInfo& EngineVersionInfo::operator =(JsonView jsonValue)
 JsonValue EngineVersionInfo::Jsonize() const
 {
   JsonValue payload;
+
+  if(m_engineHasBeenSet)
+  {
+   payload.WithString("Engine", m_engine);
+
+  }
 
   if(m_engineVersionHasBeenSet)
   {

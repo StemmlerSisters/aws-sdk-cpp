@@ -18,16 +18,14 @@ using namespace Aws::Utils;
 using namespace Aws;
 
 GetTaskResult::GetTaskResult() : 
-    m_failureRetryCount(0),
     m_runStatus(TaskRunStatus::NOT_SET),
-    m_targetRunStatus(TaskTargetRunStatus::NOT_SET)
+    m_targetRunStatus(TaskTargetRunStatus::NOT_SET),
+    m_failureRetryCount(0)
 {
 }
 
-GetTaskResult::GetTaskResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_failureRetryCount(0),
-    m_runStatus(TaskRunStatus::NOT_SET),
-    m_targetRunStatus(TaskTargetRunStatus::NOT_SET)
+GetTaskResult::GetTaskResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetTaskResult()
 {
   *this = result;
 }
@@ -35,6 +33,12 @@ GetTaskResult::GetTaskResult(const Aws::AmazonWebServiceResult<JsonValue>& resul
 GetTaskResult& GetTaskResult::operator =(const Aws::AmazonWebServiceResult<JsonValue>& result)
 {
   JsonView jsonValue = result.GetPayload().View();
+  if(jsonValue.ValueExists("taskId"))
+  {
+    m_taskId = jsonValue.GetString("taskId");
+
+  }
+
   if(jsonValue.ValueExists("createdAt"))
   {
     m_createdAt = jsonValue.GetString("createdAt");
@@ -47,21 +51,21 @@ GetTaskResult& GetTaskResult::operator =(const Aws::AmazonWebServiceResult<JsonV
 
   }
 
-  if(jsonValue.ValueExists("endedAt"))
+  if(jsonValue.ValueExists("runStatus"))
   {
-    m_endedAt = jsonValue.GetString("endedAt");
+    m_runStatus = TaskRunStatusMapper::GetTaskRunStatusForName(jsonValue.GetString("runStatus"));
+
+  }
+
+  if(jsonValue.ValueExists("targetRunStatus"))
+  {
+    m_targetRunStatus = TaskTargetRunStatusMapper::GetTaskTargetRunStatusForName(jsonValue.GetString("targetRunStatus"));
 
   }
 
   if(jsonValue.ValueExists("failureRetryCount"))
   {
     m_failureRetryCount = jsonValue.GetInteger("failureRetryCount");
-
-  }
-
-  if(jsonValue.ValueExists("latestSessionActionId"))
-  {
-    m_latestSessionActionId = jsonValue.GetString("latestSessionActionId");
 
   }
 
@@ -74,27 +78,15 @@ GetTaskResult& GetTaskResult::operator =(const Aws::AmazonWebServiceResult<JsonV
     }
   }
 
-  if(jsonValue.ValueExists("runStatus"))
-  {
-    m_runStatus = TaskRunStatusMapper::GetTaskRunStatusForName(jsonValue.GetString("runStatus"));
-
-  }
-
   if(jsonValue.ValueExists("startedAt"))
   {
     m_startedAt = jsonValue.GetString("startedAt");
 
   }
 
-  if(jsonValue.ValueExists("targetRunStatus"))
+  if(jsonValue.ValueExists("endedAt"))
   {
-    m_targetRunStatus = TaskTargetRunStatusMapper::GetTaskTargetRunStatusForName(jsonValue.GetString("targetRunStatus"));
-
-  }
-
-  if(jsonValue.ValueExists("taskId"))
-  {
-    m_taskId = jsonValue.GetString("taskId");
+    m_endedAt = jsonValue.GetString("endedAt");
 
   }
 
@@ -107,6 +99,12 @@ GetTaskResult& GetTaskResult::operator =(const Aws::AmazonWebServiceResult<JsonV
   if(jsonValue.ValueExists("updatedBy"))
   {
     m_updatedBy = jsonValue.GetString("updatedBy");
+
+  }
+
+  if(jsonValue.ValueExists("latestSessionActionId"))
+  {
+    m_latestSessionActionId = jsonValue.GetString("latestSessionActionId");
 
   }
 

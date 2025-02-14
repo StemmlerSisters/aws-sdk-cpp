@@ -32,136 +32,52 @@ namespace Model
     AWS_ENTITYRESOLUTION_API Aws::String SerializePayload() const override;
 
 
+    ///@{
     /**
      * <p>The Amazon Resource Name (ARN) of the resource for which the policy needs to
      * be updated.</p>
      */
     inline const Aws::String& GetArn() const{ return m_arn; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the resource for which the policy needs to
-     * be updated.</p>
-     */
     inline bool ArnHasBeenSet() const { return m_arnHasBeenSet; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the resource for which the policy needs to
-     * be updated.</p>
-     */
     inline void SetArn(const Aws::String& value) { m_arnHasBeenSet = true; m_arn = value; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the resource for which the policy needs to
-     * be updated.</p>
-     */
     inline void SetArn(Aws::String&& value) { m_arnHasBeenSet = true; m_arn = std::move(value); }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the resource for which the policy needs to
-     * be updated.</p>
-     */
     inline void SetArn(const char* value) { m_arnHasBeenSet = true; m_arn.assign(value); }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the resource for which the policy needs to
-     * be updated.</p>
-     */
     inline PutPolicyRequest& WithArn(const Aws::String& value) { SetArn(value); return *this;}
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the resource for which the policy needs to
-     * be updated.</p>
-     */
     inline PutPolicyRequest& WithArn(Aws::String&& value) { SetArn(std::move(value)); return *this;}
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the resource for which the policy needs to
-     * be updated.</p>
-     */
     inline PutPolicyRequest& WithArn(const char* value) { SetArn(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p>The resource-based policy.</p>
+     * <p>The resource-based policy.</p>  <p>If you set the value of the
+     * <code>effect</code> parameter in the <code>policy</code> to <code>Deny</code>
+     * for the <code>PutPolicy</code> operation, you must also set the value of the
+     * <code>effect</code> parameter to <code>Deny</code> for the
+     * <code>AddPolicyStatement</code> operation.</p> 
      */
     inline const Aws::String& GetPolicy() const{ return m_policy; }
-
-    /**
-     * <p>The resource-based policy.</p>
-     */
     inline bool PolicyHasBeenSet() const { return m_policyHasBeenSet; }
-
-    /**
-     * <p>The resource-based policy.</p>
-     */
     inline void SetPolicy(const Aws::String& value) { m_policyHasBeenSet = true; m_policy = value; }
-
-    /**
-     * <p>The resource-based policy.</p>
-     */
     inline void SetPolicy(Aws::String&& value) { m_policyHasBeenSet = true; m_policy = std::move(value); }
-
-    /**
-     * <p>The resource-based policy.</p>
-     */
     inline void SetPolicy(const char* value) { m_policyHasBeenSet = true; m_policy.assign(value); }
-
-    /**
-     * <p>The resource-based policy.</p>
-     */
     inline PutPolicyRequest& WithPolicy(const Aws::String& value) { SetPolicy(value); return *this;}
-
-    /**
-     * <p>The resource-based policy.</p>
-     */
     inline PutPolicyRequest& WithPolicy(Aws::String&& value) { SetPolicy(std::move(value)); return *this;}
-
-    /**
-     * <p>The resource-based policy.</p>
-     */
     inline PutPolicyRequest& WithPolicy(const char* value) { SetPolicy(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>A unique identifier for the current revision of the policy.</p>
      */
     inline const Aws::String& GetToken() const{ return m_token; }
-
-    /**
-     * <p>A unique identifier for the current revision of the policy.</p>
-     */
     inline bool TokenHasBeenSet() const { return m_tokenHasBeenSet; }
-
-    /**
-     * <p>A unique identifier for the current revision of the policy.</p>
-     */
     inline void SetToken(const Aws::String& value) { m_tokenHasBeenSet = true; m_token = value; }
-
-    /**
-     * <p>A unique identifier for the current revision of the policy.</p>
-     */
     inline void SetToken(Aws::String&& value) { m_tokenHasBeenSet = true; m_token = std::move(value); }
-
-    /**
-     * <p>A unique identifier for the current revision of the policy.</p>
-     */
     inline void SetToken(const char* value) { m_tokenHasBeenSet = true; m_token.assign(value); }
-
-    /**
-     * <p>A unique identifier for the current revision of the policy.</p>
-     */
     inline PutPolicyRequest& WithToken(const Aws::String& value) { SetToken(value); return *this;}
-
-    /**
-     * <p>A unique identifier for the current revision of the policy.</p>
-     */
     inline PutPolicyRequest& WithToken(Aws::String&& value) { SetToken(std::move(value)); return *this;}
-
-    /**
-     * <p>A unique identifier for the current revision of the policy.</p>
-     */
     inline PutPolicyRequest& WithToken(const char* value) { SetToken(value); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_arn;

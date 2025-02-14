@@ -24,17 +24,13 @@ TargetAddress::TargetAddress() :
     m_portHasBeenSet(false),
     m_ipv6HasBeenSet(false),
     m_protocol(Protocol::NOT_SET),
-    m_protocolHasBeenSet(false)
+    m_protocolHasBeenSet(false),
+    m_serverNameIndicationHasBeenSet(false)
 {
 }
 
-TargetAddress::TargetAddress(JsonView jsonValue) : 
-    m_ipHasBeenSet(false),
-    m_port(0),
-    m_portHasBeenSet(false),
-    m_ipv6HasBeenSet(false),
-    m_protocol(Protocol::NOT_SET),
-    m_protocolHasBeenSet(false)
+TargetAddress::TargetAddress(JsonView jsonValue)
+  : TargetAddress()
 {
   *this = jsonValue;
 }
@@ -69,6 +65,13 @@ TargetAddress& TargetAddress::operator =(JsonView jsonValue)
     m_protocolHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("ServerNameIndication"))
+  {
+    m_serverNameIndication = jsonValue.GetString("ServerNameIndication");
+
+    m_serverNameIndicationHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -97,6 +100,12 @@ JsonValue TargetAddress::Jsonize() const
   if(m_protocolHasBeenSet)
   {
    payload.WithString("Protocol", ProtocolMapper::GetNameForProtocol(m_protocol));
+  }
+
+  if(m_serverNameIndicationHasBeenSet)
+  {
+   payload.WithString("ServerNameIndication", m_serverNameIndication);
+
   }
 
   return payload;

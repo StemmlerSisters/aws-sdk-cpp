@@ -8,6 +8,7 @@
 #include <aws/core/Core_EXPORTS.h>
 
 #include <aws/core/client/RequestCompression.h>
+#include <aws/core/client/UserAgent.h>
 #include <aws/core/auth/AWSAuthSigner.h>
 #include <aws/core/client/CoreErrors.h>
 #include <aws/core/endpoint/EndpointParameter.h>
@@ -83,6 +84,12 @@ namespace Aws
          * Defaults to false, if this is set to true in derived class, it's an event stream request, which means the payload is consisted by multiple structured events.
          */
         inline virtual bool IsEventStreamRequest() const { return false; }
+
+        /**
+         * Defaults to false, if this is set to true in derived class, the operation using this request will return an event stream response.
+         */
+        inline virtual bool HasEventStreamResponse() const { return false; }
+
         /**
          * Defaults to true, if this is set to false, then signers, if they support body signing, will not do so
          */
@@ -119,38 +126,51 @@ namespace Aws
          * Set the response stream factory.
          */
         void SetResponseStreamFactory(const Aws::IOStreamFactory& factory) { m_responseStreamFactory = factory; }
+
+        ///@{
+        /**
+         * Sets the closure for headers received event.
+         */
+        inline virtual void SetHeadersReceivedEventHandler(const Aws::Http::HeadersReceivedEventHandler& headersReceivedEventHandler) { m_onHeadersReceived = headersReceivedEventHandler; }
+        inline virtual void SetHeadersReceivedEventHandler(Aws::Http::HeadersReceivedEventHandler&& headersReceivedEventHandler) { m_onHeadersReceived = std::move(headersReceivedEventHandler); }
+        ///@}
+
+        ///@{
         /**
          * Register closure for data received event.
          */
         inline virtual void SetDataReceivedEventHandler(const Aws::Http::DataReceivedEventHandler& dataReceivedEventHandler) { m_onDataReceived = dataReceivedEventHandler; }
+        inline virtual void SetDataReceivedEventHandler(Aws::Http::DataReceivedEventHandler&& dataReceivedEventHandler) { m_onDataReceived = std::move(dataReceivedEventHandler); }
+        ///@}
+
+        ///@{
         /**
-         * register closure for data sent event
+         * Register closure for data sent event
          */
         inline virtual void SetDataSentEventHandler(const Aws::Http::DataSentEventHandler& dataSentEventHandler) { m_onDataSent = dataSentEventHandler; }
+        inline virtual void SetDataSentEventHandler(Aws::Http::DataSentEventHandler&& dataSentEventHandler) { m_onDataSent = std::move(dataSentEventHandler); }
+        ///@}
+
+        ///@{
         /**
          * Register closure for  handling whether or not to continue a request.
          */
         inline virtual void SetContinueRequestHandler(const Aws::Http::ContinueRequestHandler& continueRequestHandler) { m_continueRequest = continueRequestHandler; }
-        /**
-         * Register closure for data received event.
-         */
-        inline virtual void SetDataReceivedEventHandler(Aws::Http::DataReceivedEventHandler&& dataReceivedEventHandler) { m_onDataReceived = std::move(dataReceivedEventHandler); }
-        /**
-         * register closure for data sent event
-         */
-        inline virtual void SetDataSentEventHandler(Aws::Http::DataSentEventHandler&& dataSentEventHandler) { m_onDataSent = std::move(dataSentEventHandler); }
-        /**
-         * Register closure for handling whether or not to cancel a request.
-         */
         inline virtual void SetContinueRequestHandler(Aws::Http::ContinueRequestHandler&& continueRequestHandler) { m_continueRequest = std::move(continueRequestHandler); }
+        ///@}
+
+        ///@{
         /**
          * Register closure for notification that a request is being retried
          */
         inline virtual void SetRequestRetryHandler(const RequestRetryHandler& handler) { m_requestRetryHandler = handler; }
-        /**
-         * Register closure for notification that a request is being retried
-         */
         inline virtual void SetRequestRetryHandler(RequestRetryHandler&& handler) { m_requestRetryHandler = std::move(handler); }
+        ///@}
+
+        /**
+         * get closure for headers received event.
+         */
+        inline virtual const Aws::Http::HeadersReceivedEventHandler& GetHeadersReceivedEventHandler() const { return m_onHeadersReceived; }
         /**
          * get closure for data received event.
          */
@@ -190,6 +210,19 @@ namespace Aws
         virtual Aws::Client::CompressionAlgorithm
         GetSelectedCompressionAlgorithm(Aws::Client::RequestCompressionConfig) const { return Aws::Client::CompressionAlgorithm::NONE; }
 
+        /**
+         * Adds a used feature to the user agent string for the request.
+         * @param feature the feature to be added in the user agent string.
+         */
+        void AddUserAgentFeature(Aws::Client::UserAgentFeature feature) const { m_userAgentFeatures.insert(feature); }
+
+        /**
+         * Gets all features that would be included in the requests user agent string.
+         * @return a set of features that will be included in the user agent associated with this request.
+         */
+        Aws::Set<Aws::Client::UserAgentFeature> GetUserAgentFeatures() const { return m_userAgentFeatures; }
+
+      inline virtual bool RequestChecksumRequired() const { return false; }
     protected:
         /**
          * Default does nothing. Override this to convert what would otherwise be the payload of the
@@ -201,12 +234,14 @@ namespace Aws
     private:
         Aws::IOStreamFactory m_responseStreamFactory;
 
+        Aws::Http::HeadersReceivedEventHandler m_onHeadersReceived;
         Aws::Http::DataReceivedEventHandler m_onDataReceived;
         Aws::Http::DataSentEventHandler m_onDataSent;
         Aws::Http::ContinueRequestHandler m_continueRequest;
         RequestSignedHandler m_onRequestSigned;
         RequestRetryHandler m_requestRetryHandler;
         mutable std::shared_ptr<Aws::Http::ServiceSpecificParameters> m_serviceSpecificParameters;
+        mutable Aws::Set<Client::UserAgentFeature> m_userAgentFeatures;
     };
 
 } // namespace Aws

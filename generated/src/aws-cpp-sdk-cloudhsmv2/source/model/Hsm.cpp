@@ -24,23 +24,17 @@ Hsm::Hsm() :
     m_subnetIdHasBeenSet(false),
     m_eniIdHasBeenSet(false),
     m_eniIpHasBeenSet(false),
+    m_eniIpV6HasBeenSet(false),
     m_hsmIdHasBeenSet(false),
+    m_hsmTypeHasBeenSet(false),
     m_state(HsmState::NOT_SET),
     m_stateHasBeenSet(false),
     m_stateMessageHasBeenSet(false)
 {
 }
 
-Hsm::Hsm(JsonView jsonValue) : 
-    m_availabilityZoneHasBeenSet(false),
-    m_clusterIdHasBeenSet(false),
-    m_subnetIdHasBeenSet(false),
-    m_eniIdHasBeenSet(false),
-    m_eniIpHasBeenSet(false),
-    m_hsmIdHasBeenSet(false),
-    m_state(HsmState::NOT_SET),
-    m_stateHasBeenSet(false),
-    m_stateMessageHasBeenSet(false)
+Hsm::Hsm(JsonView jsonValue)
+  : Hsm()
 {
   *this = jsonValue;
 }
@@ -82,11 +76,25 @@ Hsm& Hsm::operator =(JsonView jsonValue)
     m_eniIpHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("EniIpV6"))
+  {
+    m_eniIpV6 = jsonValue.GetString("EniIpV6");
+
+    m_eniIpV6HasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("HsmId"))
   {
     m_hsmId = jsonValue.GetString("HsmId");
 
     m_hsmIdHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("HsmType"))
+  {
+    m_hsmType = jsonValue.GetString("HsmType");
+
+    m_hsmTypeHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("State"))
@@ -140,9 +148,21 @@ JsonValue Hsm::Jsonize() const
 
   }
 
+  if(m_eniIpV6HasBeenSet)
+  {
+   payload.WithString("EniIpV6", m_eniIpV6);
+
+  }
+
   if(m_hsmIdHasBeenSet)
   {
    payload.WithString("HsmId", m_hsmId);
+
+  }
+
+  if(m_hsmTypeHasBeenSet)
+  {
+   payload.WithString("HsmType", m_hsmType);
 
   }
 

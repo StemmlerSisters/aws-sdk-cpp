@@ -7,7 +7,7 @@
 
 /* Generic header includes */
 #include <aws/timestream-query/TimestreamQueryErrors.h>
-#include <aws/core/client/GenericClientConfiguration.h>
+#include <aws/timestream-query/TimestreamQueryClientConfiguration.h>
 #include <aws/core/client/AWSError.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/core/client/AsyncCallerContext.h>
@@ -31,6 +31,10 @@
 #include <aws/timestream-query/model/TagResourceResult.h>
 #include <aws/timestream-query/model/UntagResourceResult.h>
 #include <aws/timestream-query/model/UpdateAccountSettingsResult.h>
+#include <aws/timestream-query/model/DescribeAccountSettingsRequest.h>
+#include <aws/timestream-query/model/UpdateAccountSettingsRequest.h>
+#include <aws/timestream-query/model/DescribeEndpointsRequest.h>
+#include <aws/timestream-query/model/ListScheduledQueriesRequest.h>
 #include <aws/core/NoResult.h>
 /* End of service model headers required in TimestreamQueryClient header */
 
@@ -65,7 +69,6 @@ namespace Aws
 
   namespace TimestreamQuery
   {
-    using TimestreamQueryClientConfiguration = Aws::Client::GenericClientConfiguration<true>;
     using TimestreamQueryEndpointProviderBase = Aws::TimestreamQuery::Endpoint::TimestreamQueryEndpointProviderBase;
     using TimestreamQueryEndpointProvider = Aws::TimestreamQuery::Endpoint::TimestreamQueryEndpointProvider;
 

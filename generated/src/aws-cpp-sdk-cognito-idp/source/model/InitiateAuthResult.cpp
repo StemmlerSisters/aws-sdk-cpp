@@ -22,8 +22,8 @@ InitiateAuthResult::InitiateAuthResult() :
 {
 }
 
-InitiateAuthResult::InitiateAuthResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_challengeName(ChallengeNameType::NOT_SET)
+InitiateAuthResult::InitiateAuthResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : InitiateAuthResult()
 {
   *this = result;
 }
@@ -56,6 +56,15 @@ InitiateAuthResult& InitiateAuthResult::operator =(const Aws::AmazonWebServiceRe
   {
     m_authenticationResult = jsonValue.GetObject("AuthenticationResult");
 
+  }
+
+  if(jsonValue.ValueExists("AvailableChallenges"))
+  {
+    Aws::Utils::Array<JsonView> availableChallengesJsonList = jsonValue.GetArray("AvailableChallenges");
+    for(unsigned availableChallengesIndex = 0; availableChallengesIndex < availableChallengesJsonList.GetLength(); ++availableChallengesIndex)
+    {
+      m_availableChallenges.push_back(ChallengeNameTypeMapper::GetChallengeNameTypeForName(availableChallengesJsonList[availableChallengesIndex].AsString()));
+    }
   }
 
 

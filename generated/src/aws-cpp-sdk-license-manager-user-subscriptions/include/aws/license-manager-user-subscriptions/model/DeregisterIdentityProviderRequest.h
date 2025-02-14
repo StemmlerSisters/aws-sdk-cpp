@@ -33,81 +33,56 @@ namespace Model
     AWS_LICENSEMANAGERUSERSUBSCRIPTIONS_API Aws::String SerializePayload() const override;
 
 
+    ///@{
     /**
-     * <p>An object that specifies details for the identity provider.</p>
+     * <p>An object that specifies details for the Active Directory identity
+     * provider.</p>
      */
     inline const IdentityProvider& GetIdentityProvider() const{ return m_identityProvider; }
-
-    /**
-     * <p>An object that specifies details for the identity provider.</p>
-     */
     inline bool IdentityProviderHasBeenSet() const { return m_identityProviderHasBeenSet; }
-
-    /**
-     * <p>An object that specifies details for the identity provider.</p>
-     */
     inline void SetIdentityProvider(const IdentityProvider& value) { m_identityProviderHasBeenSet = true; m_identityProvider = value; }
-
-    /**
-     * <p>An object that specifies details for the identity provider.</p>
-     */
     inline void SetIdentityProvider(IdentityProvider&& value) { m_identityProviderHasBeenSet = true; m_identityProvider = std::move(value); }
-
-    /**
-     * <p>An object that specifies details for the identity provider.</p>
-     */
     inline DeregisterIdentityProviderRequest& WithIdentityProvider(const IdentityProvider& value) { SetIdentityProvider(value); return *this;}
-
-    /**
-     * <p>An object that specifies details for the identity provider.</p>
-     */
     inline DeregisterIdentityProviderRequest& WithIdentityProvider(IdentityProvider&& value) { SetIdentityProvider(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p>The name of the user-based subscription product.</p>
+     * <p>The Amazon Resource Name (ARN) that identifies the identity provider to
+     * deregister.</p>
+     */
+    inline const Aws::String& GetIdentityProviderArn() const{ return m_identityProviderArn; }
+    inline bool IdentityProviderArnHasBeenSet() const { return m_identityProviderArnHasBeenSet; }
+    inline void SetIdentityProviderArn(const Aws::String& value) { m_identityProviderArnHasBeenSet = true; m_identityProviderArn = value; }
+    inline void SetIdentityProviderArn(Aws::String&& value) { m_identityProviderArnHasBeenSet = true; m_identityProviderArn = std::move(value); }
+    inline void SetIdentityProviderArn(const char* value) { m_identityProviderArnHasBeenSet = true; m_identityProviderArn.assign(value); }
+    inline DeregisterIdentityProviderRequest& WithIdentityProviderArn(const Aws::String& value) { SetIdentityProviderArn(value); return *this;}
+    inline DeregisterIdentityProviderRequest& WithIdentityProviderArn(Aws::String&& value) { SetIdentityProviderArn(std::move(value)); return *this;}
+    inline DeregisterIdentityProviderRequest& WithIdentityProviderArn(const char* value) { SetIdentityProviderArn(value); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>The name of the user-based subscription product.</p> <p>Valid values:
+     * <code>VISUAL_STUDIO_ENTERPRISE</code> | <code>VISUAL_STUDIO_PROFESSIONAL</code>
+     * | <code>OFFICE_PROFESSIONAL_PLUS</code> </p>
      */
     inline const Aws::String& GetProduct() const{ return m_product; }
-
-    /**
-     * <p>The name of the user-based subscription product.</p>
-     */
     inline bool ProductHasBeenSet() const { return m_productHasBeenSet; }
-
-    /**
-     * <p>The name of the user-based subscription product.</p>
-     */
     inline void SetProduct(const Aws::String& value) { m_productHasBeenSet = true; m_product = value; }
-
-    /**
-     * <p>The name of the user-based subscription product.</p>
-     */
     inline void SetProduct(Aws::String&& value) { m_productHasBeenSet = true; m_product = std::move(value); }
-
-    /**
-     * <p>The name of the user-based subscription product.</p>
-     */
     inline void SetProduct(const char* value) { m_productHasBeenSet = true; m_product.assign(value); }
-
-    /**
-     * <p>The name of the user-based subscription product.</p>
-     */
     inline DeregisterIdentityProviderRequest& WithProduct(const Aws::String& value) { SetProduct(value); return *this;}
-
-    /**
-     * <p>The name of the user-based subscription product.</p>
-     */
     inline DeregisterIdentityProviderRequest& WithProduct(Aws::String&& value) { SetProduct(std::move(value)); return *this;}
-
-    /**
-     * <p>The name of the user-based subscription product.</p>
-     */
     inline DeregisterIdentityProviderRequest& WithProduct(const char* value) { SetProduct(value); return *this;}
-
+    ///@}
   private:
 
     IdentityProvider m_identityProvider;
     bool m_identityProviderHasBeenSet = false;
+
+    Aws::String m_identityProviderArn;
+    bool m_identityProviderArnHasBeenSet = false;
 
     Aws::String m_product;
     bool m_productHasBeenSet = false;

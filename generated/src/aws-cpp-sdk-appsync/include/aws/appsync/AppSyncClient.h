@@ -6,25 +6,37 @@
 #pragma once
 #include <aws/appsync/AppSync_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/appsync/AppSyncServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/appsync/AppSyncErrorMarshaller.h>
 
 namespace Aws
 {
 namespace AppSync
 {
+  AWS_APPSYNC_API extern const char SERVICE_NAME[];
   /**
    * <p>AppSync provides API actions for creating and interacting with data sources
    * using GraphQL from your application.</p>
    */
-  class AWS_APPSYNC_API AppSyncClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<AppSyncClient>
+  class AWS_APPSYNC_API AppSyncClient : smithy::client::AwsSmithyClientT<Aws::AppSync::SERVICE_NAME,
+      Aws::AppSync::AppSyncClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      AppSyncEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::AppSyncErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<AppSyncClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "AppSync"; }
 
       typedef AppSyncClientConfiguration ClientConfigurationType;
       typedef AppSyncEndpointProvider EndpointProviderType;
@@ -155,6 +167,34 @@ namespace AppSync
         }
 
         /**
+         * <p>Creates an <code>Api</code> object. Use this operation to create an AppSync
+         * API with your preferred configuration, such as an Event API that provides
+         * real-time message publishing and message subscriptions over
+         * WebSockets.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/appsync-2017-07-25/CreateApi">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateApiOutcome CreateApi(const Model::CreateApiRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateApi that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateApiRequestT = Model::CreateApiRequest>
+        Model::CreateApiOutcomeCallable CreateApiCallable(const CreateApiRequestT& request) const
+        {
+            return SubmitCallable(&AppSyncClient::CreateApi, request);
+        }
+
+        /**
+         * An Async wrapper for CreateApi that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateApiRequestT = Model::CreateApiRequest>
+        void CreateApiAsync(const CreateApiRequestT& request, const CreateApiResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&AppSyncClient::CreateApi, request, handler, context);
+        }
+
+        /**
          * <p>Creates a cache for the GraphQL API.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/appsync-2017-07-25/CreateApiCache">AWS
          * API Reference</a></p>
@@ -203,6 +243,32 @@ namespace AppSync
         void CreateApiKeyAsync(const CreateApiKeyRequestT& request, const CreateApiKeyResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&AppSyncClient::CreateApiKey, request, handler, context);
+        }
+
+        /**
+         * <p>Creates a <code>ChannelNamespace</code> for an
+         * <code>Api</code>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/appsync-2017-07-25/CreateChannelNamespace">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateChannelNamespaceOutcome CreateChannelNamespace(const Model::CreateChannelNamespaceRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateChannelNamespace that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateChannelNamespaceRequestT = Model::CreateChannelNamespaceRequest>
+        Model::CreateChannelNamespaceOutcomeCallable CreateChannelNamespaceCallable(const CreateChannelNamespaceRequestT& request) const
+        {
+            return SubmitCallable(&AppSyncClient::CreateChannelNamespace, request);
+        }
+
+        /**
+         * An Async wrapper for CreateChannelNamespace that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateChannelNamespaceRequestT = Model::CreateChannelNamespaceRequest>
+        void CreateChannelNamespaceAsync(const CreateChannelNamespaceRequestT& request, const CreateChannelNamespaceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&AppSyncClient::CreateChannelNamespace, request, handler, context);
         }
 
         /**
@@ -361,6 +427,31 @@ namespace AppSync
         }
 
         /**
+         * <p>Deletes an <code>Api</code> object</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/appsync-2017-07-25/DeleteApi">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteApiOutcome DeleteApi(const Model::DeleteApiRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteApi that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteApiRequestT = Model::DeleteApiRequest>
+        Model::DeleteApiOutcomeCallable DeleteApiCallable(const DeleteApiRequestT& request) const
+        {
+            return SubmitCallable(&AppSyncClient::DeleteApi, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteApi that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteApiRequestT = Model::DeleteApiRequest>
+        void DeleteApiAsync(const DeleteApiRequestT& request, const DeleteApiResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&AppSyncClient::DeleteApi, request, handler, context);
+        }
+
+        /**
          * <p>Deletes an <code>ApiCache</code> object.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/appsync-2017-07-25/DeleteApiCache">AWS
          * API Reference</a></p>
@@ -408,6 +499,31 @@ namespace AppSync
         void DeleteApiKeyAsync(const DeleteApiKeyRequestT& request, const DeleteApiKeyResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&AppSyncClient::DeleteApiKey, request, handler, context);
+        }
+
+        /**
+         * <p>Deletes a <code>ChannelNamespace</code>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/appsync-2017-07-25/DeleteChannelNamespace">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteChannelNamespaceOutcome DeleteChannelNamespace(const Model::DeleteChannelNamespaceRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteChannelNamespace that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteChannelNamespaceRequestT = Model::DeleteChannelNamespaceRequest>
+        Model::DeleteChannelNamespaceOutcomeCallable DeleteChannelNamespaceCallable(const DeleteChannelNamespaceRequestT& request) const
+        {
+            return SubmitCallable(&AppSyncClient::DeleteChannelNamespace, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteChannelNamespace that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteChannelNamespaceRequestT = Model::DeleteChannelNamespaceRequest>
+        void DeleteChannelNamespaceAsync(const DeleteChannelNamespaceRequestT& request, const DeleteChannelNamespaceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&AppSyncClient::DeleteChannelNamespace, request, handler, context);
         }
 
         /**
@@ -727,6 +843,31 @@ namespace AppSync
         }
 
         /**
+         * <p>Retrieves an <code>Api</code> object.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/appsync-2017-07-25/GetApi">AWS API
+         * Reference</a></p>
+         */
+        virtual Model::GetApiOutcome GetApi(const Model::GetApiRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetApi that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetApiRequestT = Model::GetApiRequest>
+        Model::GetApiOutcomeCallable GetApiCallable(const GetApiRequestT& request) const
+        {
+            return SubmitCallable(&AppSyncClient::GetApi, request);
+        }
+
+        /**
+         * An Async wrapper for GetApi that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetApiRequestT = Model::GetApiRequest>
+        void GetApiAsync(const GetApiRequestT& request, const GetApiResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&AppSyncClient::GetApi, request, handler, context);
+        }
+
+        /**
          * <p>Retrieves an <code>ApiAssociation</code> object.</p><p><h3>See Also:</h3>  
          * <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/appsync-2017-07-25/GetApiAssociation">AWS
@@ -775,6 +916,32 @@ namespace AppSync
         void GetApiCacheAsync(const GetApiCacheRequestT& request, const GetApiCacheResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&AppSyncClient::GetApiCache, request, handler, context);
+        }
+
+        /**
+         * <p>Retrieves the channel namespace for a specified
+         * <code>Api</code>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/appsync-2017-07-25/GetChannelNamespace">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetChannelNamespaceOutcome GetChannelNamespace(const Model::GetChannelNamespaceRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetChannelNamespace that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetChannelNamespaceRequestT = Model::GetChannelNamespaceRequest>
+        Model::GetChannelNamespaceOutcomeCallable GetChannelNamespaceCallable(const GetChannelNamespaceRequestT& request) const
+        {
+            return SubmitCallable(&AppSyncClient::GetChannelNamespace, request);
+        }
+
+        /**
+         * An Async wrapper for GetChannelNamespace that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetChannelNamespaceRequestT = Model::GetChannelNamespaceRequest>
+        void GetChannelNamespaceAsync(const GetChannelNamespaceRequestT& request, const GetChannelNamespaceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&AppSyncClient::GetChannelNamespace, request, handler, context);
         }
 
         /**
@@ -1090,6 +1257,61 @@ namespace AppSync
         }
 
         /**
+         * <p>Lists the APIs in your AppSync account.</p> <p> <code>ListApis</code> returns
+         * only the high level API details. For more detailed information about an API, use
+         * <code>GetApi</code>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/appsync-2017-07-25/ListApis">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListApisOutcome ListApis(const Model::ListApisRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for ListApis that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListApisRequestT = Model::ListApisRequest>
+        Model::ListApisOutcomeCallable ListApisCallable(const ListApisRequestT& request = {}) const
+        {
+            return SubmitCallable(&AppSyncClient::ListApis, request);
+        }
+
+        /**
+         * An Async wrapper for ListApis that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListApisRequestT = Model::ListApisRequest>
+        void ListApisAsync(const ListApisResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListApisRequestT& request = {}) const
+        {
+            return SubmitAsync(&AppSyncClient::ListApis, request, handler, context);
+        }
+
+        /**
+         * <p>Lists the channel namespaces for a specified <code>Api</code>.</p> <p>
+         * <code>ListChannelNamespaces</code> returns only high level details for the
+         * channel namespace. To retrieve code handlers, use
+         * <code>GetChannelNamespace</code>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/appsync-2017-07-25/ListChannelNamespaces">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListChannelNamespacesOutcome ListChannelNamespaces(const Model::ListChannelNamespacesRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListChannelNamespaces that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListChannelNamespacesRequestT = Model::ListChannelNamespacesRequest>
+        Model::ListChannelNamespacesOutcomeCallable ListChannelNamespacesCallable(const ListChannelNamespacesRequestT& request) const
+        {
+            return SubmitCallable(&AppSyncClient::ListChannelNamespaces, request);
+        }
+
+        /**
+         * An Async wrapper for ListChannelNamespaces that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListChannelNamespacesRequestT = Model::ListChannelNamespacesRequest>
+        void ListChannelNamespacesAsync(const ListChannelNamespacesRequestT& request, const ListChannelNamespacesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&AppSyncClient::ListChannelNamespaces, request, handler, context);
+        }
+
+        /**
          * <p>Lists the data sources for a given API.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/appsync-2017-07-25/ListDataSources">AWS
          * API Reference</a></p>
@@ -1119,13 +1341,13 @@ namespace AppSync
          * href="http://docs.aws.amazon.com/goto/WebAPI/appsync-2017-07-25/ListDomainNames">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDomainNamesOutcome ListDomainNames(const Model::ListDomainNamesRequest& request) const;
+        virtual Model::ListDomainNamesOutcome ListDomainNames(const Model::ListDomainNamesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDomainNames that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDomainNamesRequestT = Model::ListDomainNamesRequest>
-        Model::ListDomainNamesOutcomeCallable ListDomainNamesCallable(const ListDomainNamesRequestT& request) const
+        Model::ListDomainNamesOutcomeCallable ListDomainNamesCallable(const ListDomainNamesRequestT& request = {}) const
         {
             return SubmitCallable(&AppSyncClient::ListDomainNames, request);
         }
@@ -1134,7 +1356,7 @@ namespace AppSync
          * An Async wrapper for ListDomainNames that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDomainNamesRequestT = Model::ListDomainNamesRequest>
-        void ListDomainNamesAsync(const ListDomainNamesRequestT& request, const ListDomainNamesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDomainNamesAsync(const ListDomainNamesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDomainNamesRequestT& request = {}) const
         {
             return SubmitAsync(&AppSyncClient::ListDomainNames, request, handler, context);
         }
@@ -1169,13 +1391,13 @@ namespace AppSync
          * href="http://docs.aws.amazon.com/goto/WebAPI/appsync-2017-07-25/ListGraphqlApis">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListGraphqlApisOutcome ListGraphqlApis(const Model::ListGraphqlApisRequest& request) const;
+        virtual Model::ListGraphqlApisOutcome ListGraphqlApis(const Model::ListGraphqlApisRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListGraphqlApis that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListGraphqlApisRequestT = Model::ListGraphqlApisRequest>
-        Model::ListGraphqlApisOutcomeCallable ListGraphqlApisCallable(const ListGraphqlApisRequestT& request) const
+        Model::ListGraphqlApisOutcomeCallable ListGraphqlApisCallable(const ListGraphqlApisRequestT& request = {}) const
         {
             return SubmitCallable(&AppSyncClient::ListGraphqlApis, request);
         }
@@ -1184,7 +1406,7 @@ namespace AppSync
          * An Async wrapper for ListGraphqlApis that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListGraphqlApisRequestT = Model::ListGraphqlApisRequest>
-        void ListGraphqlApisAsync(const ListGraphqlApisRequestT& request, const ListGraphqlApisResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListGraphqlApisAsync(const ListGraphqlApisResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListGraphqlApisRequestT& request = {}) const
         {
             return SubmitAsync(&AppSyncClient::ListGraphqlApis, request, handler, context);
         }
@@ -1394,13 +1616,13 @@ namespace AppSync
          * href="http://docs.aws.amazon.com/goto/WebAPI/appsync-2017-07-25/StartDataSourceIntrospection">AWS
          * API Reference</a></p>
          */
-        virtual Model::StartDataSourceIntrospectionOutcome StartDataSourceIntrospection(const Model::StartDataSourceIntrospectionRequest& request) const;
+        virtual Model::StartDataSourceIntrospectionOutcome StartDataSourceIntrospection(const Model::StartDataSourceIntrospectionRequest& request = {}) const;
 
         /**
          * A Callable wrapper for StartDataSourceIntrospection that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename StartDataSourceIntrospectionRequestT = Model::StartDataSourceIntrospectionRequest>
-        Model::StartDataSourceIntrospectionOutcomeCallable StartDataSourceIntrospectionCallable(const StartDataSourceIntrospectionRequestT& request) const
+        Model::StartDataSourceIntrospectionOutcomeCallable StartDataSourceIntrospectionCallable(const StartDataSourceIntrospectionRequestT& request = {}) const
         {
             return SubmitCallable(&AppSyncClient::StartDataSourceIntrospection, request);
         }
@@ -1409,7 +1631,7 @@ namespace AppSync
          * An Async wrapper for StartDataSourceIntrospection that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename StartDataSourceIntrospectionRequestT = Model::StartDataSourceIntrospectionRequest>
-        void StartDataSourceIntrospectionAsync(const StartDataSourceIntrospectionRequestT& request, const StartDataSourceIntrospectionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void StartDataSourceIntrospectionAsync(const StartDataSourceIntrospectionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const StartDataSourceIntrospectionRequestT& request = {}) const
         {
             return SubmitAsync(&AppSyncClient::StartDataSourceIntrospection, request, handler, context);
         }
@@ -1517,6 +1739,31 @@ namespace AppSync
         }
 
         /**
+         * <p>Updates an <code>Api</code>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/appsync-2017-07-25/UpdateApi">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateApiOutcome UpdateApi(const Model::UpdateApiRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateApi that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateApiRequestT = Model::UpdateApiRequest>
+        Model::UpdateApiOutcomeCallable UpdateApiCallable(const UpdateApiRequestT& request) const
+        {
+            return SubmitCallable(&AppSyncClient::UpdateApi, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateApi that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateApiRequestT = Model::UpdateApiRequest>
+        void UpdateApiAsync(const UpdateApiRequestT& request, const UpdateApiResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&AppSyncClient::UpdateApi, request, handler, context);
+        }
+
+        /**
          * <p>Updates the cache for the GraphQL API.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/appsync-2017-07-25/UpdateApiCache">AWS
          * API Reference</a></p>
@@ -1565,6 +1812,32 @@ namespace AppSync
         void UpdateApiKeyAsync(const UpdateApiKeyRequestT& request, const UpdateApiKeyResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&AppSyncClient::UpdateApiKey, request, handler, context);
+        }
+
+        /**
+         * <p>Updates a <code>ChannelNamespace</code> associated with an
+         * <code>Api</code>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/appsync-2017-07-25/UpdateChannelNamespace">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateChannelNamespaceOutcome UpdateChannelNamespace(const Model::UpdateChannelNamespaceRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateChannelNamespace that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateChannelNamespaceRequestT = Model::UpdateChannelNamespaceRequest>
+        Model::UpdateChannelNamespaceOutcomeCallable UpdateChannelNamespaceCallable(const UpdateChannelNamespaceRequestT& request) const
+        {
+            return SubmitCallable(&AppSyncClient::UpdateChannelNamespace, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateChannelNamespace that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateChannelNamespaceRequestT = Model::UpdateChannelNamespaceRequest>
+        void UpdateChannelNamespaceAsync(const UpdateChannelNamespaceRequestT& request, const UpdateChannelNamespaceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&AppSyncClient::UpdateChannelNamespace, request, handler, context);
         }
 
         /**
@@ -1749,11 +2022,7 @@ namespace AppSync
       std::shared_ptr<AppSyncEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<AppSyncClient>;
-      void init(const AppSyncClientConfiguration& clientConfiguration);
 
-      AppSyncClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<AppSyncEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace AppSync

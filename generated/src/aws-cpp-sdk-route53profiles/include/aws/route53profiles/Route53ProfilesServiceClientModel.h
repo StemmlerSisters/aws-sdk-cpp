@@ -34,6 +34,8 @@
 #include <aws/route53profiles/model/TagResourceResult.h>
 #include <aws/route53profiles/model/UntagResourceResult.h>
 #include <aws/route53profiles/model/UpdateProfileResourceAssociationResult.h>
+#include <aws/route53profiles/model/ListProfileAssociationsRequest.h>
+#include <aws/route53profiles/model/ListProfilesRequest.h>
 /* End of service model headers required in Route53ProfilesClient header */
 
 namespace Aws
@@ -67,7 +69,7 @@ namespace Aws
 
   namespace Route53Profiles
   {
-    using Route53ProfilesClientConfiguration = Aws::Client::GenericClientConfiguration<false>;
+    using Route53ProfilesClientConfiguration = Aws::Client::GenericClientConfiguration;
     using Route53ProfilesEndpointProviderBase = Aws::Route53Profiles::Endpoint::Route53ProfilesEndpointProviderBase;
     using Route53ProfilesEndpointProvider = Aws::Route53Profiles::Endpoint::Route53ProfilesEndpointProvider;
 

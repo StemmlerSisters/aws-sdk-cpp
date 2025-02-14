@@ -22,8 +22,8 @@ CreateServiceNetworkResult::CreateServiceNetworkResult() :
 {
 }
 
-CreateServiceNetworkResult::CreateServiceNetworkResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_authType(AuthType::NOT_SET)
+CreateServiceNetworkResult::CreateServiceNetworkResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : CreateServiceNetworkResult()
 {
   *this = result;
 }
@@ -52,6 +52,12 @@ CreateServiceNetworkResult& CreateServiceNetworkResult::operator =(const Aws::Am
   if(jsonValue.ValueExists("name"))
   {
     m_name = jsonValue.GetString("name");
+
+  }
+
+  if(jsonValue.ValueExists("sharingConfig"))
+  {
+    m_sharingConfig = jsonValue.GetObject("sharingConfig");
 
   }
 

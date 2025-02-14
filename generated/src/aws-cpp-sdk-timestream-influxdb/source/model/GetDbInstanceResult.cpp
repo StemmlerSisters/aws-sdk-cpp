@@ -19,6 +19,8 @@ using namespace Aws;
 
 GetDbInstanceResult::GetDbInstanceResult() : 
     m_status(Status::NOT_SET),
+    m_port(0),
+    m_networkType(NetworkType::NOT_SET),
     m_dbInstanceType(DbInstanceType::NOT_SET),
     m_dbStorageType(DbStorageType::NOT_SET),
     m_allocatedStorage(0),
@@ -27,13 +29,8 @@ GetDbInstanceResult::GetDbInstanceResult() :
 {
 }
 
-GetDbInstanceResult::GetDbInstanceResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_status(Status::NOT_SET),
-    m_dbInstanceType(DbInstanceType::NOT_SET),
-    m_dbStorageType(DbStorageType::NOT_SET),
-    m_allocatedStorage(0),
-    m_deploymentType(DeploymentType::NOT_SET),
-    m_publiclyAccessible(false)
+GetDbInstanceResult::GetDbInstanceResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetDbInstanceResult()
 {
   *this = result;
 }
@@ -68,6 +65,18 @@ GetDbInstanceResult& GetDbInstanceResult::operator =(const Aws::AmazonWebService
   if(jsonValue.ValueExists("endpoint"))
   {
     m_endpoint = jsonValue.GetString("endpoint");
+
+  }
+
+  if(jsonValue.ValueExists("port"))
+  {
+    m_port = jsonValue.GetInteger("port");
+
+  }
+
+  if(jsonValue.ValueExists("networkType"))
+  {
+    m_networkType = NetworkTypeMapper::GetNetworkTypeForName(jsonValue.GetString("networkType"));
 
   }
 

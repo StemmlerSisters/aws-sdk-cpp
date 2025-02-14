@@ -16,10 +16,10 @@ using namespace Aws::Utils;
 using namespace Aws::Http;
 
 DeleteDataSourceRequest::DeleteDataSourceRequest() : 
-    m_clientToken(Aws::Utils::UUID::PseudoRandomUUID()),
-    m_clientTokenHasBeenSet(true),
     m_domainIdentifierHasBeenSet(false),
-    m_identifierHasBeenSet(false)
+    m_identifierHasBeenSet(false),
+    m_retainPermissionsOnRevokeFailure(false),
+    m_retainPermissionsOnRevokeFailureHasBeenSet(false)
 {
 }
 
@@ -31,10 +31,10 @@ Aws::String DeleteDataSourceRequest::SerializePayload() const
 void DeleteDataSourceRequest::AddQueryStringParameters(URI& uri) const
 {
     Aws::StringStream ss;
-    if(m_clientTokenHasBeenSet)
+    if(m_retainPermissionsOnRevokeFailureHasBeenSet)
     {
-      ss << m_clientToken;
-      uri.AddQueryStringParameter("clientToken", ss.str());
+      ss << m_retainPermissionsOnRevokeFailure;
+      uri.AddQueryStringParameter("retainPermissionsOnRevokeFailure", ss.str());
       ss.str("");
     }
 

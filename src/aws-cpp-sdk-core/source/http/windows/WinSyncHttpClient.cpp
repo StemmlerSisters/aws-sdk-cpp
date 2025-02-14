@@ -74,7 +74,15 @@ void WinSyncHttpClient::AddHeadersToRequest(const std::shared_ptr<HttpRequest>& 
         AWS_LOGSTREAM_DEBUG(GetLogTag(), "with headers:");
         for (auto& header : request->GetHeaders())
         {
-            ss << header.first << ": " << header.second << "\r\n";
+            if (!header.first.empty() && !header.second.empty())
+            {
+                ss << header.first << ": " << header.second << "\r\n";
+            }
+            else
+            {
+                // DOUBLE SPACE after COLON, thanks, WinHTTP!
+                ss << header.first << ":  " << "\r\n";
+            }
         }
 
         Aws::String headerString = ss.str();
@@ -92,7 +100,8 @@ bool WinSyncHttpClient::StreamPayloadToRequest(const std::shared_ptr<HttpRequest
 {
     bool success = true;
     bool isChunked = request->HasTransferEncoding() && request->GetTransferEncoding() == Aws::Http::CHUNKED_VALUE;
-    bool isAwsChunked = request->HasHeader(Aws::Http::CONTENT_ENCODING_HEADER) && request->GetHeaderValue(Aws::Http::CONTENT_ENCODING_HEADER) == Aws::Http::AWS_CHUNKED_VALUE;
+    bool isAwsChunked = request->HasHeader(Aws::Http::CONTENT_ENCODING_HEADER) &&
+                        request->GetHeaderValue(Aws::Http::CONTENT_ENCODING_HEADER).find(Aws::Http::AWS_CHUNKED_VALUE) != Aws::String::npos;
     auto payloadStream = request->GetContentBody();
     const char CRLF[] = "\r\n";
     if(payloadStream)
@@ -402,6 +411,7 @@ std::shared_ptr<HttpResponse> WinSyncHttpClient::MakeRequest(const std::shared_p
     }
     else if(!success)
     {
+        AWS_LOGSTREAM_INFO(GetLogTag(), "Actual HTTP Version used " <<  GetActualHttpVersionUsed(hHttpRequest));
         LogRequestInternalFailure();
     }
 

@@ -29,22 +29,14 @@ CollaborationSummary::CollaborationSummary() :
     m_memberStatus(MemberStatus::NOT_SET),
     m_memberStatusHasBeenSet(false),
     m_membershipIdHasBeenSet(false),
-    m_membershipArnHasBeenSet(false)
+    m_membershipArnHasBeenSet(false),
+    m_analyticsEngine(AnalyticsEngine::NOT_SET),
+    m_analyticsEngineHasBeenSet(false)
 {
 }
 
-CollaborationSummary::CollaborationSummary(JsonView jsonValue) : 
-    m_idHasBeenSet(false),
-    m_arnHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_creatorAccountIdHasBeenSet(false),
-    m_creatorDisplayNameHasBeenSet(false),
-    m_createTimeHasBeenSet(false),
-    m_updateTimeHasBeenSet(false),
-    m_memberStatus(MemberStatus::NOT_SET),
-    m_memberStatusHasBeenSet(false),
-    m_membershipIdHasBeenSet(false),
-    m_membershipArnHasBeenSet(false)
+CollaborationSummary::CollaborationSummary(JsonView jsonValue)
+  : CollaborationSummary()
 {
   *this = jsonValue;
 }
@@ -121,6 +113,13 @@ CollaborationSummary& CollaborationSummary::operator =(JsonView jsonValue)
     m_membershipArnHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("analyticsEngine"))
+  {
+    m_analyticsEngine = AnalyticsEngineMapper::GetAnalyticsEngineForName(jsonValue.GetString("analyticsEngine"));
+
+    m_analyticsEngineHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -183,6 +182,11 @@ JsonValue CollaborationSummary::Jsonize() const
   {
    payload.WithString("membershipArn", m_membershipArn);
 
+  }
+
+  if(m_analyticsEngineHasBeenSet)
+  {
+   payload.WithString("analyticsEngine", AnalyticsEngineMapper::GetNameForAnalyticsEngine(m_analyticsEngine));
   }
 
   return payload;

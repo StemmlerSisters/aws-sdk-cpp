@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/rum/CloudWatchRUM_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/rum/CloudWatchRUMServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/rum/CloudWatchRUMErrorMarshaller.h>
 
 namespace Aws
 {
 namespace CloudWatchRUM
 {
+  AWS_CLOUDWATCHRUM_API extern const char SERVICE_NAME[];
   /**
    * <p>With Amazon CloudWatch RUM, you can perform real-user monitoring to collect
    * client-side data about your web application performance from actual user
@@ -28,12 +32,20 @@ namespace CloudWatchRUM
    * understand the range of end-user impact including the number of users,
    * geolocations, and browsers used.</p>
    */
-  class AWS_CLOUDWATCHRUM_API CloudWatchRUMClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<CloudWatchRUMClient>
+  class AWS_CLOUDWATCHRUM_API CloudWatchRUMClient : smithy::client::AwsSmithyClientT<Aws::CloudWatchRUM::SERVICE_NAME,
+      Aws::CloudWatchRUM::CloudWatchRUMClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      CloudWatchRUMEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::CloudWatchRUMErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<CloudWatchRUMClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "RUM"; }
 
       typedef CloudWatchRUMClientConfiguration ClientConfigurationType;
       typedef CloudWatchRUMEndpointProvider EndpointProviderType;
@@ -355,13 +367,13 @@ namespace CloudWatchRUM
          * href="http://docs.aws.amazon.com/goto/WebAPI/rum-2018-05-10/ListAppMonitors">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAppMonitorsOutcome ListAppMonitors(const Model::ListAppMonitorsRequest& request) const;
+        virtual Model::ListAppMonitorsOutcome ListAppMonitors(const Model::ListAppMonitorsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAppMonitors that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAppMonitorsRequestT = Model::ListAppMonitorsRequest>
-        Model::ListAppMonitorsOutcomeCallable ListAppMonitorsCallable(const ListAppMonitorsRequestT& request) const
+        Model::ListAppMonitorsOutcomeCallable ListAppMonitorsCallable(const ListAppMonitorsRequestT& request = {}) const
         {
             return SubmitCallable(&CloudWatchRUMClient::ListAppMonitors, request);
         }
@@ -370,7 +382,7 @@ namespace CloudWatchRUM
          * An Async wrapper for ListAppMonitors that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAppMonitorsRequestT = Model::ListAppMonitorsRequest>
-        void ListAppMonitorsAsync(const ListAppMonitorsRequestT& request, const ListAppMonitorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAppMonitorsAsync(const ListAppMonitorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAppMonitorsRequestT& request = {}) const
         {
             return SubmitAsync(&CloudWatchRUMClient::ListAppMonitors, request, handler, context);
         }
@@ -623,11 +635,7 @@ namespace CloudWatchRUM
       std::shared_ptr<CloudWatchRUMEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<CloudWatchRUMClient>;
-      void init(const CloudWatchRUMClientConfiguration& clientConfiguration);
 
-      CloudWatchRUMClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<CloudWatchRUMEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace CloudWatchRUM

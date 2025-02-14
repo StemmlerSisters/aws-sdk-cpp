@@ -26,19 +26,13 @@ Document::Document() :
     m_contentTypeHasBeenSet(false),
     m_titleHasBeenSet(false),
     m_accessConfigurationHasBeenSet(false),
-    m_documentEnrichmentConfigurationHasBeenSet(false)
+    m_documentEnrichmentConfigurationHasBeenSet(false),
+    m_mediaExtractionConfigurationHasBeenSet(false)
 {
 }
 
-Document::Document(JsonView jsonValue) : 
-    m_idHasBeenSet(false),
-    m_attributesHasBeenSet(false),
-    m_contentHasBeenSet(false),
-    m_contentType(ContentType::NOT_SET),
-    m_contentTypeHasBeenSet(false),
-    m_titleHasBeenSet(false),
-    m_accessConfigurationHasBeenSet(false),
-    m_documentEnrichmentConfigurationHasBeenSet(false)
+Document::Document(JsonView jsonValue)
+  : Document()
 {
   *this = jsonValue;
 }
@@ -97,6 +91,13 @@ Document& Document::operator =(JsonView jsonValue)
     m_documentEnrichmentConfigurationHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("mediaExtractionConfiguration"))
+  {
+    m_mediaExtractionConfiguration = jsonValue.GetObject("mediaExtractionConfiguration");
+
+    m_mediaExtractionConfigurationHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -147,6 +148,12 @@ JsonValue Document::Jsonize() const
   if(m_documentEnrichmentConfigurationHasBeenSet)
   {
    payload.WithObject("documentEnrichmentConfiguration", m_documentEnrichmentConfiguration.Jsonize());
+
+  }
+
+  if(m_mediaExtractionConfigurationHasBeenSet)
+  {
+   payload.WithObject("mediaExtractionConfiguration", m_mediaExtractionConfiguration.Jsonize());
 
   }
 

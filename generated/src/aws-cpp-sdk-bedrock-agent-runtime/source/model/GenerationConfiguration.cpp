@@ -22,15 +22,13 @@ GenerationConfiguration::GenerationConfiguration() :
     m_additionalModelRequestFieldsHasBeenSet(false),
     m_guardrailConfigurationHasBeenSet(false),
     m_inferenceConfigHasBeenSet(false),
+    m_performanceConfigHasBeenSet(false),
     m_promptTemplateHasBeenSet(false)
 {
 }
 
-GenerationConfiguration::GenerationConfiguration(JsonView jsonValue) : 
-    m_additionalModelRequestFieldsHasBeenSet(false),
-    m_guardrailConfigurationHasBeenSet(false),
-    m_inferenceConfigHasBeenSet(false),
-    m_promptTemplateHasBeenSet(false)
+GenerationConfiguration::GenerationConfiguration(JsonView jsonValue)
+  : GenerationConfiguration()
 {
   *this = jsonValue;
 }
@@ -59,6 +57,13 @@ GenerationConfiguration& GenerationConfiguration::operator =(JsonView jsonValue)
     m_inferenceConfig = jsonValue.GetObject("inferenceConfig");
 
     m_inferenceConfigHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("performanceConfig"))
+  {
+    m_performanceConfig = jsonValue.GetObject("performanceConfig");
+
+    m_performanceConfigHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("promptTemplate"))
@@ -95,6 +100,12 @@ JsonValue GenerationConfiguration::Jsonize() const
   if(m_inferenceConfigHasBeenSet)
   {
    payload.WithObject("inferenceConfig", m_inferenceConfig.Jsonize());
+
+  }
+
+  if(m_performanceConfigHasBeenSet)
+  {
+   payload.WithObject("performanceConfig", m_performanceConfig.Jsonize());
 
   }
 

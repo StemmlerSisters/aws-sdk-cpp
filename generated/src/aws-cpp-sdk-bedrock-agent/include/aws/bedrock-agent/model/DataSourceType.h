@@ -16,7 +16,13 @@ namespace Model
   enum class DataSourceType
   {
     NOT_SET,
-    S3
+    S3,
+    WEB,
+    CONFLUENCE,
+    SALESFORCE,
+    SHAREPOINT,
+    CUSTOM,
+    REDSHIFT_METADATA
   };
 
 namespace DataSourceTypeMapper

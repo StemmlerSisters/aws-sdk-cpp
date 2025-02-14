@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/iotsitewise/IoTSiteWise_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/iotsitewise/IoTSiteWiseServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/iotsitewise/IoTSiteWiseErrorMarshaller.h>
 
 namespace Aws
 {
 namespace IoTSiteWise
 {
+  AWS_IOTSITEWISE_API extern const char SERVICE_NAME[];
   /**
    * <p>Welcome to the IoT SiteWise API Reference. IoT SiteWise is an Amazon Web
    * Services service that connects <a
@@ -26,12 +30,20 @@ namespace IoTSiteWise
    * href="https://docs.aws.amazon.com/iot-sitewise/latest/userguide/quotas.html">Quotas</a>
    * in the <i>IoT SiteWise User Guide</i>.</p>
    */
-  class AWS_IOTSITEWISE_API IoTSiteWiseClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<IoTSiteWiseClient>
+  class AWS_IOTSITEWISE_API IoTSiteWiseClient : smithy::client::AwsSmithyClientT<Aws::IoTSiteWise::SERVICE_NAME,
+      Aws::IoTSiteWise::IoTSiteWiseClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      IoTSiteWiseEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::IoTSiteWiseErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<IoTSiteWiseClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "IoTSiteWise"; }
 
       typedef IoTSiteWiseClientConfiguration ClientConfigurationType;
       typedef IoTSiteWiseEndpointProvider EndpointProviderType;
@@ -523,6 +535,32 @@ namespace IoTSiteWise
         }
 
         /**
+         * <p>Creates a dataset to connect an external datasource.</p><p><h3>See Also:</h3>
+         * <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/CreateDataset">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateDatasetOutcome CreateDataset(const Model::CreateDatasetRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateDataset that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateDatasetRequestT = Model::CreateDatasetRequest>
+        Model::CreateDatasetOutcomeCallable CreateDatasetCallable(const CreateDatasetRequestT& request) const
+        {
+            return SubmitCallable(&IoTSiteWiseClient::CreateDataset, request);
+        }
+
+        /**
+         * An Async wrapper for CreateDataset that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateDatasetRequestT = Model::CreateDatasetRequest>
+        void CreateDatasetAsync(const CreateDatasetRequestT& request, const CreateDatasetResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&IoTSiteWiseClient::CreateDataset, request, handler, context);
+        }
+
+        /**
          * <p>Creates a gateway, which is a virtual or edge device that delivers industrial
          * data streams from local servers to IoT SiteWise. For more information, see <a
          * href="https://docs.aws.amazon.com/iot-sitewise/latest/userguide/gateway-connector.html">Ingesting
@@ -757,6 +795,31 @@ namespace IoTSiteWise
         }
 
         /**
+         * <p>Deletes a dataset. This cannot be undone.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/DeleteDataset">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteDatasetOutcome DeleteDataset(const Model::DeleteDatasetRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteDataset that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteDatasetRequestT = Model::DeleteDatasetRequest>
+        Model::DeleteDatasetOutcomeCallable DeleteDatasetCallable(const DeleteDatasetRequestT& request) const
+        {
+            return SubmitCallable(&IoTSiteWiseClient::DeleteDataset, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteDataset that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteDatasetRequestT = Model::DeleteDatasetRequest>
+        void DeleteDatasetAsync(const DeleteDatasetRequestT& request, const DeleteDatasetResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&IoTSiteWiseClient::DeleteDataset, request, handler, context);
+        }
+
+        /**
          * <p>Deletes a gateway from IoT SiteWise. When you delete a gateway, some of the
          * gateway's files remain in your gateway's file system.</p><p><h3>See Also:</h3>  
          * <a
@@ -847,13 +910,13 @@ namespace IoTSiteWise
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/DeleteTimeSeries">AWS
          * API Reference</a></p>
          */
-        virtual Model::DeleteTimeSeriesOutcome DeleteTimeSeries(const Model::DeleteTimeSeriesRequest& request) const;
+        virtual Model::DeleteTimeSeriesOutcome DeleteTimeSeries(const Model::DeleteTimeSeriesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DeleteTimeSeries that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DeleteTimeSeriesRequestT = Model::DeleteTimeSeriesRequest>
-        Model::DeleteTimeSeriesOutcomeCallable DeleteTimeSeriesCallable(const DeleteTimeSeriesRequestT& request) const
+        Model::DeleteTimeSeriesOutcomeCallable DeleteTimeSeriesCallable(const DeleteTimeSeriesRequestT& request = {}) const
         {
             return SubmitCallable(&IoTSiteWiseClient::DeleteTimeSeries, request);
         }
@@ -862,7 +925,7 @@ namespace IoTSiteWise
          * An Async wrapper for DeleteTimeSeries that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DeleteTimeSeriesRequestT = Model::DeleteTimeSeriesRequest>
-        void DeleteTimeSeriesAsync(const DeleteTimeSeriesRequestT& request, const DeleteTimeSeriesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DeleteTimeSeriesAsync(const DeleteTimeSeriesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DeleteTimeSeriesRequestT& request = {}) const
         {
             return SubmitAsync(&IoTSiteWiseClient::DeleteTimeSeries, request, handler, context);
         }
@@ -1114,6 +1177,31 @@ namespace IoTSiteWise
         }
 
         /**
+         * <p>Retrieves information about a dataset.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/DescribeDataset">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DescribeDatasetOutcome DescribeDataset(const Model::DescribeDatasetRequest& request) const;
+
+        /**
+         * A Callable wrapper for DescribeDataset that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DescribeDatasetRequestT = Model::DescribeDatasetRequest>
+        Model::DescribeDatasetOutcomeCallable DescribeDatasetCallable(const DescribeDatasetRequestT& request) const
+        {
+            return SubmitCallable(&IoTSiteWiseClient::DescribeDataset, request);
+        }
+
+        /**
+         * An Async wrapper for DescribeDataset that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DescribeDatasetRequestT = Model::DescribeDatasetRequest>
+        void DescribeDatasetAsync(const DescribeDatasetRequestT& request, const DescribeDatasetResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&IoTSiteWiseClient::DescribeDataset, request, handler, context);
+        }
+
+        /**
          * <p>Retrieves information about the default encryption configuration for the
          * Amazon Web Services account in the default or specified Region. For more
          * information, see <a
@@ -1123,13 +1211,13 @@ namespace IoTSiteWise
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/DescribeDefaultEncryptionConfiguration">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeDefaultEncryptionConfigurationOutcome DescribeDefaultEncryptionConfiguration(const Model::DescribeDefaultEncryptionConfigurationRequest& request) const;
+        virtual Model::DescribeDefaultEncryptionConfigurationOutcome DescribeDefaultEncryptionConfiguration(const Model::DescribeDefaultEncryptionConfigurationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeDefaultEncryptionConfiguration that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeDefaultEncryptionConfigurationRequestT = Model::DescribeDefaultEncryptionConfigurationRequest>
-        Model::DescribeDefaultEncryptionConfigurationOutcomeCallable DescribeDefaultEncryptionConfigurationCallable(const DescribeDefaultEncryptionConfigurationRequestT& request) const
+        Model::DescribeDefaultEncryptionConfigurationOutcomeCallable DescribeDefaultEncryptionConfigurationCallable(const DescribeDefaultEncryptionConfigurationRequestT& request = {}) const
         {
             return SubmitCallable(&IoTSiteWiseClient::DescribeDefaultEncryptionConfiguration, request);
         }
@@ -1138,7 +1226,7 @@ namespace IoTSiteWise
          * An Async wrapper for DescribeDefaultEncryptionConfiguration that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeDefaultEncryptionConfigurationRequestT = Model::DescribeDefaultEncryptionConfigurationRequest>
-        void DescribeDefaultEncryptionConfigurationAsync(const DescribeDefaultEncryptionConfigurationRequestT& request, const DescribeDefaultEncryptionConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeDefaultEncryptionConfigurationAsync(const DescribeDefaultEncryptionConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeDefaultEncryptionConfigurationRequestT& request = {}) const
         {
             return SubmitAsync(&IoTSiteWiseClient::DescribeDefaultEncryptionConfiguration, request, handler, context);
         }
@@ -1206,13 +1294,13 @@ namespace IoTSiteWise
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/DescribeLoggingOptions">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeLoggingOptionsOutcome DescribeLoggingOptions(const Model::DescribeLoggingOptionsRequest& request) const;
+        virtual Model::DescribeLoggingOptionsOutcome DescribeLoggingOptions(const Model::DescribeLoggingOptionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeLoggingOptions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeLoggingOptionsRequestT = Model::DescribeLoggingOptionsRequest>
-        Model::DescribeLoggingOptionsOutcomeCallable DescribeLoggingOptionsCallable(const DescribeLoggingOptionsRequestT& request) const
+        Model::DescribeLoggingOptionsOutcomeCallable DescribeLoggingOptionsCallable(const DescribeLoggingOptionsRequestT& request = {}) const
         {
             return SubmitCallable(&IoTSiteWiseClient::DescribeLoggingOptions, request);
         }
@@ -1221,7 +1309,7 @@ namespace IoTSiteWise
          * An Async wrapper for DescribeLoggingOptions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeLoggingOptionsRequestT = Model::DescribeLoggingOptionsRequest>
-        void DescribeLoggingOptionsAsync(const DescribeLoggingOptionsRequestT& request, const DescribeLoggingOptionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeLoggingOptionsAsync(const DescribeLoggingOptionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeLoggingOptionsRequestT& request = {}) const
         {
             return SubmitAsync(&IoTSiteWiseClient::DescribeLoggingOptions, request, handler, context);
         }
@@ -1282,13 +1370,13 @@ namespace IoTSiteWise
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/DescribeStorageConfiguration">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeStorageConfigurationOutcome DescribeStorageConfiguration(const Model::DescribeStorageConfigurationRequest& request) const;
+        virtual Model::DescribeStorageConfigurationOutcome DescribeStorageConfiguration(const Model::DescribeStorageConfigurationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeStorageConfiguration that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeStorageConfigurationRequestT = Model::DescribeStorageConfigurationRequest>
-        Model::DescribeStorageConfigurationOutcomeCallable DescribeStorageConfigurationCallable(const DescribeStorageConfigurationRequestT& request) const
+        Model::DescribeStorageConfigurationOutcomeCallable DescribeStorageConfigurationCallable(const DescribeStorageConfigurationRequestT& request = {}) const
         {
             return SubmitCallable(&IoTSiteWiseClient::DescribeStorageConfiguration, request);
         }
@@ -1297,7 +1385,7 @@ namespace IoTSiteWise
          * An Async wrapper for DescribeStorageConfiguration that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeStorageConfigurationRequestT = Model::DescribeStorageConfigurationRequest>
-        void DescribeStorageConfigurationAsync(const DescribeStorageConfigurationRequestT& request, const DescribeStorageConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeStorageConfigurationAsync(const DescribeStorageConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeStorageConfigurationRequestT& request = {}) const
         {
             return SubmitAsync(&IoTSiteWiseClient::DescribeStorageConfiguration, request, handler, context);
         }
@@ -1314,13 +1402,13 @@ namespace IoTSiteWise
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/DescribeTimeSeries">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeTimeSeriesOutcome DescribeTimeSeries(const Model::DescribeTimeSeriesRequest& request) const;
+        virtual Model::DescribeTimeSeriesOutcome DescribeTimeSeries(const Model::DescribeTimeSeriesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeTimeSeries that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeTimeSeriesRequestT = Model::DescribeTimeSeriesRequest>
-        Model::DescribeTimeSeriesOutcomeCallable DescribeTimeSeriesCallable(const DescribeTimeSeriesRequestT& request) const
+        Model::DescribeTimeSeriesOutcomeCallable DescribeTimeSeriesCallable(const DescribeTimeSeriesRequestT& request = {}) const
         {
             return SubmitCallable(&IoTSiteWiseClient::DescribeTimeSeries, request);
         }
@@ -1329,7 +1417,7 @@ namespace IoTSiteWise
          * An Async wrapper for DescribeTimeSeries that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeTimeSeriesRequestT = Model::DescribeTimeSeriesRequest>
-        void DescribeTimeSeriesAsync(const DescribeTimeSeriesRequestT& request, const DescribeTimeSeriesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeTimeSeriesAsync(const DescribeTimeSeriesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeTimeSeriesRequestT& request = {}) const
         {
             return SubmitAsync(&IoTSiteWiseClient::DescribeTimeSeries, request, handler, context);
         }
@@ -1486,13 +1574,13 @@ namespace IoTSiteWise
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/GetAssetPropertyValue">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetAssetPropertyValueOutcome GetAssetPropertyValue(const Model::GetAssetPropertyValueRequest& request) const;
+        virtual Model::GetAssetPropertyValueOutcome GetAssetPropertyValue(const Model::GetAssetPropertyValueRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetAssetPropertyValue that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetAssetPropertyValueRequestT = Model::GetAssetPropertyValueRequest>
-        Model::GetAssetPropertyValueOutcomeCallable GetAssetPropertyValueCallable(const GetAssetPropertyValueRequestT& request) const
+        Model::GetAssetPropertyValueOutcomeCallable GetAssetPropertyValueCallable(const GetAssetPropertyValueRequestT& request = {}) const
         {
             return SubmitCallable(&IoTSiteWiseClient::GetAssetPropertyValue, request);
         }
@@ -1501,7 +1589,7 @@ namespace IoTSiteWise
          * An Async wrapper for GetAssetPropertyValue that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetAssetPropertyValueRequestT = Model::GetAssetPropertyValueRequest>
-        void GetAssetPropertyValueAsync(const GetAssetPropertyValueRequestT& request, const GetAssetPropertyValueResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetAssetPropertyValueAsync(const GetAssetPropertyValueResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetAssetPropertyValueRequestT& request = {}) const
         {
             return SubmitAsync(&IoTSiteWiseClient::GetAssetPropertyValue, request, handler, context);
         }
@@ -1520,13 +1608,13 @@ namespace IoTSiteWise
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/GetAssetPropertyValueHistory">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetAssetPropertyValueHistoryOutcome GetAssetPropertyValueHistory(const Model::GetAssetPropertyValueHistoryRequest& request) const;
+        virtual Model::GetAssetPropertyValueHistoryOutcome GetAssetPropertyValueHistory(const Model::GetAssetPropertyValueHistoryRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetAssetPropertyValueHistory that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetAssetPropertyValueHistoryRequestT = Model::GetAssetPropertyValueHistoryRequest>
-        Model::GetAssetPropertyValueHistoryOutcomeCallable GetAssetPropertyValueHistoryCallable(const GetAssetPropertyValueHistoryRequestT& request) const
+        Model::GetAssetPropertyValueHistoryOutcomeCallable GetAssetPropertyValueHistoryCallable(const GetAssetPropertyValueHistoryRequestT& request = {}) const
         {
             return SubmitCallable(&IoTSiteWiseClient::GetAssetPropertyValueHistory, request);
         }
@@ -1535,7 +1623,7 @@ namespace IoTSiteWise
          * An Async wrapper for GetAssetPropertyValueHistory that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetAssetPropertyValueHistoryRequestT = Model::GetAssetPropertyValueHistoryRequest>
-        void GetAssetPropertyValueHistoryAsync(const GetAssetPropertyValueHistoryRequestT& request, const GetAssetPropertyValueHistoryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetAssetPropertyValueHistoryAsync(const GetAssetPropertyValueHistoryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetAssetPropertyValueHistoryRequestT& request = {}) const
         {
             return SubmitAsync(&IoTSiteWiseClient::GetAssetPropertyValueHistory, request, handler, context);
         }
@@ -1578,19 +1666,45 @@ namespace IoTSiteWise
         }
 
         /**
+         * <p>Invokes SiteWise Assistant to start or continue a conversation.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/InvokeAssistant">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::InvokeAssistantOutcome InvokeAssistant(Model::InvokeAssistantRequest& request) const;
+
+        /**
+         * A Callable wrapper for InvokeAssistant that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename InvokeAssistantRequestT = Model::InvokeAssistantRequest>
+        Model::InvokeAssistantOutcomeCallable InvokeAssistantCallable(InvokeAssistantRequestT& request) const
+        {
+            return SubmitCallable(&IoTSiteWiseClient::InvokeAssistant, request);
+        }
+
+        /**
+         * An Async wrapper for InvokeAssistant that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename InvokeAssistantRequestT = Model::InvokeAssistantRequest>
+        void InvokeAssistantAsync(InvokeAssistantRequestT& request, const InvokeAssistantResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&IoTSiteWiseClient::InvokeAssistant, request, handler, context);
+        }
+
+        /**
          * <p>Retrieves a paginated list of access policies for an identity (an IAM
          * Identity Center user, an IAM Identity Center group, or an IAM user) or an IoT
          * SiteWise Monitor resource (a portal or project).</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/ListAccessPolicies">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAccessPoliciesOutcome ListAccessPolicies(const Model::ListAccessPoliciesRequest& request) const;
+        virtual Model::ListAccessPoliciesOutcome ListAccessPolicies(const Model::ListAccessPoliciesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAccessPolicies that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAccessPoliciesRequestT = Model::ListAccessPoliciesRequest>
-        Model::ListAccessPoliciesOutcomeCallable ListAccessPoliciesCallable(const ListAccessPoliciesRequestT& request) const
+        Model::ListAccessPoliciesOutcomeCallable ListAccessPoliciesCallable(const ListAccessPoliciesRequestT& request = {}) const
         {
             return SubmitCallable(&IoTSiteWiseClient::ListAccessPolicies, request);
         }
@@ -1599,7 +1713,7 @@ namespace IoTSiteWise
          * An Async wrapper for ListAccessPolicies that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAccessPoliciesRequestT = Model::ListAccessPoliciesRequest>
-        void ListAccessPoliciesAsync(const ListAccessPoliciesRequestT& request, const ListAccessPoliciesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAccessPoliciesAsync(const ListAccessPoliciesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAccessPoliciesRequestT& request = {}) const
         {
             return SubmitAsync(&IoTSiteWiseClient::ListAccessPolicies, request, handler, context);
         }
@@ -1689,13 +1803,13 @@ namespace IoTSiteWise
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/ListAssetModels">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAssetModelsOutcome ListAssetModels(const Model::ListAssetModelsRequest& request) const;
+        virtual Model::ListAssetModelsOutcome ListAssetModels(const Model::ListAssetModelsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAssetModels that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAssetModelsRequestT = Model::ListAssetModelsRequest>
-        Model::ListAssetModelsOutcomeCallable ListAssetModelsCallable(const ListAssetModelsRequestT& request) const
+        Model::ListAssetModelsOutcomeCallable ListAssetModelsCallable(const ListAssetModelsRequestT& request = {}) const
         {
             return SubmitCallable(&IoTSiteWiseClient::ListAssetModels, request);
         }
@@ -1704,7 +1818,7 @@ namespace IoTSiteWise
          * An Async wrapper for ListAssetModels that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAssetModelsRequestT = Model::ListAssetModelsRequest>
-        void ListAssetModelsAsync(const ListAssetModelsRequestT& request, const ListAssetModelsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAssetModelsAsync(const ListAssetModelsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAssetModelsRequestT& request = {}) const
         {
             return SubmitAsync(&IoTSiteWiseClient::ListAssetModels, request, handler, context);
         }
@@ -1775,13 +1889,13 @@ namespace IoTSiteWise
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/ListAssets">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAssetsOutcome ListAssets(const Model::ListAssetsRequest& request) const;
+        virtual Model::ListAssetsOutcome ListAssets(const Model::ListAssetsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAssets that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAssetsRequestT = Model::ListAssetsRequest>
-        Model::ListAssetsOutcomeCallable ListAssetsCallable(const ListAssetsRequestT& request) const
+        Model::ListAssetsOutcomeCallable ListAssetsCallable(const ListAssetsRequestT& request = {}) const
         {
             return SubmitCallable(&IoTSiteWiseClient::ListAssets, request);
         }
@@ -1790,16 +1904,16 @@ namespace IoTSiteWise
          * An Async wrapper for ListAssets that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAssetsRequestT = Model::ListAssetsRequest>
-        void ListAssetsAsync(const ListAssetsRequestT& request, const ListAssetsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAssetsAsync(const ListAssetsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAssetsRequestT& request = {}) const
         {
             return SubmitAsync(&IoTSiteWiseClient::ListAssets, request, handler, context);
         }
 
         /**
          * <p>Retrieves a paginated list of associated assets.</p> <p>You can use this
-         * operation to do the following:</p> <ul> <li> <p>List child assets associated to
-         * a parent asset by a hierarchy that you specify.</p> </li> <li> <p>List an
-         * asset's parent asset.</p> </li> </ul><p><h3>See Also:</h3>   <a
+         * operation to do the following:</p> <ul> <li> <p> <code>CHILD</code> - List all
+         * child assets associated to the asset.</p> </li> <li> <p> <code>PARENT</code> -
+         * List the asset's parent asset.</p> </li> </ul><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/ListAssociatedAssets">AWS
          * API Reference</a></p>
          */
@@ -1832,13 +1946,13 @@ namespace IoTSiteWise
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/ListBulkImportJobs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListBulkImportJobsOutcome ListBulkImportJobs(const Model::ListBulkImportJobsRequest& request) const;
+        virtual Model::ListBulkImportJobsOutcome ListBulkImportJobs(const Model::ListBulkImportJobsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListBulkImportJobs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListBulkImportJobsRequestT = Model::ListBulkImportJobsRequest>
-        Model::ListBulkImportJobsOutcomeCallable ListBulkImportJobsCallable(const ListBulkImportJobsRequestT& request) const
+        Model::ListBulkImportJobsOutcomeCallable ListBulkImportJobsCallable(const ListBulkImportJobsRequestT& request = {}) const
         {
             return SubmitCallable(&IoTSiteWiseClient::ListBulkImportJobs, request);
         }
@@ -1847,7 +1961,7 @@ namespace IoTSiteWise
          * An Async wrapper for ListBulkImportJobs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListBulkImportJobsRequestT = Model::ListBulkImportJobsRequest>
-        void ListBulkImportJobsAsync(const ListBulkImportJobsRequestT& request, const ListBulkImportJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListBulkImportJobsAsync(const ListBulkImportJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListBulkImportJobsRequestT& request = {}) const
         {
             return SubmitAsync(&IoTSiteWiseClient::ListBulkImportJobs, request, handler, context);
         }
@@ -1905,17 +2019,43 @@ namespace IoTSiteWise
         }
 
         /**
+         * <p>Retrieves a paginated list of datasets for a specific target
+         * resource.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/ListDatasets">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListDatasetsOutcome ListDatasets(const Model::ListDatasetsRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListDatasets that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListDatasetsRequestT = Model::ListDatasetsRequest>
+        Model::ListDatasetsOutcomeCallable ListDatasetsCallable(const ListDatasetsRequestT& request) const
+        {
+            return SubmitCallable(&IoTSiteWiseClient::ListDatasets, request);
+        }
+
+        /**
+         * An Async wrapper for ListDatasets that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListDatasetsRequestT = Model::ListDatasetsRequest>
+        void ListDatasetsAsync(const ListDatasetsRequestT& request, const ListDatasetsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&IoTSiteWiseClient::ListDatasets, request, handler, context);
+        }
+
+        /**
          * <p>Retrieves a paginated list of gateways.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/ListGateways">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListGatewaysOutcome ListGateways(const Model::ListGatewaysRequest& request) const;
+        virtual Model::ListGatewaysOutcome ListGateways(const Model::ListGatewaysRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListGateways that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListGatewaysRequestT = Model::ListGatewaysRequest>
-        Model::ListGatewaysOutcomeCallable ListGatewaysCallable(const ListGatewaysRequestT& request) const
+        Model::ListGatewaysOutcomeCallable ListGatewaysCallable(const ListGatewaysRequestT& request = {}) const
         {
             return SubmitCallable(&IoTSiteWiseClient::ListGateways, request);
         }
@@ -1924,7 +2064,7 @@ namespace IoTSiteWise
          * An Async wrapper for ListGateways that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListGatewaysRequestT = Model::ListGatewaysRequest>
-        void ListGatewaysAsync(const ListGatewaysRequestT& request, const ListGatewaysResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListGatewaysAsync(const ListGatewaysResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListGatewaysRequestT& request = {}) const
         {
             return SubmitAsync(&IoTSiteWiseClient::ListGateways, request, handler, context);
         }
@@ -1935,13 +2075,13 @@ namespace IoTSiteWise
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/ListPortals">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListPortalsOutcome ListPortals(const Model::ListPortalsRequest& request) const;
+        virtual Model::ListPortalsOutcome ListPortals(const Model::ListPortalsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListPortals that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListPortalsRequestT = Model::ListPortalsRequest>
-        Model::ListPortalsOutcomeCallable ListPortalsCallable(const ListPortalsRequestT& request) const
+        Model::ListPortalsOutcomeCallable ListPortalsCallable(const ListPortalsRequestT& request = {}) const
         {
             return SubmitCallable(&IoTSiteWiseClient::ListPortals, request);
         }
@@ -1950,7 +2090,7 @@ namespace IoTSiteWise
          * An Async wrapper for ListPortals that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListPortalsRequestT = Model::ListPortalsRequest>
-        void ListPortalsAsync(const ListPortalsRequestT& request, const ListPortalsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListPortalsAsync(const ListPortalsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListPortalsRequestT& request = {}) const
         {
             return SubmitAsync(&IoTSiteWiseClient::ListPortals, request, handler, context);
         }
@@ -2039,13 +2179,13 @@ namespace IoTSiteWise
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/ListTimeSeries">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListTimeSeriesOutcome ListTimeSeries(const Model::ListTimeSeriesRequest& request) const;
+        virtual Model::ListTimeSeriesOutcome ListTimeSeries(const Model::ListTimeSeriesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListTimeSeries that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListTimeSeriesRequestT = Model::ListTimeSeriesRequest>
-        Model::ListTimeSeriesOutcomeCallable ListTimeSeriesCallable(const ListTimeSeriesRequestT& request) const
+        Model::ListTimeSeriesOutcomeCallable ListTimeSeriesCallable(const ListTimeSeriesRequestT& request = {}) const
         {
             return SubmitCallable(&IoTSiteWiseClient::ListTimeSeries, request);
         }
@@ -2054,7 +2194,7 @@ namespace IoTSiteWise
          * An Async wrapper for ListTimeSeries that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListTimeSeriesRequestT = Model::ListTimeSeriesRequest>
-        void ListTimeSeriesAsync(const ListTimeSeriesRequestT& request, const ListTimeSeriesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListTimeSeriesAsync(const ListTimeSeriesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListTimeSeriesRequestT& request = {}) const
         {
             return SubmitAsync(&IoTSiteWiseClient::ListTimeSeries, request, handler, context);
         }
@@ -2249,16 +2389,15 @@ namespace IoTSiteWise
          * property and hierarchy definitions. For more information, see <a
          * href="https://docs.aws.amazon.com/iot-sitewise/latest/userguide/update-assets-and-models.html">Updating
          * assets and models</a> in the <i>IoT SiteWise User Guide</i>.</p> 
-         * <p>This operation overwrites the existing model with the provided model. To
-         * avoid deleting your asset model's properties or hierarchies, you must include
-         * their IDs and definitions in the updated asset model payload. For more
-         * information, see <a
-         * href="https://docs.aws.amazon.com/iot-sitewise/latest/APIReference/API_DescribeAssetModel.html">DescribeAssetModel</a>.</p>
          * <p>If you remove a property from an asset model, IoT SiteWise deletes all
-         * previous data for that property. If you remove a hierarchy definition from an
-         * asset model, IoT SiteWise disassociates every asset associated with that
-         * hierarchy. You can't change the type or data type of an existing property.</p>
-         * <p><h3>See Also:</h3>   <a
+         * previous data for that property. You can’t change the type or data type of an
+         * existing property.</p> <p>To replace an existing asset model property with a new
+         * one with the same <code>name</code>, do the following:</p> <ol> <li> <p>Submit
+         * an <code>UpdateAssetModel</code> request with the entire existing property
+         * removed.</p> </li> <li> <p>Submit a second <code>UpdateAssetModel</code> request
+         * that includes the new property. The new asset property will have the same
+         * <code>name</code> as the previous one and IoT SiteWise will generate a new
+         * unique <code>id</code>.</p> </li> </ol> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/UpdateAssetModel">AWS
          * API Reference</a></p>
          */
@@ -2378,6 +2517,31 @@ namespace IoTSiteWise
         }
 
         /**
+         * <p>Updates a dataset.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/UpdateDataset">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateDatasetOutcome UpdateDataset(const Model::UpdateDatasetRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateDataset that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateDatasetRequestT = Model::UpdateDatasetRequest>
+        Model::UpdateDatasetOutcomeCallable UpdateDatasetCallable(const UpdateDatasetRequestT& request) const
+        {
+            return SubmitCallable(&IoTSiteWiseClient::UpdateDataset, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateDataset that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateDatasetRequestT = Model::UpdateDatasetRequest>
+        void UpdateDatasetAsync(const UpdateDatasetRequestT& request, const UpdateDatasetResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&IoTSiteWiseClient::UpdateDataset, request, handler, context);
+        }
+
+        /**
          * <p>Updates a gateway's name.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotsitewise-2019-12-02/UpdateGateway">AWS
          * API Reference</a></p>
@@ -2489,11 +2653,7 @@ namespace IoTSiteWise
       std::shared_ptr<IoTSiteWiseEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<IoTSiteWiseClient>;
-      void init(const IoTSiteWiseClientConfiguration& clientConfiguration);
 
-      IoTSiteWiseClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<IoTSiteWiseEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace IoTSiteWise

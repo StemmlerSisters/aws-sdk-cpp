@@ -26,21 +26,15 @@ SubscriptionFilter::SubscriptionFilter() :
     m_roleArnHasBeenSet(false),
     m_distribution(Distribution::NOT_SET),
     m_distributionHasBeenSet(false),
+    m_applyOnTransformedLogs(false),
+    m_applyOnTransformedLogsHasBeenSet(false),
     m_creationTime(0),
     m_creationTimeHasBeenSet(false)
 {
 }
 
-SubscriptionFilter::SubscriptionFilter(JsonView jsonValue) : 
-    m_filterNameHasBeenSet(false),
-    m_logGroupNameHasBeenSet(false),
-    m_filterPatternHasBeenSet(false),
-    m_destinationArnHasBeenSet(false),
-    m_roleArnHasBeenSet(false),
-    m_distribution(Distribution::NOT_SET),
-    m_distributionHasBeenSet(false),
-    m_creationTime(0),
-    m_creationTimeHasBeenSet(false)
+SubscriptionFilter::SubscriptionFilter(JsonView jsonValue)
+  : SubscriptionFilter()
 {
   *this = jsonValue;
 }
@@ -87,6 +81,13 @@ SubscriptionFilter& SubscriptionFilter::operator =(JsonView jsonValue)
     m_distribution = DistributionMapper::GetDistributionForName(jsonValue.GetString("distribution"));
 
     m_distributionHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("applyOnTransformedLogs"))
+  {
+    m_applyOnTransformedLogs = jsonValue.GetBool("applyOnTransformedLogs");
+
+    m_applyOnTransformedLogsHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("creationTime"))
@@ -136,6 +137,12 @@ JsonValue SubscriptionFilter::Jsonize() const
   if(m_distributionHasBeenSet)
   {
    payload.WithString("distribution", DistributionMapper::GetNameForDistribution(m_distribution));
+  }
+
+  if(m_applyOnTransformedLogsHasBeenSet)
+  {
+   payload.WithBool("applyOnTransformedLogs", m_applyOnTransformedLogs);
+
   }
 
   if(m_creationTimeHasBeenSet)

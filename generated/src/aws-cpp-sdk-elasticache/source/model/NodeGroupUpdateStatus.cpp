@@ -26,9 +26,8 @@ NodeGroupUpdateStatus::NodeGroupUpdateStatus() :
 {
 }
 
-NodeGroupUpdateStatus::NodeGroupUpdateStatus(const XmlNode& xmlNode) : 
-    m_nodeGroupIdHasBeenSet(false),
-    m_nodeGroupMemberUpdateStatusHasBeenSet(false)
+NodeGroupUpdateStatus::NodeGroupUpdateStatus(const XmlNode& xmlNode)
+  : NodeGroupUpdateStatus()
 {
   *this = xmlNode;
 }
@@ -75,7 +74,7 @@ void NodeGroupUpdateStatus::OutputToStream(Aws::OStream& oStream, const char* lo
       for(auto& item : m_nodeGroupMemberUpdateStatus)
       {
         Aws::StringStream nodeGroupMemberUpdateStatusSs;
-        nodeGroupMemberUpdateStatusSs << location << index << locationValue << ".NodeGroupMemberUpdateStatus." << nodeGroupMemberUpdateStatusIdx++;
+        nodeGroupMemberUpdateStatusSs << location << index << locationValue << ".NodeGroupMemberUpdateStatus.NodeGroupMemberUpdateStatus." << nodeGroupMemberUpdateStatusIdx++;
         item.OutputToStream(oStream, nodeGroupMemberUpdateStatusSs.str().c_str());
       }
   }

@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/cost-optimization-hub/CostOptimizationHub_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/cost-optimization-hub/CostOptimizationHubServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/cost-optimization-hub/CostOptimizationHubErrorMarshaller.h>
 
 namespace Aws
 {
 namespace CostOptimizationHub
 {
+  AWS_COSTOPTIMIZATIONHUB_API extern const char SERVICE_NAME[];
   /**
    * <p>You can use the Cost Optimization Hub API to programmatically identify,
    * filter, aggregate, and quantify savings for your cost optimization
@@ -23,12 +27,20 @@ namespace CostOptimizationHub
    * provides the following endpoint:</p> <ul> <li> <p>
    * https://cost-optimization-hub.us-east-1.amazonaws.com </p> </li> </ul>
    */
-  class AWS_COSTOPTIMIZATIONHUB_API CostOptimizationHubClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<CostOptimizationHubClient>
+  class AWS_COSTOPTIMIZATIONHUB_API CostOptimizationHubClient : smithy::client::AwsSmithyClientT<Aws::CostOptimizationHub::SERVICE_NAME,
+      Aws::CostOptimizationHub::CostOptimizationHubClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      CostOptimizationHubEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::CostOptimizationHubErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<CostOptimizationHubClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Cost Optimization Hub"; }
 
       typedef CostOptimizationHubClientConfiguration ClientConfigurationType;
       typedef CostOptimizationHubEndpointProvider EndpointProviderType;
@@ -90,13 +102,13 @@ namespace CostOptimizationHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/cost-optimization-hub-2022-07-26/GetPreferences">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetPreferencesOutcome GetPreferences(const Model::GetPreferencesRequest& request) const;
+        virtual Model::GetPreferencesOutcome GetPreferences(const Model::GetPreferencesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetPreferences that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetPreferencesRequestT = Model::GetPreferencesRequest>
-        Model::GetPreferencesOutcomeCallable GetPreferencesCallable(const GetPreferencesRequestT& request) const
+        Model::GetPreferencesOutcomeCallable GetPreferencesCallable(const GetPreferencesRequestT& request = {}) const
         {
             return SubmitCallable(&CostOptimizationHubClient::GetPreferences, request);
         }
@@ -105,7 +117,7 @@ namespace CostOptimizationHub
          * An Async wrapper for GetPreferences that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetPreferencesRequestT = Model::GetPreferencesRequest>
-        void GetPreferencesAsync(const GetPreferencesRequestT& request, const GetPreferencesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetPreferencesAsync(const GetPreferencesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetPreferencesRequestT& request = {}) const
         {
             return SubmitAsync(&CostOptimizationHubClient::GetPreferences, request, handler, context);
         }
@@ -147,13 +159,13 @@ namespace CostOptimizationHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/cost-optimization-hub-2022-07-26/ListEnrollmentStatuses">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListEnrollmentStatusesOutcome ListEnrollmentStatuses(const Model::ListEnrollmentStatusesRequest& request) const;
+        virtual Model::ListEnrollmentStatusesOutcome ListEnrollmentStatuses(const Model::ListEnrollmentStatusesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListEnrollmentStatuses that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListEnrollmentStatusesRequestT = Model::ListEnrollmentStatusesRequest>
-        Model::ListEnrollmentStatusesOutcomeCallable ListEnrollmentStatusesCallable(const ListEnrollmentStatusesRequestT& request) const
+        Model::ListEnrollmentStatusesOutcomeCallable ListEnrollmentStatusesCallable(const ListEnrollmentStatusesRequestT& request = {}) const
         {
             return SubmitCallable(&CostOptimizationHubClient::ListEnrollmentStatuses, request);
         }
@@ -162,7 +174,7 @@ namespace CostOptimizationHub
          * An Async wrapper for ListEnrollmentStatuses that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListEnrollmentStatusesRequestT = Model::ListEnrollmentStatusesRequest>
-        void ListEnrollmentStatusesAsync(const ListEnrollmentStatusesRequestT& request, const ListEnrollmentStatusesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListEnrollmentStatusesAsync(const ListEnrollmentStatusesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListEnrollmentStatusesRequestT& request = {}) const
         {
             return SubmitAsync(&CostOptimizationHubClient::ListEnrollmentStatuses, request, handler, context);
         }
@@ -201,13 +213,13 @@ namespace CostOptimizationHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/cost-optimization-hub-2022-07-26/ListRecommendations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListRecommendationsOutcome ListRecommendations(const Model::ListRecommendationsRequest& request) const;
+        virtual Model::ListRecommendationsOutcome ListRecommendations(const Model::ListRecommendationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListRecommendations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListRecommendationsRequestT = Model::ListRecommendationsRequest>
-        Model::ListRecommendationsOutcomeCallable ListRecommendationsCallable(const ListRecommendationsRequestT& request) const
+        Model::ListRecommendationsOutcomeCallable ListRecommendationsCallable(const ListRecommendationsRequestT& request = {}) const
         {
             return SubmitCallable(&CostOptimizationHubClient::ListRecommendations, request);
         }
@@ -216,19 +228,19 @@ namespace CostOptimizationHub
          * An Async wrapper for ListRecommendations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListRecommendationsRequestT = Model::ListRecommendationsRequest>
-        void ListRecommendationsAsync(const ListRecommendationsRequestT& request, const ListRecommendationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListRecommendationsAsync(const ListRecommendationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListRecommendationsRequestT& request = {}) const
         {
             return SubmitAsync(&CostOptimizationHubClient::ListRecommendations, request, handler, context);
         }
 
         /**
          * <p>Updates the enrollment (opt in and opt out) status of an account to the Cost
-         * Optimization Hub service.</p> <p>If the account is a management account of an
-         * organization, this action can also be used to enroll member accounts of the
-         * organization.</p> <p>You must have the appropriate permissions to opt in to Cost
-         * Optimization Hub and to view its recommendations. When you opt in, Cost
-         * Optimization Hub automatically creates a service-linked role in your account to
-         * access its data.</p><p><h3>See Also:</h3>   <a
+         * Optimization Hub service.</p> <p>If the account is a management account or
+         * delegated administrator of an organization, this action can also be used to
+         * enroll member accounts of the organization.</p> <p>You must have the appropriate
+         * permissions to opt in to Cost Optimization Hub and to view its recommendations.
+         * When you opt in, Cost Optimization Hub automatically creates a service-linked
+         * role in your account to access its data.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cost-optimization-hub-2022-07-26/UpdateEnrollmentStatus">AWS
          * API Reference</a></p>
          */
@@ -259,13 +271,13 @@ namespace CostOptimizationHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/cost-optimization-hub-2022-07-26/UpdatePreferences">AWS
          * API Reference</a></p>
          */
-        virtual Model::UpdatePreferencesOutcome UpdatePreferences(const Model::UpdatePreferencesRequest& request) const;
+        virtual Model::UpdatePreferencesOutcome UpdatePreferences(const Model::UpdatePreferencesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for UpdatePreferences that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename UpdatePreferencesRequestT = Model::UpdatePreferencesRequest>
-        Model::UpdatePreferencesOutcomeCallable UpdatePreferencesCallable(const UpdatePreferencesRequestT& request) const
+        Model::UpdatePreferencesOutcomeCallable UpdatePreferencesCallable(const UpdatePreferencesRequestT& request = {}) const
         {
             return SubmitCallable(&CostOptimizationHubClient::UpdatePreferences, request);
         }
@@ -274,7 +286,7 @@ namespace CostOptimizationHub
          * An Async wrapper for UpdatePreferences that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename UpdatePreferencesRequestT = Model::UpdatePreferencesRequest>
-        void UpdatePreferencesAsync(const UpdatePreferencesRequestT& request, const UpdatePreferencesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void UpdatePreferencesAsync(const UpdatePreferencesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const UpdatePreferencesRequestT& request = {}) const
         {
             return SubmitAsync(&CostOptimizationHubClient::UpdatePreferences, request, handler, context);
         }
@@ -284,11 +296,7 @@ namespace CostOptimizationHub
       std::shared_ptr<CostOptimizationHubEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<CostOptimizationHubClient>;
-      void init(const CostOptimizationHubClientConfiguration& clientConfiguration);
 
-      CostOptimizationHubClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<CostOptimizationHubEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace CostOptimizationHub

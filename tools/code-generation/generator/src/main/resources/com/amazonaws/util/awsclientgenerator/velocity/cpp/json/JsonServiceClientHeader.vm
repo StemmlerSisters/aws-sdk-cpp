@@ -11,9 +11,6 @@
 \#include <aws/core/client/AWSClientAsyncCRTP.h>
 \#include <aws/core/utils/json/JsonSerializer.h>
 \#include <aws/$metadata.projectName/${metadata.classNamePrefix}ServiceClientModel.h>
-#foreach($RequestImport in $RequestlessOperations)
-\#include <aws/$metadata.projectName/model/${RequestImport}Request.h>
-#end
 
 namespace ${rootNamespace}
 {
@@ -38,6 +35,9 @@ namespace ${serviceNamespace}
 #parse("com/amazonaws/util/awsclientgenerator/velocity/cpp/ServiceClientHeaderConfigTypeDeclarations.vm")
 #parse("com/amazonaws/util/awsclientgenerator/velocity/cpp/ServiceClientHeaderConstructors.vm")
 #parse("com/amazonaws/util/awsclientgenerator/velocity/cpp/ServiceClientHeaderOperations.vm")
+#foreach($presigner in $serviceModel.presigners)
+        Aws::Utils::Outcome<String, ${metadata.classNamePrefix}Error> ${presigner.functionName}(const Aws::String& ${presigner.hostNameVarName}, const Aws::String& ${presigner.regionVarName},#foreach($arg in $presigner.queryParams)#if(${arg.variableName}) ${arg.type} ${arg.variableName},#end#end long long expiresIn = 900);
+#end
 
       void OverrideEndpoint(const Aws::String& endpoint);
 #if($serviceModel.endpointRules)
@@ -78,7 +78,6 @@ namespace ${serviceNamespace}
 #if($serviceModel.endpointRules)
       ${metadata.classNamePrefix}ClientConfiguration m_clientConfiguration;
 #end
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
 #if($serviceModel.endpointRules)
       std::shared_ptr<${metadata.classNamePrefix}EndpointProviderBase> m_endpointProvider;
 #end

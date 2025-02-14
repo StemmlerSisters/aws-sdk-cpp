@@ -24,15 +24,13 @@ AvailabilityZone::AvailabilityZone() :
     m_zoneNameHasBeenSet(false),
     m_subnetIdHasBeenSet(false),
     m_outpostIdHasBeenSet(false),
-    m_loadBalancerAddressesHasBeenSet(false)
+    m_loadBalancerAddressesHasBeenSet(false),
+    m_sourceNatIpv6PrefixesHasBeenSet(false)
 {
 }
 
-AvailabilityZone::AvailabilityZone(const XmlNode& xmlNode) : 
-    m_zoneNameHasBeenSet(false),
-    m_subnetIdHasBeenSet(false),
-    m_outpostIdHasBeenSet(false),
-    m_loadBalancerAddressesHasBeenSet(false)
+AvailabilityZone::AvailabilityZone(const XmlNode& xmlNode)
+  : AvailabilityZone()
 {
   *this = xmlNode;
 }
@@ -73,6 +71,18 @@ AvailabilityZone& AvailabilityZone::operator =(const XmlNode& xmlNode)
 
       m_loadBalancerAddressesHasBeenSet = true;
     }
+    XmlNode sourceNatIpv6PrefixesNode = resultNode.FirstChild("SourceNatIpv6Prefixes");
+    if(!sourceNatIpv6PrefixesNode.IsNull())
+    {
+      XmlNode sourceNatIpv6PrefixesMember = sourceNatIpv6PrefixesNode.FirstChild("member");
+      while(!sourceNatIpv6PrefixesMember.IsNull())
+      {
+        m_sourceNatIpv6Prefixes.push_back(sourceNatIpv6PrefixesMember.GetText());
+        sourceNatIpv6PrefixesMember = sourceNatIpv6PrefixesMember.NextNode("member");
+      }
+
+      m_sourceNatIpv6PrefixesHasBeenSet = true;
+    }
   }
 
   return *this;
@@ -106,6 +116,15 @@ void AvailabilityZone::OutputToStream(Aws::OStream& oStream, const char* locatio
       }
   }
 
+  if(m_sourceNatIpv6PrefixesHasBeenSet)
+  {
+      unsigned sourceNatIpv6PrefixesIdx = 1;
+      for(auto& item : m_sourceNatIpv6Prefixes)
+      {
+        oStream << location << index << locationValue << ".SourceNatIpv6Prefixes.member." << sourceNatIpv6PrefixesIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
+      }
+  }
+
 }
 
 void AvailabilityZone::OutputToStream(Aws::OStream& oStream, const char* location) const
@@ -130,6 +149,14 @@ void AvailabilityZone::OutputToStream(Aws::OStream& oStream, const char* locatio
         Aws::StringStream loadBalancerAddressesSs;
         loadBalancerAddressesSs << location <<  ".LoadBalancerAddresses.member." << loadBalancerAddressesIdx++;
         item.OutputToStream(oStream, loadBalancerAddressesSs.str().c_str());
+      }
+  }
+  if(m_sourceNatIpv6PrefixesHasBeenSet)
+  {
+      unsigned sourceNatIpv6PrefixesIdx = 1;
+      for(auto& item : m_sourceNatIpv6Prefixes)
+      {
+        oStream << location << ".SourceNatIpv6Prefixes.member." << sourceNatIpv6PrefixesIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
       }
   }
 }

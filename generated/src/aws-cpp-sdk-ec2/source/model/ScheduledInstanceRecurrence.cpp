@@ -31,14 +31,8 @@ ScheduledInstanceRecurrence::ScheduledInstanceRecurrence() :
 {
 }
 
-ScheduledInstanceRecurrence::ScheduledInstanceRecurrence(const XmlNode& xmlNode) : 
-    m_frequencyHasBeenSet(false),
-    m_interval(0),
-    m_intervalHasBeenSet(false),
-    m_occurrenceDaySetHasBeenSet(false),
-    m_occurrenceRelativeToEnd(false),
-    m_occurrenceRelativeToEndHasBeenSet(false),
-    m_occurrenceUnitHasBeenSet(false)
+ScheduledInstanceRecurrence::ScheduledInstanceRecurrence(const XmlNode& xmlNode)
+  : ScheduledInstanceRecurrence()
 {
   *this = xmlNode;
 }
@@ -67,7 +61,7 @@ ScheduledInstanceRecurrence& ScheduledInstanceRecurrence::operator =(const XmlNo
       XmlNode occurrenceDaySetMember = occurrenceDaySetNode.FirstChild("item");
       while(!occurrenceDaySetMember.IsNull())
       {
-         m_occurrenceDaySet.push_back(StringUtils::ConvertToInt32(StringUtils::Trim(occurrenceDaySetMember.GetText().c_str()).c_str()));
+        m_occurrenceDaySet.push_back(StringUtils::ConvertToInt32(StringUtils::Trim(occurrenceDaySetMember.GetText().c_str()).c_str()));
         occurrenceDaySetMember = occurrenceDaySetMember.NextNode("item");
       }
 

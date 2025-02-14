@@ -19,29 +19,20 @@ namespace Model
 {
 
 Attachments::Attachments() : 
+    m_manifestsHasBeenSet(false),
     m_fileSystem(JobAttachmentsFileSystem::NOT_SET),
-    m_fileSystemHasBeenSet(false),
-    m_manifestsHasBeenSet(false)
+    m_fileSystemHasBeenSet(false)
 {
 }
 
-Attachments::Attachments(JsonView jsonValue) : 
-    m_fileSystem(JobAttachmentsFileSystem::NOT_SET),
-    m_fileSystemHasBeenSet(false),
-    m_manifestsHasBeenSet(false)
+Attachments::Attachments(JsonView jsonValue)
+  : Attachments()
 {
   *this = jsonValue;
 }
 
 Attachments& Attachments::operator =(JsonView jsonValue)
 {
-  if(jsonValue.ValueExists("fileSystem"))
-  {
-    m_fileSystem = JobAttachmentsFileSystemMapper::GetJobAttachmentsFileSystemForName(jsonValue.GetString("fileSystem"));
-
-    m_fileSystemHasBeenSet = true;
-  }
-
   if(jsonValue.ValueExists("manifests"))
   {
     Aws::Utils::Array<JsonView> manifestsJsonList = jsonValue.GetArray("manifests");
@@ -52,17 +43,19 @@ Attachments& Attachments::operator =(JsonView jsonValue)
     m_manifestsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("fileSystem"))
+  {
+    m_fileSystem = JobAttachmentsFileSystemMapper::GetJobAttachmentsFileSystemForName(jsonValue.GetString("fileSystem"));
+
+    m_fileSystemHasBeenSet = true;
+  }
+
   return *this;
 }
 
 JsonValue Attachments::Jsonize() const
 {
   JsonValue payload;
-
-  if(m_fileSystemHasBeenSet)
-  {
-   payload.WithString("fileSystem", JobAttachmentsFileSystemMapper::GetNameForJobAttachmentsFileSystem(m_fileSystem));
-  }
 
   if(m_manifestsHasBeenSet)
   {
@@ -73,6 +66,11 @@ JsonValue Attachments::Jsonize() const
    }
    payload.WithArray("manifests", std::move(manifestsJsonList));
 
+  }
+
+  if(m_fileSystemHasBeenSet)
+  {
+   payload.WithString("fileSystem", JobAttachmentsFileSystemMapper::GetNameForJobAttachmentsFileSystem(m_fileSystem));
   }
 
   return payload;

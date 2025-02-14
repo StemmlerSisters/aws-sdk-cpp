@@ -21,7 +21,9 @@ namespace Model
     Upgrade,
     PurchaseSavingsPlans,
     PurchaseReservedInstances,
-    MigrateToGraviton
+    MigrateToGraviton,
+    Delete,
+    ScaleIn
   };
 
 namespace ActionTypeMapper

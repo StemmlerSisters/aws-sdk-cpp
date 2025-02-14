@@ -22,13 +22,13 @@ namespace Model
 
 Bucket::Bucket() : 
     m_nameHasBeenSet(false),
-    m_creationDateHasBeenSet(false)
+    m_creationDateHasBeenSet(false),
+    m_bucketRegionHasBeenSet(false)
 {
 }
 
-Bucket::Bucket(const XmlNode& xmlNode) : 
-    m_nameHasBeenSet(false),
-    m_creationDateHasBeenSet(false)
+Bucket::Bucket(const XmlNode& xmlNode)
+  : Bucket()
 {
   *this = xmlNode;
 }
@@ -51,6 +51,12 @@ Bucket& Bucket::operator =(const XmlNode& xmlNode)
       m_creationDate = DateTime(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(creationDateNode.GetText()).c_str()).c_str(), Aws::Utils::DateFormat::ISO_8601);
       m_creationDateHasBeenSet = true;
     }
+    XmlNode bucketRegionNode = resultNode.FirstChild("BucketRegion");
+    if(!bucketRegionNode.IsNull())
+    {
+      m_bucketRegion = Aws::Utils::Xml::DecodeEscapedXmlText(bucketRegionNode.GetText());
+      m_bucketRegionHasBeenSet = true;
+    }
   }
 
   return *this;
@@ -69,6 +75,12 @@ void Bucket::AddToNode(XmlNode& parentNode) const
   {
    XmlNode creationDateNode = parentNode.CreateChildElement("CreationDate");
    creationDateNode.SetText(m_creationDate.ToGmtString(Aws::Utils::DateFormat::ISO_8601));
+  }
+
+  if(m_bucketRegionHasBeenSet)
+  {
+   XmlNode bucketRegionNode = parentNode.CreateChildElement("BucketRegion");
+   bucketRegionNode.SetText(m_bucketRegion);
   }
 
 }

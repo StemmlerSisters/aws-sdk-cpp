@@ -25,11 +25,8 @@ CreateDataSourceResult::CreateDataSourceResult() :
 {
 }
 
-CreateDataSourceResult::CreateDataSourceResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_enableSetting(EnableSetting::NOT_SET),
-    m_lastRunStatus(DataSourceRunStatus::NOT_SET),
-    m_publishOnImport(false),
-    m_status(DataSourceStatus::NOT_SET)
+CreateDataSourceResult::CreateDataSourceResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : CreateDataSourceResult()
 {
   *this = result;
 }
@@ -49,6 +46,12 @@ CreateDataSourceResult& CreateDataSourceResult::operator =(const Aws::AmazonWebS
   if(jsonValue.ValueExists("configuration"))
   {
     m_configuration = jsonValue.GetObject("configuration");
+
+  }
+
+  if(jsonValue.ValueExists("connectionId"))
+  {
+    m_connectionId = jsonValue.GetString("connectionId");
 
   }
 

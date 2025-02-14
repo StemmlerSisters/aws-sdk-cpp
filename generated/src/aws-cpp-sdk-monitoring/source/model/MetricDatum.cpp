@@ -36,19 +36,8 @@ MetricDatum::MetricDatum() :
 {
 }
 
-MetricDatum::MetricDatum(const XmlNode& xmlNode) : 
-    m_metricNameHasBeenSet(false),
-    m_dimensionsHasBeenSet(false),
-    m_timestampHasBeenSet(false),
-    m_value(0.0),
-    m_valueHasBeenSet(false),
-    m_statisticValuesHasBeenSet(false),
-    m_valuesHasBeenSet(false),
-    m_countsHasBeenSet(false),
-    m_unit(StandardUnit::NOT_SET),
-    m_unitHasBeenSet(false),
-    m_storageResolution(0),
-    m_storageResolutionHasBeenSet(false)
+MetricDatum::MetricDatum(const XmlNode& xmlNode)
+  : MetricDatum()
 {
   *this = xmlNode;
 }
@@ -101,7 +90,7 @@ MetricDatum& MetricDatum::operator =(const XmlNode& xmlNode)
       XmlNode valuesMember = valuesNode.FirstChild("member");
       while(!valuesMember.IsNull())
       {
-         m_values.push_back(StringUtils::ConvertToDouble(StringUtils::Trim(valuesMember.GetText().c_str()).c_str()));
+        m_values.push_back(StringUtils::ConvertToDouble(StringUtils::Trim(valuesMember.GetText().c_str()).c_str()));
         valuesMember = valuesMember.NextNode("member");
       }
 
@@ -113,7 +102,7 @@ MetricDatum& MetricDatum::operator =(const XmlNode& xmlNode)
       XmlNode countsMember = countsNode.FirstChild("member");
       while(!countsMember.IsNull())
       {
-         m_counts.push_back(StringUtils::ConvertToDouble(StringUtils::Trim(countsMember.GetText().c_str()).c_str()));
+        m_counts.push_back(StringUtils::ConvertToDouble(StringUtils::Trim(countsMember.GetText().c_str()).c_str()));
         countsMember = countsMember.NextNode("member");
       }
 

@@ -22,8 +22,8 @@ UpdateConnectorResult::UpdateConnectorResult() :
 {
 }
 
-UpdateConnectorResult::UpdateConnectorResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_connectorState(ConnectorState::NOT_SET)
+UpdateConnectorResult::UpdateConnectorResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : UpdateConnectorResult()
 {
   *this = result;
 }
@@ -40,6 +40,12 @@ UpdateConnectorResult& UpdateConnectorResult::operator =(const Aws::AmazonWebSer
   if(jsonValue.ValueExists("connectorState"))
   {
     m_connectorState = ConnectorStateMapper::GetConnectorStateForName(jsonValue.GetString("connectorState"));
+
+  }
+
+  if(jsonValue.ValueExists("connectorOperationArn"))
+  {
+    m_connectorOperationArn = jsonValue.GetString("connectorOperationArn");
 
   }
 

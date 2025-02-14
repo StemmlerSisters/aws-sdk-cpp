@@ -25,8 +25,13 @@ namespace Model
 {
 
   /**
-   * <p>Configuration for mitigation actions and notification for different levels of
-   * risk detected for a potential account takeover.</p><p><h3>See Also:</h3>   <a
+   * <p>The settings for automated responses and notification templates for adaptive
+   * authentication with advanced security features.</p> <p>This data type is a
+   * request parameter of <a
+   * href="https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_SetRiskConfiguration.html">SetRiskConfiguration</a>
+   * and a response parameter of <a
+   * href="https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_DescribeRiskConfiguration.html">DescribeRiskConfiguration</a>.</p><p><h3>See
+   * Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/cognito-idp-2016-04-18/AccountTakeoverRiskConfigurationType">AWS
    * API Reference</a></p>
    */
@@ -39,67 +44,34 @@ namespace Model
     AWS_COGNITOIDENTITYPROVIDER_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
-     * <p>The notify configuration used to construct email notifications.</p>
+     * <p>The settings for composing and sending an email message when advanced
+     * security features assesses a risk level with adaptive authentication. When you
+     * choose to notify users in <code>AccountTakeoverRiskConfiguration</code>, Amazon
+     * Cognito sends an email message using the method and template that you set with
+     * this data type.</p>
      */
     inline const NotifyConfigurationType& GetNotifyConfiguration() const{ return m_notifyConfiguration; }
-
-    /**
-     * <p>The notify configuration used to construct email notifications.</p>
-     */
     inline bool NotifyConfigurationHasBeenSet() const { return m_notifyConfigurationHasBeenSet; }
-
-    /**
-     * <p>The notify configuration used to construct email notifications.</p>
-     */
     inline void SetNotifyConfiguration(const NotifyConfigurationType& value) { m_notifyConfigurationHasBeenSet = true; m_notifyConfiguration = value; }
-
-    /**
-     * <p>The notify configuration used to construct email notifications.</p>
-     */
     inline void SetNotifyConfiguration(NotifyConfigurationType&& value) { m_notifyConfigurationHasBeenSet = true; m_notifyConfiguration = std::move(value); }
-
-    /**
-     * <p>The notify configuration used to construct email notifications.</p>
-     */
     inline AccountTakeoverRiskConfigurationType& WithNotifyConfiguration(const NotifyConfigurationType& value) { SetNotifyConfiguration(value); return *this;}
-
-    /**
-     * <p>The notify configuration used to construct email notifications.</p>
-     */
     inline AccountTakeoverRiskConfigurationType& WithNotifyConfiguration(NotifyConfigurationType&& value) { SetNotifyConfiguration(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p>Account takeover risk configuration actions.</p>
+     * <p>A list of account-takeover actions for each level of risk that Amazon Cognito
+     * might assess with advanced security features.</p>
      */
     inline const AccountTakeoverActionsType& GetActions() const{ return m_actions; }
-
-    /**
-     * <p>Account takeover risk configuration actions.</p>
-     */
     inline bool ActionsHasBeenSet() const { return m_actionsHasBeenSet; }
-
-    /**
-     * <p>Account takeover risk configuration actions.</p>
-     */
     inline void SetActions(const AccountTakeoverActionsType& value) { m_actionsHasBeenSet = true; m_actions = value; }
-
-    /**
-     * <p>Account takeover risk configuration actions.</p>
-     */
     inline void SetActions(AccountTakeoverActionsType&& value) { m_actionsHasBeenSet = true; m_actions = std::move(value); }
-
-    /**
-     * <p>Account takeover risk configuration actions.</p>
-     */
     inline AccountTakeoverRiskConfigurationType& WithActions(const AccountTakeoverActionsType& value) { SetActions(value); return *this;}
-
-    /**
-     * <p>Account takeover risk configuration actions.</p>
-     */
     inline AccountTakeoverRiskConfigurationType& WithActions(AccountTakeoverActionsType&& value) { SetActions(std::move(value)); return *this;}
-
+    ///@}
   private:
 
     NotifyConfigurationType m_notifyConfiguration;

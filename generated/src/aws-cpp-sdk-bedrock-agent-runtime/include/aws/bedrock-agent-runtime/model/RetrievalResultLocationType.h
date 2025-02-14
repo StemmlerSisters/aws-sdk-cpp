@@ -16,7 +16,14 @@ namespace Model
   enum class RetrievalResultLocationType
   {
     NOT_SET,
-    S3
+    S3,
+    WEB,
+    CONFLUENCE,
+    SALESFORCE,
+    SHAREPOINT,
+    CUSTOM,
+    KENDRA,
+    SQL
   };
 
 namespace RetrievalResultLocationTypeMapper

@@ -23,6 +23,8 @@ namespace Aws
         static const int TELEPHONE_NUMBER_HASH = HashingUtils::HashString("TELEPHONE_NUMBER");
         static const int VOIP_HASH = HashingUtils::HashString("VOIP");
         static const int CONTACT_FLOW_HASH = HashingUtils::HashString("CONTACT_FLOW");
+        static const int CONNECT_PHONENUMBER_ARN_HASH = HashingUtils::HashString("CONNECT_PHONENUMBER_ARN");
+        static const int EMAIL_ADDRESS_HASH = HashingUtils::HashString("EMAIL_ADDRESS");
 
 
         EndpointType GetEndpointTypeForName(const Aws::String& name)
@@ -39,6 +41,14 @@ namespace Aws
           else if (hashCode == CONTACT_FLOW_HASH)
           {
             return EndpointType::CONTACT_FLOW;
+          }
+          else if (hashCode == CONNECT_PHONENUMBER_ARN_HASH)
+          {
+            return EndpointType::CONNECT_PHONENUMBER_ARN;
+          }
+          else if (hashCode == EMAIL_ADDRESS_HASH)
+          {
+            return EndpointType::EMAIL_ADDRESS;
           }
           EnumParseOverflowContainer* overflowContainer = Aws::GetEnumOverflowContainer();
           if(overflowContainer)
@@ -62,6 +72,10 @@ namespace Aws
             return "VOIP";
           case EndpointType::CONTACT_FLOW:
             return "CONTACT_FLOW";
+          case EndpointType::CONNECT_PHONENUMBER_ARN:
+            return "CONNECT_PHONENUMBER_ARN";
+          case EndpointType::EMAIL_ADDRESS:
+            return "EMAIL_ADDRESS";
           default:
             EnumParseOverflowContainer* overflowContainer = Aws::GetEnumOverflowContainer();
             if(overflowContainer)

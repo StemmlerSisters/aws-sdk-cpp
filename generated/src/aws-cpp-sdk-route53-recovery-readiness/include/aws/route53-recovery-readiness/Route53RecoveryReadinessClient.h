@@ -6,24 +6,36 @@
 #pragma once
 #include <aws/route53-recovery-readiness/Route53RecoveryReadiness_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/route53-recovery-readiness/Route53RecoveryReadinessServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/route53-recovery-readiness/Route53RecoveryReadinessErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Route53RecoveryReadiness
 {
+  AWS_ROUTE53RECOVERYREADINESS_API extern const char SERVICE_NAME[];
   /**
    * <p>Recovery readiness</p>
    */
-  class AWS_ROUTE53RECOVERYREADINESS_API Route53RecoveryReadinessClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<Route53RecoveryReadinessClient>
+  class AWS_ROUTE53RECOVERYREADINESS_API Route53RecoveryReadinessClient : smithy::client::AwsSmithyClientT<Aws::Route53RecoveryReadiness::SERVICE_NAME,
+      Aws::Route53RecoveryReadiness::Route53RecoveryReadinessClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      Route53RecoveryReadinessEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::Route53RecoveryReadinessErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<Route53RecoveryReadinessClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Route53 Recovery Readiness"; }
 
       typedef Route53RecoveryReadinessClientConfiguration ClientConfigurationType;
       typedef Route53RecoveryReadinessEndpointProvider EndpointProviderType;
@@ -582,13 +594,13 @@ namespace Route53RecoveryReadiness
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-recovery-readiness-2019-12-02/ListCells">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListCellsOutcome ListCells(const Model::ListCellsRequest& request) const;
+        virtual Model::ListCellsOutcome ListCells(const Model::ListCellsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListCells that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListCellsRequestT = Model::ListCellsRequest>
-        Model::ListCellsOutcomeCallable ListCellsCallable(const ListCellsRequestT& request) const
+        Model::ListCellsOutcomeCallable ListCellsCallable(const ListCellsRequestT& request = {}) const
         {
             return SubmitCallable(&Route53RecoveryReadinessClient::ListCells, request);
         }
@@ -597,7 +609,7 @@ namespace Route53RecoveryReadiness
          * An Async wrapper for ListCells that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListCellsRequestT = Model::ListCellsRequest>
-        void ListCellsAsync(const ListCellsRequestT& request, const ListCellsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListCellsAsync(const ListCellsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListCellsRequestT& request = {}) const
         {
             return SubmitAsync(&Route53RecoveryReadinessClient::ListCells, request, handler, context);
         }
@@ -608,13 +620,13 @@ namespace Route53RecoveryReadiness
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-recovery-readiness-2019-12-02/ListCrossAccountAuthorizations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListCrossAccountAuthorizationsOutcome ListCrossAccountAuthorizations(const Model::ListCrossAccountAuthorizationsRequest& request) const;
+        virtual Model::ListCrossAccountAuthorizationsOutcome ListCrossAccountAuthorizations(const Model::ListCrossAccountAuthorizationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListCrossAccountAuthorizations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListCrossAccountAuthorizationsRequestT = Model::ListCrossAccountAuthorizationsRequest>
-        Model::ListCrossAccountAuthorizationsOutcomeCallable ListCrossAccountAuthorizationsCallable(const ListCrossAccountAuthorizationsRequestT& request) const
+        Model::ListCrossAccountAuthorizationsOutcomeCallable ListCrossAccountAuthorizationsCallable(const ListCrossAccountAuthorizationsRequestT& request = {}) const
         {
             return SubmitCallable(&Route53RecoveryReadinessClient::ListCrossAccountAuthorizations, request);
         }
@@ -623,7 +635,7 @@ namespace Route53RecoveryReadiness
          * An Async wrapper for ListCrossAccountAuthorizations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListCrossAccountAuthorizationsRequestT = Model::ListCrossAccountAuthorizationsRequest>
-        void ListCrossAccountAuthorizationsAsync(const ListCrossAccountAuthorizationsRequestT& request, const ListCrossAccountAuthorizationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListCrossAccountAuthorizationsAsync(const ListCrossAccountAuthorizationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListCrossAccountAuthorizationsRequestT& request = {}) const
         {
             return SubmitAsync(&Route53RecoveryReadinessClient::ListCrossAccountAuthorizations, request, handler, context);
         }
@@ -633,13 +645,13 @@ namespace Route53RecoveryReadiness
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-recovery-readiness-2019-12-02/ListReadinessChecks">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListReadinessChecksOutcome ListReadinessChecks(const Model::ListReadinessChecksRequest& request) const;
+        virtual Model::ListReadinessChecksOutcome ListReadinessChecks(const Model::ListReadinessChecksRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListReadinessChecks that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListReadinessChecksRequestT = Model::ListReadinessChecksRequest>
-        Model::ListReadinessChecksOutcomeCallable ListReadinessChecksCallable(const ListReadinessChecksRequestT& request) const
+        Model::ListReadinessChecksOutcomeCallable ListReadinessChecksCallable(const ListReadinessChecksRequestT& request = {}) const
         {
             return SubmitCallable(&Route53RecoveryReadinessClient::ListReadinessChecks, request);
         }
@@ -648,7 +660,7 @@ namespace Route53RecoveryReadiness
          * An Async wrapper for ListReadinessChecks that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListReadinessChecksRequestT = Model::ListReadinessChecksRequest>
-        void ListReadinessChecksAsync(const ListReadinessChecksRequestT& request, const ListReadinessChecksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListReadinessChecksAsync(const ListReadinessChecksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListReadinessChecksRequestT& request = {}) const
         {
             return SubmitAsync(&Route53RecoveryReadinessClient::ListReadinessChecks, request, handler, context);
         }
@@ -658,13 +670,13 @@ namespace Route53RecoveryReadiness
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-recovery-readiness-2019-12-02/ListRecoveryGroups">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListRecoveryGroupsOutcome ListRecoveryGroups(const Model::ListRecoveryGroupsRequest& request) const;
+        virtual Model::ListRecoveryGroupsOutcome ListRecoveryGroups(const Model::ListRecoveryGroupsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListRecoveryGroups that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListRecoveryGroupsRequestT = Model::ListRecoveryGroupsRequest>
-        Model::ListRecoveryGroupsOutcomeCallable ListRecoveryGroupsCallable(const ListRecoveryGroupsRequestT& request) const
+        Model::ListRecoveryGroupsOutcomeCallable ListRecoveryGroupsCallable(const ListRecoveryGroupsRequestT& request = {}) const
         {
             return SubmitCallable(&Route53RecoveryReadinessClient::ListRecoveryGroups, request);
         }
@@ -673,7 +685,7 @@ namespace Route53RecoveryReadiness
          * An Async wrapper for ListRecoveryGroups that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListRecoveryGroupsRequestT = Model::ListRecoveryGroupsRequest>
-        void ListRecoveryGroupsAsync(const ListRecoveryGroupsRequestT& request, const ListRecoveryGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListRecoveryGroupsAsync(const ListRecoveryGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListRecoveryGroupsRequestT& request = {}) const
         {
             return SubmitAsync(&Route53RecoveryReadinessClient::ListRecoveryGroups, request, handler, context);
         }
@@ -683,13 +695,13 @@ namespace Route53RecoveryReadiness
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-recovery-readiness-2019-12-02/ListResourceSets">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListResourceSetsOutcome ListResourceSets(const Model::ListResourceSetsRequest& request) const;
+        virtual Model::ListResourceSetsOutcome ListResourceSets(const Model::ListResourceSetsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListResourceSets that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListResourceSetsRequestT = Model::ListResourceSetsRequest>
-        Model::ListResourceSetsOutcomeCallable ListResourceSetsCallable(const ListResourceSetsRequestT& request) const
+        Model::ListResourceSetsOutcomeCallable ListResourceSetsCallable(const ListResourceSetsRequestT& request = {}) const
         {
             return SubmitCallable(&Route53RecoveryReadinessClient::ListResourceSets, request);
         }
@@ -698,7 +710,7 @@ namespace Route53RecoveryReadiness
          * An Async wrapper for ListResourceSets that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListResourceSetsRequestT = Model::ListResourceSetsRequest>
-        void ListResourceSetsAsync(const ListResourceSetsRequestT& request, const ListResourceSetsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListResourceSetsAsync(const ListResourceSetsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListResourceSetsRequestT& request = {}) const
         {
             return SubmitAsync(&Route53RecoveryReadinessClient::ListResourceSets, request, handler, context);
         }
@@ -709,13 +721,13 @@ namespace Route53RecoveryReadiness
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53-recovery-readiness-2019-12-02/ListRules">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListRulesOutcome ListRules(const Model::ListRulesRequest& request) const;
+        virtual Model::ListRulesOutcome ListRules(const Model::ListRulesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListRules that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListRulesRequestT = Model::ListRulesRequest>
-        Model::ListRulesOutcomeCallable ListRulesCallable(const ListRulesRequestT& request) const
+        Model::ListRulesOutcomeCallable ListRulesCallable(const ListRulesRequestT& request = {}) const
         {
             return SubmitCallable(&Route53RecoveryReadinessClient::ListRules, request);
         }
@@ -724,7 +736,7 @@ namespace Route53RecoveryReadiness
          * An Async wrapper for ListRules that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListRulesRequestT = Model::ListRulesRequest>
-        void ListRulesAsync(const ListRulesRequestT& request, const ListRulesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListRulesAsync(const ListRulesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListRulesRequestT& request = {}) const
         {
             return SubmitAsync(&Route53RecoveryReadinessClient::ListRules, request, handler, context);
         }
@@ -910,11 +922,7 @@ namespace Route53RecoveryReadiness
       std::shared_ptr<Route53RecoveryReadinessEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<Route53RecoveryReadinessClient>;
-      void init(const Route53RecoveryReadinessClientConfiguration& clientConfiguration);
 
-      Route53RecoveryReadinessClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<Route53RecoveryReadinessEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Route53RecoveryReadiness

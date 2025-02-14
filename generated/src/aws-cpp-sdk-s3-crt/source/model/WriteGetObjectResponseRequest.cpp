@@ -34,6 +34,7 @@ WriteGetObjectResponseRequest::WriteGetObjectResponseRequest() :
     m_contentRangeHasBeenSet(false),
     m_checksumCRC32HasBeenSet(false),
     m_checksumCRC32CHasBeenSet(false),
+    m_checksumCRC64NVMEHasBeenSet(false),
     m_checksumSHA1HasBeenSet(false),
     m_checksumSHA256HasBeenSet(false),
     m_deleteMarker(false),
@@ -198,6 +199,13 @@ Aws::Http::HeaderValueCollection WriteGetObjectResponseRequest::GetRequestSpecif
     ss.str("");
   }
 
+  if(m_checksumCRC64NVMEHasBeenSet)
+  {
+    ss << m_checksumCRC64NVME;
+    headers.emplace("x-amz-fwd-header-x-amz-checksum-crc64nvme",  ss.str());
+    ss.str("");
+  }
+
   if(m_checksumSHA1HasBeenSet)
   {
     ss << m_checksumSHA1;
@@ -353,6 +361,27 @@ Aws::Http::HeaderValueCollection WriteGetObjectResponseRequest::GetRequestSpecif
 
   return headers;
 
+}
+
+bool WriteGetObjectResponseRequest::HasEmbeddedError(Aws::IOStream &body,
+  const Aws::Http::HeaderValueCollection &header) const
+{
+  // Header is unused
+  AWS_UNREFERENCED_PARAM(header);
+
+  auto readPointer = body.tellg();
+  Utils::Xml::XmlDocument doc = Utils::Xml::XmlDocument::CreateFromXmlStream(body);
+  body.seekg(readPointer);
+
+  if (!doc.WasParseSuccessful()) {
+    return false;
+  }
+
+  if (!doc.GetRootElement().IsNull() && doc.GetRootElement().GetName() == Aws::String("Error")) {
+    return true;
+  }
+
+  return false;
 }
 
 WriteGetObjectResponseRequest::EndpointParameters WriteGetObjectResponseRequest::GetEndpointContextParams() const

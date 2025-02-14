@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/wisdom/ConnectWisdomService_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/wisdom/ConnectWisdomServiceServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/wisdom/ConnectWisdomServiceErrorMarshaller.h>
 
 namespace Aws
 {
 namespace ConnectWisdomService
 {
+  AWS_CONNECTWISDOMSERVICE_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon Connect Wisdom delivers agents the information they need to solve
    * customer issues as they're actively speaking with customers. Agents can search
@@ -22,12 +26,20 @@ namespace ConnectWisdomService
    * quickly. Use Amazon Connect Wisdom to create an assistant and a knowledge base,
    * for example, or manage content by uploading custom files.</p>
    */
-  class AWS_CONNECTWISDOMSERVICE_API ConnectWisdomServiceClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<ConnectWisdomServiceClient>
+  class AWS_CONNECTWISDOMSERVICE_API ConnectWisdomServiceClient : smithy::client::AwsSmithyClientT<Aws::ConnectWisdomService::SERVICE_NAME,
+      Aws::ConnectWisdomService::ConnectWisdomServiceClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      ConnectWisdomServiceEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::ConnectWisdomServiceErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<ConnectWisdomServiceClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Wisdom"; }
 
       typedef ConnectWisdomServiceClientConfiguration ClientConfigurationType;
       typedef ConnectWisdomServiceEndpointProvider EndpointProviderType;
@@ -645,13 +657,13 @@ namespace ConnectWisdomService
          * href="http://docs.aws.amazon.com/goto/WebAPI/wisdom-2020-10-19/ListAssistants">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAssistantsOutcome ListAssistants(const Model::ListAssistantsRequest& request) const;
+        virtual Model::ListAssistantsOutcome ListAssistants(const Model::ListAssistantsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAssistants that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAssistantsRequestT = Model::ListAssistantsRequest>
-        Model::ListAssistantsOutcomeCallable ListAssistantsCallable(const ListAssistantsRequestT& request) const
+        Model::ListAssistantsOutcomeCallable ListAssistantsCallable(const ListAssistantsRequestT& request = {}) const
         {
             return SubmitCallable(&ConnectWisdomServiceClient::ListAssistants, request);
         }
@@ -660,7 +672,7 @@ namespace ConnectWisdomService
          * An Async wrapper for ListAssistants that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAssistantsRequestT = Model::ListAssistantsRequest>
-        void ListAssistantsAsync(const ListAssistantsRequestT& request, const ListAssistantsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAssistantsAsync(const ListAssistantsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAssistantsRequestT& request = {}) const
         {
             return SubmitAsync(&ConnectWisdomServiceClient::ListAssistants, request, handler, context);
         }
@@ -720,13 +732,13 @@ namespace ConnectWisdomService
          * href="http://docs.aws.amazon.com/goto/WebAPI/wisdom-2020-10-19/ListKnowledgeBases">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListKnowledgeBasesOutcome ListKnowledgeBases(const Model::ListKnowledgeBasesRequest& request) const;
+        virtual Model::ListKnowledgeBasesOutcome ListKnowledgeBases(const Model::ListKnowledgeBasesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListKnowledgeBases that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListKnowledgeBasesRequestT = Model::ListKnowledgeBasesRequest>
-        Model::ListKnowledgeBasesOutcomeCallable ListKnowledgeBasesCallable(const ListKnowledgeBasesRequestT& request) const
+        Model::ListKnowledgeBasesOutcomeCallable ListKnowledgeBasesCallable(const ListKnowledgeBasesRequestT& request = {}) const
         {
             return SubmitCallable(&ConnectWisdomServiceClient::ListKnowledgeBases, request);
         }
@@ -735,7 +747,7 @@ namespace ConnectWisdomService
          * An Async wrapper for ListKnowledgeBases that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListKnowledgeBasesRequestT = Model::ListKnowledgeBasesRequest>
-        void ListKnowledgeBasesAsync(const ListKnowledgeBasesRequestT& request, const ListKnowledgeBasesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListKnowledgeBasesAsync(const ListKnowledgeBasesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListKnowledgeBasesRequestT& request = {}) const
         {
             return SubmitAsync(&ConnectWisdomServiceClient::ListKnowledgeBases, request, handler, context);
         }
@@ -1124,11 +1136,7 @@ namespace ConnectWisdomService
       std::shared_ptr<ConnectWisdomServiceEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<ConnectWisdomServiceClient>;
-      void init(const ConnectWisdomServiceClientConfiguration& clientConfiguration);
 
-      ConnectWisdomServiceClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<ConnectWisdomServiceEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace ConnectWisdomService

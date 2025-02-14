@@ -26,7 +26,10 @@ StatementData::StatementData() :
     m_queryParametersHasBeenSet(false),
     m_queryStringHasBeenSet(false),
     m_queryStringsHasBeenSet(false),
+    m_resultFormat(ResultFormatString::NOT_SET),
+    m_resultFormatHasBeenSet(false),
     m_secretArnHasBeenSet(false),
+    m_sessionIdHasBeenSet(false),
     m_statementNameHasBeenSet(false),
     m_status(StatusString::NOT_SET),
     m_statusHasBeenSet(false),
@@ -34,19 +37,8 @@ StatementData::StatementData() :
 {
 }
 
-StatementData::StatementData(JsonView jsonValue) : 
-    m_createdAtHasBeenSet(false),
-    m_idHasBeenSet(false),
-    m_isBatchStatement(false),
-    m_isBatchStatementHasBeenSet(false),
-    m_queryParametersHasBeenSet(false),
-    m_queryStringHasBeenSet(false),
-    m_queryStringsHasBeenSet(false),
-    m_secretArnHasBeenSet(false),
-    m_statementNameHasBeenSet(false),
-    m_status(StatusString::NOT_SET),
-    m_statusHasBeenSet(false),
-    m_updatedAtHasBeenSet(false)
+StatementData::StatementData(JsonView jsonValue)
+  : StatementData()
 {
   *this = jsonValue;
 }
@@ -101,11 +93,25 @@ StatementData& StatementData::operator =(JsonView jsonValue)
     m_queryStringsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("ResultFormat"))
+  {
+    m_resultFormat = ResultFormatStringMapper::GetResultFormatStringForName(jsonValue.GetString("ResultFormat"));
+
+    m_resultFormatHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("SecretArn"))
   {
     m_secretArn = jsonValue.GetString("SecretArn");
 
     m_secretArnHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("SessionId"))
+  {
+    m_sessionId = jsonValue.GetString("SessionId");
+
+    m_sessionIdHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("StatementName"))
@@ -181,9 +187,20 @@ JsonValue StatementData::Jsonize() const
 
   }
 
+  if(m_resultFormatHasBeenSet)
+  {
+   payload.WithString("ResultFormat", ResultFormatStringMapper::GetNameForResultFormatString(m_resultFormat));
+  }
+
   if(m_secretArnHasBeenSet)
   {
    payload.WithString("SecretArn", m_secretArn);
+
+  }
+
+  if(m_sessionIdHasBeenSet)
+  {
+   payload.WithString("SessionId", m_sessionId);
 
   }
 

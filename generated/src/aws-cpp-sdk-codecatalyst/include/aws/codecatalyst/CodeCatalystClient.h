@@ -6,16 +6,19 @@
 #pragma once
 #include <aws/codecatalyst/CodeCatalyst_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/codecatalyst/CodeCatalystServiceClientModel.h>
-#include <aws/codecatalyst/model/VerifySessionRequest.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/BearerTokenAuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/BearerTokenAuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/codecatalyst/CodeCatalystErrorMarshaller.h>
 
 namespace Aws
 {
 namespace CodeCatalyst
 {
+  AWS_CODECATALYST_API extern const char SERVICE_NAME[];
   /**
    * <p>Welcome to the Amazon CodeCatalyst API reference. This reference provides
    * descriptions of operations and data types for Amazon CodeCatalyst. You can use
@@ -85,12 +88,20 @@ namespace CodeCatalyst
    * up to use the CLI with Amazon CodeCatalyst</a> and the SSO documentation for
    * your SDK.</p> 
    */
-  class AWS_CODECATALYST_API CodeCatalystClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<CodeCatalystClient>
+  class AWS_CODECATALYST_API CodeCatalystClient : smithy::client::AwsSmithyClientT<Aws::CodeCatalyst::SERVICE_NAME,
+      Aws::CodeCatalyst::CodeCatalystClientConfiguration,
+      smithy::BearerTokenAuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::BearerTokenAuthScheme>,
+      CodeCatalystEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::CodeCatalystErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<CodeCatalystClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "CodeCatalyst"; }
 
       typedef CodeCatalystClientConfiguration ClientConfigurationType;
       typedef CodeCatalystEndpointProvider EndpointProviderType;
@@ -546,13 +557,13 @@ namespace CodeCatalyst
          * href="http://docs.aws.amazon.com/goto/WebAPI/codecatalyst-2022-09-28/GetUserDetails">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetUserDetailsOutcome GetUserDetails(const Model::GetUserDetailsRequest& request) const;
+        virtual Model::GetUserDetailsOutcome GetUserDetails(const Model::GetUserDetailsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetUserDetails that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetUserDetailsRequestT = Model::GetUserDetailsRequest>
-        Model::GetUserDetailsOutcomeCallable GetUserDetailsCallable(const GetUserDetailsRequestT& request) const
+        Model::GetUserDetailsOutcomeCallable GetUserDetailsCallable(const GetUserDetailsRequestT& request = {}) const
         {
             return SubmitCallable(&CodeCatalystClient::GetUserDetails, request);
         }
@@ -561,7 +572,7 @@ namespace CodeCatalyst
          * An Async wrapper for GetUserDetails that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetUserDetailsRequestT = Model::GetUserDetailsRequest>
-        void GetUserDetailsAsync(const GetUserDetailsRequestT& request, const GetUserDetailsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetUserDetailsAsync(const GetUserDetailsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetUserDetailsRequestT& request = {}) const
         {
             return SubmitAsync(&CodeCatalystClient::GetUserDetails, request, handler, context);
         }
@@ -624,13 +635,13 @@ namespace CodeCatalyst
          * href="http://docs.aws.amazon.com/goto/WebAPI/codecatalyst-2022-09-28/ListAccessTokens">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAccessTokensOutcome ListAccessTokens(const Model::ListAccessTokensRequest& request) const;
+        virtual Model::ListAccessTokensOutcome ListAccessTokens(const Model::ListAccessTokensRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAccessTokens that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAccessTokensRequestT = Model::ListAccessTokensRequest>
-        Model::ListAccessTokensOutcomeCallable ListAccessTokensCallable(const ListAccessTokensRequestT& request) const
+        Model::ListAccessTokensOutcomeCallable ListAccessTokensCallable(const ListAccessTokensRequestT& request = {}) const
         {
             return SubmitCallable(&CodeCatalystClient::ListAccessTokens, request);
         }
@@ -639,7 +650,7 @@ namespace CodeCatalyst
          * An Async wrapper for ListAccessTokens that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAccessTokensRequestT = Model::ListAccessTokensRequest>
-        void ListAccessTokensAsync(const ListAccessTokensRequestT& request, const ListAccessTokensResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAccessTokensAsync(const ListAccessTokensResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAccessTokensRequestT& request = {}) const
         {
             return SubmitAsync(&CodeCatalystClient::ListAccessTokens, request, handler, context);
         }
@@ -816,13 +827,13 @@ namespace CodeCatalyst
          * href="http://docs.aws.amazon.com/goto/WebAPI/codecatalyst-2022-09-28/ListSpaces">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListSpacesOutcome ListSpaces(const Model::ListSpacesRequest& request) const;
+        virtual Model::ListSpacesOutcome ListSpaces(const Model::ListSpacesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListSpaces that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListSpacesRequestT = Model::ListSpacesRequest>
-        Model::ListSpacesOutcomeCallable ListSpacesCallable(const ListSpacesRequestT& request) const
+        Model::ListSpacesOutcomeCallable ListSpacesCallable(const ListSpacesRequestT& request = {}) const
         {
             return SubmitCallable(&CodeCatalystClient::ListSpaces, request);
         }
@@ -831,7 +842,7 @@ namespace CodeCatalyst
          * An Async wrapper for ListSpaces that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListSpacesRequestT = Model::ListSpacesRequest>
-        void ListSpacesAsync(const ListSpacesRequestT& request, const ListSpacesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListSpacesAsync(const ListSpacesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListSpacesRequestT& request = {}) const
         {
             return SubmitAsync(&CodeCatalystClient::ListSpaces, request, handler, context);
         }
@@ -1126,11 +1137,7 @@ namespace CodeCatalyst
       std::shared_ptr<CodeCatalystEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<CodeCatalystClient>;
-      void init(const CodeCatalystClientConfiguration& clientConfiguration);
 
-      CodeCatalystClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<CodeCatalystEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace CodeCatalyst

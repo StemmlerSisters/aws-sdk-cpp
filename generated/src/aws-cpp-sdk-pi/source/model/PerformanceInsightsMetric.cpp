@@ -22,17 +22,14 @@ PerformanceInsightsMetric::PerformanceInsightsMetric() :
     m_metricHasBeenSet(false),
     m_displayNameHasBeenSet(false),
     m_dimensionsHasBeenSet(false),
+    m_filterHasBeenSet(false),
     m_value(0.0),
     m_valueHasBeenSet(false)
 {
 }
 
-PerformanceInsightsMetric::PerformanceInsightsMetric(JsonView jsonValue) : 
-    m_metricHasBeenSet(false),
-    m_displayNameHasBeenSet(false),
-    m_dimensionsHasBeenSet(false),
-    m_value(0.0),
-    m_valueHasBeenSet(false)
+PerformanceInsightsMetric::PerformanceInsightsMetric(JsonView jsonValue)
+  : PerformanceInsightsMetric()
 {
   *this = jsonValue;
 }
@@ -61,6 +58,16 @@ PerformanceInsightsMetric& PerformanceInsightsMetric::operator =(JsonView jsonVa
       m_dimensions[dimensionsItem.first] = dimensionsItem.second.AsString();
     }
     m_dimensionsHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("Filter"))
+  {
+    Aws::Map<Aws::String, JsonView> filterJsonMap = jsonValue.GetObject("Filter").GetAllObjects();
+    for(auto& filterItem : filterJsonMap)
+    {
+      m_filter[filterItem.first] = filterItem.second.AsString();
+    }
+    m_filterHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("Value"))
@@ -97,6 +104,17 @@ JsonValue PerformanceInsightsMetric::Jsonize() const
      dimensionsJsonMap.WithString(dimensionsItem.first, dimensionsItem.second);
    }
    payload.WithObject("Dimensions", std::move(dimensionsJsonMap));
+
+  }
+
+  if(m_filterHasBeenSet)
+  {
+   JsonValue filterJsonMap;
+   for(auto& filterItem : m_filter)
+   {
+     filterJsonMap.WithString(filterItem.first, filterItem.second);
+   }
+   payload.WithObject("Filter", std::move(filterJsonMap));
 
   }
 

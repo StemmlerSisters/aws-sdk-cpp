@@ -28,11 +28,8 @@ ClusterDbRevision::ClusterDbRevision() :
 {
 }
 
-ClusterDbRevision::ClusterDbRevision(const XmlNode& xmlNode) : 
-    m_clusterIdentifierHasBeenSet(false),
-    m_currentDatabaseRevisionHasBeenSet(false),
-    m_databaseRevisionReleaseDateHasBeenSet(false),
-    m_revisionTargetsHasBeenSet(false)
+ClusterDbRevision::ClusterDbRevision(const XmlNode& xmlNode)
+  : ClusterDbRevision()
 {
   *this = xmlNode;
 }
@@ -101,7 +98,7 @@ void ClusterDbRevision::OutputToStream(Aws::OStream& oStream, const char* locati
       for(auto& item : m_revisionTargets)
       {
         Aws::StringStream revisionTargetsSs;
-        revisionTargetsSs << location << index << locationValue << ".RevisionTarget." << revisionTargetsIdx++;
+        revisionTargetsSs << location << index << locationValue << ".RevisionTargets.RevisionTarget." << revisionTargetsIdx++;
         item.OutputToStream(oStream, revisionTargetsSs.str().c_str());
       }
   }

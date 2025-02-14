@@ -27,20 +27,15 @@ CrlConfiguration::CrlConfiguration() :
     m_s3BucketNameHasBeenSet(false),
     m_s3ObjectAcl(S3ObjectAcl::NOT_SET),
     m_s3ObjectAclHasBeenSet(false),
-    m_crlDistributionPointExtensionConfigurationHasBeenSet(false)
+    m_crlDistributionPointExtensionConfigurationHasBeenSet(false),
+    m_crlType(CrlType::NOT_SET),
+    m_crlTypeHasBeenSet(false),
+    m_customPathHasBeenSet(false)
 {
 }
 
-CrlConfiguration::CrlConfiguration(JsonView jsonValue) : 
-    m_enabled(false),
-    m_enabledHasBeenSet(false),
-    m_expirationInDays(0),
-    m_expirationInDaysHasBeenSet(false),
-    m_customCnameHasBeenSet(false),
-    m_s3BucketNameHasBeenSet(false),
-    m_s3ObjectAcl(S3ObjectAcl::NOT_SET),
-    m_s3ObjectAclHasBeenSet(false),
-    m_crlDistributionPointExtensionConfigurationHasBeenSet(false)
+CrlConfiguration::CrlConfiguration(JsonView jsonValue)
+  : CrlConfiguration()
 {
   *this = jsonValue;
 }
@@ -89,6 +84,20 @@ CrlConfiguration& CrlConfiguration::operator =(JsonView jsonValue)
     m_crlDistributionPointExtensionConfigurationHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("CrlType"))
+  {
+    m_crlType = CrlTypeMapper::GetCrlTypeForName(jsonValue.GetString("CrlType"));
+
+    m_crlTypeHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("CustomPath"))
+  {
+    m_customPath = jsonValue.GetString("CustomPath");
+
+    m_customPathHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -128,6 +137,17 @@ JsonValue CrlConfiguration::Jsonize() const
   if(m_crlDistributionPointExtensionConfigurationHasBeenSet)
   {
    payload.WithObject("CrlDistributionPointExtensionConfiguration", m_crlDistributionPointExtensionConfiguration.Jsonize());
+
+  }
+
+  if(m_crlTypeHasBeenSet)
+  {
+   payload.WithString("CrlType", CrlTypeMapper::GetNameForCrlType(m_crlType));
+  }
+
+  if(m_customPathHasBeenSet)
+  {
+   payload.WithString("CustomPath", m_customPath);
 
   }
 

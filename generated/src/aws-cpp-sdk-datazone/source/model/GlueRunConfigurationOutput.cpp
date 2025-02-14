@@ -22,19 +22,15 @@ GlueRunConfigurationOutput::GlueRunConfigurationOutput() :
     m_accountIdHasBeenSet(false),
     m_autoImportDataQualityResult(false),
     m_autoImportDataQualityResultHasBeenSet(false),
+    m_catalogNameHasBeenSet(false),
     m_dataAccessRoleHasBeenSet(false),
     m_regionHasBeenSet(false),
     m_relationalFilterConfigurationsHasBeenSet(false)
 {
 }
 
-GlueRunConfigurationOutput::GlueRunConfigurationOutput(JsonView jsonValue) : 
-    m_accountIdHasBeenSet(false),
-    m_autoImportDataQualityResult(false),
-    m_autoImportDataQualityResultHasBeenSet(false),
-    m_dataAccessRoleHasBeenSet(false),
-    m_regionHasBeenSet(false),
-    m_relationalFilterConfigurationsHasBeenSet(false)
+GlueRunConfigurationOutput::GlueRunConfigurationOutput(JsonView jsonValue)
+  : GlueRunConfigurationOutput()
 {
   *this = jsonValue;
 }
@@ -53,6 +49,13 @@ GlueRunConfigurationOutput& GlueRunConfigurationOutput::operator =(JsonView json
     m_autoImportDataQualityResult = jsonValue.GetBool("autoImportDataQualityResult");
 
     m_autoImportDataQualityResultHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("catalogName"))
+  {
+    m_catalogName = jsonValue.GetString("catalogName");
+
+    m_catalogNameHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("dataAccessRole"))
@@ -95,6 +98,12 @@ JsonValue GlueRunConfigurationOutput::Jsonize() const
   if(m_autoImportDataQualityResultHasBeenSet)
   {
    payload.WithBool("autoImportDataQualityResult", m_autoImportDataQualityResult);
+
+  }
+
+  if(m_catalogNameHasBeenSet)
+  {
+   payload.WithString("catalogName", m_catalogName);
 
   }
 

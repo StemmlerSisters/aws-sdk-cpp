@@ -52,6 +52,10 @@
 #include <aws/m2/model/UntagResourceResult.h>
 #include <aws/m2/model/UpdateApplicationResult.h>
 #include <aws/m2/model/UpdateEnvironmentResult.h>
+#include <aws/m2/model/GetSignedBluinsightsUrlRequest.h>
+#include <aws/m2/model/ListEnvironmentsRequest.h>
+#include <aws/m2/model/ListApplicationsRequest.h>
+#include <aws/m2/model/ListEngineVersionsRequest.h>
 /* End of service model headers required in MainframeModernizationClient header */
 
 namespace Aws
@@ -85,7 +89,7 @@ namespace Aws
 
   namespace MainframeModernization
   {
-    using MainframeModernizationClientConfiguration = Aws::Client::GenericClientConfiguration<false>;
+    using MainframeModernizationClientConfiguration = Aws::Client::GenericClientConfiguration;
     using MainframeModernizationEndpointProviderBase = Aws::MainframeModernization::Endpoint::MainframeModernizationEndpointProviderBase;
     using MainframeModernizationEndpointProvider = Aws::MainframeModernization::Endpoint::MainframeModernizationEndpointProvider;
 

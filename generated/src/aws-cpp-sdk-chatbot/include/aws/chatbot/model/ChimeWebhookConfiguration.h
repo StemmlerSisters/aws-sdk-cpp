@@ -26,7 +26,7 @@ namespace Model
 {
 
   /**
-   * An AWS Chatbot configuration for Amazon Chime.<p><h3>See Also:</h3>   <a
+   * <p>An AWS Chatbot configuration for Amazon Chime.</p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/chatbot-2017-10-11/ChimeWebhookConfiguration">AWS
    * API Reference</a></p>
    */
@@ -39,345 +39,146 @@ namespace Model
     AWS_CHATBOT_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
-     * Description of the webhook. Recommend using the convention
-     * `RoomName/WebhookName`. See Chime setup tutorial for more details:
-     * https://docs.aws.amazon.com/chatbot/latest/adminguide/chime-setup.html.
+     * <p>A description of the webhook. We recommend using the convention
+     * <code>RoomName/WebhookName</code>.</p> <p>For more information, see <a
+     * href="https://docs.aws.amazon.com/chatbot/latest/adminguide/chime-setup.html">Tutorial:
+     * Get started with Amazon Chime</a> in the <i> AWS Chatbot Administrator
+     * Guide</i>. </p>
      */
     inline const Aws::String& GetWebhookDescription() const{ return m_webhookDescription; }
-
-    /**
-     * Description of the webhook. Recommend using the convention
-     * `RoomName/WebhookName`. See Chime setup tutorial for more details:
-     * https://docs.aws.amazon.com/chatbot/latest/adminguide/chime-setup.html.
-     */
     inline bool WebhookDescriptionHasBeenSet() const { return m_webhookDescriptionHasBeenSet; }
-
-    /**
-     * Description of the webhook. Recommend using the convention
-     * `RoomName/WebhookName`. See Chime setup tutorial for more details:
-     * https://docs.aws.amazon.com/chatbot/latest/adminguide/chime-setup.html.
-     */
     inline void SetWebhookDescription(const Aws::String& value) { m_webhookDescriptionHasBeenSet = true; m_webhookDescription = value; }
-
-    /**
-     * Description of the webhook. Recommend using the convention
-     * `RoomName/WebhookName`. See Chime setup tutorial for more details:
-     * https://docs.aws.amazon.com/chatbot/latest/adminguide/chime-setup.html.
-     */
     inline void SetWebhookDescription(Aws::String&& value) { m_webhookDescriptionHasBeenSet = true; m_webhookDescription = std::move(value); }
-
-    /**
-     * Description of the webhook. Recommend using the convention
-     * `RoomName/WebhookName`. See Chime setup tutorial for more details:
-     * https://docs.aws.amazon.com/chatbot/latest/adminguide/chime-setup.html.
-     */
     inline void SetWebhookDescription(const char* value) { m_webhookDescriptionHasBeenSet = true; m_webhookDescription.assign(value); }
-
-    /**
-     * Description of the webhook. Recommend using the convention
-     * `RoomName/WebhookName`. See Chime setup tutorial for more details:
-     * https://docs.aws.amazon.com/chatbot/latest/adminguide/chime-setup.html.
-     */
     inline ChimeWebhookConfiguration& WithWebhookDescription(const Aws::String& value) { SetWebhookDescription(value); return *this;}
-
-    /**
-     * Description of the webhook. Recommend using the convention
-     * `RoomName/WebhookName`. See Chime setup tutorial for more details:
-     * https://docs.aws.amazon.com/chatbot/latest/adminguide/chime-setup.html.
-     */
     inline ChimeWebhookConfiguration& WithWebhookDescription(Aws::String&& value) { SetWebhookDescription(std::move(value)); return *this;}
-
-    /**
-     * Description of the webhook. Recommend using the convention
-     * `RoomName/WebhookName`. See Chime setup tutorial for more details:
-     * https://docs.aws.amazon.com/chatbot/latest/adminguide/chime-setup.html.
-     */
     inline ChimeWebhookConfiguration& WithWebhookDescription(const char* value) { SetWebhookDescription(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * The ARN of the ChimeWebhookConfiguration.
+     * <p>The Amazon Resource Name (ARN) of the ChimeWebhookConfiguration.</p>
      */
     inline const Aws::String& GetChatConfigurationArn() const{ return m_chatConfigurationArn; }
-
-    /**
-     * The ARN of the ChimeWebhookConfiguration.
-     */
     inline bool ChatConfigurationArnHasBeenSet() const { return m_chatConfigurationArnHasBeenSet; }
-
-    /**
-     * The ARN of the ChimeWebhookConfiguration.
-     */
     inline void SetChatConfigurationArn(const Aws::String& value) { m_chatConfigurationArnHasBeenSet = true; m_chatConfigurationArn = value; }
-
-    /**
-     * The ARN of the ChimeWebhookConfiguration.
-     */
     inline void SetChatConfigurationArn(Aws::String&& value) { m_chatConfigurationArnHasBeenSet = true; m_chatConfigurationArn = std::move(value); }
-
-    /**
-     * The ARN of the ChimeWebhookConfiguration.
-     */
     inline void SetChatConfigurationArn(const char* value) { m_chatConfigurationArnHasBeenSet = true; m_chatConfigurationArn.assign(value); }
-
-    /**
-     * The ARN of the ChimeWebhookConfiguration.
-     */
     inline ChimeWebhookConfiguration& WithChatConfigurationArn(const Aws::String& value) { SetChatConfigurationArn(value); return *this;}
-
-    /**
-     * The ARN of the ChimeWebhookConfiguration.
-     */
     inline ChimeWebhookConfiguration& WithChatConfigurationArn(Aws::String&& value) { SetChatConfigurationArn(std::move(value)); return *this;}
-
-    /**
-     * The ARN of the ChimeWebhookConfiguration.
-     */
     inline ChimeWebhookConfiguration& WithChatConfigurationArn(const char* value) { SetChatConfigurationArn(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * The ARN of the IAM role that defines the permissions for AWS Chatbot. This is a
-     * user-defined role that AWS Chatbot will assume. This is not the service-linked
-     * role. For more information, see IAM Policies for AWS Chatbot.
+     * <p>A user-defined role that AWS Chatbot assumes. This is not the service-linked
+     * role.</p> <p>For more information, see <a
+     * href="https://docs.aws.amazon.com/chatbot/latest/adminguide/chatbot-iam-policies.html">IAM
+     * policies for AWS Chatbot</a> in the <i> AWS Chatbot Administrator Guide</i>.
+     * </p>
      */
     inline const Aws::String& GetIamRoleArn() const{ return m_iamRoleArn; }
-
-    /**
-     * The ARN of the IAM role that defines the permissions for AWS Chatbot. This is a
-     * user-defined role that AWS Chatbot will assume. This is not the service-linked
-     * role. For more information, see IAM Policies for AWS Chatbot.
-     */
     inline bool IamRoleArnHasBeenSet() const { return m_iamRoleArnHasBeenSet; }
-
-    /**
-     * The ARN of the IAM role that defines the permissions for AWS Chatbot. This is a
-     * user-defined role that AWS Chatbot will assume. This is not the service-linked
-     * role. For more information, see IAM Policies for AWS Chatbot.
-     */
     inline void SetIamRoleArn(const Aws::String& value) { m_iamRoleArnHasBeenSet = true; m_iamRoleArn = value; }
-
-    /**
-     * The ARN of the IAM role that defines the permissions for AWS Chatbot. This is a
-     * user-defined role that AWS Chatbot will assume. This is not the service-linked
-     * role. For more information, see IAM Policies for AWS Chatbot.
-     */
     inline void SetIamRoleArn(Aws::String&& value) { m_iamRoleArnHasBeenSet = true; m_iamRoleArn = std::move(value); }
-
-    /**
-     * The ARN of the IAM role that defines the permissions for AWS Chatbot. This is a
-     * user-defined role that AWS Chatbot will assume. This is not the service-linked
-     * role. For more information, see IAM Policies for AWS Chatbot.
-     */
     inline void SetIamRoleArn(const char* value) { m_iamRoleArnHasBeenSet = true; m_iamRoleArn.assign(value); }
-
-    /**
-     * The ARN of the IAM role that defines the permissions for AWS Chatbot. This is a
-     * user-defined role that AWS Chatbot will assume. This is not the service-linked
-     * role. For more information, see IAM Policies for AWS Chatbot.
-     */
     inline ChimeWebhookConfiguration& WithIamRoleArn(const Aws::String& value) { SetIamRoleArn(value); return *this;}
-
-    /**
-     * The ARN of the IAM role that defines the permissions for AWS Chatbot. This is a
-     * user-defined role that AWS Chatbot will assume. This is not the service-linked
-     * role. For more information, see IAM Policies for AWS Chatbot.
-     */
     inline ChimeWebhookConfiguration& WithIamRoleArn(Aws::String&& value) { SetIamRoleArn(std::move(value)); return *this;}
-
-    /**
-     * The ARN of the IAM role that defines the permissions for AWS Chatbot. This is a
-     * user-defined role that AWS Chatbot will assume. This is not the service-linked
-     * role. For more information, see IAM Policies for AWS Chatbot.
-     */
     inline ChimeWebhookConfiguration& WithIamRoleArn(const char* value) { SetIamRoleArn(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * The ARNs of the SNS topics that deliver notifications to AWS Chatbot.
+     * <p>The Amazon Resource Names (ARNs) of the SNS topics that deliver notifications
+     * to AWS Chatbot.</p>
      */
     inline const Aws::Vector<Aws::String>& GetSnsTopicArns() const{ return m_snsTopicArns; }
-
-    /**
-     * The ARNs of the SNS topics that deliver notifications to AWS Chatbot.
-     */
     inline bool SnsTopicArnsHasBeenSet() const { return m_snsTopicArnsHasBeenSet; }
-
-    /**
-     * The ARNs of the SNS topics that deliver notifications to AWS Chatbot.
-     */
     inline void SetSnsTopicArns(const Aws::Vector<Aws::String>& value) { m_snsTopicArnsHasBeenSet = true; m_snsTopicArns = value; }
-
-    /**
-     * The ARNs of the SNS topics that deliver notifications to AWS Chatbot.
-     */
     inline void SetSnsTopicArns(Aws::Vector<Aws::String>&& value) { m_snsTopicArnsHasBeenSet = true; m_snsTopicArns = std::move(value); }
-
-    /**
-     * The ARNs of the SNS topics that deliver notifications to AWS Chatbot.
-     */
     inline ChimeWebhookConfiguration& WithSnsTopicArns(const Aws::Vector<Aws::String>& value) { SetSnsTopicArns(value); return *this;}
-
-    /**
-     * The ARNs of the SNS topics that deliver notifications to AWS Chatbot.
-     */
     inline ChimeWebhookConfiguration& WithSnsTopicArns(Aws::Vector<Aws::String>&& value) { SetSnsTopicArns(std::move(value)); return *this;}
-
-    /**
-     * The ARNs of the SNS topics that deliver notifications to AWS Chatbot.
-     */
     inline ChimeWebhookConfiguration& AddSnsTopicArns(const Aws::String& value) { m_snsTopicArnsHasBeenSet = true; m_snsTopicArns.push_back(value); return *this; }
-
-    /**
-     * The ARNs of the SNS topics that deliver notifications to AWS Chatbot.
-     */
     inline ChimeWebhookConfiguration& AddSnsTopicArns(Aws::String&& value) { m_snsTopicArnsHasBeenSet = true; m_snsTopicArns.push_back(std::move(value)); return *this; }
-
-    /**
-     * The ARNs of the SNS topics that deliver notifications to AWS Chatbot.
-     */
     inline ChimeWebhookConfiguration& AddSnsTopicArns(const char* value) { m_snsTopicArnsHasBeenSet = true; m_snsTopicArns.push_back(value); return *this; }
+    ///@}
 
-
+    ///@{
     /**
-     * The name of the configuration.
+     * <p>The name of the configuration.</p>
      */
     inline const Aws::String& GetConfigurationName() const{ return m_configurationName; }
-
-    /**
-     * The name of the configuration.
-     */
     inline bool ConfigurationNameHasBeenSet() const { return m_configurationNameHasBeenSet; }
-
-    /**
-     * The name of the configuration.
-     */
     inline void SetConfigurationName(const Aws::String& value) { m_configurationNameHasBeenSet = true; m_configurationName = value; }
-
-    /**
-     * The name of the configuration.
-     */
     inline void SetConfigurationName(Aws::String&& value) { m_configurationNameHasBeenSet = true; m_configurationName = std::move(value); }
-
-    /**
-     * The name of the configuration.
-     */
     inline void SetConfigurationName(const char* value) { m_configurationNameHasBeenSet = true; m_configurationName.assign(value); }
-
-    /**
-     * The name of the configuration.
-     */
     inline ChimeWebhookConfiguration& WithConfigurationName(const Aws::String& value) { SetConfigurationName(value); return *this;}
-
-    /**
-     * The name of the configuration.
-     */
     inline ChimeWebhookConfiguration& WithConfigurationName(Aws::String&& value) { SetConfigurationName(std::move(value)); return *this;}
-
-    /**
-     * The name of the configuration.
-     */
     inline ChimeWebhookConfiguration& WithConfigurationName(const char* value) { SetConfigurationName(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * Specifies the logging level for this configuration. This property affects the
-     * log entries pushed to Amazon CloudWatch Logs.Logging levels include ERROR, INFO,
-     * or NONE.
+     * <p>Logging levels include <code>ERROR</code>, <code>INFO</code>, or
+     * <code>NONE</code>.</p>
      */
     inline const Aws::String& GetLoggingLevel() const{ return m_loggingLevel; }
-
-    /**
-     * Specifies the logging level for this configuration. This property affects the
-     * log entries pushed to Amazon CloudWatch Logs.Logging levels include ERROR, INFO,
-     * or NONE.
-     */
     inline bool LoggingLevelHasBeenSet() const { return m_loggingLevelHasBeenSet; }
-
-    /**
-     * Specifies the logging level for this configuration. This property affects the
-     * log entries pushed to Amazon CloudWatch Logs.Logging levels include ERROR, INFO,
-     * or NONE.
-     */
     inline void SetLoggingLevel(const Aws::String& value) { m_loggingLevelHasBeenSet = true; m_loggingLevel = value; }
-
-    /**
-     * Specifies the logging level for this configuration. This property affects the
-     * log entries pushed to Amazon CloudWatch Logs.Logging levels include ERROR, INFO,
-     * or NONE.
-     */
     inline void SetLoggingLevel(Aws::String&& value) { m_loggingLevelHasBeenSet = true; m_loggingLevel = std::move(value); }
-
-    /**
-     * Specifies the logging level for this configuration. This property affects the
-     * log entries pushed to Amazon CloudWatch Logs.Logging levels include ERROR, INFO,
-     * or NONE.
-     */
     inline void SetLoggingLevel(const char* value) { m_loggingLevelHasBeenSet = true; m_loggingLevel.assign(value); }
-
-    /**
-     * Specifies the logging level for this configuration. This property affects the
-     * log entries pushed to Amazon CloudWatch Logs.Logging levels include ERROR, INFO,
-     * or NONE.
-     */
     inline ChimeWebhookConfiguration& WithLoggingLevel(const Aws::String& value) { SetLoggingLevel(value); return *this;}
-
-    /**
-     * Specifies the logging level for this configuration. This property affects the
-     * log entries pushed to Amazon CloudWatch Logs.Logging levels include ERROR, INFO,
-     * or NONE.
-     */
     inline ChimeWebhookConfiguration& WithLoggingLevel(Aws::String&& value) { SetLoggingLevel(std::move(value)); return *this;}
-
-    /**
-     * Specifies the logging level for this configuration. This property affects the
-     * log entries pushed to Amazon CloudWatch Logs.Logging levels include ERROR, INFO,
-     * or NONE.
-     */
     inline ChimeWebhookConfiguration& WithLoggingLevel(const char* value) { SetLoggingLevel(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * A list of tags applied to the configuration.
+     * <p>A map of tags assigned to a resource. A tag is a string-to-string map of
+     * key-value pairs.</p>
      */
     inline const Aws::Vector<Tag>& GetTags() const{ return m_tags; }
-
-    /**
-     * A list of tags applied to the configuration.
-     */
     inline bool TagsHasBeenSet() const { return m_tagsHasBeenSet; }
-
-    /**
-     * A list of tags applied to the configuration.
-     */
     inline void SetTags(const Aws::Vector<Tag>& value) { m_tagsHasBeenSet = true; m_tags = value; }
-
-    /**
-     * A list of tags applied to the configuration.
-     */
     inline void SetTags(Aws::Vector<Tag>&& value) { m_tagsHasBeenSet = true; m_tags = std::move(value); }
-
-    /**
-     * A list of tags applied to the configuration.
-     */
     inline ChimeWebhookConfiguration& WithTags(const Aws::Vector<Tag>& value) { SetTags(value); return *this;}
-
-    /**
-     * A list of tags applied to the configuration.
-     */
     inline ChimeWebhookConfiguration& WithTags(Aws::Vector<Tag>&& value) { SetTags(std::move(value)); return *this;}
-
-    /**
-     * A list of tags applied to the configuration.
-     */
     inline ChimeWebhookConfiguration& AddTags(const Tag& value) { m_tagsHasBeenSet = true; m_tags.push_back(value); return *this; }
-
-    /**
-     * A list of tags applied to the configuration.
-     */
     inline ChimeWebhookConfiguration& AddTags(Tag&& value) { m_tagsHasBeenSet = true; m_tags.push_back(std::move(value)); return *this; }
+    ///@}
 
+    ///@{
+    /**
+     * <p>Either <code>ENABLED</code> or <code>DISABLED</code>. The resource returns
+     * <code>DISABLED</code> if the organization's AWS Chatbot policy has explicitly
+     * denied that configuration. For example, if Amazon Chime is disabled.</p>
+     */
+    inline const Aws::String& GetState() const{ return m_state; }
+    inline bool StateHasBeenSet() const { return m_stateHasBeenSet; }
+    inline void SetState(const Aws::String& value) { m_stateHasBeenSet = true; m_state = value; }
+    inline void SetState(Aws::String&& value) { m_stateHasBeenSet = true; m_state = std::move(value); }
+    inline void SetState(const char* value) { m_stateHasBeenSet = true; m_state.assign(value); }
+    inline ChimeWebhookConfiguration& WithState(const Aws::String& value) { SetState(value); return *this;}
+    inline ChimeWebhookConfiguration& WithState(Aws::String&& value) { SetState(std::move(value)); return *this;}
+    inline ChimeWebhookConfiguration& WithState(const char* value) { SetState(value); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>Provided if State is <code>DISABLED</code>. Provides context as to why the
+     * resource is disabled.</p>
+     */
+    inline const Aws::String& GetStateReason() const{ return m_stateReason; }
+    inline bool StateReasonHasBeenSet() const { return m_stateReasonHasBeenSet; }
+    inline void SetStateReason(const Aws::String& value) { m_stateReasonHasBeenSet = true; m_stateReason = value; }
+    inline void SetStateReason(Aws::String&& value) { m_stateReasonHasBeenSet = true; m_stateReason = std::move(value); }
+    inline void SetStateReason(const char* value) { m_stateReasonHasBeenSet = true; m_stateReason.assign(value); }
+    inline ChimeWebhookConfiguration& WithStateReason(const Aws::String& value) { SetStateReason(value); return *this;}
+    inline ChimeWebhookConfiguration& WithStateReason(Aws::String&& value) { SetStateReason(std::move(value)); return *this;}
+    inline ChimeWebhookConfiguration& WithStateReason(const char* value) { SetStateReason(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_webhookDescription;
@@ -400,6 +201,12 @@ namespace Model
 
     Aws::Vector<Tag> m_tags;
     bool m_tagsHasBeenSet = false;
+
+    Aws::String m_state;
+    bool m_stateHasBeenSet = false;
+
+    Aws::String m_stateReason;
+    bool m_stateReasonHasBeenSet = false;
   };
 
 } // namespace Model

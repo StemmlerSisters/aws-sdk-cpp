@@ -19,13 +19,13 @@ using namespace Aws;
 
 StartCapacityTaskResult::StartCapacityTaskResult() : 
     m_dryRun(false),
-    m_capacityTaskStatus(CapacityTaskStatus::NOT_SET)
+    m_capacityTaskStatus(CapacityTaskStatus::NOT_SET),
+    m_taskActionOnBlockingInstances(TaskActionOnBlockingInstances::NOT_SET)
 {
 }
 
-StartCapacityTaskResult::StartCapacityTaskResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_dryRun(false),
-    m_capacityTaskStatus(CapacityTaskStatus::NOT_SET)
+StartCapacityTaskResult::StartCapacityTaskResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : StartCapacityTaskResult()
 {
   *this = result;
 }
@@ -58,6 +58,12 @@ StartCapacityTaskResult& StartCapacityTaskResult::operator =(const Aws::AmazonWe
     {
       m_requestedInstancePools.push_back(requestedInstancePoolsJsonList[requestedInstancePoolsIndex].AsObject());
     }
+  }
+
+  if(jsonValue.ValueExists("InstancesToExclude"))
+  {
+    m_instancesToExclude = jsonValue.GetObject("InstancesToExclude");
+
   }
 
   if(jsonValue.ValueExists("DryRun"))
@@ -93,6 +99,12 @@ StartCapacityTaskResult& StartCapacityTaskResult::operator =(const Aws::AmazonWe
   if(jsonValue.ValueExists("LastModifiedDate"))
   {
     m_lastModifiedDate = jsonValue.GetDouble("LastModifiedDate");
+
+  }
+
+  if(jsonValue.ValueExists("TaskActionOnBlockingInstances"))
+  {
+    m_taskActionOnBlockingInstances = TaskActionOnBlockingInstancesMapper::GetTaskActionOnBlockingInstancesForName(jsonValue.GetString("TaskActionOnBlockingInstances"));
 
   }
 

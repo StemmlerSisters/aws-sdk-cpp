@@ -19,32 +19,31 @@ namespace Model
 {
 
 WindowsUser::WindowsUser() : 
-    m_passwordArnHasBeenSet(false),
-    m_userHasBeenSet(false)
+    m_userHasBeenSet(false),
+    m_passwordArnHasBeenSet(false)
 {
 }
 
-WindowsUser::WindowsUser(JsonView jsonValue) : 
-    m_passwordArnHasBeenSet(false),
-    m_userHasBeenSet(false)
+WindowsUser::WindowsUser(JsonView jsonValue)
+  : WindowsUser()
 {
   *this = jsonValue;
 }
 
 WindowsUser& WindowsUser::operator =(JsonView jsonValue)
 {
-  if(jsonValue.ValueExists("passwordArn"))
-  {
-    m_passwordArn = jsonValue.GetString("passwordArn");
-
-    m_passwordArnHasBeenSet = true;
-  }
-
   if(jsonValue.ValueExists("user"))
   {
     m_user = jsonValue.GetString("user");
 
     m_userHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("passwordArn"))
+  {
+    m_passwordArn = jsonValue.GetString("passwordArn");
+
+    m_passwordArnHasBeenSet = true;
   }
 
   return *this;
@@ -54,15 +53,15 @@ JsonValue WindowsUser::Jsonize() const
 {
   JsonValue payload;
 
-  if(m_passwordArnHasBeenSet)
-  {
-   payload.WithString("passwordArn", m_passwordArn);
-
-  }
-
   if(m_userHasBeenSet)
   {
    payload.WithString("user", m_user);
+
+  }
+
+  if(m_passwordArnHasBeenSet)
+  {
+   payload.WithString("passwordArn", m_passwordArn);
 
   }
 

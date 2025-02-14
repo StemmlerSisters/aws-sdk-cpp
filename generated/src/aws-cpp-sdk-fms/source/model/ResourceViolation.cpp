@@ -42,35 +42,14 @@ ResourceViolation::ResourceViolation() :
     m_thirdPartyFirewallMissingExpectedRouteTableViolationHasBeenSet(false),
     m_firewallSubnetMissingVPCEndpointViolationHasBeenSet(false),
     m_invalidNetworkAclEntriesViolationHasBeenSet(false),
-    m_possibleRemediationActionsHasBeenSet(false)
+    m_possibleRemediationActionsHasBeenSet(false),
+    m_webACLHasIncompatibleConfigurationViolationHasBeenSet(false),
+    m_webACLHasOutOfScopeResourcesViolationHasBeenSet(false)
 {
 }
 
-ResourceViolation::ResourceViolation(JsonView jsonValue) : 
-    m_awsVPCSecurityGroupViolationHasBeenSet(false),
-    m_awsEc2NetworkInterfaceViolationHasBeenSet(false),
-    m_awsEc2InstanceViolationHasBeenSet(false),
-    m_networkFirewallMissingFirewallViolationHasBeenSet(false),
-    m_networkFirewallMissingSubnetViolationHasBeenSet(false),
-    m_networkFirewallMissingExpectedRTViolationHasBeenSet(false),
-    m_networkFirewallPolicyModifiedViolationHasBeenSet(false),
-    m_networkFirewallInternetTrafficNotInspectedViolationHasBeenSet(false),
-    m_networkFirewallInvalidRouteConfigurationViolationHasBeenSet(false),
-    m_networkFirewallBlackHoleRouteDetectedViolationHasBeenSet(false),
-    m_networkFirewallUnexpectedFirewallRoutesViolationHasBeenSet(false),
-    m_networkFirewallUnexpectedGatewayRoutesViolationHasBeenSet(false),
-    m_networkFirewallMissingExpectedRoutesViolationHasBeenSet(false),
-    m_dnsRuleGroupPriorityConflictViolationHasBeenSet(false),
-    m_dnsDuplicateRuleGroupViolationHasBeenSet(false),
-    m_dnsRuleGroupLimitExceededViolationHasBeenSet(false),
-    m_firewallSubnetIsOutOfScopeViolationHasBeenSet(false),
-    m_routeHasOutOfScopeEndpointViolationHasBeenSet(false),
-    m_thirdPartyFirewallMissingFirewallViolationHasBeenSet(false),
-    m_thirdPartyFirewallMissingSubnetViolationHasBeenSet(false),
-    m_thirdPartyFirewallMissingExpectedRouteTableViolationHasBeenSet(false),
-    m_firewallSubnetMissingVPCEndpointViolationHasBeenSet(false),
-    m_invalidNetworkAclEntriesViolationHasBeenSet(false),
-    m_possibleRemediationActionsHasBeenSet(false)
+ResourceViolation::ResourceViolation(JsonView jsonValue)
+  : ResourceViolation()
 {
   *this = jsonValue;
 }
@@ -245,6 +224,20 @@ ResourceViolation& ResourceViolation::operator =(JsonView jsonValue)
     m_possibleRemediationActionsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("WebACLHasIncompatibleConfigurationViolation"))
+  {
+    m_webACLHasIncompatibleConfigurationViolation = jsonValue.GetObject("WebACLHasIncompatibleConfigurationViolation");
+
+    m_webACLHasIncompatibleConfigurationViolationHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("WebACLHasOutOfScopeResourcesViolation"))
+  {
+    m_webACLHasOutOfScopeResourcesViolation = jsonValue.GetObject("WebACLHasOutOfScopeResourcesViolation");
+
+    m_webACLHasOutOfScopeResourcesViolationHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -393,6 +386,18 @@ JsonValue ResourceViolation::Jsonize() const
   if(m_possibleRemediationActionsHasBeenSet)
   {
    payload.WithObject("PossibleRemediationActions", m_possibleRemediationActions.Jsonize());
+
+  }
+
+  if(m_webACLHasIncompatibleConfigurationViolationHasBeenSet)
+  {
+   payload.WithObject("WebACLHasIncompatibleConfigurationViolation", m_webACLHasIncompatibleConfigurationViolation.Jsonize());
+
+  }
+
+  if(m_webACLHasOutOfScopeResourcesViolationHasBeenSet)
+  {
+   payload.WithObject("WebACLHasOutOfScopeResourcesViolation", m_webACLHasOutOfScopeResourcesViolation.Jsonize());
 
   }
 

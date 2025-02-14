@@ -47,6 +47,9 @@ ModelPackage::ModelPackage() :
     m_samplePayloadUrlHasBeenSet(false),
     m_additionalInferenceSpecificationsHasBeenSet(false),
     m_sourceUriHasBeenSet(false),
+    m_securityConfigHasBeenSet(false),
+    m_modelCardHasBeenSet(false),
+    m_modelLifeCycleHasBeenSet(false),
     m_tagsHasBeenSet(false),
     m_customerMetadataPropertiesHasBeenSet(false),
     m_driftCheckBaselinesHasBeenSet(false),
@@ -55,40 +58,8 @@ ModelPackage::ModelPackage() :
 {
 }
 
-ModelPackage::ModelPackage(JsonView jsonValue) : 
-    m_modelPackageNameHasBeenSet(false),
-    m_modelPackageGroupNameHasBeenSet(false),
-    m_modelPackageVersion(0),
-    m_modelPackageVersionHasBeenSet(false),
-    m_modelPackageArnHasBeenSet(false),
-    m_modelPackageDescriptionHasBeenSet(false),
-    m_creationTimeHasBeenSet(false),
-    m_inferenceSpecificationHasBeenSet(false),
-    m_sourceAlgorithmSpecificationHasBeenSet(false),
-    m_validationSpecificationHasBeenSet(false),
-    m_modelPackageStatus(ModelPackageStatus::NOT_SET),
-    m_modelPackageStatusHasBeenSet(false),
-    m_modelPackageStatusDetailsHasBeenSet(false),
-    m_certifyForMarketplace(false),
-    m_certifyForMarketplaceHasBeenSet(false),
-    m_modelApprovalStatus(ModelApprovalStatus::NOT_SET),
-    m_modelApprovalStatusHasBeenSet(false),
-    m_createdByHasBeenSet(false),
-    m_metadataPropertiesHasBeenSet(false),
-    m_modelMetricsHasBeenSet(false),
-    m_lastModifiedTimeHasBeenSet(false),
-    m_lastModifiedByHasBeenSet(false),
-    m_approvalDescriptionHasBeenSet(false),
-    m_domainHasBeenSet(false),
-    m_taskHasBeenSet(false),
-    m_samplePayloadUrlHasBeenSet(false),
-    m_additionalInferenceSpecificationsHasBeenSet(false),
-    m_sourceUriHasBeenSet(false),
-    m_tagsHasBeenSet(false),
-    m_customerMetadataPropertiesHasBeenSet(false),
-    m_driftCheckBaselinesHasBeenSet(false),
-    m_skipModelValidation(SkipModelValidation::NOT_SET),
-    m_skipModelValidationHasBeenSet(false)
+ModelPackage::ModelPackage(JsonView jsonValue)
+  : ModelPackage()
 {
   *this = jsonValue;
 }
@@ -264,6 +235,27 @@ ModelPackage& ModelPackage::operator =(JsonView jsonValue)
     m_sourceUri = jsonValue.GetString("SourceUri");
 
     m_sourceUriHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("SecurityConfig"))
+  {
+    m_securityConfig = jsonValue.GetObject("SecurityConfig");
+
+    m_securityConfigHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("ModelCard"))
+  {
+    m_modelCard = jsonValue.GetObject("ModelCard");
+
+    m_modelCardHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("ModelLifeCycle"))
+  {
+    m_modelLifeCycle = jsonValue.GetObject("ModelLifeCycle");
+
+    m_modelLifeCycleHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("Tags"))
@@ -449,6 +441,24 @@ JsonValue ModelPackage::Jsonize() const
   if(m_sourceUriHasBeenSet)
   {
    payload.WithString("SourceUri", m_sourceUri);
+
+  }
+
+  if(m_securityConfigHasBeenSet)
+  {
+   payload.WithObject("SecurityConfig", m_securityConfig.Jsonize());
+
+  }
+
+  if(m_modelCardHasBeenSet)
+  {
+   payload.WithObject("ModelCard", m_modelCard.Jsonize());
+
+  }
+
+  if(m_modelLifeCycleHasBeenSet)
+  {
+   payload.WithObject("ModelLifeCycle", m_modelLifeCycle.Jsonize());
 
   }
 

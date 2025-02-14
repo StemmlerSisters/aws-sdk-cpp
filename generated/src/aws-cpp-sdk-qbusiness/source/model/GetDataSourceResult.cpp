@@ -22,8 +22,8 @@ GetDataSourceResult::GetDataSourceResult() :
 {
 }
 
-GetDataSourceResult::GetDataSourceResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_status(DataSourceStatus::NOT_SET)
+GetDataSourceResult::GetDataSourceResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetDataSourceResult()
 {
   *this = result;
 }
@@ -124,6 +124,12 @@ GetDataSourceResult& GetDataSourceResult::operator =(const Aws::AmazonWebService
   if(jsonValue.ValueExists("documentEnrichmentConfiguration"))
   {
     m_documentEnrichmentConfiguration = jsonValue.GetObject("documentEnrichmentConfiguration");
+
+  }
+
+  if(jsonValue.ValueExists("mediaExtractionConfiguration"))
+  {
+    m_mediaExtractionConfiguration = jsonValue.GetObject("mediaExtractionConfiguration");
 
   }
 

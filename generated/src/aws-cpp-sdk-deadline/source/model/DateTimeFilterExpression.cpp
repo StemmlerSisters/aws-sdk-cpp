@@ -19,31 +19,21 @@ namespace Model
 {
 
 DateTimeFilterExpression::DateTimeFilterExpression() : 
-    m_dateTimeHasBeenSet(false),
     m_nameHasBeenSet(false),
     m_operator(ComparisonOperator::NOT_SET),
-    m_operatorHasBeenSet(false)
+    m_operatorHasBeenSet(false),
+    m_dateTimeHasBeenSet(false)
 {
 }
 
-DateTimeFilterExpression::DateTimeFilterExpression(JsonView jsonValue) : 
-    m_dateTimeHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_operator(ComparisonOperator::NOT_SET),
-    m_operatorHasBeenSet(false)
+DateTimeFilterExpression::DateTimeFilterExpression(JsonView jsonValue)
+  : DateTimeFilterExpression()
 {
   *this = jsonValue;
 }
 
 DateTimeFilterExpression& DateTimeFilterExpression::operator =(JsonView jsonValue)
 {
-  if(jsonValue.ValueExists("dateTime"))
-  {
-    m_dateTime = jsonValue.GetString("dateTime");
-
-    m_dateTimeHasBeenSet = true;
-  }
-
   if(jsonValue.ValueExists("name"))
   {
     m_name = jsonValue.GetString("name");
@@ -58,17 +48,19 @@ DateTimeFilterExpression& DateTimeFilterExpression::operator =(JsonView jsonValu
     m_operatorHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("dateTime"))
+  {
+    m_dateTime = jsonValue.GetString("dateTime");
+
+    m_dateTimeHasBeenSet = true;
+  }
+
   return *this;
 }
 
 JsonValue DateTimeFilterExpression::Jsonize() const
 {
   JsonValue payload;
-
-  if(m_dateTimeHasBeenSet)
-  {
-   payload.WithString("dateTime", m_dateTime.ToGmtString(Aws::Utils::DateFormat::ISO_8601));
-  }
 
   if(m_nameHasBeenSet)
   {
@@ -79,6 +71,11 @@ JsonValue DateTimeFilterExpression::Jsonize() const
   if(m_operatorHasBeenSet)
   {
    payload.WithString("operator", ComparisonOperatorMapper::GetNameForComparisonOperator(m_operator));
+  }
+
+  if(m_dateTimeHasBeenSet)
+  {
+   payload.WithString("dateTime", m_dateTime.ToGmtString(Aws::Utils::DateFormat::ISO_8601));
   }
 
   return payload;

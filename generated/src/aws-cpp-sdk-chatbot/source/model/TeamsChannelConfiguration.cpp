@@ -32,25 +32,14 @@ TeamsChannelConfiguration::TeamsChannelConfiguration() :
     m_guardrailPolicyArnsHasBeenSet(false),
     m_userAuthorizationRequired(false),
     m_userAuthorizationRequiredHasBeenSet(false),
-    m_tagsHasBeenSet(false)
+    m_tagsHasBeenSet(false),
+    m_stateHasBeenSet(false),
+    m_stateReasonHasBeenSet(false)
 {
 }
 
-TeamsChannelConfiguration::TeamsChannelConfiguration(JsonView jsonValue) : 
-    m_channelIdHasBeenSet(false),
-    m_channelNameHasBeenSet(false),
-    m_teamIdHasBeenSet(false),
-    m_teamNameHasBeenSet(false),
-    m_tenantIdHasBeenSet(false),
-    m_chatConfigurationArnHasBeenSet(false),
-    m_iamRoleArnHasBeenSet(false),
-    m_snsTopicArnsHasBeenSet(false),
-    m_configurationNameHasBeenSet(false),
-    m_loggingLevelHasBeenSet(false),
-    m_guardrailPolicyArnsHasBeenSet(false),
-    m_userAuthorizationRequired(false),
-    m_userAuthorizationRequiredHasBeenSet(false),
-    m_tagsHasBeenSet(false)
+TeamsChannelConfiguration::TeamsChannelConfiguration(JsonView jsonValue)
+  : TeamsChannelConfiguration()
 {
   *this = jsonValue;
 }
@@ -157,6 +146,20 @@ TeamsChannelConfiguration& TeamsChannelConfiguration::operator =(JsonView jsonVa
     m_tagsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("State"))
+  {
+    m_state = jsonValue.GetString("State");
+
+    m_stateHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("StateReason"))
+  {
+    m_stateReason = jsonValue.GetString("StateReason");
+
+    m_stateReasonHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -254,6 +257,18 @@ JsonValue TeamsChannelConfiguration::Jsonize() const
      tagsJsonList[tagsIndex].AsObject(m_tags[tagsIndex].Jsonize());
    }
    payload.WithArray("Tags", std::move(tagsJsonList));
+
+  }
+
+  if(m_stateHasBeenSet)
+  {
+   payload.WithString("State", m_state);
+
+  }
+
+  if(m_stateReasonHasBeenSet)
+  {
+   payload.WithString("StateReason", m_stateReason);
 
   }
 

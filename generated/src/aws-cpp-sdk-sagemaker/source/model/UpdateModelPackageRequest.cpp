@@ -21,7 +21,10 @@ UpdateModelPackageRequest::UpdateModelPackageRequest() :
     m_customerMetadataPropertiesToRemoveHasBeenSet(false),
     m_additionalInferenceSpecificationsToAddHasBeenSet(false),
     m_inferenceSpecificationHasBeenSet(false),
-    m_sourceUriHasBeenSet(false)
+    m_sourceUriHasBeenSet(false),
+    m_modelCardHasBeenSet(false),
+    m_modelLifeCycleHasBeenSet(false),
+    m_clientTokenHasBeenSet(false)
 {
 }
 
@@ -88,6 +91,24 @@ Aws::String UpdateModelPackageRequest::SerializePayload() const
   if(m_sourceUriHasBeenSet)
   {
    payload.WithString("SourceUri", m_sourceUri);
+
+  }
+
+  if(m_modelCardHasBeenSet)
+  {
+   payload.WithObject("ModelCard", m_modelCard.Jsonize());
+
+  }
+
+  if(m_modelLifeCycleHasBeenSet)
+  {
+   payload.WithObject("ModelLifeCycle", m_modelLifeCycle.Jsonize());
+
+  }
+
+  if(m_clientTokenHasBeenSet)
+  {
+   payload.WithString("ClientToken", m_clientToken);
 
   }
 

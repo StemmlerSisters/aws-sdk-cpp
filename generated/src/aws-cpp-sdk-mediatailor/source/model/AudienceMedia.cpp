@@ -19,20 +19,26 @@ namespace Model
 {
 
 AudienceMedia::AudienceMedia() : 
-    m_alternateMediaHasBeenSet(false),
-    m_audienceHasBeenSet(false)
+    m_audienceHasBeenSet(false),
+    m_alternateMediaHasBeenSet(false)
 {
 }
 
-AudienceMedia::AudienceMedia(JsonView jsonValue) : 
-    m_alternateMediaHasBeenSet(false),
-    m_audienceHasBeenSet(false)
+AudienceMedia::AudienceMedia(JsonView jsonValue)
+  : AudienceMedia()
 {
   *this = jsonValue;
 }
 
 AudienceMedia& AudienceMedia::operator =(JsonView jsonValue)
 {
+  if(jsonValue.ValueExists("Audience"))
+  {
+    m_audience = jsonValue.GetString("Audience");
+
+    m_audienceHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("AlternateMedia"))
   {
     Aws::Utils::Array<JsonView> alternateMediaJsonList = jsonValue.GetArray("AlternateMedia");
@@ -43,19 +49,18 @@ AudienceMedia& AudienceMedia::operator =(JsonView jsonValue)
     m_alternateMediaHasBeenSet = true;
   }
 
-  if(jsonValue.ValueExists("Audience"))
-  {
-    m_audience = jsonValue.GetString("Audience");
-
-    m_audienceHasBeenSet = true;
-  }
-
   return *this;
 }
 
 JsonValue AudienceMedia::Jsonize() const
 {
   JsonValue payload;
+
+  if(m_audienceHasBeenSet)
+  {
+   payload.WithString("Audience", m_audience);
+
+  }
 
   if(m_alternateMediaHasBeenSet)
   {
@@ -65,12 +70,6 @@ JsonValue AudienceMedia::Jsonize() const
      alternateMediaJsonList[alternateMediaIndex].AsObject(m_alternateMedia[alternateMediaIndex].Jsonize());
    }
    payload.WithArray("AlternateMedia", std::move(alternateMediaJsonList));
-
-  }
-
-  if(m_audienceHasBeenSet)
-  {
-   payload.WithString("Audience", m_audience);
 
   }
 

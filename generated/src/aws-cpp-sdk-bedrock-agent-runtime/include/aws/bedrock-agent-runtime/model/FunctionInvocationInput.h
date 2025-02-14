@@ -6,6 +6,7 @@
 #pragma once
 #include <aws/bedrock-agent-runtime/BedrockAgentRuntime_EXPORTS.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
+#include <aws/bedrock-agent-runtime/model/ActionInvocationType.h>
 #include <aws/core/utils/memory/stl/AWSVector.h>
 #include <aws/bedrock-agent-runtime/model/FunctionParameter.h>
 #include <utility>
@@ -43,132 +44,100 @@ namespace Model
     AWS_BEDROCKAGENTRUNTIME_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The action group that the function belongs to.</p>
      */
     inline const Aws::String& GetActionGroup() const{ return m_actionGroup; }
-
-    /**
-     * <p>The action group that the function belongs to.</p>
-     */
     inline bool ActionGroupHasBeenSet() const { return m_actionGroupHasBeenSet; }
-
-    /**
-     * <p>The action group that the function belongs to.</p>
-     */
     inline void SetActionGroup(const Aws::String& value) { m_actionGroupHasBeenSet = true; m_actionGroup = value; }
-
-    /**
-     * <p>The action group that the function belongs to.</p>
-     */
     inline void SetActionGroup(Aws::String&& value) { m_actionGroupHasBeenSet = true; m_actionGroup = std::move(value); }
-
-    /**
-     * <p>The action group that the function belongs to.</p>
-     */
     inline void SetActionGroup(const char* value) { m_actionGroupHasBeenSet = true; m_actionGroup.assign(value); }
-
-    /**
-     * <p>The action group that the function belongs to.</p>
-     */
     inline FunctionInvocationInput& WithActionGroup(const Aws::String& value) { SetActionGroup(value); return *this;}
-
-    /**
-     * <p>The action group that the function belongs to.</p>
-     */
     inline FunctionInvocationInput& WithActionGroup(Aws::String&& value) { SetActionGroup(std::move(value)); return *this;}
-
-    /**
-     * <p>The action group that the function belongs to.</p>
-     */
     inline FunctionInvocationInput& WithActionGroup(const char* value) { SetActionGroup(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>Contains information about the function to invoke,</p>
+     */
+    inline const ActionInvocationType& GetActionInvocationType() const{ return m_actionInvocationType; }
+    inline bool ActionInvocationTypeHasBeenSet() const { return m_actionInvocationTypeHasBeenSet; }
+    inline void SetActionInvocationType(const ActionInvocationType& value) { m_actionInvocationTypeHasBeenSet = true; m_actionInvocationType = value; }
+    inline void SetActionInvocationType(ActionInvocationType&& value) { m_actionInvocationTypeHasBeenSet = true; m_actionInvocationType = std::move(value); }
+    inline FunctionInvocationInput& WithActionInvocationType(const ActionInvocationType& value) { SetActionInvocationType(value); return *this;}
+    inline FunctionInvocationInput& WithActionInvocationType(ActionInvocationType&& value) { SetActionInvocationType(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The agent's ID.</p>
+     */
+    inline const Aws::String& GetAgentId() const{ return m_agentId; }
+    inline bool AgentIdHasBeenSet() const { return m_agentIdHasBeenSet; }
+    inline void SetAgentId(const Aws::String& value) { m_agentIdHasBeenSet = true; m_agentId = value; }
+    inline void SetAgentId(Aws::String&& value) { m_agentIdHasBeenSet = true; m_agentId = std::move(value); }
+    inline void SetAgentId(const char* value) { m_agentIdHasBeenSet = true; m_agentId.assign(value); }
+    inline FunctionInvocationInput& WithAgentId(const Aws::String& value) { SetAgentId(value); return *this;}
+    inline FunctionInvocationInput& WithAgentId(Aws::String&& value) { SetAgentId(std::move(value)); return *this;}
+    inline FunctionInvocationInput& WithAgentId(const char* value) { SetAgentId(value); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>The collaborator's name.</p>
+     */
+    inline const Aws::String& GetCollaboratorName() const{ return m_collaboratorName; }
+    inline bool CollaboratorNameHasBeenSet() const { return m_collaboratorNameHasBeenSet; }
+    inline void SetCollaboratorName(const Aws::String& value) { m_collaboratorNameHasBeenSet = true; m_collaboratorName = value; }
+    inline void SetCollaboratorName(Aws::String&& value) { m_collaboratorNameHasBeenSet = true; m_collaboratorName = std::move(value); }
+    inline void SetCollaboratorName(const char* value) { m_collaboratorNameHasBeenSet = true; m_collaboratorName.assign(value); }
+    inline FunctionInvocationInput& WithCollaboratorName(const Aws::String& value) { SetCollaboratorName(value); return *this;}
+    inline FunctionInvocationInput& WithCollaboratorName(Aws::String&& value) { SetCollaboratorName(std::move(value)); return *this;}
+    inline FunctionInvocationInput& WithCollaboratorName(const char* value) { SetCollaboratorName(value); return *this;}
+    ///@}
+
+    ///@{
     /**
      * <p>The name of the function.</p>
      */
     inline const Aws::String& GetFunction() const{ return m_function; }
-
-    /**
-     * <p>The name of the function.</p>
-     */
     inline bool FunctionHasBeenSet() const { return m_functionHasBeenSet; }
-
-    /**
-     * <p>The name of the function.</p>
-     */
     inline void SetFunction(const Aws::String& value) { m_functionHasBeenSet = true; m_function = value; }
-
-    /**
-     * <p>The name of the function.</p>
-     */
     inline void SetFunction(Aws::String&& value) { m_functionHasBeenSet = true; m_function = std::move(value); }
-
-    /**
-     * <p>The name of the function.</p>
-     */
     inline void SetFunction(const char* value) { m_functionHasBeenSet = true; m_function.assign(value); }
-
-    /**
-     * <p>The name of the function.</p>
-     */
     inline FunctionInvocationInput& WithFunction(const Aws::String& value) { SetFunction(value); return *this;}
-
-    /**
-     * <p>The name of the function.</p>
-     */
     inline FunctionInvocationInput& WithFunction(Aws::String&& value) { SetFunction(std::move(value)); return *this;}
-
-    /**
-     * <p>The name of the function.</p>
-     */
     inline FunctionInvocationInput& WithFunction(const char* value) { SetFunction(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>A list of parameters of the function.</p>
      */
     inline const Aws::Vector<FunctionParameter>& GetParameters() const{ return m_parameters; }
-
-    /**
-     * <p>A list of parameters of the function.</p>
-     */
     inline bool ParametersHasBeenSet() const { return m_parametersHasBeenSet; }
-
-    /**
-     * <p>A list of parameters of the function.</p>
-     */
     inline void SetParameters(const Aws::Vector<FunctionParameter>& value) { m_parametersHasBeenSet = true; m_parameters = value; }
-
-    /**
-     * <p>A list of parameters of the function.</p>
-     */
     inline void SetParameters(Aws::Vector<FunctionParameter>&& value) { m_parametersHasBeenSet = true; m_parameters = std::move(value); }
-
-    /**
-     * <p>A list of parameters of the function.</p>
-     */
     inline FunctionInvocationInput& WithParameters(const Aws::Vector<FunctionParameter>& value) { SetParameters(value); return *this;}
-
-    /**
-     * <p>A list of parameters of the function.</p>
-     */
     inline FunctionInvocationInput& WithParameters(Aws::Vector<FunctionParameter>&& value) { SetParameters(std::move(value)); return *this;}
-
-    /**
-     * <p>A list of parameters of the function.</p>
-     */
     inline FunctionInvocationInput& AddParameters(const FunctionParameter& value) { m_parametersHasBeenSet = true; m_parameters.push_back(value); return *this; }
-
-    /**
-     * <p>A list of parameters of the function.</p>
-     */
     inline FunctionInvocationInput& AddParameters(FunctionParameter&& value) { m_parametersHasBeenSet = true; m_parameters.push_back(std::move(value)); return *this; }
-
+    ///@}
   private:
 
     Aws::String m_actionGroup;
     bool m_actionGroupHasBeenSet = false;
+
+    ActionInvocationType m_actionInvocationType;
+    bool m_actionInvocationTypeHasBeenSet = false;
+
+    Aws::String m_agentId;
+    bool m_agentIdHasBeenSet = false;
+
+    Aws::String m_collaboratorName;
+    bool m_collaboratorNameHasBeenSet = false;
 
     Aws::String m_function;
     bool m_functionHasBeenSet = false;

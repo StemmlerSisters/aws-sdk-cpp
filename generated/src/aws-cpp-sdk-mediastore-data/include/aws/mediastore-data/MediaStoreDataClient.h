@@ -6,26 +6,38 @@
 #pragma once
 #include <aws/mediastore-data/MediaStoreData_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/mediastore-data/MediaStoreDataServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/mediastore-data/MediaStoreDataErrorMarshaller.h>
 
 namespace Aws
 {
 namespace MediaStoreData
 {
+  AWS_MEDIASTOREDATA_API extern const char SERVICE_NAME[];
   /**
    * <p>An AWS Elemental MediaStore asset is an object, similar to an object in the
    * Amazon S3 service. Objects are the fundamental entities that are stored in AWS
    * Elemental MediaStore.</p>
    */
-  class AWS_MEDIASTOREDATA_API MediaStoreDataClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<MediaStoreDataClient>
+  class AWS_MEDIASTOREDATA_API MediaStoreDataClient : smithy::client::AwsSmithyClientT<Aws::MediaStoreData::SERVICE_NAME,
+      Aws::MediaStoreData::MediaStoreDataClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      MediaStoreDataEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::MediaStoreDataErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<MediaStoreDataClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "MediaStore Data"; }
 
       typedef MediaStoreDataClientConfiguration ClientConfigurationType;
       typedef MediaStoreDataEndpointProvider EndpointProviderType;
@@ -163,13 +175,13 @@ namespace MediaStoreData
          * href="http://docs.aws.amazon.com/goto/WebAPI/mediastore-data-2017-09-01/ListItems">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListItemsOutcome ListItems(const Model::ListItemsRequest& request) const;
+        virtual Model::ListItemsOutcome ListItems(const Model::ListItemsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListItems that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListItemsRequestT = Model::ListItemsRequest>
-        Model::ListItemsOutcomeCallable ListItemsCallable(const ListItemsRequestT& request) const
+        Model::ListItemsOutcomeCallable ListItemsCallable(const ListItemsRequestT& request = {}) const
         {
             return SubmitCallable(&MediaStoreDataClient::ListItems, request);
         }
@@ -178,7 +190,7 @@ namespace MediaStoreData
          * An Async wrapper for ListItems that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListItemsRequestT = Model::ListItemsRequest>
-        void ListItemsAsync(const ListItemsRequestT& request, const ListItemsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListItemsAsync(const ListItemsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListItemsRequestT& request = {}) const
         {
             return SubmitAsync(&MediaStoreDataClient::ListItems, request, handler, context);
         }
@@ -215,11 +227,7 @@ namespace MediaStoreData
       std::shared_ptr<MediaStoreDataEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<MediaStoreDataClient>;
-      void init(const MediaStoreDataClientConfiguration& clientConfiguration);
 
-      MediaStoreDataClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<MediaStoreDataEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace MediaStoreData

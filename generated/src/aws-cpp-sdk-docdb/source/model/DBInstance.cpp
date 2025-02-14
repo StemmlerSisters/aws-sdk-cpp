@@ -61,44 +61,8 @@ DBInstance::DBInstance() :
 {
 }
 
-DBInstance::DBInstance(const XmlNode& xmlNode) : 
-    m_dBInstanceIdentifierHasBeenSet(false),
-    m_dBInstanceClassHasBeenSet(false),
-    m_engineHasBeenSet(false),
-    m_dBInstanceStatusHasBeenSet(false),
-    m_endpointHasBeenSet(false),
-    m_instanceCreateTimeHasBeenSet(false),
-    m_preferredBackupWindowHasBeenSet(false),
-    m_backupRetentionPeriod(0),
-    m_backupRetentionPeriodHasBeenSet(false),
-    m_vpcSecurityGroupsHasBeenSet(false),
-    m_availabilityZoneHasBeenSet(false),
-    m_dBSubnetGroupHasBeenSet(false),
-    m_preferredMaintenanceWindowHasBeenSet(false),
-    m_pendingModifiedValuesHasBeenSet(false),
-    m_latestRestorableTimeHasBeenSet(false),
-    m_engineVersionHasBeenSet(false),
-    m_autoMinorVersionUpgrade(false),
-    m_autoMinorVersionUpgradeHasBeenSet(false),
-    m_publiclyAccessible(false),
-    m_publiclyAccessibleHasBeenSet(false),
-    m_statusInfosHasBeenSet(false),
-    m_dBClusterIdentifierHasBeenSet(false),
-    m_storageEncrypted(false),
-    m_storageEncryptedHasBeenSet(false),
-    m_kmsKeyIdHasBeenSet(false),
-    m_dbiResourceIdHasBeenSet(false),
-    m_cACertificateIdentifierHasBeenSet(false),
-    m_copyTagsToSnapshot(false),
-    m_copyTagsToSnapshotHasBeenSet(false),
-    m_promotionTier(0),
-    m_promotionTierHasBeenSet(false),
-    m_dBInstanceArnHasBeenSet(false),
-    m_enabledCloudwatchLogsExportsHasBeenSet(false),
-    m_certificateDetailsHasBeenSet(false),
-    m_performanceInsightsEnabled(false),
-    m_performanceInsightsEnabledHasBeenSet(false),
-    m_performanceInsightsKMSKeyIdHasBeenSet(false)
+DBInstance::DBInstance(const XmlNode& xmlNode)
+  : DBInstance()
 {
   *this = xmlNode;
 }
@@ -362,7 +326,7 @@ void DBInstance::OutputToStream(Aws::OStream& oStream, const char* location, uns
       for(auto& item : m_vpcSecurityGroups)
       {
         Aws::StringStream vpcSecurityGroupsSs;
-        vpcSecurityGroupsSs << location << index << locationValue << ".VpcSecurityGroupMembership." << vpcSecurityGroupsIdx++;
+        vpcSecurityGroupsSs << location << index << locationValue << ".VpcSecurityGroups.VpcSecurityGroupMembership." << vpcSecurityGroupsIdx++;
         item.OutputToStream(oStream, vpcSecurityGroupsSs.str().c_str());
       }
   }
@@ -417,7 +381,7 @@ void DBInstance::OutputToStream(Aws::OStream& oStream, const char* location, uns
       for(auto& item : m_statusInfos)
       {
         Aws::StringStream statusInfosSs;
-        statusInfosSs << location << index << locationValue << ".DBInstanceStatusInfo." << statusInfosIdx++;
+        statusInfosSs << location << index << locationValue << ".StatusInfos.DBInstanceStatusInfo." << statusInfosIdx++;
         item.OutputToStream(oStream, statusInfosSs.str().c_str());
       }
   }

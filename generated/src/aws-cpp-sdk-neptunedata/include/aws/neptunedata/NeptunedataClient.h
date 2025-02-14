@@ -6,20 +6,19 @@
 #pragma once
 #include <aws/neptunedata/Neptunedata_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/neptunedata/NeptunedataServiceClientModel.h>
-#include <aws/neptunedata/model/GetSparqlStatisticsRequest.h>
-#include <aws/neptunedata/model/GetPropertygraphStatisticsRequest.h>
-#include <aws/neptunedata/model/DeletePropertygraphStatisticsRequest.h>
-#include <aws/neptunedata/model/DeleteSparqlStatisticsRequest.h>
-#include <aws/neptunedata/model/GetEngineStatusRequest.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/neptunedata/NeptunedataErrorMarshaller.h>
 
 namespace Aws
 {
 namespace neptunedata
 {
+  AWS_NEPTUNEDATA_API extern const char SERVICE_NAME[];
   /**
    * <p><fullname>Neptune Data API</fullname> <p>The Amazon Neptune data API provides
    * SDK support for more than 40 of Neptune's data operations, including data
@@ -28,12 +27,20 @@ namespace neptunedata
    * It automatically signs API requests and greatly simplifies integrating Neptune
    * into your applications.</p></p>
    */
-  class AWS_NEPTUNEDATA_API NeptunedataClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<NeptunedataClient>
+  class AWS_NEPTUNEDATA_API NeptunedataClient : smithy::client::AwsSmithyClientT<Aws::neptunedata::SERVICE_NAME,
+      Aws::neptunedata::NeptunedataClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      NeptunedataEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::NeptunedataErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<NeptunedataClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "neptunedata"; }
 
       typedef NeptunedataClientConfiguration ClientConfigurationType;
       typedef NeptunedataEndpointProvider EndpointProviderType;
@@ -285,13 +292,13 @@ namespace neptunedata
          * href="http://docs.aws.amazon.com/goto/WebAPI/neptunedata-2023-08-01/CreateMLEndpoint">AWS
          * API Reference</a></p>
          */
-        virtual Model::CreateMLEndpointOutcome CreateMLEndpoint(const Model::CreateMLEndpointRequest& request) const;
+        virtual Model::CreateMLEndpointOutcome CreateMLEndpoint(const Model::CreateMLEndpointRequest& request = {}) const;
 
         /**
          * A Callable wrapper for CreateMLEndpoint that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename CreateMLEndpointRequestT = Model::CreateMLEndpointRequest>
-        Model::CreateMLEndpointOutcomeCallable CreateMLEndpointCallable(const CreateMLEndpointRequestT& request) const
+        Model::CreateMLEndpointOutcomeCallable CreateMLEndpointCallable(const CreateMLEndpointRequestT& request = {}) const
         {
             return SubmitCallable(&NeptunedataClient::CreateMLEndpoint, request);
         }
@@ -300,7 +307,7 @@ namespace neptunedata
          * An Async wrapper for CreateMLEndpoint that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename CreateMLEndpointRequestT = Model::CreateMLEndpointRequest>
-        void CreateMLEndpointAsync(const CreateMLEndpointRequestT& request, const CreateMLEndpointResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void CreateMLEndpointAsync(const CreateMLEndpointResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const CreateMLEndpointRequestT& request = {}) const
         {
             return SubmitAsync(&NeptunedataClient::CreateMLEndpoint, request, handler, context);
         }
@@ -967,13 +974,13 @@ namespace neptunedata
          * href="http://docs.aws.amazon.com/goto/WebAPI/neptunedata-2023-08-01/GetPropertygraphStream">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetPropertygraphStreamOutcome GetPropertygraphStream(const Model::GetPropertygraphStreamRequest& request) const;
+        virtual Model::GetPropertygraphStreamOutcome GetPropertygraphStream(const Model::GetPropertygraphStreamRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetPropertygraphStream that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetPropertygraphStreamRequestT = Model::GetPropertygraphStreamRequest>
-        Model::GetPropertygraphStreamOutcomeCallable GetPropertygraphStreamCallable(const GetPropertygraphStreamRequestT& request) const
+        Model::GetPropertygraphStreamOutcomeCallable GetPropertygraphStreamCallable(const GetPropertygraphStreamRequestT& request = {}) const
         {
             return SubmitCallable(&NeptunedataClient::GetPropertygraphStream, request);
         }
@@ -982,7 +989,7 @@ namespace neptunedata
          * An Async wrapper for GetPropertygraphStream that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetPropertygraphStreamRequestT = Model::GetPropertygraphStreamRequest>
-        void GetPropertygraphStreamAsync(const GetPropertygraphStreamRequestT& request, const GetPropertygraphStreamResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetPropertygraphStreamAsync(const GetPropertygraphStreamResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetPropertygraphStreamRequestT& request = {}) const
         {
             return SubmitAsync(&NeptunedataClient::GetPropertygraphStream, request, handler, context);
         }
@@ -996,13 +1003,13 @@ namespace neptunedata
          * href="http://docs.aws.amazon.com/goto/WebAPI/neptunedata-2023-08-01/GetPropertygraphSummary">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetPropertygraphSummaryOutcome GetPropertygraphSummary(const Model::GetPropertygraphSummaryRequest& request) const;
+        virtual Model::GetPropertygraphSummaryOutcome GetPropertygraphSummary(const Model::GetPropertygraphSummaryRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetPropertygraphSummary that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetPropertygraphSummaryRequestT = Model::GetPropertygraphSummaryRequest>
-        Model::GetPropertygraphSummaryOutcomeCallable GetPropertygraphSummaryCallable(const GetPropertygraphSummaryRequestT& request) const
+        Model::GetPropertygraphSummaryOutcomeCallable GetPropertygraphSummaryCallable(const GetPropertygraphSummaryRequestT& request = {}) const
         {
             return SubmitCallable(&NeptunedataClient::GetPropertygraphSummary, request);
         }
@@ -1011,7 +1018,7 @@ namespace neptunedata
          * An Async wrapper for GetPropertygraphSummary that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetPropertygraphSummaryRequestT = Model::GetPropertygraphSummaryRequest>
-        void GetPropertygraphSummaryAsync(const GetPropertygraphSummaryRequestT& request, const GetPropertygraphSummaryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetPropertygraphSummaryAsync(const GetPropertygraphSummaryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetPropertygraphSummaryRequestT& request = {}) const
         {
             return SubmitAsync(&NeptunedataClient::GetPropertygraphSummary, request, handler, context);
         }
@@ -1025,13 +1032,13 @@ namespace neptunedata
          * href="http://docs.aws.amazon.com/goto/WebAPI/neptunedata-2023-08-01/GetRDFGraphSummary">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetRDFGraphSummaryOutcome GetRDFGraphSummary(const Model::GetRDFGraphSummaryRequest& request) const;
+        virtual Model::GetRDFGraphSummaryOutcome GetRDFGraphSummary(const Model::GetRDFGraphSummaryRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetRDFGraphSummary that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetRDFGraphSummaryRequestT = Model::GetRDFGraphSummaryRequest>
-        Model::GetRDFGraphSummaryOutcomeCallable GetRDFGraphSummaryCallable(const GetRDFGraphSummaryRequestT& request) const
+        Model::GetRDFGraphSummaryOutcomeCallable GetRDFGraphSummaryCallable(const GetRDFGraphSummaryRequestT& request = {}) const
         {
             return SubmitCallable(&NeptunedataClient::GetRDFGraphSummary, request);
         }
@@ -1040,7 +1047,7 @@ namespace neptunedata
          * An Async wrapper for GetRDFGraphSummary that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetRDFGraphSummaryRequestT = Model::GetRDFGraphSummaryRequest>
-        void GetRDFGraphSummaryAsync(const GetRDFGraphSummaryRequestT& request, const GetRDFGraphSummaryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetRDFGraphSummaryAsync(const GetRDFGraphSummaryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetRDFGraphSummaryRequestT& request = {}) const
         {
             return SubmitAsync(&NeptunedataClient::GetRDFGraphSummary, request, handler, context);
         }
@@ -1094,13 +1101,13 @@ namespace neptunedata
          * href="http://docs.aws.amazon.com/goto/WebAPI/neptunedata-2023-08-01/GetSparqlStream">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetSparqlStreamOutcome GetSparqlStream(const Model::GetSparqlStreamRequest& request) const;
+        virtual Model::GetSparqlStreamOutcome GetSparqlStream(const Model::GetSparqlStreamRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetSparqlStream that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetSparqlStreamRequestT = Model::GetSparqlStreamRequest>
-        Model::GetSparqlStreamOutcomeCallable GetSparqlStreamCallable(const GetSparqlStreamRequestT& request) const
+        Model::GetSparqlStreamOutcomeCallable GetSparqlStreamCallable(const GetSparqlStreamRequestT& request = {}) const
         {
             return SubmitCallable(&NeptunedataClient::GetSparqlStream, request);
         }
@@ -1109,7 +1116,7 @@ namespace neptunedata
          * An Async wrapper for GetSparqlStream that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetSparqlStreamRequestT = Model::GetSparqlStreamRequest>
-        void GetSparqlStreamAsync(const GetSparqlStreamRequestT& request, const GetSparqlStreamResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetSparqlStreamAsync(const GetSparqlStreamResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetSparqlStreamRequestT& request = {}) const
         {
             return SubmitAsync(&NeptunedataClient::GetSparqlStream, request, handler, context);
         }
@@ -1131,13 +1138,13 @@ namespace neptunedata
          * href="http://docs.aws.amazon.com/goto/WebAPI/neptunedata-2023-08-01/ListGremlinQueries">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListGremlinQueriesOutcome ListGremlinQueries(const Model::ListGremlinQueriesRequest& request) const;
+        virtual Model::ListGremlinQueriesOutcome ListGremlinQueries(const Model::ListGremlinQueriesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListGremlinQueries that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListGremlinQueriesRequestT = Model::ListGremlinQueriesRequest>
-        Model::ListGremlinQueriesOutcomeCallable ListGremlinQueriesCallable(const ListGremlinQueriesRequestT& request) const
+        Model::ListGremlinQueriesOutcomeCallable ListGremlinQueriesCallable(const ListGremlinQueriesRequestT& request = {}) const
         {
             return SubmitCallable(&NeptunedataClient::ListGremlinQueries, request);
         }
@@ -1146,7 +1153,7 @@ namespace neptunedata
          * An Async wrapper for ListGremlinQueries that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListGremlinQueriesRequestT = Model::ListGremlinQueriesRequest>
-        void ListGremlinQueriesAsync(const ListGremlinQueriesRequestT& request, const ListGremlinQueriesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListGremlinQueriesAsync(const ListGremlinQueriesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListGremlinQueriesRequestT& request = {}) const
         {
             return SubmitAsync(&NeptunedataClient::ListGremlinQueries, request, handler, context);
         }
@@ -1161,13 +1168,13 @@ namespace neptunedata
          * href="http://docs.aws.amazon.com/goto/WebAPI/neptunedata-2023-08-01/ListLoaderJobs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListLoaderJobsOutcome ListLoaderJobs(const Model::ListLoaderJobsRequest& request) const;
+        virtual Model::ListLoaderJobsOutcome ListLoaderJobs(const Model::ListLoaderJobsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListLoaderJobs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListLoaderJobsRequestT = Model::ListLoaderJobsRequest>
-        Model::ListLoaderJobsOutcomeCallable ListLoaderJobsCallable(const ListLoaderJobsRequestT& request) const
+        Model::ListLoaderJobsOutcomeCallable ListLoaderJobsCallable(const ListLoaderJobsRequestT& request = {}) const
         {
             return SubmitCallable(&NeptunedataClient::ListLoaderJobs, request);
         }
@@ -1176,7 +1183,7 @@ namespace neptunedata
          * An Async wrapper for ListLoaderJobs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListLoaderJobsRequestT = Model::ListLoaderJobsRequest>
-        void ListLoaderJobsAsync(const ListLoaderJobsRequestT& request, const ListLoaderJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListLoaderJobsAsync(const ListLoaderJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListLoaderJobsRequestT& request = {}) const
         {
             return SubmitAsync(&NeptunedataClient::ListLoaderJobs, request, handler, context);
         }
@@ -1193,13 +1200,13 @@ namespace neptunedata
          * href="http://docs.aws.amazon.com/goto/WebAPI/neptunedata-2023-08-01/ListMLDataProcessingJobs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListMLDataProcessingJobsOutcome ListMLDataProcessingJobs(const Model::ListMLDataProcessingJobsRequest& request) const;
+        virtual Model::ListMLDataProcessingJobsOutcome ListMLDataProcessingJobs(const Model::ListMLDataProcessingJobsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListMLDataProcessingJobs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListMLDataProcessingJobsRequestT = Model::ListMLDataProcessingJobsRequest>
-        Model::ListMLDataProcessingJobsOutcomeCallable ListMLDataProcessingJobsCallable(const ListMLDataProcessingJobsRequestT& request) const
+        Model::ListMLDataProcessingJobsOutcomeCallable ListMLDataProcessingJobsCallable(const ListMLDataProcessingJobsRequestT& request = {}) const
         {
             return SubmitCallable(&NeptunedataClient::ListMLDataProcessingJobs, request);
         }
@@ -1208,7 +1215,7 @@ namespace neptunedata
          * An Async wrapper for ListMLDataProcessingJobs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListMLDataProcessingJobsRequestT = Model::ListMLDataProcessingJobsRequest>
-        void ListMLDataProcessingJobsAsync(const ListMLDataProcessingJobsRequestT& request, const ListMLDataProcessingJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListMLDataProcessingJobsAsync(const ListMLDataProcessingJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListMLDataProcessingJobsRequestT& request = {}) const
         {
             return SubmitAsync(&NeptunedataClient::ListMLDataProcessingJobs, request, handler, context);
         }
@@ -1224,13 +1231,13 @@ namespace neptunedata
          * href="http://docs.aws.amazon.com/goto/WebAPI/neptunedata-2023-08-01/ListMLEndpoints">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListMLEndpointsOutcome ListMLEndpoints(const Model::ListMLEndpointsRequest& request) const;
+        virtual Model::ListMLEndpointsOutcome ListMLEndpoints(const Model::ListMLEndpointsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListMLEndpoints that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListMLEndpointsRequestT = Model::ListMLEndpointsRequest>
-        Model::ListMLEndpointsOutcomeCallable ListMLEndpointsCallable(const ListMLEndpointsRequestT& request) const
+        Model::ListMLEndpointsOutcomeCallable ListMLEndpointsCallable(const ListMLEndpointsRequestT& request = {}) const
         {
             return SubmitCallable(&NeptunedataClient::ListMLEndpoints, request);
         }
@@ -1239,7 +1246,7 @@ namespace neptunedata
          * An Async wrapper for ListMLEndpoints that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListMLEndpointsRequestT = Model::ListMLEndpointsRequest>
-        void ListMLEndpointsAsync(const ListMLEndpointsRequestT& request, const ListMLEndpointsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListMLEndpointsAsync(const ListMLEndpointsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListMLEndpointsRequestT& request = {}) const
         {
             return SubmitAsync(&NeptunedataClient::ListMLEndpoints, request, handler, context);
         }
@@ -1255,13 +1262,13 @@ namespace neptunedata
          * href="http://docs.aws.amazon.com/goto/WebAPI/neptunedata-2023-08-01/ListMLModelTrainingJobs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListMLModelTrainingJobsOutcome ListMLModelTrainingJobs(const Model::ListMLModelTrainingJobsRequest& request) const;
+        virtual Model::ListMLModelTrainingJobsOutcome ListMLModelTrainingJobs(const Model::ListMLModelTrainingJobsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListMLModelTrainingJobs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListMLModelTrainingJobsRequestT = Model::ListMLModelTrainingJobsRequest>
-        Model::ListMLModelTrainingJobsOutcomeCallable ListMLModelTrainingJobsCallable(const ListMLModelTrainingJobsRequestT& request) const
+        Model::ListMLModelTrainingJobsOutcomeCallable ListMLModelTrainingJobsCallable(const ListMLModelTrainingJobsRequestT& request = {}) const
         {
             return SubmitCallable(&NeptunedataClient::ListMLModelTrainingJobs, request);
         }
@@ -1270,7 +1277,7 @@ namespace neptunedata
          * An Async wrapper for ListMLModelTrainingJobs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListMLModelTrainingJobsRequestT = Model::ListMLModelTrainingJobsRequest>
-        void ListMLModelTrainingJobsAsync(const ListMLModelTrainingJobsRequestT& request, const ListMLModelTrainingJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListMLModelTrainingJobsAsync(const ListMLModelTrainingJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListMLModelTrainingJobsRequestT& request = {}) const
         {
             return SubmitAsync(&NeptunedataClient::ListMLModelTrainingJobs, request, handler, context);
         }
@@ -1286,13 +1293,13 @@ namespace neptunedata
          * href="http://docs.aws.amazon.com/goto/WebAPI/neptunedata-2023-08-01/ListMLModelTransformJobs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListMLModelTransformJobsOutcome ListMLModelTransformJobs(const Model::ListMLModelTransformJobsRequest& request) const;
+        virtual Model::ListMLModelTransformJobsOutcome ListMLModelTransformJobs(const Model::ListMLModelTransformJobsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListMLModelTransformJobs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListMLModelTransformJobsRequestT = Model::ListMLModelTransformJobsRequest>
-        Model::ListMLModelTransformJobsOutcomeCallable ListMLModelTransformJobsCallable(const ListMLModelTransformJobsRequestT& request) const
+        Model::ListMLModelTransformJobsOutcomeCallable ListMLModelTransformJobsCallable(const ListMLModelTransformJobsRequestT& request = {}) const
         {
             return SubmitCallable(&NeptunedataClient::ListMLModelTransformJobs, request);
         }
@@ -1301,7 +1308,7 @@ namespace neptunedata
          * An Async wrapper for ListMLModelTransformJobs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListMLModelTransformJobsRequestT = Model::ListMLModelTransformJobsRequest>
-        void ListMLModelTransformJobsAsync(const ListMLModelTransformJobsRequestT& request, const ListMLModelTransformJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListMLModelTransformJobsAsync(const ListMLModelTransformJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListMLModelTransformJobsRequestT& request = {}) const
         {
             return SubmitAsync(&NeptunedataClient::ListMLModelTransformJobs, request, handler, context);
         }
@@ -1323,13 +1330,13 @@ namespace neptunedata
          * href="http://docs.aws.amazon.com/goto/WebAPI/neptunedata-2023-08-01/ListOpenCypherQueries">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListOpenCypherQueriesOutcome ListOpenCypherQueries(const Model::ListOpenCypherQueriesRequest& request) const;
+        virtual Model::ListOpenCypherQueriesOutcome ListOpenCypherQueries(const Model::ListOpenCypherQueriesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListOpenCypherQueries that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListOpenCypherQueriesRequestT = Model::ListOpenCypherQueriesRequest>
-        Model::ListOpenCypherQueriesOutcomeCallable ListOpenCypherQueriesCallable(const ListOpenCypherQueriesRequestT& request) const
+        Model::ListOpenCypherQueriesOutcomeCallable ListOpenCypherQueriesCallable(const ListOpenCypherQueriesRequestT& request = {}) const
         {
             return SubmitCallable(&NeptunedataClient::ListOpenCypherQueries, request);
         }
@@ -1338,7 +1345,7 @@ namespace neptunedata
          * An Async wrapper for ListOpenCypherQueries that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListOpenCypherQueriesRequestT = Model::ListOpenCypherQueriesRequest>
-        void ListOpenCypherQueriesAsync(const ListOpenCypherQueriesRequestT& request, const ListOpenCypherQueriesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListOpenCypherQueriesAsync(const ListOpenCypherQueriesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListOpenCypherQueriesRequestT& request = {}) const
         {
             return SubmitAsync(&NeptunedataClient::ListOpenCypherQueries, request, handler, context);
         }
@@ -1353,13 +1360,13 @@ namespace neptunedata
          * href="http://docs.aws.amazon.com/goto/WebAPI/neptunedata-2023-08-01/ManagePropertygraphStatistics">AWS
          * API Reference</a></p>
          */
-        virtual Model::ManagePropertygraphStatisticsOutcome ManagePropertygraphStatistics(const Model::ManagePropertygraphStatisticsRequest& request) const;
+        virtual Model::ManagePropertygraphStatisticsOutcome ManagePropertygraphStatistics(const Model::ManagePropertygraphStatisticsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ManagePropertygraphStatistics that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ManagePropertygraphStatisticsRequestT = Model::ManagePropertygraphStatisticsRequest>
-        Model::ManagePropertygraphStatisticsOutcomeCallable ManagePropertygraphStatisticsCallable(const ManagePropertygraphStatisticsRequestT& request) const
+        Model::ManagePropertygraphStatisticsOutcomeCallable ManagePropertygraphStatisticsCallable(const ManagePropertygraphStatisticsRequestT& request = {}) const
         {
             return SubmitCallable(&NeptunedataClient::ManagePropertygraphStatistics, request);
         }
@@ -1368,7 +1375,7 @@ namespace neptunedata
          * An Async wrapper for ManagePropertygraphStatistics that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ManagePropertygraphStatisticsRequestT = Model::ManagePropertygraphStatisticsRequest>
-        void ManagePropertygraphStatisticsAsync(const ManagePropertygraphStatisticsRequestT& request, const ManagePropertygraphStatisticsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ManagePropertygraphStatisticsAsync(const ManagePropertygraphStatisticsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ManagePropertygraphStatisticsRequestT& request = {}) const
         {
             return SubmitAsync(&NeptunedataClient::ManagePropertygraphStatistics, request, handler, context);
         }
@@ -1382,13 +1389,13 @@ namespace neptunedata
          * href="http://docs.aws.amazon.com/goto/WebAPI/neptunedata-2023-08-01/ManageSparqlStatistics">AWS
          * API Reference</a></p>
          */
-        virtual Model::ManageSparqlStatisticsOutcome ManageSparqlStatistics(const Model::ManageSparqlStatisticsRequest& request) const;
+        virtual Model::ManageSparqlStatisticsOutcome ManageSparqlStatistics(const Model::ManageSparqlStatisticsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ManageSparqlStatistics that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ManageSparqlStatisticsRequestT = Model::ManageSparqlStatisticsRequest>
-        Model::ManageSparqlStatisticsOutcomeCallable ManageSparqlStatisticsCallable(const ManageSparqlStatisticsRequestT& request) const
+        Model::ManageSparqlStatisticsOutcomeCallable ManageSparqlStatisticsCallable(const ManageSparqlStatisticsRequestT& request = {}) const
         {
             return SubmitCallable(&NeptunedataClient::ManageSparqlStatistics, request);
         }
@@ -1397,7 +1404,7 @@ namespace neptunedata
          * An Async wrapper for ManageSparqlStatistics that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ManageSparqlStatisticsRequestT = Model::ManageSparqlStatisticsRequest>
-        void ManageSparqlStatisticsAsync(const ManageSparqlStatisticsRequestT& request, const ManageSparqlStatisticsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ManageSparqlStatisticsAsync(const ManageSparqlStatisticsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ManageSparqlStatisticsRequestT& request = {}) const
         {
             return SubmitAsync(&NeptunedataClient::ManageSparqlStatistics, request, handler, context);
         }
@@ -1533,11 +1540,7 @@ namespace neptunedata
       std::shared_ptr<NeptunedataEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<NeptunedataClient>;
-      void init(const NeptunedataClientConfiguration& clientConfiguration);
 
-      NeptunedataClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<NeptunedataEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace neptunedata

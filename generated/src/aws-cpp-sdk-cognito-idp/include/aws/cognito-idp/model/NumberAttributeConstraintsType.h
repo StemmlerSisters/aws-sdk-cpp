@@ -24,8 +24,18 @@ namespace Model
 {
 
   /**
-   * <p>The minimum and maximum values of an attribute that is of the number data
-   * type.</p><p><h3>See Also:</h3>   <a
+   * <p>The minimum and maximum values of an attribute that is of the number type,
+   * for example <code>custom:age</code>.</p> <p>This data type is part of <a
+   * href="https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_SchemaAttributeType.html">SchemaAttributeType</a>.
+   * It defines the length constraints on number-type attributes that you configure
+   * in <a
+   * href="https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_CreateUserPool.html">CreateUserPool</a>
+   * and <a
+   * href="https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_UpdateUserPool.html">UpdateUserPool</a>,
+   * and displays the length constraints of all number-type attributes in the
+   * response to <a
+   * href="https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_DescribeUserPool.html">DescribeUserPool</a>
+   * </p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/cognito-idp-2016-04-18/NumberAttributeConstraintsType">AWS
    * API Reference</a></p>
    */
@@ -38,103 +48,35 @@ namespace Model
     AWS_COGNITOIDENTITYPROVIDER_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The minimum value of an attribute that is of the number data type.</p>
      */
     inline const Aws::String& GetMinValue() const{ return m_minValue; }
-
-    /**
-     * <p>The minimum value of an attribute that is of the number data type.</p>
-     */
     inline bool MinValueHasBeenSet() const { return m_minValueHasBeenSet; }
-
-    /**
-     * <p>The minimum value of an attribute that is of the number data type.</p>
-     */
     inline void SetMinValue(const Aws::String& value) { m_minValueHasBeenSet = true; m_minValue = value; }
-
-    /**
-     * <p>The minimum value of an attribute that is of the number data type.</p>
-     */
     inline void SetMinValue(Aws::String&& value) { m_minValueHasBeenSet = true; m_minValue = std::move(value); }
-
-    /**
-     * <p>The minimum value of an attribute that is of the number data type.</p>
-     */
     inline void SetMinValue(const char* value) { m_minValueHasBeenSet = true; m_minValue.assign(value); }
-
-    /**
-     * <p>The minimum value of an attribute that is of the number data type.</p>
-     */
     inline NumberAttributeConstraintsType& WithMinValue(const Aws::String& value) { SetMinValue(value); return *this;}
-
-    /**
-     * <p>The minimum value of an attribute that is of the number data type.</p>
-     */
     inline NumberAttributeConstraintsType& WithMinValue(Aws::String&& value) { SetMinValue(std::move(value)); return *this;}
-
-    /**
-     * <p>The minimum value of an attribute that is of the number data type.</p>
-     */
     inline NumberAttributeConstraintsType& WithMinValue(const char* value) { SetMinValue(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The maximum length of a number attribute value. Must be a number less than or
      * equal to <code>2^1023</code>, represented as a string with a length of 131072
      * characters or fewer.</p>
      */
     inline const Aws::String& GetMaxValue() const{ return m_maxValue; }
-
-    /**
-     * <p>The maximum length of a number attribute value. Must be a number less than or
-     * equal to <code>2^1023</code>, represented as a string with a length of 131072
-     * characters or fewer.</p>
-     */
     inline bool MaxValueHasBeenSet() const { return m_maxValueHasBeenSet; }
-
-    /**
-     * <p>The maximum length of a number attribute value. Must be a number less than or
-     * equal to <code>2^1023</code>, represented as a string with a length of 131072
-     * characters or fewer.</p>
-     */
     inline void SetMaxValue(const Aws::String& value) { m_maxValueHasBeenSet = true; m_maxValue = value; }
-
-    /**
-     * <p>The maximum length of a number attribute value. Must be a number less than or
-     * equal to <code>2^1023</code>, represented as a string with a length of 131072
-     * characters or fewer.</p>
-     */
     inline void SetMaxValue(Aws::String&& value) { m_maxValueHasBeenSet = true; m_maxValue = std::move(value); }
-
-    /**
-     * <p>The maximum length of a number attribute value. Must be a number less than or
-     * equal to <code>2^1023</code>, represented as a string with a length of 131072
-     * characters or fewer.</p>
-     */
     inline void SetMaxValue(const char* value) { m_maxValueHasBeenSet = true; m_maxValue.assign(value); }
-
-    /**
-     * <p>The maximum length of a number attribute value. Must be a number less than or
-     * equal to <code>2^1023</code>, represented as a string with a length of 131072
-     * characters or fewer.</p>
-     */
     inline NumberAttributeConstraintsType& WithMaxValue(const Aws::String& value) { SetMaxValue(value); return *this;}
-
-    /**
-     * <p>The maximum length of a number attribute value. Must be a number less than or
-     * equal to <code>2^1023</code>, represented as a string with a length of 131072
-     * characters or fewer.</p>
-     */
     inline NumberAttributeConstraintsType& WithMaxValue(Aws::String&& value) { SetMaxValue(std::move(value)); return *this;}
-
-    /**
-     * <p>The maximum length of a number attribute value. Must be a number less than or
-     * equal to <code>2^1023</code>, represented as a string with a length of 131072
-     * characters or fewer.</p>
-     */
     inline NumberAttributeConstraintsType& WithMaxValue(const char* value) { SetMaxValue(value); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_minValue;

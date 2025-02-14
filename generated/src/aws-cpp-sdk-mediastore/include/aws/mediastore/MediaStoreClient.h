@@ -6,25 +6,37 @@
 #pragma once
 #include <aws/mediastore/MediaStore_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/mediastore/MediaStoreServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/mediastore/MediaStoreErrorMarshaller.h>
 
 namespace Aws
 {
 namespace MediaStore
 {
+  AWS_MEDIASTORE_API extern const char SERVICE_NAME[];
   /**
    * <p>An AWS Elemental MediaStore container is a namespace that holds folders and
    * objects. You use a container endpoint to create, read, and delete objects. </p>
    */
-  class AWS_MEDIASTORE_API MediaStoreClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<MediaStoreClient>
+  class AWS_MEDIASTORE_API MediaStoreClient : smithy::client::AwsSmithyClientT<Aws::MediaStore::SERVICE_NAME,
+      Aws::MediaStore::MediaStoreClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      MediaStoreEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::MediaStoreErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<MediaStoreClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "MediaStore"; }
 
       typedef MediaStoreClientConfiguration ClientConfigurationType;
       typedef MediaStoreEndpointProvider EndpointProviderType;
@@ -251,13 +263,13 @@ namespace MediaStore
          * href="http://docs.aws.amazon.com/goto/WebAPI/mediastore-2017-09-01/DescribeContainer">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeContainerOutcome DescribeContainer(const Model::DescribeContainerRequest& request) const;
+        virtual Model::DescribeContainerOutcome DescribeContainer(const Model::DescribeContainerRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeContainer that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeContainerRequestT = Model::DescribeContainerRequest>
-        Model::DescribeContainerOutcomeCallable DescribeContainerCallable(const DescribeContainerRequestT& request) const
+        Model::DescribeContainerOutcomeCallable DescribeContainerCallable(const DescribeContainerRequestT& request = {}) const
         {
             return SubmitCallable(&MediaStoreClient::DescribeContainer, request);
         }
@@ -266,7 +278,7 @@ namespace MediaStore
          * An Async wrapper for DescribeContainer that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeContainerRequestT = Model::DescribeContainerRequest>
-        void DescribeContainerAsync(const DescribeContainerRequestT& request, const DescribeContainerResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeContainerAsync(const DescribeContainerResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeContainerRequestT& request = {}) const
         {
             return SubmitAsync(&MediaStoreClient::DescribeContainer, request, handler, context);
         }
@@ -393,13 +405,13 @@ namespace MediaStore
          * href="http://docs.aws.amazon.com/goto/WebAPI/mediastore-2017-09-01/ListContainers">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListContainersOutcome ListContainers(const Model::ListContainersRequest& request) const;
+        virtual Model::ListContainersOutcome ListContainers(const Model::ListContainersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListContainers that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListContainersRequestT = Model::ListContainersRequest>
-        Model::ListContainersOutcomeCallable ListContainersCallable(const ListContainersRequestT& request) const
+        Model::ListContainersOutcomeCallable ListContainersCallable(const ListContainersRequestT& request = {}) const
         {
             return SubmitCallable(&MediaStoreClient::ListContainers, request);
         }
@@ -408,7 +420,7 @@ namespace MediaStore
          * An Async wrapper for ListContainers that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListContainersRequestT = Model::ListContainersRequest>
-        void ListContainersAsync(const ListContainersRequestT& request, const ListContainersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListContainersAsync(const ListContainersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListContainersRequestT& request = {}) const
         {
             return SubmitAsync(&MediaStoreClient::ListContainers, request, handler, context);
         }
@@ -684,11 +696,7 @@ namespace MediaStore
       std::shared_ptr<MediaStoreEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<MediaStoreClient>;
-      void init(const MediaStoreClientConfiguration& clientConfiguration);
 
-      MediaStoreClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<MediaStoreEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace MediaStore

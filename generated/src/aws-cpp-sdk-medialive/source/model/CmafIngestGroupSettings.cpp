@@ -29,22 +29,20 @@ CmafIngestGroupSettings::CmafIngestGroupSettings() :
     m_segmentLengthUnits(CmafIngestSegmentLengthUnits::NOT_SET),
     m_segmentLengthUnitsHasBeenSet(false),
     m_sendDelayMs(0),
-    m_sendDelayMsHasBeenSet(false)
+    m_sendDelayMsHasBeenSet(false),
+    m_klvBehavior(CmafKLVBehavior::NOT_SET),
+    m_klvBehaviorHasBeenSet(false),
+    m_klvNameModifierHasBeenSet(false),
+    m_nielsenId3NameModifierHasBeenSet(false),
+    m_scte35NameModifierHasBeenSet(false),
+    m_id3Behavior(CmafId3Behavior::NOT_SET),
+    m_id3BehaviorHasBeenSet(false),
+    m_id3NameModifierHasBeenSet(false)
 {
 }
 
-CmafIngestGroupSettings::CmafIngestGroupSettings(JsonView jsonValue) : 
-    m_destinationHasBeenSet(false),
-    m_nielsenId3Behavior(CmafNielsenId3Behavior::NOT_SET),
-    m_nielsenId3BehaviorHasBeenSet(false),
-    m_scte35Type(Scte35Type::NOT_SET),
-    m_scte35TypeHasBeenSet(false),
-    m_segmentLength(0),
-    m_segmentLengthHasBeenSet(false),
-    m_segmentLengthUnits(CmafIngestSegmentLengthUnits::NOT_SET),
-    m_segmentLengthUnitsHasBeenSet(false),
-    m_sendDelayMs(0),
-    m_sendDelayMsHasBeenSet(false)
+CmafIngestGroupSettings::CmafIngestGroupSettings(JsonView jsonValue)
+  : CmafIngestGroupSettings()
 {
   *this = jsonValue;
 }
@@ -93,6 +91,48 @@ CmafIngestGroupSettings& CmafIngestGroupSettings::operator =(JsonView jsonValue)
     m_sendDelayMsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("klvBehavior"))
+  {
+    m_klvBehavior = CmafKLVBehaviorMapper::GetCmafKLVBehaviorForName(jsonValue.GetString("klvBehavior"));
+
+    m_klvBehaviorHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("klvNameModifier"))
+  {
+    m_klvNameModifier = jsonValue.GetString("klvNameModifier");
+
+    m_klvNameModifierHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("nielsenId3NameModifier"))
+  {
+    m_nielsenId3NameModifier = jsonValue.GetString("nielsenId3NameModifier");
+
+    m_nielsenId3NameModifierHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("scte35NameModifier"))
+  {
+    m_scte35NameModifier = jsonValue.GetString("scte35NameModifier");
+
+    m_scte35NameModifierHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("id3Behavior"))
+  {
+    m_id3Behavior = CmafId3BehaviorMapper::GetCmafId3BehaviorForName(jsonValue.GetString("id3Behavior"));
+
+    m_id3BehaviorHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("id3NameModifier"))
+  {
+    m_id3NameModifier = jsonValue.GetString("id3NameModifier");
+
+    m_id3NameModifierHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -130,6 +170,40 @@ JsonValue CmafIngestGroupSettings::Jsonize() const
   if(m_sendDelayMsHasBeenSet)
   {
    payload.WithInteger("sendDelayMs", m_sendDelayMs);
+
+  }
+
+  if(m_klvBehaviorHasBeenSet)
+  {
+   payload.WithString("klvBehavior", CmafKLVBehaviorMapper::GetNameForCmafKLVBehavior(m_klvBehavior));
+  }
+
+  if(m_klvNameModifierHasBeenSet)
+  {
+   payload.WithString("klvNameModifier", m_klvNameModifier);
+
+  }
+
+  if(m_nielsenId3NameModifierHasBeenSet)
+  {
+   payload.WithString("nielsenId3NameModifier", m_nielsenId3NameModifier);
+
+  }
+
+  if(m_scte35NameModifierHasBeenSet)
+  {
+   payload.WithString("scte35NameModifier", m_scte35NameModifier);
+
+  }
+
+  if(m_id3BehaviorHasBeenSet)
+  {
+   payload.WithString("id3Behavior", CmafId3BehaviorMapper::GetNameForCmafId3Behavior(m_id3Behavior));
+  }
+
+  if(m_id3NameModifierHasBeenSet)
+  {
+   payload.WithString("id3NameModifier", m_id3NameModifier);
 
   }
 

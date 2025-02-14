@@ -43,10 +43,18 @@ namespace Aws
         static const int ResolveConflicts_HASH = HashingUtils::HashString("ResolveConflicts");
         static const int MaxUnavailable_HASH = HashingUtils::HashString("MaxUnavailable");
         static const int MaxUnavailablePercentage_HASH = HashingUtils::HashString("MaxUnavailablePercentage");
+        static const int NodeRepairEnabled_HASH = HashingUtils::HashString("NodeRepairEnabled");
+        static const int UpdateStrategy_HASH = HashingUtils::HashString("UpdateStrategy");
         static const int ConfigurationValues_HASH = HashingUtils::HashString("ConfigurationValues");
         static const int SecurityGroups_HASH = HashingUtils::HashString("SecurityGroups");
         static const int Subnets_HASH = HashingUtils::HashString("Subnets");
         static const int AuthenticationMode_HASH = HashingUtils::HashString("AuthenticationMode");
+        static const int PodIdentityAssociations_HASH = HashingUtils::HashString("PodIdentityAssociations");
+        static const int UpgradePolicy_HASH = HashingUtils::HashString("UpgradePolicy");
+        static const int ZonalShiftConfig_HASH = HashingUtils::HashString("ZonalShiftConfig");
+        static const int ComputeConfig_HASH = HashingUtils::HashString("ComputeConfig");
+        static const int StorageConfig_HASH = HashingUtils::HashString("StorageConfig");
+        static const int KubernetesNetworkConfig_HASH = HashingUtils::HashString("KubernetesNetworkConfig");
 
 
         UpdateParamType GetUpdateParamTypeForName(const Aws::String& name)
@@ -144,6 +152,14 @@ namespace Aws
           {
             return UpdateParamType::MaxUnavailablePercentage;
           }
+          else if (hashCode == NodeRepairEnabled_HASH)
+          {
+            return UpdateParamType::NodeRepairEnabled;
+          }
+          else if (hashCode == UpdateStrategy_HASH)
+          {
+            return UpdateParamType::UpdateStrategy;
+          }
           else if (hashCode == ConfigurationValues_HASH)
           {
             return UpdateParamType::ConfigurationValues;
@@ -159,6 +175,30 @@ namespace Aws
           else if (hashCode == AuthenticationMode_HASH)
           {
             return UpdateParamType::AuthenticationMode;
+          }
+          else if (hashCode == PodIdentityAssociations_HASH)
+          {
+            return UpdateParamType::PodIdentityAssociations;
+          }
+          else if (hashCode == UpgradePolicy_HASH)
+          {
+            return UpdateParamType::UpgradePolicy;
+          }
+          else if (hashCode == ZonalShiftConfig_HASH)
+          {
+            return UpdateParamType::ZonalShiftConfig;
+          }
+          else if (hashCode == ComputeConfig_HASH)
+          {
+            return UpdateParamType::ComputeConfig;
+          }
+          else if (hashCode == StorageConfig_HASH)
+          {
+            return UpdateParamType::StorageConfig;
+          }
+          else if (hashCode == KubernetesNetworkConfig_HASH)
+          {
+            return UpdateParamType::KubernetesNetworkConfig;
           }
           EnumParseOverflowContainer* overflowContainer = Aws::GetEnumOverflowContainer();
           if(overflowContainer)
@@ -222,6 +262,10 @@ namespace Aws
             return "MaxUnavailable";
           case UpdateParamType::MaxUnavailablePercentage:
             return "MaxUnavailablePercentage";
+          case UpdateParamType::NodeRepairEnabled:
+            return "NodeRepairEnabled";
+          case UpdateParamType::UpdateStrategy:
+            return "UpdateStrategy";
           case UpdateParamType::ConfigurationValues:
             return "ConfigurationValues";
           case UpdateParamType::SecurityGroups:
@@ -230,6 +274,18 @@ namespace Aws
             return "Subnets";
           case UpdateParamType::AuthenticationMode:
             return "AuthenticationMode";
+          case UpdateParamType::PodIdentityAssociations:
+            return "PodIdentityAssociations";
+          case UpdateParamType::UpgradePolicy:
+            return "UpgradePolicy";
+          case UpdateParamType::ZonalShiftConfig:
+            return "ZonalShiftConfig";
+          case UpdateParamType::ComputeConfig:
+            return "ComputeConfig";
+          case UpdateParamType::StorageConfig:
+            return "StorageConfig";
+          case UpdateParamType::KubernetesNetworkConfig:
+            return "KubernetesNetworkConfig";
           default:
             EnumParseOverflowContainer* overflowContainer = Aws::GetEnumOverflowContainer();
             if(overflowContainer)

@@ -29,20 +29,13 @@ LaunchTemplate::LaunchTemplate() :
     m_defaultVersionNumberHasBeenSet(false),
     m_latestVersionNumber(0),
     m_latestVersionNumberHasBeenSet(false),
-    m_tagsHasBeenSet(false)
+    m_tagsHasBeenSet(false),
+    m_operatorHasBeenSet(false)
 {
 }
 
-LaunchTemplate::LaunchTemplate(const XmlNode& xmlNode) : 
-    m_launchTemplateIdHasBeenSet(false),
-    m_launchTemplateNameHasBeenSet(false),
-    m_createTimeHasBeenSet(false),
-    m_createdByHasBeenSet(false),
-    m_defaultVersionNumber(0),
-    m_defaultVersionNumberHasBeenSet(false),
-    m_latestVersionNumber(0),
-    m_latestVersionNumberHasBeenSet(false),
-    m_tagsHasBeenSet(false)
+LaunchTemplate::LaunchTemplate(const XmlNode& xmlNode)
+  : LaunchTemplate()
 {
   *this = xmlNode;
 }
@@ -101,6 +94,12 @@ LaunchTemplate& LaunchTemplate::operator =(const XmlNode& xmlNode)
 
       m_tagsHasBeenSet = true;
     }
+    XmlNode operatorNode = resultNode.FirstChild("operator");
+    if(!operatorNode.IsNull())
+    {
+      m_operator = operatorNode;
+      m_operatorHasBeenSet = true;
+    }
   }
 
   return *this;
@@ -149,6 +148,13 @@ void LaunchTemplate::OutputToStream(Aws::OStream& oStream, const char* location,
       }
   }
 
+  if(m_operatorHasBeenSet)
+  {
+      Aws::StringStream operatorLocationAndMemberSs;
+      operatorLocationAndMemberSs << location << index << locationValue << ".Operator";
+      m_operator.OutputToStream(oStream, operatorLocationAndMemberSs.str().c_str());
+  }
+
 }
 
 void LaunchTemplate::OutputToStream(Aws::OStream& oStream, const char* location) const
@@ -186,6 +192,12 @@ void LaunchTemplate::OutputToStream(Aws::OStream& oStream, const char* location)
         tagsSs << location <<  ".TagSet." << tagsIdx++;
         item.OutputToStream(oStream, tagsSs.str().c_str());
       }
+  }
+  if(m_operatorHasBeenSet)
+  {
+      Aws::String operatorLocationAndMember(location);
+      operatorLocationAndMember += ".Operator";
+      m_operator.OutputToStream(oStream, operatorLocationAndMember.c_str());
   }
 }
 

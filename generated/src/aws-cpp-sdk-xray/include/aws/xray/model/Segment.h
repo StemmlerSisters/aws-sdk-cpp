@@ -30,8 +30,8 @@ namespace Model
    * or an <code>inferred</code> segment for a downstream service, generated from a
    * subsegment sent by the service that called it.</p> <p>For the full segment
    * document schema, see <a
-   * href="https://docs.aws.amazon.com/xray/latest/devguide/xray-api-segmentdocuments.html">Amazon
-   * Web Services X-Ray Segment Documents</a> in the <i>Amazon Web Services X-Ray
+   * href="https://docs.aws.amazon.com/xray/latest/devguide/aws-xray-interface-api.html#xray-api-segmentdocuments">Amazon
+   * Web Services X-Ray segment documents</a> in the <i>Amazon Web Services X-Ray
    * Developer Guide</i>.</p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/xray-2016-04-12/Segment">AWS API
    * Reference</a></p>
@@ -45,87 +45,33 @@ namespace Model
     AWS_XRAY_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The segment's ID.</p>
      */
     inline const Aws::String& GetId() const{ return m_id; }
-
-    /**
-     * <p>The segment's ID.</p>
-     */
     inline bool IdHasBeenSet() const { return m_idHasBeenSet; }
-
-    /**
-     * <p>The segment's ID.</p>
-     */
     inline void SetId(const Aws::String& value) { m_idHasBeenSet = true; m_id = value; }
-
-    /**
-     * <p>The segment's ID.</p>
-     */
     inline void SetId(Aws::String&& value) { m_idHasBeenSet = true; m_id = std::move(value); }
-
-    /**
-     * <p>The segment's ID.</p>
-     */
     inline void SetId(const char* value) { m_idHasBeenSet = true; m_id.assign(value); }
-
-    /**
-     * <p>The segment's ID.</p>
-     */
     inline Segment& WithId(const Aws::String& value) { SetId(value); return *this;}
-
-    /**
-     * <p>The segment's ID.</p>
-     */
     inline Segment& WithId(Aws::String&& value) { SetId(std::move(value)); return *this;}
-
-    /**
-     * <p>The segment's ID.</p>
-     */
     inline Segment& WithId(const char* value) { SetId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The segment document.</p>
      */
     inline const Aws::String& GetDocument() const{ return m_document; }
-
-    /**
-     * <p>The segment document.</p>
-     */
     inline bool DocumentHasBeenSet() const { return m_documentHasBeenSet; }
-
-    /**
-     * <p>The segment document.</p>
-     */
     inline void SetDocument(const Aws::String& value) { m_documentHasBeenSet = true; m_document = value; }
-
-    /**
-     * <p>The segment document.</p>
-     */
     inline void SetDocument(Aws::String&& value) { m_documentHasBeenSet = true; m_document = std::move(value); }
-
-    /**
-     * <p>The segment document.</p>
-     */
     inline void SetDocument(const char* value) { m_documentHasBeenSet = true; m_document.assign(value); }
-
-    /**
-     * <p>The segment document.</p>
-     */
     inline Segment& WithDocument(const Aws::String& value) { SetDocument(value); return *this;}
-
-    /**
-     * <p>The segment document.</p>
-     */
     inline Segment& WithDocument(Aws::String&& value) { SetDocument(std::move(value)); return *this;}
-
-    /**
-     * <p>The segment document.</p>
-     */
     inline Segment& WithDocument(const char* value) { SetDocument(value); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_id;

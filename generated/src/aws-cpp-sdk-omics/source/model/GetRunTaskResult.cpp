@@ -20,16 +20,14 @@ using namespace Aws;
 GetRunTaskResult::GetRunTaskResult() : 
     m_status(TaskStatus::NOT_SET),
     m_cpus(0),
+    m_cacheHit(false),
     m_memory(0),
     m_gpus(0)
 {
 }
 
-GetRunTaskResult::GetRunTaskResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_status(TaskStatus::NOT_SET),
-    m_cpus(0),
-    m_memory(0),
-    m_gpus(0)
+GetRunTaskResult::GetRunTaskResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetRunTaskResult()
 {
   *this = result;
 }
@@ -58,6 +56,18 @@ GetRunTaskResult& GetRunTaskResult::operator =(const Aws::AmazonWebServiceResult
   if(jsonValue.ValueExists("cpus"))
   {
     m_cpus = jsonValue.GetInteger("cpus");
+
+  }
+
+  if(jsonValue.ValueExists("cacheHit"))
+  {
+    m_cacheHit = jsonValue.GetBool("cacheHit");
+
+  }
+
+  if(jsonValue.ValueExists("cacheS3Uri"))
+  {
+    m_cacheS3Uri = jsonValue.GetString("cacheS3Uri");
 
   }
 

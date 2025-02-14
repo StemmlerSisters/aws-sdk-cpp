@@ -14,24 +14,27 @@ using namespace Aws::Utils::Json;
 using namespace Aws::Utils;
 
 CreateJobRequest::CreateJobRequest() : 
-    m_attachmentsHasBeenSet(false),
+    m_farmIdHasBeenSet(false),
+    m_queueIdHasBeenSet(false),
     m_clientToken(Aws::Utils::UUID::PseudoRandomUUID()),
     m_clientTokenHasBeenSet(true),
-    m_farmIdHasBeenSet(false),
+    m_templateHasBeenSet(false),
+    m_templateType(JobTemplateType::NOT_SET),
+    m_templateTypeHasBeenSet(false),
+    m_priority(0),
+    m_priorityHasBeenSet(false),
+    m_parametersHasBeenSet(false),
+    m_attachmentsHasBeenSet(false),
+    m_storageProfileIdHasBeenSet(false),
+    m_targetTaskRunStatus(CreateJobTargetTaskRunStatus::NOT_SET),
+    m_targetTaskRunStatusHasBeenSet(false),
     m_maxFailedTasksCount(0),
     m_maxFailedTasksCountHasBeenSet(false),
     m_maxRetriesPerTask(0),
     m_maxRetriesPerTaskHasBeenSet(false),
-    m_parametersHasBeenSet(false),
-    m_priority(0),
-    m_priorityHasBeenSet(false),
-    m_queueIdHasBeenSet(false),
-    m_storageProfileIdHasBeenSet(false),
-    m_targetTaskRunStatus(CreateJobTargetTaskRunStatus::NOT_SET),
-    m_targetTaskRunStatusHasBeenSet(false),
-    m_templateHasBeenSet(false),
-    m_templateType(JobTemplateType::NOT_SET),
-    m_templateTypeHasBeenSet(false)
+    m_maxWorkerCount(0),
+    m_maxWorkerCountHasBeenSet(false),
+    m_sourceJobIdHasBeenSet(false)
 {
 }
 
@@ -39,21 +42,20 @@ Aws::String CreateJobRequest::SerializePayload() const
 {
   JsonValue payload;
 
-  if(m_attachmentsHasBeenSet)
+  if(m_templateHasBeenSet)
   {
-   payload.WithObject("attachments", m_attachments.Jsonize());
+   payload.WithString("template", m_template);
 
   }
 
-  if(m_maxFailedTasksCountHasBeenSet)
+  if(m_templateTypeHasBeenSet)
   {
-   payload.WithInteger("maxFailedTasksCount", m_maxFailedTasksCount);
-
+   payload.WithString("templateType", JobTemplateTypeMapper::GetNameForJobTemplateType(m_templateType));
   }
 
-  if(m_maxRetriesPerTaskHasBeenSet)
+  if(m_priorityHasBeenSet)
   {
-   payload.WithInteger("maxRetriesPerTask", m_maxRetriesPerTask);
+   payload.WithInteger("priority", m_priority);
 
   }
 
@@ -68,9 +70,9 @@ Aws::String CreateJobRequest::SerializePayload() const
 
   }
 
-  if(m_priorityHasBeenSet)
+  if(m_attachmentsHasBeenSet)
   {
-   payload.WithInteger("priority", m_priority);
+   payload.WithObject("attachments", m_attachments.Jsonize());
 
   }
 
@@ -85,15 +87,28 @@ Aws::String CreateJobRequest::SerializePayload() const
    payload.WithString("targetTaskRunStatus", CreateJobTargetTaskRunStatusMapper::GetNameForCreateJobTargetTaskRunStatus(m_targetTaskRunStatus));
   }
 
-  if(m_templateHasBeenSet)
+  if(m_maxFailedTasksCountHasBeenSet)
   {
-   payload.WithString("template", m_template);
+   payload.WithInteger("maxFailedTasksCount", m_maxFailedTasksCount);
 
   }
 
-  if(m_templateTypeHasBeenSet)
+  if(m_maxRetriesPerTaskHasBeenSet)
   {
-   payload.WithString("templateType", JobTemplateTypeMapper::GetNameForJobTemplateType(m_templateType));
+   payload.WithInteger("maxRetriesPerTask", m_maxRetriesPerTask);
+
+  }
+
+  if(m_maxWorkerCountHasBeenSet)
+  {
+   payload.WithInteger("maxWorkerCount", m_maxWorkerCount);
+
+  }
+
+  if(m_sourceJobIdHasBeenSet)
+  {
+   payload.WithString("sourceJobId", m_sourceJobId);
+
   }
 
   return payload.View().WriteReadable();

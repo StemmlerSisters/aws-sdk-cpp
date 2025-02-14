@@ -6,7 +6,9 @@
 #pragma once
 #include <aws/bedrock-agent-runtime/BedrockAgentRuntime_EXPORTS.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
+#include <aws/core/utils/memory/stl/AWSVector.h>
 #include <aws/bedrock-agent-runtime/model/Trace.h>
+#include <aws/bedrock-agent-runtime/model/Caller.h>
 #include <utility>
 
 namespace Aws
@@ -44,170 +46,91 @@ namespace Model
     AWS_BEDROCKAGENTRUNTIME_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The unique identifier of the alias of the agent.</p>
      */
     inline const Aws::String& GetAgentAliasId() const{ return m_agentAliasId; }
-
-    /**
-     * <p>The unique identifier of the alias of the agent.</p>
-     */
     inline bool AgentAliasIdHasBeenSet() const { return m_agentAliasIdHasBeenSet; }
-
-    /**
-     * <p>The unique identifier of the alias of the agent.</p>
-     */
     inline void SetAgentAliasId(const Aws::String& value) { m_agentAliasIdHasBeenSet = true; m_agentAliasId = value; }
-
-    /**
-     * <p>The unique identifier of the alias of the agent.</p>
-     */
     inline void SetAgentAliasId(Aws::String&& value) { m_agentAliasIdHasBeenSet = true; m_agentAliasId = std::move(value); }
-
-    /**
-     * <p>The unique identifier of the alias of the agent.</p>
-     */
     inline void SetAgentAliasId(const char* value) { m_agentAliasIdHasBeenSet = true; m_agentAliasId.assign(value); }
-
-    /**
-     * <p>The unique identifier of the alias of the agent.</p>
-     */
     inline TracePart& WithAgentAliasId(const Aws::String& value) { SetAgentAliasId(value); return *this;}
-
-    /**
-     * <p>The unique identifier of the alias of the agent.</p>
-     */
     inline TracePart& WithAgentAliasId(Aws::String&& value) { SetAgentAliasId(std::move(value)); return *this;}
-
-    /**
-     * <p>The unique identifier of the alias of the agent.</p>
-     */
     inline TracePart& WithAgentAliasId(const char* value) { SetAgentAliasId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The unique identifier of the agent.</p>
      */
     inline const Aws::String& GetAgentId() const{ return m_agentId; }
-
-    /**
-     * <p>The unique identifier of the agent.</p>
-     */
     inline bool AgentIdHasBeenSet() const { return m_agentIdHasBeenSet; }
-
-    /**
-     * <p>The unique identifier of the agent.</p>
-     */
     inline void SetAgentId(const Aws::String& value) { m_agentIdHasBeenSet = true; m_agentId = value; }
-
-    /**
-     * <p>The unique identifier of the agent.</p>
-     */
     inline void SetAgentId(Aws::String&& value) { m_agentIdHasBeenSet = true; m_agentId = std::move(value); }
-
-    /**
-     * <p>The unique identifier of the agent.</p>
-     */
     inline void SetAgentId(const char* value) { m_agentIdHasBeenSet = true; m_agentId.assign(value); }
-
-    /**
-     * <p>The unique identifier of the agent.</p>
-     */
     inline TracePart& WithAgentId(const Aws::String& value) { SetAgentId(value); return *this;}
-
-    /**
-     * <p>The unique identifier of the agent.</p>
-     */
     inline TracePart& WithAgentId(Aws::String&& value) { SetAgentId(std::move(value)); return *this;}
-
-    /**
-     * <p>The unique identifier of the agent.</p>
-     */
     inline TracePart& WithAgentId(const char* value) { SetAgentId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The version of the agent.</p>
      */
     inline const Aws::String& GetAgentVersion() const{ return m_agentVersion; }
-
-    /**
-     * <p>The version of the agent.</p>
-     */
     inline bool AgentVersionHasBeenSet() const { return m_agentVersionHasBeenSet; }
-
-    /**
-     * <p>The version of the agent.</p>
-     */
     inline void SetAgentVersion(const Aws::String& value) { m_agentVersionHasBeenSet = true; m_agentVersion = value; }
-
-    /**
-     * <p>The version of the agent.</p>
-     */
     inline void SetAgentVersion(Aws::String&& value) { m_agentVersionHasBeenSet = true; m_agentVersion = std::move(value); }
-
-    /**
-     * <p>The version of the agent.</p>
-     */
     inline void SetAgentVersion(const char* value) { m_agentVersionHasBeenSet = true; m_agentVersion.assign(value); }
-
-    /**
-     * <p>The version of the agent.</p>
-     */
     inline TracePart& WithAgentVersion(const Aws::String& value) { SetAgentVersion(value); return *this;}
-
-    /**
-     * <p>The version of the agent.</p>
-     */
     inline TracePart& WithAgentVersion(Aws::String&& value) { SetAgentVersion(std::move(value)); return *this;}
-
-    /**
-     * <p>The version of the agent.</p>
-     */
     inline TracePart& WithAgentVersion(const char* value) { SetAgentVersion(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The part's caller chain.</p>
+     */
+    inline const Aws::Vector<Caller>& GetCallerChain() const{ return m_callerChain; }
+    inline bool CallerChainHasBeenSet() const { return m_callerChainHasBeenSet; }
+    inline void SetCallerChain(const Aws::Vector<Caller>& value) { m_callerChainHasBeenSet = true; m_callerChain = value; }
+    inline void SetCallerChain(Aws::Vector<Caller>&& value) { m_callerChainHasBeenSet = true; m_callerChain = std::move(value); }
+    inline TracePart& WithCallerChain(const Aws::Vector<Caller>& value) { SetCallerChain(value); return *this;}
+    inline TracePart& WithCallerChain(Aws::Vector<Caller>&& value) { SetCallerChain(std::move(value)); return *this;}
+    inline TracePart& AddCallerChain(const Caller& value) { m_callerChainHasBeenSet = true; m_callerChain.push_back(value); return *this; }
+    inline TracePart& AddCallerChain(Caller&& value) { m_callerChainHasBeenSet = true; m_callerChain.push_back(std::move(value)); return *this; }
+    ///@}
 
+    ///@{
+    /**
+     * <p>The part's collaborator name.</p>
+     */
+    inline const Aws::String& GetCollaboratorName() const{ return m_collaboratorName; }
+    inline bool CollaboratorNameHasBeenSet() const { return m_collaboratorNameHasBeenSet; }
+    inline void SetCollaboratorName(const Aws::String& value) { m_collaboratorNameHasBeenSet = true; m_collaboratorName = value; }
+    inline void SetCollaboratorName(Aws::String&& value) { m_collaboratorNameHasBeenSet = true; m_collaboratorName = std::move(value); }
+    inline void SetCollaboratorName(const char* value) { m_collaboratorNameHasBeenSet = true; m_collaboratorName.assign(value); }
+    inline TracePart& WithCollaboratorName(const Aws::String& value) { SetCollaboratorName(value); return *this;}
+    inline TracePart& WithCollaboratorName(Aws::String&& value) { SetCollaboratorName(std::move(value)); return *this;}
+    inline TracePart& WithCollaboratorName(const char* value) { SetCollaboratorName(value); return *this;}
+    ///@}
+
+    ///@{
     /**
      * <p>The unique identifier of the session with the agent.</p>
      */
     inline const Aws::String& GetSessionId() const{ return m_sessionId; }
-
-    /**
-     * <p>The unique identifier of the session with the agent.</p>
-     */
     inline bool SessionIdHasBeenSet() const { return m_sessionIdHasBeenSet; }
-
-    /**
-     * <p>The unique identifier of the session with the agent.</p>
-     */
     inline void SetSessionId(const Aws::String& value) { m_sessionIdHasBeenSet = true; m_sessionId = value; }
-
-    /**
-     * <p>The unique identifier of the session with the agent.</p>
-     */
     inline void SetSessionId(Aws::String&& value) { m_sessionIdHasBeenSet = true; m_sessionId = std::move(value); }
-
-    /**
-     * <p>The unique identifier of the session with the agent.</p>
-     */
     inline void SetSessionId(const char* value) { m_sessionIdHasBeenSet = true; m_sessionId.assign(value); }
-
-    /**
-     * <p>The unique identifier of the session with the agent.</p>
-     */
     inline TracePart& WithSessionId(const Aws::String& value) { SetSessionId(value); return *this;}
-
-    /**
-     * <p>The unique identifier of the session with the agent.</p>
-     */
     inline TracePart& WithSessionId(Aws::String&& value) { SetSessionId(std::move(value)); return *this;}
-
-    /**
-     * <p>The unique identifier of the session with the agent.</p>
-     */
     inline TracePart& WithSessionId(const char* value) { SetSessionId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Contains one part of the agent's reasoning process and results from calling
      * API actions and querying knowledge bases. You can use the trace to understand
@@ -217,57 +140,12 @@ namespace Model
      * enablement</a>.</p>
      */
     inline const Trace& GetTrace() const{ return m_trace; }
-
-    /**
-     * <p>Contains one part of the agent's reasoning process and results from calling
-     * API actions and querying knowledge bases. You can use the trace to understand
-     * how the agent arrived at the response it provided the customer. For more
-     * information, see <a
-     * href="https://docs.aws.amazon.com/bedrock/latest/userguide/agents-test.html#trace-enablement">Trace
-     * enablement</a>.</p>
-     */
     inline bool TraceHasBeenSet() const { return m_traceHasBeenSet; }
-
-    /**
-     * <p>Contains one part of the agent's reasoning process and results from calling
-     * API actions and querying knowledge bases. You can use the trace to understand
-     * how the agent arrived at the response it provided the customer. For more
-     * information, see <a
-     * href="https://docs.aws.amazon.com/bedrock/latest/userguide/agents-test.html#trace-enablement">Trace
-     * enablement</a>.</p>
-     */
     inline void SetTrace(const Trace& value) { m_traceHasBeenSet = true; m_trace = value; }
-
-    /**
-     * <p>Contains one part of the agent's reasoning process and results from calling
-     * API actions and querying knowledge bases. You can use the trace to understand
-     * how the agent arrived at the response it provided the customer. For more
-     * information, see <a
-     * href="https://docs.aws.amazon.com/bedrock/latest/userguide/agents-test.html#trace-enablement">Trace
-     * enablement</a>.</p>
-     */
     inline void SetTrace(Trace&& value) { m_traceHasBeenSet = true; m_trace = std::move(value); }
-
-    /**
-     * <p>Contains one part of the agent's reasoning process and results from calling
-     * API actions and querying knowledge bases. You can use the trace to understand
-     * how the agent arrived at the response it provided the customer. For more
-     * information, see <a
-     * href="https://docs.aws.amazon.com/bedrock/latest/userguide/agents-test.html#trace-enablement">Trace
-     * enablement</a>.</p>
-     */
     inline TracePart& WithTrace(const Trace& value) { SetTrace(value); return *this;}
-
-    /**
-     * <p>Contains one part of the agent's reasoning process and results from calling
-     * API actions and querying knowledge bases. You can use the trace to understand
-     * how the agent arrived at the response it provided the customer. For more
-     * information, see <a
-     * href="https://docs.aws.amazon.com/bedrock/latest/userguide/agents-test.html#trace-enablement">Trace
-     * enablement</a>.</p>
-     */
     inline TracePart& WithTrace(Trace&& value) { SetTrace(std::move(value)); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_agentAliasId;
@@ -278,6 +156,12 @@ namespace Model
 
     Aws::String m_agentVersion;
     bool m_agentVersionHasBeenSet = false;
+
+    Aws::Vector<Caller> m_callerChain;
+    bool m_callerChainHasBeenSet = false;
+
+    Aws::String m_collaboratorName;
+    bool m_collaboratorNameHasBeenSet = false;
 
     Aws::String m_sessionId;
     bool m_sessionIdHasBeenSet = false;

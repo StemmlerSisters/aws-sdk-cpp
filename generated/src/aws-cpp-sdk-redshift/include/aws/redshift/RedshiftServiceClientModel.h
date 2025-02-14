@@ -40,6 +40,7 @@
 #include <aws/redshift/model/CreateEventSubscriptionResult.h>
 #include <aws/redshift/model/CreateHsmClientCertificateResult.h>
 #include <aws/redshift/model/CreateHsmConfigurationResult.h>
+#include <aws/redshift/model/CreateIntegrationResult.h>
 #include <aws/redshift/model/CreateRedshiftIdcApplicationResult.h>
 #include <aws/redshift/model/CreateScheduledActionResult.h>
 #include <aws/redshift/model/CreateSnapshotCopyGrantResult.h>
@@ -50,7 +51,9 @@
 #include <aws/redshift/model/DeleteClusterResult.h>
 #include <aws/redshift/model/DeleteClusterSnapshotResult.h>
 #include <aws/redshift/model/DeleteEndpointAccessResult.h>
+#include <aws/redshift/model/DeleteIntegrationResult.h>
 #include <aws/redshift/model/DeletePartnerResult.h>
+#include <aws/redshift/model/DeregisterNamespaceResult.h>
 #include <aws/redshift/model/DescribeAccountAttributesResult.h>
 #include <aws/redshift/model/DescribeAuthenticationProfilesResult.h>
 #include <aws/redshift/model/DescribeClusterDbRevisionsResult.h>
@@ -75,6 +78,7 @@
 #include <aws/redshift/model/DescribeHsmClientCertificatesResult.h>
 #include <aws/redshift/model/DescribeHsmConfigurationsResult.h>
 #include <aws/redshift/model/DescribeInboundIntegrationsResult.h>
+#include <aws/redshift/model/DescribeIntegrationsResult.h>
 #include <aws/redshift/model/DescribeLoggingStatusResult.h>
 #include <aws/redshift/model/DescribeNodeConfigurationOptionsResult.h>
 #include <aws/redshift/model/DescribeOrderableClusterOptionsResult.h>
@@ -115,6 +119,7 @@
 #include <aws/redshift/model/ModifyCustomDomainAssociationResult.h>
 #include <aws/redshift/model/ModifyEndpointAccessResult.h>
 #include <aws/redshift/model/ModifyEventSubscriptionResult.h>
+#include <aws/redshift/model/ModifyIntegrationResult.h>
 #include <aws/redshift/model/ModifyRedshiftIdcApplicationResult.h>
 #include <aws/redshift/model/ModifyScheduledActionResult.h>
 #include <aws/redshift/model/ModifySnapshotCopyRetentionPeriodResult.h>
@@ -124,6 +129,7 @@
 #include <aws/redshift/model/PurchaseReservedNodeOfferingResult.h>
 #include <aws/redshift/model/PutResourcePolicyResult.h>
 #include <aws/redshift/model/RebootClusterResult.h>
+#include <aws/redshift/model/RegisterNamespaceResult.h>
 #include <aws/redshift/model/RejectDataShareResult.h>
 #include <aws/redshift/model/ResetClusterParameterGroupResult.h>
 #include <aws/redshift/model/ResizeClusterResult.h>
@@ -135,6 +141,45 @@
 #include <aws/redshift/model/RevokeSnapshotAccessResult.h>
 #include <aws/redshift/model/RotateEncryptionKeyResult.h>
 #include <aws/redshift/model/UpdatePartnerStatusResult.h>
+#include <aws/redshift/model/ListRecommendationsRequest.h>
+#include <aws/redshift/model/DescribeIntegrationsRequest.h>
+#include <aws/redshift/model/DescribeClusterVersionsRequest.h>
+#include <aws/redshift/model/DescribeDataSharesForConsumerRequest.h>
+#include <aws/redshift/model/DescribeEndpointAuthorizationRequest.h>
+#include <aws/redshift/model/DescribeHsmConfigurationsRequest.h>
+#include <aws/redshift/model/DescribeUsageLimitsRequest.h>
+#include <aws/redshift/model/DescribeEventCategoriesRequest.h>
+#include <aws/redshift/model/DescribeAuthenticationProfilesRequest.h>
+#include <aws/redshift/model/DescribeClusterParameterGroupsRequest.h>
+#include <aws/redshift/model/DescribeStorageRequest.h>
+#include <aws/redshift/model/GetClusterCredentialsWithIAMRequest.h>
+#include <aws/redshift/model/DescribeScheduledActionsRequest.h>
+#include <aws/redshift/model/RevokeEndpointAccessRequest.h>
+#include <aws/redshift/model/DescribeHsmClientCertificatesRequest.h>
+#include <aws/redshift/model/CreateSnapshotScheduleRequest.h>
+#include <aws/redshift/model/DescribeSnapshotCopyGrantsRequest.h>
+#include <aws/redshift/model/DescribeRedshiftIdcApplicationsRequest.h>
+#include <aws/redshift/model/DescribeSnapshotSchedulesRequest.h>
+#include <aws/redshift/model/DescribeReservedNodesRequest.h>
+#include <aws/redshift/model/DescribeClusterSnapshotsRequest.h>
+#include <aws/redshift/model/DescribeClustersRequest.h>
+#include <aws/redshift/model/DescribeEventSubscriptionsRequest.h>
+#include <aws/redshift/model/DescribeTagsRequest.h>
+#include <aws/redshift/model/DescribeAccountAttributesRequest.h>
+#include <aws/redshift/model/DescribeClusterTracksRequest.h>
+#include <aws/redshift/model/DescribeDataSharesForProducerRequest.h>
+#include <aws/redshift/model/DescribeDataSharesRequest.h>
+#include <aws/redshift/model/DescribeInboundIntegrationsRequest.h>
+#include <aws/redshift/model/DescribeClusterSubnetGroupsRequest.h>
+#include <aws/redshift/model/DescribeOrderableClusterOptionsRequest.h>
+#include <aws/redshift/model/DescribeReservedNodeOfferingsRequest.h>
+#include <aws/redshift/model/DescribeTableRestoreStatusRequest.h>
+#include <aws/redshift/model/DescribeEventsRequest.h>
+#include <aws/redshift/model/DescribeClusterSecurityGroupsRequest.h>
+#include <aws/redshift/model/DescribeEndpointAccessRequest.h>
+#include <aws/redshift/model/DescribeReservedNodeExchangeStatusRequest.h>
+#include <aws/redshift/model/DescribeClusterDbRevisionsRequest.h>
+#include <aws/redshift/model/DescribeCustomDomainAssociationsRequest.h>
 #include <aws/core/NoResult.h>
 /* End of service model headers required in RedshiftClient header */
 
@@ -169,7 +214,7 @@ namespace Aws
 
   namespace Redshift
   {
-    using RedshiftClientConfiguration = Aws::Client::GenericClientConfiguration<false>;
+    using RedshiftClientConfiguration = Aws::Client::GenericClientConfiguration;
     using RedshiftEndpointProviderBase = Aws::Redshift::Endpoint::RedshiftEndpointProviderBase;
     using RedshiftEndpointProvider = Aws::Redshift::Endpoint::RedshiftEndpointProvider;
 
@@ -198,6 +243,7 @@ namespace Aws
       class CreateEventSubscriptionRequest;
       class CreateHsmClientCertificateRequest;
       class CreateHsmConfigurationRequest;
+      class CreateIntegrationRequest;
       class CreateRedshiftIdcApplicationRequest;
       class CreateScheduledActionRequest;
       class CreateSnapshotCopyGrantRequest;
@@ -216,6 +262,7 @@ namespace Aws
       class DeleteEventSubscriptionRequest;
       class DeleteHsmClientCertificateRequest;
       class DeleteHsmConfigurationRequest;
+      class DeleteIntegrationRequest;
       class DeletePartnerRequest;
       class DeleteRedshiftIdcApplicationRequest;
       class DeleteResourcePolicyRequest;
@@ -224,6 +271,7 @@ namespace Aws
       class DeleteSnapshotScheduleRequest;
       class DeleteTagsRequest;
       class DeleteUsageLimitRequest;
+      class DeregisterNamespaceRequest;
       class DescribeAccountAttributesRequest;
       class DescribeAuthenticationProfilesRequest;
       class DescribeClusterDbRevisionsRequest;
@@ -248,6 +296,7 @@ namespace Aws
       class DescribeHsmClientCertificatesRequest;
       class DescribeHsmConfigurationsRequest;
       class DescribeInboundIntegrationsRequest;
+      class DescribeIntegrationsRequest;
       class DescribeLoggingStatusRequest;
       class DescribeNodeConfigurationOptionsRequest;
       class DescribeOrderableClusterOptionsRequest;
@@ -289,6 +338,7 @@ namespace Aws
       class ModifyCustomDomainAssociationRequest;
       class ModifyEndpointAccessRequest;
       class ModifyEventSubscriptionRequest;
+      class ModifyIntegrationRequest;
       class ModifyRedshiftIdcApplicationRequest;
       class ModifyScheduledActionRequest;
       class ModifySnapshotCopyRetentionPeriodRequest;
@@ -298,6 +348,7 @@ namespace Aws
       class PurchaseReservedNodeOfferingRequest;
       class PutResourcePolicyRequest;
       class RebootClusterRequest;
+      class RegisterNamespaceRequest;
       class RejectDataShareRequest;
       class ResetClusterParameterGroupRequest;
       class ResizeClusterRequest;
@@ -334,6 +385,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<CreateEventSubscriptionResult, RedshiftError> CreateEventSubscriptionOutcome;
       typedef Aws::Utils::Outcome<CreateHsmClientCertificateResult, RedshiftError> CreateHsmClientCertificateOutcome;
       typedef Aws::Utils::Outcome<CreateHsmConfigurationResult, RedshiftError> CreateHsmConfigurationOutcome;
+      typedef Aws::Utils::Outcome<CreateIntegrationResult, RedshiftError> CreateIntegrationOutcome;
       typedef Aws::Utils::Outcome<CreateRedshiftIdcApplicationResult, RedshiftError> CreateRedshiftIdcApplicationOutcome;
       typedef Aws::Utils::Outcome<CreateScheduledActionResult, RedshiftError> CreateScheduledActionOutcome;
       typedef Aws::Utils::Outcome<CreateSnapshotCopyGrantResult, RedshiftError> CreateSnapshotCopyGrantOutcome;
@@ -352,6 +404,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<Aws::NoResult, RedshiftError> DeleteEventSubscriptionOutcome;
       typedef Aws::Utils::Outcome<Aws::NoResult, RedshiftError> DeleteHsmClientCertificateOutcome;
       typedef Aws::Utils::Outcome<Aws::NoResult, RedshiftError> DeleteHsmConfigurationOutcome;
+      typedef Aws::Utils::Outcome<DeleteIntegrationResult, RedshiftError> DeleteIntegrationOutcome;
       typedef Aws::Utils::Outcome<DeletePartnerResult, RedshiftError> DeletePartnerOutcome;
       typedef Aws::Utils::Outcome<Aws::NoResult, RedshiftError> DeleteRedshiftIdcApplicationOutcome;
       typedef Aws::Utils::Outcome<Aws::NoResult, RedshiftError> DeleteResourcePolicyOutcome;
@@ -360,6 +413,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<Aws::NoResult, RedshiftError> DeleteSnapshotScheduleOutcome;
       typedef Aws::Utils::Outcome<Aws::NoResult, RedshiftError> DeleteTagsOutcome;
       typedef Aws::Utils::Outcome<Aws::NoResult, RedshiftError> DeleteUsageLimitOutcome;
+      typedef Aws::Utils::Outcome<DeregisterNamespaceResult, RedshiftError> DeregisterNamespaceOutcome;
       typedef Aws::Utils::Outcome<DescribeAccountAttributesResult, RedshiftError> DescribeAccountAttributesOutcome;
       typedef Aws::Utils::Outcome<DescribeAuthenticationProfilesResult, RedshiftError> DescribeAuthenticationProfilesOutcome;
       typedef Aws::Utils::Outcome<DescribeClusterDbRevisionsResult, RedshiftError> DescribeClusterDbRevisionsOutcome;
@@ -384,6 +438,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<DescribeHsmClientCertificatesResult, RedshiftError> DescribeHsmClientCertificatesOutcome;
       typedef Aws::Utils::Outcome<DescribeHsmConfigurationsResult, RedshiftError> DescribeHsmConfigurationsOutcome;
       typedef Aws::Utils::Outcome<DescribeInboundIntegrationsResult, RedshiftError> DescribeInboundIntegrationsOutcome;
+      typedef Aws::Utils::Outcome<DescribeIntegrationsResult, RedshiftError> DescribeIntegrationsOutcome;
       typedef Aws::Utils::Outcome<DescribeLoggingStatusResult, RedshiftError> DescribeLoggingStatusOutcome;
       typedef Aws::Utils::Outcome<DescribeNodeConfigurationOptionsResult, RedshiftError> DescribeNodeConfigurationOptionsOutcome;
       typedef Aws::Utils::Outcome<DescribeOrderableClusterOptionsResult, RedshiftError> DescribeOrderableClusterOptionsOutcome;
@@ -425,6 +480,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<ModifyCustomDomainAssociationResult, RedshiftError> ModifyCustomDomainAssociationOutcome;
       typedef Aws::Utils::Outcome<ModifyEndpointAccessResult, RedshiftError> ModifyEndpointAccessOutcome;
       typedef Aws::Utils::Outcome<ModifyEventSubscriptionResult, RedshiftError> ModifyEventSubscriptionOutcome;
+      typedef Aws::Utils::Outcome<ModifyIntegrationResult, RedshiftError> ModifyIntegrationOutcome;
       typedef Aws::Utils::Outcome<ModifyRedshiftIdcApplicationResult, RedshiftError> ModifyRedshiftIdcApplicationOutcome;
       typedef Aws::Utils::Outcome<ModifyScheduledActionResult, RedshiftError> ModifyScheduledActionOutcome;
       typedef Aws::Utils::Outcome<ModifySnapshotCopyRetentionPeriodResult, RedshiftError> ModifySnapshotCopyRetentionPeriodOutcome;
@@ -434,6 +490,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<PurchaseReservedNodeOfferingResult, RedshiftError> PurchaseReservedNodeOfferingOutcome;
       typedef Aws::Utils::Outcome<PutResourcePolicyResult, RedshiftError> PutResourcePolicyOutcome;
       typedef Aws::Utils::Outcome<RebootClusterResult, RedshiftError> RebootClusterOutcome;
+      typedef Aws::Utils::Outcome<RegisterNamespaceResult, RedshiftError> RegisterNamespaceOutcome;
       typedef Aws::Utils::Outcome<RejectDataShareResult, RedshiftError> RejectDataShareOutcome;
       typedef Aws::Utils::Outcome<ResetClusterParameterGroupResult, RedshiftError> ResetClusterParameterGroupOutcome;
       typedef Aws::Utils::Outcome<ResizeClusterResult, RedshiftError> ResizeClusterOutcome;
@@ -470,6 +527,7 @@ namespace Aws
       typedef std::future<CreateEventSubscriptionOutcome> CreateEventSubscriptionOutcomeCallable;
       typedef std::future<CreateHsmClientCertificateOutcome> CreateHsmClientCertificateOutcomeCallable;
       typedef std::future<CreateHsmConfigurationOutcome> CreateHsmConfigurationOutcomeCallable;
+      typedef std::future<CreateIntegrationOutcome> CreateIntegrationOutcomeCallable;
       typedef std::future<CreateRedshiftIdcApplicationOutcome> CreateRedshiftIdcApplicationOutcomeCallable;
       typedef std::future<CreateScheduledActionOutcome> CreateScheduledActionOutcomeCallable;
       typedef std::future<CreateSnapshotCopyGrantOutcome> CreateSnapshotCopyGrantOutcomeCallable;
@@ -488,6 +546,7 @@ namespace Aws
       typedef std::future<DeleteEventSubscriptionOutcome> DeleteEventSubscriptionOutcomeCallable;
       typedef std::future<DeleteHsmClientCertificateOutcome> DeleteHsmClientCertificateOutcomeCallable;
       typedef std::future<DeleteHsmConfigurationOutcome> DeleteHsmConfigurationOutcomeCallable;
+      typedef std::future<DeleteIntegrationOutcome> DeleteIntegrationOutcomeCallable;
       typedef std::future<DeletePartnerOutcome> DeletePartnerOutcomeCallable;
       typedef std::future<DeleteRedshiftIdcApplicationOutcome> DeleteRedshiftIdcApplicationOutcomeCallable;
       typedef std::future<DeleteResourcePolicyOutcome> DeleteResourcePolicyOutcomeCallable;
@@ -496,6 +555,7 @@ namespace Aws
       typedef std::future<DeleteSnapshotScheduleOutcome> DeleteSnapshotScheduleOutcomeCallable;
       typedef std::future<DeleteTagsOutcome> DeleteTagsOutcomeCallable;
       typedef std::future<DeleteUsageLimitOutcome> DeleteUsageLimitOutcomeCallable;
+      typedef std::future<DeregisterNamespaceOutcome> DeregisterNamespaceOutcomeCallable;
       typedef std::future<DescribeAccountAttributesOutcome> DescribeAccountAttributesOutcomeCallable;
       typedef std::future<DescribeAuthenticationProfilesOutcome> DescribeAuthenticationProfilesOutcomeCallable;
       typedef std::future<DescribeClusterDbRevisionsOutcome> DescribeClusterDbRevisionsOutcomeCallable;
@@ -520,6 +580,7 @@ namespace Aws
       typedef std::future<DescribeHsmClientCertificatesOutcome> DescribeHsmClientCertificatesOutcomeCallable;
       typedef std::future<DescribeHsmConfigurationsOutcome> DescribeHsmConfigurationsOutcomeCallable;
       typedef std::future<DescribeInboundIntegrationsOutcome> DescribeInboundIntegrationsOutcomeCallable;
+      typedef std::future<DescribeIntegrationsOutcome> DescribeIntegrationsOutcomeCallable;
       typedef std::future<DescribeLoggingStatusOutcome> DescribeLoggingStatusOutcomeCallable;
       typedef std::future<DescribeNodeConfigurationOptionsOutcome> DescribeNodeConfigurationOptionsOutcomeCallable;
       typedef std::future<DescribeOrderableClusterOptionsOutcome> DescribeOrderableClusterOptionsOutcomeCallable;
@@ -561,6 +622,7 @@ namespace Aws
       typedef std::future<ModifyCustomDomainAssociationOutcome> ModifyCustomDomainAssociationOutcomeCallable;
       typedef std::future<ModifyEndpointAccessOutcome> ModifyEndpointAccessOutcomeCallable;
       typedef std::future<ModifyEventSubscriptionOutcome> ModifyEventSubscriptionOutcomeCallable;
+      typedef std::future<ModifyIntegrationOutcome> ModifyIntegrationOutcomeCallable;
       typedef std::future<ModifyRedshiftIdcApplicationOutcome> ModifyRedshiftIdcApplicationOutcomeCallable;
       typedef std::future<ModifyScheduledActionOutcome> ModifyScheduledActionOutcomeCallable;
       typedef std::future<ModifySnapshotCopyRetentionPeriodOutcome> ModifySnapshotCopyRetentionPeriodOutcomeCallable;
@@ -570,6 +632,7 @@ namespace Aws
       typedef std::future<PurchaseReservedNodeOfferingOutcome> PurchaseReservedNodeOfferingOutcomeCallable;
       typedef std::future<PutResourcePolicyOutcome> PutResourcePolicyOutcomeCallable;
       typedef std::future<RebootClusterOutcome> RebootClusterOutcomeCallable;
+      typedef std::future<RegisterNamespaceOutcome> RegisterNamespaceOutcomeCallable;
       typedef std::future<RejectDataShareOutcome> RejectDataShareOutcomeCallable;
       typedef std::future<ResetClusterParameterGroupOutcome> ResetClusterParameterGroupOutcomeCallable;
       typedef std::future<ResizeClusterOutcome> ResizeClusterOutcomeCallable;
@@ -609,6 +672,7 @@ namespace Aws
     typedef std::function<void(const RedshiftClient*, const Model::CreateEventSubscriptionRequest&, const Model::CreateEventSubscriptionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateEventSubscriptionResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::CreateHsmClientCertificateRequest&, const Model::CreateHsmClientCertificateOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateHsmClientCertificateResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::CreateHsmConfigurationRequest&, const Model::CreateHsmConfigurationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateHsmConfigurationResponseReceivedHandler;
+    typedef std::function<void(const RedshiftClient*, const Model::CreateIntegrationRequest&, const Model::CreateIntegrationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateIntegrationResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::CreateRedshiftIdcApplicationRequest&, const Model::CreateRedshiftIdcApplicationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateRedshiftIdcApplicationResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::CreateScheduledActionRequest&, const Model::CreateScheduledActionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateScheduledActionResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::CreateSnapshotCopyGrantRequest&, const Model::CreateSnapshotCopyGrantOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateSnapshotCopyGrantResponseReceivedHandler;
@@ -627,6 +691,7 @@ namespace Aws
     typedef std::function<void(const RedshiftClient*, const Model::DeleteEventSubscriptionRequest&, const Model::DeleteEventSubscriptionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteEventSubscriptionResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::DeleteHsmClientCertificateRequest&, const Model::DeleteHsmClientCertificateOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteHsmClientCertificateResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::DeleteHsmConfigurationRequest&, const Model::DeleteHsmConfigurationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteHsmConfigurationResponseReceivedHandler;
+    typedef std::function<void(const RedshiftClient*, const Model::DeleteIntegrationRequest&, const Model::DeleteIntegrationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteIntegrationResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::DeletePartnerRequest&, const Model::DeletePartnerOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeletePartnerResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::DeleteRedshiftIdcApplicationRequest&, const Model::DeleteRedshiftIdcApplicationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteRedshiftIdcApplicationResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::DeleteResourcePolicyRequest&, const Model::DeleteResourcePolicyOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteResourcePolicyResponseReceivedHandler;
@@ -635,6 +700,7 @@ namespace Aws
     typedef std::function<void(const RedshiftClient*, const Model::DeleteSnapshotScheduleRequest&, const Model::DeleteSnapshotScheduleOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteSnapshotScheduleResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::DeleteTagsRequest&, const Model::DeleteTagsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteTagsResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::DeleteUsageLimitRequest&, const Model::DeleteUsageLimitOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteUsageLimitResponseReceivedHandler;
+    typedef std::function<void(const RedshiftClient*, const Model::DeregisterNamespaceRequest&, const Model::DeregisterNamespaceOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeregisterNamespaceResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::DescribeAccountAttributesRequest&, const Model::DescribeAccountAttributesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeAccountAttributesResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::DescribeAuthenticationProfilesRequest&, const Model::DescribeAuthenticationProfilesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeAuthenticationProfilesResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::DescribeClusterDbRevisionsRequest&, const Model::DescribeClusterDbRevisionsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeClusterDbRevisionsResponseReceivedHandler;
@@ -659,6 +725,7 @@ namespace Aws
     typedef std::function<void(const RedshiftClient*, const Model::DescribeHsmClientCertificatesRequest&, const Model::DescribeHsmClientCertificatesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeHsmClientCertificatesResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::DescribeHsmConfigurationsRequest&, const Model::DescribeHsmConfigurationsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeHsmConfigurationsResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::DescribeInboundIntegrationsRequest&, const Model::DescribeInboundIntegrationsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeInboundIntegrationsResponseReceivedHandler;
+    typedef std::function<void(const RedshiftClient*, const Model::DescribeIntegrationsRequest&, const Model::DescribeIntegrationsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeIntegrationsResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::DescribeLoggingStatusRequest&, const Model::DescribeLoggingStatusOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeLoggingStatusResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::DescribeNodeConfigurationOptionsRequest&, const Model::DescribeNodeConfigurationOptionsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeNodeConfigurationOptionsResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::DescribeOrderableClusterOptionsRequest&, const Model::DescribeOrderableClusterOptionsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeOrderableClusterOptionsResponseReceivedHandler;
@@ -700,6 +767,7 @@ namespace Aws
     typedef std::function<void(const RedshiftClient*, const Model::ModifyCustomDomainAssociationRequest&, const Model::ModifyCustomDomainAssociationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ModifyCustomDomainAssociationResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::ModifyEndpointAccessRequest&, const Model::ModifyEndpointAccessOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ModifyEndpointAccessResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::ModifyEventSubscriptionRequest&, const Model::ModifyEventSubscriptionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ModifyEventSubscriptionResponseReceivedHandler;
+    typedef std::function<void(const RedshiftClient*, const Model::ModifyIntegrationRequest&, const Model::ModifyIntegrationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ModifyIntegrationResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::ModifyRedshiftIdcApplicationRequest&, const Model::ModifyRedshiftIdcApplicationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ModifyRedshiftIdcApplicationResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::ModifyScheduledActionRequest&, const Model::ModifyScheduledActionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ModifyScheduledActionResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::ModifySnapshotCopyRetentionPeriodRequest&, const Model::ModifySnapshotCopyRetentionPeriodOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ModifySnapshotCopyRetentionPeriodResponseReceivedHandler;
@@ -709,6 +777,7 @@ namespace Aws
     typedef std::function<void(const RedshiftClient*, const Model::PurchaseReservedNodeOfferingRequest&, const Model::PurchaseReservedNodeOfferingOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > PurchaseReservedNodeOfferingResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::PutResourcePolicyRequest&, const Model::PutResourcePolicyOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > PutResourcePolicyResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::RebootClusterRequest&, const Model::RebootClusterOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > RebootClusterResponseReceivedHandler;
+    typedef std::function<void(const RedshiftClient*, const Model::RegisterNamespaceRequest&, const Model::RegisterNamespaceOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > RegisterNamespaceResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::RejectDataShareRequest&, const Model::RejectDataShareOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > RejectDataShareResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::ResetClusterParameterGroupRequest&, const Model::ResetClusterParameterGroupOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ResetClusterParameterGroupResponseReceivedHandler;
     typedef std::function<void(const RedshiftClient*, const Model::ResizeClusterRequest&, const Model::ResizeClusterOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ResizeClusterResponseReceivedHandler;

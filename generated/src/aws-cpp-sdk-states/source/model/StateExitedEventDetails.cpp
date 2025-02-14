@@ -21,14 +21,14 @@ namespace Model
 StateExitedEventDetails::StateExitedEventDetails() : 
     m_nameHasBeenSet(false),
     m_outputHasBeenSet(false),
-    m_outputDetailsHasBeenSet(false)
+    m_outputDetailsHasBeenSet(false),
+    m_assignedVariablesHasBeenSet(false),
+    m_assignedVariablesDetailsHasBeenSet(false)
 {
 }
 
-StateExitedEventDetails::StateExitedEventDetails(JsonView jsonValue) : 
-    m_nameHasBeenSet(false),
-    m_outputHasBeenSet(false),
-    m_outputDetailsHasBeenSet(false)
+StateExitedEventDetails::StateExitedEventDetails(JsonView jsonValue)
+  : StateExitedEventDetails()
 {
   *this = jsonValue;
 }
@@ -56,6 +56,23 @@ StateExitedEventDetails& StateExitedEventDetails::operator =(JsonView jsonValue)
     m_outputDetailsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("assignedVariables"))
+  {
+    Aws::Map<Aws::String, JsonView> assignedVariablesJsonMap = jsonValue.GetObject("assignedVariables").GetAllObjects();
+    for(auto& assignedVariablesItem : assignedVariablesJsonMap)
+    {
+      m_assignedVariables[assignedVariablesItem.first] = assignedVariablesItem.second.AsString();
+    }
+    m_assignedVariablesHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("assignedVariablesDetails"))
+  {
+    m_assignedVariablesDetails = jsonValue.GetObject("assignedVariablesDetails");
+
+    m_assignedVariablesDetailsHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -78,6 +95,23 @@ JsonValue StateExitedEventDetails::Jsonize() const
   if(m_outputDetailsHasBeenSet)
   {
    payload.WithObject("outputDetails", m_outputDetails.Jsonize());
+
+  }
+
+  if(m_assignedVariablesHasBeenSet)
+  {
+   JsonValue assignedVariablesJsonMap;
+   for(auto& assignedVariablesItem : m_assignedVariables)
+   {
+     assignedVariablesJsonMap.WithString(assignedVariablesItem.first, assignedVariablesItem.second);
+   }
+   payload.WithObject("assignedVariables", std::move(assignedVariablesJsonMap));
+
+  }
+
+  if(m_assignedVariablesDetailsHasBeenSet)
+  {
+   payload.WithObject("assignedVariablesDetails", m_assignedVariablesDetails.Jsonize());
 
   }
 

@@ -7,6 +7,7 @@
 #include <aws/connect/Connect_EXPORTS.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/connect/model/ReferenceType.h>
+#include <aws/connect/model/ReferenceStatus.h>
 #include <utility>
 
 namespace Aws
@@ -40,99 +41,74 @@ namespace Model
     AWS_CONNECT_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>A valid value for the reference. For example, for a URL reference, a
      * formatted URL that is displayed to an agent in the Contact Control Panel
      * (CCP).</p>
      */
     inline const Aws::String& GetValue() const{ return m_value; }
-
-    /**
-     * <p>A valid value for the reference. For example, for a URL reference, a
-     * formatted URL that is displayed to an agent in the Contact Control Panel
-     * (CCP).</p>
-     */
     inline bool ValueHasBeenSet() const { return m_valueHasBeenSet; }
-
-    /**
-     * <p>A valid value for the reference. For example, for a URL reference, a
-     * formatted URL that is displayed to an agent in the Contact Control Panel
-     * (CCP).</p>
-     */
     inline void SetValue(const Aws::String& value) { m_valueHasBeenSet = true; m_value = value; }
-
-    /**
-     * <p>A valid value for the reference. For example, for a URL reference, a
-     * formatted URL that is displayed to an agent in the Contact Control Panel
-     * (CCP).</p>
-     */
     inline void SetValue(Aws::String&& value) { m_valueHasBeenSet = true; m_value = std::move(value); }
-
-    /**
-     * <p>A valid value for the reference. For example, for a URL reference, a
-     * formatted URL that is displayed to an agent in the Contact Control Panel
-     * (CCP).</p>
-     */
     inline void SetValue(const char* value) { m_valueHasBeenSet = true; m_value.assign(value); }
-
-    /**
-     * <p>A valid value for the reference. For example, for a URL reference, a
-     * formatted URL that is displayed to an agent in the Contact Control Panel
-     * (CCP).</p>
-     */
     inline Reference& WithValue(const Aws::String& value) { SetValue(value); return *this;}
-
-    /**
-     * <p>A valid value for the reference. For example, for a URL reference, a
-     * formatted URL that is displayed to an agent in the Contact Control Panel
-     * (CCP).</p>
-     */
     inline Reference& WithValue(Aws::String&& value) { SetValue(std::move(value)); return *this;}
-
-    /**
-     * <p>A valid value for the reference. For example, for a URL reference, a
-     * formatted URL that is displayed to an agent in the Contact Control Panel
-     * (CCP).</p>
-     */
     inline Reference& WithValue(const char* value) { SetValue(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The type of the reference. <code>DATE</code> must be of type Epoch timestamp.
      * </p>
      */
     inline const ReferenceType& GetType() const{ return m_type; }
-
-    /**
-     * <p>The type of the reference. <code>DATE</code> must be of type Epoch timestamp.
-     * </p>
-     */
     inline bool TypeHasBeenSet() const { return m_typeHasBeenSet; }
-
-    /**
-     * <p>The type of the reference. <code>DATE</code> must be of type Epoch timestamp.
-     * </p>
-     */
     inline void SetType(const ReferenceType& value) { m_typeHasBeenSet = true; m_type = value; }
-
-    /**
-     * <p>The type of the reference. <code>DATE</code> must be of type Epoch timestamp.
-     * </p>
-     */
     inline void SetType(ReferenceType&& value) { m_typeHasBeenSet = true; m_type = std::move(value); }
-
-    /**
-     * <p>The type of the reference. <code>DATE</code> must be of type Epoch timestamp.
-     * </p>
-     */
     inline Reference& WithType(const ReferenceType& value) { SetType(value); return *this;}
-
-    /**
-     * <p>The type of the reference. <code>DATE</code> must be of type Epoch timestamp.
-     * </p>
-     */
     inline Reference& WithType(ReferenceType&& value) { SetType(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>Status of the attachment reference type.</p>
+     */
+    inline const ReferenceStatus& GetStatus() const{ return m_status; }
+    inline bool StatusHasBeenSet() const { return m_statusHasBeenSet; }
+    inline void SetStatus(const ReferenceStatus& value) { m_statusHasBeenSet = true; m_status = value; }
+    inline void SetStatus(ReferenceStatus&& value) { m_statusHasBeenSet = true; m_status = std::move(value); }
+    inline Reference& WithStatus(const ReferenceStatus& value) { SetStatus(value); return *this;}
+    inline Reference& WithStatus(ReferenceStatus&& value) { SetStatus(std::move(value)); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>The Amazon Resource Name (ARN) of the reference</p>
+     */
+    inline const Aws::String& GetArn() const{ return m_arn; }
+    inline bool ArnHasBeenSet() const { return m_arnHasBeenSet; }
+    inline void SetArn(const Aws::String& value) { m_arnHasBeenSet = true; m_arn = value; }
+    inline void SetArn(Aws::String&& value) { m_arnHasBeenSet = true; m_arn = std::move(value); }
+    inline void SetArn(const char* value) { m_arnHasBeenSet = true; m_arn.assign(value); }
+    inline Reference& WithArn(const Aws::String& value) { SetArn(value); return *this;}
+    inline Reference& WithArn(Aws::String&& value) { SetArn(std::move(value)); return *this;}
+    inline Reference& WithArn(const char* value) { SetArn(value); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>Relevant details why the reference was not successfully created.</p>
+     */
+    inline const Aws::String& GetStatusReason() const{ return m_statusReason; }
+    inline bool StatusReasonHasBeenSet() const { return m_statusReasonHasBeenSet; }
+    inline void SetStatusReason(const Aws::String& value) { m_statusReasonHasBeenSet = true; m_statusReason = value; }
+    inline void SetStatusReason(Aws::String&& value) { m_statusReasonHasBeenSet = true; m_statusReason = std::move(value); }
+    inline void SetStatusReason(const char* value) { m_statusReasonHasBeenSet = true; m_statusReason.assign(value); }
+    inline Reference& WithStatusReason(const Aws::String& value) { SetStatusReason(value); return *this;}
+    inline Reference& WithStatusReason(Aws::String&& value) { SetStatusReason(std::move(value)); return *this;}
+    inline Reference& WithStatusReason(const char* value) { SetStatusReason(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_value;
@@ -140,6 +116,15 @@ namespace Model
 
     ReferenceType m_type;
     bool m_typeHasBeenSet = false;
+
+    ReferenceStatus m_status;
+    bool m_statusHasBeenSet = false;
+
+    Aws::String m_arn;
+    bool m_arnHasBeenSet = false;
+
+    Aws::String m_statusReason;
+    bool m_statusReasonHasBeenSet = false;
   };
 
 } // namespace Model

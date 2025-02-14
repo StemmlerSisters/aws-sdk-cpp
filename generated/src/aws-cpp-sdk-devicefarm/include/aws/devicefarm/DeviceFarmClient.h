@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/devicefarm/DeviceFarm_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/devicefarm/DeviceFarmServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/devicefarm/DeviceFarmErrorMarshaller.h>
 
 namespace Aws
 {
 namespace DeviceFarm
 {
+  AWS_DEVICEFARM_API extern const char SERVICE_NAME[];
   /**
    * <p>Welcome to the AWS Device Farm API documentation, which contains APIs
    * for:</p> <ul> <li> <p>Testing on desktop browsers</p> <p> Device Farm makes it
@@ -29,12 +33,20 @@ namespace DeviceFarm
    * href="https://docs.aws.amazon.com/devicefarm/latest/developerguide/">Device Farm
    * Developer Guide</a>.</p> </li> </ul>
    */
-  class AWS_DEVICEFARM_API DeviceFarmClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<DeviceFarmClient>
+  class AWS_DEVICEFARM_API DeviceFarmClient : smithy::client::AwsSmithyClientT<Aws::DeviceFarm::SERVICE_NAME,
+      Aws::DeviceFarm::DeviceFarmClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      DeviceFarmEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::DeviceFarmErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<DeviceFarmClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Device Farm"; }
 
       typedef DeviceFarmClientConfiguration ClientConfigurationType;
       typedef DeviceFarmEndpointProvider EndpointProviderType;
@@ -556,13 +568,13 @@ namespace DeviceFarm
          * href="http://docs.aws.amazon.com/goto/WebAPI/devicefarm-2015-06-23/GetAccountSettings">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetAccountSettingsOutcome GetAccountSettings(const Model::GetAccountSettingsRequest& request) const;
+        virtual Model::GetAccountSettingsOutcome GetAccountSettings(const Model::GetAccountSettingsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetAccountSettings that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetAccountSettingsRequestT = Model::GetAccountSettingsRequest>
-        Model::GetAccountSettingsOutcomeCallable GetAccountSettingsCallable(const GetAccountSettingsRequestT& request) const
+        Model::GetAccountSettingsOutcomeCallable GetAccountSettingsCallable(const GetAccountSettingsRequestT& request = {}) const
         {
             return SubmitCallable(&DeviceFarmClient::GetAccountSettings, request);
         }
@@ -571,7 +583,7 @@ namespace DeviceFarm
          * An Async wrapper for GetAccountSettings that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetAccountSettingsRequestT = Model::GetAccountSettingsRequest>
-        void GetAccountSettingsAsync(const GetAccountSettingsRequestT& request, const GetAccountSettingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetAccountSettingsAsync(const GetAccountSettingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetAccountSettingsRequestT& request = {}) const
         {
             return SubmitAsync(&DeviceFarmClient::GetAccountSettings, request, handler, context);
         }
@@ -765,13 +777,13 @@ namespace DeviceFarm
          * href="http://docs.aws.amazon.com/goto/WebAPI/devicefarm-2015-06-23/GetOfferingStatus">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetOfferingStatusOutcome GetOfferingStatus(const Model::GetOfferingStatusRequest& request) const;
+        virtual Model::GetOfferingStatusOutcome GetOfferingStatus(const Model::GetOfferingStatusRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetOfferingStatus that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetOfferingStatusRequestT = Model::GetOfferingStatusRequest>
-        Model::GetOfferingStatusOutcomeCallable GetOfferingStatusCallable(const GetOfferingStatusRequestT& request) const
+        Model::GetOfferingStatusOutcomeCallable GetOfferingStatusCallable(const GetOfferingStatusRequestT& request = {}) const
         {
             return SubmitCallable(&DeviceFarmClient::GetOfferingStatus, request);
         }
@@ -780,7 +792,7 @@ namespace DeviceFarm
          * An Async wrapper for GetOfferingStatus that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetOfferingStatusRequestT = Model::GetOfferingStatusRequest>
-        void GetOfferingStatusAsync(const GetOfferingStatusRequestT& request, const GetOfferingStatusResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetOfferingStatusAsync(const GetOfferingStatusResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetOfferingStatusRequestT& request = {}) const
         {
             return SubmitAsync(&DeviceFarmClient::GetOfferingStatus, request, handler, context);
         }
@@ -949,13 +961,13 @@ namespace DeviceFarm
          * href="http://docs.aws.amazon.com/goto/WebAPI/devicefarm-2015-06-23/GetTestGridSession">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetTestGridSessionOutcome GetTestGridSession(const Model::GetTestGridSessionRequest& request) const;
+        virtual Model::GetTestGridSessionOutcome GetTestGridSession(const Model::GetTestGridSessionRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetTestGridSession that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetTestGridSessionRequestT = Model::GetTestGridSessionRequest>
-        Model::GetTestGridSessionOutcomeCallable GetTestGridSessionCallable(const GetTestGridSessionRequestT& request) const
+        Model::GetTestGridSessionOutcomeCallable GetTestGridSessionCallable(const GetTestGridSessionRequestT& request = {}) const
         {
             return SubmitCallable(&DeviceFarmClient::GetTestGridSession, request);
         }
@@ -964,7 +976,7 @@ namespace DeviceFarm
          * An Async wrapper for GetTestGridSession that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetTestGridSessionRequestT = Model::GetTestGridSessionRequest>
-        void GetTestGridSessionAsync(const GetTestGridSessionRequestT& request, const GetTestGridSessionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetTestGridSessionAsync(const GetTestGridSessionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetTestGridSessionRequestT& request = {}) const
         {
             return SubmitAsync(&DeviceFarmClient::GetTestGridSession, request, handler, context);
         }
@@ -1078,13 +1090,13 @@ namespace DeviceFarm
          * href="http://docs.aws.amazon.com/goto/WebAPI/devicefarm-2015-06-23/ListDeviceInstances">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDeviceInstancesOutcome ListDeviceInstances(const Model::ListDeviceInstancesRequest& request) const;
+        virtual Model::ListDeviceInstancesOutcome ListDeviceInstances(const Model::ListDeviceInstancesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDeviceInstances that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDeviceInstancesRequestT = Model::ListDeviceInstancesRequest>
-        Model::ListDeviceInstancesOutcomeCallable ListDeviceInstancesCallable(const ListDeviceInstancesRequestT& request) const
+        Model::ListDeviceInstancesOutcomeCallable ListDeviceInstancesCallable(const ListDeviceInstancesRequestT& request = {}) const
         {
             return SubmitCallable(&DeviceFarmClient::ListDeviceInstances, request);
         }
@@ -1093,7 +1105,7 @@ namespace DeviceFarm
          * An Async wrapper for ListDeviceInstances that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDeviceInstancesRequestT = Model::ListDeviceInstancesRequest>
-        void ListDeviceInstancesAsync(const ListDeviceInstancesRequestT& request, const ListDeviceInstancesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDeviceInstancesAsync(const ListDeviceInstancesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDeviceInstancesRequestT& request = {}) const
         {
             return SubmitAsync(&DeviceFarmClient::ListDeviceInstances, request, handler, context);
         }
@@ -1128,13 +1140,13 @@ namespace DeviceFarm
          * href="http://docs.aws.amazon.com/goto/WebAPI/devicefarm-2015-06-23/ListDevices">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDevicesOutcome ListDevices(const Model::ListDevicesRequest& request) const;
+        virtual Model::ListDevicesOutcome ListDevices(const Model::ListDevicesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDevices that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDevicesRequestT = Model::ListDevicesRequest>
-        Model::ListDevicesOutcomeCallable ListDevicesCallable(const ListDevicesRequestT& request) const
+        Model::ListDevicesOutcomeCallable ListDevicesCallable(const ListDevicesRequestT& request = {}) const
         {
             return SubmitCallable(&DeviceFarmClient::ListDevices, request);
         }
@@ -1143,7 +1155,7 @@ namespace DeviceFarm
          * An Async wrapper for ListDevices that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDevicesRequestT = Model::ListDevicesRequest>
-        void ListDevicesAsync(const ListDevicesRequestT& request, const ListDevicesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDevicesAsync(const ListDevicesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDevicesRequestT& request = {}) const
         {
             return SubmitAsync(&DeviceFarmClient::ListDevices, request, handler, context);
         }
@@ -1154,13 +1166,13 @@ namespace DeviceFarm
          * href="http://docs.aws.amazon.com/goto/WebAPI/devicefarm-2015-06-23/ListInstanceProfiles">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListInstanceProfilesOutcome ListInstanceProfiles(const Model::ListInstanceProfilesRequest& request) const;
+        virtual Model::ListInstanceProfilesOutcome ListInstanceProfiles(const Model::ListInstanceProfilesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListInstanceProfiles that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListInstanceProfilesRequestT = Model::ListInstanceProfilesRequest>
-        Model::ListInstanceProfilesOutcomeCallable ListInstanceProfilesCallable(const ListInstanceProfilesRequestT& request) const
+        Model::ListInstanceProfilesOutcomeCallable ListInstanceProfilesCallable(const ListInstanceProfilesRequestT& request = {}) const
         {
             return SubmitCallable(&DeviceFarmClient::ListInstanceProfiles, request);
         }
@@ -1169,7 +1181,7 @@ namespace DeviceFarm
          * An Async wrapper for ListInstanceProfiles that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListInstanceProfilesRequestT = Model::ListInstanceProfilesRequest>
-        void ListInstanceProfilesAsync(const ListInstanceProfilesRequestT& request, const ListInstanceProfilesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListInstanceProfilesAsync(const ListInstanceProfilesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListInstanceProfilesRequestT& request = {}) const
         {
             return SubmitAsync(&DeviceFarmClient::ListInstanceProfiles, request, handler, context);
         }
@@ -1235,13 +1247,13 @@ namespace DeviceFarm
          * href="http://docs.aws.amazon.com/goto/WebAPI/devicefarm-2015-06-23/ListOfferingPromotions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListOfferingPromotionsOutcome ListOfferingPromotions(const Model::ListOfferingPromotionsRequest& request) const;
+        virtual Model::ListOfferingPromotionsOutcome ListOfferingPromotions(const Model::ListOfferingPromotionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListOfferingPromotions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListOfferingPromotionsRequestT = Model::ListOfferingPromotionsRequest>
-        Model::ListOfferingPromotionsOutcomeCallable ListOfferingPromotionsCallable(const ListOfferingPromotionsRequestT& request) const
+        Model::ListOfferingPromotionsOutcomeCallable ListOfferingPromotionsCallable(const ListOfferingPromotionsRequestT& request = {}) const
         {
             return SubmitCallable(&DeviceFarmClient::ListOfferingPromotions, request);
         }
@@ -1250,7 +1262,7 @@ namespace DeviceFarm
          * An Async wrapper for ListOfferingPromotions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListOfferingPromotionsRequestT = Model::ListOfferingPromotionsRequest>
-        void ListOfferingPromotionsAsync(const ListOfferingPromotionsRequestT& request, const ListOfferingPromotionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListOfferingPromotionsAsync(const ListOfferingPromotionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListOfferingPromotionsRequestT& request = {}) const
         {
             return SubmitAsync(&DeviceFarmClient::ListOfferingPromotions, request, handler, context);
         }
@@ -1266,13 +1278,13 @@ namespace DeviceFarm
          * href="http://docs.aws.amazon.com/goto/WebAPI/devicefarm-2015-06-23/ListOfferingTransactions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListOfferingTransactionsOutcome ListOfferingTransactions(const Model::ListOfferingTransactionsRequest& request) const;
+        virtual Model::ListOfferingTransactionsOutcome ListOfferingTransactions(const Model::ListOfferingTransactionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListOfferingTransactions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListOfferingTransactionsRequestT = Model::ListOfferingTransactionsRequest>
-        Model::ListOfferingTransactionsOutcomeCallable ListOfferingTransactionsCallable(const ListOfferingTransactionsRequestT& request) const
+        Model::ListOfferingTransactionsOutcomeCallable ListOfferingTransactionsCallable(const ListOfferingTransactionsRequestT& request = {}) const
         {
             return SubmitCallable(&DeviceFarmClient::ListOfferingTransactions, request);
         }
@@ -1281,7 +1293,7 @@ namespace DeviceFarm
          * An Async wrapper for ListOfferingTransactions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListOfferingTransactionsRequestT = Model::ListOfferingTransactionsRequest>
-        void ListOfferingTransactionsAsync(const ListOfferingTransactionsRequestT& request, const ListOfferingTransactionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListOfferingTransactionsAsync(const ListOfferingTransactionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListOfferingTransactionsRequestT& request = {}) const
         {
             return SubmitAsync(&DeviceFarmClient::ListOfferingTransactions, request, handler, context);
         }
@@ -1297,13 +1309,13 @@ namespace DeviceFarm
          * href="http://docs.aws.amazon.com/goto/WebAPI/devicefarm-2015-06-23/ListOfferings">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListOfferingsOutcome ListOfferings(const Model::ListOfferingsRequest& request) const;
+        virtual Model::ListOfferingsOutcome ListOfferings(const Model::ListOfferingsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListOfferings that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListOfferingsRequestT = Model::ListOfferingsRequest>
-        Model::ListOfferingsOutcomeCallable ListOfferingsCallable(const ListOfferingsRequestT& request) const
+        Model::ListOfferingsOutcomeCallable ListOfferingsCallable(const ListOfferingsRequestT& request = {}) const
         {
             return SubmitCallable(&DeviceFarmClient::ListOfferings, request);
         }
@@ -1312,7 +1324,7 @@ namespace DeviceFarm
          * An Async wrapper for ListOfferings that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListOfferingsRequestT = Model::ListOfferingsRequest>
-        void ListOfferingsAsync(const ListOfferingsRequestT& request, const ListOfferingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListOfferingsAsync(const ListOfferingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListOfferingsRequestT& request = {}) const
         {
             return SubmitAsync(&DeviceFarmClient::ListOfferings, request, handler, context);
         }
@@ -1322,13 +1334,13 @@ namespace DeviceFarm
          * href="http://docs.aws.amazon.com/goto/WebAPI/devicefarm-2015-06-23/ListProjects">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListProjectsOutcome ListProjects(const Model::ListProjectsRequest& request) const;
+        virtual Model::ListProjectsOutcome ListProjects(const Model::ListProjectsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListProjects that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListProjectsRequestT = Model::ListProjectsRequest>
-        Model::ListProjectsOutcomeCallable ListProjectsCallable(const ListProjectsRequestT& request) const
+        Model::ListProjectsOutcomeCallable ListProjectsCallable(const ListProjectsRequestT& request = {}) const
         {
             return SubmitCallable(&DeviceFarmClient::ListProjects, request);
         }
@@ -1337,7 +1349,7 @@ namespace DeviceFarm
          * An Async wrapper for ListProjects that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListProjectsRequestT = Model::ListProjectsRequest>
-        void ListProjectsAsync(const ListProjectsRequestT& request, const ListProjectsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListProjectsAsync(const ListProjectsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListProjectsRequestT& request = {}) const
         {
             return SubmitAsync(&DeviceFarmClient::ListProjects, request, handler, context);
         }
@@ -1477,13 +1489,13 @@ namespace DeviceFarm
          * href="http://docs.aws.amazon.com/goto/WebAPI/devicefarm-2015-06-23/ListTestGridProjects">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListTestGridProjectsOutcome ListTestGridProjects(const Model::ListTestGridProjectsRequest& request) const;
+        virtual Model::ListTestGridProjectsOutcome ListTestGridProjects(const Model::ListTestGridProjectsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListTestGridProjects that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListTestGridProjectsRequestT = Model::ListTestGridProjectsRequest>
-        Model::ListTestGridProjectsOutcomeCallable ListTestGridProjectsCallable(const ListTestGridProjectsRequestT& request) const
+        Model::ListTestGridProjectsOutcomeCallable ListTestGridProjectsCallable(const ListTestGridProjectsRequestT& request = {}) const
         {
             return SubmitCallable(&DeviceFarmClient::ListTestGridProjects, request);
         }
@@ -1492,7 +1504,7 @@ namespace DeviceFarm
          * An Async wrapper for ListTestGridProjects that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListTestGridProjectsRequestT = Model::ListTestGridProjectsRequest>
-        void ListTestGridProjectsAsync(const ListTestGridProjectsRequestT& request, const ListTestGridProjectsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListTestGridProjectsAsync(const ListTestGridProjectsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListTestGridProjectsRequestT& request = {}) const
         {
             return SubmitAsync(&DeviceFarmClient::ListTestGridProjects, request, handler, context);
         }
@@ -1663,13 +1675,13 @@ namespace DeviceFarm
          * href="http://docs.aws.amazon.com/goto/WebAPI/devicefarm-2015-06-23/ListVPCEConfigurations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListVPCEConfigurationsOutcome ListVPCEConfigurations(const Model::ListVPCEConfigurationsRequest& request) const;
+        virtual Model::ListVPCEConfigurationsOutcome ListVPCEConfigurations(const Model::ListVPCEConfigurationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListVPCEConfigurations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListVPCEConfigurationsRequestT = Model::ListVPCEConfigurationsRequest>
-        Model::ListVPCEConfigurationsOutcomeCallable ListVPCEConfigurationsCallable(const ListVPCEConfigurationsRequestT& request) const
+        Model::ListVPCEConfigurationsOutcomeCallable ListVPCEConfigurationsCallable(const ListVPCEConfigurationsRequestT& request = {}) const
         {
             return SubmitCallable(&DeviceFarmClient::ListVPCEConfigurations, request);
         }
@@ -1678,7 +1690,7 @@ namespace DeviceFarm
          * An Async wrapper for ListVPCEConfigurations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListVPCEConfigurationsRequestT = Model::ListVPCEConfigurationsRequest>
-        void ListVPCEConfigurationsAsync(const ListVPCEConfigurationsRequestT& request, const ListVPCEConfigurationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListVPCEConfigurationsAsync(const ListVPCEConfigurationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListVPCEConfigurationsRequestT& request = {}) const
         {
             return SubmitAsync(&DeviceFarmClient::ListVPCEConfigurations, request, handler, context);
         }
@@ -2119,11 +2131,7 @@ namespace DeviceFarm
       std::shared_ptr<DeviceFarmEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<DeviceFarmClient>;
-      void init(const DeviceFarmClientConfiguration& clientConfiguration);
 
-      DeviceFarmClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<DeviceFarmEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace DeviceFarm

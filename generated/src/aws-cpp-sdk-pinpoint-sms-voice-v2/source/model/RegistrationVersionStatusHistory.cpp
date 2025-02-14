@@ -22,6 +22,7 @@ RegistrationVersionStatusHistory::RegistrationVersionStatusHistory() :
     m_draftTimestampHasBeenSet(false),
     m_submittedTimestampHasBeenSet(false),
     m_reviewingTimestampHasBeenSet(false),
+    m_requiresAuthenticationTimestampHasBeenSet(false),
     m_approvedTimestampHasBeenSet(false),
     m_discardedTimestampHasBeenSet(false),
     m_deniedTimestampHasBeenSet(false),
@@ -30,15 +31,8 @@ RegistrationVersionStatusHistory::RegistrationVersionStatusHistory() :
 {
 }
 
-RegistrationVersionStatusHistory::RegistrationVersionStatusHistory(JsonView jsonValue) : 
-    m_draftTimestampHasBeenSet(false),
-    m_submittedTimestampHasBeenSet(false),
-    m_reviewingTimestampHasBeenSet(false),
-    m_approvedTimestampHasBeenSet(false),
-    m_discardedTimestampHasBeenSet(false),
-    m_deniedTimestampHasBeenSet(false),
-    m_revokedTimestampHasBeenSet(false),
-    m_archivedTimestampHasBeenSet(false)
+RegistrationVersionStatusHistory::RegistrationVersionStatusHistory(JsonView jsonValue)
+  : RegistrationVersionStatusHistory()
 {
   *this = jsonValue;
 }
@@ -64,6 +58,13 @@ RegistrationVersionStatusHistory& RegistrationVersionStatusHistory::operator =(J
     m_reviewingTimestamp = jsonValue.GetDouble("ReviewingTimestamp");
 
     m_reviewingTimestampHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("RequiresAuthenticationTimestamp"))
+  {
+    m_requiresAuthenticationTimestamp = jsonValue.GetDouble("RequiresAuthenticationTimestamp");
+
+    m_requiresAuthenticationTimestampHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("ApprovedTimestamp"))
@@ -121,6 +122,11 @@ JsonValue RegistrationVersionStatusHistory::Jsonize() const
   if(m_reviewingTimestampHasBeenSet)
   {
    payload.WithDouble("ReviewingTimestamp", m_reviewingTimestamp.SecondsWithMSPrecision());
+  }
+
+  if(m_requiresAuthenticationTimestampHasBeenSet)
+  {
+   payload.WithDouble("RequiresAuthenticationTimestamp", m_requiresAuthenticationTimestamp.SecondsWithMSPrecision());
   }
 
   if(m_approvedTimestampHasBeenSet)

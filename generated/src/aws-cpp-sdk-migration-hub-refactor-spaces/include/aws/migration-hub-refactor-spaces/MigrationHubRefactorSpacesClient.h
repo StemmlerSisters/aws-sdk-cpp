@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/migration-hub-refactor-spaces/MigrationHubRefactorSpaces_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/migration-hub-refactor-spaces/MigrationHubRefactorSpacesServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/migration-hub-refactor-spaces/MigrationHubRefactorSpacesErrorMarshaller.h>
 
 namespace Aws
 {
 namespace MigrationHubRefactorSpaces
 {
+  AWS_MIGRATIONHUBREFACTORSPACES_API extern const char SERVICE_NAME[];
   /**
    * <p><fullname>Amazon Web Services Migration Hub Refactor Spaces</fullname>
    * <p>This API reference provides descriptions, syntax, and other details about
@@ -30,12 +34,20 @@ namespace MigrationHubRefactorSpaces
    * href="https://docs.aws.amazon.com/ram/latest/APIReference/API_CreateResourceShare.html">CreateResourceShare</a>
    * in the <i>Amazon Web Services RAM API Reference</i>.</p></p>
    */
-  class AWS_MIGRATIONHUBREFACTORSPACES_API MigrationHubRefactorSpacesClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<MigrationHubRefactorSpacesClient>
+  class AWS_MIGRATIONHUBREFACTORSPACES_API MigrationHubRefactorSpacesClient : smithy::client::AwsSmithyClientT<Aws::MigrationHubRefactorSpaces::SERVICE_NAME,
+      Aws::MigrationHubRefactorSpaces::MigrationHubRefactorSpacesClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      MigrationHubRefactorSpacesEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::MigrationHubRefactorSpacesErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<MigrationHubRefactorSpacesClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Migration Hub Refactor Spaces"; }
 
       typedef MigrationHubRefactorSpacesClientConfiguration ClientConfigurationType;
       typedef MigrationHubRefactorSpacesEndpointProvider EndpointProviderType;
@@ -609,13 +621,13 @@ namespace MigrationHubRefactorSpaces
          * href="http://docs.aws.amazon.com/goto/WebAPI/migration-hub-refactor-spaces-2021-10-26/ListEnvironments">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListEnvironmentsOutcome ListEnvironments(const Model::ListEnvironmentsRequest& request) const;
+        virtual Model::ListEnvironmentsOutcome ListEnvironments(const Model::ListEnvironmentsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListEnvironments that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListEnvironmentsRequestT = Model::ListEnvironmentsRequest>
-        Model::ListEnvironmentsOutcomeCallable ListEnvironmentsCallable(const ListEnvironmentsRequestT& request) const
+        Model::ListEnvironmentsOutcomeCallable ListEnvironmentsCallable(const ListEnvironmentsRequestT& request = {}) const
         {
             return SubmitCallable(&MigrationHubRefactorSpacesClient::ListEnvironments, request);
         }
@@ -624,7 +636,7 @@ namespace MigrationHubRefactorSpaces
          * An Async wrapper for ListEnvironments that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListEnvironmentsRequestT = Model::ListEnvironmentsRequest>
-        void ListEnvironmentsAsync(const ListEnvironmentsRequestT& request, const ListEnvironmentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListEnvironmentsAsync(const ListEnvironmentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListEnvironmentsRequestT& request = {}) const
         {
             return SubmitAsync(&MigrationHubRefactorSpacesClient::ListEnvironments, request, handler, context);
         }
@@ -827,11 +839,7 @@ namespace MigrationHubRefactorSpaces
       std::shared_ptr<MigrationHubRefactorSpacesEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<MigrationHubRefactorSpacesClient>;
-      void init(const MigrationHubRefactorSpacesClientConfiguration& clientConfiguration);
 
-      MigrationHubRefactorSpacesClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<MigrationHubRefactorSpacesEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace MigrationHubRefactorSpaces

@@ -22,8 +22,8 @@ RevokeSecurityGroupIngressResponse::RevokeSecurityGroupIngressResponse() :
 {
 }
 
-RevokeSecurityGroupIngressResponse::RevokeSecurityGroupIngressResponse(const Aws::AmazonWebServiceResult<XmlDocument>& result) : 
-    m_return(false)
+RevokeSecurityGroupIngressResponse::RevokeSecurityGroupIngressResponse(const Aws::AmazonWebServiceResult<XmlDocument>& result)
+  : RevokeSecurityGroupIngressResponse()
 {
   *this = result;
 }
@@ -53,6 +53,17 @@ RevokeSecurityGroupIngressResponse& RevokeSecurityGroupIngressResponse::operator
       {
         m_unknownIpPermissions.push_back(unknownIpPermissionsMember);
         unknownIpPermissionsMember = unknownIpPermissionsMember.NextNode("item");
+      }
+
+    }
+    XmlNode revokedSecurityGroupRulesNode = resultNode.FirstChild("revokedSecurityGroupRuleSet");
+    if(!revokedSecurityGroupRulesNode.IsNull())
+    {
+      XmlNode revokedSecurityGroupRulesMember = revokedSecurityGroupRulesNode.FirstChild("item");
+      while(!revokedSecurityGroupRulesMember.IsNull())
+      {
+        m_revokedSecurityGroupRules.push_back(revokedSecurityGroupRulesMember);
+        revokedSecurityGroupRulesMember = revokedSecurityGroupRulesMember.NextNode("item");
       }
 
     }

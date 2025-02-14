@@ -23,9 +23,8 @@ DescribeStateMachineResult::DescribeStateMachineResult() :
 {
 }
 
-DescribeStateMachineResult::DescribeStateMachineResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_status(StateMachineStatus::NOT_SET),
-    m_type(StateMachineType::NOT_SET)
+DescribeStateMachineResult::DescribeStateMachineResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : DescribeStateMachineResult()
 {
   *this = result;
 }
@@ -103,6 +102,28 @@ DescribeStateMachineResult& DescribeStateMachineResult::operator =(const Aws::Am
   {
     m_description = jsonValue.GetString("description");
 
+  }
+
+  if(jsonValue.ValueExists("encryptionConfiguration"))
+  {
+    m_encryptionConfiguration = jsonValue.GetObject("encryptionConfiguration");
+
+  }
+
+  if(jsonValue.ValueExists("variableReferences"))
+  {
+    Aws::Map<Aws::String, JsonView> variableReferencesJsonMap = jsonValue.GetObject("variableReferences").GetAllObjects();
+    for(auto& variableReferencesItem : variableReferencesJsonMap)
+    {
+      Aws::Utils::Array<JsonView> variableNameListJsonList = variableReferencesItem.second.AsArray();
+      Aws::Vector<Aws::String> variableNameListList;
+      variableNameListList.reserve((size_t)variableNameListJsonList.GetLength());
+      for(unsigned variableNameListIndex = 0; variableNameListIndex < variableNameListJsonList.GetLength(); ++variableNameListIndex)
+      {
+        variableNameListList.push_back(variableNameListJsonList[variableNameListIndex].AsString());
+      }
+      m_variableReferences[variableReferencesItem.first] = std::move(variableNameListList);
+    }
   }
 
 

@@ -27,6 +27,8 @@
 #include <aws/timestream-influxdb/model/ListDbParameterGroupsResult.h>
 #include <aws/timestream-influxdb/model/ListTagsForResourceResult.h>
 #include <aws/timestream-influxdb/model/UpdateDbInstanceResult.h>
+#include <aws/timestream-influxdb/model/ListDbParameterGroupsRequest.h>
+#include <aws/timestream-influxdb/model/ListDbInstancesRequest.h>
 #include <aws/core/NoResult.h>
 /* End of service model headers required in TimestreamInfluxDBClient header */
 
@@ -61,7 +63,7 @@ namespace Aws
 
   namespace TimestreamInfluxDB
   {
-    using TimestreamInfluxDBClientConfiguration = Aws::Client::GenericClientConfiguration<false>;
+    using TimestreamInfluxDBClientConfiguration = Aws::Client::GenericClientConfiguration;
     using TimestreamInfluxDBEndpointProviderBase = Aws::TimestreamInfluxDB::Endpoint::TimestreamInfluxDBEndpointProviderBase;
     using TimestreamInfluxDBEndpointProvider = Aws::TimestreamInfluxDB::Endpoint::TimestreamInfluxDBEndpointProvider;
 

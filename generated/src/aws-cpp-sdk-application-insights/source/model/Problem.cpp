@@ -21,6 +21,7 @@ namespace Model
 Problem::Problem() : 
     m_idHasBeenSet(false),
     m_titleHasBeenSet(false),
+    m_shortNameHasBeenSet(false),
     m_insightsHasBeenSet(false),
     m_status(Status::NOT_SET),
     m_statusHasBeenSet(false),
@@ -42,27 +43,8 @@ Problem::Problem() :
 {
 }
 
-Problem::Problem(JsonView jsonValue) : 
-    m_idHasBeenSet(false),
-    m_titleHasBeenSet(false),
-    m_insightsHasBeenSet(false),
-    m_status(Status::NOT_SET),
-    m_statusHasBeenSet(false),
-    m_affectedResourceHasBeenSet(false),
-    m_startTimeHasBeenSet(false),
-    m_endTimeHasBeenSet(false),
-    m_severityLevel(SeverityLevel::NOT_SET),
-    m_severityLevelHasBeenSet(false),
-    m_accountIdHasBeenSet(false),
-    m_resourceGroupNameHasBeenSet(false),
-    m_feedbackHasBeenSet(false),
-    m_recurringCount(0),
-    m_recurringCountHasBeenSet(false),
-    m_lastRecurrenceTimeHasBeenSet(false),
-    m_visibility(Visibility::NOT_SET),
-    m_visibilityHasBeenSet(false),
-    m_resolutionMethod(ResolutionMethod::NOT_SET),
-    m_resolutionMethodHasBeenSet(false)
+Problem::Problem(JsonView jsonValue)
+  : Problem()
 {
   *this = jsonValue;
 }
@@ -81,6 +63,13 @@ Problem& Problem::operator =(JsonView jsonValue)
     m_title = jsonValue.GetString("Title");
 
     m_titleHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("ShortName"))
+  {
+    m_shortName = jsonValue.GetString("ShortName");
+
+    m_shortNameHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("Insights"))
@@ -193,6 +182,12 @@ JsonValue Problem::Jsonize() const
   if(m_titleHasBeenSet)
   {
    payload.WithString("Title", m_title);
+
+  }
+
+  if(m_shortNameHasBeenSet)
+  {
+   payload.WithString("ShortName", m_shortName);
 
   }
 
