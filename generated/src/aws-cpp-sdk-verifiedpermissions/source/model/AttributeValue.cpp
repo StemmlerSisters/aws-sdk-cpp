@@ -26,19 +26,14 @@ AttributeValue::AttributeValue() :
     m_longHasBeenSet(false),
     m_stringHasBeenSet(false),
     m_setHasBeenSet(false),
-    m_recordHasBeenSet(false)
+    m_recordHasBeenSet(false),
+    m_ipaddrHasBeenSet(false),
+    m_decimalHasBeenSet(false)
 {
 }
 
-AttributeValue::AttributeValue(JsonView jsonValue) : 
-    m_boolean(false),
-    m_booleanHasBeenSet(false),
-    m_entityIdentifierHasBeenSet(false),
-    m_long(0),
-    m_longHasBeenSet(false),
-    m_stringHasBeenSet(false),
-    m_setHasBeenSet(false),
-    m_recordHasBeenSet(false)
+AttributeValue::AttributeValue(JsonView jsonValue)
+  : AttributeValue()
 {
   *this = jsonValue;
 }
@@ -93,6 +88,20 @@ AttributeValue& AttributeValue::operator =(JsonView jsonValue)
     m_recordHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("ipaddr"))
+  {
+    m_ipaddr = jsonValue.GetString("ipaddr");
+
+    m_ipaddrHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("decimal"))
+  {
+    m_decimal = jsonValue.GetString("decimal");
+
+    m_decimalHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -143,6 +152,18 @@ JsonValue AttributeValue::Jsonize() const
      recordJsonMap.WithObject(recordItem.first, recordItem.second.Jsonize());
    }
    payload.WithObject("record", std::move(recordJsonMap));
+
+  }
+
+  if(m_ipaddrHasBeenSet)
+  {
+   payload.WithString("ipaddr", m_ipaddr);
+
+  }
+
+  if(m_decimalHasBeenSet)
+  {
+   payload.WithString("decimal", m_decimal);
 
   }
 

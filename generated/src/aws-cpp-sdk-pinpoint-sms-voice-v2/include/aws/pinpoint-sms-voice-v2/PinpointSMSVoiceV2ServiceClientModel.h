@@ -41,9 +41,11 @@
 #include <aws/pinpoint-sms-voice-v2/model/DeleteOptedOutNumberResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/DeletePoolResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/DeleteProtectConfigurationResult.h>
+#include <aws/pinpoint-sms-voice-v2/model/DeleteProtectConfigurationRuleSetNumberOverrideResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/DeleteRegistrationResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/DeleteRegistrationAttachmentResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/DeleteRegistrationFieldValueResult.h>
+#include <aws/pinpoint-sms-voice-v2/model/DeleteResourcePolicyResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/DeleteTextMessageSpendLimitOverrideResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/DeleteVerifiedDestinationNumberResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/DeleteVoiceMessageSpendLimitOverrideResult.h>
@@ -70,12 +72,17 @@
 #include <aws/pinpoint-sms-voice-v2/model/DisassociateProtectConfigurationResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/DiscardRegistrationVersionResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/GetProtectConfigurationCountryRuleSetResult.h>
+#include <aws/pinpoint-sms-voice-v2/model/GetResourcePolicyResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/ListPoolOriginationIdentitiesResult.h>
+#include <aws/pinpoint-sms-voice-v2/model/ListProtectConfigurationRuleSetNumberOverridesResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/ListRegistrationAssociationsResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/ListTagsForResourceResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/PutKeywordResult.h>
+#include <aws/pinpoint-sms-voice-v2/model/PutMessageFeedbackResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/PutOptedOutNumberResult.h>
+#include <aws/pinpoint-sms-voice-v2/model/PutProtectConfigurationRuleSetNumberOverrideResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/PutRegistrationFieldValueResult.h>
+#include <aws/pinpoint-sms-voice-v2/model/PutResourcePolicyResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/ReleasePhoneNumberResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/ReleaseSenderIdResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/RequestPhoneNumberResult.h>
@@ -85,6 +92,7 @@
 #include <aws/pinpoint-sms-voice-v2/model/SendTextMessageResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/SendVoiceMessageResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/SetAccountDefaultProtectConfigurationResult.h>
+#include <aws/pinpoint-sms-voice-v2/model/SetDefaultMessageFeedbackEnabledResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/SetDefaultMessageTypeResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/SetDefaultSenderIdResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/SetMediaMessageSpendLimitOverrideResult.h>
@@ -100,6 +108,25 @@
 #include <aws/pinpoint-sms-voice-v2/model/UpdateProtectConfigurationCountryRuleSetResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/UpdateSenderIdResult.h>
 #include <aws/pinpoint-sms-voice-v2/model/VerifyDestinationNumberResult.h>
+#include <aws/pinpoint-sms-voice-v2/model/CreateRegistrationAttachmentRequest.h>
+#include <aws/pinpoint-sms-voice-v2/model/DescribeSenderIdsRequest.h>
+#include <aws/pinpoint-sms-voice-v2/model/CreateProtectConfigurationRequest.h>
+#include <aws/pinpoint-sms-voice-v2/model/DescribeAccountAttributesRequest.h>
+#include <aws/pinpoint-sms-voice-v2/model/DeleteAccountDefaultProtectConfigurationRequest.h>
+#include <aws/pinpoint-sms-voice-v2/model/DeleteTextMessageSpendLimitOverrideRequest.h>
+#include <aws/pinpoint-sms-voice-v2/model/DescribeRegistrationAttachmentsRequest.h>
+#include <aws/pinpoint-sms-voice-v2/model/DescribeVerifiedDestinationNumbersRequest.h>
+#include <aws/pinpoint-sms-voice-v2/model/DescribeRegistrationsRequest.h>
+#include <aws/pinpoint-sms-voice-v2/model/DescribeRegistrationTypeDefinitionsRequest.h>
+#include <aws/pinpoint-sms-voice-v2/model/DescribeAccountLimitsRequest.h>
+#include <aws/pinpoint-sms-voice-v2/model/DeleteMediaMessageSpendLimitOverrideRequest.h>
+#include <aws/pinpoint-sms-voice-v2/model/DescribeConfigurationSetsRequest.h>
+#include <aws/pinpoint-sms-voice-v2/model/DeleteVoiceMessageSpendLimitOverrideRequest.h>
+#include <aws/pinpoint-sms-voice-v2/model/DescribeOptOutListsRequest.h>
+#include <aws/pinpoint-sms-voice-v2/model/DescribeSpendLimitsRequest.h>
+#include <aws/pinpoint-sms-voice-v2/model/DescribeProtectConfigurationsRequest.h>
+#include <aws/pinpoint-sms-voice-v2/model/DescribePhoneNumbersRequest.h>
+#include <aws/pinpoint-sms-voice-v2/model/DescribePoolsRequest.h>
 /* End of service model headers required in PinpointSMSVoiceV2Client header */
 
 namespace Aws
@@ -133,7 +160,7 @@ namespace Aws
 
   namespace PinpointSMSVoiceV2
   {
-    using PinpointSMSVoiceV2ClientConfiguration = Aws::Client::GenericClientConfiguration<false>;
+    using PinpointSMSVoiceV2ClientConfiguration = Aws::Client::GenericClientConfiguration;
     using PinpointSMSVoiceV2EndpointProviderBase = Aws::PinpointSMSVoiceV2::Endpoint::PinpointSMSVoiceV2EndpointProviderBase;
     using PinpointSMSVoiceV2EndpointProvider = Aws::PinpointSMSVoiceV2::Endpoint::PinpointSMSVoiceV2EndpointProvider;
 
@@ -163,9 +190,11 @@ namespace Aws
       class DeleteOptedOutNumberRequest;
       class DeletePoolRequest;
       class DeleteProtectConfigurationRequest;
+      class DeleteProtectConfigurationRuleSetNumberOverrideRequest;
       class DeleteRegistrationRequest;
       class DeleteRegistrationAttachmentRequest;
       class DeleteRegistrationFieldValueRequest;
+      class DeleteResourcePolicyRequest;
       class DeleteTextMessageSpendLimitOverrideRequest;
       class DeleteVerifiedDestinationNumberRequest;
       class DeleteVoiceMessageSpendLimitOverrideRequest;
@@ -192,12 +221,17 @@ namespace Aws
       class DisassociateProtectConfigurationRequest;
       class DiscardRegistrationVersionRequest;
       class GetProtectConfigurationCountryRuleSetRequest;
+      class GetResourcePolicyRequest;
       class ListPoolOriginationIdentitiesRequest;
+      class ListProtectConfigurationRuleSetNumberOverridesRequest;
       class ListRegistrationAssociationsRequest;
       class ListTagsForResourceRequest;
       class PutKeywordRequest;
+      class PutMessageFeedbackRequest;
       class PutOptedOutNumberRequest;
+      class PutProtectConfigurationRuleSetNumberOverrideRequest;
       class PutRegistrationFieldValueRequest;
+      class PutResourcePolicyRequest;
       class ReleasePhoneNumberRequest;
       class ReleaseSenderIdRequest;
       class RequestPhoneNumberRequest;
@@ -207,6 +241,7 @@ namespace Aws
       class SendTextMessageRequest;
       class SendVoiceMessageRequest;
       class SetAccountDefaultProtectConfigurationRequest;
+      class SetDefaultMessageFeedbackEnabledRequest;
       class SetDefaultMessageTypeRequest;
       class SetDefaultSenderIdRequest;
       class SetMediaMessageSpendLimitOverrideRequest;
@@ -248,9 +283,11 @@ namespace Aws
       typedef Aws::Utils::Outcome<DeleteOptedOutNumberResult, PinpointSMSVoiceV2Error> DeleteOptedOutNumberOutcome;
       typedef Aws::Utils::Outcome<DeletePoolResult, PinpointSMSVoiceV2Error> DeletePoolOutcome;
       typedef Aws::Utils::Outcome<DeleteProtectConfigurationResult, PinpointSMSVoiceV2Error> DeleteProtectConfigurationOutcome;
+      typedef Aws::Utils::Outcome<DeleteProtectConfigurationRuleSetNumberOverrideResult, PinpointSMSVoiceV2Error> DeleteProtectConfigurationRuleSetNumberOverrideOutcome;
       typedef Aws::Utils::Outcome<DeleteRegistrationResult, PinpointSMSVoiceV2Error> DeleteRegistrationOutcome;
       typedef Aws::Utils::Outcome<DeleteRegistrationAttachmentResult, PinpointSMSVoiceV2Error> DeleteRegistrationAttachmentOutcome;
       typedef Aws::Utils::Outcome<DeleteRegistrationFieldValueResult, PinpointSMSVoiceV2Error> DeleteRegistrationFieldValueOutcome;
+      typedef Aws::Utils::Outcome<DeleteResourcePolicyResult, PinpointSMSVoiceV2Error> DeleteResourcePolicyOutcome;
       typedef Aws::Utils::Outcome<DeleteTextMessageSpendLimitOverrideResult, PinpointSMSVoiceV2Error> DeleteTextMessageSpendLimitOverrideOutcome;
       typedef Aws::Utils::Outcome<DeleteVerifiedDestinationNumberResult, PinpointSMSVoiceV2Error> DeleteVerifiedDestinationNumberOutcome;
       typedef Aws::Utils::Outcome<DeleteVoiceMessageSpendLimitOverrideResult, PinpointSMSVoiceV2Error> DeleteVoiceMessageSpendLimitOverrideOutcome;
@@ -277,12 +314,17 @@ namespace Aws
       typedef Aws::Utils::Outcome<DisassociateProtectConfigurationResult, PinpointSMSVoiceV2Error> DisassociateProtectConfigurationOutcome;
       typedef Aws::Utils::Outcome<DiscardRegistrationVersionResult, PinpointSMSVoiceV2Error> DiscardRegistrationVersionOutcome;
       typedef Aws::Utils::Outcome<GetProtectConfigurationCountryRuleSetResult, PinpointSMSVoiceV2Error> GetProtectConfigurationCountryRuleSetOutcome;
+      typedef Aws::Utils::Outcome<GetResourcePolicyResult, PinpointSMSVoiceV2Error> GetResourcePolicyOutcome;
       typedef Aws::Utils::Outcome<ListPoolOriginationIdentitiesResult, PinpointSMSVoiceV2Error> ListPoolOriginationIdentitiesOutcome;
+      typedef Aws::Utils::Outcome<ListProtectConfigurationRuleSetNumberOverridesResult, PinpointSMSVoiceV2Error> ListProtectConfigurationRuleSetNumberOverridesOutcome;
       typedef Aws::Utils::Outcome<ListRegistrationAssociationsResult, PinpointSMSVoiceV2Error> ListRegistrationAssociationsOutcome;
       typedef Aws::Utils::Outcome<ListTagsForResourceResult, PinpointSMSVoiceV2Error> ListTagsForResourceOutcome;
       typedef Aws::Utils::Outcome<PutKeywordResult, PinpointSMSVoiceV2Error> PutKeywordOutcome;
+      typedef Aws::Utils::Outcome<PutMessageFeedbackResult, PinpointSMSVoiceV2Error> PutMessageFeedbackOutcome;
       typedef Aws::Utils::Outcome<PutOptedOutNumberResult, PinpointSMSVoiceV2Error> PutOptedOutNumberOutcome;
+      typedef Aws::Utils::Outcome<PutProtectConfigurationRuleSetNumberOverrideResult, PinpointSMSVoiceV2Error> PutProtectConfigurationRuleSetNumberOverrideOutcome;
       typedef Aws::Utils::Outcome<PutRegistrationFieldValueResult, PinpointSMSVoiceV2Error> PutRegistrationFieldValueOutcome;
+      typedef Aws::Utils::Outcome<PutResourcePolicyResult, PinpointSMSVoiceV2Error> PutResourcePolicyOutcome;
       typedef Aws::Utils::Outcome<ReleasePhoneNumberResult, PinpointSMSVoiceV2Error> ReleasePhoneNumberOutcome;
       typedef Aws::Utils::Outcome<ReleaseSenderIdResult, PinpointSMSVoiceV2Error> ReleaseSenderIdOutcome;
       typedef Aws::Utils::Outcome<RequestPhoneNumberResult, PinpointSMSVoiceV2Error> RequestPhoneNumberOutcome;
@@ -292,6 +334,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<SendTextMessageResult, PinpointSMSVoiceV2Error> SendTextMessageOutcome;
       typedef Aws::Utils::Outcome<SendVoiceMessageResult, PinpointSMSVoiceV2Error> SendVoiceMessageOutcome;
       typedef Aws::Utils::Outcome<SetAccountDefaultProtectConfigurationResult, PinpointSMSVoiceV2Error> SetAccountDefaultProtectConfigurationOutcome;
+      typedef Aws::Utils::Outcome<SetDefaultMessageFeedbackEnabledResult, PinpointSMSVoiceV2Error> SetDefaultMessageFeedbackEnabledOutcome;
       typedef Aws::Utils::Outcome<SetDefaultMessageTypeResult, PinpointSMSVoiceV2Error> SetDefaultMessageTypeOutcome;
       typedef Aws::Utils::Outcome<SetDefaultSenderIdResult, PinpointSMSVoiceV2Error> SetDefaultSenderIdOutcome;
       typedef Aws::Utils::Outcome<SetMediaMessageSpendLimitOverrideResult, PinpointSMSVoiceV2Error> SetMediaMessageSpendLimitOverrideOutcome;
@@ -333,9 +376,11 @@ namespace Aws
       typedef std::future<DeleteOptedOutNumberOutcome> DeleteOptedOutNumberOutcomeCallable;
       typedef std::future<DeletePoolOutcome> DeletePoolOutcomeCallable;
       typedef std::future<DeleteProtectConfigurationOutcome> DeleteProtectConfigurationOutcomeCallable;
+      typedef std::future<DeleteProtectConfigurationRuleSetNumberOverrideOutcome> DeleteProtectConfigurationRuleSetNumberOverrideOutcomeCallable;
       typedef std::future<DeleteRegistrationOutcome> DeleteRegistrationOutcomeCallable;
       typedef std::future<DeleteRegistrationAttachmentOutcome> DeleteRegistrationAttachmentOutcomeCallable;
       typedef std::future<DeleteRegistrationFieldValueOutcome> DeleteRegistrationFieldValueOutcomeCallable;
+      typedef std::future<DeleteResourcePolicyOutcome> DeleteResourcePolicyOutcomeCallable;
       typedef std::future<DeleteTextMessageSpendLimitOverrideOutcome> DeleteTextMessageSpendLimitOverrideOutcomeCallable;
       typedef std::future<DeleteVerifiedDestinationNumberOutcome> DeleteVerifiedDestinationNumberOutcomeCallable;
       typedef std::future<DeleteVoiceMessageSpendLimitOverrideOutcome> DeleteVoiceMessageSpendLimitOverrideOutcomeCallable;
@@ -362,12 +407,17 @@ namespace Aws
       typedef std::future<DisassociateProtectConfigurationOutcome> DisassociateProtectConfigurationOutcomeCallable;
       typedef std::future<DiscardRegistrationVersionOutcome> DiscardRegistrationVersionOutcomeCallable;
       typedef std::future<GetProtectConfigurationCountryRuleSetOutcome> GetProtectConfigurationCountryRuleSetOutcomeCallable;
+      typedef std::future<GetResourcePolicyOutcome> GetResourcePolicyOutcomeCallable;
       typedef std::future<ListPoolOriginationIdentitiesOutcome> ListPoolOriginationIdentitiesOutcomeCallable;
+      typedef std::future<ListProtectConfigurationRuleSetNumberOverridesOutcome> ListProtectConfigurationRuleSetNumberOverridesOutcomeCallable;
       typedef std::future<ListRegistrationAssociationsOutcome> ListRegistrationAssociationsOutcomeCallable;
       typedef std::future<ListTagsForResourceOutcome> ListTagsForResourceOutcomeCallable;
       typedef std::future<PutKeywordOutcome> PutKeywordOutcomeCallable;
+      typedef std::future<PutMessageFeedbackOutcome> PutMessageFeedbackOutcomeCallable;
       typedef std::future<PutOptedOutNumberOutcome> PutOptedOutNumberOutcomeCallable;
+      typedef std::future<PutProtectConfigurationRuleSetNumberOverrideOutcome> PutProtectConfigurationRuleSetNumberOverrideOutcomeCallable;
       typedef std::future<PutRegistrationFieldValueOutcome> PutRegistrationFieldValueOutcomeCallable;
+      typedef std::future<PutResourcePolicyOutcome> PutResourcePolicyOutcomeCallable;
       typedef std::future<ReleasePhoneNumberOutcome> ReleasePhoneNumberOutcomeCallable;
       typedef std::future<ReleaseSenderIdOutcome> ReleaseSenderIdOutcomeCallable;
       typedef std::future<RequestPhoneNumberOutcome> RequestPhoneNumberOutcomeCallable;
@@ -377,6 +427,7 @@ namespace Aws
       typedef std::future<SendTextMessageOutcome> SendTextMessageOutcomeCallable;
       typedef std::future<SendVoiceMessageOutcome> SendVoiceMessageOutcomeCallable;
       typedef std::future<SetAccountDefaultProtectConfigurationOutcome> SetAccountDefaultProtectConfigurationOutcomeCallable;
+      typedef std::future<SetDefaultMessageFeedbackEnabledOutcome> SetDefaultMessageFeedbackEnabledOutcomeCallable;
       typedef std::future<SetDefaultMessageTypeOutcome> SetDefaultMessageTypeOutcomeCallable;
       typedef std::future<SetDefaultSenderIdOutcome> SetDefaultSenderIdOutcomeCallable;
       typedef std::future<SetMediaMessageSpendLimitOverrideOutcome> SetMediaMessageSpendLimitOverrideOutcomeCallable;
@@ -421,9 +472,11 @@ namespace Aws
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::DeleteOptedOutNumberRequest&, const Model::DeleteOptedOutNumberOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteOptedOutNumberResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::DeletePoolRequest&, const Model::DeletePoolOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeletePoolResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::DeleteProtectConfigurationRequest&, const Model::DeleteProtectConfigurationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteProtectConfigurationResponseReceivedHandler;
+    typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::DeleteProtectConfigurationRuleSetNumberOverrideRequest&, const Model::DeleteProtectConfigurationRuleSetNumberOverrideOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteProtectConfigurationRuleSetNumberOverrideResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::DeleteRegistrationRequest&, const Model::DeleteRegistrationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteRegistrationResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::DeleteRegistrationAttachmentRequest&, const Model::DeleteRegistrationAttachmentOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteRegistrationAttachmentResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::DeleteRegistrationFieldValueRequest&, const Model::DeleteRegistrationFieldValueOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteRegistrationFieldValueResponseReceivedHandler;
+    typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::DeleteResourcePolicyRequest&, const Model::DeleteResourcePolicyOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteResourcePolicyResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::DeleteTextMessageSpendLimitOverrideRequest&, const Model::DeleteTextMessageSpendLimitOverrideOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteTextMessageSpendLimitOverrideResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::DeleteVerifiedDestinationNumberRequest&, const Model::DeleteVerifiedDestinationNumberOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteVerifiedDestinationNumberResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::DeleteVoiceMessageSpendLimitOverrideRequest&, const Model::DeleteVoiceMessageSpendLimitOverrideOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteVoiceMessageSpendLimitOverrideResponseReceivedHandler;
@@ -450,12 +503,17 @@ namespace Aws
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::DisassociateProtectConfigurationRequest&, const Model::DisassociateProtectConfigurationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DisassociateProtectConfigurationResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::DiscardRegistrationVersionRequest&, const Model::DiscardRegistrationVersionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DiscardRegistrationVersionResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::GetProtectConfigurationCountryRuleSetRequest&, const Model::GetProtectConfigurationCountryRuleSetOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetProtectConfigurationCountryRuleSetResponseReceivedHandler;
+    typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::GetResourcePolicyRequest&, const Model::GetResourcePolicyOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetResourcePolicyResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::ListPoolOriginationIdentitiesRequest&, const Model::ListPoolOriginationIdentitiesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListPoolOriginationIdentitiesResponseReceivedHandler;
+    typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::ListProtectConfigurationRuleSetNumberOverridesRequest&, const Model::ListProtectConfigurationRuleSetNumberOverridesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListProtectConfigurationRuleSetNumberOverridesResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::ListRegistrationAssociationsRequest&, const Model::ListRegistrationAssociationsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListRegistrationAssociationsResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::ListTagsForResourceRequest&, const Model::ListTagsForResourceOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListTagsForResourceResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::PutKeywordRequest&, const Model::PutKeywordOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > PutKeywordResponseReceivedHandler;
+    typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::PutMessageFeedbackRequest&, const Model::PutMessageFeedbackOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > PutMessageFeedbackResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::PutOptedOutNumberRequest&, const Model::PutOptedOutNumberOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > PutOptedOutNumberResponseReceivedHandler;
+    typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::PutProtectConfigurationRuleSetNumberOverrideRequest&, const Model::PutProtectConfigurationRuleSetNumberOverrideOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > PutProtectConfigurationRuleSetNumberOverrideResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::PutRegistrationFieldValueRequest&, const Model::PutRegistrationFieldValueOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > PutRegistrationFieldValueResponseReceivedHandler;
+    typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::PutResourcePolicyRequest&, const Model::PutResourcePolicyOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > PutResourcePolicyResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::ReleasePhoneNumberRequest&, const Model::ReleasePhoneNumberOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ReleasePhoneNumberResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::ReleaseSenderIdRequest&, const Model::ReleaseSenderIdOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ReleaseSenderIdResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::RequestPhoneNumberRequest&, const Model::RequestPhoneNumberOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > RequestPhoneNumberResponseReceivedHandler;
@@ -465,6 +523,7 @@ namespace Aws
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::SendTextMessageRequest&, const Model::SendTextMessageOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > SendTextMessageResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::SendVoiceMessageRequest&, const Model::SendVoiceMessageOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > SendVoiceMessageResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::SetAccountDefaultProtectConfigurationRequest&, const Model::SetAccountDefaultProtectConfigurationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > SetAccountDefaultProtectConfigurationResponseReceivedHandler;
+    typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::SetDefaultMessageFeedbackEnabledRequest&, const Model::SetDefaultMessageFeedbackEnabledOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > SetDefaultMessageFeedbackEnabledResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::SetDefaultMessageTypeRequest&, const Model::SetDefaultMessageTypeOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > SetDefaultMessageTypeResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::SetDefaultSenderIdRequest&, const Model::SetDefaultSenderIdOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > SetDefaultSenderIdResponseReceivedHandler;
     typedef std::function<void(const PinpointSMSVoiceV2Client*, const Model::SetMediaMessageSpendLimitOverrideRequest&, const Model::SetMediaMessageSpendLimitOverrideOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > SetMediaMessageSpendLimitOverrideResponseReceivedHandler;

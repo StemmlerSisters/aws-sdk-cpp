@@ -27,24 +27,15 @@ DirectConnectGatewayAssociation::DirectConnectGatewayAssociation() :
     m_associatedGatewayHasBeenSet(false),
     m_associationIdHasBeenSet(false),
     m_allowedPrefixesToDirectConnectGatewayHasBeenSet(false),
+    m_associatedCoreNetworkHasBeenSet(false),
     m_virtualGatewayIdHasBeenSet(false),
     m_virtualGatewayRegionHasBeenSet(false),
     m_virtualGatewayOwnerAccountHasBeenSet(false)
 {
 }
 
-DirectConnectGatewayAssociation::DirectConnectGatewayAssociation(JsonView jsonValue) : 
-    m_directConnectGatewayIdHasBeenSet(false),
-    m_directConnectGatewayOwnerAccountHasBeenSet(false),
-    m_associationState(DirectConnectGatewayAssociationState::NOT_SET),
-    m_associationStateHasBeenSet(false),
-    m_stateChangeErrorHasBeenSet(false),
-    m_associatedGatewayHasBeenSet(false),
-    m_associationIdHasBeenSet(false),
-    m_allowedPrefixesToDirectConnectGatewayHasBeenSet(false),
-    m_virtualGatewayIdHasBeenSet(false),
-    m_virtualGatewayRegionHasBeenSet(false),
-    m_virtualGatewayOwnerAccountHasBeenSet(false)
+DirectConnectGatewayAssociation::DirectConnectGatewayAssociation(JsonView jsonValue)
+  : DirectConnectGatewayAssociation()
 {
   *this = jsonValue;
 }
@@ -101,6 +92,13 @@ DirectConnectGatewayAssociation& DirectConnectGatewayAssociation::operator =(Jso
       m_allowedPrefixesToDirectConnectGateway.push_back(allowedPrefixesToDirectConnectGatewayJsonList[allowedPrefixesToDirectConnectGatewayIndex].AsObject());
     }
     m_allowedPrefixesToDirectConnectGatewayHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("associatedCoreNetwork"))
+  {
+    m_associatedCoreNetwork = jsonValue.GetObject("associatedCoreNetwork");
+
+    m_associatedCoreNetworkHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("virtualGatewayId"))
@@ -174,6 +172,12 @@ JsonValue DirectConnectGatewayAssociation::Jsonize() const
      allowedPrefixesToDirectConnectGatewayJsonList[allowedPrefixesToDirectConnectGatewayIndex].AsObject(m_allowedPrefixesToDirectConnectGateway[allowedPrefixesToDirectConnectGatewayIndex].Jsonize());
    }
    payload.WithArray("allowedPrefixesToDirectConnectGateway", std::move(allowedPrefixesToDirectConnectGatewayJsonList));
+
+  }
+
+  if(m_associatedCoreNetworkHasBeenSet)
+  {
+   payload.WithObject("associatedCoreNetwork", m_associatedCoreNetwork.Jsonize());
 
   }
 

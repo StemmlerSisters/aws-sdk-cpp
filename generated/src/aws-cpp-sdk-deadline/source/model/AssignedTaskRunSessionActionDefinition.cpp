@@ -19,22 +19,34 @@ namespace Model
 {
 
 AssignedTaskRunSessionActionDefinition::AssignedTaskRunSessionActionDefinition() : 
-    m_parametersHasBeenSet(false),
+    m_taskIdHasBeenSet(false),
     m_stepIdHasBeenSet(false),
-    m_taskIdHasBeenSet(false)
+    m_parametersHasBeenSet(false)
 {
 }
 
-AssignedTaskRunSessionActionDefinition::AssignedTaskRunSessionActionDefinition(JsonView jsonValue) : 
-    m_parametersHasBeenSet(false),
-    m_stepIdHasBeenSet(false),
-    m_taskIdHasBeenSet(false)
+AssignedTaskRunSessionActionDefinition::AssignedTaskRunSessionActionDefinition(JsonView jsonValue)
+  : AssignedTaskRunSessionActionDefinition()
 {
   *this = jsonValue;
 }
 
 AssignedTaskRunSessionActionDefinition& AssignedTaskRunSessionActionDefinition::operator =(JsonView jsonValue)
 {
+  if(jsonValue.ValueExists("taskId"))
+  {
+    m_taskId = jsonValue.GetString("taskId");
+
+    m_taskIdHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("stepId"))
+  {
+    m_stepId = jsonValue.GetString("stepId");
+
+    m_stepIdHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("parameters"))
   {
     Aws::Map<Aws::String, JsonView> parametersJsonMap = jsonValue.GetObject("parameters").GetAllObjects();
@@ -45,20 +57,6 @@ AssignedTaskRunSessionActionDefinition& AssignedTaskRunSessionActionDefinition::
     m_parametersHasBeenSet = true;
   }
 
-  if(jsonValue.ValueExists("stepId"))
-  {
-    m_stepId = jsonValue.GetString("stepId");
-
-    m_stepIdHasBeenSet = true;
-  }
-
-  if(jsonValue.ValueExists("taskId"))
-  {
-    m_taskId = jsonValue.GetString("taskId");
-
-    m_taskIdHasBeenSet = true;
-  }
-
   return *this;
 }
 
@@ -66,14 +64,9 @@ JsonValue AssignedTaskRunSessionActionDefinition::Jsonize() const
 {
   JsonValue payload;
 
-  if(m_parametersHasBeenSet)
+  if(m_taskIdHasBeenSet)
   {
-   JsonValue parametersJsonMap;
-   for(auto& parametersItem : m_parameters)
-   {
-     parametersJsonMap.WithObject(parametersItem.first, parametersItem.second.Jsonize());
-   }
-   payload.WithObject("parameters", std::move(parametersJsonMap));
+   payload.WithString("taskId", m_taskId);
 
   }
 
@@ -83,9 +76,14 @@ JsonValue AssignedTaskRunSessionActionDefinition::Jsonize() const
 
   }
 
-  if(m_taskIdHasBeenSet)
+  if(m_parametersHasBeenSet)
   {
-   payload.WithString("taskId", m_taskId);
+   JsonValue parametersJsonMap;
+   for(auto& parametersItem : m_parameters)
+   {
+     parametersJsonMap.WithObject(parametersItem.first, parametersItem.second.Jsonize());
+   }
+   payload.WithObject("parameters", std::move(parametersJsonMap));
 
   }
 

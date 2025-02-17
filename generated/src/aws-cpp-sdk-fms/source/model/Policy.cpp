@@ -37,30 +37,14 @@ Policy::Policy() :
     m_resourceSetIdsHasBeenSet(false),
     m_policyDescriptionHasBeenSet(false),
     m_policyStatus(CustomerPolicyStatus::NOT_SET),
-    m_policyStatusHasBeenSet(false)
+    m_policyStatusHasBeenSet(false),
+    m_resourceTagLogicalOperator(ResourceTagLogicalOperator::NOT_SET),
+    m_resourceTagLogicalOperatorHasBeenSet(false)
 {
 }
 
-Policy::Policy(JsonView jsonValue) : 
-    m_policyIdHasBeenSet(false),
-    m_policyNameHasBeenSet(false),
-    m_policyUpdateTokenHasBeenSet(false),
-    m_securityServicePolicyDataHasBeenSet(false),
-    m_resourceTypeHasBeenSet(false),
-    m_resourceTypeListHasBeenSet(false),
-    m_resourceTagsHasBeenSet(false),
-    m_excludeResourceTags(false),
-    m_excludeResourceTagsHasBeenSet(false),
-    m_remediationEnabled(false),
-    m_remediationEnabledHasBeenSet(false),
-    m_deleteUnusedFMManagedResources(false),
-    m_deleteUnusedFMManagedResourcesHasBeenSet(false),
-    m_includeMapHasBeenSet(false),
-    m_excludeMapHasBeenSet(false),
-    m_resourceSetIdsHasBeenSet(false),
-    m_policyDescriptionHasBeenSet(false),
-    m_policyStatus(CustomerPolicyStatus::NOT_SET),
-    m_policyStatusHasBeenSet(false)
+Policy::Policy(JsonView jsonValue)
+  : Policy()
 {
   *this = jsonValue;
 }
@@ -201,6 +185,13 @@ Policy& Policy::operator =(JsonView jsonValue)
     m_policyStatusHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("ResourceTagLogicalOperator"))
+  {
+    m_resourceTagLogicalOperator = ResourceTagLogicalOperatorMapper::GetResourceTagLogicalOperatorForName(jsonValue.GetString("ResourceTagLogicalOperator"));
+
+    m_resourceTagLogicalOperatorHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -330,6 +321,11 @@ JsonValue Policy::Jsonize() const
   if(m_policyStatusHasBeenSet)
   {
    payload.WithString("PolicyStatus", CustomerPolicyStatusMapper::GetNameForCustomerPolicyStatus(m_policyStatus));
+  }
+
+  if(m_resourceTagLogicalOperatorHasBeenSet)
+  {
+   payload.WithString("ResourceTagLogicalOperator", ResourceTagLogicalOperatorMapper::GetNameForResourceTagLogicalOperator(m_resourceTagLogicalOperator));
   }
 
   return payload;

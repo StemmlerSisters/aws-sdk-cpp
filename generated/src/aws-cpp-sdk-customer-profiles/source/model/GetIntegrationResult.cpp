@@ -22,8 +22,8 @@ GetIntegrationResult::GetIntegrationResult() :
 {
 }
 
-GetIntegrationResult::GetIntegrationResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_isUnstructured(false)
+GetIntegrationResult::GetIntegrationResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetIntegrationResult()
 {
   *this = result;
 }
@@ -89,6 +89,21 @@ GetIntegrationResult& GetIntegrationResult::operator =(const Aws::AmazonWebServi
   {
     m_isUnstructured = jsonValue.GetBool("IsUnstructured");
 
+  }
+
+  if(jsonValue.ValueExists("RoleArn"))
+  {
+    m_roleArn = jsonValue.GetString("RoleArn");
+
+  }
+
+  if(jsonValue.ValueExists("EventTriggerNames"))
+  {
+    Aws::Utils::Array<JsonView> eventTriggerNamesJsonList = jsonValue.GetArray("EventTriggerNames");
+    for(unsigned eventTriggerNamesIndex = 0; eventTriggerNamesIndex < eventTriggerNamesJsonList.GetLength(); ++eventTriggerNamesIndex)
+    {
+      m_eventTriggerNames.push_back(eventTriggerNamesJsonList[eventTriggerNamesIndex].AsString());
+    }
   }
 
 

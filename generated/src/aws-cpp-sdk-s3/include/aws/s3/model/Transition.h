@@ -42,98 +42,51 @@ namespace Model
     AWS_S3_API void AddToNode(Aws::Utils::Xml::XmlNode& parentNode) const;
 
 
+    ///@{
     /**
      * <p>Indicates when objects are transitioned to the specified storage class. The
      * date value must be in ISO 8601 format. The time is always midnight UTC.</p>
      */
     inline const Aws::Utils::DateTime& GetDate() const{ return m_date; }
-
-    /**
-     * <p>Indicates when objects are transitioned to the specified storage class. The
-     * date value must be in ISO 8601 format. The time is always midnight UTC.</p>
-     */
     inline bool DateHasBeenSet() const { return m_dateHasBeenSet; }
-
-    /**
-     * <p>Indicates when objects are transitioned to the specified storage class. The
-     * date value must be in ISO 8601 format. The time is always midnight UTC.</p>
-     */
     inline void SetDate(const Aws::Utils::DateTime& value) { m_dateHasBeenSet = true; m_date = value; }
-
-    /**
-     * <p>Indicates when objects are transitioned to the specified storage class. The
-     * date value must be in ISO 8601 format. The time is always midnight UTC.</p>
-     */
     inline void SetDate(Aws::Utils::DateTime&& value) { m_dateHasBeenSet = true; m_date = std::move(value); }
-
-    /**
-     * <p>Indicates when objects are transitioned to the specified storage class. The
-     * date value must be in ISO 8601 format. The time is always midnight UTC.</p>
-     */
     inline Transition& WithDate(const Aws::Utils::DateTime& value) { SetDate(value); return *this;}
-
-    /**
-     * <p>Indicates when objects are transitioned to the specified storage class. The
-     * date value must be in ISO 8601 format. The time is always midnight UTC.</p>
-     */
     inline Transition& WithDate(Aws::Utils::DateTime&& value) { SetDate(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Indicates the number of days after creation when objects are transitioned to
-     * the specified storage class. The value must be a positive integer.</p>
+     * the specified storage class. If the specified storage class is
+     * <code>INTELLIGENT_TIERING</code>, <code>GLACIER_IR</code>, <code>GLACIER</code>,
+     * or <code>DEEP_ARCHIVE</code>, valid values are <code>0</code> or positive
+     * integers. If the specified storage class is <code>STANDARD_IA</code> or
+     * <code>ONEZONE_IA</code>, valid values are positive integers greater than
+     * <code>30</code>. Be aware that some storage classes have a minimum storage
+     * duration and that you're charged for transitioning objects before their minimum
+     * storage duration. For more information, see <a
+     * href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/lifecycle-transition-general-considerations.html#lifecycle-configuration-constraints">
+     * Constraints and considerations for transitions</a> in the <i>Amazon S3 User
+     * Guide</i>.</p>
      */
     inline int GetDays() const{ return m_days; }
-
-    /**
-     * <p>Indicates the number of days after creation when objects are transitioned to
-     * the specified storage class. The value must be a positive integer.</p>
-     */
     inline bool DaysHasBeenSet() const { return m_daysHasBeenSet; }
-
-    /**
-     * <p>Indicates the number of days after creation when objects are transitioned to
-     * the specified storage class. The value must be a positive integer.</p>
-     */
     inline void SetDays(int value) { m_daysHasBeenSet = true; m_days = value; }
-
-    /**
-     * <p>Indicates the number of days after creation when objects are transitioned to
-     * the specified storage class. The value must be a positive integer.</p>
-     */
     inline Transition& WithDays(int value) { SetDays(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The storage class to which you want the object to transition.</p>
      */
     inline const TransitionStorageClass& GetStorageClass() const{ return m_storageClass; }
-
-    /**
-     * <p>The storage class to which you want the object to transition.</p>
-     */
     inline bool StorageClassHasBeenSet() const { return m_storageClassHasBeenSet; }
-
-    /**
-     * <p>The storage class to which you want the object to transition.</p>
-     */
     inline void SetStorageClass(const TransitionStorageClass& value) { m_storageClassHasBeenSet = true; m_storageClass = value; }
-
-    /**
-     * <p>The storage class to which you want the object to transition.</p>
-     */
     inline void SetStorageClass(TransitionStorageClass&& value) { m_storageClassHasBeenSet = true; m_storageClass = std::move(value); }
-
-    /**
-     * <p>The storage class to which you want the object to transition.</p>
-     */
     inline Transition& WithStorageClass(const TransitionStorageClass& value) { SetStorageClass(value); return *this;}
-
-    /**
-     * <p>The storage class to which you want the object to transition.</p>
-     */
     inline Transition& WithStorageClass(TransitionStorageClass&& value) { SetStorageClass(std::move(value)); return *this;}
-
+    ///@}
   private:
 
     Aws::Utils::DateTime m_date;

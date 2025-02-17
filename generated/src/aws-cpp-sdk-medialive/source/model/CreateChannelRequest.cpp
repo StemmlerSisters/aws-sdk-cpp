@@ -28,7 +28,11 @@ CreateChannelRequest::CreateChannelRequest() :
     m_requestIdHasBeenSet(true),
     m_roleArnHasBeenSet(false),
     m_tagsHasBeenSet(false),
-    m_vpcHasBeenSet(false)
+    m_vpcHasBeenSet(false),
+    m_anywhereSettingsHasBeenSet(false),
+    m_channelEngineVersionHasBeenSet(false),
+    m_dryRun(false),
+    m_dryRunHasBeenSet(false)
 {
 }
 
@@ -124,6 +128,24 @@ Aws::String CreateChannelRequest::SerializePayload() const
   if(m_vpcHasBeenSet)
   {
    payload.WithObject("vpc", m_vpc.Jsonize());
+
+  }
+
+  if(m_anywhereSettingsHasBeenSet)
+  {
+   payload.WithObject("anywhereSettings", m_anywhereSettings.Jsonize());
+
+  }
+
+  if(m_channelEngineVersionHasBeenSet)
+  {
+   payload.WithObject("channelEngineVersion", m_channelEngineVersion.Jsonize());
+
+  }
+
+  if(m_dryRunHasBeenSet)
+  {
+   payload.WithBool("dryRun", m_dryRun);
 
   }
 

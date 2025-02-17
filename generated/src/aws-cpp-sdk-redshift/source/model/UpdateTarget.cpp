@@ -27,10 +27,8 @@ UpdateTarget::UpdateTarget() :
 {
 }
 
-UpdateTarget::UpdateTarget(const XmlNode& xmlNode) : 
-    m_maintenanceTrackNameHasBeenSet(false),
-    m_databaseVersionHasBeenSet(false),
-    m_supportedOperationsHasBeenSet(false)
+UpdateTarget::UpdateTarget(const XmlNode& xmlNode)
+  : UpdateTarget()
 {
   *this = xmlNode;
 }
@@ -88,7 +86,7 @@ void UpdateTarget::OutputToStream(Aws::OStream& oStream, const char* location, u
       for(auto& item : m_supportedOperations)
       {
         Aws::StringStream supportedOperationsSs;
-        supportedOperationsSs << location << index << locationValue << ".SupportedOperation." << supportedOperationsIdx++;
+        supportedOperationsSs << location << index << locationValue << ".SupportedOperations.SupportedOperation." << supportedOperationsIdx++;
         item.OutputToStream(oStream, supportedOperationsSs.str().c_str());
       }
   }

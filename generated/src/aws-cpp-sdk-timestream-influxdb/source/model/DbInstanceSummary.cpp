@@ -25,6 +25,10 @@ DbInstanceSummary::DbInstanceSummary() :
     m_status(Status::NOT_SET),
     m_statusHasBeenSet(false),
     m_endpointHasBeenSet(false),
+    m_port(0),
+    m_portHasBeenSet(false),
+    m_networkType(NetworkType::NOT_SET),
+    m_networkTypeHasBeenSet(false),
     m_dbInstanceType(DbInstanceType::NOT_SET),
     m_dbInstanceTypeHasBeenSet(false),
     m_dbStorageType(DbStorageType::NOT_SET),
@@ -36,21 +40,8 @@ DbInstanceSummary::DbInstanceSummary() :
 {
 }
 
-DbInstanceSummary::DbInstanceSummary(JsonView jsonValue) : 
-    m_idHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_arnHasBeenSet(false),
-    m_status(Status::NOT_SET),
-    m_statusHasBeenSet(false),
-    m_endpointHasBeenSet(false),
-    m_dbInstanceType(DbInstanceType::NOT_SET),
-    m_dbInstanceTypeHasBeenSet(false),
-    m_dbStorageType(DbStorageType::NOT_SET),
-    m_dbStorageTypeHasBeenSet(false),
-    m_allocatedStorage(0),
-    m_allocatedStorageHasBeenSet(false),
-    m_deploymentType(DeploymentType::NOT_SET),
-    m_deploymentTypeHasBeenSet(false)
+DbInstanceSummary::DbInstanceSummary(JsonView jsonValue)
+  : DbInstanceSummary()
 {
   *this = jsonValue;
 }
@@ -90,6 +81,20 @@ DbInstanceSummary& DbInstanceSummary::operator =(JsonView jsonValue)
     m_endpoint = jsonValue.GetString("endpoint");
 
     m_endpointHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("port"))
+  {
+    m_port = jsonValue.GetInteger("port");
+
+    m_portHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("networkType"))
+  {
+    m_networkType = NetworkTypeMapper::GetNetworkTypeForName(jsonValue.GetString("networkType"));
+
+    m_networkTypeHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("dbInstanceType"))
@@ -154,6 +159,17 @@ JsonValue DbInstanceSummary::Jsonize() const
   {
    payload.WithString("endpoint", m_endpoint);
 
+  }
+
+  if(m_portHasBeenSet)
+  {
+   payload.WithInteger("port", m_port);
+
+  }
+
+  if(m_networkTypeHasBeenSet)
+  {
+   payload.WithString("networkType", NetworkTypeMapper::GetNameForNetworkType(m_networkType));
   }
 
   if(m_dbInstanceTypeHasBeenSet)

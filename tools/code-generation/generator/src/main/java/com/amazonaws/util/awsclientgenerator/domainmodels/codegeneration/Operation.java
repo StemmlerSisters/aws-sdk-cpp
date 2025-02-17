@@ -23,6 +23,9 @@ public class Operation {
     private boolean virtualAddressAllowed;
     private String virtualAddressMemberName;
     private String authtype;
+    // Non-empty, priority-ordered list of string auth types.
+    // This trait should only be present if its value differs from the service-level trait
+    private List<String> auth; // aws.auth#sigv4 | aws.auth#sigv4a | smithy.api#httpBearerAuth | smithy.api#noAuth
     private String signerName;
     private String authorizer;
     private boolean eventStream;
@@ -30,6 +33,9 @@ public class Operation {
 
     // Endpoint Rule static context parameters
     private Map<String, Map<String, EndpointParameterValue>> staticContextParams;
+
+    //operation context params
+    private Map<String, List<String>> operationContextParamsCode;
 
     // ARN supports.
     private boolean arnEndpointAllowed;
@@ -53,7 +59,6 @@ public class Operation {
 
     // For S3 Express
     private boolean shouldUsePropertyBag;
-    private boolean shouldSkipChecksum;
 
     // For Host Prefix Injection.
     private boolean hasEndpointTrait;
@@ -75,6 +80,8 @@ public class Operation {
     private String requestAlgorithmMember;
     private String requestValidationModeMember;
     private List<String> responseAlgorithms;
+
+    // for comporession
     private boolean requestCompressionRequired;
     private boolean requestCompressionRequiredGzip;
 

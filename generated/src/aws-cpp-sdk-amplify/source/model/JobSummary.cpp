@@ -29,22 +29,15 @@ JobSummary::JobSummary() :
     m_statusHasBeenSet(false),
     m_endTimeHasBeenSet(false),
     m_jobType(JobType::NOT_SET),
-    m_jobTypeHasBeenSet(false)
+    m_jobTypeHasBeenSet(false),
+    m_sourceUrlHasBeenSet(false),
+    m_sourceUrlType(SourceUrlType::NOT_SET),
+    m_sourceUrlTypeHasBeenSet(false)
 {
 }
 
-JobSummary::JobSummary(JsonView jsonValue) : 
-    m_jobArnHasBeenSet(false),
-    m_jobIdHasBeenSet(false),
-    m_commitIdHasBeenSet(false),
-    m_commitMessageHasBeenSet(false),
-    m_commitTimeHasBeenSet(false),
-    m_startTimeHasBeenSet(false),
-    m_status(JobStatus::NOT_SET),
-    m_statusHasBeenSet(false),
-    m_endTimeHasBeenSet(false),
-    m_jobType(JobType::NOT_SET),
-    m_jobTypeHasBeenSet(false)
+JobSummary::JobSummary(JsonView jsonValue)
+  : JobSummary()
 {
   *this = jsonValue;
 }
@@ -114,6 +107,20 @@ JobSummary& JobSummary::operator =(JsonView jsonValue)
     m_jobTypeHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("sourceUrl"))
+  {
+    m_sourceUrl = jsonValue.GetString("sourceUrl");
+
+    m_sourceUrlHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("sourceUrlType"))
+  {
+    m_sourceUrlType = SourceUrlTypeMapper::GetSourceUrlTypeForName(jsonValue.GetString("sourceUrlType"));
+
+    m_sourceUrlTypeHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -168,6 +175,17 @@ JsonValue JobSummary::Jsonize() const
   if(m_jobTypeHasBeenSet)
   {
    payload.WithString("jobType", JobTypeMapper::GetNameForJobType(m_jobType));
+  }
+
+  if(m_sourceUrlHasBeenSet)
+  {
+   payload.WithString("sourceUrl", m_sourceUrl);
+
+  }
+
+  if(m_sourceUrlTypeHasBeenSet)
+  {
+   payload.WithString("sourceUrlType", SourceUrlTypeMapper::GetNameForSourceUrlType(m_sourceUrlType));
   }
 
   return payload;

@@ -56,47 +56,14 @@ RequestLaunchTemplateData::RequestLaunchTemplateData() :
     m_privateDnsNameOptionsHasBeenSet(false),
     m_maintenanceOptionsHasBeenSet(false),
     m_disableApiStop(false),
-    m_disableApiStopHasBeenSet(false)
+    m_disableApiStopHasBeenSet(false),
+    m_operatorHasBeenSet(false),
+    m_networkPerformanceOptionsHasBeenSet(false)
 {
 }
 
-RequestLaunchTemplateData::RequestLaunchTemplateData(const XmlNode& xmlNode) : 
-    m_kernelIdHasBeenSet(false),
-    m_ebsOptimized(false),
-    m_ebsOptimizedHasBeenSet(false),
-    m_iamInstanceProfileHasBeenSet(false),
-    m_blockDeviceMappingsHasBeenSet(false),
-    m_networkInterfacesHasBeenSet(false),
-    m_imageIdHasBeenSet(false),
-    m_instanceType(InstanceType::NOT_SET),
-    m_instanceTypeHasBeenSet(false),
-    m_keyNameHasBeenSet(false),
-    m_monitoringHasBeenSet(false),
-    m_placementHasBeenSet(false),
-    m_ramDiskIdHasBeenSet(false),
-    m_disableApiTermination(false),
-    m_disableApiTerminationHasBeenSet(false),
-    m_instanceInitiatedShutdownBehavior(ShutdownBehavior::NOT_SET),
-    m_instanceInitiatedShutdownBehaviorHasBeenSet(false),
-    m_userDataHasBeenSet(false),
-    m_tagSpecificationsHasBeenSet(false),
-    m_elasticGpuSpecificationsHasBeenSet(false),
-    m_elasticInferenceAcceleratorsHasBeenSet(false),
-    m_securityGroupIdsHasBeenSet(false),
-    m_securityGroupsHasBeenSet(false),
-    m_instanceMarketOptionsHasBeenSet(false),
-    m_creditSpecificationHasBeenSet(false),
-    m_cpuOptionsHasBeenSet(false),
-    m_capacityReservationSpecificationHasBeenSet(false),
-    m_licenseSpecificationsHasBeenSet(false),
-    m_hibernationOptionsHasBeenSet(false),
-    m_metadataOptionsHasBeenSet(false),
-    m_enclaveOptionsHasBeenSet(false),
-    m_instanceRequirementsHasBeenSet(false),
-    m_privateDnsNameOptionsHasBeenSet(false),
-    m_maintenanceOptionsHasBeenSet(false),
-    m_disableApiStop(false),
-    m_disableApiStopHasBeenSet(false)
+RequestLaunchTemplateData::RequestLaunchTemplateData(const XmlNode& xmlNode)
+  : RequestLaunchTemplateData()
 {
   *this = xmlNode;
 }
@@ -341,6 +308,18 @@ RequestLaunchTemplateData& RequestLaunchTemplateData::operator =(const XmlNode& 
       m_disableApiStop = StringUtils::ConvertToBool(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(disableApiStopNode.GetText()).c_str()).c_str());
       m_disableApiStopHasBeenSet = true;
     }
+    XmlNode operatorNode = resultNode.FirstChild("Operator");
+    if(!operatorNode.IsNull())
+    {
+      m_operator = operatorNode;
+      m_operatorHasBeenSet = true;
+    }
+    XmlNode networkPerformanceOptionsNode = resultNode.FirstChild("NetworkPerformanceOptions");
+    if(!networkPerformanceOptionsNode.IsNull())
+    {
+      m_networkPerformanceOptions = networkPerformanceOptionsNode;
+      m_networkPerformanceOptionsHasBeenSet = true;
+    }
   }
 
   return *this;
@@ -573,6 +552,20 @@ void RequestLaunchTemplateData::OutputToStream(Aws::OStream& oStream, const char
       oStream << location << index << locationValue << ".DisableApiStop=" << std::boolalpha << m_disableApiStop << "&";
   }
 
+  if(m_operatorHasBeenSet)
+  {
+      Aws::StringStream operatorLocationAndMemberSs;
+      operatorLocationAndMemberSs << location << index << locationValue << ".Operator";
+      m_operator.OutputToStream(oStream, operatorLocationAndMemberSs.str().c_str());
+  }
+
+  if(m_networkPerformanceOptionsHasBeenSet)
+  {
+      Aws::StringStream networkPerformanceOptionsLocationAndMemberSs;
+      networkPerformanceOptionsLocationAndMemberSs << location << index << locationValue << ".NetworkPerformanceOptions";
+      m_networkPerformanceOptions.OutputToStream(oStream, networkPerformanceOptionsLocationAndMemberSs.str().c_str());
+  }
+
 }
 
 void RequestLaunchTemplateData::OutputToStream(Aws::OStream& oStream, const char* location) const
@@ -770,6 +763,18 @@ void RequestLaunchTemplateData::OutputToStream(Aws::OStream& oStream, const char
   if(m_disableApiStopHasBeenSet)
   {
       oStream << location << ".DisableApiStop=" << std::boolalpha << m_disableApiStop << "&";
+  }
+  if(m_operatorHasBeenSet)
+  {
+      Aws::String operatorLocationAndMember(location);
+      operatorLocationAndMember += ".Operator";
+      m_operator.OutputToStream(oStream, operatorLocationAndMember.c_str());
+  }
+  if(m_networkPerformanceOptionsHasBeenSet)
+  {
+      Aws::String networkPerformanceOptionsLocationAndMember(location);
+      networkPerformanceOptionsLocationAndMember += ".NetworkPerformanceOptions";
+      m_networkPerformanceOptions.OutputToStream(oStream, networkPerformanceOptionsLocationAndMember.c_str());
   }
 }
 

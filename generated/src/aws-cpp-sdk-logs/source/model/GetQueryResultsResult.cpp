@@ -18,12 +18,13 @@ using namespace Aws::Utils;
 using namespace Aws;
 
 GetQueryResultsResult::GetQueryResultsResult() : 
+    m_queryLanguage(QueryLanguage::NOT_SET),
     m_status(QueryStatus::NOT_SET)
 {
 }
 
-GetQueryResultsResult::GetQueryResultsResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_status(QueryStatus::NOT_SET)
+GetQueryResultsResult::GetQueryResultsResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetQueryResultsResult()
 {
   *this = result;
 }
@@ -31,6 +32,12 @@ GetQueryResultsResult::GetQueryResultsResult(const Aws::AmazonWebServiceResult<J
 GetQueryResultsResult& GetQueryResultsResult::operator =(const Aws::AmazonWebServiceResult<JsonValue>& result)
 {
   JsonView jsonValue = result.GetPayload().View();
+  if(jsonValue.ValueExists("queryLanguage"))
+  {
+    m_queryLanguage = QueryLanguageMapper::GetQueryLanguageForName(jsonValue.GetString("queryLanguage"));
+
+  }
+
   if(jsonValue.ValueExists("results"))
   {
     Aws::Utils::Array<JsonView> resultsJsonList = jsonValue.GetArray("results");

@@ -12,49 +12,21 @@ import com.amazonaws.util.awsclientgenerator.domainmodels.codegeneration.Shape;
 import com.amazonaws.util.awsclientgenerator.domainmodels.codegeneration.ShapeMember;
 import com.amazonaws.util.awsclientgenerator.domainmodels.codegeneration.cpp.CppShapeInformation;
 import com.amazonaws.util.awsclientgenerator.domainmodels.codegeneration.cpp.CppViewHelper;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Sets;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class JsonCppClientGenerator extends CppClientGenerator {
 
-    private final Set<String> requestlessOperations = new HashSet<>();
-
     public JsonCppClientGenerator() throws Exception {
         super();
-    }
-
-    @Override
-    public SdkFileEntry[] generateSourceFiles(ServiceModel serviceModel) throws Exception {
-        serviceModel.getOperations().values().stream()
-                .filter(operation -> !operation.hasRequest())
-                .forEach(operation -> {
-                    Shape requestShape = Shape.builder()
-                            .name(operation.getName() + "Request")
-                            .referencedBy(Sets.newHashSet(operation.getName()))
-                            .type("structure")
-                            .isRequest(true)
-                            .isReferenced(true)
-                            .members(ImmutableMap.of())
-                            .enumValues(ImmutableList.of())
-                            .build();
-                    operation.setRequestlessDefault(true);
-                    serviceModel.getShapes().put(requestShape.getName(), requestShape);
-                    operation.addRequest(ShapeMember.builder().shape(requestShape).build());
-                    requestlessOperations.add(operation.getName());
-                });
-
-        return super.generateSourceFiles(serviceModel);
     }
 
     @Override
@@ -164,14 +136,7 @@ public class JsonCppClientGenerator extends CppClientGenerator {
                 template = velocityEngine.getTemplate("/com/amazonaws/util/awsclientgenerator/velocity/cpp/json/JsonSubObjectSource.vm", StandardCharsets.UTF_8.name());
             }
 
-            for (Map.Entry<String, Operation> opEntry : serviceModel.getOperations().entrySet()) {
-                Operation op = opEntry.getValue();
-                if (op.getRequest() != null && op.getRequest().getShape().getName() == shape.getName()) {
-                    context.put("operation", op);
-                    break;
-                }
-            }
-
+            context.put("operation", serviceModel.getOperationForRequestShapeName(shape.getName()));
             context.put("shape", shape);
             context.put("typeInfo", new CppShapeInformation(shape, serviceModel));
             context.put("CppViewHelper", CppViewHelper.class);
@@ -187,6 +152,10 @@ public class JsonCppClientGenerator extends CppClientGenerator {
     @Override
     protected SdkFileEntry generateClientHeaderFile(final ServiceModel serviceModel) throws Exception {
 
+        if (serviceModel.isUseSmithyClient() && !serviceModel.hasEventStreamingRequestShapes()) {
+            return generateClientSmithyHeaderFile(serviceModel);
+        }
+
         Template template = velocityEngine.getTemplate("/com/amazonaws/util/awsclientgenerator/velocity/cpp/json/JsonServiceClientHeader.vm", StandardCharsets.UTF_8.name());
 
         VelocityContext context = createContext(serviceModel);
@@ -195,30 +164,25 @@ public class JsonCppClientGenerator extends CppClientGenerator {
 
         String fileName = String.format("include/aws/%s/%sClient.h", serviceModel.getMetadata().getProjectName(),
                 serviceModel.getMetadata().getClassNamePrefix());
-
         return makeFile(template, context, fileName, true);
     }
 
     @Override
-    protected List<SdkFileEntry> generateClientSourceFile(final List<ServiceModel> serviceModels) throws Exception {
-        List<SdkFileEntry> sourceFiles = new ArrayList<>();
-        for (int i = 0; i < serviceModels.size(); i++) {
-            Template template = velocityEngine.getTemplate("/com/amazonaws/util/awsclientgenerator/velocity/cpp/json/JsonServiceClientSource.vm", StandardCharsets.UTF_8.name());
+    protected List<SdkFileEntry> generateClientSourceFile( List<ServiceModel> serviceModels) throws Exception {
 
-            VelocityContext context = createContext(serviceModels.get(i));
-            context.put("CppViewHelper", CppViewHelper.class);
+        List<Integer> serviceModelsIndices = IntStream.range(0, serviceModels.size()).boxed().collect(Collectors.toList());
 
-            final String fileName;
-            if (i == 0) {
-                context.put("onlyGeneratedOperations", false);
-                fileName = String.format("source/%sClient.cpp", serviceModels.get(i).getMetadata().getClassNamePrefix());
-            } else {
-                context.put("onlyGeneratedOperations", true);
-                fileName = String.format("source/%sClient%d.cpp", serviceModels.get(i).getMetadata().getClassNamePrefix(), i);
+        return serviceModelsIndices.stream().map(index -> 
+        {
+            if(serviceModels.get(index).isUseSmithyClient() && !serviceModels.get(index).hasEventStreamingRequestShapes())
+            {
+                return GenerateSmithyClientSourceFile(serviceModels.get(index), index);
             }
-            sourceFiles.add(makeFile(template, context, fileName, true));
-        }
-        return sourceFiles;
+            else
+            {
+                return GenerateLegacyClientSourceFile(serviceModels.get(index), index);
+            }
+        }).collect(Collectors.toList()); 
     }
 
     @Override

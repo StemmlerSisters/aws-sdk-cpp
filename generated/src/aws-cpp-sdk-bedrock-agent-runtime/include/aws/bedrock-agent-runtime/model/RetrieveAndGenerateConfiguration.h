@@ -43,104 +43,46 @@ namespace Model
     AWS_BEDROCKAGENTRUNTIME_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
-     * <p>The configuration used with the external source wrapper object in the
-     * retrieveAndGenerate function.</p>
+     * <p>The configuration for the external source wrapper object in the
+     * <code>retrieveAndGenerate</code> function.</p>
      */
     inline const ExternalSourcesRetrieveAndGenerateConfiguration& GetExternalSourcesConfiguration() const{ return m_externalSourcesConfiguration; }
-
-    /**
-     * <p>The configuration used with the external source wrapper object in the
-     * retrieveAndGenerate function.</p>
-     */
     inline bool ExternalSourcesConfigurationHasBeenSet() const { return m_externalSourcesConfigurationHasBeenSet; }
-
-    /**
-     * <p>The configuration used with the external source wrapper object in the
-     * retrieveAndGenerate function.</p>
-     */
     inline void SetExternalSourcesConfiguration(const ExternalSourcesRetrieveAndGenerateConfiguration& value) { m_externalSourcesConfigurationHasBeenSet = true; m_externalSourcesConfiguration = value; }
-
-    /**
-     * <p>The configuration used with the external source wrapper object in the
-     * retrieveAndGenerate function.</p>
-     */
     inline void SetExternalSourcesConfiguration(ExternalSourcesRetrieveAndGenerateConfiguration&& value) { m_externalSourcesConfigurationHasBeenSet = true; m_externalSourcesConfiguration = std::move(value); }
-
-    /**
-     * <p>The configuration used with the external source wrapper object in the
-     * retrieveAndGenerate function.</p>
-     */
     inline RetrieveAndGenerateConfiguration& WithExternalSourcesConfiguration(const ExternalSourcesRetrieveAndGenerateConfiguration& value) { SetExternalSourcesConfiguration(value); return *this;}
-
-    /**
-     * <p>The configuration used with the external source wrapper object in the
-     * retrieveAndGenerate function.</p>
-     */
     inline RetrieveAndGenerateConfiguration& WithExternalSourcesConfiguration(ExternalSourcesRetrieveAndGenerateConfiguration&& value) { SetExternalSourcesConfiguration(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p>Contains details about the resource being queried.</p>
+     * <p>Contains details about the knowledge base for retrieving information and
+     * generating responses.</p>
      */
     inline const KnowledgeBaseRetrieveAndGenerateConfiguration& GetKnowledgeBaseConfiguration() const{ return m_knowledgeBaseConfiguration; }
-
-    /**
-     * <p>Contains details about the resource being queried.</p>
-     */
     inline bool KnowledgeBaseConfigurationHasBeenSet() const { return m_knowledgeBaseConfigurationHasBeenSet; }
-
-    /**
-     * <p>Contains details about the resource being queried.</p>
-     */
     inline void SetKnowledgeBaseConfiguration(const KnowledgeBaseRetrieveAndGenerateConfiguration& value) { m_knowledgeBaseConfigurationHasBeenSet = true; m_knowledgeBaseConfiguration = value; }
-
-    /**
-     * <p>Contains details about the resource being queried.</p>
-     */
     inline void SetKnowledgeBaseConfiguration(KnowledgeBaseRetrieveAndGenerateConfiguration&& value) { m_knowledgeBaseConfigurationHasBeenSet = true; m_knowledgeBaseConfiguration = std::move(value); }
-
-    /**
-     * <p>Contains details about the resource being queried.</p>
-     */
     inline RetrieveAndGenerateConfiguration& WithKnowledgeBaseConfiguration(const KnowledgeBaseRetrieveAndGenerateConfiguration& value) { SetKnowledgeBaseConfiguration(value); return *this;}
-
-    /**
-     * <p>Contains details about the resource being queried.</p>
-     */
     inline RetrieveAndGenerateConfiguration& WithKnowledgeBaseConfiguration(KnowledgeBaseRetrieveAndGenerateConfiguration&& value) { SetKnowledgeBaseConfiguration(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p>The type of resource that is queried by the request.</p>
+     * <p>The type of resource that contains your data for retrieving information and
+     * generating responses.</p> <p>If you choose ot use <code>EXTERNAL_SOURCES</code>,
+     * then currently only Claude 3 Sonnet models for knowledge bases are
+     * supported.</p>
      */
     inline const RetrieveAndGenerateType& GetType() const{ return m_type; }
-
-    /**
-     * <p>The type of resource that is queried by the request.</p>
-     */
     inline bool TypeHasBeenSet() const { return m_typeHasBeenSet; }
-
-    /**
-     * <p>The type of resource that is queried by the request.</p>
-     */
     inline void SetType(const RetrieveAndGenerateType& value) { m_typeHasBeenSet = true; m_type = value; }
-
-    /**
-     * <p>The type of resource that is queried by the request.</p>
-     */
     inline void SetType(RetrieveAndGenerateType&& value) { m_typeHasBeenSet = true; m_type = std::move(value); }
-
-    /**
-     * <p>The type of resource that is queried by the request.</p>
-     */
     inline RetrieveAndGenerateConfiguration& WithType(const RetrieveAndGenerateType& value) { SetType(value); return *this;}
-
-    /**
-     * <p>The type of resource that is queried by the request.</p>
-     */
     inline RetrieveAndGenerateConfiguration& WithType(RetrieveAndGenerateType&& value) { SetType(std::move(value)); return *this;}
-
+    ///@}
   private:
 
     ExternalSourcesRetrieveAndGenerateConfiguration m_externalSourcesConfiguration;

@@ -22,15 +22,13 @@ LFTagPolicyResource::LFTagPolicyResource() :
     m_catalogIdHasBeenSet(false),
     m_resourceType(ResourceType::NOT_SET),
     m_resourceTypeHasBeenSet(false),
-    m_expressionHasBeenSet(false)
+    m_expressionHasBeenSet(false),
+    m_expressionNameHasBeenSet(false)
 {
 }
 
-LFTagPolicyResource::LFTagPolicyResource(JsonView jsonValue) : 
-    m_catalogIdHasBeenSet(false),
-    m_resourceType(ResourceType::NOT_SET),
-    m_resourceTypeHasBeenSet(false),
-    m_expressionHasBeenSet(false)
+LFTagPolicyResource::LFTagPolicyResource(JsonView jsonValue)
+  : LFTagPolicyResource()
 {
   *this = jsonValue;
 }
@@ -61,6 +59,13 @@ LFTagPolicyResource& LFTagPolicyResource::operator =(JsonView jsonValue)
     m_expressionHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("ExpressionName"))
+  {
+    m_expressionName = jsonValue.GetString("ExpressionName");
+
+    m_expressionNameHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -87,6 +92,12 @@ JsonValue LFTagPolicyResource::Jsonize() const
      expressionJsonList[expressionIndex].AsObject(m_expression[expressionIndex].Jsonize());
    }
    payload.WithArray("Expression", std::move(expressionJsonList));
+
+  }
+
+  if(m_expressionNameHasBeenSet)
+  {
+   payload.WithString("ExpressionName", m_expressionName);
 
   }
 

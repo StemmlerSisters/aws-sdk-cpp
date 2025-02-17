@@ -19,6 +19,7 @@ using namespace Aws;
 GetObjectResult::GetObjectResult() : 
     m_deleteMarker(false),
     m_contentLength(0),
+    m_checksumType(ChecksumType::NOT_SET),
     m_missingMeta(0),
     m_serverSideEncryption(ServerSideEncryption::NOT_SET),
     m_bucketKeyEnabled(false),
@@ -43,8 +44,10 @@ GetObjectResult::GetObjectResult(GetObjectResult&& toMove) :
     m_eTag(std::move(toMove.m_eTag)),
     m_checksumCRC32(std::move(toMove.m_checksumCRC32)),
     m_checksumCRC32C(std::move(toMove.m_checksumCRC32C)),
+    m_checksumCRC64NVME(std::move(toMove.m_checksumCRC64NVME)),
     m_checksumSHA1(std::move(toMove.m_checksumSHA1)),
     m_checksumSHA256(std::move(toMove.m_checksumSHA256)),
+    m_checksumType(toMove.m_checksumType),
     m_missingMeta(toMove.m_missingMeta),
     m_versionId(std::move(toMove.m_versionId)),
     m_cacheControl(std::move(toMove.m_cacheControl)),
@@ -70,7 +73,8 @@ GetObjectResult::GetObjectResult(GetObjectResult&& toMove) :
     m_objectLockRetainUntilDate(std::move(toMove.m_objectLockRetainUntilDate)),
     m_objectLockLegalHoldStatus(toMove.m_objectLockLegalHoldStatus),
     m_id2(std::move(toMove.m_id2)),
-    m_requestId(std::move(toMove.m_requestId))
+    m_requestId(std::move(toMove.m_requestId)),
+    m_expiresString(std::move(toMove.m_expiresString))
 {
 }
 
@@ -91,8 +95,10 @@ GetObjectResult& GetObjectResult::operator=(GetObjectResult&& toMove)
    m_eTag = std::move(toMove.m_eTag);
    m_checksumCRC32 = std::move(toMove.m_checksumCRC32);
    m_checksumCRC32C = std::move(toMove.m_checksumCRC32C);
+   m_checksumCRC64NVME = std::move(toMove.m_checksumCRC64NVME);
    m_checksumSHA1 = std::move(toMove.m_checksumSHA1);
    m_checksumSHA256 = std::move(toMove.m_checksumSHA256);
+   m_checksumType = toMove.m_checksumType;
    m_missingMeta = toMove.m_missingMeta;
    m_versionId = std::move(toMove.m_versionId);
    m_cacheControl = std::move(toMove.m_cacheControl);
@@ -119,23 +125,13 @@ GetObjectResult& GetObjectResult::operator=(GetObjectResult&& toMove)
    m_objectLockLegalHoldStatus = toMove.m_objectLockLegalHoldStatus;
    m_id2 = std::move(toMove.m_id2);
    m_requestId = std::move(toMove.m_requestId);
+   m_expiresString = std::move(toMove.m_expiresString);
 
    return *this;
 }
 
-GetObjectResult::GetObjectResult(Aws::AmazonWebServiceResult<ResponseStream>&& result) : 
-    m_deleteMarker(false),
-    m_contentLength(0),
-    m_missingMeta(0),
-    m_serverSideEncryption(ServerSideEncryption::NOT_SET),
-    m_bucketKeyEnabled(false),
-    m_storageClass(StorageClass::NOT_SET),
-    m_requestCharged(RequestCharged::NOT_SET),
-    m_replicationStatus(ReplicationStatus::NOT_SET),
-    m_partsCount(0),
-    m_tagCount(0),
-    m_objectLockMode(ObjectLockMode::NOT_SET),
-    m_objectLockLegalHoldStatus(ObjectLockLegalHoldStatus::NOT_SET)
+GetObjectResult::GetObjectResult(Aws::AmazonWebServiceResult<ResponseStream>&& result)
+  : GetObjectResult()
 {
   *this = std::move(result);
 }
@@ -172,7 +168,11 @@ GetObjectResult& GetObjectResult::operator =(Aws::AmazonWebServiceResult<Respons
   const auto& lastModifiedIter = headers.find("last-modified");
   if(lastModifiedIter != headers.end())
   {
-    m_lastModified = DateTime(lastModifiedIter->second, Aws::Utils::DateFormat::RFC822);
+    m_lastModified = DateTime(lastModifiedIter->second.c_str(), Aws::Utils::DateFormat::RFC822);
+    if(!m_lastModified.WasParseSuccessful())
+    {
+      AWS_LOGSTREAM_WARN("S3Crt::GetObjectResult", "Failed to parse lastModified header as an RFC822 timestamp: " << lastModifiedIter->second.c_str());
+    }
   }
 
   const auto& contentLengthIter = headers.find("content-length");
@@ -199,6 +199,12 @@ GetObjectResult& GetObjectResult::operator =(Aws::AmazonWebServiceResult<Respons
     m_checksumCRC32C = checksumCRC32CIter->second;
   }
 
+  const auto& checksumCRC64NVMEIter = headers.find("x-amz-checksum-crc64nvme");
+  if(checksumCRC64NVMEIter != headers.end())
+  {
+    m_checksumCRC64NVME = checksumCRC64NVMEIter->second;
+  }
+
   const auto& checksumSHA1Iter = headers.find("x-amz-checksum-sha1");
   if(checksumSHA1Iter != headers.end())
   {
@@ -209,6 +215,12 @@ GetObjectResult& GetObjectResult::operator =(Aws::AmazonWebServiceResult<Respons
   if(checksumSHA256Iter != headers.end())
   {
     m_checksumSHA256 = checksumSHA256Iter->second;
+  }
+
+  const auto& checksumTypeIter = headers.find("x-amz-checksum-type");
+  if(checksumTypeIter != headers.end())
+  {
+    m_checksumType = ChecksumTypeMapper::GetChecksumTypeForName(checksumTypeIter->second);
   }
 
   const auto& missingMetaIter = headers.find("x-amz-missing-meta");
@@ -262,7 +274,11 @@ GetObjectResult& GetObjectResult::operator =(Aws::AmazonWebServiceResult<Respons
   const auto& expiresIter = headers.find("expires");
   if(expiresIter != headers.end())
   {
-    m_expires = DateTime(expiresIter->second, Aws::Utils::DateFormat::RFC822);
+    m_expires = DateTime(expiresIter->second.c_str(), Aws::Utils::DateFormat::RFC822);
+    if(!m_expires.WasParseSuccessful())
+    {
+      AWS_LOGSTREAM_WARN("S3Crt::GetObjectResult", "Failed to parse expires header as an RFC822 timestamp: " << expiresIter->second.c_str());
+    }
   }
 
   const auto& websiteRedirectLocationIter = headers.find("x-amz-website-redirect-location");
@@ -351,7 +367,11 @@ GetObjectResult& GetObjectResult::operator =(Aws::AmazonWebServiceResult<Respons
   const auto& objectLockRetainUntilDateIter = headers.find("x-amz-object-lock-retain-until-date");
   if(objectLockRetainUntilDateIter != headers.end())
   {
-    m_objectLockRetainUntilDate = DateTime(objectLockRetainUntilDateIter->second, Aws::Utils::DateFormat::ISO_8601);
+    m_objectLockRetainUntilDate = DateTime(objectLockRetainUntilDateIter->second.c_str(), Aws::Utils::DateFormat::ISO_8601);
+    if(!m_objectLockRetainUntilDate.WasParseSuccessful())
+    {
+      AWS_LOGSTREAM_WARN("S3Crt::GetObjectResult", "Failed to parse objectLockRetainUntilDate header as an ISO_8601 timestamp: " << objectLockRetainUntilDateIter->second.c_str());
+    }
   }
 
   const auto& objectLockLegalHoldStatusIter = headers.find("x-amz-object-lock-legal-hold");
@@ -370,6 +390,12 @@ GetObjectResult& GetObjectResult::operator =(Aws::AmazonWebServiceResult<Respons
   if(requestIdIter != headers.end())
   {
     m_requestId = requestIdIter->second;
+  }
+
+  const auto& expiresStringIter = headers.find("expires");
+  if(expiresStringIter != headers.end())
+  {
+    m_expiresString = expiresStringIter->second;
   }
 
    return *this;

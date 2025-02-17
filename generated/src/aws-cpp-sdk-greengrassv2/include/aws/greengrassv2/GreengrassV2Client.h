@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/greengrassv2/GreengrassV2_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/greengrassv2/GreengrassV2ServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/greengrassv2/GreengrassV2ErrorMarshaller.h>
 
 namespace Aws
 {
 namespace GreengrassV2
 {
+  AWS_GREENGRASSV2_API extern const char SERVICE_NAME[];
   /**
    * <p>IoT Greengrass brings local compute, messaging, data management, sync, and ML
    * inference capabilities to edge devices. This enables devices to collect and
@@ -31,12 +35,20 @@ namespace GreengrassV2
    * href="https://docs.aws.amazon.com/greengrass/v2/developerguide/what-is-iot-greengrass.html">What
    * is IoT Greengrass?</a> in the <i>IoT Greengrass V2 Developer Guide</i>.</p>
    */
-  class AWS_GREENGRASSV2_API GreengrassV2Client : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<GreengrassV2Client>
+  class AWS_GREENGRASSV2_API GreengrassV2Client : smithy::client::AwsSmithyClientT<Aws::GreengrassV2::SERVICE_NAME,
+      Aws::GreengrassV2::GreengrassV2ClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      GreengrassV2EndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::GreengrassV2ErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<GreengrassV2Client>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "GreengrassV2"; }
 
       typedef GreengrassV2ClientConfiguration ClientConfigurationType;
       typedef GreengrassV2EndpointProvider EndpointProviderType;
@@ -243,13 +255,13 @@ namespace GreengrassV2
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrassv2-2020-11-30/CreateComponentVersion">AWS
          * API Reference</a></p>
          */
-        virtual Model::CreateComponentVersionOutcome CreateComponentVersion(const Model::CreateComponentVersionRequest& request) const;
+        virtual Model::CreateComponentVersionOutcome CreateComponentVersion(const Model::CreateComponentVersionRequest& request = {}) const;
 
         /**
          * A Callable wrapper for CreateComponentVersion that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename CreateComponentVersionRequestT = Model::CreateComponentVersionRequest>
-        Model::CreateComponentVersionOutcomeCallable CreateComponentVersionCallable(const CreateComponentVersionRequestT& request) const
+        Model::CreateComponentVersionOutcomeCallable CreateComponentVersionCallable(const CreateComponentVersionRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassV2Client::CreateComponentVersion, request);
         }
@@ -258,7 +270,7 @@ namespace GreengrassV2
          * An Async wrapper for CreateComponentVersion that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename CreateComponentVersionRequestT = Model::CreateComponentVersionRequest>
-        void CreateComponentVersionAsync(const CreateComponentVersionRequestT& request, const CreateComponentVersionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void CreateComponentVersionAsync(const CreateComponentVersionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const CreateComponentVersionRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassV2Client::CreateComponentVersion, request, handler, context);
         }
@@ -428,13 +440,13 @@ namespace GreengrassV2
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrassv2-2020-11-30/DisassociateServiceRoleFromAccount">AWS
          * API Reference</a></p>
          */
-        virtual Model::DisassociateServiceRoleFromAccountOutcome DisassociateServiceRoleFromAccount(const Model::DisassociateServiceRoleFromAccountRequest& request) const;
+        virtual Model::DisassociateServiceRoleFromAccountOutcome DisassociateServiceRoleFromAccount(const Model::DisassociateServiceRoleFromAccountRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DisassociateServiceRoleFromAccount that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DisassociateServiceRoleFromAccountRequestT = Model::DisassociateServiceRoleFromAccountRequest>
-        Model::DisassociateServiceRoleFromAccountOutcomeCallable DisassociateServiceRoleFromAccountCallable(const DisassociateServiceRoleFromAccountRequestT& request) const
+        Model::DisassociateServiceRoleFromAccountOutcomeCallable DisassociateServiceRoleFromAccountCallable(const DisassociateServiceRoleFromAccountRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassV2Client::DisassociateServiceRoleFromAccount, request);
         }
@@ -443,7 +455,7 @@ namespace GreengrassV2
          * An Async wrapper for DisassociateServiceRoleFromAccount that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DisassociateServiceRoleFromAccountRequestT = Model::DisassociateServiceRoleFromAccountRequest>
-        void DisassociateServiceRoleFromAccountAsync(const DisassociateServiceRoleFromAccountRequestT& request, const DisassociateServiceRoleFromAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DisassociateServiceRoleFromAccountAsync(const DisassociateServiceRoleFromAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DisassociateServiceRoleFromAccountRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassV2Client::DisassociateServiceRoleFromAccount, request, handler, context);
         }
@@ -612,13 +624,13 @@ namespace GreengrassV2
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrassv2-2020-11-30/GetServiceRoleForAccount">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetServiceRoleForAccountOutcome GetServiceRoleForAccount(const Model::GetServiceRoleForAccountRequest& request) const;
+        virtual Model::GetServiceRoleForAccountOutcome GetServiceRoleForAccount(const Model::GetServiceRoleForAccountRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetServiceRoleForAccount that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetServiceRoleForAccountRequestT = Model::GetServiceRoleForAccountRequest>
-        Model::GetServiceRoleForAccountOutcomeCallable GetServiceRoleForAccountCallable(const GetServiceRoleForAccountRequestT& request) const
+        Model::GetServiceRoleForAccountOutcomeCallable GetServiceRoleForAccountCallable(const GetServiceRoleForAccountRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassV2Client::GetServiceRoleForAccount, request);
         }
@@ -627,7 +639,7 @@ namespace GreengrassV2
          * An Async wrapper for GetServiceRoleForAccount that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetServiceRoleForAccountRequestT = Model::GetServiceRoleForAccountRequest>
-        void GetServiceRoleForAccountAsync(const GetServiceRoleForAccountRequestT& request, const GetServiceRoleForAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetServiceRoleForAccountAsync(const GetServiceRoleForAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetServiceRoleForAccountRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassV2Client::GetServiceRoleForAccount, request, handler, context);
         }
@@ -690,13 +702,13 @@ namespace GreengrassV2
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrassv2-2020-11-30/ListComponents">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListComponentsOutcome ListComponents(const Model::ListComponentsRequest& request) const;
+        virtual Model::ListComponentsOutcome ListComponents(const Model::ListComponentsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListComponents that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListComponentsRequestT = Model::ListComponentsRequest>
-        Model::ListComponentsOutcomeCallable ListComponentsCallable(const ListComponentsRequestT& request) const
+        Model::ListComponentsOutcomeCallable ListComponentsCallable(const ListComponentsRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassV2Client::ListComponents, request);
         }
@@ -705,7 +717,7 @@ namespace GreengrassV2
          * An Async wrapper for ListComponents that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListComponentsRequestT = Model::ListComponentsRequest>
-        void ListComponentsAsync(const ListComponentsRequestT& request, const ListComponentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListComponentsAsync(const ListComponentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListComponentsRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassV2Client::ListComponents, request, handler, context);
         }
@@ -719,9 +731,13 @@ namespace GreengrassV2
          * indicates when the device status was last updated.</p> <p>Core devices send
          * status updates at the following times:</p> <ul> <li> <p>When the IoT Greengrass
          * Core software starts</p> </li> <li> <p>When the core device receives a
-         * deployment from the Amazon Web Services Cloud</p> </li> <li> <p>When the status
-         * of any component on the core device becomes <code>BROKEN</code> </p> </li> <li>
-         * <p>At a <a
+         * deployment from the Amazon Web Services Cloud</p> </li> <li> <p>For Greengrass
+         * nucleus 2.12.2 and earlier, the core device sends status updates when the status
+         * of any component on the core device becomes <code>ERRORED</code> or
+         * <code>BROKEN</code>.</p> </li> <li> <p>For Greengrass nucleus 2.12.3 and later,
+         * the core device sends status updates when the status of any component on the
+         * core device becomes <code>ERRORED</code>, <code>BROKEN</code>,
+         * <code>RUNNING</code>, or <code>FINISHED</code>.</p> </li> <li> <p>At a <a
          * href="https://docs.aws.amazon.com/greengrass/v2/developerguide/greengrass-nucleus-component.html#greengrass-nucleus-component-configuration-fss">regular
          * interval that you can configure</a>, which defaults to 24 hours</p> </li> <li>
          * <p>For IoT Greengrass Core v2.7.0, the core device sends status updates upon
@@ -730,13 +746,13 @@ namespace GreengrassV2
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrassv2-2020-11-30/ListCoreDevices">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListCoreDevicesOutcome ListCoreDevices(const Model::ListCoreDevicesRequest& request) const;
+        virtual Model::ListCoreDevicesOutcome ListCoreDevices(const Model::ListCoreDevicesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListCoreDevices that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListCoreDevicesRequestT = Model::ListCoreDevicesRequest>
-        Model::ListCoreDevicesOutcomeCallable ListCoreDevicesCallable(const ListCoreDevicesRequestT& request) const
+        Model::ListCoreDevicesOutcomeCallable ListCoreDevicesCallable(const ListCoreDevicesRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassV2Client::ListCoreDevices, request);
         }
@@ -745,7 +761,7 @@ namespace GreengrassV2
          * An Async wrapper for ListCoreDevices that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListCoreDevicesRequestT = Model::ListCoreDevicesRequest>
-        void ListCoreDevicesAsync(const ListCoreDevicesRequestT& request, const ListCoreDevicesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListCoreDevicesAsync(const ListCoreDevicesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListCoreDevicesRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassV2Client::ListCoreDevices, request, handler, context);
         }
@@ -755,13 +771,13 @@ namespace GreengrassV2
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrassv2-2020-11-30/ListDeployments">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDeploymentsOutcome ListDeployments(const Model::ListDeploymentsRequest& request) const;
+        virtual Model::ListDeploymentsOutcome ListDeployments(const Model::ListDeploymentsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDeployments that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDeploymentsRequestT = Model::ListDeploymentsRequest>
-        Model::ListDeploymentsOutcomeCallable ListDeploymentsCallable(const ListDeploymentsRequestT& request) const
+        Model::ListDeploymentsOutcomeCallable ListDeploymentsCallable(const ListDeploymentsRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassV2Client::ListDeployments, request);
         }
@@ -770,7 +786,7 @@ namespace GreengrassV2
          * An Async wrapper for ListDeployments that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDeploymentsRequestT = Model::ListDeploymentsRequest>
-        void ListDeploymentsAsync(const ListDeploymentsRequestT& request, const ListDeploymentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDeploymentsAsync(const ListDeploymentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDeploymentsRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassV2Client::ListDeployments, request, handler, context);
         }
@@ -890,13 +906,13 @@ namespace GreengrassV2
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrassv2-2020-11-30/ResolveComponentCandidates">AWS
          * API Reference</a></p>
          */
-        virtual Model::ResolveComponentCandidatesOutcome ResolveComponentCandidates(const Model::ResolveComponentCandidatesRequest& request) const;
+        virtual Model::ResolveComponentCandidatesOutcome ResolveComponentCandidates(const Model::ResolveComponentCandidatesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ResolveComponentCandidates that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ResolveComponentCandidatesRequestT = Model::ResolveComponentCandidatesRequest>
-        Model::ResolveComponentCandidatesOutcomeCallable ResolveComponentCandidatesCallable(const ResolveComponentCandidatesRequestT& request) const
+        Model::ResolveComponentCandidatesOutcomeCallable ResolveComponentCandidatesCallable(const ResolveComponentCandidatesRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassV2Client::ResolveComponentCandidates, request);
         }
@@ -905,7 +921,7 @@ namespace GreengrassV2
          * An Async wrapper for ResolveComponentCandidates that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ResolveComponentCandidatesRequestT = Model::ResolveComponentCandidatesRequest>
-        void ResolveComponentCandidatesAsync(const ResolveComponentCandidatesRequestT& request, const ResolveComponentCandidatesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ResolveComponentCandidatesAsync(const ResolveComponentCandidatesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ResolveComponentCandidatesRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassV2Client::ResolveComponentCandidates, request, handler, context);
         }
@@ -1001,11 +1017,7 @@ namespace GreengrassV2
       std::shared_ptr<GreengrassV2EndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<GreengrassV2Client>;
-      void init(const GreengrassV2ClientConfiguration& clientConfiguration);
 
-      GreengrassV2ClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<GreengrassV2EndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace GreengrassV2

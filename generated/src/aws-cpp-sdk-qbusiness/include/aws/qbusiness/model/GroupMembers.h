@@ -6,6 +6,7 @@
 #pragma once
 #include <aws/qbusiness/QBusiness_EXPORTS.h>
 #include <aws/core/utils/memory/stl/AWSVector.h>
+#include <aws/qbusiness/model/S3.h>
 #include <aws/qbusiness/model/MemberGroup.h>
 #include <aws/qbusiness/model/MemberUser.h>
 #include <utility>
@@ -41,111 +42,46 @@ namespace Model
     AWS_QBUSINESS_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>A list of sub groups that belong to a group. For example, the sub groups
      * "Research", "Engineering", and "Sales and Marketing" all belong to the group
      * "Company".</p>
      */
     inline const Aws::Vector<MemberGroup>& GetMemberGroups() const{ return m_memberGroups; }
-
-    /**
-     * <p>A list of sub groups that belong to a group. For example, the sub groups
-     * "Research", "Engineering", and "Sales and Marketing" all belong to the group
-     * "Company".</p>
-     */
     inline bool MemberGroupsHasBeenSet() const { return m_memberGroupsHasBeenSet; }
-
-    /**
-     * <p>A list of sub groups that belong to a group. For example, the sub groups
-     * "Research", "Engineering", and "Sales and Marketing" all belong to the group
-     * "Company".</p>
-     */
     inline void SetMemberGroups(const Aws::Vector<MemberGroup>& value) { m_memberGroupsHasBeenSet = true; m_memberGroups = value; }
-
-    /**
-     * <p>A list of sub groups that belong to a group. For example, the sub groups
-     * "Research", "Engineering", and "Sales and Marketing" all belong to the group
-     * "Company".</p>
-     */
     inline void SetMemberGroups(Aws::Vector<MemberGroup>&& value) { m_memberGroupsHasBeenSet = true; m_memberGroups = std::move(value); }
-
-    /**
-     * <p>A list of sub groups that belong to a group. For example, the sub groups
-     * "Research", "Engineering", and "Sales and Marketing" all belong to the group
-     * "Company".</p>
-     */
     inline GroupMembers& WithMemberGroups(const Aws::Vector<MemberGroup>& value) { SetMemberGroups(value); return *this;}
-
-    /**
-     * <p>A list of sub groups that belong to a group. For example, the sub groups
-     * "Research", "Engineering", and "Sales and Marketing" all belong to the group
-     * "Company".</p>
-     */
     inline GroupMembers& WithMemberGroups(Aws::Vector<MemberGroup>&& value) { SetMemberGroups(std::move(value)); return *this;}
-
-    /**
-     * <p>A list of sub groups that belong to a group. For example, the sub groups
-     * "Research", "Engineering", and "Sales and Marketing" all belong to the group
-     * "Company".</p>
-     */
     inline GroupMembers& AddMemberGroups(const MemberGroup& value) { m_memberGroupsHasBeenSet = true; m_memberGroups.push_back(value); return *this; }
-
-    /**
-     * <p>A list of sub groups that belong to a group. For example, the sub groups
-     * "Research", "Engineering", and "Sales and Marketing" all belong to the group
-     * "Company".</p>
-     */
     inline GroupMembers& AddMemberGroups(MemberGroup&& value) { m_memberGroupsHasBeenSet = true; m_memberGroups.push_back(std::move(value)); return *this; }
+    ///@}
 
-
+    ///@{
     /**
      * <p>A list of users that belong to a group. For example, a list of interns all
      * belong to the "Interns" group.</p>
      */
     inline const Aws::Vector<MemberUser>& GetMemberUsers() const{ return m_memberUsers; }
-
-    /**
-     * <p>A list of users that belong to a group. For example, a list of interns all
-     * belong to the "Interns" group.</p>
-     */
     inline bool MemberUsersHasBeenSet() const { return m_memberUsersHasBeenSet; }
-
-    /**
-     * <p>A list of users that belong to a group. For example, a list of interns all
-     * belong to the "Interns" group.</p>
-     */
     inline void SetMemberUsers(const Aws::Vector<MemberUser>& value) { m_memberUsersHasBeenSet = true; m_memberUsers = value; }
-
-    /**
-     * <p>A list of users that belong to a group. For example, a list of interns all
-     * belong to the "Interns" group.</p>
-     */
     inline void SetMemberUsers(Aws::Vector<MemberUser>&& value) { m_memberUsersHasBeenSet = true; m_memberUsers = std::move(value); }
-
-    /**
-     * <p>A list of users that belong to a group. For example, a list of interns all
-     * belong to the "Interns" group.</p>
-     */
     inline GroupMembers& WithMemberUsers(const Aws::Vector<MemberUser>& value) { SetMemberUsers(value); return *this;}
-
-    /**
-     * <p>A list of users that belong to a group. For example, a list of interns all
-     * belong to the "Interns" group.</p>
-     */
     inline GroupMembers& WithMemberUsers(Aws::Vector<MemberUser>&& value) { SetMemberUsers(std::move(value)); return *this;}
-
-    /**
-     * <p>A list of users that belong to a group. For example, a list of interns all
-     * belong to the "Interns" group.</p>
-     */
     inline GroupMembers& AddMemberUsers(const MemberUser& value) { m_memberUsersHasBeenSet = true; m_memberUsers.push_back(value); return *this; }
-
-    /**
-     * <p>A list of users that belong to a group. For example, a list of interns all
-     * belong to the "Interns" group.</p>
-     */
     inline GroupMembers& AddMemberUsers(MemberUser&& value) { m_memberUsersHasBeenSet = true; m_memberUsers.push_back(std::move(value)); return *this; }
+    ///@}
 
+    ///@{
+    
+    inline const S3& GetS3PathForGroupMembers() const{ return m_s3PathForGroupMembers; }
+    inline bool S3PathForGroupMembersHasBeenSet() const { return m_s3PathForGroupMembersHasBeenSet; }
+    inline void SetS3PathForGroupMembers(const S3& value) { m_s3PathForGroupMembersHasBeenSet = true; m_s3PathForGroupMembers = value; }
+    inline void SetS3PathForGroupMembers(S3&& value) { m_s3PathForGroupMembersHasBeenSet = true; m_s3PathForGroupMembers = std::move(value); }
+    inline GroupMembers& WithS3PathForGroupMembers(const S3& value) { SetS3PathForGroupMembers(value); return *this;}
+    inline GroupMembers& WithS3PathForGroupMembers(S3&& value) { SetS3PathForGroupMembers(std::move(value)); return *this;}
+    ///@}
   private:
 
     Aws::Vector<MemberGroup> m_memberGroups;
@@ -153,6 +89,9 @@ namespace Model
 
     Aws::Vector<MemberUser> m_memberUsers;
     bool m_memberUsersHasBeenSet = false;
+
+    S3 m_s3PathForGroupMembers;
+    bool m_s3PathForGroupMembersHasBeenSet = false;
   };
 
 } // namespace Model

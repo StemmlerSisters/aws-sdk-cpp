@@ -24,21 +24,15 @@ InstanceUserSummary::InstanceUserSummary() :
     m_domainHasBeenSet(false),
     m_identityProviderHasBeenSet(false),
     m_instanceIdHasBeenSet(false),
+    m_instanceUserArnHasBeenSet(false),
     m_statusHasBeenSet(false),
     m_statusMessageHasBeenSet(false),
     m_usernameHasBeenSet(false)
 {
 }
 
-InstanceUserSummary::InstanceUserSummary(JsonView jsonValue) : 
-    m_associationDateHasBeenSet(false),
-    m_disassociationDateHasBeenSet(false),
-    m_domainHasBeenSet(false),
-    m_identityProviderHasBeenSet(false),
-    m_instanceIdHasBeenSet(false),
-    m_statusHasBeenSet(false),
-    m_statusMessageHasBeenSet(false),
-    m_usernameHasBeenSet(false)
+InstanceUserSummary::InstanceUserSummary(JsonView jsonValue)
+  : InstanceUserSummary()
 {
   *this = jsonValue;
 }
@@ -78,6 +72,13 @@ InstanceUserSummary& InstanceUserSummary::operator =(JsonView jsonValue)
     m_instanceId = jsonValue.GetString("InstanceId");
 
     m_instanceIdHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("InstanceUserArn"))
+  {
+    m_instanceUserArn = jsonValue.GetString("InstanceUserArn");
+
+    m_instanceUserArnHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("Status"))
@@ -135,6 +136,12 @@ JsonValue InstanceUserSummary::Jsonize() const
   if(m_instanceIdHasBeenSet)
   {
    payload.WithString("InstanceId", m_instanceId);
+
+  }
+
+  if(m_instanceUserArnHasBeenSet)
+  {
+   payload.WithString("InstanceUserArn", m_instanceUserArn);
 
   }
 

@@ -34,68 +34,51 @@ namespace Model
     AWS_S3CONTROL_API GetBucketLifecycleConfigurationResult& operator=(const Aws::AmazonWebServiceResult<Aws::Utils::Xml::XmlDocument>& result);
 
 
+    ///@{
     /**
      * <p>Container for the lifecycle rule of the Outposts bucket.</p>
      */
     inline const Aws::Vector<LifecycleRule>& GetRules() const{ return m_rules; }
-
-    /**
-     * <p>Container for the lifecycle rule of the Outposts bucket.</p>
-     */
     inline void SetRules(const Aws::Vector<LifecycleRule>& value) { m_rules = value; }
-
-    /**
-     * <p>Container for the lifecycle rule of the Outposts bucket.</p>
-     */
     inline void SetRules(Aws::Vector<LifecycleRule>&& value) { m_rules = std::move(value); }
-
-    /**
-     * <p>Container for the lifecycle rule of the Outposts bucket.</p>
-     */
     inline GetBucketLifecycleConfigurationResult& WithRules(const Aws::Vector<LifecycleRule>& value) { SetRules(value); return *this;}
-
-    /**
-     * <p>Container for the lifecycle rule of the Outposts bucket.</p>
-     */
     inline GetBucketLifecycleConfigurationResult& WithRules(Aws::Vector<LifecycleRule>&& value) { SetRules(std::move(value)); return *this;}
-
-    /**
-     * <p>Container for the lifecycle rule of the Outposts bucket.</p>
-     */
     inline GetBucketLifecycleConfigurationResult& AddRules(const LifecycleRule& value) { m_rules.push_back(value); return *this; }
-
-    /**
-     * <p>Container for the lifecycle rule of the Outposts bucket.</p>
-     */
     inline GetBucketLifecycleConfigurationResult& AddRules(LifecycleRule&& value) { m_rules.push_back(std::move(value)); return *this; }
+    ///@}
 
-
-    
+    ///@{
+    /**
+     * AWS Request Id value
+     */
     inline const Aws::String& GetRequestId() const{ return m_requestId; }
-
-    
     inline void SetRequestId(const Aws::String& value) { m_requestId = value; }
-
-    
     inline void SetRequestId(Aws::String&& value) { m_requestId = std::move(value); }
-
-    
     inline void SetRequestId(const char* value) { m_requestId.assign(value); }
-
-    
     inline GetBucketLifecycleConfigurationResult& WithRequestId(const Aws::String& value) { SetRequestId(value); return *this;}
-
-    
     inline GetBucketLifecycleConfigurationResult& WithRequestId(Aws::String&& value) { SetRequestId(std::move(value)); return *this;}
-
-    
     inline GetBucketLifecycleConfigurationResult& WithRequestId(const char* value) { SetRequestId(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * x-amz-id-2 header value, also known as Host Id
+     */
+    inline const Aws::String& GetHostId() const{ return m_hostId; }
+    inline void SetHostId(const Aws::String& value) { m_hostId = value; }
+    inline void SetHostId(Aws::String&& value) { m_hostId = std::move(value); }
+    inline void SetHostId(const char* value) { m_hostId.assign(value); }
+    inline GetBucketLifecycleConfigurationResult& WithHostId(const Aws::String& value) { SetHostId(value); return *this;}
+    inline GetBucketLifecycleConfigurationResult& WithHostId(Aws::String&& value) { SetHostId(std::move(value)); return *this;}
+    inline GetBucketLifecycleConfigurationResult& WithHostId(const char* value) { SetHostId(value); return *this;}
+    ///@}
   private:
 
     Aws::Vector<LifecycleRule> m_rules;
 
     Aws::String m_requestId;
+
+    Aws::String m_hostId;
   };
 
 } // namespace Model

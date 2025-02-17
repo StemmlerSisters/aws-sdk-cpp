@@ -20,13 +20,13 @@ namespace Model
 
 RuleBooleanToEvaluate::RuleBooleanToEvaluate() : 
     m_attribute(RuleBooleanEmailAttribute::NOT_SET),
-    m_attributeHasBeenSet(false)
+    m_attributeHasBeenSet(false),
+    m_isInAddressListHasBeenSet(false)
 {
 }
 
-RuleBooleanToEvaluate::RuleBooleanToEvaluate(JsonView jsonValue) : 
-    m_attribute(RuleBooleanEmailAttribute::NOT_SET),
-    m_attributeHasBeenSet(false)
+RuleBooleanToEvaluate::RuleBooleanToEvaluate(JsonView jsonValue)
+  : RuleBooleanToEvaluate()
 {
   *this = jsonValue;
 }
@@ -40,6 +40,13 @@ RuleBooleanToEvaluate& RuleBooleanToEvaluate::operator =(JsonView jsonValue)
     m_attributeHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("IsInAddressList"))
+  {
+    m_isInAddressList = jsonValue.GetObject("IsInAddressList");
+
+    m_isInAddressListHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -50,6 +57,12 @@ JsonValue RuleBooleanToEvaluate::Jsonize() const
   if(m_attributeHasBeenSet)
   {
    payload.WithString("Attribute", RuleBooleanEmailAttributeMapper::GetNameForRuleBooleanEmailAttribute(m_attribute));
+  }
+
+  if(m_isInAddressListHasBeenSet)
+  {
+   payload.WithObject("IsInAddressList", m_isInAddressList.Jsonize());
+
   }
 
   return payload;

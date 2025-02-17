@@ -40,33 +40,13 @@ PlaybackConfiguration::PlaybackConfiguration() :
     m_slateAdUrlHasBeenSet(false),
     m_tagsHasBeenSet(false),
     m_transcodeProfileNameHasBeenSet(false),
-    m_videoContentSourceUrlHasBeenSet(false)
+    m_videoContentSourceUrlHasBeenSet(false),
+    m_adConditioningConfigurationHasBeenSet(false)
 {
 }
 
-PlaybackConfiguration::PlaybackConfiguration(JsonView jsonValue) : 
-    m_adDecisionServerUrlHasBeenSet(false),
-    m_availSuppressionHasBeenSet(false),
-    m_bumperHasBeenSet(false),
-    m_cdnConfigurationHasBeenSet(false),
-    m_configurationAliasesHasBeenSet(false),
-    m_dashConfigurationHasBeenSet(false),
-    m_hlsConfigurationHasBeenSet(false),
-    m_insertionMode(InsertionMode::NOT_SET),
-    m_insertionModeHasBeenSet(false),
-    m_livePreRollConfigurationHasBeenSet(false),
-    m_logConfigurationHasBeenSet(false),
-    m_manifestProcessingRulesHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_personalizationThresholdSeconds(0),
-    m_personalizationThresholdSecondsHasBeenSet(false),
-    m_playbackConfigurationArnHasBeenSet(false),
-    m_playbackEndpointPrefixHasBeenSet(false),
-    m_sessionInitializationEndpointPrefixHasBeenSet(false),
-    m_slateAdUrlHasBeenSet(false),
-    m_tagsHasBeenSet(false),
-    m_transcodeProfileNameHasBeenSet(false),
-    m_videoContentSourceUrlHasBeenSet(false)
+PlaybackConfiguration::PlaybackConfiguration(JsonView jsonValue)
+  : PlaybackConfiguration()
 {
   *this = jsonValue;
 }
@@ -225,6 +205,13 @@ PlaybackConfiguration& PlaybackConfiguration::operator =(JsonView jsonValue)
     m_videoContentSourceUrlHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("AdConditioningConfiguration"))
+  {
+    m_adConditioningConfiguration = jsonValue.GetObject("AdConditioningConfiguration");
+
+    m_adConditioningConfigurationHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -363,6 +350,12 @@ JsonValue PlaybackConfiguration::Jsonize() const
   if(m_videoContentSourceUrlHasBeenSet)
   {
    payload.WithString("VideoContentSourceUrl", m_videoContentSourceUrl);
+
+  }
+
+  if(m_adConditioningConfigurationHasBeenSet)
+  {
+   payload.WithObject("AdConditioningConfiguration", m_adConditioningConfiguration.Jsonize());
 
   }
 

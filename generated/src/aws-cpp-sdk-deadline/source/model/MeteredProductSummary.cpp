@@ -19,45 +19,34 @@ namespace Model
 {
 
 MeteredProductSummary::MeteredProductSummary() : 
-    m_familyHasBeenSet(false),
-    m_port(0),
-    m_portHasBeenSet(false),
     m_productIdHasBeenSet(false),
-    m_vendorHasBeenSet(false)
+    m_familyHasBeenSet(false),
+    m_vendorHasBeenSet(false),
+    m_port(0),
+    m_portHasBeenSet(false)
 {
 }
 
-MeteredProductSummary::MeteredProductSummary(JsonView jsonValue) : 
-    m_familyHasBeenSet(false),
-    m_port(0),
-    m_portHasBeenSet(false),
-    m_productIdHasBeenSet(false),
-    m_vendorHasBeenSet(false)
+MeteredProductSummary::MeteredProductSummary(JsonView jsonValue)
+  : MeteredProductSummary()
 {
   *this = jsonValue;
 }
 
 MeteredProductSummary& MeteredProductSummary::operator =(JsonView jsonValue)
 {
-  if(jsonValue.ValueExists("family"))
-  {
-    m_family = jsonValue.GetString("family");
-
-    m_familyHasBeenSet = true;
-  }
-
-  if(jsonValue.ValueExists("port"))
-  {
-    m_port = jsonValue.GetInteger("port");
-
-    m_portHasBeenSet = true;
-  }
-
   if(jsonValue.ValueExists("productId"))
   {
     m_productId = jsonValue.GetString("productId");
 
     m_productIdHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("family"))
+  {
+    m_family = jsonValue.GetString("family");
+
+    m_familyHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("vendor"))
@@ -67,6 +56,13 @@ MeteredProductSummary& MeteredProductSummary::operator =(JsonView jsonValue)
     m_vendorHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("port"))
+  {
+    m_port = jsonValue.GetInteger("port");
+
+    m_portHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -74,27 +70,27 @@ JsonValue MeteredProductSummary::Jsonize() const
 {
   JsonValue payload;
 
-  if(m_familyHasBeenSet)
-  {
-   payload.WithString("family", m_family);
-
-  }
-
-  if(m_portHasBeenSet)
-  {
-   payload.WithInteger("port", m_port);
-
-  }
-
   if(m_productIdHasBeenSet)
   {
    payload.WithString("productId", m_productId);
 
   }
 
+  if(m_familyHasBeenSet)
+  {
+   payload.WithString("family", m_family);
+
+  }
+
   if(m_vendorHasBeenSet)
   {
    payload.WithString("vendor", m_vendor);
+
+  }
+
+  if(m_portHasBeenSet)
+  {
+   payload.WithInteger("port", m_port);
 
   }
 

@@ -56,39 +56,8 @@ PendingModifiedValues::PendingModifiedValues() :
 {
 }
 
-PendingModifiedValues::PendingModifiedValues(const XmlNode& xmlNode) : 
-    m_dBInstanceClassHasBeenSet(false),
-    m_allocatedStorage(0),
-    m_allocatedStorageHasBeenSet(false),
-    m_masterUserPasswordHasBeenSet(false),
-    m_port(0),
-    m_portHasBeenSet(false),
-    m_backupRetentionPeriod(0),
-    m_backupRetentionPeriodHasBeenSet(false),
-    m_multiAZ(false),
-    m_multiAZHasBeenSet(false),
-    m_engineVersionHasBeenSet(false),
-    m_licenseModelHasBeenSet(false),
-    m_iops(0),
-    m_iopsHasBeenSet(false),
-    m_dBInstanceIdentifierHasBeenSet(false),
-    m_storageTypeHasBeenSet(false),
-    m_cACertificateIdentifierHasBeenSet(false),
-    m_dBSubnetGroupNameHasBeenSet(false),
-    m_pendingCloudwatchLogsExportsHasBeenSet(false),
-    m_processorFeaturesHasBeenSet(false),
-    m_iAMDatabaseAuthenticationEnabled(false),
-    m_iAMDatabaseAuthenticationEnabledHasBeenSet(false),
-    m_automationMode(AutomationMode::NOT_SET),
-    m_automationModeHasBeenSet(false),
-    m_resumeFullAutomationModeTimeHasBeenSet(false),
-    m_storageThroughput(0),
-    m_storageThroughputHasBeenSet(false),
-    m_engineHasBeenSet(false),
-    m_dedicatedLogVolume(false),
-    m_dedicatedLogVolumeHasBeenSet(false),
-    m_multiTenant(false),
-    m_multiTenantHasBeenSet(false)
+PendingModifiedValues::PendingModifiedValues(const XmlNode& xmlNode)
+  : PendingModifiedValues()
 {
   *this = xmlNode;
 }
@@ -322,7 +291,7 @@ void PendingModifiedValues::OutputToStream(Aws::OStream& oStream, const char* lo
       for(auto& item : m_processorFeatures)
       {
         Aws::StringStream processorFeaturesSs;
-        processorFeaturesSs << location << index << locationValue << ".ProcessorFeature." << processorFeaturesIdx++;
+        processorFeaturesSs << location << index << locationValue << ".ProcessorFeatures.ProcessorFeature." << processorFeaturesIdx++;
         item.OutputToStream(oStream, processorFeaturesSs.str().c_str());
       }
   }

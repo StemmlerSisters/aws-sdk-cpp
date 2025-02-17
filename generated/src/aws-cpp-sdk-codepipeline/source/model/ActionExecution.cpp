@@ -30,23 +30,13 @@ ActionExecution::ActionExecution() :
     m_externalExecutionUrlHasBeenSet(false),
     m_percentComplete(0),
     m_percentCompleteHasBeenSet(false),
-    m_errorDetailsHasBeenSet(false)
+    m_errorDetailsHasBeenSet(false),
+    m_logStreamARNHasBeenSet(false)
 {
 }
 
-ActionExecution::ActionExecution(JsonView jsonValue) : 
-    m_actionExecutionIdHasBeenSet(false),
-    m_status(ActionExecutionStatus::NOT_SET),
-    m_statusHasBeenSet(false),
-    m_summaryHasBeenSet(false),
-    m_lastStatusChangeHasBeenSet(false),
-    m_tokenHasBeenSet(false),
-    m_lastUpdatedByHasBeenSet(false),
-    m_externalExecutionIdHasBeenSet(false),
-    m_externalExecutionUrlHasBeenSet(false),
-    m_percentComplete(0),
-    m_percentCompleteHasBeenSet(false),
-    m_errorDetailsHasBeenSet(false)
+ActionExecution::ActionExecution(JsonView jsonValue)
+  : ActionExecution()
 {
   *this = jsonValue;
 }
@@ -123,6 +113,13 @@ ActionExecution& ActionExecution::operator =(JsonView jsonValue)
     m_errorDetailsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("logStreamARN"))
+  {
+    m_logStreamARN = jsonValue.GetString("logStreamARN");
+
+    m_logStreamARNHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -185,6 +182,12 @@ JsonValue ActionExecution::Jsonize() const
   if(m_errorDetailsHasBeenSet)
   {
    payload.WithObject("errorDetails", m_errorDetails.Jsonize());
+
+  }
+
+  if(m_logStreamARNHasBeenSet)
+  {
+   payload.WithString("logStreamARN", m_logStreamARN);
 
   }
 

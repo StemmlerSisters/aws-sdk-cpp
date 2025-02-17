@@ -42,25 +42,8 @@ ServerlessCache::ServerlessCache() :
 {
 }
 
-ServerlessCache::ServerlessCache(const XmlNode& xmlNode) : 
-    m_serverlessCacheNameHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_createTimeHasBeenSet(false),
-    m_statusHasBeenSet(false),
-    m_engineHasBeenSet(false),
-    m_majorEngineVersionHasBeenSet(false),
-    m_fullEngineVersionHasBeenSet(false),
-    m_cacheUsageLimitsHasBeenSet(false),
-    m_kmsKeyIdHasBeenSet(false),
-    m_securityGroupIdsHasBeenSet(false),
-    m_endpointHasBeenSet(false),
-    m_readerEndpointHasBeenSet(false),
-    m_aRNHasBeenSet(false),
-    m_userGroupIdHasBeenSet(false),
-    m_subnetIdsHasBeenSet(false),
-    m_snapshotRetentionLimit(0),
-    m_snapshotRetentionLimitHasBeenSet(false),
-    m_dailySnapshotTimeHasBeenSet(false)
+ServerlessCache::ServerlessCache(const XmlNode& xmlNode)
+  : ServerlessCache()
 {
   *this = xmlNode;
 }
@@ -244,7 +227,7 @@ void ServerlessCache::OutputToStream(Aws::OStream& oStream, const char* location
       unsigned securityGroupIdsIdx = 1;
       for(auto& item : m_securityGroupIds)
       {
-        oStream << location << index << locationValue << ".SecurityGroupId." << securityGroupIdsIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
+        oStream << location << index << locationValue << ".SecurityGroupIds.SecurityGroupId." << securityGroupIdsIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
       }
   }
 
@@ -277,7 +260,7 @@ void ServerlessCache::OutputToStream(Aws::OStream& oStream, const char* location
       unsigned subnetIdsIdx = 1;
       for(auto& item : m_subnetIds)
       {
-        oStream << location << index << locationValue << ".SubnetId." << subnetIdsIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
+        oStream << location << index << locationValue << ".SubnetIds.SubnetId." << subnetIdsIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
       }
   }
 

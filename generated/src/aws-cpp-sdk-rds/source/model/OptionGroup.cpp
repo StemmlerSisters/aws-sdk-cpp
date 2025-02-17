@@ -36,19 +36,8 @@ OptionGroup::OptionGroup() :
 {
 }
 
-OptionGroup::OptionGroup(const XmlNode& xmlNode) : 
-    m_optionGroupNameHasBeenSet(false),
-    m_optionGroupDescriptionHasBeenSet(false),
-    m_engineNameHasBeenSet(false),
-    m_majorEngineVersionHasBeenSet(false),
-    m_optionsHasBeenSet(false),
-    m_allowsVpcAndNonVpcInstanceMemberships(false),
-    m_allowsVpcAndNonVpcInstanceMembershipsHasBeenSet(false),
-    m_vpcIdHasBeenSet(false),
-    m_optionGroupArnHasBeenSet(false),
-    m_sourceOptionGroupHasBeenSet(false),
-    m_sourceAccountIdHasBeenSet(false),
-    m_copyTimestampHasBeenSet(false)
+OptionGroup::OptionGroup(const XmlNode& xmlNode)
+  : OptionGroup()
 {
   *this = xmlNode;
 }
@@ -164,7 +153,7 @@ void OptionGroup::OutputToStream(Aws::OStream& oStream, const char* location, un
       for(auto& item : m_options)
       {
         Aws::StringStream optionsSs;
-        optionsSs << location << index << locationValue << ".Option." << optionsIdx++;
+        optionsSs << location << index << locationValue << ".Options.Option." << optionsIdx++;
         item.OutputToStream(oStream, optionsSs.str().c_str());
       }
   }

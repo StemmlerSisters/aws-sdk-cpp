@@ -24,17 +24,13 @@ GeospatialMapVisual::GeospatialMapVisual() :
     m_subtitleHasBeenSet(false),
     m_chartConfigurationHasBeenSet(false),
     m_columnHierarchiesHasBeenSet(false),
-    m_actionsHasBeenSet(false)
+    m_actionsHasBeenSet(false),
+    m_visualContentAltTextHasBeenSet(false)
 {
 }
 
-GeospatialMapVisual::GeospatialMapVisual(JsonView jsonValue) : 
-    m_visualIdHasBeenSet(false),
-    m_titleHasBeenSet(false),
-    m_subtitleHasBeenSet(false),
-    m_chartConfigurationHasBeenSet(false),
-    m_columnHierarchiesHasBeenSet(false),
-    m_actionsHasBeenSet(false)
+GeospatialMapVisual::GeospatialMapVisual(JsonView jsonValue)
+  : GeospatialMapVisual()
 {
   *this = jsonValue;
 }
@@ -89,6 +85,13 @@ GeospatialMapVisual& GeospatialMapVisual::operator =(JsonView jsonValue)
     m_actionsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("VisualContentAltText"))
+  {
+    m_visualContentAltText = jsonValue.GetString("VisualContentAltText");
+
+    m_visualContentAltTextHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -139,6 +142,12 @@ JsonValue GeospatialMapVisual::Jsonize() const
      actionsJsonList[actionsIndex].AsObject(m_actions[actionsIndex].Jsonize());
    }
    payload.WithArray("Actions", std::move(actionsJsonList));
+
+  }
+
+  if(m_visualContentAltTextHasBeenSet)
+  {
+   payload.WithString("VisualContentAltText", m_visualContentAltText);
 
   }
 

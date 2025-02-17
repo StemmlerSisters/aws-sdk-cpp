@@ -22,7 +22,9 @@
 #include <aws/transcribestreaming/TranscribeStreamingServiceClient.h>
 #include <aws/transcribestreaming/TranscribeStreamingServiceErrorMarshaller.h>
 #include <aws/transcribestreaming/TranscribeStreamingServiceEndpointProvider.h>
+#include <aws/transcribestreaming/model/GetMedicalScribeStreamRequest.h>
 #include <aws/transcribestreaming/model/StartCallAnalyticsStreamTranscriptionRequest.h>
+#include <aws/transcribestreaming/model/StartMedicalScribeStreamRequest.h>
 #include <aws/transcribestreaming/model/StartMedicalStreamTranscriptionRequest.h>
 #include <aws/transcribestreaming/model/StartStreamTranscriptionRequest.h>
 
@@ -59,7 +61,6 @@ TranscribeStreamingServiceClient::TranscribeStreamingServiceClient(const Transcr
                                                                   Aws::Region::ComputeSignerRegion(clientConfiguration.region)),
             Aws::MakeShared<TranscribeStreamingServiceErrorMarshaller>(ALLOCATION_TAG)),
   m_clientConfiguration(clientConfiguration),
-  m_executor(clientConfiguration.executor),
   m_endpointProvider(endpointProvider ? std::move(endpointProvider) : Aws::MakeShared<TranscribeStreamingServiceEndpointProvider>(ALLOCATION_TAG))
 {
   init(m_clientConfiguration);
@@ -75,7 +76,6 @@ TranscribeStreamingServiceClient::TranscribeStreamingServiceClient(const AWSCred
                                                                   Aws::Region::ComputeSignerRegion(clientConfiguration.region)),
             Aws::MakeShared<TranscribeStreamingServiceErrorMarshaller>(ALLOCATION_TAG)),
     m_clientConfiguration(clientConfiguration),
-    m_executor(clientConfiguration.executor),
     m_endpointProvider(endpointProvider ? std::move(endpointProvider) : Aws::MakeShared<TranscribeStreamingServiceEndpointProvider>(ALLOCATION_TAG))
 {
   init(m_clientConfiguration);
@@ -91,7 +91,6 @@ TranscribeStreamingServiceClient::TranscribeStreamingServiceClient(const std::sh
                                                                   Aws::Region::ComputeSignerRegion(clientConfiguration.region)),
             Aws::MakeShared<TranscribeStreamingServiceErrorMarshaller>(ALLOCATION_TAG)),
     m_clientConfiguration(clientConfiguration),
-    m_executor(clientConfiguration.executor),
     m_endpointProvider(endpointProvider ? std::move(endpointProvider) : Aws::MakeShared<TranscribeStreamingServiceEndpointProvider>(ALLOCATION_TAG))
 {
   init(m_clientConfiguration);
@@ -106,7 +105,6 @@ TranscribeStreamingServiceClient::TranscribeStreamingServiceClient(const std::sh
                                                                   Aws::Region::ComputeSignerRegion(clientConfiguration.region)),
             Aws::MakeShared<TranscribeStreamingServiceErrorMarshaller>(ALLOCATION_TAG)),
   m_clientConfiguration(clientConfiguration),
-  m_executor(clientConfiguration.executor),
   m_endpointProvider(Aws::MakeShared<TranscribeStreamingServiceEndpointProvider>(ALLOCATION_TAG))
 {
   init(m_clientConfiguration);
@@ -121,7 +119,6 @@ TranscribeStreamingServiceClient::TranscribeStreamingServiceClient(const AWSCred
                                                                   Aws::Region::ComputeSignerRegion(clientConfiguration.region)),
             Aws::MakeShared<TranscribeStreamingServiceErrorMarshaller>(ALLOCATION_TAG)),
     m_clientConfiguration(clientConfiguration),
-    m_executor(clientConfiguration.executor),
     m_endpointProvider(Aws::MakeShared<TranscribeStreamingServiceEndpointProvider>(ALLOCATION_TAG))
 {
   init(m_clientConfiguration);
@@ -136,7 +133,6 @@ TranscribeStreamingServiceClient::TranscribeStreamingServiceClient(const std::sh
                                                                   Aws::Region::ComputeSignerRegion(clientConfiguration.region)),
             Aws::MakeShared<TranscribeStreamingServiceErrorMarshaller>(ALLOCATION_TAG)),
     m_clientConfiguration(clientConfiguration),
-    m_executor(clientConfiguration.executor),
     m_endpointProvider(Aws::MakeShared<TranscribeStreamingServiceEndpointProvider>(ALLOCATION_TAG))
 {
   init(m_clientConfiguration);
@@ -156,6 +152,14 @@ std::shared_ptr<TranscribeStreamingServiceEndpointProviderBase>& TranscribeStrea
 void TranscribeStreamingServiceClient::init(const TranscribeStreamingService::TranscribeStreamingServiceClientConfiguration& config)
 {
   AWSClient::SetServiceClientName("Transcribe Streaming");
+  if (!m_clientConfiguration.executor) {
+    if (!m_clientConfiguration.configFactories.executorCreateFn()) {
+      AWS_LOGSTREAM_FATAL(ALLOCATION_TAG, "Failed to initialize client: config is missing Executor or executorCreateFn");
+      m_isInitialized = false;
+      return;
+    }
+    m_clientConfiguration.executor = m_clientConfiguration.configFactories.executorCreateFn();
+  }
   AWS_CHECK_PTR(SERVICE_NAME, m_endpointProvider);
   m_endpointProvider->InitBuiltInParameters(config);
 }
@@ -166,11 +170,45 @@ void TranscribeStreamingServiceClient::OverrideEndpoint(const Aws::String& endpo
   m_endpointProvider->OverrideEndpoint(endpoint);
 }
 
+GetMedicalScribeStreamOutcome TranscribeStreamingServiceClient::GetMedicalScribeStream(const GetMedicalScribeStreamRequest& request) const
+{
+  AWS_OPERATION_GUARD(GetMedicalScribeStream);
+  AWS_OPERATION_CHECK_PTR(m_endpointProvider, GetMedicalScribeStream, CoreErrors, CoreErrors::ENDPOINT_RESOLUTION_FAILURE);
+  if (!request.SessionIdHasBeenSet())
+  {
+    AWS_LOGSTREAM_ERROR("GetMedicalScribeStream", "Required field: SessionId, is not set");
+    return GetMedicalScribeStreamOutcome(Aws::Client::AWSError<TranscribeStreamingServiceErrors>(TranscribeStreamingServiceErrors::MISSING_PARAMETER, "MISSING_PARAMETER", "Missing required field [SessionId]", false));
+  }
+  AWS_OPERATION_CHECK_PTR(m_telemetryProvider, GetMedicalScribeStream, CoreErrors, CoreErrors::NOT_INITIALIZED);
+  auto tracer = m_telemetryProvider->getTracer(this->GetServiceClientName(), {});
+  auto meter = m_telemetryProvider->getMeter(this->GetServiceClientName(), {});
+  AWS_OPERATION_CHECK_PTR(meter, GetMedicalScribeStream, CoreErrors, CoreErrors::NOT_INITIALIZED);
+  auto span = tracer->CreateSpan(Aws::String(this->GetServiceClientName()) + ".GetMedicalScribeStream",
+    {{ TracingUtils::SMITHY_METHOD_DIMENSION, request.GetServiceRequestName() }, { TracingUtils::SMITHY_SERVICE_DIMENSION, this->GetServiceClientName() }, { TracingUtils::SMITHY_SYSTEM_DIMENSION, TracingUtils::SMITHY_METHOD_AWS_VALUE }},
+    smithy::components::tracing::SpanKind::CLIENT);
+  return TracingUtils::MakeCallWithTiming<GetMedicalScribeStreamOutcome>(
+    [&]()-> GetMedicalScribeStreamOutcome {
+      auto endpointResolutionOutcome = TracingUtils::MakeCallWithTiming<ResolveEndpointOutcome>(
+          [&]() -> ResolveEndpointOutcome { return m_endpointProvider->ResolveEndpoint(request.GetEndpointContextParams()); },
+          TracingUtils::SMITHY_CLIENT_ENDPOINT_RESOLUTION_METRIC,
+          *meter,
+          {{TracingUtils::SMITHY_METHOD_DIMENSION, request.GetServiceRequestName()}, {TracingUtils::SMITHY_SERVICE_DIMENSION, this->GetServiceClientName()}});
+      AWS_OPERATION_CHECK_SUCCESS(endpointResolutionOutcome, GetMedicalScribeStream, CoreErrors, CoreErrors::ENDPOINT_RESOLUTION_FAILURE, endpointResolutionOutcome.GetError().GetMessage());
+      endpointResolutionOutcome.GetResult().AddPathSegments("/medical-scribe-stream/");
+      endpointResolutionOutcome.GetResult().AddPathSegment(request.GetSessionId());
+      return GetMedicalScribeStreamOutcome(MakeRequest(request, endpointResolutionOutcome.GetResult(), Aws::Http::HttpMethod::HTTP_GET, Aws::Auth::SIGV4_SIGNER));
+    },
+    TracingUtils::SMITHY_CLIENT_DURATION_METRIC,
+    *meter,
+    {{TracingUtils::SMITHY_METHOD_DIMENSION, request.GetServiceRequestName()}, {TracingUtils::SMITHY_SERVICE_DIMENSION, this->GetServiceClientName()}});
+}
+
 void TranscribeStreamingServiceClient::StartCallAnalyticsStreamTranscriptionAsync(Model::StartCallAnalyticsStreamTranscriptionRequest& request,
                 const StartCallAnalyticsStreamTranscriptionStreamReadyHandler& streamReadyHandler,
                 const StartCallAnalyticsStreamTranscriptionResponseReceivedHandler& handler,
                 const std::shared_ptr<const Aws::Client::AsyncCallerContext>& handlerContext) const
 {
+  AWS_ASYNC_OPERATION_GUARD(StartCallAnalyticsStreamTranscription);
   if (!m_endpointProvider) {
     handler(this, request, StartCallAnalyticsStreamTranscriptionOutcome(Aws::Client::AWSError<TranscribeStreamingServiceErrors>(TranscribeStreamingServiceErrors::INTERNAL_FAILURE, "INTERNAL_FAILURE", "Endpoint provider is not initialized", false)), handlerContext);
     return;
@@ -215,7 +253,7 @@ void TranscribeStreamingServiceClient::StartCallAnalyticsStreamTranscriptionAsyn
   auto sem = Aws::MakeShared<Aws::Utils::Threading::Semaphore>(ALLOCATION_TAG, 0, 1);
   request.SetRequestSignedHandler([eventEncoderStream, sem](const Aws::Http::HttpRequest& httpRequest) { eventEncoderStream->SetSignatureSeed(Aws::Client::GetAuthorizationHeader(httpRequest)); sem->ReleaseAll(); });
 
-  m_executor->Submit([this, endpointResolutionOutcome, &request, handler, handlerContext] () mutable {
+  m_clientConfiguration.executor->Submit([this, endpointResolutionOutcome, &request, handler, handlerContext] () mutable {
       JsonOutcome outcome = MakeRequest(request, endpointResolutionOutcome.GetResult(), Aws::Http::HttpMethod::HTTP_POST, Aws::Auth::EVENTSTREAM_SIGV4_SIGNER);
       if(outcome.IsSuccess())
       {
@@ -231,11 +269,78 @@ void TranscribeStreamingServiceClient::StartCallAnalyticsStreamTranscriptionAsyn
   sem->WaitOne();
   streamReadyHandler(*request.GetAudioStream());
 }
+void TranscribeStreamingServiceClient::StartMedicalScribeStreamAsync(Model::StartMedicalScribeStreamRequest& request,
+                const StartMedicalScribeStreamStreamReadyHandler& streamReadyHandler,
+                const StartMedicalScribeStreamResponseReceivedHandler& handler,
+                const std::shared_ptr<const Aws::Client::AsyncCallerContext>& handlerContext) const
+{
+  AWS_ASYNC_OPERATION_GUARD(StartMedicalScribeStream);
+  if (!m_endpointProvider) {
+    handler(this, request, StartMedicalScribeStreamOutcome(Aws::Client::AWSError<TranscribeStreamingServiceErrors>(TranscribeStreamingServiceErrors::INTERNAL_FAILURE, "INTERNAL_FAILURE", "Endpoint provider is not initialized", false)), handlerContext);
+    return;
+  }
+  if (!request.LanguageCodeHasBeenSet())
+  {
+    AWS_LOGSTREAM_ERROR("StartMedicalScribeStream", "Required field: LanguageCode, is not set");
+    handler(this, request, StartMedicalScribeStreamOutcome(Aws::Client::AWSError<TranscribeStreamingServiceErrors>(TranscribeStreamingServiceErrors::MISSING_PARAMETER, "MISSING_PARAMETER", "Missing required field [LanguageCode]", false)), handlerContext);
+    return;
+  }
+  if (!request.MediaSampleRateHertzHasBeenSet())
+  {
+    AWS_LOGSTREAM_ERROR("StartMedicalScribeStream", "Required field: MediaSampleRateHertz, is not set");
+    handler(this, request, StartMedicalScribeStreamOutcome(Aws::Client::AWSError<TranscribeStreamingServiceErrors>(TranscribeStreamingServiceErrors::MISSING_PARAMETER, "MISSING_PARAMETER", "Missing required field [MediaSampleRateHertz]", false)), handlerContext);
+    return;
+  }
+  if (!request.MediaEncodingHasBeenSet())
+  {
+    AWS_LOGSTREAM_ERROR("StartMedicalScribeStream", "Required field: MediaEncoding, is not set");
+    handler(this, request, StartMedicalScribeStreamOutcome(Aws::Client::AWSError<TranscribeStreamingServiceErrors>(TranscribeStreamingServiceErrors::MISSING_PARAMETER, "MISSING_PARAMETER", "Missing required field [MediaEncoding]", false)), handlerContext);
+    return;
+  }
+  auto meter = m_telemetryProvider->getMeter(this->GetServiceClientName(), {});
+  auto endpointResolutionOutcome = TracingUtils::MakeCallWithTiming<ResolveEndpointOutcome>(
+      [&]() -> ResolveEndpointOutcome { return m_endpointProvider->ResolveEndpoint(request.GetEndpointContextParams()); },
+      TracingUtils::SMITHY_CLIENT_ENDPOINT_RESOLUTION_METRIC,
+      *meter,
+      {{TracingUtils::SMITHY_METHOD_DIMENSION, request.GetServiceRequestName()}, {TracingUtils::SMITHY_SERVICE_DIMENSION, this->GetServiceClientName()}});
+  if (!endpointResolutionOutcome.IsSuccess()) {
+      handler(this, request, StartMedicalScribeStreamOutcome(Aws::Client::AWSError<CoreErrors>(
+          CoreErrors::ENDPOINT_RESOLUTION_FAILURE, "ENDPOINT_RESOLUTION_FAILURE", endpointResolutionOutcome.GetError().GetMessage(), false)), handlerContext);
+      return;
+  }
+  endpointResolutionOutcome.GetResult().AddPathSegments("/medical-scribe-stream");
+  request.SetResponseStreamFactory(
+      [&] { request.GetEventStreamDecoder().Reset(); return Aws::New<Aws::Utils::Event::EventDecoderStream>(ALLOCATION_TAG, request.GetEventStreamDecoder()); }
+  );
+
+  auto eventEncoderStream = Aws::MakeShared<Model::MedicalScribeInputStream>(ALLOCATION_TAG);
+  eventEncoderStream->SetSigner(GetSignerByName(Aws::Auth::EVENTSTREAM_SIGV4_SIGNER));
+  request.SetInputStream(eventEncoderStream); // this becomes the body of the request
+  auto sem = Aws::MakeShared<Aws::Utils::Threading::Semaphore>(ALLOCATION_TAG, 0, 1);
+  request.SetRequestSignedHandler([eventEncoderStream, sem](const Aws::Http::HttpRequest& httpRequest) { eventEncoderStream->SetSignatureSeed(Aws::Client::GetAuthorizationHeader(httpRequest)); sem->ReleaseAll(); });
+
+  m_clientConfiguration.executor->Submit([this, endpointResolutionOutcome, &request, handler, handlerContext] () mutable {
+      JsonOutcome outcome = MakeRequest(request, endpointResolutionOutcome.GetResult(), Aws::Http::HttpMethod::HTTP_POST, Aws::Auth::EVENTSTREAM_SIGV4_SIGNER);
+      if(outcome.IsSuccess())
+      {
+        handler(this, request, StartMedicalScribeStreamOutcome(NoResult()), handlerContext);
+      }
+      else
+      {
+        request.GetInputStream()->Close();
+        handler(this, request, StartMedicalScribeStreamOutcome(outcome.GetError()), handlerContext);
+      }
+      return StartMedicalScribeStreamOutcome(NoResult());
+  });
+  sem->WaitOne();
+  streamReadyHandler(*request.GetInputStream());
+}
 void TranscribeStreamingServiceClient::StartMedicalStreamTranscriptionAsync(Model::StartMedicalStreamTranscriptionRequest& request,
                 const StartMedicalStreamTranscriptionStreamReadyHandler& streamReadyHandler,
                 const StartMedicalStreamTranscriptionResponseReceivedHandler& handler,
                 const std::shared_ptr<const Aws::Client::AsyncCallerContext>& handlerContext) const
 {
+  AWS_ASYNC_OPERATION_GUARD(StartMedicalStreamTranscription);
   if (!m_endpointProvider) {
     handler(this, request, StartMedicalStreamTranscriptionOutcome(Aws::Client::AWSError<TranscribeStreamingServiceErrors>(TranscribeStreamingServiceErrors::INTERNAL_FAILURE, "INTERNAL_FAILURE", "Endpoint provider is not initialized", false)), handlerContext);
     return;
@@ -292,7 +397,7 @@ void TranscribeStreamingServiceClient::StartMedicalStreamTranscriptionAsync(Mode
   auto sem = Aws::MakeShared<Aws::Utils::Threading::Semaphore>(ALLOCATION_TAG, 0, 1);
   request.SetRequestSignedHandler([eventEncoderStream, sem](const Aws::Http::HttpRequest& httpRequest) { eventEncoderStream->SetSignatureSeed(Aws::Client::GetAuthorizationHeader(httpRequest)); sem->ReleaseAll(); });
 
-  m_executor->Submit([this, endpointResolutionOutcome, &request, handler, handlerContext] () mutable {
+  m_clientConfiguration.executor->Submit([this, endpointResolutionOutcome, &request, handler, handlerContext] () mutable {
       JsonOutcome outcome = MakeRequest(request, endpointResolutionOutcome.GetResult(), Aws::Http::HttpMethod::HTTP_POST, Aws::Auth::EVENTSTREAM_SIGV4_SIGNER);
       if(outcome.IsSuccess())
       {
@@ -313,6 +418,7 @@ void TranscribeStreamingServiceClient::StartStreamTranscriptionAsync(Model::Star
                 const StartStreamTranscriptionResponseReceivedHandler& handler,
                 const std::shared_ptr<const Aws::Client::AsyncCallerContext>& handlerContext) const
 {
+  AWS_ASYNC_OPERATION_GUARD(StartStreamTranscription);
   if (!m_endpointProvider) {
     handler(this, request, StartStreamTranscriptionOutcome(Aws::Client::AWSError<TranscribeStreamingServiceErrors>(TranscribeStreamingServiceErrors::INTERNAL_FAILURE, "INTERNAL_FAILURE", "Endpoint provider is not initialized", false)), handlerContext);
     return;
@@ -351,7 +457,7 @@ void TranscribeStreamingServiceClient::StartStreamTranscriptionAsync(Model::Star
   auto sem = Aws::MakeShared<Aws::Utils::Threading::Semaphore>(ALLOCATION_TAG, 0, 1);
   request.SetRequestSignedHandler([eventEncoderStream, sem](const Aws::Http::HttpRequest& httpRequest) { eventEncoderStream->SetSignatureSeed(Aws::Client::GetAuthorizationHeader(httpRequest)); sem->ReleaseAll(); });
 
-  m_executor->Submit([this, endpointResolutionOutcome, &request, handler, handlerContext] () mutable {
+  m_clientConfiguration.executor->Submit([this, endpointResolutionOutcome, &request, handler, handlerContext] () mutable {
       JsonOutcome outcome = MakeRequest(request, endpointResolutionOutcome.GetResult(), Aws::Http::HttpMethod::HTTP_POST, Aws::Auth::EVENTSTREAM_SIGV4_SIGNER);
       if(outcome.IsSuccess())
       {

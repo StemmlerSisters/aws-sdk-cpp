@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/dataexchange/DataExchange_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/dataexchange/DataExchangeServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/dataexchange/DataExchangeErrorMarshaller.h>
 
 namespace Aws
 {
 namespace DataExchange
 {
+  AWS_DATAEXCHANGE_API extern const char SERVICE_NAME[];
   /**
    * <p>AWS Data Exchange is a service that makes it easy for AWS customers to
    * exchange data in the cloud. You can use the AWS Data Exchange APIs to create,
@@ -35,12 +39,20 @@ namespace DataExchange
    * structured data file, an image file, or some other data file. Jobs are
    * asynchronous import or export operations used to create or copy assets.</p>
    */
-  class AWS_DATAEXCHANGE_API DataExchangeClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<DataExchangeClient>
+  class AWS_DATAEXCHANGE_API DataExchangeClient : smithy::client::AwsSmithyClientT<Aws::DataExchange::SERVICE_NAME,
+      Aws::DataExchange::DataExchangeClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      DataExchangeEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::DataExchangeErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<DataExchangeClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "DataExchange"; }
 
       typedef DataExchangeClientConfiguration ClientConfigurationType;
       typedef DataExchangeEndpointProvider EndpointProviderType;
@@ -94,6 +106,31 @@ namespace DataExchange
         virtual ~DataExchangeClient();
 
         /**
+         * <p>This operation accepts a data grant.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/dataexchange-2017-07-25/AcceptDataGrant">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::AcceptDataGrantOutcome AcceptDataGrant(const Model::AcceptDataGrantRequest& request) const;
+
+        /**
+         * A Callable wrapper for AcceptDataGrant that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename AcceptDataGrantRequestT = Model::AcceptDataGrantRequest>
+        Model::AcceptDataGrantOutcomeCallable AcceptDataGrantCallable(const AcceptDataGrantRequestT& request) const
+        {
+            return SubmitCallable(&DataExchangeClient::AcceptDataGrant, request);
+        }
+
+        /**
+         * An Async wrapper for AcceptDataGrant that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename AcceptDataGrantRequestT = Model::AcceptDataGrantRequest>
+        void AcceptDataGrantAsync(const AcceptDataGrantRequestT& request, const AcceptDataGrantResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataExchangeClient::AcceptDataGrant, request, handler, context);
+        }
+
+        /**
          * <p>This operation cancels a job. Jobs can be cancelled only when they are in the
          * WAITING state.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/dataexchange-2017-07-25/CancelJob">AWS
@@ -117,6 +154,31 @@ namespace DataExchange
         void CancelJobAsync(const CancelJobRequestT& request, const CancelJobResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&DataExchangeClient::CancelJob, request, handler, context);
+        }
+
+        /**
+         * <p>This operation creates a data grant.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/dataexchange-2017-07-25/CreateDataGrant">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateDataGrantOutcome CreateDataGrant(const Model::CreateDataGrantRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateDataGrant that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateDataGrantRequestT = Model::CreateDataGrantRequest>
+        Model::CreateDataGrantOutcomeCallable CreateDataGrantCallable(const CreateDataGrantRequestT& request) const
+        {
+            return SubmitCallable(&DataExchangeClient::CreateDataGrant, request);
+        }
+
+        /**
+         * An Async wrapper for CreateDataGrant that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateDataGrantRequestT = Model::CreateDataGrantRequest>
+        void CreateDataGrantAsync(const CreateDataGrantRequestT& request, const CreateDataGrantResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataExchangeClient::CreateDataGrant, request, handler, context);
         }
 
         /**
@@ -246,6 +308,31 @@ namespace DataExchange
         }
 
         /**
+         * <p>This operation deletes a data grant.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/dataexchange-2017-07-25/DeleteDataGrant">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteDataGrantOutcome DeleteDataGrant(const Model::DeleteDataGrantRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteDataGrant that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteDataGrantRequestT = Model::DeleteDataGrantRequest>
+        Model::DeleteDataGrantOutcomeCallable DeleteDataGrantCallable(const DeleteDataGrantRequestT& request) const
+        {
+            return SubmitCallable(&DataExchangeClient::DeleteDataGrant, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteDataGrant that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteDataGrantRequestT = Model::DeleteDataGrantRequest>
+        void DeleteDataGrantAsync(const DeleteDataGrantRequestT& request, const DeleteDataGrantResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataExchangeClient::DeleteDataGrant, request, handler, context);
+        }
+
+        /**
          * <p>This operation deletes a data set.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/dataexchange-2017-07-25/DeleteDataSet">AWS
          * API Reference</a></p>
@@ -347,6 +434,32 @@ namespace DataExchange
         }
 
         /**
+         * <p>This operation returns information about a data grant.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/dataexchange-2017-07-25/GetDataGrant">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetDataGrantOutcome GetDataGrant(const Model::GetDataGrantRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetDataGrant that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetDataGrantRequestT = Model::GetDataGrantRequest>
+        Model::GetDataGrantOutcomeCallable GetDataGrantCallable(const GetDataGrantRequestT& request) const
+        {
+            return SubmitCallable(&DataExchangeClient::GetDataGrant, request);
+        }
+
+        /**
+         * An Async wrapper for GetDataGrant that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetDataGrantRequestT = Model::GetDataGrantRequest>
+        void GetDataGrantAsync(const GetDataGrantRequestT& request, const GetDataGrantResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataExchangeClient::GetDataGrant, request, handler, context);
+        }
+
+        /**
          * <p>This operation returns information about a data set.</p><p><h3>See Also:</h3>
          * <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/dataexchange-2017-07-25/GetDataSet">AWS
@@ -424,6 +537,32 @@ namespace DataExchange
         }
 
         /**
+         * <p>This operation returns information about a received data grant.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/dataexchange-2017-07-25/GetReceivedDataGrant">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetReceivedDataGrantOutcome GetReceivedDataGrant(const Model::GetReceivedDataGrantRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetReceivedDataGrant that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetReceivedDataGrantRequestT = Model::GetReceivedDataGrantRequest>
+        Model::GetReceivedDataGrantOutcomeCallable GetReceivedDataGrantCallable(const GetReceivedDataGrantRequestT& request) const
+        {
+            return SubmitCallable(&DataExchangeClient::GetReceivedDataGrant, request);
+        }
+
+        /**
+         * An Async wrapper for GetReceivedDataGrant that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetReceivedDataGrantRequestT = Model::GetReceivedDataGrantRequest>
+        void GetReceivedDataGrantAsync(const GetReceivedDataGrantRequestT& request, const GetReceivedDataGrantResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataExchangeClient::GetReceivedDataGrant, request, handler, context);
+        }
+
+        /**
          * <p>This operation returns information about a revision.</p><p><h3>See Also:</h3>
          * <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/dataexchange-2017-07-25/GetRevision">AWS
@@ -447,6 +586,32 @@ namespace DataExchange
         void GetRevisionAsync(const GetRevisionRequestT& request, const GetRevisionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&DataExchangeClient::GetRevision, request, handler, context);
+        }
+
+        /**
+         * <p>This operation returns information about all data grants.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/dataexchange-2017-07-25/ListDataGrants">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListDataGrantsOutcome ListDataGrants(const Model::ListDataGrantsRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for ListDataGrants that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListDataGrantsRequestT = Model::ListDataGrantsRequest>
+        Model::ListDataGrantsOutcomeCallable ListDataGrantsCallable(const ListDataGrantsRequestT& request = {}) const
+        {
+            return SubmitCallable(&DataExchangeClient::ListDataGrants, request);
+        }
+
+        /**
+         * An Async wrapper for ListDataGrants that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListDataGrantsRequestT = Model::ListDataGrantsRequest>
+        void ListDataGrantsAsync(const ListDataGrantsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDataGrantsRequestT& request = {}) const
+        {
+            return SubmitAsync(&DataExchangeClient::ListDataGrants, request, handler, context);
         }
 
         /**
@@ -478,18 +643,17 @@ namespace DataExchange
         /**
          * <p>This operation lists your data sets. When listing by origin OWNED, results
          * are sorted by CreatedAt in descending order. When listing by origin ENTITLED,
-         * there is no order and the maxResults parameter is ignored.</p><p><h3>See
-         * Also:</h3>   <a
+         * there is no order.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/dataexchange-2017-07-25/ListDataSets">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDataSetsOutcome ListDataSets(const Model::ListDataSetsRequest& request) const;
+        virtual Model::ListDataSetsOutcome ListDataSets(const Model::ListDataSetsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDataSets that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDataSetsRequestT = Model::ListDataSetsRequest>
-        Model::ListDataSetsOutcomeCallable ListDataSetsCallable(const ListDataSetsRequestT& request) const
+        Model::ListDataSetsOutcomeCallable ListDataSetsCallable(const ListDataSetsRequestT& request = {}) const
         {
             return SubmitCallable(&DataExchangeClient::ListDataSets, request);
         }
@@ -498,7 +662,7 @@ namespace DataExchange
          * An Async wrapper for ListDataSets that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDataSetsRequestT = Model::ListDataSetsRequest>
-        void ListDataSetsAsync(const ListDataSetsRequestT& request, const ListDataSetsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDataSetsAsync(const ListDataSetsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDataSetsRequestT& request = {}) const
         {
             return SubmitAsync(&DataExchangeClient::ListDataSets, request, handler, context);
         }
@@ -508,13 +672,13 @@ namespace DataExchange
          * href="http://docs.aws.amazon.com/goto/WebAPI/dataexchange-2017-07-25/ListEventActions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListEventActionsOutcome ListEventActions(const Model::ListEventActionsRequest& request) const;
+        virtual Model::ListEventActionsOutcome ListEventActions(const Model::ListEventActionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListEventActions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListEventActionsRequestT = Model::ListEventActionsRequest>
-        Model::ListEventActionsOutcomeCallable ListEventActionsCallable(const ListEventActionsRequestT& request) const
+        Model::ListEventActionsOutcomeCallable ListEventActionsCallable(const ListEventActionsRequestT& request = {}) const
         {
             return SubmitCallable(&DataExchangeClient::ListEventActions, request);
         }
@@ -523,7 +687,7 @@ namespace DataExchange
          * An Async wrapper for ListEventActions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListEventActionsRequestT = Model::ListEventActionsRequest>
-        void ListEventActionsAsync(const ListEventActionsRequestT& request, const ListEventActionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListEventActionsAsync(const ListEventActionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListEventActionsRequestT& request = {}) const
         {
             return SubmitAsync(&DataExchangeClient::ListEventActions, request, handler, context);
         }
@@ -534,13 +698,13 @@ namespace DataExchange
          * href="http://docs.aws.amazon.com/goto/WebAPI/dataexchange-2017-07-25/ListJobs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListJobsOutcome ListJobs(const Model::ListJobsRequest& request) const;
+        virtual Model::ListJobsOutcome ListJobs(const Model::ListJobsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListJobs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListJobsRequestT = Model::ListJobsRequest>
-        Model::ListJobsOutcomeCallable ListJobsCallable(const ListJobsRequestT& request) const
+        Model::ListJobsOutcomeCallable ListJobsCallable(const ListJobsRequestT& request = {}) const
         {
             return SubmitCallable(&DataExchangeClient::ListJobs, request);
         }
@@ -549,9 +713,35 @@ namespace DataExchange
          * An Async wrapper for ListJobs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListJobsRequestT = Model::ListJobsRequest>
-        void ListJobsAsync(const ListJobsRequestT& request, const ListJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListJobsAsync(const ListJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListJobsRequestT& request = {}) const
         {
             return SubmitAsync(&DataExchangeClient::ListJobs, request, handler, context);
+        }
+
+        /**
+         * <p>This operation returns information about all received data
+         * grants.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/dataexchange-2017-07-25/ListReceivedDataGrants">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListReceivedDataGrantsOutcome ListReceivedDataGrants(const Model::ListReceivedDataGrantsRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for ListReceivedDataGrants that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListReceivedDataGrantsRequestT = Model::ListReceivedDataGrantsRequest>
+        Model::ListReceivedDataGrantsOutcomeCallable ListReceivedDataGrantsCallable(const ListReceivedDataGrantsRequestT& request = {}) const
+        {
+            return SubmitCallable(&DataExchangeClient::ListReceivedDataGrants, request);
+        }
+
+        /**
+         * An Async wrapper for ListReceivedDataGrants that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListReceivedDataGrantsRequestT = Model::ListReceivedDataGrantsRequest>
+        void ListReceivedDataGrantsAsync(const ListReceivedDataGrantsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListReceivedDataGrantsRequestT& request = {}) const
+        {
+            return SubmitAsync(&DataExchangeClient::ListReceivedDataGrants, request, handler, context);
         }
 
         /**
@@ -863,11 +1053,7 @@ namespace DataExchange
       std::shared_ptr<DataExchangeEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<DataExchangeClient>;
-      void init(const DataExchangeClientConfiguration& clientConfiguration);
 
-      DataExchangeClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<DataExchangeEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace DataExchange

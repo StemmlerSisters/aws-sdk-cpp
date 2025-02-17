@@ -27,10 +27,8 @@ LambdaInvokeOperation::LambdaInvokeOperation() :
 {
 }
 
-LambdaInvokeOperation::LambdaInvokeOperation(const XmlNode& xmlNode) : 
-    m_functionArnHasBeenSet(false),
-    m_invocationSchemaVersionHasBeenSet(false),
-    m_userArgumentsHasBeenSet(false)
+LambdaInvokeOperation::LambdaInvokeOperation(const XmlNode& xmlNode)
+  : LambdaInvokeOperation()
 {
   *this = xmlNode;
 }
@@ -91,6 +89,15 @@ void LambdaInvokeOperation::AddToNode(XmlNode& parentNode) const
 
   if(m_userArgumentsHasBeenSet)
   {
+   XmlNode userArgumentsParentNode = parentNode.CreateChildElement("UserArguments");
+   for(const auto& mapItem : m_userArguments)
+   {
+     XmlNode userArgumentsMapEntryNode = userArgumentsParentNode.CreateChildElement("entry");
+     XmlNode userArgumentsKeyNode = userArgumentsMapEntryNode.CreateChildElement("key");
+     userArgumentsKeyNode.SetText(mapItem.first);
+     XmlNode userArgumentsValueNode = userArgumentsMapEntryNode.CreateChildElement("value");
+     userArgumentsValueNode.SetText(mapItem.second);
+   }
   }
 
 }

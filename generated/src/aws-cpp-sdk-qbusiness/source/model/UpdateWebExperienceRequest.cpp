@@ -20,7 +20,11 @@ UpdateWebExperienceRequest::UpdateWebExperienceRequest() :
     m_subtitleHasBeenSet(false),
     m_welcomeMessageHasBeenSet(false),
     m_samplePromptsControlMode(WebExperienceSamplePromptsControlMode::NOT_SET),
-    m_samplePromptsControlModeHasBeenSet(false)
+    m_samplePromptsControlModeHasBeenSet(false),
+    m_identityProviderConfigurationHasBeenSet(false),
+    m_originsHasBeenSet(false),
+    m_browserExtensionConfigurationHasBeenSet(false),
+    m_customizationConfigurationHasBeenSet(false)
 {
 }
 
@@ -55,6 +59,35 @@ Aws::String UpdateWebExperienceRequest::SerializePayload() const
   if(m_samplePromptsControlModeHasBeenSet)
   {
    payload.WithString("samplePromptsControlMode", WebExperienceSamplePromptsControlModeMapper::GetNameForWebExperienceSamplePromptsControlMode(m_samplePromptsControlMode));
+  }
+
+  if(m_identityProviderConfigurationHasBeenSet)
+  {
+   payload.WithObject("identityProviderConfiguration", m_identityProviderConfiguration.Jsonize());
+
+  }
+
+  if(m_originsHasBeenSet)
+  {
+   Aws::Utils::Array<JsonValue> originsJsonList(m_origins.size());
+   for(unsigned originsIndex = 0; originsIndex < originsJsonList.GetLength(); ++originsIndex)
+   {
+     originsJsonList[originsIndex].AsString(m_origins[originsIndex]);
+   }
+   payload.WithArray("origins", std::move(originsJsonList));
+
+  }
+
+  if(m_browserExtensionConfigurationHasBeenSet)
+  {
+   payload.WithObject("browserExtensionConfiguration", m_browserExtensionConfiguration.Jsonize());
+
+  }
+
+  if(m_customizationConfigurationHasBeenSet)
+  {
+   payload.WithObject("customizationConfiguration", m_customizationConfiguration.Jsonize());
+
   }
 
   return payload.View().WriteReadable();

@@ -16,11 +16,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
+import lombok.Data;
 import lombok.Value;
 import org.apache.commons.lang.WordUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import software.amazon.smithy.jmespath.JmespathExpression;
 
 public class C2jModelToGeneratorModelTransformer {
 
@@ -147,6 +152,13 @@ public class C2jModelToGeneratorModelTransformer {
         serviceModel.setVersion(c2jServiceModel.getVersion());
         serviceModel.setDocumentation(formatDocumentation(c2jServiceModel.getDocumentation(), 3));
         serviceModel.setServiceName(c2jServiceModel.getServiceName());
+        serviceModel.setAuthSchemes(c2jServiceModel.getMetadata().getAuth());
+        //if auth field is not present, check for SignatureVersion
+        if( (c2jServiceModel.getMetadata().getAuth() == null || c2jServiceModel.getMetadata().getAuth().isEmpty() )
+            && (c2jServiceModel.getMetadata().getSignatureVersion() != null))
+        {
+            serviceModel.setAuthSchemes(Arrays.asList(c2jServiceModel.getMetadata().getSignatureVersion()));
+        }
 
         convertShapes();
         convertOperations();
@@ -156,12 +168,20 @@ public class C2jModelToGeneratorModelTransformer {
 
         serviceModel.setShapes(shapes);
         serviceModel.setOperations(operations);
+        //for operations with context params, extract using jmespath expression and populate in endpoint params
         serviceModel.setServiceErrors(allErrors);
         serviceModel.getMetadata().setHasEndpointTrait(hasEndpointTrait);
         serviceModel.getMetadata().setHasEndpointDiscoveryTrait(hasEndpointDiscoveryTrait && !endpointOperationName.isEmpty());
         serviceModel.getMetadata().setRequireEndpointDiscovery(requireEndpointDiscovery);
         serviceModel.getMetadata().setEndpointOperationName(endpointOperationName);
-        serviceModel.getMetadata().setAwsQueryCompatible(c2jServiceModel.getMetadata().getAwsQueryCompatible() != null);
+
+        // add protocol check. only for json, query protocols
+        if (serviceModel.getMetadata().getProtocol().equals("json")) {
+            serviceModel.getMetadata().setAwsQueryCompatible(
+                    c2jServiceModel.getMetadata().getAwsQueryCompatible() != null);
+        } else {
+            serviceModel.getMetadata().setAwsQueryCompatible(false);
+        }
 
         if (c2jServiceModel.getEndpointRules() != null) {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -176,6 +196,8 @@ public class C2jModelToGeneratorModelTransformer {
             shortenedRules += "\0";
             serviceModel.setEndpointRules(shortenedRules);
         }
+        serviceModel.setRawEndpointRules(c2jServiceModel.getEndpointRules() );
+        serviceModel.setEndpointRuleSetModel(c2jServiceModel.getEndpointRuleSetModel());
         serviceModel.setEndpointTests(c2jServiceModel.getEndpointTests());
         serviceModel.setClientContextParams(c2jServiceModel.getClientContextParams());
 
@@ -305,9 +327,32 @@ public class C2jModelToGeneratorModelTransformer {
                 } else if (shape.hasEventPayloadMembers() || shape.getMembers().size() == 1) {
                     if (shape.getMembers().size() == 1) {
                         shape.getMembers().entrySet().stream().forEach(memberEntry -> {
-                            memberEntry.getValue().setEventPayload(true);
-                            shape.setEventPayloadMemberName(memberEntry.getKey());
-                            shape.setEventPayloadType(memberEntry.getValue().getShape().getType());
+                            /**
+                             * Note: this is complicated and potentially not completely correct.
+                             * So touch at your own risk until we have protocol tests supported.
+                             * In summary:
+                             * - we need to determine how to serialize events in eventstream
+                             * - to specify payload there is an eventpayload trait
+                             * - but what happens if that trait is not specified
+                             * - if there is one field and its a string, blob or struct then we assume that field is event payload
+                             *  (note: this might not be completely correct, spec is vague on that and other sdks do implicit struct around string and blob)
+                             * - if that one field is of any other type then treat parent shape as eventpayload
+                             * - if there is more than one field then parent shape is the payload
+                             */
+                            Shape memberShape = memberEntry.getValue().getShape();
+                            if (memberShape.isString() ||
+                                memberShape.isBlob() ||
+                                memberShape.isStructure()) {
+                                memberEntry.getValue().setEventPayload(true);
+                                shape.setEventPayloadMemberName(memberEntry.getKey());
+                                shape.setEventPayloadType(memberShape.getType());
+                            } else {
+                                if (!shape.getType().equals("structure")) {
+                                    throw new RuntimeException("Event shape should always has \"structure\" type if single member cannot be event payload.");
+                                }
+                                shape.setEventPayloadType(shape.getType());
+                            }
+
                         });
                     } else {
                         throw new RuntimeException("Event shape used in Event Stream should only has one member if it has event payload member.");
@@ -538,7 +583,6 @@ public class C2jModelToGeneratorModelTransformer {
         if (operation.isRequireEndpointDiscovery()) {
             requireEndpointDiscovery = true;
         }
-
         // Documentation
         String crossLinkedShapeDocs =
                 addDocCrossLinks(c2jOperation.getDocumentation(), c2jServiceModel.getMetadata().getUid(), c2jOperation.getName());
@@ -568,10 +612,8 @@ public class C2jModelToGeneratorModelTransformer {
         } else {
             operation.setSignerName("Aws::Auth::NULL_SIGNER");
         }
-
-
+        //set operation context params
         operation.setStaticContextParams(c2jOperation.getStaticContextParams());
-
         // input
         if (c2jOperation.getInput() != null) {
             Shape requestShape = renameShape(shapes.get(c2jOperation.getInput().getShape()), c2jOperation.getName(), SHAPE_SDK_REQUEST_SUFFIX);
@@ -619,12 +661,26 @@ public class C2jModelToGeneratorModelTransformer {
                     }
                 }
             }
+            Map<String, Map<String, String>> operationContextParams = c2jOperation.getOperationContextParams();
+            if (operationContextParams != null )
+            {
+                Map<String, List<String>> operationContextParamMap = new HashMap<>();
+                //find first element in nested map with key "path"
+                operationContextParams.entrySet().stream().filter(entry -> entry.getValue().containsKey("path"))
+                .forEach(entry -> {
+                    Optional<Map.Entry<String, String>> firstEntry = entry.getValue().entrySet().stream().filter(innerMap -> "path".equals(innerMap.getKey())).findFirst();
+                    if (firstEntry.isPresent()) {
+                        OperationContextCppCodeGenerator ctxt = new OperationContextCppCodeGenerator();
+                        JmespathExpression.parse(firstEntry.get().getValue()).accept(new CppEndpointsJmesPathVisitor(ctxt, requestShape));
+                        operationContextParamMap.put(entry.getKey() ,Arrays.asList(ctxt.getCppCode().toString().split("\n")) );
+                    }
+                });
+                operation.setOperationContextParamsCode(operationContextParamMap);
+            }
         }
-
         // output
         if (c2jOperation.getOutput() != null) {
             Shape resultShape = renameShape(shapes.get(c2jOperation.getOutput().getShape()), c2jOperation.getName(), SHAPE_SDK_RESULT_SUFFIX);
-
             resultShape.setResult(true);
             resultShape.setReferenced(true);
             resultShape.getReferencedBy().add(c2jOperation.getName());

@@ -25,18 +25,13 @@ FontConfiguration::FontConfiguration() :
     m_fontColorHasBeenSet(false),
     m_fontWeightHasBeenSet(false),
     m_fontStyle(FontStyle::NOT_SET),
-    m_fontStyleHasBeenSet(false)
+    m_fontStyleHasBeenSet(false),
+    m_fontFamilyHasBeenSet(false)
 {
 }
 
-FontConfiguration::FontConfiguration(JsonView jsonValue) : 
-    m_fontSizeHasBeenSet(false),
-    m_fontDecoration(FontDecoration::NOT_SET),
-    m_fontDecorationHasBeenSet(false),
-    m_fontColorHasBeenSet(false),
-    m_fontWeightHasBeenSet(false),
-    m_fontStyle(FontStyle::NOT_SET),
-    m_fontStyleHasBeenSet(false)
+FontConfiguration::FontConfiguration(JsonView jsonValue)
+  : FontConfiguration()
 {
   *this = jsonValue;
 }
@@ -78,6 +73,13 @@ FontConfiguration& FontConfiguration::operator =(JsonView jsonValue)
     m_fontStyleHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("FontFamily"))
+  {
+    m_fontFamily = jsonValue.GetString("FontFamily");
+
+    m_fontFamilyHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -111,6 +113,12 @@ JsonValue FontConfiguration::Jsonize() const
   if(m_fontStyleHasBeenSet)
   {
    payload.WithString("FontStyle", FontStyleMapper::GetNameForFontStyle(m_fontStyle));
+  }
+
+  if(m_fontFamilyHasBeenSet)
+  {
+   payload.WithString("FontFamily", m_fontFamily);
+
   }
 
   return payload;

@@ -46,7 +46,10 @@ namespace Model
     eu_south_2,
     ap_southeast_4,
     il_central_1,
-    ca_west_1
+    ca_west_1,
+    ap_southeast_5,
+    mx_central_1,
+    ap_southeast_7
   };
 
 namespace ResourceRecordSetRegionMapper

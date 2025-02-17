@@ -22,15 +22,13 @@ InferenceComponentSpecification::InferenceComponentSpecification() :
     m_modelNameHasBeenSet(false),
     m_containerHasBeenSet(false),
     m_startupParametersHasBeenSet(false),
-    m_computeResourceRequirementsHasBeenSet(false)
+    m_computeResourceRequirementsHasBeenSet(false),
+    m_baseInferenceComponentNameHasBeenSet(false)
 {
 }
 
-InferenceComponentSpecification::InferenceComponentSpecification(JsonView jsonValue) : 
-    m_modelNameHasBeenSet(false),
-    m_containerHasBeenSet(false),
-    m_startupParametersHasBeenSet(false),
-    m_computeResourceRequirementsHasBeenSet(false)
+InferenceComponentSpecification::InferenceComponentSpecification(JsonView jsonValue)
+  : InferenceComponentSpecification()
 {
   *this = jsonValue;
 }
@@ -65,6 +63,13 @@ InferenceComponentSpecification& InferenceComponentSpecification::operator =(Jso
     m_computeResourceRequirementsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("BaseInferenceComponentName"))
+  {
+    m_baseInferenceComponentName = jsonValue.GetString("BaseInferenceComponentName");
+
+    m_baseInferenceComponentNameHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -93,6 +98,12 @@ JsonValue InferenceComponentSpecification::Jsonize() const
   if(m_computeResourceRequirementsHasBeenSet)
   {
    payload.WithObject("ComputeResourceRequirements", m_computeResourceRequirements.Jsonize());
+
+  }
+
+  if(m_baseInferenceComponentNameHasBeenSet)
+  {
+   payload.WithString("BaseInferenceComponentName", m_baseInferenceComponentName);
 
   }
 

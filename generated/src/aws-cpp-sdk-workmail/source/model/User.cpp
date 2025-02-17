@@ -28,21 +28,14 @@ User::User() :
     m_userRole(UserRole::NOT_SET),
     m_userRoleHasBeenSet(false),
     m_enabledDateHasBeenSet(false),
-    m_disabledDateHasBeenSet(false)
+    m_disabledDateHasBeenSet(false),
+    m_identityProviderUserIdHasBeenSet(false),
+    m_identityProviderIdentityStoreIdHasBeenSet(false)
 {
 }
 
-User::User(JsonView jsonValue) : 
-    m_idHasBeenSet(false),
-    m_emailHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_displayNameHasBeenSet(false),
-    m_state(EntityState::NOT_SET),
-    m_stateHasBeenSet(false),
-    m_userRole(UserRole::NOT_SET),
-    m_userRoleHasBeenSet(false),
-    m_enabledDateHasBeenSet(false),
-    m_disabledDateHasBeenSet(false)
+User::User(JsonView jsonValue)
+  : User()
 {
   *this = jsonValue;
 }
@@ -105,6 +98,20 @@ User& User::operator =(JsonView jsonValue)
     m_disabledDateHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("IdentityProviderUserId"))
+  {
+    m_identityProviderUserId = jsonValue.GetString("IdentityProviderUserId");
+
+    m_identityProviderUserIdHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("IdentityProviderIdentityStoreId"))
+  {
+    m_identityProviderIdentityStoreId = jsonValue.GetString("IdentityProviderIdentityStoreId");
+
+    m_identityProviderIdentityStoreIdHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -154,6 +161,18 @@ JsonValue User::Jsonize() const
   if(m_disabledDateHasBeenSet)
   {
    payload.WithDouble("DisabledDate", m_disabledDate.SecondsWithMSPrecision());
+  }
+
+  if(m_identityProviderUserIdHasBeenSet)
+  {
+   payload.WithString("IdentityProviderUserId", m_identityProviderUserId);
+
+  }
+
+  if(m_identityProviderIdentityStoreIdHasBeenSet)
+  {
+   payload.WithString("IdentityProviderIdentityStoreId", m_identityProviderIdentityStoreId);
+
   }
 
   return payload;

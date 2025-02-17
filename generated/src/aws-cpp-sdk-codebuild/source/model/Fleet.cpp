@@ -31,34 +31,20 @@ Fleet::Fleet() :
     m_environmentTypeHasBeenSet(false),
     m_computeType(ComputeType::NOT_SET),
     m_computeTypeHasBeenSet(false),
+    m_computeConfigurationHasBeenSet(false),
     m_scalingConfigurationHasBeenSet(false),
     m_overflowBehavior(FleetOverflowBehavior::NOT_SET),
     m_overflowBehaviorHasBeenSet(false),
     m_vpcConfigHasBeenSet(false),
+    m_proxyConfigurationHasBeenSet(false),
+    m_imageIdHasBeenSet(false),
     m_fleetServiceRoleHasBeenSet(false),
     m_tagsHasBeenSet(false)
 {
 }
 
-Fleet::Fleet(JsonView jsonValue) : 
-    m_arnHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_idHasBeenSet(false),
-    m_createdHasBeenSet(false),
-    m_lastModifiedHasBeenSet(false),
-    m_statusHasBeenSet(false),
-    m_baseCapacity(0),
-    m_baseCapacityHasBeenSet(false),
-    m_environmentType(EnvironmentType::NOT_SET),
-    m_environmentTypeHasBeenSet(false),
-    m_computeType(ComputeType::NOT_SET),
-    m_computeTypeHasBeenSet(false),
-    m_scalingConfigurationHasBeenSet(false),
-    m_overflowBehavior(FleetOverflowBehavior::NOT_SET),
-    m_overflowBehaviorHasBeenSet(false),
-    m_vpcConfigHasBeenSet(false),
-    m_fleetServiceRoleHasBeenSet(false),
-    m_tagsHasBeenSet(false)
+Fleet::Fleet(JsonView jsonValue)
+  : Fleet()
 {
   *this = jsonValue;
 }
@@ -128,6 +114,13 @@ Fleet& Fleet::operator =(JsonView jsonValue)
     m_computeTypeHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("computeConfiguration"))
+  {
+    m_computeConfiguration = jsonValue.GetObject("computeConfiguration");
+
+    m_computeConfigurationHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("scalingConfiguration"))
   {
     m_scalingConfiguration = jsonValue.GetObject("scalingConfiguration");
@@ -147,6 +140,20 @@ Fleet& Fleet::operator =(JsonView jsonValue)
     m_vpcConfig = jsonValue.GetObject("vpcConfig");
 
     m_vpcConfigHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("proxyConfiguration"))
+  {
+    m_proxyConfiguration = jsonValue.GetObject("proxyConfiguration");
+
+    m_proxyConfigurationHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("imageId"))
+  {
+    m_imageId = jsonValue.GetString("imageId");
+
+    m_imageIdHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("fleetServiceRole"))
@@ -223,6 +230,12 @@ JsonValue Fleet::Jsonize() const
    payload.WithString("computeType", ComputeTypeMapper::GetNameForComputeType(m_computeType));
   }
 
+  if(m_computeConfigurationHasBeenSet)
+  {
+   payload.WithObject("computeConfiguration", m_computeConfiguration.Jsonize());
+
+  }
+
   if(m_scalingConfigurationHasBeenSet)
   {
    payload.WithObject("scalingConfiguration", m_scalingConfiguration.Jsonize());
@@ -237,6 +250,18 @@ JsonValue Fleet::Jsonize() const
   if(m_vpcConfigHasBeenSet)
   {
    payload.WithObject("vpcConfig", m_vpcConfig.Jsonize());
+
+  }
+
+  if(m_proxyConfigurationHasBeenSet)
+  {
+   payload.WithObject("proxyConfiguration", m_proxyConfiguration.Jsonize());
+
+  }
+
+  if(m_imageIdHasBeenSet)
+  {
+   payload.WithString("imageId", m_imageId);
 
   }
 

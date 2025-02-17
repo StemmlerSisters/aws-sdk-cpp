@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/chime-sdk-identity/ChimeSDKIdentity_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/chime-sdk-identity/ChimeSDKIdentityServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/chime-sdk-identity/ChimeSDKIdentityErrorMarshaller.h>
 
 namespace Aws
 {
 namespace ChimeSDKIdentity
 {
+  AWS_CHIMESDKIDENTITY_API extern const char SERVICE_NAME[];
   /**
    * <p>The Amazon Chime SDK Identity APIs in this section allow software developers
    * to create and manage unique instances of their messaging applications. These
@@ -23,12 +27,20 @@ namespace ChimeSDKIdentity
    * href="https://docs.aws.amazon.com/chime/latest/APIReference/API_Operations_Amazon_Chime_SDK_Identity.html">Amazon
    * Chime SDK identity</a>.</p>
    */
-  class AWS_CHIMESDKIDENTITY_API ChimeSDKIdentityClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<ChimeSDKIdentityClient>
+  class AWS_CHIMESDKIDENTITY_API ChimeSDKIdentityClient : smithy::client::AwsSmithyClientT<Aws::ChimeSDKIdentity::SERVICE_NAME,
+      Aws::ChimeSDKIdentity::ChimeSDKIdentityClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      ChimeSDKIdentityEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::ChimeSDKIdentityErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<ChimeSDKIdentityClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Chime SDK Identity"; }
 
       typedef ChimeSDKIdentityClientConfiguration ClientConfigurationType;
       typedef ChimeSDKIdentityEndpointProvider EndpointProviderType;
@@ -588,13 +600,13 @@ namespace ChimeSDKIdentity
          * href="http://docs.aws.amazon.com/goto/WebAPI/chime-sdk-identity-2021-04-20/ListAppInstances">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAppInstancesOutcome ListAppInstances(const Model::ListAppInstancesRequest& request) const;
+        virtual Model::ListAppInstancesOutcome ListAppInstances(const Model::ListAppInstancesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAppInstances that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAppInstancesRequestT = Model::ListAppInstancesRequest>
-        Model::ListAppInstancesOutcomeCallable ListAppInstancesCallable(const ListAppInstancesRequestT& request) const
+        Model::ListAppInstancesOutcomeCallable ListAppInstancesCallable(const ListAppInstancesRequestT& request = {}) const
         {
             return SubmitCallable(&ChimeSDKIdentityClient::ListAppInstances, request);
         }
@@ -603,7 +615,7 @@ namespace ChimeSDKIdentity
          * An Async wrapper for ListAppInstances that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAppInstancesRequestT = Model::ListAppInstancesRequest>
-        void ListAppInstancesAsync(const ListAppInstancesRequestT& request, const ListAppInstancesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAppInstancesAsync(const ListAppInstancesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAppInstancesRequestT& request = {}) const
         {
             return SubmitAsync(&ChimeSDKIdentityClient::ListAppInstances, request, handler, context);
         }
@@ -879,11 +891,7 @@ namespace ChimeSDKIdentity
       std::shared_ptr<ChimeSDKIdentityEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<ChimeSDKIdentityClient>;
-      void init(const ChimeSDKIdentityClientConfiguration& clientConfiguration);
 
-      ChimeSDKIdentityClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<ChimeSDKIdentityEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace ChimeSDKIdentity

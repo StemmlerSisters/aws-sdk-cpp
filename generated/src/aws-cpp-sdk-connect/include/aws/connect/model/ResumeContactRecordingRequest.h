@@ -7,6 +7,7 @@
 #include <aws/connect/Connect_EXPORTS.h>
 #include <aws/connect/ConnectRequest.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
+#include <aws/connect/model/ContactRecordingType.h>
 #include <utility>
 
 namespace Aws
@@ -32,152 +33,62 @@ namespace Model
     AWS_CONNECT_API Aws::String SerializePayload() const override;
 
 
+    ///@{
     /**
      * <p>The identifier of the Amazon Connect instance. You can <a
      * href="https://docs.aws.amazon.com/connect/latest/adminguide/find-instance-arn.html">find
      * the instance ID</a> in the Amazon Resource Name (ARN) of the instance.</p>
      */
     inline const Aws::String& GetInstanceId() const{ return m_instanceId; }
-
-    /**
-     * <p>The identifier of the Amazon Connect instance. You can <a
-     * href="https://docs.aws.amazon.com/connect/latest/adminguide/find-instance-arn.html">find
-     * the instance ID</a> in the Amazon Resource Name (ARN) of the instance.</p>
-     */
     inline bool InstanceIdHasBeenSet() const { return m_instanceIdHasBeenSet; }
-
-    /**
-     * <p>The identifier of the Amazon Connect instance. You can <a
-     * href="https://docs.aws.amazon.com/connect/latest/adminguide/find-instance-arn.html">find
-     * the instance ID</a> in the Amazon Resource Name (ARN) of the instance.</p>
-     */
     inline void SetInstanceId(const Aws::String& value) { m_instanceIdHasBeenSet = true; m_instanceId = value; }
-
-    /**
-     * <p>The identifier of the Amazon Connect instance. You can <a
-     * href="https://docs.aws.amazon.com/connect/latest/adminguide/find-instance-arn.html">find
-     * the instance ID</a> in the Amazon Resource Name (ARN) of the instance.</p>
-     */
     inline void SetInstanceId(Aws::String&& value) { m_instanceIdHasBeenSet = true; m_instanceId = std::move(value); }
-
-    /**
-     * <p>The identifier of the Amazon Connect instance. You can <a
-     * href="https://docs.aws.amazon.com/connect/latest/adminguide/find-instance-arn.html">find
-     * the instance ID</a> in the Amazon Resource Name (ARN) of the instance.</p>
-     */
     inline void SetInstanceId(const char* value) { m_instanceIdHasBeenSet = true; m_instanceId.assign(value); }
-
-    /**
-     * <p>The identifier of the Amazon Connect instance. You can <a
-     * href="https://docs.aws.amazon.com/connect/latest/adminguide/find-instance-arn.html">find
-     * the instance ID</a> in the Amazon Resource Name (ARN) of the instance.</p>
-     */
     inline ResumeContactRecordingRequest& WithInstanceId(const Aws::String& value) { SetInstanceId(value); return *this;}
-
-    /**
-     * <p>The identifier of the Amazon Connect instance. You can <a
-     * href="https://docs.aws.amazon.com/connect/latest/adminguide/find-instance-arn.html">find
-     * the instance ID</a> in the Amazon Resource Name (ARN) of the instance.</p>
-     */
     inline ResumeContactRecordingRequest& WithInstanceId(Aws::String&& value) { SetInstanceId(std::move(value)); return *this;}
-
-    /**
-     * <p>The identifier of the Amazon Connect instance. You can <a
-     * href="https://docs.aws.amazon.com/connect/latest/adminguide/find-instance-arn.html">find
-     * the instance ID</a> in the Amazon Resource Name (ARN) of the instance.</p>
-     */
     inline ResumeContactRecordingRequest& WithInstanceId(const char* value) { SetInstanceId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The identifier of the contact.</p>
      */
     inline const Aws::String& GetContactId() const{ return m_contactId; }
-
-    /**
-     * <p>The identifier of the contact.</p>
-     */
     inline bool ContactIdHasBeenSet() const { return m_contactIdHasBeenSet; }
-
-    /**
-     * <p>The identifier of the contact.</p>
-     */
     inline void SetContactId(const Aws::String& value) { m_contactIdHasBeenSet = true; m_contactId = value; }
-
-    /**
-     * <p>The identifier of the contact.</p>
-     */
     inline void SetContactId(Aws::String&& value) { m_contactIdHasBeenSet = true; m_contactId = std::move(value); }
-
-    /**
-     * <p>The identifier of the contact.</p>
-     */
     inline void SetContactId(const char* value) { m_contactIdHasBeenSet = true; m_contactId.assign(value); }
-
-    /**
-     * <p>The identifier of the contact.</p>
-     */
     inline ResumeContactRecordingRequest& WithContactId(const Aws::String& value) { SetContactId(value); return *this;}
-
-    /**
-     * <p>The identifier of the contact.</p>
-     */
     inline ResumeContactRecordingRequest& WithContactId(Aws::String&& value) { SetContactId(std::move(value)); return *this;}
-
-    /**
-     * <p>The identifier of the contact.</p>
-     */
     inline ResumeContactRecordingRequest& WithContactId(const char* value) { SetContactId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The identifier of the contact. This is the identifier of the contact
      * associated with the first interaction with the contact center.</p>
      */
     inline const Aws::String& GetInitialContactId() const{ return m_initialContactId; }
-
-    /**
-     * <p>The identifier of the contact. This is the identifier of the contact
-     * associated with the first interaction with the contact center.</p>
-     */
     inline bool InitialContactIdHasBeenSet() const { return m_initialContactIdHasBeenSet; }
-
-    /**
-     * <p>The identifier of the contact. This is the identifier of the contact
-     * associated with the first interaction with the contact center.</p>
-     */
     inline void SetInitialContactId(const Aws::String& value) { m_initialContactIdHasBeenSet = true; m_initialContactId = value; }
-
-    /**
-     * <p>The identifier of the contact. This is the identifier of the contact
-     * associated with the first interaction with the contact center.</p>
-     */
     inline void SetInitialContactId(Aws::String&& value) { m_initialContactIdHasBeenSet = true; m_initialContactId = std::move(value); }
-
-    /**
-     * <p>The identifier of the contact. This is the identifier of the contact
-     * associated with the first interaction with the contact center.</p>
-     */
     inline void SetInitialContactId(const char* value) { m_initialContactIdHasBeenSet = true; m_initialContactId.assign(value); }
-
-    /**
-     * <p>The identifier of the contact. This is the identifier of the contact
-     * associated with the first interaction with the contact center.</p>
-     */
     inline ResumeContactRecordingRequest& WithInitialContactId(const Aws::String& value) { SetInitialContactId(value); return *this;}
-
-    /**
-     * <p>The identifier of the contact. This is the identifier of the contact
-     * associated with the first interaction with the contact center.</p>
-     */
     inline ResumeContactRecordingRequest& WithInitialContactId(Aws::String&& value) { SetInitialContactId(std::move(value)); return *this;}
-
-    /**
-     * <p>The identifier of the contact. This is the identifier of the contact
-     * associated with the first interaction with the contact center.</p>
-     */
     inline ResumeContactRecordingRequest& WithInitialContactId(const char* value) { SetInitialContactId(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The type of recording being operated on.</p>
+     */
+    inline const ContactRecordingType& GetContactRecordingType() const{ return m_contactRecordingType; }
+    inline bool ContactRecordingTypeHasBeenSet() const { return m_contactRecordingTypeHasBeenSet; }
+    inline void SetContactRecordingType(const ContactRecordingType& value) { m_contactRecordingTypeHasBeenSet = true; m_contactRecordingType = value; }
+    inline void SetContactRecordingType(ContactRecordingType&& value) { m_contactRecordingTypeHasBeenSet = true; m_contactRecordingType = std::move(value); }
+    inline ResumeContactRecordingRequest& WithContactRecordingType(const ContactRecordingType& value) { SetContactRecordingType(value); return *this;}
+    inline ResumeContactRecordingRequest& WithContactRecordingType(ContactRecordingType&& value) { SetContactRecordingType(std::move(value)); return *this;}
+    ///@}
   private:
 
     Aws::String m_instanceId;
@@ -188,6 +99,9 @@ namespace Model
 
     Aws::String m_initialContactId;
     bool m_initialContactIdHasBeenSet = false;
+
+    ContactRecordingType m_contactRecordingType;
+    bool m_contactRecordingTypeHasBeenSet = false;
   };
 
 } // namespace Model

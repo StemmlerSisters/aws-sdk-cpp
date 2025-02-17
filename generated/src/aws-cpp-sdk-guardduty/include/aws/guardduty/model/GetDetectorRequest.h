@@ -32,46 +32,23 @@ namespace Model
     AWS_GUARDDUTY_API Aws::String SerializePayload() const override;
 
 
+    ///@{
     /**
-     * <p>The unique ID of the detector that you want to get.</p>
+     * <p>The unique ID of the detector that you want to get.</p> <p>To find the
+     * <code>detectorId</code> in the current Region, see the Settings page in the
+     * GuardDuty console, or run the <a
+     * href="https://docs.aws.amazon.com/guardduty/latest/APIReference/API_ListDetectors.html">ListDetectors</a>
+     * API.</p>
      */
     inline const Aws::String& GetDetectorId() const{ return m_detectorId; }
-
-    /**
-     * <p>The unique ID of the detector that you want to get.</p>
-     */
     inline bool DetectorIdHasBeenSet() const { return m_detectorIdHasBeenSet; }
-
-    /**
-     * <p>The unique ID of the detector that you want to get.</p>
-     */
     inline void SetDetectorId(const Aws::String& value) { m_detectorIdHasBeenSet = true; m_detectorId = value; }
-
-    /**
-     * <p>The unique ID of the detector that you want to get.</p>
-     */
     inline void SetDetectorId(Aws::String&& value) { m_detectorIdHasBeenSet = true; m_detectorId = std::move(value); }
-
-    /**
-     * <p>The unique ID of the detector that you want to get.</p>
-     */
     inline void SetDetectorId(const char* value) { m_detectorIdHasBeenSet = true; m_detectorId.assign(value); }
-
-    /**
-     * <p>The unique ID of the detector that you want to get.</p>
-     */
     inline GetDetectorRequest& WithDetectorId(const Aws::String& value) { SetDetectorId(value); return *this;}
-
-    /**
-     * <p>The unique ID of the detector that you want to get.</p>
-     */
     inline GetDetectorRequest& WithDetectorId(Aws::String&& value) { SetDetectorId(std::move(value)); return *this;}
-
-    /**
-     * <p>The unique ID of the detector that you want to get.</p>
-     */
     inline GetDetectorRequest& WithDetectorId(const char* value) { SetDetectorId(value); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_detectorId;

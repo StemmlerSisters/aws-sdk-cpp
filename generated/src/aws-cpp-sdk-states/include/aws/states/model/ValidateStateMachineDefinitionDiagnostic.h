@@ -25,9 +25,39 @@ namespace Model
 {
 
   /**
-   * <p>Describes an error found during validation. Validation errors found in the
-   * definition return in the response as <b>diagnostic elements</b>, rather than
-   * raise an exception.</p><p><h3>See Also:</h3>   <a
+   * <p>Describes potential issues found during state machine validation. Rather than
+   * raise an exception, validation will return a list of <b>diagnostic elements</b>
+   * containing diagnostic information. </p>  <p>The <a
+   * href="https://docs.aws.amazon.com/step-functions/latest/apireference/API_ValidateStateMachineDefinition.html">ValidateStateMachineDefinitionlAPI</a>
+   * might add new diagnostics in the future, adjust diagnostic codes, or change the
+   * message wording. Your automated processes should only rely on the value of the
+   * <b>result</b> field value (OK, FAIL). Do <b>not</b> rely on the exact order,
+   * count, or wording of diagnostic messages.</p>  <p> <b>List of warning
+   * codes</b> </p> <dl> <dt>NO_DOLLAR</dt> <dd> <p>No <code>.$</code> on a field
+   * that appears to be a JSONPath or Intrinsic Function.</p> </dd> <dt>NO_PATH</dt>
+   * <dd> <p>Field value looks like a path, but field name does not end with
+   * 'Path'.</p> </dd> <dt>PASS_RESULT_IS_STATIC</dt> <dd> <p>Attempt to use a path
+   * in the result of a pass state.</p> </dd> </dl> <p> <b>List of error codes</b>
+   * </p> <dl> <dt>INVALID_JSON_DESCRIPTION</dt> <dd> <p>JSON syntax problem
+   * found.</p> </dd> <dt>MISSING_DESCRIPTION</dt> <dd> <p>Received a null or empty
+   * workflow input.</p> </dd> <dt>SCHEMA_VALIDATION_FAILED</dt> <dd> <p>Schema
+   * validation reported errors.</p> </dd> <dt>INVALID_RESOURCE</dt> <dd> <p>The
+   * value of a Task-state resource field is invalid.</p> </dd>
+   * <dt>MISSING_END_STATE</dt> <dd> <p>The workflow does not have a terminal
+   * state.</p> </dd> <dt>DUPLICATE_STATE_NAME</dt> <dd> <p>The same state name
+   * appears more than once.</p> </dd> <dt>INVALID_STATE_NAME</dt> <dd> <p>The state
+   * name does not follow the naming convention.</p> </dd>
+   * <dt>STATE_MACHINE_NAME_EMPTY</dt> <dd> <p>The state machine name has not been
+   * specified.</p> </dd> <dt>STATE_MACHINE_NAME_INVALID</dt> <dd> <p>The state
+   * machine name does not follow the naming convention.</p> </dd>
+   * <dt>STATE_MACHINE_NAME_TOO_LONG</dt> <dd> <p>The state name exceeds the allowed
+   * length.</p> </dd> <dt>STATE_MACHINE_NAME_ALREADY_EXISTS</dt> <dd> <p>The state
+   * name already exists.</p> </dd> <dt>DUPLICATE_LABEL_NAME</dt> <dd> <p>A label
+   * name appears more than once.</p> </dd> <dt>INVALID_LABEL_NAME</dt> <dd> <p>You
+   * have provided an invalid label name.</p> </dd>
+   * <dt>MISSING_TRANSITION_TARGET</dt> <dd> <p>The value of "Next" field doesn't
+   * match a known state name.</p> </dd> <dt>TOO_DEEPLY_NESTED</dt> <dd> <p>The
+   * states are too deeply nested.</p> </dd> </dl><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/states-2016-11-23/ValidateStateMachineDefinitionDiagnostic">AWS
    * API Reference</a></p>
    */
@@ -40,125 +70,50 @@ namespace Model
     AWS_SFN_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>A value of <code>ERROR</code> means that you cannot create or update a state
-     * machine with this definition.</p>
+     * machine with this definition.</p> <p> <code>WARNING</code> level diagnostics
+     * alert you to potential issues, but they will not prevent you from creating or
+     * updating your state machine.</p>
      */
     inline const ValidateStateMachineDefinitionSeverity& GetSeverity() const{ return m_severity; }
-
-    /**
-     * <p>A value of <code>ERROR</code> means that you cannot create or update a state
-     * machine with this definition.</p>
-     */
     inline bool SeverityHasBeenSet() const { return m_severityHasBeenSet; }
-
-    /**
-     * <p>A value of <code>ERROR</code> means that you cannot create or update a state
-     * machine with this definition.</p>
-     */
     inline void SetSeverity(const ValidateStateMachineDefinitionSeverity& value) { m_severityHasBeenSet = true; m_severity = value; }
-
-    /**
-     * <p>A value of <code>ERROR</code> means that you cannot create or update a state
-     * machine with this definition.</p>
-     */
     inline void SetSeverity(ValidateStateMachineDefinitionSeverity&& value) { m_severityHasBeenSet = true; m_severity = std::move(value); }
-
-    /**
-     * <p>A value of <code>ERROR</code> means that you cannot create or update a state
-     * machine with this definition.</p>
-     */
     inline ValidateStateMachineDefinitionDiagnostic& WithSeverity(const ValidateStateMachineDefinitionSeverity& value) { SetSeverity(value); return *this;}
-
-    /**
-     * <p>A value of <code>ERROR</code> means that you cannot create or update a state
-     * machine with this definition.</p>
-     */
     inline ValidateStateMachineDefinitionDiagnostic& WithSeverity(ValidateStateMachineDefinitionSeverity&& value) { SetSeverity(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Identifying code for the diagnostic.</p>
      */
     inline const Aws::String& GetCode() const{ return m_code; }
-
-    /**
-     * <p>Identifying code for the diagnostic.</p>
-     */
     inline bool CodeHasBeenSet() const { return m_codeHasBeenSet; }
-
-    /**
-     * <p>Identifying code for the diagnostic.</p>
-     */
     inline void SetCode(const Aws::String& value) { m_codeHasBeenSet = true; m_code = value; }
-
-    /**
-     * <p>Identifying code for the diagnostic.</p>
-     */
     inline void SetCode(Aws::String&& value) { m_codeHasBeenSet = true; m_code = std::move(value); }
-
-    /**
-     * <p>Identifying code for the diagnostic.</p>
-     */
     inline void SetCode(const char* value) { m_codeHasBeenSet = true; m_code.assign(value); }
-
-    /**
-     * <p>Identifying code for the diagnostic.</p>
-     */
     inline ValidateStateMachineDefinitionDiagnostic& WithCode(const Aws::String& value) { SetCode(value); return *this;}
-
-    /**
-     * <p>Identifying code for the diagnostic.</p>
-     */
     inline ValidateStateMachineDefinitionDiagnostic& WithCode(Aws::String&& value) { SetCode(std::move(value)); return *this;}
-
-    /**
-     * <p>Identifying code for the diagnostic.</p>
-     */
     inline ValidateStateMachineDefinitionDiagnostic& WithCode(const char* value) { SetCode(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Message describing the diagnostic condition.</p>
      */
     inline const Aws::String& GetMessage() const{ return m_message; }
-
-    /**
-     * <p>Message describing the diagnostic condition.</p>
-     */
     inline bool MessageHasBeenSet() const { return m_messageHasBeenSet; }
-
-    /**
-     * <p>Message describing the diagnostic condition.</p>
-     */
     inline void SetMessage(const Aws::String& value) { m_messageHasBeenSet = true; m_message = value; }
-
-    /**
-     * <p>Message describing the diagnostic condition.</p>
-     */
     inline void SetMessage(Aws::String&& value) { m_messageHasBeenSet = true; m_message = std::move(value); }
-
-    /**
-     * <p>Message describing the diagnostic condition.</p>
-     */
     inline void SetMessage(const char* value) { m_messageHasBeenSet = true; m_message.assign(value); }
-
-    /**
-     * <p>Message describing the diagnostic condition.</p>
-     */
     inline ValidateStateMachineDefinitionDiagnostic& WithMessage(const Aws::String& value) { SetMessage(value); return *this;}
-
-    /**
-     * <p>Message describing the diagnostic condition.</p>
-     */
     inline ValidateStateMachineDefinitionDiagnostic& WithMessage(Aws::String&& value) { SetMessage(std::move(value)); return *this;}
-
-    /**
-     * <p>Message describing the diagnostic condition.</p>
-     */
     inline ValidateStateMachineDefinitionDiagnostic& WithMessage(const char* value) { SetMessage(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Location of the issue in the state machine, if available.</p> <p>For errors
      * specific to a field, the location could be in the format:
@@ -166,63 +121,14 @@ namespace Model
      * <code>/States/FailState/ErrorPath</code>.</p>
      */
     inline const Aws::String& GetLocation() const{ return m_location; }
-
-    /**
-     * <p>Location of the issue in the state machine, if available.</p> <p>For errors
-     * specific to a field, the location could be in the format:
-     * <code>/States/&lt;StateName&gt;/&lt;FieldName&gt;</code>, for example:
-     * <code>/States/FailState/ErrorPath</code>.</p>
-     */
     inline bool LocationHasBeenSet() const { return m_locationHasBeenSet; }
-
-    /**
-     * <p>Location of the issue in the state machine, if available.</p> <p>For errors
-     * specific to a field, the location could be in the format:
-     * <code>/States/&lt;StateName&gt;/&lt;FieldName&gt;</code>, for example:
-     * <code>/States/FailState/ErrorPath</code>.</p>
-     */
     inline void SetLocation(const Aws::String& value) { m_locationHasBeenSet = true; m_location = value; }
-
-    /**
-     * <p>Location of the issue in the state machine, if available.</p> <p>For errors
-     * specific to a field, the location could be in the format:
-     * <code>/States/&lt;StateName&gt;/&lt;FieldName&gt;</code>, for example:
-     * <code>/States/FailState/ErrorPath</code>.</p>
-     */
     inline void SetLocation(Aws::String&& value) { m_locationHasBeenSet = true; m_location = std::move(value); }
-
-    /**
-     * <p>Location of the issue in the state machine, if available.</p> <p>For errors
-     * specific to a field, the location could be in the format:
-     * <code>/States/&lt;StateName&gt;/&lt;FieldName&gt;</code>, for example:
-     * <code>/States/FailState/ErrorPath</code>.</p>
-     */
     inline void SetLocation(const char* value) { m_locationHasBeenSet = true; m_location.assign(value); }
-
-    /**
-     * <p>Location of the issue in the state machine, if available.</p> <p>For errors
-     * specific to a field, the location could be in the format:
-     * <code>/States/&lt;StateName&gt;/&lt;FieldName&gt;</code>, for example:
-     * <code>/States/FailState/ErrorPath</code>.</p>
-     */
     inline ValidateStateMachineDefinitionDiagnostic& WithLocation(const Aws::String& value) { SetLocation(value); return *this;}
-
-    /**
-     * <p>Location of the issue in the state machine, if available.</p> <p>For errors
-     * specific to a field, the location could be in the format:
-     * <code>/States/&lt;StateName&gt;/&lt;FieldName&gt;</code>, for example:
-     * <code>/States/FailState/ErrorPath</code>.</p>
-     */
     inline ValidateStateMachineDefinitionDiagnostic& WithLocation(Aws::String&& value) { SetLocation(std::move(value)); return *this;}
-
-    /**
-     * <p>Location of the issue in the state machine, if available.</p> <p>For errors
-     * specific to a field, the location could be in the format:
-     * <code>/States/&lt;StateName&gt;/&lt;FieldName&gt;</code>, for example:
-     * <code>/States/FailState/ErrorPath</code>.</p>
-     */
     inline ValidateStateMachineDefinitionDiagnostic& WithLocation(const char* value) { SetLocation(value); return *this;}
-
+    ///@}
   private:
 
     ValidateStateMachineDefinitionSeverity m_severity;

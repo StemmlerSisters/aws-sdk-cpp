@@ -19,22 +19,28 @@ namespace Model
 {
 
 StreamEvent::StreamEvent() : 
+    m_codeHasBeenSet(false),
     m_eventTimeHasBeenSet(false),
     m_nameHasBeenSet(false),
     m_typeHasBeenSet(false)
 {
 }
 
-StreamEvent::StreamEvent(JsonView jsonValue) : 
-    m_eventTimeHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_typeHasBeenSet(false)
+StreamEvent::StreamEvent(JsonView jsonValue)
+  : StreamEvent()
 {
   *this = jsonValue;
 }
 
 StreamEvent& StreamEvent::operator =(JsonView jsonValue)
 {
+  if(jsonValue.ValueExists("code"))
+  {
+    m_code = jsonValue.GetString("code");
+
+    m_codeHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("eventTime"))
   {
     m_eventTime = jsonValue.GetString("eventTime");
@@ -62,6 +68,12 @@ StreamEvent& StreamEvent::operator =(JsonView jsonValue)
 JsonValue StreamEvent::Jsonize() const
 {
   JsonValue payload;
+
+  if(m_codeHasBeenSet)
+  {
+   payload.WithString("code", m_code);
+
+  }
 
   if(m_eventTimeHasBeenSet)
   {

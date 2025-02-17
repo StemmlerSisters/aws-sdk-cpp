@@ -6,26 +6,38 @@
 #pragma once
 #include <aws/textract/Textract_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/textract/TextractServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/textract/TextractErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Textract
 {
+  AWS_TEXTRACT_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon Textract detects and analyzes text in documents and converts it into
    * machine-readable text. This is the API reference documentation for Amazon
    * Textract.</p>
    */
-  class AWS_TEXTRACT_API TextractClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<TextractClient>
+  class AWS_TEXTRACT_API TextractClient : smithy::client::AwsSmithyClientT<Aws::Textract::SERVICE_NAME,
+      Aws::Textract::TextractClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      TextractEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::TextractErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<TextractClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Textract"; }
 
       typedef TextractClientConfiguration ClientConfigurationType;
       typedef TextractEndpointProvider EndpointProviderType;
@@ -645,13 +657,13 @@ namespace Textract
          * href="http://docs.aws.amazon.com/goto/WebAPI/textract-2018-06-27/ListAdapterVersions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAdapterVersionsOutcome ListAdapterVersions(const Model::ListAdapterVersionsRequest& request) const;
+        virtual Model::ListAdapterVersionsOutcome ListAdapterVersions(const Model::ListAdapterVersionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAdapterVersions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAdapterVersionsRequestT = Model::ListAdapterVersionsRequest>
-        Model::ListAdapterVersionsOutcomeCallable ListAdapterVersionsCallable(const ListAdapterVersionsRequestT& request) const
+        Model::ListAdapterVersionsOutcomeCallable ListAdapterVersionsCallable(const ListAdapterVersionsRequestT& request = {}) const
         {
             return SubmitCallable(&TextractClient::ListAdapterVersions, request);
         }
@@ -660,7 +672,7 @@ namespace Textract
          * An Async wrapper for ListAdapterVersions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAdapterVersionsRequestT = Model::ListAdapterVersionsRequest>
-        void ListAdapterVersionsAsync(const ListAdapterVersionsRequestT& request, const ListAdapterVersionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAdapterVersionsAsync(const ListAdapterVersionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAdapterVersionsRequestT& request = {}) const
         {
             return SubmitAsync(&TextractClient::ListAdapterVersions, request, handler, context);
         }
@@ -671,13 +683,13 @@ namespace Textract
          * href="http://docs.aws.amazon.com/goto/WebAPI/textract-2018-06-27/ListAdapters">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAdaptersOutcome ListAdapters(const Model::ListAdaptersRequest& request) const;
+        virtual Model::ListAdaptersOutcome ListAdapters(const Model::ListAdaptersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAdapters that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAdaptersRequestT = Model::ListAdaptersRequest>
-        Model::ListAdaptersOutcomeCallable ListAdaptersCallable(const ListAdaptersRequestT& request) const
+        Model::ListAdaptersOutcomeCallable ListAdaptersCallable(const ListAdaptersRequestT& request = {}) const
         {
             return SubmitCallable(&TextractClient::ListAdapters, request);
         }
@@ -686,7 +698,7 @@ namespace Textract
          * An Async wrapper for ListAdapters that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAdaptersRequestT = Model::ListAdaptersRequest>
-        void ListAdaptersAsync(const ListAdaptersRequestT& request, const ListAdaptersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAdaptersAsync(const ListAdaptersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAdaptersRequestT& request = {}) const
         {
             return SubmitAsync(&TextractClient::ListAdapters, request, handler, context);
         }
@@ -970,11 +982,7 @@ namespace Textract
       std::shared_ptr<TextractEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<TextractClient>;
-      void init(const TextractClientConfiguration& clientConfiguration);
 
-      TextractClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<TextractEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Textract

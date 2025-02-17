@@ -11,6 +11,10 @@
 
 namespace Aws
 {
+namespace Http
+{
+    class URI;
+} //namespace Http
 namespace QuickSight
 {
 namespace Model
@@ -31,88 +35,51 @@ namespace Model
 
     AWS_QUICKSIGHT_API Aws::String SerializePayload() const override;
 
+    AWS_QUICKSIGHT_API void AddQueryStringParameters(Aws::Http::URI& uri) const override;
 
+
+    ///@{
     /**
      * <p>The ID of the Amazon Web Services account that contains the analysis.</p>
      */
     inline const Aws::String& GetAwsAccountId() const{ return m_awsAccountId; }
-
-    /**
-     * <p>The ID of the Amazon Web Services account that contains the analysis.</p>
-     */
     inline bool AwsAccountIdHasBeenSet() const { return m_awsAccountIdHasBeenSet; }
-
-    /**
-     * <p>The ID of the Amazon Web Services account that contains the analysis.</p>
-     */
     inline void SetAwsAccountId(const Aws::String& value) { m_awsAccountIdHasBeenSet = true; m_awsAccountId = value; }
-
-    /**
-     * <p>The ID of the Amazon Web Services account that contains the analysis.</p>
-     */
     inline void SetAwsAccountId(Aws::String&& value) { m_awsAccountIdHasBeenSet = true; m_awsAccountId = std::move(value); }
-
-    /**
-     * <p>The ID of the Amazon Web Services account that contains the analysis.</p>
-     */
     inline void SetAwsAccountId(const char* value) { m_awsAccountIdHasBeenSet = true; m_awsAccountId.assign(value); }
-
-    /**
-     * <p>The ID of the Amazon Web Services account that contains the analysis.</p>
-     */
     inline RestoreAnalysisRequest& WithAwsAccountId(const Aws::String& value) { SetAwsAccountId(value); return *this;}
-
-    /**
-     * <p>The ID of the Amazon Web Services account that contains the analysis.</p>
-     */
     inline RestoreAnalysisRequest& WithAwsAccountId(Aws::String&& value) { SetAwsAccountId(std::move(value)); return *this;}
-
-    /**
-     * <p>The ID of the Amazon Web Services account that contains the analysis.</p>
-     */
     inline RestoreAnalysisRequest& WithAwsAccountId(const char* value) { SetAwsAccountId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The ID of the analysis that you're restoring.</p>
      */
     inline const Aws::String& GetAnalysisId() const{ return m_analysisId; }
-
-    /**
-     * <p>The ID of the analysis that you're restoring.</p>
-     */
     inline bool AnalysisIdHasBeenSet() const { return m_analysisIdHasBeenSet; }
-
-    /**
-     * <p>The ID of the analysis that you're restoring.</p>
-     */
     inline void SetAnalysisId(const Aws::String& value) { m_analysisIdHasBeenSet = true; m_analysisId = value; }
-
-    /**
-     * <p>The ID of the analysis that you're restoring.</p>
-     */
     inline void SetAnalysisId(Aws::String&& value) { m_analysisIdHasBeenSet = true; m_analysisId = std::move(value); }
-
-    /**
-     * <p>The ID of the analysis that you're restoring.</p>
-     */
     inline void SetAnalysisId(const char* value) { m_analysisIdHasBeenSet = true; m_analysisId.assign(value); }
-
-    /**
-     * <p>The ID of the analysis that you're restoring.</p>
-     */
     inline RestoreAnalysisRequest& WithAnalysisId(const Aws::String& value) { SetAnalysisId(value); return *this;}
-
-    /**
-     * <p>The ID of the analysis that you're restoring.</p>
-     */
     inline RestoreAnalysisRequest& WithAnalysisId(Aws::String&& value) { SetAnalysisId(std::move(value)); return *this;}
-
-    /**
-     * <p>The ID of the analysis that you're restoring.</p>
-     */
     inline RestoreAnalysisRequest& WithAnalysisId(const char* value) { SetAnalysisId(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>A boolean value that determines if the analysis will be restored to folders
+     * that it previously resided in. A <code>True</code> value restores analysis back
+     * to all folders that it previously resided in. A <code>False</code> value
+     * restores the analysis but does not restore the analysis back to all previously
+     * resided folders. Restoring a restricted analysis requires this parameter to be
+     * set to <code>True</code>.</p>
+     */
+    inline bool GetRestoreToFolders() const{ return m_restoreToFolders; }
+    inline bool RestoreToFoldersHasBeenSet() const { return m_restoreToFoldersHasBeenSet; }
+    inline void SetRestoreToFolders(bool value) { m_restoreToFoldersHasBeenSet = true; m_restoreToFolders = value; }
+    inline RestoreAnalysisRequest& WithRestoreToFolders(bool value) { SetRestoreToFolders(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_awsAccountId;
@@ -120,6 +87,9 @@ namespace Model
 
     Aws::String m_analysisId;
     bool m_analysisIdHasBeenSet = false;
+
+    bool m_restoreToFolders;
+    bool m_restoreToFoldersHasBeenSet = false;
   };
 
 } // namespace Model

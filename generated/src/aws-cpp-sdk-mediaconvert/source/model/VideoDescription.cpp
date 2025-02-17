@@ -23,6 +23,8 @@ VideoDescription::VideoDescription() :
     m_afdSignalingHasBeenSet(false),
     m_antiAlias(AntiAlias::NOT_SET),
     m_antiAliasHasBeenSet(false),
+    m_chromaPositionMode(ChromaPositionMode::NOT_SET),
+    m_chromaPositionModeHasBeenSet(false),
     m_codecSettingsHasBeenSet(false),
     m_colorMetadata(ColorMetadata::NOT_SET),
     m_colorMetadataHasBeenSet(false),
@@ -42,39 +44,16 @@ VideoDescription::VideoDescription() :
     m_sharpnessHasBeenSet(false),
     m_timecodeInsertion(VideoTimecodeInsertion::NOT_SET),
     m_timecodeInsertionHasBeenSet(false),
+    m_timecodeTrack(TimecodeTrack::NOT_SET),
+    m_timecodeTrackHasBeenSet(false),
     m_videoPreprocessorsHasBeenSet(false),
     m_width(0),
     m_widthHasBeenSet(false)
 {
 }
 
-VideoDescription::VideoDescription(JsonView jsonValue) : 
-    m_afdSignaling(AfdSignaling::NOT_SET),
-    m_afdSignalingHasBeenSet(false),
-    m_antiAlias(AntiAlias::NOT_SET),
-    m_antiAliasHasBeenSet(false),
-    m_codecSettingsHasBeenSet(false),
-    m_colorMetadata(ColorMetadata::NOT_SET),
-    m_colorMetadataHasBeenSet(false),
-    m_cropHasBeenSet(false),
-    m_dropFrameTimecode(DropFrameTimecode::NOT_SET),
-    m_dropFrameTimecodeHasBeenSet(false),
-    m_fixedAfd(0),
-    m_fixedAfdHasBeenSet(false),
-    m_height(0),
-    m_heightHasBeenSet(false),
-    m_positionHasBeenSet(false),
-    m_respondToAfd(RespondToAfd::NOT_SET),
-    m_respondToAfdHasBeenSet(false),
-    m_scalingBehavior(ScalingBehavior::NOT_SET),
-    m_scalingBehaviorHasBeenSet(false),
-    m_sharpness(0),
-    m_sharpnessHasBeenSet(false),
-    m_timecodeInsertion(VideoTimecodeInsertion::NOT_SET),
-    m_timecodeInsertionHasBeenSet(false),
-    m_videoPreprocessorsHasBeenSet(false),
-    m_width(0),
-    m_widthHasBeenSet(false)
+VideoDescription::VideoDescription(JsonView jsonValue)
+  : VideoDescription()
 {
   *this = jsonValue;
 }
@@ -93,6 +72,13 @@ VideoDescription& VideoDescription::operator =(JsonView jsonValue)
     m_antiAlias = AntiAliasMapper::GetAntiAliasForName(jsonValue.GetString("antiAlias"));
 
     m_antiAliasHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("chromaPositionMode"))
+  {
+    m_chromaPositionMode = ChromaPositionModeMapper::GetChromaPositionModeForName(jsonValue.GetString("chromaPositionMode"));
+
+    m_chromaPositionModeHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("codecSettings"))
@@ -172,6 +158,13 @@ VideoDescription& VideoDescription::operator =(JsonView jsonValue)
     m_timecodeInsertionHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("timecodeTrack"))
+  {
+    m_timecodeTrack = TimecodeTrackMapper::GetTimecodeTrackForName(jsonValue.GetString("timecodeTrack"));
+
+    m_timecodeTrackHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("videoPreprocessors"))
   {
     m_videoPreprocessors = jsonValue.GetObject("videoPreprocessors");
@@ -201,6 +194,11 @@ JsonValue VideoDescription::Jsonize() const
   if(m_antiAliasHasBeenSet)
   {
    payload.WithString("antiAlias", AntiAliasMapper::GetNameForAntiAlias(m_antiAlias));
+  }
+
+  if(m_chromaPositionModeHasBeenSet)
+  {
+   payload.WithString("chromaPositionMode", ChromaPositionModeMapper::GetNameForChromaPositionMode(m_chromaPositionMode));
   }
 
   if(m_codecSettingsHasBeenSet)
@@ -262,6 +260,11 @@ JsonValue VideoDescription::Jsonize() const
   if(m_timecodeInsertionHasBeenSet)
   {
    payload.WithString("timecodeInsertion", VideoTimecodeInsertionMapper::GetNameForVideoTimecodeInsertion(m_timecodeInsertion));
+  }
+
+  if(m_timecodeTrackHasBeenSet)
+  {
+   payload.WithString("timecodeTrack", TimecodeTrackMapper::GetNameForTimecodeTrack(m_timecodeTrack));
   }
 
   if(m_videoPreprocessorsHasBeenSet)

@@ -6,25 +6,37 @@
 #pragma once
 #include <aws/kendra-ranking/KendraRanking_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/kendra-ranking/KendraRankingServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/kendra-ranking/KendraRankingErrorMarshaller.h>
 
 namespace Aws
 {
 namespace KendraRanking
 {
+  AWS_KENDRARANKING_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon Kendra Intelligent Ranking uses Amazon Kendra semantic search
    * capabilities to intelligently re-rank a search service's results.</p>
    */
-  class AWS_KENDRARANKING_API KendraRankingClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<KendraRankingClient>
+  class AWS_KENDRARANKING_API KendraRankingClient : smithy::client::AwsSmithyClientT<Aws::KendraRanking::SERVICE_NAME,
+      Aws::KendraRanking::KendraRankingClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      KendraRankingEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::KendraRankingErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<KendraRankingClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Kendra Ranking"; }
 
       typedef KendraRankingClientConfiguration ClientConfigurationType;
       typedef KendraRankingEndpointProvider EndpointProviderType;
@@ -171,13 +183,13 @@ namespace KendraRanking
          * href="http://docs.aws.amazon.com/goto/WebAPI/kendra-ranking-2022-10-19/ListRescoreExecutionPlans">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListRescoreExecutionPlansOutcome ListRescoreExecutionPlans(const Model::ListRescoreExecutionPlansRequest& request) const;
+        virtual Model::ListRescoreExecutionPlansOutcome ListRescoreExecutionPlans(const Model::ListRescoreExecutionPlansRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListRescoreExecutionPlans that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListRescoreExecutionPlansRequestT = Model::ListRescoreExecutionPlansRequest>
-        Model::ListRescoreExecutionPlansOutcomeCallable ListRescoreExecutionPlansCallable(const ListRescoreExecutionPlansRequestT& request) const
+        Model::ListRescoreExecutionPlansOutcomeCallable ListRescoreExecutionPlansCallable(const ListRescoreExecutionPlansRequestT& request = {}) const
         {
             return SubmitCallable(&KendraRankingClient::ListRescoreExecutionPlans, request);
         }
@@ -186,7 +198,7 @@ namespace KendraRanking
          * An Async wrapper for ListRescoreExecutionPlans that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListRescoreExecutionPlansRequestT = Model::ListRescoreExecutionPlansRequest>
-        void ListRescoreExecutionPlansAsync(const ListRescoreExecutionPlansRequestT& request, const ListRescoreExecutionPlansResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListRescoreExecutionPlansAsync(const ListRescoreExecutionPlansResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListRescoreExecutionPlansRequestT& request = {}) const
         {
             return SubmitAsync(&KendraRankingClient::ListRescoreExecutionPlans, request, handler, context);
         }
@@ -335,11 +347,7 @@ namespace KendraRanking
       std::shared_ptr<KendraRankingEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<KendraRankingClient>;
-      void init(const KendraRankingClientConfiguration& clientConfiguration);
 
-      KendraRankingClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<KendraRankingEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace KendraRanking

@@ -19,32 +19,31 @@ namespace Model
 {
 
 ScheduleConfiguration::ScheduleConfiguration() : 
-    m_clipRangeHasBeenSet(false),
-    m_transitionHasBeenSet(false)
+    m_transitionHasBeenSet(false),
+    m_clipRangeHasBeenSet(false)
 {
 }
 
-ScheduleConfiguration::ScheduleConfiguration(JsonView jsonValue) : 
-    m_clipRangeHasBeenSet(false),
-    m_transitionHasBeenSet(false)
+ScheduleConfiguration::ScheduleConfiguration(JsonView jsonValue)
+  : ScheduleConfiguration()
 {
   *this = jsonValue;
 }
 
 ScheduleConfiguration& ScheduleConfiguration::operator =(JsonView jsonValue)
 {
-  if(jsonValue.ValueExists("ClipRange"))
-  {
-    m_clipRange = jsonValue.GetObject("ClipRange");
-
-    m_clipRangeHasBeenSet = true;
-  }
-
   if(jsonValue.ValueExists("Transition"))
   {
     m_transition = jsonValue.GetObject("Transition");
 
     m_transitionHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("ClipRange"))
+  {
+    m_clipRange = jsonValue.GetObject("ClipRange");
+
+    m_clipRangeHasBeenSet = true;
   }
 
   return *this;
@@ -54,15 +53,15 @@ JsonValue ScheduleConfiguration::Jsonize() const
 {
   JsonValue payload;
 
-  if(m_clipRangeHasBeenSet)
-  {
-   payload.WithObject("ClipRange", m_clipRange.Jsonize());
-
-  }
-
   if(m_transitionHasBeenSet)
   {
    payload.WithObject("Transition", m_transition.Jsonize());
+
+  }
+
+  if(m_clipRangeHasBeenSet)
+  {
+   payload.WithObject("ClipRange", m_clipRange.Jsonize());
 
   }
 

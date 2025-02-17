@@ -22,8 +22,8 @@ GetPoliciesStatsResult::GetPoliciesStatsResult() :
 {
 }
 
-GetPoliciesStatsResult::GetPoliciesStatsResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_totalPolicyCount(0)
+GetPoliciesStatsResult::GetPoliciesStatsResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetPoliciesStatsResult()
 {
   *this = result;
 }
@@ -37,9 +37,9 @@ GetPoliciesStatsResult& GetPoliciesStatsResult::operator =(const Aws::AmazonWebS
 
   }
 
-  if(jsonValue.ValueExists("LifecyclePolicyStats"))
+  if(jsonValue.ValueExists("SecurityPolicyStats"))
   {
-    m_lifecyclePolicyStats = jsonValue.GetObject("LifecyclePolicyStats");
+    m_securityPolicyStats = jsonValue.GetObject("SecurityPolicyStats");
 
   }
 
@@ -49,9 +49,9 @@ GetPoliciesStatsResult& GetPoliciesStatsResult::operator =(const Aws::AmazonWebS
 
   }
 
-  if(jsonValue.ValueExists("SecurityPolicyStats"))
+  if(jsonValue.ValueExists("LifecyclePolicyStats"))
   {
-    m_securityPolicyStats = jsonValue.GetObject("SecurityPolicyStats");
+    m_lifecyclePolicyStats = jsonValue.GetObject("LifecyclePolicyStats");
 
   }
 

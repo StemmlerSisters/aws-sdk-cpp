@@ -27,6 +27,7 @@ Origin::Origin() :
     m_customHeadersHasBeenSet(false),
     m_s3OriginConfigHasBeenSet(false),
     m_customOriginConfigHasBeenSet(false),
+    m_vpcOriginConfigHasBeenSet(false),
     m_connectionAttempts(0),
     m_connectionAttemptsHasBeenSet(false),
     m_connectionTimeout(0),
@@ -36,19 +37,8 @@ Origin::Origin() :
 {
 }
 
-Origin::Origin(const XmlNode& xmlNode) : 
-    m_idHasBeenSet(false),
-    m_domainNameHasBeenSet(false),
-    m_originPathHasBeenSet(false),
-    m_customHeadersHasBeenSet(false),
-    m_s3OriginConfigHasBeenSet(false),
-    m_customOriginConfigHasBeenSet(false),
-    m_connectionAttempts(0),
-    m_connectionAttemptsHasBeenSet(false),
-    m_connectionTimeout(0),
-    m_connectionTimeoutHasBeenSet(false),
-    m_originShieldHasBeenSet(false),
-    m_originAccessControlIdHasBeenSet(false)
+Origin::Origin(const XmlNode& xmlNode)
+  : Origin()
 {
   *this = xmlNode;
 }
@@ -94,6 +84,12 @@ Origin& Origin::operator =(const XmlNode& xmlNode)
     {
       m_customOriginConfig = customOriginConfigNode;
       m_customOriginConfigHasBeenSet = true;
+    }
+    XmlNode vpcOriginConfigNode = resultNode.FirstChild("VpcOriginConfig");
+    if(!vpcOriginConfigNode.IsNull())
+    {
+      m_vpcOriginConfig = vpcOriginConfigNode;
+      m_vpcOriginConfigHasBeenSet = true;
     }
     XmlNode connectionAttemptsNode = resultNode.FirstChild("ConnectionAttempts");
     if(!connectionAttemptsNode.IsNull())
@@ -161,6 +157,12 @@ void Origin::AddToNode(XmlNode& parentNode) const
   {
    XmlNode customOriginConfigNode = parentNode.CreateChildElement("CustomOriginConfig");
    m_customOriginConfig.AddToNode(customOriginConfigNode);
+  }
+
+  if(m_vpcOriginConfigHasBeenSet)
+  {
+   XmlNode vpcOriginConfigNode = parentNode.CreateChildElement("VpcOriginConfig");
+   m_vpcOriginConfig.AddToNode(vpcOriginConfigNode);
   }
 
   if(m_connectionAttemptsHasBeenSet)

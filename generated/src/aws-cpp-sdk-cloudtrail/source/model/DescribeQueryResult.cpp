@@ -23,9 +23,8 @@ DescribeQueryResult::DescribeQueryResult() :
 {
 }
 
-DescribeQueryResult::DescribeQueryResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_queryStatus(QueryStatus::NOT_SET),
-    m_deliveryStatus(DeliveryStatus::NOT_SET)
+DescribeQueryResult::DescribeQueryResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : DescribeQueryResult()
 {
   *this = result;
 }
@@ -72,6 +71,18 @@ DescribeQueryResult& DescribeQueryResult::operator =(const Aws::AmazonWebService
   if(jsonValue.ValueExists("DeliveryStatus"))
   {
     m_deliveryStatus = DeliveryStatusMapper::GetDeliveryStatusForName(jsonValue.GetString("DeliveryStatus"));
+
+  }
+
+  if(jsonValue.ValueExists("Prompt"))
+  {
+    m_prompt = jsonValue.GetString("Prompt");
+
+  }
+
+  if(jsonValue.ValueExists("EventDataStoreOwnerAccountId"))
+  {
+    m_eventDataStoreOwnerAccountId = jsonValue.GetString("EventDataStoreOwnerAccountId");
 
   }
 

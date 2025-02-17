@@ -47,18 +47,29 @@ CreateAccessGrantsInstanceResult& CreateAccessGrantsInstanceResult::operator =(c
     {
       m_accessGrantsInstanceArn = Aws::Utils::Xml::DecodeEscapedXmlText(accessGrantsInstanceArnNode.GetText());
     }
-    XmlNode identityCenterArnNode = resultNode.FirstChild("IdentityCenterArn");
-    if(!identityCenterArnNode.IsNull())
+    XmlNode identityCenterInstanceArnNode = resultNode.FirstChild("IdentityCenterInstanceArn");
+    if(!identityCenterInstanceArnNode.IsNull())
     {
-      m_identityCenterArn = Aws::Utils::Xml::DecodeEscapedXmlText(identityCenterArnNode.GetText());
+      m_identityCenterInstanceArn = Aws::Utils::Xml::DecodeEscapedXmlText(identityCenterInstanceArnNode.GetText());
+    }
+    XmlNode identityCenterApplicationArnNode = resultNode.FirstChild("IdentityCenterApplicationArn");
+    if(!identityCenterApplicationArnNode.IsNull())
+    {
+      m_identityCenterApplicationArn = Aws::Utils::Xml::DecodeEscapedXmlText(identityCenterApplicationArnNode.GetText());
     }
   }
 
   const auto& headers = result.GetHeaderValueCollection();
-  const auto& requestIdIter = headers.find("x-amzn-requestid");
+  const auto& requestIdIter = headers.find("x-amz-request-id");
   if(requestIdIter != headers.end())
   {
     m_requestId = requestIdIter->second;
+  }
+
+  const auto& hostIdIter = headers.find("x-amz-id-2");
+  if(hostIdIter != headers.end())
+  {
+    m_hostId = hostIdIter->second;
   }
 
   return *this;

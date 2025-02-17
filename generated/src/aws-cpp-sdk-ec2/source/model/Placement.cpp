@@ -21,7 +21,6 @@ namespace Model
 {
 
 Placement::Placement() : 
-    m_availabilityZoneHasBeenSet(false),
     m_affinityHasBeenSet(false),
     m_groupNameHasBeenSet(false),
     m_partitionNumber(0),
@@ -31,22 +30,13 @@ Placement::Placement() :
     m_tenancyHasBeenSet(false),
     m_spreadDomainHasBeenSet(false),
     m_hostResourceGroupArnHasBeenSet(false),
-    m_groupIdHasBeenSet(false)
+    m_groupIdHasBeenSet(false),
+    m_availabilityZoneHasBeenSet(false)
 {
 }
 
-Placement::Placement(const XmlNode& xmlNode) : 
-    m_availabilityZoneHasBeenSet(false),
-    m_affinityHasBeenSet(false),
-    m_groupNameHasBeenSet(false),
-    m_partitionNumber(0),
-    m_partitionNumberHasBeenSet(false),
-    m_hostIdHasBeenSet(false),
-    m_tenancy(Tenancy::NOT_SET),
-    m_tenancyHasBeenSet(false),
-    m_spreadDomainHasBeenSet(false),
-    m_hostResourceGroupArnHasBeenSet(false),
-    m_groupIdHasBeenSet(false)
+Placement::Placement(const XmlNode& xmlNode)
+  : Placement()
 {
   *this = xmlNode;
 }
@@ -57,12 +47,6 @@ Placement& Placement::operator =(const XmlNode& xmlNode)
 
   if(!resultNode.IsNull())
   {
-    XmlNode availabilityZoneNode = resultNode.FirstChild("availabilityZone");
-    if(!availabilityZoneNode.IsNull())
-    {
-      m_availabilityZone = Aws::Utils::Xml::DecodeEscapedXmlText(availabilityZoneNode.GetText());
-      m_availabilityZoneHasBeenSet = true;
-    }
     XmlNode affinityNode = resultNode.FirstChild("affinity");
     if(!affinityNode.IsNull())
     {
@@ -111,6 +95,12 @@ Placement& Placement::operator =(const XmlNode& xmlNode)
       m_groupId = Aws::Utils::Xml::DecodeEscapedXmlText(groupIdNode.GetText());
       m_groupIdHasBeenSet = true;
     }
+    XmlNode availabilityZoneNode = resultNode.FirstChild("availabilityZone");
+    if(!availabilityZoneNode.IsNull())
+    {
+      m_availabilityZone = Aws::Utils::Xml::DecodeEscapedXmlText(availabilityZoneNode.GetText());
+      m_availabilityZoneHasBeenSet = true;
+    }
   }
 
   return *this;
@@ -118,11 +108,6 @@ Placement& Placement::operator =(const XmlNode& xmlNode)
 
 void Placement::OutputToStream(Aws::OStream& oStream, const char* location, unsigned index, const char* locationValue) const
 {
-  if(m_availabilityZoneHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".AvailabilityZone=" << StringUtils::URLEncode(m_availabilityZone.c_str()) << "&";
-  }
-
   if(m_affinityHasBeenSet)
   {
       oStream << location << index << locationValue << ".Affinity=" << StringUtils::URLEncode(m_affinity.c_str()) << "&";
@@ -163,14 +148,15 @@ void Placement::OutputToStream(Aws::OStream& oStream, const char* location, unsi
       oStream << location << index << locationValue << ".GroupId=" << StringUtils::URLEncode(m_groupId.c_str()) << "&";
   }
 
+  if(m_availabilityZoneHasBeenSet)
+  {
+      oStream << location << index << locationValue << ".AvailabilityZone=" << StringUtils::URLEncode(m_availabilityZone.c_str()) << "&";
+  }
+
 }
 
 void Placement::OutputToStream(Aws::OStream& oStream, const char* location) const
 {
-  if(m_availabilityZoneHasBeenSet)
-  {
-      oStream << location << ".AvailabilityZone=" << StringUtils::URLEncode(m_availabilityZone.c_str()) << "&";
-  }
   if(m_affinityHasBeenSet)
   {
       oStream << location << ".Affinity=" << StringUtils::URLEncode(m_affinity.c_str()) << "&";
@@ -202,6 +188,10 @@ void Placement::OutputToStream(Aws::OStream& oStream, const char* location) cons
   if(m_groupIdHasBeenSet)
   {
       oStream << location << ".GroupId=" << StringUtils::URLEncode(m_groupId.c_str()) << "&";
+  }
+  if(m_availabilityZoneHasBeenSet)
+  {
+      oStream << location << ".AvailabilityZone=" << StringUtils::URLEncode(m_availabilityZone.c_str()) << "&";
   }
 }
 

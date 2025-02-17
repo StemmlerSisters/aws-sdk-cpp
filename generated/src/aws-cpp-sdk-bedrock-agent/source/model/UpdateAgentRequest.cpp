@@ -13,9 +13,12 @@ using namespace Aws::Utils::Json;
 using namespace Aws::Utils;
 
 UpdateAgentRequest::UpdateAgentRequest() : 
+    m_agentCollaboration(AgentCollaboration::NOT_SET),
+    m_agentCollaborationHasBeenSet(false),
     m_agentIdHasBeenSet(false),
     m_agentNameHasBeenSet(false),
     m_agentResourceRoleArnHasBeenSet(false),
+    m_customOrchestrationHasBeenSet(false),
     m_customerEncryptionKeyArnHasBeenSet(false),
     m_descriptionHasBeenSet(false),
     m_foundationModelHasBeenSet(false),
@@ -23,6 +26,9 @@ UpdateAgentRequest::UpdateAgentRequest() :
     m_idleSessionTTLInSeconds(0),
     m_idleSessionTTLInSecondsHasBeenSet(false),
     m_instructionHasBeenSet(false),
+    m_memoryConfigurationHasBeenSet(false),
+    m_orchestrationType(OrchestrationType::NOT_SET),
+    m_orchestrationTypeHasBeenSet(false),
     m_promptOverrideConfigurationHasBeenSet(false)
 {
 }
@@ -30,6 +36,11 @@ UpdateAgentRequest::UpdateAgentRequest() :
 Aws::String UpdateAgentRequest::SerializePayload() const
 {
   JsonValue payload;
+
+  if(m_agentCollaborationHasBeenSet)
+  {
+   payload.WithString("agentCollaboration", AgentCollaborationMapper::GetNameForAgentCollaboration(m_agentCollaboration));
+  }
 
   if(m_agentNameHasBeenSet)
   {
@@ -40,6 +51,12 @@ Aws::String UpdateAgentRequest::SerializePayload() const
   if(m_agentResourceRoleArnHasBeenSet)
   {
    payload.WithString("agentResourceRoleArn", m_agentResourceRoleArn);
+
+  }
+
+  if(m_customOrchestrationHasBeenSet)
+  {
+   payload.WithObject("customOrchestration", m_customOrchestration.Jsonize());
 
   }
 
@@ -77,6 +94,17 @@ Aws::String UpdateAgentRequest::SerializePayload() const
   {
    payload.WithString("instruction", m_instruction);
 
+  }
+
+  if(m_memoryConfigurationHasBeenSet)
+  {
+   payload.WithObject("memoryConfiguration", m_memoryConfiguration.Jsonize());
+
+  }
+
+  if(m_orchestrationTypeHasBeenSet)
+  {
+   payload.WithString("orchestrationType", OrchestrationTypeMapper::GetNameForOrchestrationType(m_orchestrationType));
   }
 
   if(m_promptOverrideConfigurationHasBeenSet)

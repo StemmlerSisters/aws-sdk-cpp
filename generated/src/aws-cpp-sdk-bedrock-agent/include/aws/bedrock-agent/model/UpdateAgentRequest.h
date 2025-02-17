@@ -6,8 +6,12 @@
 #pragma once
 #include <aws/bedrock-agent/BedrockAgent_EXPORTS.h>
 #include <aws/bedrock-agent/BedrockAgentRequest.h>
+#include <aws/bedrock-agent/model/AgentCollaboration.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
+#include <aws/bedrock-agent/model/CustomOrchestration.h>
 #include <aws/bedrock-agent/model/GuardrailConfiguration.h>
+#include <aws/bedrock-agent/model/MemoryConfiguration.h>
+#include <aws/bedrock-agent/model/OrchestrationType.h>
 #include <aws/bedrock-agent/model/PromptOverrideConfiguration.h>
 #include <utility>
 
@@ -34,313 +38,155 @@ namespace Model
     AWS_BEDROCKAGENT_API Aws::String SerializePayload() const override;
 
 
+    ///@{
+    /**
+     * <p>The agent's collaboration role.</p>
+     */
+    inline const AgentCollaboration& GetAgentCollaboration() const{ return m_agentCollaboration; }
+    inline bool AgentCollaborationHasBeenSet() const { return m_agentCollaborationHasBeenSet; }
+    inline void SetAgentCollaboration(const AgentCollaboration& value) { m_agentCollaborationHasBeenSet = true; m_agentCollaboration = value; }
+    inline void SetAgentCollaboration(AgentCollaboration&& value) { m_agentCollaborationHasBeenSet = true; m_agentCollaboration = std::move(value); }
+    inline UpdateAgentRequest& WithAgentCollaboration(const AgentCollaboration& value) { SetAgentCollaboration(value); return *this;}
+    inline UpdateAgentRequest& WithAgentCollaboration(AgentCollaboration&& value) { SetAgentCollaboration(std::move(value)); return *this;}
+    ///@}
+
+    ///@{
     /**
      * <p>The unique identifier of the agent.</p>
      */
     inline const Aws::String& GetAgentId() const{ return m_agentId; }
-
-    /**
-     * <p>The unique identifier of the agent.</p>
-     */
     inline bool AgentIdHasBeenSet() const { return m_agentIdHasBeenSet; }
-
-    /**
-     * <p>The unique identifier of the agent.</p>
-     */
     inline void SetAgentId(const Aws::String& value) { m_agentIdHasBeenSet = true; m_agentId = value; }
-
-    /**
-     * <p>The unique identifier of the agent.</p>
-     */
     inline void SetAgentId(Aws::String&& value) { m_agentIdHasBeenSet = true; m_agentId = std::move(value); }
-
-    /**
-     * <p>The unique identifier of the agent.</p>
-     */
     inline void SetAgentId(const char* value) { m_agentIdHasBeenSet = true; m_agentId.assign(value); }
-
-    /**
-     * <p>The unique identifier of the agent.</p>
-     */
     inline UpdateAgentRequest& WithAgentId(const Aws::String& value) { SetAgentId(value); return *this;}
-
-    /**
-     * <p>The unique identifier of the agent.</p>
-     */
     inline UpdateAgentRequest& WithAgentId(Aws::String&& value) { SetAgentId(std::move(value)); return *this;}
-
-    /**
-     * <p>The unique identifier of the agent.</p>
-     */
     inline UpdateAgentRequest& WithAgentId(const char* value) { SetAgentId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Specifies a new name for the agent.</p>
      */
     inline const Aws::String& GetAgentName() const{ return m_agentName; }
-
-    /**
-     * <p>Specifies a new name for the agent.</p>
-     */
     inline bool AgentNameHasBeenSet() const { return m_agentNameHasBeenSet; }
-
-    /**
-     * <p>Specifies a new name for the agent.</p>
-     */
     inline void SetAgentName(const Aws::String& value) { m_agentNameHasBeenSet = true; m_agentName = value; }
-
-    /**
-     * <p>Specifies a new name for the agent.</p>
-     */
     inline void SetAgentName(Aws::String&& value) { m_agentNameHasBeenSet = true; m_agentName = std::move(value); }
-
-    /**
-     * <p>Specifies a new name for the agent.</p>
-     */
     inline void SetAgentName(const char* value) { m_agentNameHasBeenSet = true; m_agentName.assign(value); }
-
-    /**
-     * <p>Specifies a new name for the agent.</p>
-     */
     inline UpdateAgentRequest& WithAgentName(const Aws::String& value) { SetAgentName(value); return *this;}
-
-    /**
-     * <p>Specifies a new name for the agent.</p>
-     */
     inline UpdateAgentRequest& WithAgentName(Aws::String&& value) { SetAgentName(std::move(value)); return *this;}
-
-    /**
-     * <p>Specifies a new name for the agent.</p>
-     */
     inline UpdateAgentRequest& WithAgentName(const char* value) { SetAgentName(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The Amazon Resource Name (ARN) of the IAM role with permissions to invoke API
      * operations on the agent.</p>
      */
     inline const Aws::String& GetAgentResourceRoleArn() const{ return m_agentResourceRoleArn; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the IAM role with permissions to invoke API
-     * operations on the agent.</p>
-     */
     inline bool AgentResourceRoleArnHasBeenSet() const { return m_agentResourceRoleArnHasBeenSet; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the IAM role with permissions to invoke API
-     * operations on the agent.</p>
-     */
     inline void SetAgentResourceRoleArn(const Aws::String& value) { m_agentResourceRoleArnHasBeenSet = true; m_agentResourceRoleArn = value; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the IAM role with permissions to invoke API
-     * operations on the agent.</p>
-     */
     inline void SetAgentResourceRoleArn(Aws::String&& value) { m_agentResourceRoleArnHasBeenSet = true; m_agentResourceRoleArn = std::move(value); }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the IAM role with permissions to invoke API
-     * operations on the agent.</p>
-     */
     inline void SetAgentResourceRoleArn(const char* value) { m_agentResourceRoleArnHasBeenSet = true; m_agentResourceRoleArn.assign(value); }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the IAM role with permissions to invoke API
-     * operations on the agent.</p>
-     */
     inline UpdateAgentRequest& WithAgentResourceRoleArn(const Aws::String& value) { SetAgentResourceRoleArn(value); return *this;}
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the IAM role with permissions to invoke API
-     * operations on the agent.</p>
-     */
     inline UpdateAgentRequest& WithAgentResourceRoleArn(Aws::String&& value) { SetAgentResourceRoleArn(std::move(value)); return *this;}
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the IAM role with permissions to invoke API
-     * operations on the agent.</p>
-     */
     inline UpdateAgentRequest& WithAgentResourceRoleArn(const char* value) { SetAgentResourceRoleArn(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p> Contains details of the custom orchestration configured for the agent. </p>
+     */
+    inline const CustomOrchestration& GetCustomOrchestration() const{ return m_customOrchestration; }
+    inline bool CustomOrchestrationHasBeenSet() const { return m_customOrchestrationHasBeenSet; }
+    inline void SetCustomOrchestration(const CustomOrchestration& value) { m_customOrchestrationHasBeenSet = true; m_customOrchestration = value; }
+    inline void SetCustomOrchestration(CustomOrchestration&& value) { m_customOrchestrationHasBeenSet = true; m_customOrchestration = std::move(value); }
+    inline UpdateAgentRequest& WithCustomOrchestration(const CustomOrchestration& value) { SetCustomOrchestration(value); return *this;}
+    inline UpdateAgentRequest& WithCustomOrchestration(CustomOrchestration&& value) { SetCustomOrchestration(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
     /**
      * <p>The Amazon Resource Name (ARN) of the KMS key with which to encrypt the
      * agent.</p>
      */
     inline const Aws::String& GetCustomerEncryptionKeyArn() const{ return m_customerEncryptionKeyArn; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the KMS key with which to encrypt the
-     * agent.</p>
-     */
     inline bool CustomerEncryptionKeyArnHasBeenSet() const { return m_customerEncryptionKeyArnHasBeenSet; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the KMS key with which to encrypt the
-     * agent.</p>
-     */
     inline void SetCustomerEncryptionKeyArn(const Aws::String& value) { m_customerEncryptionKeyArnHasBeenSet = true; m_customerEncryptionKeyArn = value; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the KMS key with which to encrypt the
-     * agent.</p>
-     */
     inline void SetCustomerEncryptionKeyArn(Aws::String&& value) { m_customerEncryptionKeyArnHasBeenSet = true; m_customerEncryptionKeyArn = std::move(value); }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the KMS key with which to encrypt the
-     * agent.</p>
-     */
     inline void SetCustomerEncryptionKeyArn(const char* value) { m_customerEncryptionKeyArnHasBeenSet = true; m_customerEncryptionKeyArn.assign(value); }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the KMS key with which to encrypt the
-     * agent.</p>
-     */
     inline UpdateAgentRequest& WithCustomerEncryptionKeyArn(const Aws::String& value) { SetCustomerEncryptionKeyArn(value); return *this;}
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the KMS key with which to encrypt the
-     * agent.</p>
-     */
     inline UpdateAgentRequest& WithCustomerEncryptionKeyArn(Aws::String&& value) { SetCustomerEncryptionKeyArn(std::move(value)); return *this;}
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the KMS key with which to encrypt the
-     * agent.</p>
-     */
     inline UpdateAgentRequest& WithCustomerEncryptionKeyArn(const char* value) { SetCustomerEncryptionKeyArn(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Specifies a new description of the agent.</p>
      */
     inline const Aws::String& GetDescription() const{ return m_description; }
-
-    /**
-     * <p>Specifies a new description of the agent.</p>
-     */
     inline bool DescriptionHasBeenSet() const { return m_descriptionHasBeenSet; }
-
-    /**
-     * <p>Specifies a new description of the agent.</p>
-     */
     inline void SetDescription(const Aws::String& value) { m_descriptionHasBeenSet = true; m_description = value; }
-
-    /**
-     * <p>Specifies a new description of the agent.</p>
-     */
     inline void SetDescription(Aws::String&& value) { m_descriptionHasBeenSet = true; m_description = std::move(value); }
-
-    /**
-     * <p>Specifies a new description of the agent.</p>
-     */
     inline void SetDescription(const char* value) { m_descriptionHasBeenSet = true; m_description.assign(value); }
-
-    /**
-     * <p>Specifies a new description of the agent.</p>
-     */
     inline UpdateAgentRequest& WithDescription(const Aws::String& value) { SetDescription(value); return *this;}
-
-    /**
-     * <p>Specifies a new description of the agent.</p>
-     */
     inline UpdateAgentRequest& WithDescription(Aws::String&& value) { SetDescription(std::move(value)); return *this;}
-
-    /**
-     * <p>Specifies a new description of the agent.</p>
-     */
     inline UpdateAgentRequest& WithDescription(const char* value) { SetDescription(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p>Specifies a new foundation model to be used for orchestration by the
-     * agent.</p>
+     * <p>The identifier for the model that you want to be used for orchestration by
+     * the agent you create.</p> <p>The <code>modelId</code> to provide depends on the
+     * type of model or throughput that you use:</p> <ul> <li> <p>If you use a base
+     * model, specify the model ID or its ARN. For a list of model IDs for base models,
+     * see <a
+     * href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-ids.html#model-ids-arns">Amazon
+     * Bedrock base model IDs (on-demand throughput)</a> in the Amazon Bedrock User
+     * Guide.</p> </li> <li> <p>If you use an inference profile, specify the inference
+     * profile ID or its ARN. For a list of inference profile IDs, see <a
+     * href="https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference-support.html">Supported
+     * Regions and models for cross-region inference</a> in the Amazon Bedrock User
+     * Guide.</p> </li> <li> <p>If you use a provisioned model, specify the ARN of the
+     * Provisioned Throughput. For more information, see <a
+     * href="https://docs.aws.amazon.com/bedrock/latest/userguide/prov-thru-use.html">Run
+     * inference using a Provisioned Throughput</a> in the Amazon Bedrock User
+     * Guide.</p> </li> <li> <p>If you use a custom model, first purchase Provisioned
+     * Throughput for it. Then specify the ARN of the resulting provisioned model. For
+     * more information, see <a
+     * href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-customization-use.html">Use
+     * a custom model in Amazon Bedrock</a> in the Amazon Bedrock User Guide.</p> </li>
+     * <li> <p>If you use an <a
+     * href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-customization-import-model.html">imported
+     * model</a>, specify the ARN of the imported model. You can get the model ARN from
+     * a successful call to <a
+     * href="https://docs.aws.amazon.com/bedrock/latest/APIReference/API_CreateModelImportJob.html">CreateModelImportJob</a>
+     * or from the Imported models page in the Amazon Bedrock console.</p> </li> </ul>
      */
     inline const Aws::String& GetFoundationModel() const{ return m_foundationModel; }
-
-    /**
-     * <p>Specifies a new foundation model to be used for orchestration by the
-     * agent.</p>
-     */
     inline bool FoundationModelHasBeenSet() const { return m_foundationModelHasBeenSet; }
-
-    /**
-     * <p>Specifies a new foundation model to be used for orchestration by the
-     * agent.</p>
-     */
     inline void SetFoundationModel(const Aws::String& value) { m_foundationModelHasBeenSet = true; m_foundationModel = value; }
-
-    /**
-     * <p>Specifies a new foundation model to be used for orchestration by the
-     * agent.</p>
-     */
     inline void SetFoundationModel(Aws::String&& value) { m_foundationModelHasBeenSet = true; m_foundationModel = std::move(value); }
-
-    /**
-     * <p>Specifies a new foundation model to be used for orchestration by the
-     * agent.</p>
-     */
     inline void SetFoundationModel(const char* value) { m_foundationModelHasBeenSet = true; m_foundationModel.assign(value); }
-
-    /**
-     * <p>Specifies a new foundation model to be used for orchestration by the
-     * agent.</p>
-     */
     inline UpdateAgentRequest& WithFoundationModel(const Aws::String& value) { SetFoundationModel(value); return *this;}
-
-    /**
-     * <p>Specifies a new foundation model to be used for orchestration by the
-     * agent.</p>
-     */
     inline UpdateAgentRequest& WithFoundationModel(Aws::String&& value) { SetFoundationModel(std::move(value)); return *this;}
-
-    /**
-     * <p>Specifies a new foundation model to be used for orchestration by the
-     * agent.</p>
-     */
     inline UpdateAgentRequest& WithFoundationModel(const char* value) { SetFoundationModel(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The unique Guardrail configuration assigned to the agent when it is
      * updated.</p>
      */
     inline const GuardrailConfiguration& GetGuardrailConfiguration() const{ return m_guardrailConfiguration; }
-
-    /**
-     * <p>The unique Guardrail configuration assigned to the agent when it is
-     * updated.</p>
-     */
     inline bool GuardrailConfigurationHasBeenSet() const { return m_guardrailConfigurationHasBeenSet; }
-
-    /**
-     * <p>The unique Guardrail configuration assigned to the agent when it is
-     * updated.</p>
-     */
     inline void SetGuardrailConfiguration(const GuardrailConfiguration& value) { m_guardrailConfigurationHasBeenSet = true; m_guardrailConfiguration = value; }
-
-    /**
-     * <p>The unique Guardrail configuration assigned to the agent when it is
-     * updated.</p>
-     */
     inline void SetGuardrailConfiguration(GuardrailConfiguration&& value) { m_guardrailConfigurationHasBeenSet = true; m_guardrailConfiguration = std::move(value); }
-
-    /**
-     * <p>The unique Guardrail configuration assigned to the agent when it is
-     * updated.</p>
-     */
     inline UpdateAgentRequest& WithGuardrailConfiguration(const GuardrailConfiguration& value) { SetGuardrailConfiguration(value); return *this;}
-
-    /**
-     * <p>The unique Guardrail configuration assigned to the agent when it is
-     * updated.</p>
-     */
     inline UpdateAgentRequest& WithGuardrailConfiguration(GuardrailConfiguration&& value) { SetGuardrailConfiguration(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The number of seconds for which Amazon Bedrock keeps information about a
      * user's conversation with the agent.</p> <p>A user interaction remains active for
@@ -349,84 +195,52 @@ namespace Model
      * timeout.</p>
      */
     inline int GetIdleSessionTTLInSeconds() const{ return m_idleSessionTTLInSeconds; }
-
-    /**
-     * <p>The number of seconds for which Amazon Bedrock keeps information about a
-     * user's conversation with the agent.</p> <p>A user interaction remains active for
-     * the amount of time specified. If no conversation occurs during this time, the
-     * session expires and Amazon Bedrock deletes any data provided before the
-     * timeout.</p>
-     */
     inline bool IdleSessionTTLInSecondsHasBeenSet() const { return m_idleSessionTTLInSecondsHasBeenSet; }
-
-    /**
-     * <p>The number of seconds for which Amazon Bedrock keeps information about a
-     * user's conversation with the agent.</p> <p>A user interaction remains active for
-     * the amount of time specified. If no conversation occurs during this time, the
-     * session expires and Amazon Bedrock deletes any data provided before the
-     * timeout.</p>
-     */
     inline void SetIdleSessionTTLInSeconds(int value) { m_idleSessionTTLInSecondsHasBeenSet = true; m_idleSessionTTLInSeconds = value; }
-
-    /**
-     * <p>The number of seconds for which Amazon Bedrock keeps information about a
-     * user's conversation with the agent.</p> <p>A user interaction remains active for
-     * the amount of time specified. If no conversation occurs during this time, the
-     * session expires and Amazon Bedrock deletes any data provided before the
-     * timeout.</p>
-     */
     inline UpdateAgentRequest& WithIdleSessionTTLInSeconds(int value) { SetIdleSessionTTLInSeconds(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Specifies new instructions that tell the agent what it should do and how it
      * should interact with users.</p>
      */
     inline const Aws::String& GetInstruction() const{ return m_instruction; }
-
-    /**
-     * <p>Specifies new instructions that tell the agent what it should do and how it
-     * should interact with users.</p>
-     */
     inline bool InstructionHasBeenSet() const { return m_instructionHasBeenSet; }
-
-    /**
-     * <p>Specifies new instructions that tell the agent what it should do and how it
-     * should interact with users.</p>
-     */
     inline void SetInstruction(const Aws::String& value) { m_instructionHasBeenSet = true; m_instruction = value; }
-
-    /**
-     * <p>Specifies new instructions that tell the agent what it should do and how it
-     * should interact with users.</p>
-     */
     inline void SetInstruction(Aws::String&& value) { m_instructionHasBeenSet = true; m_instruction = std::move(value); }
-
-    /**
-     * <p>Specifies new instructions that tell the agent what it should do and how it
-     * should interact with users.</p>
-     */
     inline void SetInstruction(const char* value) { m_instructionHasBeenSet = true; m_instruction.assign(value); }
-
-    /**
-     * <p>Specifies new instructions that tell the agent what it should do and how it
-     * should interact with users.</p>
-     */
     inline UpdateAgentRequest& WithInstruction(const Aws::String& value) { SetInstruction(value); return *this;}
-
-    /**
-     * <p>Specifies new instructions that tell the agent what it should do and how it
-     * should interact with users.</p>
-     */
     inline UpdateAgentRequest& WithInstruction(Aws::String&& value) { SetInstruction(std::move(value)); return *this;}
-
-    /**
-     * <p>Specifies new instructions that tell the agent what it should do and how it
-     * should interact with users.</p>
-     */
     inline UpdateAgentRequest& WithInstruction(const char* value) { SetInstruction(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>Specifies the new memory configuration for the agent. </p>
+     */
+    inline const MemoryConfiguration& GetMemoryConfiguration() const{ return m_memoryConfiguration; }
+    inline bool MemoryConfigurationHasBeenSet() const { return m_memoryConfigurationHasBeenSet; }
+    inline void SetMemoryConfiguration(const MemoryConfiguration& value) { m_memoryConfigurationHasBeenSet = true; m_memoryConfiguration = value; }
+    inline void SetMemoryConfiguration(MemoryConfiguration&& value) { m_memoryConfigurationHasBeenSet = true; m_memoryConfiguration = std::move(value); }
+    inline UpdateAgentRequest& WithMemoryConfiguration(const MemoryConfiguration& value) { SetMemoryConfiguration(value); return *this;}
+    inline UpdateAgentRequest& WithMemoryConfiguration(MemoryConfiguration&& value) { SetMemoryConfiguration(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p> Specifies the type of orchestration strategy for the agent. This is set to
+     * <code>DEFAULT</code> orchestration type, by default. </p>
+     */
+    inline const OrchestrationType& GetOrchestrationType() const{ return m_orchestrationType; }
+    inline bool OrchestrationTypeHasBeenSet() const { return m_orchestrationTypeHasBeenSet; }
+    inline void SetOrchestrationType(const OrchestrationType& value) { m_orchestrationTypeHasBeenSet = true; m_orchestrationType = value; }
+    inline void SetOrchestrationType(OrchestrationType&& value) { m_orchestrationTypeHasBeenSet = true; m_orchestrationType = std::move(value); }
+    inline UpdateAgentRequest& WithOrchestrationType(const OrchestrationType& value) { SetOrchestrationType(value); return *this;}
+    inline UpdateAgentRequest& WithOrchestrationType(OrchestrationType&& value) { SetOrchestrationType(std::move(value)); return *this;}
+    ///@}
+
+    ///@{
     /**
      * <p>Contains configurations to override prompts in different parts of an agent
      * sequence. For more information, see <a
@@ -434,48 +248,16 @@ namespace Model
      * prompts</a>.</p>
      */
     inline const PromptOverrideConfiguration& GetPromptOverrideConfiguration() const{ return m_promptOverrideConfiguration; }
-
-    /**
-     * <p>Contains configurations to override prompts in different parts of an agent
-     * sequence. For more information, see <a
-     * href="https://docs.aws.amazon.com/bedrock/latest/userguide/advanced-prompts.html">Advanced
-     * prompts</a>.</p>
-     */
     inline bool PromptOverrideConfigurationHasBeenSet() const { return m_promptOverrideConfigurationHasBeenSet; }
-
-    /**
-     * <p>Contains configurations to override prompts in different parts of an agent
-     * sequence. For more information, see <a
-     * href="https://docs.aws.amazon.com/bedrock/latest/userguide/advanced-prompts.html">Advanced
-     * prompts</a>.</p>
-     */
     inline void SetPromptOverrideConfiguration(const PromptOverrideConfiguration& value) { m_promptOverrideConfigurationHasBeenSet = true; m_promptOverrideConfiguration = value; }
-
-    /**
-     * <p>Contains configurations to override prompts in different parts of an agent
-     * sequence. For more information, see <a
-     * href="https://docs.aws.amazon.com/bedrock/latest/userguide/advanced-prompts.html">Advanced
-     * prompts</a>.</p>
-     */
     inline void SetPromptOverrideConfiguration(PromptOverrideConfiguration&& value) { m_promptOverrideConfigurationHasBeenSet = true; m_promptOverrideConfiguration = std::move(value); }
-
-    /**
-     * <p>Contains configurations to override prompts in different parts of an agent
-     * sequence. For more information, see <a
-     * href="https://docs.aws.amazon.com/bedrock/latest/userguide/advanced-prompts.html">Advanced
-     * prompts</a>.</p>
-     */
     inline UpdateAgentRequest& WithPromptOverrideConfiguration(const PromptOverrideConfiguration& value) { SetPromptOverrideConfiguration(value); return *this;}
-
-    /**
-     * <p>Contains configurations to override prompts in different parts of an agent
-     * sequence. For more information, see <a
-     * href="https://docs.aws.amazon.com/bedrock/latest/userguide/advanced-prompts.html">Advanced
-     * prompts</a>.</p>
-     */
     inline UpdateAgentRequest& WithPromptOverrideConfiguration(PromptOverrideConfiguration&& value) { SetPromptOverrideConfiguration(std::move(value)); return *this;}
-
+    ///@}
   private:
+
+    AgentCollaboration m_agentCollaboration;
+    bool m_agentCollaborationHasBeenSet = false;
 
     Aws::String m_agentId;
     bool m_agentIdHasBeenSet = false;
@@ -485,6 +267,9 @@ namespace Model
 
     Aws::String m_agentResourceRoleArn;
     bool m_agentResourceRoleArnHasBeenSet = false;
+
+    CustomOrchestration m_customOrchestration;
+    bool m_customOrchestrationHasBeenSet = false;
 
     Aws::String m_customerEncryptionKeyArn;
     bool m_customerEncryptionKeyArnHasBeenSet = false;
@@ -503,6 +288,12 @@ namespace Model
 
     Aws::String m_instruction;
     bool m_instructionHasBeenSet = false;
+
+    MemoryConfiguration m_memoryConfiguration;
+    bool m_memoryConfigurationHasBeenSet = false;
+
+    OrchestrationType m_orchestrationType;
+    bool m_orchestrationTypeHasBeenSet = false;
 
     PromptOverrideConfiguration m_promptOverrideConfiguration;
     bool m_promptOverrideConfigurationHasBeenSet = false;

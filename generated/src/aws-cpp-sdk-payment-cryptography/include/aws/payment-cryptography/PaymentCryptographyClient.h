@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/payment-cryptography/PaymentCryptography_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/payment-cryptography/PaymentCryptographyServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/payment-cryptography/PaymentCryptographyErrorMarshaller.h>
 
 namespace Aws
 {
 namespace PaymentCryptography
 {
+  AWS_PAYMENTCRYPTOGRAPHY_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon Web Services Payment Cryptography Control Plane APIs manage encryption
    * keys for use during payment-related cryptographic operations. You can create,
@@ -40,12 +44,20 @@ namespace PaymentCryptography
    * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/">CloudTrail
    * User Guide</a>.</p>
    */
-  class AWS_PAYMENTCRYPTOGRAPHY_API PaymentCryptographyClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<PaymentCryptographyClient>
+  class AWS_PAYMENTCRYPTOGRAPHY_API PaymentCryptographyClient : smithy::client::AwsSmithyClientT<Aws::PaymentCryptography::SERVICE_NAME,
+      Aws::PaymentCryptography::PaymentCryptographyClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      PaymentCryptographyEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::PaymentCryptographyErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<PaymentCryptographyClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Payment Cryptography"; }
 
       typedef PaymentCryptographyClientConfiguration ClientConfigurationType;
       typedef PaymentCryptographyEndpointProvider EndpointProviderType;
@@ -773,8 +785,8 @@ namespace PaymentCryptography
 
         /**
          * <p>Lists the aliases for all keys in the caller's Amazon Web Services account
-         * and Amazon Web Services Region. You can filter the list of aliases. For more
-         * information, see <a
+         * and Amazon Web Services Region. You can filter the aliases by
+         * <code>keyARN</code>. For more information, see <a
          * href="https://docs.aws.amazon.com/payment-cryptography/latest/userguide/keys-managealias.html">Using
          * aliases</a> in the <i>Amazon Web Services Payment Cryptography User
          * Guide</i>.</p> <p>This is a paginated operation, which means that each response
@@ -796,13 +808,13 @@ namespace PaymentCryptography
          * href="http://docs.aws.amazon.com/goto/WebAPI/payment-cryptography-2021-09-14/ListAliases">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAliasesOutcome ListAliases(const Model::ListAliasesRequest& request) const;
+        virtual Model::ListAliasesOutcome ListAliases(const Model::ListAliasesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAliases that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAliasesRequestT = Model::ListAliasesRequest>
-        Model::ListAliasesOutcomeCallable ListAliasesCallable(const ListAliasesRequestT& request) const
+        Model::ListAliasesOutcomeCallable ListAliasesCallable(const ListAliasesRequestT& request = {}) const
         {
             return SubmitCallable(&PaymentCryptographyClient::ListAliases, request);
         }
@@ -811,7 +823,7 @@ namespace PaymentCryptography
          * An Async wrapper for ListAliases that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAliasesRequestT = Model::ListAliasesRequest>
-        void ListAliasesAsync(const ListAliasesRequestT& request, const ListAliasesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAliasesAsync(const ListAliasesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAliasesRequestT& request = {}) const
         {
             return SubmitAsync(&PaymentCryptographyClient::ListAliases, request, handler, context);
         }
@@ -836,13 +848,13 @@ namespace PaymentCryptography
          * href="http://docs.aws.amazon.com/goto/WebAPI/payment-cryptography-2021-09-14/ListKeys">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListKeysOutcome ListKeys(const Model::ListKeysRequest& request) const;
+        virtual Model::ListKeysOutcome ListKeys(const Model::ListKeysRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListKeys that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListKeysRequestT = Model::ListKeysRequest>
-        Model::ListKeysOutcomeCallable ListKeysCallable(const ListKeysRequestT& request) const
+        Model::ListKeysOutcomeCallable ListKeysCallable(const ListKeysRequestT& request = {}) const
         {
             return SubmitCallable(&PaymentCryptographyClient::ListKeys, request);
         }
@@ -851,7 +863,7 @@ namespace PaymentCryptography
          * An Async wrapper for ListKeys that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListKeysRequestT = Model::ListKeysRequest>
-        void ListKeysAsync(const ListKeysRequestT& request, const ListKeysResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListKeysAsync(const ListKeysResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListKeysRequestT& request = {}) const
         {
             return SubmitAsync(&PaymentCryptographyClient::ListKeys, request, handler, context);
         }
@@ -1118,11 +1130,7 @@ namespace PaymentCryptography
       std::shared_ptr<PaymentCryptographyEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<PaymentCryptographyClient>;
-      void init(const PaymentCryptographyClientConfiguration& clientConfiguration);
 
-      PaymentCryptographyClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<PaymentCryptographyEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace PaymentCryptography

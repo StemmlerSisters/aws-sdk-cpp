@@ -94,9 +94,9 @@ static const int D_B_INSTANCE_AUTOMATED_BACKUP_QUOTA_EXCEEDED_FAULT_HASH = Hashi
 static const int D_B_CLUSTER_NOT_FOUND_FAULT_HASH = HashingUtils::HashString("DBClusterNotFoundFault");
 static const int SUBSCRIPTION_NOT_FOUND_FAULT_HASH = HashingUtils::HashString("SubscriptionNotFound");
 static const int BACKUP_POLICY_NOT_FOUND_FAULT_HASH = HashingUtils::HashString("BackupPolicyNotFoundFault");
-static const int INVALID_MAX_ACU_FAULT_HASH = HashingUtils::HashString("InvalidMaxAcu");
 static const int INVALID_D_B_PROXY_ENDPOINT_STATE_FAULT_HASH = HashingUtils::HashString("InvalidDBProxyEndpointStateFault");
 static const int D_B_SUBNET_GROUP_DOES_NOT_COVER_ENOUGH_A_ZS_HASH = HashingUtils::HashString("DBSubnetGroupDoesNotCoverEnoughAZs");
+static const int D_B_INSTANCE_NOT_READY_FAULT_HASH = HashingUtils::HashString("DBInstanceNotReady");
 static const int D_B_UPGRADE_DEPENDENCY_FAILURE_FAULT_HASH = HashingUtils::HashString("DBUpgradeDependencyFailure");
 static const int INVALID_D_B_PROXY_STATE_FAULT_HASH = HashingUtils::HashString("InvalidDBProxyStateFault");
 static const int D_B_SUBNET_GROUP_NOT_ALLOWED_FAULT_HASH = HashingUtils::HashString("DBSubnetGroupNotAllowedFault");
@@ -553,11 +553,6 @@ static bool GetErrorForNameHelper0(int hashCode, AWSError<CoreErrors>& error)
     error = AWSError<CoreErrors>(static_cast<CoreErrors>(RDSErrors::BACKUP_POLICY_NOT_FOUND_FAULT), RetryableType::NOT_RETRYABLE);
     return true;
   }
-  else if (hashCode == INVALID_MAX_ACU_FAULT_HASH)
-  {
-    error = AWSError<CoreErrors>(static_cast<CoreErrors>(RDSErrors::INVALID_MAX_ACU_FAULT), RetryableType::NOT_RETRYABLE);
-    return true;
-  }
   else if (hashCode == INVALID_D_B_PROXY_ENDPOINT_STATE_FAULT_HASH)
   {
     error = AWSError<CoreErrors>(static_cast<CoreErrors>(RDSErrors::INVALID_D_B_PROXY_ENDPOINT_STATE_FAULT), RetryableType::NOT_RETRYABLE);
@@ -566,6 +561,11 @@ static bool GetErrorForNameHelper0(int hashCode, AWSError<CoreErrors>& error)
   else if (hashCode == D_B_SUBNET_GROUP_DOES_NOT_COVER_ENOUGH_A_ZS_HASH)
   {
     error = AWSError<CoreErrors>(static_cast<CoreErrors>(RDSErrors::D_B_SUBNET_GROUP_DOES_NOT_COVER_ENOUGH_A_ZS), RetryableType::NOT_RETRYABLE);
+    return true;
+  }
+  else if (hashCode == D_B_INSTANCE_NOT_READY_FAULT_HASH)
+  {
+    error = AWSError<CoreErrors>(static_cast<CoreErrors>(RDSErrors::D_B_INSTANCE_NOT_READY_FAULT), RetryableType::NOT_RETRYABLE);
     return true;
   }
   else if (hashCode == D_B_UPGRADE_DEPENDENCY_FAILURE_FAULT_HASH)

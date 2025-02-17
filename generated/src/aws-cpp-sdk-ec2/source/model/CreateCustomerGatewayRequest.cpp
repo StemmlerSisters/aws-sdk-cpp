@@ -20,6 +20,8 @@ CreateCustomerGatewayRequest::CreateCustomerGatewayRequest() :
     m_tagSpecificationsHasBeenSet(false),
     m_deviceNameHasBeenSet(false),
     m_ipAddressHasBeenSet(false),
+    m_bgpAsnExtended(0),
+    m_bgpAsnExtendedHasBeenSet(false),
     m_dryRun(false),
     m_dryRunHasBeenSet(false)
 {
@@ -67,6 +69,11 @@ Aws::String CreateCustomerGatewayRequest::SerializePayload() const
   if(m_ipAddressHasBeenSet)
   {
     ss << "IpAddress=" << StringUtils::URLEncode(m_ipAddress.c_str()) << "&";
+  }
+
+  if(m_bgpAsnExtendedHasBeenSet)
+  {
+    ss << "BgpAsnExtended=" << m_bgpAsnExtended << "&";
   }
 
   if(m_dryRunHasBeenSet)

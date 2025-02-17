@@ -38,95 +38,49 @@ namespace Model
 
   public:
 
+    ///@{
     /**
      * <p>The name of the Auto Scaling group.</p>
      */
     inline const Aws::String& GetAutoScalingGroupName() const{ return m_autoScalingGroupName; }
-
-    /**
-     * <p>The name of the Auto Scaling group.</p>
-     */
     inline bool AutoScalingGroupNameHasBeenSet() const { return m_autoScalingGroupNameHasBeenSet; }
-
-    /**
-     * <p>The name of the Auto Scaling group.</p>
-     */
     inline void SetAutoScalingGroupName(const Aws::String& value) { m_autoScalingGroupNameHasBeenSet = true; m_autoScalingGroupName = value; }
-
-    /**
-     * <p>The name of the Auto Scaling group.</p>
-     */
     inline void SetAutoScalingGroupName(Aws::String&& value) { m_autoScalingGroupNameHasBeenSet = true; m_autoScalingGroupName = std::move(value); }
-
-    /**
-     * <p>The name of the Auto Scaling group.</p>
-     */
     inline void SetAutoScalingGroupName(const char* value) { m_autoScalingGroupNameHasBeenSet = true; m_autoScalingGroupName.assign(value); }
-
-    /**
-     * <p>The name of the Auto Scaling group.</p>
-     */
     inline AttachTrafficSourcesRequest& WithAutoScalingGroupName(const Aws::String& value) { SetAutoScalingGroupName(value); return *this;}
-
-    /**
-     * <p>The name of the Auto Scaling group.</p>
-     */
     inline AttachTrafficSourcesRequest& WithAutoScalingGroupName(Aws::String&& value) { SetAutoScalingGroupName(std::move(value)); return *this;}
-
-    /**
-     * <p>The name of the Auto Scaling group.</p>
-     */
     inline AttachTrafficSourcesRequest& WithAutoScalingGroupName(const char* value) { SetAutoScalingGroupName(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The unique identifiers of one or more traffic sources. You can specify up to
      * 10 traffic sources.</p>
      */
     inline const Aws::Vector<TrafficSourceIdentifier>& GetTrafficSources() const{ return m_trafficSources; }
-
-    /**
-     * <p>The unique identifiers of one or more traffic sources. You can specify up to
-     * 10 traffic sources.</p>
-     */
     inline bool TrafficSourcesHasBeenSet() const { return m_trafficSourcesHasBeenSet; }
-
-    /**
-     * <p>The unique identifiers of one or more traffic sources. You can specify up to
-     * 10 traffic sources.</p>
-     */
     inline void SetTrafficSources(const Aws::Vector<TrafficSourceIdentifier>& value) { m_trafficSourcesHasBeenSet = true; m_trafficSources = value; }
-
-    /**
-     * <p>The unique identifiers of one or more traffic sources. You can specify up to
-     * 10 traffic sources.</p>
-     */
     inline void SetTrafficSources(Aws::Vector<TrafficSourceIdentifier>&& value) { m_trafficSourcesHasBeenSet = true; m_trafficSources = std::move(value); }
-
-    /**
-     * <p>The unique identifiers of one or more traffic sources. You can specify up to
-     * 10 traffic sources.</p>
-     */
     inline AttachTrafficSourcesRequest& WithTrafficSources(const Aws::Vector<TrafficSourceIdentifier>& value) { SetTrafficSources(value); return *this;}
-
-    /**
-     * <p>The unique identifiers of one or more traffic sources. You can specify up to
-     * 10 traffic sources.</p>
-     */
     inline AttachTrafficSourcesRequest& WithTrafficSources(Aws::Vector<TrafficSourceIdentifier>&& value) { SetTrafficSources(std::move(value)); return *this;}
-
-    /**
-     * <p>The unique identifiers of one or more traffic sources. You can specify up to
-     * 10 traffic sources.</p>
-     */
     inline AttachTrafficSourcesRequest& AddTrafficSources(const TrafficSourceIdentifier& value) { m_trafficSourcesHasBeenSet = true; m_trafficSources.push_back(value); return *this; }
-
-    /**
-     * <p>The unique identifiers of one or more traffic sources. You can specify up to
-     * 10 traffic sources.</p>
-     */
     inline AttachTrafficSourcesRequest& AddTrafficSources(TrafficSourceIdentifier&& value) { m_trafficSourcesHasBeenSet = true; m_trafficSources.push_back(std::move(value)); return *this; }
+    ///@}
 
+    ///@{
+    /**
+     * <p> If you enable zonal shift with cross-zone disabled load balancers, capacity
+     * could become imbalanced across Availability Zones. To skip the validation,
+     * specify <code>true</code>. For more information, see <a
+     * href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-zonal-shift.html">Auto
+     * Scaling group zonal shift</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.
+     * </p>
+     */
+    inline bool GetSkipZonalShiftValidation() const{ return m_skipZonalShiftValidation; }
+    inline bool SkipZonalShiftValidationHasBeenSet() const { return m_skipZonalShiftValidationHasBeenSet; }
+    inline void SetSkipZonalShiftValidation(bool value) { m_skipZonalShiftValidationHasBeenSet = true; m_skipZonalShiftValidation = value; }
+    inline AttachTrafficSourcesRequest& WithSkipZonalShiftValidation(bool value) { SetSkipZonalShiftValidation(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_autoScalingGroupName;
@@ -134,6 +88,9 @@ namespace Model
 
     Aws::Vector<TrafficSourceIdentifier> m_trafficSources;
     bool m_trafficSourcesHasBeenSet = false;
+
+    bool m_skipZonalShiftValidation;
+    bool m_skipZonalShiftValidationHasBeenSet = false;
   };
 
 } // namespace Model

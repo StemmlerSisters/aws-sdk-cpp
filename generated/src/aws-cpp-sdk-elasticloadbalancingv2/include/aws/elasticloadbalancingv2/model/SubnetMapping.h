@@ -39,185 +39,80 @@ namespace Model
     AWS_ELASTICLOADBALANCINGV2_API void OutputToStream(Aws::OStream& oStream, const char* location) const;
 
 
+    ///@{
     /**
      * <p>The ID of the subnet.</p>
      */
     inline const Aws::String& GetSubnetId() const{ return m_subnetId; }
-
-    /**
-     * <p>The ID of the subnet.</p>
-     */
     inline bool SubnetIdHasBeenSet() const { return m_subnetIdHasBeenSet; }
-
-    /**
-     * <p>The ID of the subnet.</p>
-     */
     inline void SetSubnetId(const Aws::String& value) { m_subnetIdHasBeenSet = true; m_subnetId = value; }
-
-    /**
-     * <p>The ID of the subnet.</p>
-     */
     inline void SetSubnetId(Aws::String&& value) { m_subnetIdHasBeenSet = true; m_subnetId = std::move(value); }
-
-    /**
-     * <p>The ID of the subnet.</p>
-     */
     inline void SetSubnetId(const char* value) { m_subnetIdHasBeenSet = true; m_subnetId.assign(value); }
-
-    /**
-     * <p>The ID of the subnet.</p>
-     */
     inline SubnetMapping& WithSubnetId(const Aws::String& value) { SetSubnetId(value); return *this;}
-
-    /**
-     * <p>The ID of the subnet.</p>
-     */
     inline SubnetMapping& WithSubnetId(Aws::String&& value) { SetSubnetId(std::move(value)); return *this;}
-
-    /**
-     * <p>The ID of the subnet.</p>
-     */
     inline SubnetMapping& WithSubnetId(const char* value) { SetSubnetId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>[Network Load Balancers] The allocation ID of the Elastic IP address for an
      * internet-facing load balancer.</p>
      */
     inline const Aws::String& GetAllocationId() const{ return m_allocationId; }
-
-    /**
-     * <p>[Network Load Balancers] The allocation ID of the Elastic IP address for an
-     * internet-facing load balancer.</p>
-     */
     inline bool AllocationIdHasBeenSet() const { return m_allocationIdHasBeenSet; }
-
-    /**
-     * <p>[Network Load Balancers] The allocation ID of the Elastic IP address for an
-     * internet-facing load balancer.</p>
-     */
     inline void SetAllocationId(const Aws::String& value) { m_allocationIdHasBeenSet = true; m_allocationId = value; }
-
-    /**
-     * <p>[Network Load Balancers] The allocation ID of the Elastic IP address for an
-     * internet-facing load balancer.</p>
-     */
     inline void SetAllocationId(Aws::String&& value) { m_allocationIdHasBeenSet = true; m_allocationId = std::move(value); }
-
-    /**
-     * <p>[Network Load Balancers] The allocation ID of the Elastic IP address for an
-     * internet-facing load balancer.</p>
-     */
     inline void SetAllocationId(const char* value) { m_allocationIdHasBeenSet = true; m_allocationId.assign(value); }
-
-    /**
-     * <p>[Network Load Balancers] The allocation ID of the Elastic IP address for an
-     * internet-facing load balancer.</p>
-     */
     inline SubnetMapping& WithAllocationId(const Aws::String& value) { SetAllocationId(value); return *this;}
-
-    /**
-     * <p>[Network Load Balancers] The allocation ID of the Elastic IP address for an
-     * internet-facing load balancer.</p>
-     */
     inline SubnetMapping& WithAllocationId(Aws::String&& value) { SetAllocationId(std::move(value)); return *this;}
-
-    /**
-     * <p>[Network Load Balancers] The allocation ID of the Elastic IP address for an
-     * internet-facing load balancer.</p>
-     */
     inline SubnetMapping& WithAllocationId(const char* value) { SetAllocationId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>[Network Load Balancers] The private IPv4 address for an internal load
      * balancer.</p>
      */
     inline const Aws::String& GetPrivateIPv4Address() const{ return m_privateIPv4Address; }
-
-    /**
-     * <p>[Network Load Balancers] The private IPv4 address for an internal load
-     * balancer.</p>
-     */
     inline bool PrivateIPv4AddressHasBeenSet() const { return m_privateIPv4AddressHasBeenSet; }
-
-    /**
-     * <p>[Network Load Balancers] The private IPv4 address for an internal load
-     * balancer.</p>
-     */
     inline void SetPrivateIPv4Address(const Aws::String& value) { m_privateIPv4AddressHasBeenSet = true; m_privateIPv4Address = value; }
-
-    /**
-     * <p>[Network Load Balancers] The private IPv4 address for an internal load
-     * balancer.</p>
-     */
     inline void SetPrivateIPv4Address(Aws::String&& value) { m_privateIPv4AddressHasBeenSet = true; m_privateIPv4Address = std::move(value); }
-
-    /**
-     * <p>[Network Load Balancers] The private IPv4 address for an internal load
-     * balancer.</p>
-     */
     inline void SetPrivateIPv4Address(const char* value) { m_privateIPv4AddressHasBeenSet = true; m_privateIPv4Address.assign(value); }
-
-    /**
-     * <p>[Network Load Balancers] The private IPv4 address for an internal load
-     * balancer.</p>
-     */
     inline SubnetMapping& WithPrivateIPv4Address(const Aws::String& value) { SetPrivateIPv4Address(value); return *this;}
-
-    /**
-     * <p>[Network Load Balancers] The private IPv4 address for an internal load
-     * balancer.</p>
-     */
     inline SubnetMapping& WithPrivateIPv4Address(Aws::String&& value) { SetPrivateIPv4Address(std::move(value)); return *this;}
-
-    /**
-     * <p>[Network Load Balancers] The private IPv4 address for an internal load
-     * balancer.</p>
-     */
     inline SubnetMapping& WithPrivateIPv4Address(const char* value) { SetPrivateIPv4Address(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>[Network Load Balancers] The IPv6 address.</p>
      */
     inline const Aws::String& GetIPv6Address() const{ return m_iPv6Address; }
-
-    /**
-     * <p>[Network Load Balancers] The IPv6 address.</p>
-     */
     inline bool IPv6AddressHasBeenSet() const { return m_iPv6AddressHasBeenSet; }
-
-    /**
-     * <p>[Network Load Balancers] The IPv6 address.</p>
-     */
     inline void SetIPv6Address(const Aws::String& value) { m_iPv6AddressHasBeenSet = true; m_iPv6Address = value; }
-
-    /**
-     * <p>[Network Load Balancers] The IPv6 address.</p>
-     */
     inline void SetIPv6Address(Aws::String&& value) { m_iPv6AddressHasBeenSet = true; m_iPv6Address = std::move(value); }
-
-    /**
-     * <p>[Network Load Balancers] The IPv6 address.</p>
-     */
     inline void SetIPv6Address(const char* value) { m_iPv6AddressHasBeenSet = true; m_iPv6Address.assign(value); }
-
-    /**
-     * <p>[Network Load Balancers] The IPv6 address.</p>
-     */
     inline SubnetMapping& WithIPv6Address(const Aws::String& value) { SetIPv6Address(value); return *this;}
-
-    /**
-     * <p>[Network Load Balancers] The IPv6 address.</p>
-     */
     inline SubnetMapping& WithIPv6Address(Aws::String&& value) { SetIPv6Address(std::move(value)); return *this;}
-
-    /**
-     * <p>[Network Load Balancers] The IPv6 address.</p>
-     */
     inline SubnetMapping& WithIPv6Address(const char* value) { SetIPv6Address(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>[Network Load Balancers with UDP listeners] The IPv6 prefix to use for source
+     * NAT. Specify an IPv6 prefix (/80 netmask) from the subnet CIDR block or
+     * <code>auto_assigned</code> to use an IPv6 prefix selected at random from the
+     * subnet CIDR block.</p>
+     */
+    inline const Aws::String& GetSourceNatIpv6Prefix() const{ return m_sourceNatIpv6Prefix; }
+    inline bool SourceNatIpv6PrefixHasBeenSet() const { return m_sourceNatIpv6PrefixHasBeenSet; }
+    inline void SetSourceNatIpv6Prefix(const Aws::String& value) { m_sourceNatIpv6PrefixHasBeenSet = true; m_sourceNatIpv6Prefix = value; }
+    inline void SetSourceNatIpv6Prefix(Aws::String&& value) { m_sourceNatIpv6PrefixHasBeenSet = true; m_sourceNatIpv6Prefix = std::move(value); }
+    inline void SetSourceNatIpv6Prefix(const char* value) { m_sourceNatIpv6PrefixHasBeenSet = true; m_sourceNatIpv6Prefix.assign(value); }
+    inline SubnetMapping& WithSourceNatIpv6Prefix(const Aws::String& value) { SetSourceNatIpv6Prefix(value); return *this;}
+    inline SubnetMapping& WithSourceNatIpv6Prefix(Aws::String&& value) { SetSourceNatIpv6Prefix(std::move(value)); return *this;}
+    inline SubnetMapping& WithSourceNatIpv6Prefix(const char* value) { SetSourceNatIpv6Prefix(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_subnetId;
@@ -231,6 +126,9 @@ namespace Model
 
     Aws::String m_iPv6Address;
     bool m_iPv6AddressHasBeenSet = false;
+
+    Aws::String m_sourceNatIpv6Prefix;
+    bool m_sourceNatIpv6PrefixHasBeenSet = false;
   };
 
 } // namespace Model

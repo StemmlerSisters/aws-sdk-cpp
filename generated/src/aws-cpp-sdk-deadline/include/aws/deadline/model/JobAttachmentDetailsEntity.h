@@ -5,8 +5,8 @@
 
 #pragma once
 #include <aws/deadline/Deadline_EXPORTS.h>
-#include <aws/deadline/model/Attachments.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
+#include <aws/deadline/model/Attachments.h>
 #include <utility>
 
 namespace Aws
@@ -38,84 +38,38 @@ namespace Model
     AWS_DEADLINE_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
-    /**
-     * <p>The job attachments.</p>
-     */
-    inline const Attachments& GetAttachments() const{ return m_attachments; }
-
-    /**
-     * <p>The job attachments.</p>
-     */
-    inline bool AttachmentsHasBeenSet() const { return m_attachmentsHasBeenSet; }
-
-    /**
-     * <p>The job attachments.</p>
-     */
-    inline void SetAttachments(const Attachments& value) { m_attachmentsHasBeenSet = true; m_attachments = value; }
-
-    /**
-     * <p>The job attachments.</p>
-     */
-    inline void SetAttachments(Attachments&& value) { m_attachmentsHasBeenSet = true; m_attachments = std::move(value); }
-
-    /**
-     * <p>The job attachments.</p>
-     */
-    inline JobAttachmentDetailsEntity& WithAttachments(const Attachments& value) { SetAttachments(value); return *this;}
-
-    /**
-     * <p>The job attachments.</p>
-     */
-    inline JobAttachmentDetailsEntity& WithAttachments(Attachments&& value) { SetAttachments(std::move(value)); return *this;}
-
-
+    ///@{
     /**
      * <p>The job ID.</p>
      */
     inline const Aws::String& GetJobId() const{ return m_jobId; }
-
-    /**
-     * <p>The job ID.</p>
-     */
     inline bool JobIdHasBeenSet() const { return m_jobIdHasBeenSet; }
-
-    /**
-     * <p>The job ID.</p>
-     */
     inline void SetJobId(const Aws::String& value) { m_jobIdHasBeenSet = true; m_jobId = value; }
-
-    /**
-     * <p>The job ID.</p>
-     */
     inline void SetJobId(Aws::String&& value) { m_jobIdHasBeenSet = true; m_jobId = std::move(value); }
-
-    /**
-     * <p>The job ID.</p>
-     */
     inline void SetJobId(const char* value) { m_jobIdHasBeenSet = true; m_jobId.assign(value); }
-
-    /**
-     * <p>The job ID.</p>
-     */
     inline JobAttachmentDetailsEntity& WithJobId(const Aws::String& value) { SetJobId(value); return *this;}
-
-    /**
-     * <p>The job ID.</p>
-     */
     inline JobAttachmentDetailsEntity& WithJobId(Aws::String&& value) { SetJobId(std::move(value)); return *this;}
-
-    /**
-     * <p>The job ID.</p>
-     */
     inline JobAttachmentDetailsEntity& WithJobId(const char* value) { SetJobId(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The job attachments.</p>
+     */
+    inline const Attachments& GetAttachments() const{ return m_attachments; }
+    inline bool AttachmentsHasBeenSet() const { return m_attachmentsHasBeenSet; }
+    inline void SetAttachments(const Attachments& value) { m_attachmentsHasBeenSet = true; m_attachments = value; }
+    inline void SetAttachments(Attachments&& value) { m_attachmentsHasBeenSet = true; m_attachments = std::move(value); }
+    inline JobAttachmentDetailsEntity& WithAttachments(const Attachments& value) { SetAttachments(value); return *this;}
+    inline JobAttachmentDetailsEntity& WithAttachments(Attachments&& value) { SetAttachments(std::move(value)); return *this;}
+    ///@}
   private:
-
-    Attachments m_attachments;
-    bool m_attachmentsHasBeenSet = false;
 
     Aws::String m_jobId;
     bool m_jobIdHasBeenSet = false;
+
+    Attachments m_attachments;
+    bool m_attachmentsHasBeenSet = false;
   };
 
 } // namespace Model

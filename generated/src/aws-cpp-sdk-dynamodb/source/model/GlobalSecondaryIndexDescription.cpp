@@ -32,25 +32,13 @@ GlobalSecondaryIndexDescription::GlobalSecondaryIndexDescription() :
     m_itemCount(0),
     m_itemCountHasBeenSet(false),
     m_indexArnHasBeenSet(false),
-    m_onDemandThroughputHasBeenSet(false)
+    m_onDemandThroughputHasBeenSet(false),
+    m_warmThroughputHasBeenSet(false)
 {
 }
 
-GlobalSecondaryIndexDescription::GlobalSecondaryIndexDescription(JsonView jsonValue) : 
-    m_indexNameHasBeenSet(false),
-    m_keySchemaHasBeenSet(false),
-    m_projectionHasBeenSet(false),
-    m_indexStatus(IndexStatus::NOT_SET),
-    m_indexStatusHasBeenSet(false),
-    m_backfilling(false),
-    m_backfillingHasBeenSet(false),
-    m_provisionedThroughputHasBeenSet(false),
-    m_indexSizeBytes(0),
-    m_indexSizeBytesHasBeenSet(false),
-    m_itemCount(0),
-    m_itemCountHasBeenSet(false),
-    m_indexArnHasBeenSet(false),
-    m_onDemandThroughputHasBeenSet(false)
+GlobalSecondaryIndexDescription::GlobalSecondaryIndexDescription(JsonView jsonValue)
+  : GlobalSecondaryIndexDescription()
 {
   *this = jsonValue;
 }
@@ -130,6 +118,13 @@ GlobalSecondaryIndexDescription& GlobalSecondaryIndexDescription::operator =(Jso
     m_onDemandThroughputHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("WarmThroughput"))
+  {
+    m_warmThroughput = jsonValue.GetObject("WarmThroughput");
+
+    m_warmThroughputHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -198,6 +193,12 @@ JsonValue GlobalSecondaryIndexDescription::Jsonize() const
   if(m_onDemandThroughputHasBeenSet)
   {
    payload.WithObject("OnDemandThroughput", m_onDemandThroughput.Jsonize());
+
+  }
+
+  if(m_warmThroughputHasBeenSet)
+  {
+   payload.WithObject("WarmThroughput", m_warmThroughput.Jsonize());
 
   }
 

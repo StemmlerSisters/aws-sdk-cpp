@@ -51,10 +51,12 @@
 #include <aws/imagebuilder/model/GetInfrastructureConfigurationResult.h>
 #include <aws/imagebuilder/model/GetLifecycleExecutionResult.h>
 #include <aws/imagebuilder/model/GetLifecyclePolicyResult.h>
+#include <aws/imagebuilder/model/GetMarketplaceResourceResult.h>
 #include <aws/imagebuilder/model/GetWorkflowResult.h>
 #include <aws/imagebuilder/model/GetWorkflowExecutionResult.h>
 #include <aws/imagebuilder/model/GetWorkflowStepExecutionResult.h>
 #include <aws/imagebuilder/model/ImportComponentResult.h>
+#include <aws/imagebuilder/model/ImportDiskImageResult.h>
 #include <aws/imagebuilder/model/ImportVmImageResult.h>
 #include <aws/imagebuilder/model/ListComponentBuildVersionsResult.h>
 #include <aws/imagebuilder/model/ListComponentsResult.h>
@@ -91,6 +93,18 @@
 #include <aws/imagebuilder/model/UpdateImagePipelineResult.h>
 #include <aws/imagebuilder/model/UpdateInfrastructureConfigurationResult.h>
 #include <aws/imagebuilder/model/UpdateLifecyclePolicyResult.h>
+#include <aws/imagebuilder/model/ListInfrastructureConfigurationsRequest.h>
+#include <aws/imagebuilder/model/ListWorkflowsRequest.h>
+#include <aws/imagebuilder/model/ListLifecyclePoliciesRequest.h>
+#include <aws/imagebuilder/model/ListDistributionConfigurationsRequest.h>
+#include <aws/imagebuilder/model/ListWaitingWorkflowStepsRequest.h>
+#include <aws/imagebuilder/model/ListContainerRecipesRequest.h>
+#include <aws/imagebuilder/model/ListImagePipelinesRequest.h>
+#include <aws/imagebuilder/model/ListImageScanFindingsRequest.h>
+#include <aws/imagebuilder/model/ListImageRecipesRequest.h>
+#include <aws/imagebuilder/model/ListComponentsRequest.h>
+#include <aws/imagebuilder/model/ListImagesRequest.h>
+#include <aws/imagebuilder/model/ListImageScanFindingAggregationsRequest.h>
 /* End of service model headers required in ImagebuilderClient header */
 
 namespace Aws
@@ -124,7 +138,7 @@ namespace Aws
 
   namespace imagebuilder
   {
-    using ImagebuilderClientConfiguration = Aws::Client::GenericClientConfiguration<false>;
+    using ImagebuilderClientConfiguration = Aws::Client::GenericClientConfiguration;
     using ImagebuilderEndpointProviderBase = Aws::imagebuilder::Endpoint::ImagebuilderEndpointProviderBase;
     using ImagebuilderEndpointProvider = Aws::imagebuilder::Endpoint::ImagebuilderEndpointProvider;
 
@@ -164,10 +178,12 @@ namespace Aws
       class GetInfrastructureConfigurationRequest;
       class GetLifecycleExecutionRequest;
       class GetLifecyclePolicyRequest;
+      class GetMarketplaceResourceRequest;
       class GetWorkflowRequest;
       class GetWorkflowExecutionRequest;
       class GetWorkflowStepExecutionRequest;
       class ImportComponentRequest;
+      class ImportDiskImageRequest;
       class ImportVmImageRequest;
       class ListComponentBuildVersionsRequest;
       class ListComponentsRequest;
@@ -240,10 +256,12 @@ namespace Aws
       typedef Aws::Utils::Outcome<GetInfrastructureConfigurationResult, ImagebuilderError> GetInfrastructureConfigurationOutcome;
       typedef Aws::Utils::Outcome<GetLifecycleExecutionResult, ImagebuilderError> GetLifecycleExecutionOutcome;
       typedef Aws::Utils::Outcome<GetLifecyclePolicyResult, ImagebuilderError> GetLifecyclePolicyOutcome;
+      typedef Aws::Utils::Outcome<GetMarketplaceResourceResult, ImagebuilderError> GetMarketplaceResourceOutcome;
       typedef Aws::Utils::Outcome<GetWorkflowResult, ImagebuilderError> GetWorkflowOutcome;
       typedef Aws::Utils::Outcome<GetWorkflowExecutionResult, ImagebuilderError> GetWorkflowExecutionOutcome;
       typedef Aws::Utils::Outcome<GetWorkflowStepExecutionResult, ImagebuilderError> GetWorkflowStepExecutionOutcome;
       typedef Aws::Utils::Outcome<ImportComponentResult, ImagebuilderError> ImportComponentOutcome;
+      typedef Aws::Utils::Outcome<ImportDiskImageResult, ImagebuilderError> ImportDiskImageOutcome;
       typedef Aws::Utils::Outcome<ImportVmImageResult, ImagebuilderError> ImportVmImageOutcome;
       typedef Aws::Utils::Outcome<ListComponentBuildVersionsResult, ImagebuilderError> ListComponentBuildVersionsOutcome;
       typedef Aws::Utils::Outcome<ListComponentsResult, ImagebuilderError> ListComponentsOutcome;
@@ -316,10 +334,12 @@ namespace Aws
       typedef std::future<GetInfrastructureConfigurationOutcome> GetInfrastructureConfigurationOutcomeCallable;
       typedef std::future<GetLifecycleExecutionOutcome> GetLifecycleExecutionOutcomeCallable;
       typedef std::future<GetLifecyclePolicyOutcome> GetLifecyclePolicyOutcomeCallable;
+      typedef std::future<GetMarketplaceResourceOutcome> GetMarketplaceResourceOutcomeCallable;
       typedef std::future<GetWorkflowOutcome> GetWorkflowOutcomeCallable;
       typedef std::future<GetWorkflowExecutionOutcome> GetWorkflowExecutionOutcomeCallable;
       typedef std::future<GetWorkflowStepExecutionOutcome> GetWorkflowStepExecutionOutcomeCallable;
       typedef std::future<ImportComponentOutcome> ImportComponentOutcomeCallable;
+      typedef std::future<ImportDiskImageOutcome> ImportDiskImageOutcomeCallable;
       typedef std::future<ImportVmImageOutcome> ImportVmImageOutcomeCallable;
       typedef std::future<ListComponentBuildVersionsOutcome> ListComponentBuildVersionsOutcomeCallable;
       typedef std::future<ListComponentsOutcome> ListComponentsOutcomeCallable;
@@ -395,10 +415,12 @@ namespace Aws
     typedef std::function<void(const ImagebuilderClient*, const Model::GetInfrastructureConfigurationRequest&, const Model::GetInfrastructureConfigurationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetInfrastructureConfigurationResponseReceivedHandler;
     typedef std::function<void(const ImagebuilderClient*, const Model::GetLifecycleExecutionRequest&, const Model::GetLifecycleExecutionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetLifecycleExecutionResponseReceivedHandler;
     typedef std::function<void(const ImagebuilderClient*, const Model::GetLifecyclePolicyRequest&, const Model::GetLifecyclePolicyOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetLifecyclePolicyResponseReceivedHandler;
+    typedef std::function<void(const ImagebuilderClient*, const Model::GetMarketplaceResourceRequest&, const Model::GetMarketplaceResourceOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetMarketplaceResourceResponseReceivedHandler;
     typedef std::function<void(const ImagebuilderClient*, const Model::GetWorkflowRequest&, const Model::GetWorkflowOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetWorkflowResponseReceivedHandler;
     typedef std::function<void(const ImagebuilderClient*, const Model::GetWorkflowExecutionRequest&, const Model::GetWorkflowExecutionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetWorkflowExecutionResponseReceivedHandler;
     typedef std::function<void(const ImagebuilderClient*, const Model::GetWorkflowStepExecutionRequest&, const Model::GetWorkflowStepExecutionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetWorkflowStepExecutionResponseReceivedHandler;
     typedef std::function<void(const ImagebuilderClient*, const Model::ImportComponentRequest&, const Model::ImportComponentOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ImportComponentResponseReceivedHandler;
+    typedef std::function<void(const ImagebuilderClient*, const Model::ImportDiskImageRequest&, const Model::ImportDiskImageOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ImportDiskImageResponseReceivedHandler;
     typedef std::function<void(const ImagebuilderClient*, const Model::ImportVmImageRequest&, const Model::ImportVmImageOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ImportVmImageResponseReceivedHandler;
     typedef std::function<void(const ImagebuilderClient*, const Model::ListComponentBuildVersionsRequest&, const Model::ListComponentBuildVersionsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListComponentBuildVersionsResponseReceivedHandler;
     typedef std::function<void(const ImagebuilderClient*, const Model::ListComponentsRequest&, const Model::ListComponentsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListComponentsResponseReceivedHandler;

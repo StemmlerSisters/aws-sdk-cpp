@@ -19,36 +19,33 @@ namespace Model
 {
 
 JobAttachmentDetailsError::JobAttachmentDetailsError() : 
+    m_jobIdHasBeenSet(false),
     m_code(JobEntityErrorCode::NOT_SET),
     m_codeHasBeenSet(false),
-    m_jobIdHasBeenSet(false),
     m_messageHasBeenSet(false)
 {
 }
 
-JobAttachmentDetailsError::JobAttachmentDetailsError(JsonView jsonValue) : 
-    m_code(JobEntityErrorCode::NOT_SET),
-    m_codeHasBeenSet(false),
-    m_jobIdHasBeenSet(false),
-    m_messageHasBeenSet(false)
+JobAttachmentDetailsError::JobAttachmentDetailsError(JsonView jsonValue)
+  : JobAttachmentDetailsError()
 {
   *this = jsonValue;
 }
 
 JobAttachmentDetailsError& JobAttachmentDetailsError::operator =(JsonView jsonValue)
 {
-  if(jsonValue.ValueExists("code"))
-  {
-    m_code = JobEntityErrorCodeMapper::GetJobEntityErrorCodeForName(jsonValue.GetString("code"));
-
-    m_codeHasBeenSet = true;
-  }
-
   if(jsonValue.ValueExists("jobId"))
   {
     m_jobId = jsonValue.GetString("jobId");
 
     m_jobIdHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("code"))
+  {
+    m_code = JobEntityErrorCodeMapper::GetJobEntityErrorCodeForName(jsonValue.GetString("code"));
+
+    m_codeHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("message"))
@@ -65,15 +62,15 @@ JsonValue JobAttachmentDetailsError::Jsonize() const
 {
   JsonValue payload;
 
-  if(m_codeHasBeenSet)
-  {
-   payload.WithString("code", JobEntityErrorCodeMapper::GetNameForJobEntityErrorCode(m_code));
-  }
-
   if(m_jobIdHasBeenSet)
   {
    payload.WithString("jobId", m_jobId);
 
+  }
+
+  if(m_codeHasBeenSet)
+  {
+   payload.WithString("code", JobEntityErrorCodeMapper::GetNameForJobEntityErrorCode(m_code));
   }
 
   if(m_messageHasBeenSet)

@@ -21,14 +21,13 @@ namespace Model
 {
 
 IpRange::IpRange() : 
-    m_cidrIpHasBeenSet(false),
-    m_descriptionHasBeenSet(false)
+    m_descriptionHasBeenSet(false),
+    m_cidrIpHasBeenSet(false)
 {
 }
 
-IpRange::IpRange(const XmlNode& xmlNode) : 
-    m_cidrIpHasBeenSet(false),
-    m_descriptionHasBeenSet(false)
+IpRange::IpRange(const XmlNode& xmlNode)
+  : IpRange()
 {
   *this = xmlNode;
 }
@@ -39,17 +38,17 @@ IpRange& IpRange::operator =(const XmlNode& xmlNode)
 
   if(!resultNode.IsNull())
   {
-    XmlNode cidrIpNode = resultNode.FirstChild("cidrIp");
-    if(!cidrIpNode.IsNull())
-    {
-      m_cidrIp = Aws::Utils::Xml::DecodeEscapedXmlText(cidrIpNode.GetText());
-      m_cidrIpHasBeenSet = true;
-    }
     XmlNode descriptionNode = resultNode.FirstChild("description");
     if(!descriptionNode.IsNull())
     {
       m_description = Aws::Utils::Xml::DecodeEscapedXmlText(descriptionNode.GetText());
       m_descriptionHasBeenSet = true;
+    }
+    XmlNode cidrIpNode = resultNode.FirstChild("cidrIp");
+    if(!cidrIpNode.IsNull())
+    {
+      m_cidrIp = Aws::Utils::Xml::DecodeEscapedXmlText(cidrIpNode.GetText());
+      m_cidrIpHasBeenSet = true;
     }
   }
 
@@ -58,27 +57,27 @@ IpRange& IpRange::operator =(const XmlNode& xmlNode)
 
 void IpRange::OutputToStream(Aws::OStream& oStream, const char* location, unsigned index, const char* locationValue) const
 {
-  if(m_cidrIpHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".CidrIp=" << StringUtils::URLEncode(m_cidrIp.c_str()) << "&";
-  }
-
   if(m_descriptionHasBeenSet)
   {
       oStream << location << index << locationValue << ".Description=" << StringUtils::URLEncode(m_description.c_str()) << "&";
+  }
+
+  if(m_cidrIpHasBeenSet)
+  {
+      oStream << location << index << locationValue << ".CidrIp=" << StringUtils::URLEncode(m_cidrIp.c_str()) << "&";
   }
 
 }
 
 void IpRange::OutputToStream(Aws::OStream& oStream, const char* location) const
 {
-  if(m_cidrIpHasBeenSet)
-  {
-      oStream << location << ".CidrIp=" << StringUtils::URLEncode(m_cidrIp.c_str()) << "&";
-  }
   if(m_descriptionHasBeenSet)
   {
       oStream << location << ".Description=" << StringUtils::URLEncode(m_description.c_str()) << "&";
+  }
+  if(m_cidrIpHasBeenSet)
+  {
+      oStream << location << ".CidrIp=" << StringUtils::URLEncode(m_cidrIp.c_str()) << "&";
   }
 }
 

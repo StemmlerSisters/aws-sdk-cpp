@@ -23,16 +23,13 @@ SignalInformation::SignalInformation() :
     m_maxSampleCount(0),
     m_maxSampleCountHasBeenSet(false),
     m_minimumSamplingIntervalMs(0),
-    m_minimumSamplingIntervalMsHasBeenSet(false)
+    m_minimumSamplingIntervalMsHasBeenSet(false),
+    m_dataPartitionIdHasBeenSet(false)
 {
 }
 
-SignalInformation::SignalInformation(JsonView jsonValue) : 
-    m_nameHasBeenSet(false),
-    m_maxSampleCount(0),
-    m_maxSampleCountHasBeenSet(false),
-    m_minimumSamplingIntervalMs(0),
-    m_minimumSamplingIntervalMsHasBeenSet(false)
+SignalInformation::SignalInformation(JsonView jsonValue)
+  : SignalInformation()
 {
   *this = jsonValue;
 }
@@ -60,6 +57,13 @@ SignalInformation& SignalInformation::operator =(JsonView jsonValue)
     m_minimumSamplingIntervalMsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("dataPartitionId"))
+  {
+    m_dataPartitionId = jsonValue.GetString("dataPartitionId");
+
+    m_dataPartitionIdHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -82,6 +86,12 @@ JsonValue SignalInformation::Jsonize() const
   if(m_minimumSamplingIntervalMsHasBeenSet)
   {
    payload.WithInt64("minimumSamplingIntervalMs", m_minimumSamplingIntervalMs);
+
+  }
+
+  if(m_dataPartitionIdHasBeenSet)
+  {
+   payload.WithString("dataPartitionId", m_dataPartitionId);
 
   }
 

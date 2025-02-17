@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/docdb-elastic/DocDBElastic_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/docdb-elastic/DocDBElasticServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/docdb-elastic/DocDBElasticErrorMarshaller.h>
 
 namespace Aws
 {
 namespace DocDBElastic
 {
+  AWS_DOCDBELASTIC_API extern const char SERVICE_NAME[];
   /**
    * <p><fullname>Amazon DocumentDB elastic clusters</fullname> <p>Amazon DocumentDB
    * elastic-clusters support workloads with millions of reads/writes per second and
@@ -28,12 +32,20 @@ namespace DocDBElastic
    * </li> <li> <p>continue investing in a cloud-native, elastic, and class leading
    * architecture for JSON workloads.</p> </li> </ul></p>
    */
-  class AWS_DOCDBELASTIC_API DocDBElasticClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<DocDBElasticClient>
+  class AWS_DOCDBELASTIC_API DocDBElasticClient : smithy::client::AwsSmithyClientT<Aws::DocDBElastic::SERVICE_NAME,
+      Aws::DocDBElastic::DocDBElasticClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      DocDBElasticEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::DocDBElasticErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<DocDBElasticClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "DocDB Elastic"; }
 
       typedef DocDBElasticClientConfiguration ClientConfigurationType;
       typedef DocDBElasticEndpointProvider EndpointProviderType;
@@ -85,6 +97,32 @@ namespace DocDBElastic
 
         /* End of legacy constructors due deprecation */
         virtual ~DocDBElasticClient();
+
+        /**
+         * <p>The type of pending maintenance action to be applied to the
+         * resource.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/docdb-elastic-2022-11-28/ApplyPendingMaintenanceAction">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ApplyPendingMaintenanceActionOutcome ApplyPendingMaintenanceAction(const Model::ApplyPendingMaintenanceActionRequest& request) const;
+
+        /**
+         * A Callable wrapper for ApplyPendingMaintenanceAction that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ApplyPendingMaintenanceActionRequestT = Model::ApplyPendingMaintenanceActionRequest>
+        Model::ApplyPendingMaintenanceActionOutcomeCallable ApplyPendingMaintenanceActionCallable(const ApplyPendingMaintenanceActionRequestT& request) const
+        {
+            return SubmitCallable(&DocDBElasticClient::ApplyPendingMaintenanceAction, request);
+        }
+
+        /**
+         * An Async wrapper for ApplyPendingMaintenanceAction that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ApplyPendingMaintenanceActionRequestT = Model::ApplyPendingMaintenanceActionRequest>
+        void ApplyPendingMaintenanceActionAsync(const ApplyPendingMaintenanceActionRequestT& request, const ApplyPendingMaintenanceActionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DocDBElasticClient::ApplyPendingMaintenanceAction, request, handler, context);
+        }
 
         /**
          * <p>Copies a snapshot of an elastic cluster.</p><p><h3>See Also:</h3>   <a
@@ -265,18 +303,44 @@ namespace DocDBElastic
         }
 
         /**
+         * <p>Retrieves all maintenance actions that are pending.</p><p><h3>See Also:</h3> 
+         * <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/docdb-elastic-2022-11-28/GetPendingMaintenanceAction">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetPendingMaintenanceActionOutcome GetPendingMaintenanceAction(const Model::GetPendingMaintenanceActionRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetPendingMaintenanceAction that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetPendingMaintenanceActionRequestT = Model::GetPendingMaintenanceActionRequest>
+        Model::GetPendingMaintenanceActionOutcomeCallable GetPendingMaintenanceActionCallable(const GetPendingMaintenanceActionRequestT& request) const
+        {
+            return SubmitCallable(&DocDBElasticClient::GetPendingMaintenanceAction, request);
+        }
+
+        /**
+         * An Async wrapper for GetPendingMaintenanceAction that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetPendingMaintenanceActionRequestT = Model::GetPendingMaintenanceActionRequest>
+        void GetPendingMaintenanceActionAsync(const GetPendingMaintenanceActionRequestT& request, const GetPendingMaintenanceActionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DocDBElasticClient::GetPendingMaintenanceAction, request, handler, context);
+        }
+
+        /**
          * <p>Returns information about snapshots for a specified elastic
          * cluster.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/docdb-elastic-2022-11-28/ListClusterSnapshots">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListClusterSnapshotsOutcome ListClusterSnapshots(const Model::ListClusterSnapshotsRequest& request) const;
+        virtual Model::ListClusterSnapshotsOutcome ListClusterSnapshots(const Model::ListClusterSnapshotsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListClusterSnapshots that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListClusterSnapshotsRequestT = Model::ListClusterSnapshotsRequest>
-        Model::ListClusterSnapshotsOutcomeCallable ListClusterSnapshotsCallable(const ListClusterSnapshotsRequestT& request) const
+        Model::ListClusterSnapshotsOutcomeCallable ListClusterSnapshotsCallable(const ListClusterSnapshotsRequestT& request = {}) const
         {
             return SubmitCallable(&DocDBElasticClient::ListClusterSnapshots, request);
         }
@@ -285,7 +349,7 @@ namespace DocDBElastic
          * An Async wrapper for ListClusterSnapshots that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListClusterSnapshotsRequestT = Model::ListClusterSnapshotsRequest>
-        void ListClusterSnapshotsAsync(const ListClusterSnapshotsRequestT& request, const ListClusterSnapshotsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListClusterSnapshotsAsync(const ListClusterSnapshotsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListClusterSnapshotsRequestT& request = {}) const
         {
             return SubmitAsync(&DocDBElasticClient::ListClusterSnapshots, request, handler, context);
         }
@@ -296,13 +360,13 @@ namespace DocDBElastic
          * href="http://docs.aws.amazon.com/goto/WebAPI/docdb-elastic-2022-11-28/ListClusters">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListClustersOutcome ListClusters(const Model::ListClustersRequest& request) const;
+        virtual Model::ListClustersOutcome ListClusters(const Model::ListClustersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListClusters that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListClustersRequestT = Model::ListClustersRequest>
-        Model::ListClustersOutcomeCallable ListClustersCallable(const ListClustersRequestT& request) const
+        Model::ListClustersOutcomeCallable ListClustersCallable(const ListClustersRequestT& request = {}) const
         {
             return SubmitCallable(&DocDBElasticClient::ListClusters, request);
         }
@@ -311,9 +375,35 @@ namespace DocDBElastic
          * An Async wrapper for ListClusters that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListClustersRequestT = Model::ListClustersRequest>
-        void ListClustersAsync(const ListClustersRequestT& request, const ListClustersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListClustersAsync(const ListClustersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListClustersRequestT& request = {}) const
         {
             return SubmitAsync(&DocDBElasticClient::ListClusters, request, handler, context);
+        }
+
+        /**
+         * <p>Retrieves a list of all maintenance actions that are pending.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/docdb-elastic-2022-11-28/ListPendingMaintenanceActions">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListPendingMaintenanceActionsOutcome ListPendingMaintenanceActions(const Model::ListPendingMaintenanceActionsRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for ListPendingMaintenanceActions that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListPendingMaintenanceActionsRequestT = Model::ListPendingMaintenanceActionsRequest>
+        Model::ListPendingMaintenanceActionsOutcomeCallable ListPendingMaintenanceActionsCallable(const ListPendingMaintenanceActionsRequestT& request = {}) const
+        {
+            return SubmitCallable(&DocDBElasticClient::ListPendingMaintenanceActions, request);
+        }
+
+        /**
+         * An Async wrapper for ListPendingMaintenanceActions that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListPendingMaintenanceActionsRequestT = Model::ListPendingMaintenanceActionsRequest>
+        void ListPendingMaintenanceActionsAsync(const ListPendingMaintenanceActionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListPendingMaintenanceActionsRequestT& request = {}) const
+        {
+            return SubmitAsync(&DocDBElasticClient::ListPendingMaintenanceActions, request, handler, context);
         }
 
         /**
@@ -503,11 +593,7 @@ namespace DocDBElastic
       std::shared_ptr<DocDBElasticEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<DocDBElasticClient>;
-      void init(const DocDBElasticClientConfiguration& clientConfiguration);
 
-      DocDBElasticClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<DocDBElasticEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace DocDBElastic

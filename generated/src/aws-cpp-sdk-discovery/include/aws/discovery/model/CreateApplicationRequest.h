@@ -34,87 +34,47 @@ namespace Model
     AWS_APPLICATIONDISCOVERYSERVICE_API Aws::Http::HeaderValueCollection GetRequestSpecificHeaders() const override;
 
 
+    ///@{
     /**
-     * <p>Name of the application to be created.</p>
+     * <p>The name of the application to be created.</p>
      */
     inline const Aws::String& GetName() const{ return m_name; }
-
-    /**
-     * <p>Name of the application to be created.</p>
-     */
     inline bool NameHasBeenSet() const { return m_nameHasBeenSet; }
-
-    /**
-     * <p>Name of the application to be created.</p>
-     */
     inline void SetName(const Aws::String& value) { m_nameHasBeenSet = true; m_name = value; }
-
-    /**
-     * <p>Name of the application to be created.</p>
-     */
     inline void SetName(Aws::String&& value) { m_nameHasBeenSet = true; m_name = std::move(value); }
-
-    /**
-     * <p>Name of the application to be created.</p>
-     */
     inline void SetName(const char* value) { m_nameHasBeenSet = true; m_name.assign(value); }
-
-    /**
-     * <p>Name of the application to be created.</p>
-     */
     inline CreateApplicationRequest& WithName(const Aws::String& value) { SetName(value); return *this;}
-
-    /**
-     * <p>Name of the application to be created.</p>
-     */
     inline CreateApplicationRequest& WithName(Aws::String&& value) { SetName(std::move(value)); return *this;}
-
-    /**
-     * <p>Name of the application to be created.</p>
-     */
     inline CreateApplicationRequest& WithName(const char* value) { SetName(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p>Description of the application to be created.</p>
+     * <p>The description of the application to be created.</p>
      */
     inline const Aws::String& GetDescription() const{ return m_description; }
-
-    /**
-     * <p>Description of the application to be created.</p>
-     */
     inline bool DescriptionHasBeenSet() const { return m_descriptionHasBeenSet; }
-
-    /**
-     * <p>Description of the application to be created.</p>
-     */
     inline void SetDescription(const Aws::String& value) { m_descriptionHasBeenSet = true; m_description = value; }
-
-    /**
-     * <p>Description of the application to be created.</p>
-     */
     inline void SetDescription(Aws::String&& value) { m_descriptionHasBeenSet = true; m_description = std::move(value); }
-
-    /**
-     * <p>Description of the application to be created.</p>
-     */
     inline void SetDescription(const char* value) { m_descriptionHasBeenSet = true; m_description.assign(value); }
-
-    /**
-     * <p>Description of the application to be created.</p>
-     */
     inline CreateApplicationRequest& WithDescription(const Aws::String& value) { SetDescription(value); return *this;}
-
-    /**
-     * <p>Description of the application to be created.</p>
-     */
     inline CreateApplicationRequest& WithDescription(Aws::String&& value) { SetDescription(std::move(value)); return *this;}
-
-    /**
-     * <p>Description of the application to be created.</p>
-     */
     inline CreateApplicationRequest& WithDescription(const char* value) { SetDescription(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The name of the migration wave of the application to be created.</p>
+     */
+    inline const Aws::String& GetWave() const{ return m_wave; }
+    inline bool WaveHasBeenSet() const { return m_waveHasBeenSet; }
+    inline void SetWave(const Aws::String& value) { m_waveHasBeenSet = true; m_wave = value; }
+    inline void SetWave(Aws::String&& value) { m_waveHasBeenSet = true; m_wave = std::move(value); }
+    inline void SetWave(const char* value) { m_waveHasBeenSet = true; m_wave.assign(value); }
+    inline CreateApplicationRequest& WithWave(const Aws::String& value) { SetWave(value); return *this;}
+    inline CreateApplicationRequest& WithWave(Aws::String&& value) { SetWave(std::move(value)); return *this;}
+    inline CreateApplicationRequest& WithWave(const char* value) { SetWave(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_name;
@@ -122,6 +82,9 @@ namespace Model
 
     Aws::String m_description;
     bool m_descriptionHasBeenSet = false;
+
+    Aws::String m_wave;
+    bool m_waveHasBeenSet = false;
   };
 
 } // namespace Model

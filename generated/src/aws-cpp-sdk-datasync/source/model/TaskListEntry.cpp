@@ -22,15 +22,14 @@ TaskListEntry::TaskListEntry() :
     m_taskArnHasBeenSet(false),
     m_status(TaskStatus::NOT_SET),
     m_statusHasBeenSet(false),
-    m_nameHasBeenSet(false)
+    m_nameHasBeenSet(false),
+    m_taskMode(TaskMode::NOT_SET),
+    m_taskModeHasBeenSet(false)
 {
 }
 
-TaskListEntry::TaskListEntry(JsonView jsonValue) : 
-    m_taskArnHasBeenSet(false),
-    m_status(TaskStatus::NOT_SET),
-    m_statusHasBeenSet(false),
-    m_nameHasBeenSet(false)
+TaskListEntry::TaskListEntry(JsonView jsonValue)
+  : TaskListEntry()
 {
   *this = jsonValue;
 }
@@ -58,6 +57,13 @@ TaskListEntry& TaskListEntry::operator =(JsonView jsonValue)
     m_nameHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("TaskMode"))
+  {
+    m_taskMode = TaskModeMapper::GetTaskModeForName(jsonValue.GetString("TaskMode"));
+
+    m_taskModeHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -80,6 +86,11 @@ JsonValue TaskListEntry::Jsonize() const
   {
    payload.WithString("Name", m_name);
 
+  }
+
+  if(m_taskModeHasBeenSet)
+  {
+   payload.WithString("TaskMode", TaskModeMapper::GetNameForTaskMode(m_taskMode));
   }
 
   return payload;

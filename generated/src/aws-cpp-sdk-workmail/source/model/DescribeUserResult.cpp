@@ -24,10 +24,8 @@ DescribeUserResult::DescribeUserResult() :
 {
 }
 
-DescribeUserResult::DescribeUserResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_state(EntityState::NOT_SET),
-    m_userRole(UserRole::NOT_SET),
-    m_hiddenFromGlobalAddressList(false)
+DescribeUserResult::DescribeUserResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : DescribeUserResult()
 {
   *this = result;
 }
@@ -170,6 +168,18 @@ DescribeUserResult& DescribeUserResult::operator =(const Aws::AmazonWebServiceRe
   if(jsonValue.ValueExists("Office"))
   {
     m_office = jsonValue.GetString("Office");
+
+  }
+
+  if(jsonValue.ValueExists("IdentityProviderUserId"))
+  {
+    m_identityProviderUserId = jsonValue.GetString("IdentityProviderUserId");
+
+  }
+
+  if(jsonValue.ValueExists("IdentityProviderIdentityStoreId"))
+  {
+    m_identityProviderIdentityStoreId = jsonValue.GetString("IdentityProviderIdentityStoreId");
 
   }
 

@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/appmesh/AppMesh_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/appmesh/AppMeshServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/appmesh/AppMeshErrorMarshaller.h>
 
 namespace Aws
 {
 namespace AppMesh
 {
+  AWS_APPMESH_API extern const char SERVICE_NAME[];
   /**
    * <p>App Mesh is a service mesh based on the Envoy proxy that makes it easy to
    * monitor and control microservices. App Mesh standardizes how your microservices
@@ -33,12 +37,20 @@ namespace AppMesh
    * href="https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/">DNS
    * for Services and Pods</a> in the Kubernetes documentation.</p> 
    */
-  class AWS_APPMESH_API AppMeshClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<AppMeshClient>
+  class AWS_APPMESH_API AppMeshClient : smithy::client::AwsSmithyClientT<Aws::AppMesh::SERVICE_NAME,
+      Aws::AppMesh::AppMeshClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      AppMeshEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::AppMeshErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<AppMeshClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "App Mesh"; }
 
       typedef AppMeshClientConfiguration ClientConfigurationType;
       typedef AppMeshEndpointProvider EndpointProviderType;
@@ -718,13 +730,13 @@ namespace AppMesh
          * href="http://docs.aws.amazon.com/goto/WebAPI/appmesh-2019-01-25/ListMeshes">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListMeshesOutcome ListMeshes(const Model::ListMeshesRequest& request) const;
+        virtual Model::ListMeshesOutcome ListMeshes(const Model::ListMeshesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListMeshes that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListMeshesRequestT = Model::ListMeshesRequest>
-        Model::ListMeshesOutcomeCallable ListMeshesCallable(const ListMeshesRequestT& request) const
+        Model::ListMeshesOutcomeCallable ListMeshesCallable(const ListMeshesRequestT& request = {}) const
         {
             return SubmitCallable(&AppMeshClient::ListMeshes, request);
         }
@@ -733,7 +745,7 @@ namespace AppMesh
          * An Async wrapper for ListMeshes that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListMeshesRequestT = Model::ListMeshesRequest>
-        void ListMeshesAsync(const ListMeshesRequestT& request, const ListMeshesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListMeshesAsync(const ListMeshesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListMeshesRequestT& request = {}) const
         {
             return SubmitAsync(&AppMeshClient::ListMeshes, request, handler, context);
         }
@@ -1131,11 +1143,7 @@ namespace AppMesh
       std::shared_ptr<AppMeshEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<AppMeshClient>;
-      void init(const AppMeshClientConfiguration& clientConfiguration);
 
-      AppMeshClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<AppMeshEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace AppMesh

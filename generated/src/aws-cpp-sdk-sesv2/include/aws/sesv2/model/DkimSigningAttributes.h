@@ -7,6 +7,7 @@
 #include <aws/sesv2/SESV2_EXPORTS.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/sesv2/model/DkimSigningKeyLength.h>
+#include <aws/sesv2/model/DkimSigningAttributesOrigin.h>
 #include <utility>
 
 namespace Aws
@@ -39,148 +40,131 @@ namespace Model
     AWS_SESV2_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>[Bring Your Own DKIM] A string that's used to identify a public key in the
      * DNS configuration for a domain.</p>
      */
     inline const Aws::String& GetDomainSigningSelector() const{ return m_domainSigningSelector; }
-
-    /**
-     * <p>[Bring Your Own DKIM] A string that's used to identify a public key in the
-     * DNS configuration for a domain.</p>
-     */
     inline bool DomainSigningSelectorHasBeenSet() const { return m_domainSigningSelectorHasBeenSet; }
-
-    /**
-     * <p>[Bring Your Own DKIM] A string that's used to identify a public key in the
-     * DNS configuration for a domain.</p>
-     */
     inline void SetDomainSigningSelector(const Aws::String& value) { m_domainSigningSelectorHasBeenSet = true; m_domainSigningSelector = value; }
-
-    /**
-     * <p>[Bring Your Own DKIM] A string that's used to identify a public key in the
-     * DNS configuration for a domain.</p>
-     */
     inline void SetDomainSigningSelector(Aws::String&& value) { m_domainSigningSelectorHasBeenSet = true; m_domainSigningSelector = std::move(value); }
-
-    /**
-     * <p>[Bring Your Own DKIM] A string that's used to identify a public key in the
-     * DNS configuration for a domain.</p>
-     */
     inline void SetDomainSigningSelector(const char* value) { m_domainSigningSelectorHasBeenSet = true; m_domainSigningSelector.assign(value); }
-
-    /**
-     * <p>[Bring Your Own DKIM] A string that's used to identify a public key in the
-     * DNS configuration for a domain.</p>
-     */
     inline DkimSigningAttributes& WithDomainSigningSelector(const Aws::String& value) { SetDomainSigningSelector(value); return *this;}
-
-    /**
-     * <p>[Bring Your Own DKIM] A string that's used to identify a public key in the
-     * DNS configuration for a domain.</p>
-     */
     inline DkimSigningAttributes& WithDomainSigningSelector(Aws::String&& value) { SetDomainSigningSelector(std::move(value)); return *this;}
-
-    /**
-     * <p>[Bring Your Own DKIM] A string that's used to identify a public key in the
-     * DNS configuration for a domain.</p>
-     */
     inline DkimSigningAttributes& WithDomainSigningSelector(const char* value) { SetDomainSigningSelector(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>[Bring Your Own DKIM] A private key that's used to generate a DKIM
      * signature.</p> <p>The private key must use 1024 or 2048-bit RSA encryption, and
      * must be encoded using base64 encoding.</p>
      */
     inline const Aws::String& GetDomainSigningPrivateKey() const{ return m_domainSigningPrivateKey; }
-
-    /**
-     * <p>[Bring Your Own DKIM] A private key that's used to generate a DKIM
-     * signature.</p> <p>The private key must use 1024 or 2048-bit RSA encryption, and
-     * must be encoded using base64 encoding.</p>
-     */
     inline bool DomainSigningPrivateKeyHasBeenSet() const { return m_domainSigningPrivateKeyHasBeenSet; }
-
-    /**
-     * <p>[Bring Your Own DKIM] A private key that's used to generate a DKIM
-     * signature.</p> <p>The private key must use 1024 or 2048-bit RSA encryption, and
-     * must be encoded using base64 encoding.</p>
-     */
     inline void SetDomainSigningPrivateKey(const Aws::String& value) { m_domainSigningPrivateKeyHasBeenSet = true; m_domainSigningPrivateKey = value; }
-
-    /**
-     * <p>[Bring Your Own DKIM] A private key that's used to generate a DKIM
-     * signature.</p> <p>The private key must use 1024 or 2048-bit RSA encryption, and
-     * must be encoded using base64 encoding.</p>
-     */
     inline void SetDomainSigningPrivateKey(Aws::String&& value) { m_domainSigningPrivateKeyHasBeenSet = true; m_domainSigningPrivateKey = std::move(value); }
-
-    /**
-     * <p>[Bring Your Own DKIM] A private key that's used to generate a DKIM
-     * signature.</p> <p>The private key must use 1024 or 2048-bit RSA encryption, and
-     * must be encoded using base64 encoding.</p>
-     */
     inline void SetDomainSigningPrivateKey(const char* value) { m_domainSigningPrivateKeyHasBeenSet = true; m_domainSigningPrivateKey.assign(value); }
-
-    /**
-     * <p>[Bring Your Own DKIM] A private key that's used to generate a DKIM
-     * signature.</p> <p>The private key must use 1024 or 2048-bit RSA encryption, and
-     * must be encoded using base64 encoding.</p>
-     */
     inline DkimSigningAttributes& WithDomainSigningPrivateKey(const Aws::String& value) { SetDomainSigningPrivateKey(value); return *this;}
-
-    /**
-     * <p>[Bring Your Own DKIM] A private key that's used to generate a DKIM
-     * signature.</p> <p>The private key must use 1024 or 2048-bit RSA encryption, and
-     * must be encoded using base64 encoding.</p>
-     */
     inline DkimSigningAttributes& WithDomainSigningPrivateKey(Aws::String&& value) { SetDomainSigningPrivateKey(std::move(value)); return *this;}
-
-    /**
-     * <p>[Bring Your Own DKIM] A private key that's used to generate a DKIM
-     * signature.</p> <p>The private key must use 1024 or 2048-bit RSA encryption, and
-     * must be encoded using base64 encoding.</p>
-     */
     inline DkimSigningAttributes& WithDomainSigningPrivateKey(const char* value) { SetDomainSigningPrivateKey(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>[Easy DKIM] The key length of the future DKIM key pair to be generated. This
      * can be changed at most once per day.</p>
      */
     inline const DkimSigningKeyLength& GetNextSigningKeyLength() const{ return m_nextSigningKeyLength; }
-
-    /**
-     * <p>[Easy DKIM] The key length of the future DKIM key pair to be generated. This
-     * can be changed at most once per day.</p>
-     */
     inline bool NextSigningKeyLengthHasBeenSet() const { return m_nextSigningKeyLengthHasBeenSet; }
-
-    /**
-     * <p>[Easy DKIM] The key length of the future DKIM key pair to be generated. This
-     * can be changed at most once per day.</p>
-     */
     inline void SetNextSigningKeyLength(const DkimSigningKeyLength& value) { m_nextSigningKeyLengthHasBeenSet = true; m_nextSigningKeyLength = value; }
-
-    /**
-     * <p>[Easy DKIM] The key length of the future DKIM key pair to be generated. This
-     * can be changed at most once per day.</p>
-     */
     inline void SetNextSigningKeyLength(DkimSigningKeyLength&& value) { m_nextSigningKeyLengthHasBeenSet = true; m_nextSigningKeyLength = std::move(value); }
-
-    /**
-     * <p>[Easy DKIM] The key length of the future DKIM key pair to be generated. This
-     * can be changed at most once per day.</p>
-     */
     inline DkimSigningAttributes& WithNextSigningKeyLength(const DkimSigningKeyLength& value) { SetNextSigningKeyLength(value); return *this;}
-
-    /**
-     * <p>[Easy DKIM] The key length of the future DKIM key pair to be generated. This
-     * can be changed at most once per day.</p>
-     */
     inline DkimSigningAttributes& WithNextSigningKeyLength(DkimSigningKeyLength&& value) { SetNextSigningKeyLength(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The attribute to use for configuring DKIM for the identity depends on the
+     * operation: </p> <ol> <li> <p>For
+     * <code>PutEmailIdentityDkimSigningAttributes</code>: </p> <ul> <li> <p>None of
+     * the values are allowed - use the <a
+     * href="https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_PutEmailIdentityDkimSigningAttributes.html#SES-PutEmailIdentityDkimSigningAttributes-request-SigningAttributesOrigin">
+     * <code>SigningAttributesOrigin</code> </a> parameter instead </p> </li> </ul>
+     * </li> <li> <p>For <code>CreateEmailIdentity</code> when replicating a parent
+     * identity's DKIM configuration: </p> <ul> <li> <p>Allowed values: All values
+     * except <code>AWS_SES</code> and <code>EXTERNAL</code> </p> </li> </ul> </li>
+     * </ol> <ul> <li> <p> <code>AWS_SES</code> – Configure DKIM for the identity by
+     * using Easy DKIM. </p> </li> <li> <p> <code>EXTERNAL</code> – Configure DKIM for
+     * the identity by using Bring Your Own DKIM (BYODKIM). </p> </li> <li> <p>
+     * <code>AWS_SES_AF_SOUTH_1</code> – Configure DKIM for the identity by replicating
+     * from a parent identity in Africa (Cape Town) region using Deterministic
+     * Easy-DKIM (DEED). </p> </li> <li> <p> <code>AWS_SES_EU_NORTH_1</code> –
+     * Configure DKIM for the identity by replicating from a parent identity in Europe
+     * (Stockholm) region using Deterministic Easy-DKIM (DEED). </p> </li> <li> <p>
+     * <code>AWS_SES_AP_SOUTH_1</code> – Configure DKIM for the identity by replicating
+     * from a parent identity in Asia Pacific (Mumbai) region using Deterministic
+     * Easy-DKIM (DEED). </p> </li> <li> <p> <code>AWS_SES_EU_WEST_3</code> – Configure
+     * DKIM for the identity by replicating from a parent identity in Europe (Paris)
+     * region using Deterministic Easy-DKIM (DEED). </p> </li> <li> <p>
+     * <code>AWS_SES_EU_WEST_2</code> – Configure DKIM for the identity by replicating
+     * from a parent identity in Europe (London) region using Deterministic Easy-DKIM
+     * (DEED). </p> </li> <li> <p> <code>AWS_SES_EU_SOUTH_1</code> – Configure DKIM for
+     * the identity by replicating from a parent identity in Europe (Milan) region
+     * using Deterministic Easy-DKIM (DEED). </p> </li> <li> <p>
+     * <code>AWS_SES_EU_WEST_1</code> ��� Configure DKIM for the identity by
+     * replicating from a parent identity in Europe (Ireland) region using
+     * Deterministic Easy-DKIM (DEED). </p> </li> <li> <p>
+     * <code>AWS_SES_AP_NORTHEAST_3</code> – Configure DKIM for the identity by
+     * replicating from a parent identity in Asia Pacific (Osaka) region using
+     * Deterministic Easy-DKIM (DEED). </p> </li> <li> <p>
+     * <code>AWS_SES_AP_NORTHEAST_2</code> – Configure DKIM for the identity by
+     * replicating from a parent identity in Asia Pacific (Seoul) region using
+     * Deterministic Easy-DKIM (DEED). </p> </li> <li> <p>
+     * <code>AWS_SES_ME_SOUTH_1</code> – Configure DKIM for the identity by replicating
+     * from a parent identity in Middle East (Bahrain) region using Deterministic
+     * Easy-DKIM (DEED). </p> </li> <li> <p> <code>AWS_SES_AP_NORTHEAST_1</code> –
+     * Configure DKIM for the identity by replicating from a parent identity in Asia
+     * Pacific (Tokyo) region using Deterministic Easy-DKIM (DEED). </p> </li> <li> <p>
+     * <code>AWS_SES_IL_CENTRAL_1</code> – Configure DKIM for the identity by
+     * replicating from a parent identity in Israel (Tel Aviv) region using
+     * Deterministic Easy-DKIM (DEED). </p> </li> <li> <p>
+     * <code>AWS_SES_SA_EAST_1</code> – Configure DKIM for the identity by replicating
+     * from a parent identity in South America (São Paulo) region using Deterministic
+     * Easy-DKIM (DEED). </p> </li> <li> <p> <code>AWS_SES_CA_CENTRAL_1</code> –
+     * Configure DKIM for the identity by replicating from a parent identity in Canada
+     * (Central) region using Deterministic Easy-DKIM (DEED). </p> </li> <li> <p>
+     * <code>AWS_SES_AP_SOUTHEAST_1</code> – Configure DKIM for the identity by
+     * replicating from a parent identity in Asia Pacific (Singapore) region using
+     * Deterministic Easy-DKIM (DEED). </p> </li> <li> <p>
+     * <code>AWS_SES_AP_SOUTHEAST_2</code> – Configure DKIM for the identity by
+     * replicating from a parent identity in Asia Pacific (Sydney) region using
+     * Deterministic Easy-DKIM (DEED). </p> </li> <li> <p>
+     * <code>AWS_SES_AP_SOUTHEAST_3</code> – Configure DKIM for the identity by
+     * replicating from a parent identity in Asia Pacific (Jakarta) region using
+     * Deterministic Easy-DKIM (DEED). </p> </li> <li> <p>
+     * <code>AWS_SES_EU_CENTRAL_1</code> – Configure DKIM for the identity by
+     * replicating from a parent identity in Europe (Frankfurt) region using
+     * Deterministic Easy-DKIM (DEED). </p> </li> <li> <p>
+     * <code>AWS_SES_US_EAST_1</code> – Configure DKIM for the identity by replicating
+     * from a parent identity in US East (N. Virginia) region using Deterministic
+     * Easy-DKIM (DEED). </p> </li> <li> <p> <code>AWS_SES_US_EAST_2</code> – Configure
+     * DKIM for the identity by replicating from a parent identity in US East (Ohio)
+     * region using Deterministic Easy-DKIM (DEED). </p> </li> <li> <p>
+     * <code>AWS_SES_US_WEST_1</code> – Configure DKIM for the identity by replicating
+     * from a parent identity in US West (N. California) region using Deterministic
+     * Easy-DKIM (DEED). </p> </li> <li> <p> <code>AWS_SES_US_WEST_2</code> – Configure
+     * DKIM for the identity by replicating from a parent identity in US West (Oregon)
+     * region using Deterministic Easy-DKIM (DEED). </p> </li> </ul>
+     */
+    inline const DkimSigningAttributesOrigin& GetDomainSigningAttributesOrigin() const{ return m_domainSigningAttributesOrigin; }
+    inline bool DomainSigningAttributesOriginHasBeenSet() const { return m_domainSigningAttributesOriginHasBeenSet; }
+    inline void SetDomainSigningAttributesOrigin(const DkimSigningAttributesOrigin& value) { m_domainSigningAttributesOriginHasBeenSet = true; m_domainSigningAttributesOrigin = value; }
+    inline void SetDomainSigningAttributesOrigin(DkimSigningAttributesOrigin&& value) { m_domainSigningAttributesOriginHasBeenSet = true; m_domainSigningAttributesOrigin = std::move(value); }
+    inline DkimSigningAttributes& WithDomainSigningAttributesOrigin(const DkimSigningAttributesOrigin& value) { SetDomainSigningAttributesOrigin(value); return *this;}
+    inline DkimSigningAttributes& WithDomainSigningAttributesOrigin(DkimSigningAttributesOrigin&& value) { SetDomainSigningAttributesOrigin(std::move(value)); return *this;}
+    ///@}
   private:
 
     Aws::String m_domainSigningSelector;
@@ -191,6 +175,9 @@ namespace Model
 
     DkimSigningKeyLength m_nextSigningKeyLength;
     bool m_nextSigningKeyLengthHasBeenSet = false;
+
+    DkimSigningAttributesOrigin m_domainSigningAttributesOrigin;
+    bool m_domainSigningAttributesOriginHasBeenSet = false;
   };
 
 } // namespace Model

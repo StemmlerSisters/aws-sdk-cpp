@@ -22,15 +22,13 @@ FunctionCodeLocation::FunctionCodeLocation() :
     m_repositoryTypeHasBeenSet(false),
     m_locationHasBeenSet(false),
     m_imageUriHasBeenSet(false),
-    m_resolvedImageUriHasBeenSet(false)
+    m_resolvedImageUriHasBeenSet(false),
+    m_sourceKMSKeyArnHasBeenSet(false)
 {
 }
 
-FunctionCodeLocation::FunctionCodeLocation(JsonView jsonValue) : 
-    m_repositoryTypeHasBeenSet(false),
-    m_locationHasBeenSet(false),
-    m_imageUriHasBeenSet(false),
-    m_resolvedImageUriHasBeenSet(false)
+FunctionCodeLocation::FunctionCodeLocation(JsonView jsonValue)
+  : FunctionCodeLocation()
 {
   *this = jsonValue;
 }
@@ -65,6 +63,13 @@ FunctionCodeLocation& FunctionCodeLocation::operator =(JsonView jsonValue)
     m_resolvedImageUriHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("SourceKMSKeyArn"))
+  {
+    m_sourceKMSKeyArn = jsonValue.GetString("SourceKMSKeyArn");
+
+    m_sourceKMSKeyArnHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -93,6 +98,12 @@ JsonValue FunctionCodeLocation::Jsonize() const
   if(m_resolvedImageUriHasBeenSet)
   {
    payload.WithString("ResolvedImageUri", m_resolvedImageUri);
+
+  }
+
+  if(m_sourceKMSKeyArnHasBeenSet)
+  {
+   payload.WithString("SourceKMSKeyArn", m_sourceKMSKeyArn);
 
   }
 

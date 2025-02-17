@@ -19,15 +19,14 @@ using namespace Aws;
 
 RebootDBShardGroupResult::RebootDBShardGroupResult() : 
     m_maxACU(0.0),
+    m_minACU(0.0),
     m_computeRedundancy(0),
     m_publiclyAccessible(false)
 {
 }
 
-RebootDBShardGroupResult::RebootDBShardGroupResult(const Aws::AmazonWebServiceResult<XmlDocument>& result) : 
-    m_maxACU(0.0),
-    m_computeRedundancy(0),
-    m_publiclyAccessible(false)
+RebootDBShardGroupResult::RebootDBShardGroupResult(const Aws::AmazonWebServiceResult<XmlDocument>& result)
+  : RebootDBShardGroupResult()
 {
   *this = result;
 }
@@ -64,6 +63,11 @@ RebootDBShardGroupResult& RebootDBShardGroupResult::operator =(const Aws::Amazon
     {
       m_maxACU = StringUtils::ConvertToDouble(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(maxACUNode.GetText()).c_str()).c_str());
     }
+    XmlNode minACUNode = resultNode.FirstChild("MinACU");
+    if(!minACUNode.IsNull())
+    {
+      m_minACU = StringUtils::ConvertToDouble(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(minACUNode.GetText()).c_str()).c_str());
+    }
     XmlNode computeRedundancyNode = resultNode.FirstChild("ComputeRedundancy");
     if(!computeRedundancyNode.IsNull())
     {
@@ -83,6 +87,22 @@ RebootDBShardGroupResult& RebootDBShardGroupResult::operator =(const Aws::Amazon
     if(!endpointNode.IsNull())
     {
       m_endpoint = Aws::Utils::Xml::DecodeEscapedXmlText(endpointNode.GetText());
+    }
+    XmlNode dBShardGroupArnNode = resultNode.FirstChild("DBShardGroupArn");
+    if(!dBShardGroupArnNode.IsNull())
+    {
+      m_dBShardGroupArn = Aws::Utils::Xml::DecodeEscapedXmlText(dBShardGroupArnNode.GetText());
+    }
+    XmlNode tagListNode = resultNode.FirstChild("TagList");
+    if(!tagListNode.IsNull())
+    {
+      XmlNode tagListMember = tagListNode.FirstChild("Tag");
+      while(!tagListMember.IsNull())
+      {
+        m_tagList.push_back(tagListMember);
+        tagListMember = tagListMember.NextNode("Tag");
+      }
+
     }
   }
 

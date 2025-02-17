@@ -28,11 +28,8 @@ Endpoint::Endpoint() :
 {
 }
 
-Endpoint::Endpoint(const XmlNode& xmlNode) : 
-    m_addressHasBeenSet(false),
-    m_port(0),
-    m_portHasBeenSet(false),
-    m_vpcEndpointsHasBeenSet(false)
+Endpoint::Endpoint(const XmlNode& xmlNode)
+  : Endpoint()
 {
   *this = xmlNode;
 }
@@ -90,7 +87,7 @@ void Endpoint::OutputToStream(Aws::OStream& oStream, const char* location, unsig
       for(auto& item : m_vpcEndpoints)
       {
         Aws::StringStream vpcEndpointsSs;
-        vpcEndpointsSs << location << index << locationValue << ".VpcEndpoint." << vpcEndpointsIdx++;
+        vpcEndpointsSs << location << index << locationValue << ".VpcEndpoints.VpcEndpoint." << vpcEndpointsIdx++;
         item.OutputToStream(oStream, vpcEndpointsSs.str().c_str());
       }
   }

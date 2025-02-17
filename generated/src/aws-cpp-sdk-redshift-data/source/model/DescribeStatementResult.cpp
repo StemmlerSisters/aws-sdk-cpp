@@ -22,20 +22,15 @@ DescribeStatementResult::DescribeStatementResult() :
     m_hasResultSet(false),
     m_redshiftPid(0),
     m_redshiftQueryId(0),
+    m_resultFormat(ResultFormatString::NOT_SET),
     m_resultRows(0),
     m_resultSize(0),
     m_status(StatusString::NOT_SET)
 {
 }
 
-DescribeStatementResult::DescribeStatementResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_duration(0),
-    m_hasResultSet(false),
-    m_redshiftPid(0),
-    m_redshiftQueryId(0),
-    m_resultRows(0),
-    m_resultSize(0),
-    m_status(StatusString::NOT_SET)
+DescribeStatementResult::DescribeStatementResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : DescribeStatementResult()
 {
   *this = result;
 }
@@ -118,6 +113,12 @@ DescribeStatementResult& DescribeStatementResult::operator =(const Aws::AmazonWe
 
   }
 
+  if(jsonValue.ValueExists("ResultFormat"))
+  {
+    m_resultFormat = ResultFormatStringMapper::GetResultFormatStringForName(jsonValue.GetString("ResultFormat"));
+
+  }
+
   if(jsonValue.ValueExists("ResultRows"))
   {
     m_resultRows = jsonValue.GetInt64("ResultRows");
@@ -133,6 +134,12 @@ DescribeStatementResult& DescribeStatementResult::operator =(const Aws::AmazonWe
   if(jsonValue.ValueExists("SecretArn"))
   {
     m_secretArn = jsonValue.GetString("SecretArn");
+
+  }
+
+  if(jsonValue.ValueExists("SessionId"))
+  {
+    m_sessionId = jsonValue.GetString("SessionId");
 
   }
 

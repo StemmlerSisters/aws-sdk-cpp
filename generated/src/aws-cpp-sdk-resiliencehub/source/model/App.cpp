@@ -22,6 +22,7 @@ App::App() :
     m_appArnHasBeenSet(false),
     m_assessmentSchedule(AppAssessmentScheduleType::NOT_SET),
     m_assessmentScheduleHasBeenSet(false),
+    m_awsApplicationArnHasBeenSet(false),
     m_complianceStatus(AppComplianceStatusType::NOT_SET),
     m_complianceStatusHasBeenSet(false),
     m_creationTimeHasBeenSet(false),
@@ -47,32 +48,8 @@ App::App() :
 {
 }
 
-App::App(JsonView jsonValue) : 
-    m_appArnHasBeenSet(false),
-    m_assessmentSchedule(AppAssessmentScheduleType::NOT_SET),
-    m_assessmentScheduleHasBeenSet(false),
-    m_complianceStatus(AppComplianceStatusType::NOT_SET),
-    m_complianceStatusHasBeenSet(false),
-    m_creationTimeHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_driftStatus(AppDriftStatusType::NOT_SET),
-    m_driftStatusHasBeenSet(false),
-    m_eventSubscriptionsHasBeenSet(false),
-    m_lastAppComplianceEvaluationTimeHasBeenSet(false),
-    m_lastDriftEvaluationTimeHasBeenSet(false),
-    m_lastResiliencyScoreEvaluationTimeHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_permissionModelHasBeenSet(false),
-    m_policyArnHasBeenSet(false),
-    m_resiliencyScore(0.0),
-    m_resiliencyScoreHasBeenSet(false),
-    m_rpoInSecs(0),
-    m_rpoInSecsHasBeenSet(false),
-    m_rtoInSecs(0),
-    m_rtoInSecsHasBeenSet(false),
-    m_status(AppStatusType::NOT_SET),
-    m_statusHasBeenSet(false),
-    m_tagsHasBeenSet(false)
+App::App(JsonView jsonValue)
+  : App()
 {
   *this = jsonValue;
 }
@@ -91,6 +68,13 @@ App& App::operator =(JsonView jsonValue)
     m_assessmentSchedule = AppAssessmentScheduleTypeMapper::GetAppAssessmentScheduleTypeForName(jsonValue.GetString("assessmentSchedule"));
 
     m_assessmentScheduleHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("awsApplicationArn"))
+  {
+    m_awsApplicationArn = jsonValue.GetString("awsApplicationArn");
+
+    m_awsApplicationArnHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("complianceStatus"))
@@ -227,6 +211,12 @@ JsonValue App::Jsonize() const
   if(m_assessmentScheduleHasBeenSet)
   {
    payload.WithString("assessmentSchedule", AppAssessmentScheduleTypeMapper::GetNameForAppAssessmentScheduleType(m_assessmentSchedule));
+  }
+
+  if(m_awsApplicationArnHasBeenSet)
+  {
+   payload.WithString("awsApplicationArn", m_awsApplicationArn);
+
   }
 
   if(m_complianceStatusHasBeenSet)

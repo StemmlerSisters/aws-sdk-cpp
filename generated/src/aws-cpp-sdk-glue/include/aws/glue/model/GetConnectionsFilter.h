@@ -40,91 +40,43 @@ namespace Model
     AWS_GLUE_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>A criteria string that must match the criteria recorded in the connection
      * definition for that connection definition to be returned.</p>
      */
     inline const Aws::Vector<Aws::String>& GetMatchCriteria() const{ return m_matchCriteria; }
-
-    /**
-     * <p>A criteria string that must match the criteria recorded in the connection
-     * definition for that connection definition to be returned.</p>
-     */
     inline bool MatchCriteriaHasBeenSet() const { return m_matchCriteriaHasBeenSet; }
-
-    /**
-     * <p>A criteria string that must match the criteria recorded in the connection
-     * definition for that connection definition to be returned.</p>
-     */
     inline void SetMatchCriteria(const Aws::Vector<Aws::String>& value) { m_matchCriteriaHasBeenSet = true; m_matchCriteria = value; }
-
-    /**
-     * <p>A criteria string that must match the criteria recorded in the connection
-     * definition for that connection definition to be returned.</p>
-     */
     inline void SetMatchCriteria(Aws::Vector<Aws::String>&& value) { m_matchCriteriaHasBeenSet = true; m_matchCriteria = std::move(value); }
-
-    /**
-     * <p>A criteria string that must match the criteria recorded in the connection
-     * definition for that connection definition to be returned.</p>
-     */
     inline GetConnectionsFilter& WithMatchCriteria(const Aws::Vector<Aws::String>& value) { SetMatchCriteria(value); return *this;}
-
-    /**
-     * <p>A criteria string that must match the criteria recorded in the connection
-     * definition for that connection definition to be returned.</p>
-     */
     inline GetConnectionsFilter& WithMatchCriteria(Aws::Vector<Aws::String>&& value) { SetMatchCriteria(std::move(value)); return *this;}
-
-    /**
-     * <p>A criteria string that must match the criteria recorded in the connection
-     * definition for that connection definition to be returned.</p>
-     */
     inline GetConnectionsFilter& AddMatchCriteria(const Aws::String& value) { m_matchCriteriaHasBeenSet = true; m_matchCriteria.push_back(value); return *this; }
-
-    /**
-     * <p>A criteria string that must match the criteria recorded in the connection
-     * definition for that connection definition to be returned.</p>
-     */
     inline GetConnectionsFilter& AddMatchCriteria(Aws::String&& value) { m_matchCriteriaHasBeenSet = true; m_matchCriteria.push_back(std::move(value)); return *this; }
-
-    /**
-     * <p>A criteria string that must match the criteria recorded in the connection
-     * definition for that connection definition to be returned.</p>
-     */
     inline GetConnectionsFilter& AddMatchCriteria(const char* value) { m_matchCriteriaHasBeenSet = true; m_matchCriteria.push_back(value); return *this; }
+    ///@}
 
-
+    ///@{
     /**
      * <p>The type of connections to return. Currently, SFTP is not supported.</p>
      */
     inline const ConnectionType& GetConnectionType() const{ return m_connectionType; }
-
-    /**
-     * <p>The type of connections to return. Currently, SFTP is not supported.</p>
-     */
     inline bool ConnectionTypeHasBeenSet() const { return m_connectionTypeHasBeenSet; }
-
-    /**
-     * <p>The type of connections to return. Currently, SFTP is not supported.</p>
-     */
     inline void SetConnectionType(const ConnectionType& value) { m_connectionTypeHasBeenSet = true; m_connectionType = value; }
-
-    /**
-     * <p>The type of connections to return. Currently, SFTP is not supported.</p>
-     */
     inline void SetConnectionType(ConnectionType&& value) { m_connectionTypeHasBeenSet = true; m_connectionType = std::move(value); }
-
-    /**
-     * <p>The type of connections to return. Currently, SFTP is not supported.</p>
-     */
     inline GetConnectionsFilter& WithConnectionType(const ConnectionType& value) { SetConnectionType(value); return *this;}
-
-    /**
-     * <p>The type of connections to return. Currently, SFTP is not supported.</p>
-     */
     inline GetConnectionsFilter& WithConnectionType(ConnectionType&& value) { SetConnectionType(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>Denotes if the connection was created with schema version 1 or 2.</p>
+     */
+    inline int GetConnectionSchemaVersion() const{ return m_connectionSchemaVersion; }
+    inline bool ConnectionSchemaVersionHasBeenSet() const { return m_connectionSchemaVersionHasBeenSet; }
+    inline void SetConnectionSchemaVersion(int value) { m_connectionSchemaVersionHasBeenSet = true; m_connectionSchemaVersion = value; }
+    inline GetConnectionsFilter& WithConnectionSchemaVersion(int value) { SetConnectionSchemaVersion(value); return *this;}
+    ///@}
   private:
 
     Aws::Vector<Aws::String> m_matchCriteria;
@@ -132,6 +84,9 @@ namespace Model
 
     ConnectionType m_connectionType;
     bool m_connectionTypeHasBeenSet = false;
+
+    int m_connectionSchemaVersion;
+    bool m_connectionSchemaVersionHasBeenSet = false;
   };
 
 } // namespace Model

@@ -25,8 +25,8 @@ ValidDBInstanceModificationsMessage::ValidDBInstanceModificationsMessage() :
 {
 }
 
-ValidDBInstanceModificationsMessage::ValidDBInstanceModificationsMessage(const XmlNode& xmlNode) : 
-    m_storageHasBeenSet(false)
+ValidDBInstanceModificationsMessage::ValidDBInstanceModificationsMessage(const XmlNode& xmlNode)
+  : ValidDBInstanceModificationsMessage()
 {
   *this = xmlNode;
 }
@@ -62,7 +62,7 @@ void ValidDBInstanceModificationsMessage::OutputToStream(Aws::OStream& oStream, 
       for(auto& item : m_storage)
       {
         Aws::StringStream storageSs;
-        storageSs << location << index << locationValue << ".ValidStorageOptions." << storageIdx++;
+        storageSs << location << index << locationValue << ".Storage.ValidStorageOptions." << storageIdx++;
         item.OutputToStream(oStream, storageSs.str().c_str());
       }
   }

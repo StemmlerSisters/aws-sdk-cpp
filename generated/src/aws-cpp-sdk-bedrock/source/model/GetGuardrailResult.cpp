@@ -22,8 +22,8 @@ GetGuardrailResult::GetGuardrailResult() :
 {
 }
 
-GetGuardrailResult::GetGuardrailResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_status(GuardrailStatus::NOT_SET)
+GetGuardrailResult::GetGuardrailResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetGuardrailResult()
 {
   *this = result;
 }
@@ -88,6 +88,12 @@ GetGuardrailResult& GetGuardrailResult::operator =(const Aws::AmazonWebServiceRe
   if(jsonValue.ValueExists("sensitiveInformationPolicy"))
   {
     m_sensitiveInformationPolicy = jsonValue.GetObject("sensitiveInformationPolicy");
+
+  }
+
+  if(jsonValue.ValueExists("contextualGroundingPolicy"))
+  {
+    m_contextualGroundingPolicy = jsonValue.GetObject("contextualGroundingPolicy");
 
   }
 

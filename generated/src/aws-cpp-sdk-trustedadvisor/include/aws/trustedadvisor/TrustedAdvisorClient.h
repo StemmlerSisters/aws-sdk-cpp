@@ -6,24 +6,36 @@
 #pragma once
 #include <aws/trustedadvisor/TrustedAdvisor_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/trustedadvisor/TrustedAdvisorServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/trustedadvisor/TrustedAdvisorErrorMarshaller.h>
 
 namespace Aws
 {
 namespace TrustedAdvisor
 {
+  AWS_TRUSTEDADVISOR_API extern const char SERVICE_NAME[];
   /**
    * <p>TrustedAdvisor Public API</p>
    */
-  class AWS_TRUSTEDADVISOR_API TrustedAdvisorClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<TrustedAdvisorClient>
+  class AWS_TRUSTEDADVISOR_API TrustedAdvisorClient : smithy::client::AwsSmithyClientT<Aws::TrustedAdvisor::SERVICE_NAME,
+      Aws::TrustedAdvisor::TrustedAdvisorClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      TrustedAdvisorEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::TrustedAdvisorErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<TrustedAdvisorClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "TrustedAdvisor"; }
 
       typedef TrustedAdvisorClientConfiguration ClientConfigurationType;
       typedef TrustedAdvisorEndpointProvider EndpointProviderType;
@@ -158,13 +170,13 @@ namespace TrustedAdvisor
          * href="http://docs.aws.amazon.com/goto/WebAPI/trustedadvisor-2022-09-15/ListChecks">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListChecksOutcome ListChecks(const Model::ListChecksRequest& request) const;
+        virtual Model::ListChecksOutcome ListChecks(const Model::ListChecksRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListChecks that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListChecksRequestT = Model::ListChecksRequest>
-        Model::ListChecksOutcomeCallable ListChecksCallable(const ListChecksRequestT& request) const
+        Model::ListChecksOutcomeCallable ListChecksCallable(const ListChecksRequestT& request = {}) const
         {
             return SubmitCallable(&TrustedAdvisorClient::ListChecks, request);
         }
@@ -173,7 +185,7 @@ namespace TrustedAdvisor
          * An Async wrapper for ListChecks that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListChecksRequestT = Model::ListChecksRequest>
-        void ListChecksAsync(const ListChecksRequestT& request, const ListChecksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListChecksAsync(const ListChecksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListChecksRequestT& request = {}) const
         {
             return SubmitAsync(&TrustedAdvisorClient::ListChecks, request, handler, context);
         }
@@ -237,13 +249,13 @@ namespace TrustedAdvisor
          * href="http://docs.aws.amazon.com/goto/WebAPI/trustedadvisor-2022-09-15/ListOrganizationRecommendations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListOrganizationRecommendationsOutcome ListOrganizationRecommendations(const Model::ListOrganizationRecommendationsRequest& request) const;
+        virtual Model::ListOrganizationRecommendationsOutcome ListOrganizationRecommendations(const Model::ListOrganizationRecommendationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListOrganizationRecommendations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListOrganizationRecommendationsRequestT = Model::ListOrganizationRecommendationsRequest>
-        Model::ListOrganizationRecommendationsOutcomeCallable ListOrganizationRecommendationsCallable(const ListOrganizationRecommendationsRequestT& request) const
+        Model::ListOrganizationRecommendationsOutcomeCallable ListOrganizationRecommendationsCallable(const ListOrganizationRecommendationsRequestT& request = {}) const
         {
             return SubmitCallable(&TrustedAdvisorClient::ListOrganizationRecommendations, request);
         }
@@ -252,7 +264,7 @@ namespace TrustedAdvisor
          * An Async wrapper for ListOrganizationRecommendations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListOrganizationRecommendationsRequestT = Model::ListOrganizationRecommendationsRequest>
-        void ListOrganizationRecommendationsAsync(const ListOrganizationRecommendationsRequestT& request, const ListOrganizationRecommendationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListOrganizationRecommendationsAsync(const ListOrganizationRecommendationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListOrganizationRecommendationsRequestT& request = {}) const
         {
             return SubmitAsync(&TrustedAdvisorClient::ListOrganizationRecommendations, request, handler, context);
         }
@@ -287,13 +299,13 @@ namespace TrustedAdvisor
          * href="http://docs.aws.amazon.com/goto/WebAPI/trustedadvisor-2022-09-15/ListRecommendations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListRecommendationsOutcome ListRecommendations(const Model::ListRecommendationsRequest& request) const;
+        virtual Model::ListRecommendationsOutcome ListRecommendations(const Model::ListRecommendationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListRecommendations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListRecommendationsRequestT = Model::ListRecommendationsRequest>
-        Model::ListRecommendationsOutcomeCallable ListRecommendationsCallable(const ListRecommendationsRequestT& request) const
+        Model::ListRecommendationsOutcomeCallable ListRecommendationsCallable(const ListRecommendationsRequestT& request = {}) const
         {
             return SubmitCallable(&TrustedAdvisorClient::ListRecommendations, request);
         }
@@ -302,7 +314,7 @@ namespace TrustedAdvisor
          * An Async wrapper for ListRecommendations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListRecommendationsRequestT = Model::ListRecommendationsRequest>
-        void ListRecommendationsAsync(const ListRecommendationsRequestT& request, const ListRecommendationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListRecommendationsAsync(const ListRecommendationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListRecommendationsRequestT& request = {}) const
         {
             return SubmitAsync(&TrustedAdvisorClient::ListRecommendations, request, handler, context);
         }
@@ -364,11 +376,7 @@ namespace TrustedAdvisor
       std::shared_ptr<TrustedAdvisorEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<TrustedAdvisorClient>;
-      void init(const TrustedAdvisorClientConfiguration& clientConfiguration);
 
-      TrustedAdvisorClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<TrustedAdvisorEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace TrustedAdvisor

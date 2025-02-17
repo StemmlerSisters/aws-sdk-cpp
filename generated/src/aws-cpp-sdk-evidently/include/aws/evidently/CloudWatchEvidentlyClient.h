@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/evidently/CloudWatchEvidently_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/evidently/CloudWatchEvidentlyServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/evidently/CloudWatchEvidentlyErrorMarshaller.h>
 
 namespace Aws
 {
 namespace CloudWatchEvidently
 {
+  AWS_CLOUDWATCHEVIDENTLY_API extern const char SERVICE_NAME[];
   /**
    * <p>You can use Amazon CloudWatch Evidently to safely validate new features by
    * serving them to a specified percentage of your users while you roll out the
@@ -27,12 +31,20 @@ namespace CloudWatchEvidently
    * provides clear recommendations about which variations perform better. You can
    * test both user-facing features and backend features.</p>
    */
-  class AWS_CLOUDWATCHEVIDENTLY_API CloudWatchEvidentlyClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<CloudWatchEvidentlyClient>
+  class AWS_CLOUDWATCHEVIDENTLY_API CloudWatchEvidentlyClient : smithy::client::AwsSmithyClientT<Aws::CloudWatchEvidently::SERVICE_NAME,
+      Aws::CloudWatchEvidently::CloudWatchEvidentlyClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      CloudWatchEvidentlyEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::CloudWatchEvidentlyErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<CloudWatchEvidentlyClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Evidently"; }
 
       typedef CloudWatchEvidentlyClientConfiguration ClientConfigurationType;
       typedef CloudWatchEvidentlyEndpointProvider EndpointProviderType;
@@ -738,13 +750,13 @@ namespace CloudWatchEvidently
          * href="http://docs.aws.amazon.com/goto/WebAPI/evidently-2021-02-01/ListProjects">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListProjectsOutcome ListProjects(const Model::ListProjectsRequest& request) const;
+        virtual Model::ListProjectsOutcome ListProjects(const Model::ListProjectsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListProjects that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListProjectsRequestT = Model::ListProjectsRequest>
-        Model::ListProjectsOutcomeCallable ListProjectsCallable(const ListProjectsRequestT& request) const
+        Model::ListProjectsOutcomeCallable ListProjectsCallable(const ListProjectsRequestT& request = {}) const
         {
             return SubmitCallable(&CloudWatchEvidentlyClient::ListProjects, request);
         }
@@ -753,7 +765,7 @@ namespace CloudWatchEvidently
          * An Async wrapper for ListProjects that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListProjectsRequestT = Model::ListProjectsRequest>
-        void ListProjectsAsync(const ListProjectsRequestT& request, const ListProjectsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListProjectsAsync(const ListProjectsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListProjectsRequestT& request = {}) const
         {
             return SubmitAsync(&CloudWatchEvidentlyClient::ListProjects, request, handler, context);
         }
@@ -790,13 +802,13 @@ namespace CloudWatchEvidently
          * href="http://docs.aws.amazon.com/goto/WebAPI/evidently-2021-02-01/ListSegments">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListSegmentsOutcome ListSegments(const Model::ListSegmentsRequest& request) const;
+        virtual Model::ListSegmentsOutcome ListSegments(const Model::ListSegmentsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListSegments that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListSegmentsRequestT = Model::ListSegmentsRequest>
-        Model::ListSegmentsOutcomeCallable ListSegmentsCallable(const ListSegmentsRequestT& request) const
+        Model::ListSegmentsOutcomeCallable ListSegmentsCallable(const ListSegmentsRequestT& request = {}) const
         {
             return SubmitCallable(&CloudWatchEvidentlyClient::ListSegments, request);
         }
@@ -805,7 +817,7 @@ namespace CloudWatchEvidently
          * An Async wrapper for ListSegments that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListSegmentsRequestT = Model::ListSegmentsRequest>
-        void ListSegmentsAsync(const ListSegmentsRequestT& request, const ListSegmentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListSegmentsAsync(const ListSegmentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListSegmentsRequestT& request = {}) const
         {
             return SubmitAsync(&CloudWatchEvidentlyClient::ListSegments, request, handler, context);
         }
@@ -1217,11 +1229,7 @@ namespace CloudWatchEvidently
       std::shared_ptr<CloudWatchEvidentlyEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<CloudWatchEvidentlyClient>;
-      void init(const CloudWatchEvidentlyClientConfiguration& clientConfiguration);
 
-      CloudWatchEvidentlyClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<CloudWatchEvidentlyEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace CloudWatchEvidently

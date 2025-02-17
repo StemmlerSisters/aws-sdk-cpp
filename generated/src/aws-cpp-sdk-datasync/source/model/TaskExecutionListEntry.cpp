@@ -21,14 +21,14 @@ namespace Model
 TaskExecutionListEntry::TaskExecutionListEntry() : 
     m_taskExecutionArnHasBeenSet(false),
     m_status(TaskExecutionStatus::NOT_SET),
-    m_statusHasBeenSet(false)
+    m_statusHasBeenSet(false),
+    m_taskMode(TaskMode::NOT_SET),
+    m_taskModeHasBeenSet(false)
 {
 }
 
-TaskExecutionListEntry::TaskExecutionListEntry(JsonView jsonValue) : 
-    m_taskExecutionArnHasBeenSet(false),
-    m_status(TaskExecutionStatus::NOT_SET),
-    m_statusHasBeenSet(false)
+TaskExecutionListEntry::TaskExecutionListEntry(JsonView jsonValue)
+  : TaskExecutionListEntry()
 {
   *this = jsonValue;
 }
@@ -49,6 +49,13 @@ TaskExecutionListEntry& TaskExecutionListEntry::operator =(JsonView jsonValue)
     m_statusHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("TaskMode"))
+  {
+    m_taskMode = TaskModeMapper::GetTaskModeForName(jsonValue.GetString("TaskMode"));
+
+    m_taskModeHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -65,6 +72,11 @@ JsonValue TaskExecutionListEntry::Jsonize() const
   if(m_statusHasBeenSet)
   {
    payload.WithString("Status", TaskExecutionStatusMapper::GetNameForTaskExecutionStatus(m_status));
+  }
+
+  if(m_taskModeHasBeenSet)
+  {
+   payload.WithString("TaskMode", TaskModeMapper::GetNameForTaskMode(m_taskMode));
   }
 
   return payload;

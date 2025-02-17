@@ -40,119 +40,60 @@ namespace Model
     AWS_CONTROLTOWER_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>Identifiers for the <code>Baseline</code> objects returned as part of the
      * filter operation.</p>
      */
     inline const Aws::Vector<Aws::String>& GetBaselineIdentifiers() const{ return m_baselineIdentifiers; }
-
-    /**
-     * <p>Identifiers for the <code>Baseline</code> objects returned as part of the
-     * filter operation.</p>
-     */
     inline bool BaselineIdentifiersHasBeenSet() const { return m_baselineIdentifiersHasBeenSet; }
-
-    /**
-     * <p>Identifiers for the <code>Baseline</code> objects returned as part of the
-     * filter operation.</p>
-     */
     inline void SetBaselineIdentifiers(const Aws::Vector<Aws::String>& value) { m_baselineIdentifiersHasBeenSet = true; m_baselineIdentifiers = value; }
-
-    /**
-     * <p>Identifiers for the <code>Baseline</code> objects returned as part of the
-     * filter operation.</p>
-     */
     inline void SetBaselineIdentifiers(Aws::Vector<Aws::String>&& value) { m_baselineIdentifiersHasBeenSet = true; m_baselineIdentifiers = std::move(value); }
-
-    /**
-     * <p>Identifiers for the <code>Baseline</code> objects returned as part of the
-     * filter operation.</p>
-     */
     inline EnabledBaselineFilter& WithBaselineIdentifiers(const Aws::Vector<Aws::String>& value) { SetBaselineIdentifiers(value); return *this;}
-
-    /**
-     * <p>Identifiers for the <code>Baseline</code> objects returned as part of the
-     * filter operation.</p>
-     */
     inline EnabledBaselineFilter& WithBaselineIdentifiers(Aws::Vector<Aws::String>&& value) { SetBaselineIdentifiers(std::move(value)); return *this;}
-
-    /**
-     * <p>Identifiers for the <code>Baseline</code> objects returned as part of the
-     * filter operation.</p>
-     */
     inline EnabledBaselineFilter& AddBaselineIdentifiers(const Aws::String& value) { m_baselineIdentifiersHasBeenSet = true; m_baselineIdentifiers.push_back(value); return *this; }
-
-    /**
-     * <p>Identifiers for the <code>Baseline</code> objects returned as part of the
-     * filter operation.</p>
-     */
     inline EnabledBaselineFilter& AddBaselineIdentifiers(Aws::String&& value) { m_baselineIdentifiersHasBeenSet = true; m_baselineIdentifiers.push_back(std::move(value)); return *this; }
-
-    /**
-     * <p>Identifiers for the <code>Baseline</code> objects returned as part of the
-     * filter operation.</p>
-     */
     inline EnabledBaselineFilter& AddBaselineIdentifiers(const char* value) { m_baselineIdentifiersHasBeenSet = true; m_baselineIdentifiers.push_back(value); return *this; }
+    ///@}
 
+    ///@{
+    /**
+     * <p>An optional filter that sets up a list of <code>parentIdentifiers</code> to
+     * filter the results of the <code>ListEnabledBaseline</code> output.</p>
+     */
+    inline const Aws::Vector<Aws::String>& GetParentIdentifiers() const{ return m_parentIdentifiers; }
+    inline bool ParentIdentifiersHasBeenSet() const { return m_parentIdentifiersHasBeenSet; }
+    inline void SetParentIdentifiers(const Aws::Vector<Aws::String>& value) { m_parentIdentifiersHasBeenSet = true; m_parentIdentifiers = value; }
+    inline void SetParentIdentifiers(Aws::Vector<Aws::String>&& value) { m_parentIdentifiersHasBeenSet = true; m_parentIdentifiers = std::move(value); }
+    inline EnabledBaselineFilter& WithParentIdentifiers(const Aws::Vector<Aws::String>& value) { SetParentIdentifiers(value); return *this;}
+    inline EnabledBaselineFilter& WithParentIdentifiers(Aws::Vector<Aws::String>&& value) { SetParentIdentifiers(std::move(value)); return *this;}
+    inline EnabledBaselineFilter& AddParentIdentifiers(const Aws::String& value) { m_parentIdentifiersHasBeenSet = true; m_parentIdentifiers.push_back(value); return *this; }
+    inline EnabledBaselineFilter& AddParentIdentifiers(Aws::String&& value) { m_parentIdentifiersHasBeenSet = true; m_parentIdentifiers.push_back(std::move(value)); return *this; }
+    inline EnabledBaselineFilter& AddParentIdentifiers(const char* value) { m_parentIdentifiersHasBeenSet = true; m_parentIdentifiers.push_back(value); return *this; }
+    ///@}
 
+    ///@{
     /**
      * <p>Identifiers for the targets of the <code>Baseline</code> filter
      * operation.</p>
      */
     inline const Aws::Vector<Aws::String>& GetTargetIdentifiers() const{ return m_targetIdentifiers; }
-
-    /**
-     * <p>Identifiers for the targets of the <code>Baseline</code> filter
-     * operation.</p>
-     */
     inline bool TargetIdentifiersHasBeenSet() const { return m_targetIdentifiersHasBeenSet; }
-
-    /**
-     * <p>Identifiers for the targets of the <code>Baseline</code> filter
-     * operation.</p>
-     */
     inline void SetTargetIdentifiers(const Aws::Vector<Aws::String>& value) { m_targetIdentifiersHasBeenSet = true; m_targetIdentifiers = value; }
-
-    /**
-     * <p>Identifiers for the targets of the <code>Baseline</code> filter
-     * operation.</p>
-     */
     inline void SetTargetIdentifiers(Aws::Vector<Aws::String>&& value) { m_targetIdentifiersHasBeenSet = true; m_targetIdentifiers = std::move(value); }
-
-    /**
-     * <p>Identifiers for the targets of the <code>Baseline</code> filter
-     * operation.</p>
-     */
     inline EnabledBaselineFilter& WithTargetIdentifiers(const Aws::Vector<Aws::String>& value) { SetTargetIdentifiers(value); return *this;}
-
-    /**
-     * <p>Identifiers for the targets of the <code>Baseline</code> filter
-     * operation.</p>
-     */
     inline EnabledBaselineFilter& WithTargetIdentifiers(Aws::Vector<Aws::String>&& value) { SetTargetIdentifiers(std::move(value)); return *this;}
-
-    /**
-     * <p>Identifiers for the targets of the <code>Baseline</code> filter
-     * operation.</p>
-     */
     inline EnabledBaselineFilter& AddTargetIdentifiers(const Aws::String& value) { m_targetIdentifiersHasBeenSet = true; m_targetIdentifiers.push_back(value); return *this; }
-
-    /**
-     * <p>Identifiers for the targets of the <code>Baseline</code> filter
-     * operation.</p>
-     */
     inline EnabledBaselineFilter& AddTargetIdentifiers(Aws::String&& value) { m_targetIdentifiersHasBeenSet = true; m_targetIdentifiers.push_back(std::move(value)); return *this; }
-
-    /**
-     * <p>Identifiers for the targets of the <code>Baseline</code> filter
-     * operation.</p>
-     */
     inline EnabledBaselineFilter& AddTargetIdentifiers(const char* value) { m_targetIdentifiersHasBeenSet = true; m_targetIdentifiers.push_back(value); return *this; }
-
+    ///@}
   private:
 
     Aws::Vector<Aws::String> m_baselineIdentifiers;
     bool m_baselineIdentifiersHasBeenSet = false;
+
+    Aws::Vector<Aws::String> m_parentIdentifiers;
+    bool m_parentIdentifiersHasBeenSet = false;
 
     Aws::Vector<Aws::String> m_targetIdentifiers;
     bool m_targetIdentifiersHasBeenSet = false;

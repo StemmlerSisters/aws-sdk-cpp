@@ -31,14 +31,8 @@ Event::Event() :
 {
 }
 
-Event::Event(const XmlNode& xmlNode) : 
-    m_sourceIdentifierHasBeenSet(false),
-    m_sourceType(SourceType::NOT_SET),
-    m_sourceTypeHasBeenSet(false),
-    m_messageHasBeenSet(false),
-    m_eventCategoriesHasBeenSet(false),
-    m_dateHasBeenSet(false),
-    m_sourceArnHasBeenSet(false)
+Event::Event(const XmlNode& xmlNode)
+  : Event()
 {
   *this = xmlNode;
 }
@@ -118,7 +112,7 @@ void Event::OutputToStream(Aws::OStream& oStream, const char* location, unsigned
       unsigned eventCategoriesIdx = 1;
       for(auto& item : m_eventCategories)
       {
-        oStream << location << index << locationValue << ".EventCategory." << eventCategoriesIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
+        oStream << location << index << locationValue << ".EventCategories.EventCategory." << eventCategoriesIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
       }
   }
 

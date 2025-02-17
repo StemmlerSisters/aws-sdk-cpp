@@ -24,7 +24,7 @@ namespace Model
 {
 
   /**
-   * <p>The Instance configuration used for recommendations.</p><p><h3>See Also:</h3>
+   * <p>The instance configuration used for recommendations.</p><p><h3>See Also:</h3>
    * <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/cost-optimization-hub-2022-07-26/InstanceConfiguration">AWS
    * API Reference</a></p>
@@ -38,46 +38,19 @@ namespace Model
     AWS_COSTOPTIMIZATIONHUB_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
-     * <p>Details about the type.</p>
+     * <p>The instance type of the configuration.</p>
      */
     inline const Aws::String& GetType() const{ return m_type; }
-
-    /**
-     * <p>Details about the type.</p>
-     */
     inline bool TypeHasBeenSet() const { return m_typeHasBeenSet; }
-
-    /**
-     * <p>Details about the type.</p>
-     */
     inline void SetType(const Aws::String& value) { m_typeHasBeenSet = true; m_type = value; }
-
-    /**
-     * <p>Details about the type.</p>
-     */
     inline void SetType(Aws::String&& value) { m_typeHasBeenSet = true; m_type = std::move(value); }
-
-    /**
-     * <p>Details about the type.</p>
-     */
     inline void SetType(const char* value) { m_typeHasBeenSet = true; m_type.assign(value); }
-
-    /**
-     * <p>Details about the type.</p>
-     */
     inline InstanceConfiguration& WithType(const Aws::String& value) { SetType(value); return *this;}
-
-    /**
-     * <p>Details about the type.</p>
-     */
     inline InstanceConfiguration& WithType(Aws::String&& value) { SetType(std::move(value)); return *this;}
-
-    /**
-     * <p>Details about the type.</p>
-     */
     inline InstanceConfiguration& WithType(const char* value) { SetType(value); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_type;

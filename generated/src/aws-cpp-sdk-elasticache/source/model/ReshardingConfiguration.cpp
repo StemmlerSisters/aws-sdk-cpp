@@ -26,9 +26,8 @@ ReshardingConfiguration::ReshardingConfiguration() :
 {
 }
 
-ReshardingConfiguration::ReshardingConfiguration(const XmlNode& xmlNode) : 
-    m_nodeGroupIdHasBeenSet(false),
-    m_preferredAvailabilityZonesHasBeenSet(false)
+ReshardingConfiguration::ReshardingConfiguration(const XmlNode& xmlNode)
+  : ReshardingConfiguration()
 {
   *this = xmlNode;
 }
@@ -74,7 +73,7 @@ void ReshardingConfiguration::OutputToStream(Aws::OStream& oStream, const char* 
       unsigned preferredAvailabilityZonesIdx = 1;
       for(auto& item : m_preferredAvailabilityZones)
       {
-        oStream << location << index << locationValue << ".AvailabilityZone." << preferredAvailabilityZonesIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
+        oStream << location << index << locationValue << ".PreferredAvailabilityZones.AvailabilityZone." << preferredAvailabilityZonesIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
       }
   }
 

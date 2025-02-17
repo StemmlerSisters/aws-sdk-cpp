@@ -27,20 +27,14 @@ DomainDescriptionType::DomainDescriptionType() :
     m_versionHasBeenSet(false),
     m_status(DomainStatusType::NOT_SET),
     m_statusHasBeenSet(false),
-    m_customDomainConfigHasBeenSet(false)
+    m_customDomainConfigHasBeenSet(false),
+    m_managedLoginVersion(0),
+    m_managedLoginVersionHasBeenSet(false)
 {
 }
 
-DomainDescriptionType::DomainDescriptionType(JsonView jsonValue) : 
-    m_userPoolIdHasBeenSet(false),
-    m_aWSAccountIdHasBeenSet(false),
-    m_domainHasBeenSet(false),
-    m_s3BucketHasBeenSet(false),
-    m_cloudFrontDistributionHasBeenSet(false),
-    m_versionHasBeenSet(false),
-    m_status(DomainStatusType::NOT_SET),
-    m_statusHasBeenSet(false),
-    m_customDomainConfigHasBeenSet(false)
+DomainDescriptionType::DomainDescriptionType(JsonView jsonValue)
+  : DomainDescriptionType()
 {
   *this = jsonValue;
 }
@@ -103,6 +97,13 @@ DomainDescriptionType& DomainDescriptionType::operator =(JsonView jsonValue)
     m_customDomainConfigHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("ManagedLoginVersion"))
+  {
+    m_managedLoginVersion = jsonValue.GetInteger("ManagedLoginVersion");
+
+    m_managedLoginVersionHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -154,6 +155,12 @@ JsonValue DomainDescriptionType::Jsonize() const
   if(m_customDomainConfigHasBeenSet)
   {
    payload.WithObject("CustomDomainConfig", m_customDomainConfig.Jsonize());
+
+  }
+
+  if(m_managedLoginVersionHasBeenSet)
+  {
+   payload.WithInteger("ManagedLoginVersion", m_managedLoginVersion);
 
   }
 

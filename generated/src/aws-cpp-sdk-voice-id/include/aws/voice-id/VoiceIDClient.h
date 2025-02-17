@@ -6,26 +6,38 @@
 #pragma once
 #include <aws/voice-id/VoiceID_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/voice-id/VoiceIDServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/voice-id/VoiceIDErrorMarshaller.h>
 
 namespace Aws
 {
 namespace VoiceID
 {
+  AWS_VOICEID_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon Connect Voice ID provides real-time caller authentication and fraud
    * risk detection, which make voice interactions in contact centers more secure and
    * efficient.</p>
    */
-  class AWS_VOICEID_API VoiceIDClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<VoiceIDClient>
+  class AWS_VOICEID_API VoiceIDClient : smithy::client::AwsSmithyClientT<Aws::VoiceID::SERVICE_NAME,
+      Aws::VoiceID::VoiceIDClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      VoiceIDEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::VoiceIDErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<VoiceIDClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Voice ID"; }
 
       typedef VoiceIDClientConfiguration ClientConfigurationType;
       typedef VoiceIDEndpointProvider EndpointProviderType;
@@ -473,13 +485,13 @@ namespace VoiceID
          * href="http://docs.aws.amazon.com/goto/WebAPI/voice-id-2021-09-27/ListDomains">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDomainsOutcome ListDomains(const Model::ListDomainsRequest& request) const;
+        virtual Model::ListDomainsOutcome ListDomains(const Model::ListDomainsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDomains that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDomainsRequestT = Model::ListDomainsRequest>
-        Model::ListDomainsOutcomeCallable ListDomainsCallable(const ListDomainsRequestT& request) const
+        Model::ListDomainsOutcomeCallable ListDomainsCallable(const ListDomainsRequestT& request = {}) const
         {
             return SubmitCallable(&VoiceIDClient::ListDomains, request);
         }
@@ -488,7 +500,7 @@ namespace VoiceID
          * An Async wrapper for ListDomains that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDomainsRequestT = Model::ListDomainsRequest>
-        void ListDomainsAsync(const ListDomainsRequestT& request, const ListDomainsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDomainsAsync(const ListDomainsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDomainsRequestT& request = {}) const
         {
             return SubmitAsync(&VoiceIDClient::ListDomains, request, handler, context);
         }
@@ -844,11 +856,7 @@ namespace VoiceID
       std::shared_ptr<VoiceIDEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<VoiceIDClient>;
-      void init(const VoiceIDClientConfiguration& clientConfiguration);
 
-      VoiceIDClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<VoiceIDEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace VoiceID

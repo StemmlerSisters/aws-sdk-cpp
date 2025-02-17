@@ -36,31 +36,15 @@ Canary::Canary() :
     m_runtimeVersionHasBeenSet(false),
     m_vpcConfigHasBeenSet(false),
     m_visualReferenceHasBeenSet(false),
+    m_provisionedResourceCleanup(ProvisionedResourceCleanupSetting::NOT_SET),
+    m_provisionedResourceCleanupHasBeenSet(false),
     m_tagsHasBeenSet(false),
     m_artifactConfigHasBeenSet(false)
 {
 }
 
-Canary::Canary(JsonView jsonValue) : 
-    m_idHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_codeHasBeenSet(false),
-    m_executionRoleArnHasBeenSet(false),
-    m_scheduleHasBeenSet(false),
-    m_runConfigHasBeenSet(false),
-    m_successRetentionPeriodInDays(0),
-    m_successRetentionPeriodInDaysHasBeenSet(false),
-    m_failureRetentionPeriodInDays(0),
-    m_failureRetentionPeriodInDaysHasBeenSet(false),
-    m_statusHasBeenSet(false),
-    m_timelineHasBeenSet(false),
-    m_artifactS3LocationHasBeenSet(false),
-    m_engineArnHasBeenSet(false),
-    m_runtimeVersionHasBeenSet(false),
-    m_vpcConfigHasBeenSet(false),
-    m_visualReferenceHasBeenSet(false),
-    m_tagsHasBeenSet(false),
-    m_artifactConfigHasBeenSet(false)
+Canary::Canary(JsonView jsonValue)
+  : Canary()
 {
   *this = jsonValue;
 }
@@ -170,6 +154,13 @@ Canary& Canary::operator =(JsonView jsonValue)
     m_visualReference = jsonValue.GetObject("VisualReference");
 
     m_visualReferenceHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("ProvisionedResourceCleanup"))
+  {
+    m_provisionedResourceCleanup = ProvisionedResourceCleanupSettingMapper::GetProvisionedResourceCleanupSettingForName(jsonValue.GetString("ProvisionedResourceCleanup"));
+
+    m_provisionedResourceCleanupHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("Tags"))
@@ -284,6 +275,11 @@ JsonValue Canary::Jsonize() const
   {
    payload.WithObject("VisualReference", m_visualReference.Jsonize());
 
+  }
+
+  if(m_provisionedResourceCleanupHasBeenSet)
+  {
+   payload.WithString("ProvisionedResourceCleanup", ProvisionedResourceCleanupSettingMapper::GetNameForProvisionedResourceCleanupSetting(m_provisionedResourceCleanup));
   }
 
   if(m_tagsHasBeenSet)

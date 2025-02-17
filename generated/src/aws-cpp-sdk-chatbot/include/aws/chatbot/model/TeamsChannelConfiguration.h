@@ -26,7 +26,8 @@ namespace Model
 {
 
   /**
-   * An AWS Chatbot configuration for Microsoft Teams.<p><h3>See Also:</h3>   <a
+   * <p>An AWS Chatbot configuration for Microsoft Teams.</p><p><h3>See Also:</h3>  
+   * <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/chatbot-2017-10-11/TeamsChannelConfiguration">AWS
    * API Reference</a></p>
    */
@@ -39,585 +40,232 @@ namespace Model
     AWS_CHATBOT_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
-     * The ID of the Microsoft Teams channel.
+     * <p>The ID of the Microsoft Teams channel.</p>
      */
     inline const Aws::String& GetChannelId() const{ return m_channelId; }
-
-    /**
-     * The ID of the Microsoft Teams channel.
-     */
     inline bool ChannelIdHasBeenSet() const { return m_channelIdHasBeenSet; }
-
-    /**
-     * The ID of the Microsoft Teams channel.
-     */
     inline void SetChannelId(const Aws::String& value) { m_channelIdHasBeenSet = true; m_channelId = value; }
-
-    /**
-     * The ID of the Microsoft Teams channel.
-     */
     inline void SetChannelId(Aws::String&& value) { m_channelIdHasBeenSet = true; m_channelId = std::move(value); }
-
-    /**
-     * The ID of the Microsoft Teams channel.
-     */
     inline void SetChannelId(const char* value) { m_channelIdHasBeenSet = true; m_channelId.assign(value); }
-
-    /**
-     * The ID of the Microsoft Teams channel.
-     */
     inline TeamsChannelConfiguration& WithChannelId(const Aws::String& value) { SetChannelId(value); return *this;}
-
-    /**
-     * The ID of the Microsoft Teams channel.
-     */
     inline TeamsChannelConfiguration& WithChannelId(Aws::String&& value) { SetChannelId(std::move(value)); return *this;}
-
-    /**
-     * The ID of the Microsoft Teams channel.
-     */
     inline TeamsChannelConfiguration& WithChannelId(const char* value) { SetChannelId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * The name of the Microsoft Teams channel.
+     * <p>The name of the Microsoft Teams channel.</p>
      */
     inline const Aws::String& GetChannelName() const{ return m_channelName; }
-
-    /**
-     * The name of the Microsoft Teams channel.
-     */
     inline bool ChannelNameHasBeenSet() const { return m_channelNameHasBeenSet; }
-
-    /**
-     * The name of the Microsoft Teams channel.
-     */
     inline void SetChannelName(const Aws::String& value) { m_channelNameHasBeenSet = true; m_channelName = value; }
-
-    /**
-     * The name of the Microsoft Teams channel.
-     */
     inline void SetChannelName(Aws::String&& value) { m_channelNameHasBeenSet = true; m_channelName = std::move(value); }
-
-    /**
-     * The name of the Microsoft Teams channel.
-     */
     inline void SetChannelName(const char* value) { m_channelNameHasBeenSet = true; m_channelName.assign(value); }
-
-    /**
-     * The name of the Microsoft Teams channel.
-     */
     inline TeamsChannelConfiguration& WithChannelName(const Aws::String& value) { SetChannelName(value); return *this;}
-
-    /**
-     * The name of the Microsoft Teams channel.
-     */
     inline TeamsChannelConfiguration& WithChannelName(Aws::String&& value) { SetChannelName(std::move(value)); return *this;}
-
-    /**
-     * The name of the Microsoft Teams channel.
-     */
     inline TeamsChannelConfiguration& WithChannelName(const char* value) { SetChannelName(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * The ID of the Microsoft Team authorized with AWS Chatbot. To get the team ID,
-     * you must perform the initial authorization flow with Microsoft Teams in the AWS
-     * Chatbot console. Then you can copy and paste the team ID from the console. For
-     * more details, see steps 1-4 in Get started with Microsoft Teams in the AWS
-     * Chatbot Administrator Guide.
+     * <p> The ID of the Microsoft Teams authorized with AWS Chatbot.</p> <p>To get the
+     * team ID, you must perform the initial authorization flow with Microsoft Teams in
+     * the AWS Chatbot console. Then you can copy and paste the team ID from the
+     * console. For more information, see <a
+     * href="https://docs.aws.amazon.com/chatbot/latest/adminguide/teams-setup.html#teams-client-setup">Step
+     * 1: Configure a Microsoft Teams client</a> in the <i> AWS Chatbot Administrator
+     * Guide</i>. </p>
      */
     inline const Aws::String& GetTeamId() const{ return m_teamId; }
-
-    /**
-     * The ID of the Microsoft Team authorized with AWS Chatbot. To get the team ID,
-     * you must perform the initial authorization flow with Microsoft Teams in the AWS
-     * Chatbot console. Then you can copy and paste the team ID from the console. For
-     * more details, see steps 1-4 in Get started with Microsoft Teams in the AWS
-     * Chatbot Administrator Guide.
-     */
     inline bool TeamIdHasBeenSet() const { return m_teamIdHasBeenSet; }
-
-    /**
-     * The ID of the Microsoft Team authorized with AWS Chatbot. To get the team ID,
-     * you must perform the initial authorization flow with Microsoft Teams in the AWS
-     * Chatbot console. Then you can copy and paste the team ID from the console. For
-     * more details, see steps 1-4 in Get started with Microsoft Teams in the AWS
-     * Chatbot Administrator Guide.
-     */
     inline void SetTeamId(const Aws::String& value) { m_teamIdHasBeenSet = true; m_teamId = value; }
-
-    /**
-     * The ID of the Microsoft Team authorized with AWS Chatbot. To get the team ID,
-     * you must perform the initial authorization flow with Microsoft Teams in the AWS
-     * Chatbot console. Then you can copy and paste the team ID from the console. For
-     * more details, see steps 1-4 in Get started with Microsoft Teams in the AWS
-     * Chatbot Administrator Guide.
-     */
     inline void SetTeamId(Aws::String&& value) { m_teamIdHasBeenSet = true; m_teamId = std::move(value); }
-
-    /**
-     * The ID of the Microsoft Team authorized with AWS Chatbot. To get the team ID,
-     * you must perform the initial authorization flow with Microsoft Teams in the AWS
-     * Chatbot console. Then you can copy and paste the team ID from the console. For
-     * more details, see steps 1-4 in Get started with Microsoft Teams in the AWS
-     * Chatbot Administrator Guide.
-     */
     inline void SetTeamId(const char* value) { m_teamIdHasBeenSet = true; m_teamId.assign(value); }
-
-    /**
-     * The ID of the Microsoft Team authorized with AWS Chatbot. To get the team ID,
-     * you must perform the initial authorization flow with Microsoft Teams in the AWS
-     * Chatbot console. Then you can copy and paste the team ID from the console. For
-     * more details, see steps 1-4 in Get started with Microsoft Teams in the AWS
-     * Chatbot Administrator Guide.
-     */
     inline TeamsChannelConfiguration& WithTeamId(const Aws::String& value) { SetTeamId(value); return *this;}
-
-    /**
-     * The ID of the Microsoft Team authorized with AWS Chatbot. To get the team ID,
-     * you must perform the initial authorization flow with Microsoft Teams in the AWS
-     * Chatbot console. Then you can copy and paste the team ID from the console. For
-     * more details, see steps 1-4 in Get started with Microsoft Teams in the AWS
-     * Chatbot Administrator Guide.
-     */
     inline TeamsChannelConfiguration& WithTeamId(Aws::String&& value) { SetTeamId(std::move(value)); return *this;}
-
-    /**
-     * The ID of the Microsoft Team authorized with AWS Chatbot. To get the team ID,
-     * you must perform the initial authorization flow with Microsoft Teams in the AWS
-     * Chatbot console. Then you can copy and paste the team ID from the console. For
-     * more details, see steps 1-4 in Get started with Microsoft Teams in the AWS
-     * Chatbot Administrator Guide.
-     */
     inline TeamsChannelConfiguration& WithTeamId(const char* value) { SetTeamId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * The name of the Microsoft Teams Team.
+     * <p>The name of the Microsoft Teams Team.</p>
      */
     inline const Aws::String& GetTeamName() const{ return m_teamName; }
-
-    /**
-     * The name of the Microsoft Teams Team.
-     */
     inline bool TeamNameHasBeenSet() const { return m_teamNameHasBeenSet; }
-
-    /**
-     * The name of the Microsoft Teams Team.
-     */
     inline void SetTeamName(const Aws::String& value) { m_teamNameHasBeenSet = true; m_teamName = value; }
-
-    /**
-     * The name of the Microsoft Teams Team.
-     */
     inline void SetTeamName(Aws::String&& value) { m_teamNameHasBeenSet = true; m_teamName = std::move(value); }
-
-    /**
-     * The name of the Microsoft Teams Team.
-     */
     inline void SetTeamName(const char* value) { m_teamNameHasBeenSet = true; m_teamName.assign(value); }
-
-    /**
-     * The name of the Microsoft Teams Team.
-     */
     inline TeamsChannelConfiguration& WithTeamName(const Aws::String& value) { SetTeamName(value); return *this;}
-
-    /**
-     * The name of the Microsoft Teams Team.
-     */
     inline TeamsChannelConfiguration& WithTeamName(Aws::String&& value) { SetTeamName(std::move(value)); return *this;}
-
-    /**
-     * The name of the Microsoft Teams Team.
-     */
     inline TeamsChannelConfiguration& WithTeamName(const char* value) { SetTeamName(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * The ID of the Microsoft Teams tenant.
+     * <p>The ID of the Microsoft Teams tenant.</p>
      */
     inline const Aws::String& GetTenantId() const{ return m_tenantId; }
-
-    /**
-     * The ID of the Microsoft Teams tenant.
-     */
     inline bool TenantIdHasBeenSet() const { return m_tenantIdHasBeenSet; }
-
-    /**
-     * The ID of the Microsoft Teams tenant.
-     */
     inline void SetTenantId(const Aws::String& value) { m_tenantIdHasBeenSet = true; m_tenantId = value; }
-
-    /**
-     * The ID of the Microsoft Teams tenant.
-     */
     inline void SetTenantId(Aws::String&& value) { m_tenantIdHasBeenSet = true; m_tenantId = std::move(value); }
-
-    /**
-     * The ID of the Microsoft Teams tenant.
-     */
     inline void SetTenantId(const char* value) { m_tenantIdHasBeenSet = true; m_tenantId.assign(value); }
-
-    /**
-     * The ID of the Microsoft Teams tenant.
-     */
     inline TeamsChannelConfiguration& WithTenantId(const Aws::String& value) { SetTenantId(value); return *this;}
-
-    /**
-     * The ID of the Microsoft Teams tenant.
-     */
     inline TeamsChannelConfiguration& WithTenantId(Aws::String&& value) { SetTenantId(std::move(value)); return *this;}
-
-    /**
-     * The ID of the Microsoft Teams tenant.
-     */
     inline TeamsChannelConfiguration& WithTenantId(const char* value) { SetTenantId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * The ARN of the MicrosoftTeamsChannelConfiguration.
+     * <p>The Amazon Resource Name (ARN) of the MicrosoftTeamsChannelConfiguration
+     * associated with the user identity to delete.</p>
      */
     inline const Aws::String& GetChatConfigurationArn() const{ return m_chatConfigurationArn; }
-
-    /**
-     * The ARN of the MicrosoftTeamsChannelConfiguration.
-     */
     inline bool ChatConfigurationArnHasBeenSet() const { return m_chatConfigurationArnHasBeenSet; }
-
-    /**
-     * The ARN of the MicrosoftTeamsChannelConfiguration.
-     */
     inline void SetChatConfigurationArn(const Aws::String& value) { m_chatConfigurationArnHasBeenSet = true; m_chatConfigurationArn = value; }
-
-    /**
-     * The ARN of the MicrosoftTeamsChannelConfiguration.
-     */
     inline void SetChatConfigurationArn(Aws::String&& value) { m_chatConfigurationArnHasBeenSet = true; m_chatConfigurationArn = std::move(value); }
-
-    /**
-     * The ARN of the MicrosoftTeamsChannelConfiguration.
-     */
     inline void SetChatConfigurationArn(const char* value) { m_chatConfigurationArnHasBeenSet = true; m_chatConfigurationArn.assign(value); }
-
-    /**
-     * The ARN of the MicrosoftTeamsChannelConfiguration.
-     */
     inline TeamsChannelConfiguration& WithChatConfigurationArn(const Aws::String& value) { SetChatConfigurationArn(value); return *this;}
-
-    /**
-     * The ARN of the MicrosoftTeamsChannelConfiguration.
-     */
     inline TeamsChannelConfiguration& WithChatConfigurationArn(Aws::String&& value) { SetChatConfigurationArn(std::move(value)); return *this;}
-
-    /**
-     * The ARN of the MicrosoftTeamsChannelConfiguration.
-     */
     inline TeamsChannelConfiguration& WithChatConfigurationArn(const char* value) { SetChatConfigurationArn(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * The ARN of the IAM role that defines the permissions for AWS Chatbot. This is a
-     * user-defined role that AWS Chatbot will assume. This is not the service-linked
-     * role. For more information, see IAM Policies for AWS Chatbot.
+     * <p>A user-defined role that AWS Chatbot assumes. This is not the service-linked
+     * role.</p> <p>For more information, see <a
+     * href="https://docs.aws.amazon.com/chatbot/latest/adminguide/chatbot-iam-policies.html">IAM
+     * policies for AWS Chatbot</a> in the <i> AWS Chatbot Administrator Guide</i>.
+     * </p>
      */
     inline const Aws::String& GetIamRoleArn() const{ return m_iamRoleArn; }
-
-    /**
-     * The ARN of the IAM role that defines the permissions for AWS Chatbot. This is a
-     * user-defined role that AWS Chatbot will assume. This is not the service-linked
-     * role. For more information, see IAM Policies for AWS Chatbot.
-     */
     inline bool IamRoleArnHasBeenSet() const { return m_iamRoleArnHasBeenSet; }
-
-    /**
-     * The ARN of the IAM role that defines the permissions for AWS Chatbot. This is a
-     * user-defined role that AWS Chatbot will assume. This is not the service-linked
-     * role. For more information, see IAM Policies for AWS Chatbot.
-     */
     inline void SetIamRoleArn(const Aws::String& value) { m_iamRoleArnHasBeenSet = true; m_iamRoleArn = value; }
-
-    /**
-     * The ARN of the IAM role that defines the permissions for AWS Chatbot. This is a
-     * user-defined role that AWS Chatbot will assume. This is not the service-linked
-     * role. For more information, see IAM Policies for AWS Chatbot.
-     */
     inline void SetIamRoleArn(Aws::String&& value) { m_iamRoleArnHasBeenSet = true; m_iamRoleArn = std::move(value); }
-
-    /**
-     * The ARN of the IAM role that defines the permissions for AWS Chatbot. This is a
-     * user-defined role that AWS Chatbot will assume. This is not the service-linked
-     * role. For more information, see IAM Policies for AWS Chatbot.
-     */
     inline void SetIamRoleArn(const char* value) { m_iamRoleArnHasBeenSet = true; m_iamRoleArn.assign(value); }
-
-    /**
-     * The ARN of the IAM role that defines the permissions for AWS Chatbot. This is a
-     * user-defined role that AWS Chatbot will assume. This is not the service-linked
-     * role. For more information, see IAM Policies for AWS Chatbot.
-     */
     inline TeamsChannelConfiguration& WithIamRoleArn(const Aws::String& value) { SetIamRoleArn(value); return *this;}
-
-    /**
-     * The ARN of the IAM role that defines the permissions for AWS Chatbot. This is a
-     * user-defined role that AWS Chatbot will assume. This is not the service-linked
-     * role. For more information, see IAM Policies for AWS Chatbot.
-     */
     inline TeamsChannelConfiguration& WithIamRoleArn(Aws::String&& value) { SetIamRoleArn(std::move(value)); return *this;}
-
-    /**
-     * The ARN of the IAM role that defines the permissions for AWS Chatbot. This is a
-     * user-defined role that AWS Chatbot will assume. This is not the service-linked
-     * role. For more information, see IAM Policies for AWS Chatbot.
-     */
     inline TeamsChannelConfiguration& WithIamRoleArn(const char* value) { SetIamRoleArn(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * The ARNs of the SNS topics that deliver notifications to AWS Chatbot.
+     * <p>The Amazon Resource Names (ARNs) of the SNS topics that deliver notifications
+     * to AWS Chatbot.</p>
      */
     inline const Aws::Vector<Aws::String>& GetSnsTopicArns() const{ return m_snsTopicArns; }
-
-    /**
-     * The ARNs of the SNS topics that deliver notifications to AWS Chatbot.
-     */
     inline bool SnsTopicArnsHasBeenSet() const { return m_snsTopicArnsHasBeenSet; }
-
-    /**
-     * The ARNs of the SNS topics that deliver notifications to AWS Chatbot.
-     */
     inline void SetSnsTopicArns(const Aws::Vector<Aws::String>& value) { m_snsTopicArnsHasBeenSet = true; m_snsTopicArns = value; }
-
-    /**
-     * The ARNs of the SNS topics that deliver notifications to AWS Chatbot.
-     */
     inline void SetSnsTopicArns(Aws::Vector<Aws::String>&& value) { m_snsTopicArnsHasBeenSet = true; m_snsTopicArns = std::move(value); }
-
-    /**
-     * The ARNs of the SNS topics that deliver notifications to AWS Chatbot.
-     */
     inline TeamsChannelConfiguration& WithSnsTopicArns(const Aws::Vector<Aws::String>& value) { SetSnsTopicArns(value); return *this;}
-
-    /**
-     * The ARNs of the SNS topics that deliver notifications to AWS Chatbot.
-     */
     inline TeamsChannelConfiguration& WithSnsTopicArns(Aws::Vector<Aws::String>&& value) { SetSnsTopicArns(std::move(value)); return *this;}
-
-    /**
-     * The ARNs of the SNS topics that deliver notifications to AWS Chatbot.
-     */
     inline TeamsChannelConfiguration& AddSnsTopicArns(const Aws::String& value) { m_snsTopicArnsHasBeenSet = true; m_snsTopicArns.push_back(value); return *this; }
-
-    /**
-     * The ARNs of the SNS topics that deliver notifications to AWS Chatbot.
-     */
     inline TeamsChannelConfiguration& AddSnsTopicArns(Aws::String&& value) { m_snsTopicArnsHasBeenSet = true; m_snsTopicArns.push_back(std::move(value)); return *this; }
-
-    /**
-     * The ARNs of the SNS topics that deliver notifications to AWS Chatbot.
-     */
     inline TeamsChannelConfiguration& AddSnsTopicArns(const char* value) { m_snsTopicArnsHasBeenSet = true; m_snsTopicArns.push_back(value); return *this; }
+    ///@}
 
-
+    ///@{
     /**
-     * The name of the configuration.
+     * <p>The name of the configuration.</p>
      */
     inline const Aws::String& GetConfigurationName() const{ return m_configurationName; }
-
-    /**
-     * The name of the configuration.
-     */
     inline bool ConfigurationNameHasBeenSet() const { return m_configurationNameHasBeenSet; }
-
-    /**
-     * The name of the configuration.
-     */
     inline void SetConfigurationName(const Aws::String& value) { m_configurationNameHasBeenSet = true; m_configurationName = value; }
-
-    /**
-     * The name of the configuration.
-     */
     inline void SetConfigurationName(Aws::String&& value) { m_configurationNameHasBeenSet = true; m_configurationName = std::move(value); }
-
-    /**
-     * The name of the configuration.
-     */
     inline void SetConfigurationName(const char* value) { m_configurationNameHasBeenSet = true; m_configurationName.assign(value); }
-
-    /**
-     * The name of the configuration.
-     */
     inline TeamsChannelConfiguration& WithConfigurationName(const Aws::String& value) { SetConfigurationName(value); return *this;}
-
-    /**
-     * The name of the configuration.
-     */
     inline TeamsChannelConfiguration& WithConfigurationName(Aws::String&& value) { SetConfigurationName(std::move(value)); return *this;}
-
-    /**
-     * The name of the configuration.
-     */
     inline TeamsChannelConfiguration& WithConfigurationName(const char* value) { SetConfigurationName(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * Logging levels include ERROR, INFO, or NONE.
+     * <p>Logging levels include <code>ERROR</code>, <code>INFO</code>, or
+     * <code>NONE</code>.</p>
      */
     inline const Aws::String& GetLoggingLevel() const{ return m_loggingLevel; }
-
-    /**
-     * Logging levels include ERROR, INFO, or NONE.
-     */
     inline bool LoggingLevelHasBeenSet() const { return m_loggingLevelHasBeenSet; }
-
-    /**
-     * Logging levels include ERROR, INFO, or NONE.
-     */
     inline void SetLoggingLevel(const Aws::String& value) { m_loggingLevelHasBeenSet = true; m_loggingLevel = value; }
-
-    /**
-     * Logging levels include ERROR, INFO, or NONE.
-     */
     inline void SetLoggingLevel(Aws::String&& value) { m_loggingLevelHasBeenSet = true; m_loggingLevel = std::move(value); }
-
-    /**
-     * Logging levels include ERROR, INFO, or NONE.
-     */
     inline void SetLoggingLevel(const char* value) { m_loggingLevelHasBeenSet = true; m_loggingLevel.assign(value); }
-
-    /**
-     * Logging levels include ERROR, INFO, or NONE.
-     */
     inline TeamsChannelConfiguration& WithLoggingLevel(const Aws::String& value) { SetLoggingLevel(value); return *this;}
-
-    /**
-     * Logging levels include ERROR, INFO, or NONE.
-     */
     inline TeamsChannelConfiguration& WithLoggingLevel(Aws::String&& value) { SetLoggingLevel(std::move(value)); return *this;}
-
-    /**
-     * Logging levels include ERROR, INFO, or NONE.
-     */
     inline TeamsChannelConfiguration& WithLoggingLevel(const char* value) { SetLoggingLevel(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * The list of IAM policy ARNs that are applied as channel guardrails. The AWS
-     * managed 'AdministratorAccess' policy is applied by default if this is not set.
+     * <p>The list of IAM policy ARNs that are applied as channel guardrails. The AWS
+     * managed <code>AdministratorAccess</code> policy is applied by default if this is
+     * not set. </p>
      */
     inline const Aws::Vector<Aws::String>& GetGuardrailPolicyArns() const{ return m_guardrailPolicyArns; }
-
-    /**
-     * The list of IAM policy ARNs that are applied as channel guardrails. The AWS
-     * managed 'AdministratorAccess' policy is applied by default if this is not set.
-     */
     inline bool GuardrailPolicyArnsHasBeenSet() const { return m_guardrailPolicyArnsHasBeenSet; }
-
-    /**
-     * The list of IAM policy ARNs that are applied as channel guardrails. The AWS
-     * managed 'AdministratorAccess' policy is applied by default if this is not set.
-     */
     inline void SetGuardrailPolicyArns(const Aws::Vector<Aws::String>& value) { m_guardrailPolicyArnsHasBeenSet = true; m_guardrailPolicyArns = value; }
-
-    /**
-     * The list of IAM policy ARNs that are applied as channel guardrails. The AWS
-     * managed 'AdministratorAccess' policy is applied by default if this is not set.
-     */
     inline void SetGuardrailPolicyArns(Aws::Vector<Aws::String>&& value) { m_guardrailPolicyArnsHasBeenSet = true; m_guardrailPolicyArns = std::move(value); }
-
-    /**
-     * The list of IAM policy ARNs that are applied as channel guardrails. The AWS
-     * managed 'AdministratorAccess' policy is applied by default if this is not set.
-     */
     inline TeamsChannelConfiguration& WithGuardrailPolicyArns(const Aws::Vector<Aws::String>& value) { SetGuardrailPolicyArns(value); return *this;}
-
-    /**
-     * The list of IAM policy ARNs that are applied as channel guardrails. The AWS
-     * managed 'AdministratorAccess' policy is applied by default if this is not set.
-     */
     inline TeamsChannelConfiguration& WithGuardrailPolicyArns(Aws::Vector<Aws::String>&& value) { SetGuardrailPolicyArns(std::move(value)); return *this;}
-
-    /**
-     * The list of IAM policy ARNs that are applied as channel guardrails. The AWS
-     * managed 'AdministratorAccess' policy is applied by default if this is not set.
-     */
     inline TeamsChannelConfiguration& AddGuardrailPolicyArns(const Aws::String& value) { m_guardrailPolicyArnsHasBeenSet = true; m_guardrailPolicyArns.push_back(value); return *this; }
-
-    /**
-     * The list of IAM policy ARNs that are applied as channel guardrails. The AWS
-     * managed 'AdministratorAccess' policy is applied by default if this is not set.
-     */
     inline TeamsChannelConfiguration& AddGuardrailPolicyArns(Aws::String&& value) { m_guardrailPolicyArnsHasBeenSet = true; m_guardrailPolicyArns.push_back(std::move(value)); return *this; }
-
-    /**
-     * The list of IAM policy ARNs that are applied as channel guardrails. The AWS
-     * managed 'AdministratorAccess' policy is applied by default if this is not set.
-     */
     inline TeamsChannelConfiguration& AddGuardrailPolicyArns(const char* value) { m_guardrailPolicyArnsHasBeenSet = true; m_guardrailPolicyArns.push_back(value); return *this; }
+    ///@}
 
-
+    ///@{
     /**
-     * Enables use of a user role requirement in your chat configuration.
+     * <p>Enables use of a user role requirement in your chat configuration.</p>
      */
     inline bool GetUserAuthorizationRequired() const{ return m_userAuthorizationRequired; }
-
-    /**
-     * Enables use of a user role requirement in your chat configuration.
-     */
     inline bool UserAuthorizationRequiredHasBeenSet() const { return m_userAuthorizationRequiredHasBeenSet; }
-
-    /**
-     * Enables use of a user role requirement in your chat configuration.
-     */
     inline void SetUserAuthorizationRequired(bool value) { m_userAuthorizationRequiredHasBeenSet = true; m_userAuthorizationRequired = value; }
-
-    /**
-     * Enables use of a user role requirement in your chat configuration.
-     */
     inline TeamsChannelConfiguration& WithUserAuthorizationRequired(bool value) { SetUserAuthorizationRequired(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * A list of tags applied to the configuration.
+     * <p>A map of tags assigned to a resource. A tag is a string-to-string map of
+     * key-value pairs.</p>
      */
     inline const Aws::Vector<Tag>& GetTags() const{ return m_tags; }
-
-    /**
-     * A list of tags applied to the configuration.
-     */
     inline bool TagsHasBeenSet() const { return m_tagsHasBeenSet; }
-
-    /**
-     * A list of tags applied to the configuration.
-     */
     inline void SetTags(const Aws::Vector<Tag>& value) { m_tagsHasBeenSet = true; m_tags = value; }
-
-    /**
-     * A list of tags applied to the configuration.
-     */
     inline void SetTags(Aws::Vector<Tag>&& value) { m_tagsHasBeenSet = true; m_tags = std::move(value); }
-
-    /**
-     * A list of tags applied to the configuration.
-     */
     inline TeamsChannelConfiguration& WithTags(const Aws::Vector<Tag>& value) { SetTags(value); return *this;}
-
-    /**
-     * A list of tags applied to the configuration.
-     */
     inline TeamsChannelConfiguration& WithTags(Aws::Vector<Tag>&& value) { SetTags(std::move(value)); return *this;}
-
-    /**
-     * A list of tags applied to the configuration.
-     */
     inline TeamsChannelConfiguration& AddTags(const Tag& value) { m_tagsHasBeenSet = true; m_tags.push_back(value); return *this; }
-
-    /**
-     * A list of tags applied to the configuration.
-     */
     inline TeamsChannelConfiguration& AddTags(Tag&& value) { m_tagsHasBeenSet = true; m_tags.push_back(std::move(value)); return *this; }
+    ///@}
 
+    ///@{
+    /**
+     * <p>Either <code>ENABLED</code> or <code>DISABLED</code>. The resource returns
+     * <code>DISABLED</code> if the organization's AWS Chatbot policy has explicitly
+     * denied that configuration. For example, if Amazon Chime is disabled.</p>
+     */
+    inline const Aws::String& GetState() const{ return m_state; }
+    inline bool StateHasBeenSet() const { return m_stateHasBeenSet; }
+    inline void SetState(const Aws::String& value) { m_stateHasBeenSet = true; m_state = value; }
+    inline void SetState(Aws::String&& value) { m_stateHasBeenSet = true; m_state = std::move(value); }
+    inline void SetState(const char* value) { m_stateHasBeenSet = true; m_state.assign(value); }
+    inline TeamsChannelConfiguration& WithState(const Aws::String& value) { SetState(value); return *this;}
+    inline TeamsChannelConfiguration& WithState(Aws::String&& value) { SetState(std::move(value)); return *this;}
+    inline TeamsChannelConfiguration& WithState(const char* value) { SetState(value); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>Provided if State is <code>DISABLED</code>. Provides context as to why the
+     * resource is disabled.</p>
+     */
+    inline const Aws::String& GetStateReason() const{ return m_stateReason; }
+    inline bool StateReasonHasBeenSet() const { return m_stateReasonHasBeenSet; }
+    inline void SetStateReason(const Aws::String& value) { m_stateReasonHasBeenSet = true; m_stateReason = value; }
+    inline void SetStateReason(Aws::String&& value) { m_stateReasonHasBeenSet = true; m_stateReason = std::move(value); }
+    inline void SetStateReason(const char* value) { m_stateReasonHasBeenSet = true; m_stateReason.assign(value); }
+    inline TeamsChannelConfiguration& WithStateReason(const Aws::String& value) { SetStateReason(value); return *this;}
+    inline TeamsChannelConfiguration& WithStateReason(Aws::String&& value) { SetStateReason(std::move(value)); return *this;}
+    inline TeamsChannelConfiguration& WithStateReason(const char* value) { SetStateReason(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_channelId;
@@ -658,6 +306,12 @@ namespace Model
 
     Aws::Vector<Tag> m_tags;
     bool m_tagsHasBeenSet = false;
+
+    Aws::String m_state;
+    bool m_stateHasBeenSet = false;
+
+    Aws::String m_stateReason;
+    bool m_stateReasonHasBeenSet = false;
   };
 
 } // namespace Model

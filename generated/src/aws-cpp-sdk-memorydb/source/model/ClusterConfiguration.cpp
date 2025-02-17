@@ -22,6 +22,7 @@ ClusterConfiguration::ClusterConfiguration() :
     m_nameHasBeenSet(false),
     m_descriptionHasBeenSet(false),
     m_nodeTypeHasBeenSet(false),
+    m_engineHasBeenSet(false),
     m_engineVersionHasBeenSet(false),
     m_maintenanceWindowHasBeenSet(false),
     m_topicArnHasBeenSet(false),
@@ -35,28 +36,14 @@ ClusterConfiguration::ClusterConfiguration() :
     m_snapshotWindowHasBeenSet(false),
     m_numShards(0),
     m_numShardsHasBeenSet(false),
-    m_shardsHasBeenSet(false)
+    m_shardsHasBeenSet(false),
+    m_multiRegionParameterGroupNameHasBeenSet(false),
+    m_multiRegionClusterNameHasBeenSet(false)
 {
 }
 
-ClusterConfiguration::ClusterConfiguration(JsonView jsonValue) : 
-    m_nameHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_nodeTypeHasBeenSet(false),
-    m_engineVersionHasBeenSet(false),
-    m_maintenanceWindowHasBeenSet(false),
-    m_topicArnHasBeenSet(false),
-    m_port(0),
-    m_portHasBeenSet(false),
-    m_parameterGroupNameHasBeenSet(false),
-    m_subnetGroupNameHasBeenSet(false),
-    m_vpcIdHasBeenSet(false),
-    m_snapshotRetentionLimit(0),
-    m_snapshotRetentionLimitHasBeenSet(false),
-    m_snapshotWindowHasBeenSet(false),
-    m_numShards(0),
-    m_numShardsHasBeenSet(false),
-    m_shardsHasBeenSet(false)
+ClusterConfiguration::ClusterConfiguration(JsonView jsonValue)
+  : ClusterConfiguration()
 {
   *this = jsonValue;
 }
@@ -82,6 +69,13 @@ ClusterConfiguration& ClusterConfiguration::operator =(JsonView jsonValue)
     m_nodeType = jsonValue.GetString("NodeType");
 
     m_nodeTypeHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("Engine"))
+  {
+    m_engine = jsonValue.GetString("Engine");
+
+    m_engineHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("EngineVersion"))
@@ -164,6 +158,20 @@ ClusterConfiguration& ClusterConfiguration::operator =(JsonView jsonValue)
     m_shardsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("MultiRegionParameterGroupName"))
+  {
+    m_multiRegionParameterGroupName = jsonValue.GetString("MultiRegionParameterGroupName");
+
+    m_multiRegionParameterGroupNameHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("MultiRegionClusterName"))
+  {
+    m_multiRegionClusterName = jsonValue.GetString("MultiRegionClusterName");
+
+    m_multiRegionClusterNameHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -186,6 +194,12 @@ JsonValue ClusterConfiguration::Jsonize() const
   if(m_nodeTypeHasBeenSet)
   {
    payload.WithString("NodeType", m_nodeType);
+
+  }
+
+  if(m_engineHasBeenSet)
+  {
+   payload.WithString("Engine", m_engine);
 
   }
 
@@ -257,6 +271,18 @@ JsonValue ClusterConfiguration::Jsonize() const
      shardsJsonList[shardsIndex].AsObject(m_shards[shardsIndex].Jsonize());
    }
    payload.WithArray("Shards", std::move(shardsJsonList));
+
+  }
+
+  if(m_multiRegionParameterGroupNameHasBeenSet)
+  {
+   payload.WithString("MultiRegionParameterGroupName", m_multiRegionParameterGroupName);
+
+  }
+
+  if(m_multiRegionClusterNameHasBeenSet)
+  {
+   payload.WithString("MultiRegionClusterName", m_multiRegionClusterName);
 
   }
 

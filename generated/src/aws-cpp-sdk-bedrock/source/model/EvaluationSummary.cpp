@@ -27,20 +27,16 @@ EvaluationSummary::EvaluationSummary() :
     m_jobType(EvaluationJobType::NOT_SET),
     m_jobTypeHasBeenSet(false),
     m_evaluationTaskTypesHasBeenSet(false),
-    m_modelIdentifiersHasBeenSet(false)
+    m_modelIdentifiersHasBeenSet(false),
+    m_ragIdentifiersHasBeenSet(false),
+    m_evaluatorModelIdentifiersHasBeenSet(false),
+    m_applicationType(ApplicationType::NOT_SET),
+    m_applicationTypeHasBeenSet(false)
 {
 }
 
-EvaluationSummary::EvaluationSummary(JsonView jsonValue) : 
-    m_jobArnHasBeenSet(false),
-    m_jobNameHasBeenSet(false),
-    m_status(EvaluationJobStatus::NOT_SET),
-    m_statusHasBeenSet(false),
-    m_creationTimeHasBeenSet(false),
-    m_jobType(EvaluationJobType::NOT_SET),
-    m_jobTypeHasBeenSet(false),
-    m_evaluationTaskTypesHasBeenSet(false),
-    m_modelIdentifiersHasBeenSet(false)
+EvaluationSummary::EvaluationSummary(JsonView jsonValue)
+  : EvaluationSummary()
 {
   *this = jsonValue;
 }
@@ -102,6 +98,33 @@ EvaluationSummary& EvaluationSummary::operator =(JsonView jsonValue)
     m_modelIdentifiersHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("ragIdentifiers"))
+  {
+    Aws::Utils::Array<JsonView> ragIdentifiersJsonList = jsonValue.GetArray("ragIdentifiers");
+    for(unsigned ragIdentifiersIndex = 0; ragIdentifiersIndex < ragIdentifiersJsonList.GetLength(); ++ragIdentifiersIndex)
+    {
+      m_ragIdentifiers.push_back(ragIdentifiersJsonList[ragIdentifiersIndex].AsString());
+    }
+    m_ragIdentifiersHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("evaluatorModelIdentifiers"))
+  {
+    Aws::Utils::Array<JsonView> evaluatorModelIdentifiersJsonList = jsonValue.GetArray("evaluatorModelIdentifiers");
+    for(unsigned evaluatorModelIdentifiersIndex = 0; evaluatorModelIdentifiersIndex < evaluatorModelIdentifiersJsonList.GetLength(); ++evaluatorModelIdentifiersIndex)
+    {
+      m_evaluatorModelIdentifiers.push_back(evaluatorModelIdentifiersJsonList[evaluatorModelIdentifiersIndex].AsString());
+    }
+    m_evaluatorModelIdentifiersHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("applicationType"))
+  {
+    m_applicationType = ApplicationTypeMapper::GetApplicationTypeForName(jsonValue.GetString("applicationType"));
+
+    m_applicationTypeHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -156,6 +179,33 @@ JsonValue EvaluationSummary::Jsonize() const
    }
    payload.WithArray("modelIdentifiers", std::move(modelIdentifiersJsonList));
 
+  }
+
+  if(m_ragIdentifiersHasBeenSet)
+  {
+   Aws::Utils::Array<JsonValue> ragIdentifiersJsonList(m_ragIdentifiers.size());
+   for(unsigned ragIdentifiersIndex = 0; ragIdentifiersIndex < ragIdentifiersJsonList.GetLength(); ++ragIdentifiersIndex)
+   {
+     ragIdentifiersJsonList[ragIdentifiersIndex].AsString(m_ragIdentifiers[ragIdentifiersIndex]);
+   }
+   payload.WithArray("ragIdentifiers", std::move(ragIdentifiersJsonList));
+
+  }
+
+  if(m_evaluatorModelIdentifiersHasBeenSet)
+  {
+   Aws::Utils::Array<JsonValue> evaluatorModelIdentifiersJsonList(m_evaluatorModelIdentifiers.size());
+   for(unsigned evaluatorModelIdentifiersIndex = 0; evaluatorModelIdentifiersIndex < evaluatorModelIdentifiersJsonList.GetLength(); ++evaluatorModelIdentifiersIndex)
+   {
+     evaluatorModelIdentifiersJsonList[evaluatorModelIdentifiersIndex].AsString(m_evaluatorModelIdentifiers[evaluatorModelIdentifiersIndex]);
+   }
+   payload.WithArray("evaluatorModelIdentifiers", std::move(evaluatorModelIdentifiersJsonList));
+
+  }
+
+  if(m_applicationTypeHasBeenSet)
+  {
+   payload.WithString("applicationType", ApplicationTypeMapper::GetNameForApplicationType(m_applicationType));
   }
 
   return payload;

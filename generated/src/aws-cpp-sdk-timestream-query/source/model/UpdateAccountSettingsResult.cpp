@@ -23,9 +23,8 @@ UpdateAccountSettingsResult::UpdateAccountSettingsResult() :
 {
 }
 
-UpdateAccountSettingsResult::UpdateAccountSettingsResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_maxQueryTCU(0),
-    m_queryPricingModel(QueryPricingModel::NOT_SET)
+UpdateAccountSettingsResult::UpdateAccountSettingsResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : UpdateAccountSettingsResult()
 {
   *this = result;
 }
@@ -42,6 +41,12 @@ UpdateAccountSettingsResult& UpdateAccountSettingsResult::operator =(const Aws::
   if(jsonValue.ValueExists("QueryPricingModel"))
   {
     m_queryPricingModel = QueryPricingModelMapper::GetQueryPricingModelForName(jsonValue.GetString("QueryPricingModel"));
+
+  }
+
+  if(jsonValue.ValueExists("QueryCompute"))
+  {
+    m_queryCompute = jsonValue.GetObject("QueryCompute");
 
   }
 

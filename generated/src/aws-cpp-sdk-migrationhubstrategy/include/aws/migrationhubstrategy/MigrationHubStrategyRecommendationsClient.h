@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/migrationhubstrategy/MigrationHubStrategyRecommendations_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/migrationhubstrategy/MigrationHubStrategyRecommendationsServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/migrationhubstrategy/MigrationHubStrategyRecommendationsErrorMarshaller.h>
 
 namespace Aws
 {
 namespace MigrationHubStrategyRecommendations
 {
+  AWS_MIGRATIONHUBSTRATEGYRECOMMENDATIONS_API extern const char SERVICE_NAME[];
   /**
    * <p><fullname>Migration Hub Strategy Recommendations</fullname> <p>This API
    * reference provides descriptions, syntax, and other details about each of the
@@ -25,12 +29,20 @@ namespace MigrationHubStrategyRecommendations
    * more information, see <a href="http://aws.amazon.com/tools/#SDKs">AWS
    * SDKs</a>.</p></p>
    */
-  class AWS_MIGRATIONHUBSTRATEGYRECOMMENDATIONS_API MigrationHubStrategyRecommendationsClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<MigrationHubStrategyRecommendationsClient>
+  class AWS_MIGRATIONHUBSTRATEGYRECOMMENDATIONS_API MigrationHubStrategyRecommendationsClient : smithy::client::AwsSmithyClientT<Aws::MigrationHubStrategyRecommendations::SERVICE_NAME,
+      Aws::MigrationHubStrategyRecommendations::MigrationHubStrategyRecommendationsClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      MigrationHubStrategyRecommendationsEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::MigrationHubStrategyRecommendationsErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<MigrationHubStrategyRecommendationsClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "MigrationHubStrategy"; }
 
       typedef MigrationHubStrategyRecommendationsClientConfiguration ClientConfigurationType;
       typedef MigrationHubStrategyRecommendationsEndpointProvider EndpointProviderType;
@@ -193,13 +205,13 @@ namespace MigrationHubStrategyRecommendations
          * href="http://docs.aws.amazon.com/goto/WebAPI/migrationhubstrategy-2020-02-19/GetLatestAssessmentId">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetLatestAssessmentIdOutcome GetLatestAssessmentId(const Model::GetLatestAssessmentIdRequest& request) const;
+        virtual Model::GetLatestAssessmentIdOutcome GetLatestAssessmentId(const Model::GetLatestAssessmentIdRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetLatestAssessmentId that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetLatestAssessmentIdRequestT = Model::GetLatestAssessmentIdRequest>
-        Model::GetLatestAssessmentIdOutcomeCallable GetLatestAssessmentIdCallable(const GetLatestAssessmentIdRequestT& request) const
+        Model::GetLatestAssessmentIdOutcomeCallable GetLatestAssessmentIdCallable(const GetLatestAssessmentIdRequestT& request = {}) const
         {
             return SubmitCallable(&MigrationHubStrategyRecommendationsClient::GetLatestAssessmentId, request);
         }
@@ -208,7 +220,7 @@ namespace MigrationHubStrategyRecommendations
          * An Async wrapper for GetLatestAssessmentId that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetLatestAssessmentIdRequestT = Model::GetLatestAssessmentIdRequest>
-        void GetLatestAssessmentIdAsync(const GetLatestAssessmentIdRequestT& request, const GetLatestAssessmentIdResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetLatestAssessmentIdAsync(const GetLatestAssessmentIdResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetLatestAssessmentIdRequestT& request = {}) const
         {
             return SubmitAsync(&MigrationHubStrategyRecommendationsClient::GetLatestAssessmentId, request, handler, context);
         }
@@ -219,13 +231,13 @@ namespace MigrationHubStrategyRecommendations
          * href="http://docs.aws.amazon.com/goto/WebAPI/migrationhubstrategy-2020-02-19/GetPortfolioPreferences">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetPortfolioPreferencesOutcome GetPortfolioPreferences(const Model::GetPortfolioPreferencesRequest& request) const;
+        virtual Model::GetPortfolioPreferencesOutcome GetPortfolioPreferences(const Model::GetPortfolioPreferencesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetPortfolioPreferences that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetPortfolioPreferencesRequestT = Model::GetPortfolioPreferencesRequest>
-        Model::GetPortfolioPreferencesOutcomeCallable GetPortfolioPreferencesCallable(const GetPortfolioPreferencesRequestT& request) const
+        Model::GetPortfolioPreferencesOutcomeCallable GetPortfolioPreferencesCallable(const GetPortfolioPreferencesRequestT& request = {}) const
         {
             return SubmitCallable(&MigrationHubStrategyRecommendationsClient::GetPortfolioPreferences, request);
         }
@@ -234,7 +246,7 @@ namespace MigrationHubStrategyRecommendations
          * An Async wrapper for GetPortfolioPreferences that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetPortfolioPreferencesRequestT = Model::GetPortfolioPreferencesRequest>
-        void GetPortfolioPreferencesAsync(const GetPortfolioPreferencesRequestT& request, const GetPortfolioPreferencesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetPortfolioPreferencesAsync(const GetPortfolioPreferencesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetPortfolioPreferencesRequestT& request = {}) const
         {
             return SubmitAsync(&MigrationHubStrategyRecommendationsClient::GetPortfolioPreferences, request, handler, context);
         }
@@ -245,13 +257,13 @@ namespace MigrationHubStrategyRecommendations
          * href="http://docs.aws.amazon.com/goto/WebAPI/migrationhubstrategy-2020-02-19/GetPortfolioSummary">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetPortfolioSummaryOutcome GetPortfolioSummary(const Model::GetPortfolioSummaryRequest& request) const;
+        virtual Model::GetPortfolioSummaryOutcome GetPortfolioSummary(const Model::GetPortfolioSummaryRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetPortfolioSummary that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetPortfolioSummaryRequestT = Model::GetPortfolioSummaryRequest>
-        Model::GetPortfolioSummaryOutcomeCallable GetPortfolioSummaryCallable(const GetPortfolioSummaryRequestT& request) const
+        Model::GetPortfolioSummaryOutcomeCallable GetPortfolioSummaryCallable(const GetPortfolioSummaryRequestT& request = {}) const
         {
             return SubmitCallable(&MigrationHubStrategyRecommendationsClient::GetPortfolioSummary, request);
         }
@@ -260,7 +272,7 @@ namespace MigrationHubStrategyRecommendations
          * An Async wrapper for GetPortfolioSummary that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetPortfolioSummaryRequestT = Model::GetPortfolioSummaryRequest>
-        void GetPortfolioSummaryAsync(const GetPortfolioSummaryRequestT& request, const GetPortfolioSummaryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetPortfolioSummaryAsync(const GetPortfolioSummaryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetPortfolioSummaryRequestT& request = {}) const
         {
             return SubmitAsync(&MigrationHubStrategyRecommendationsClient::GetPortfolioSummary, request, handler, context);
         }
@@ -349,13 +361,13 @@ namespace MigrationHubStrategyRecommendations
          * href="http://docs.aws.amazon.com/goto/WebAPI/migrationhubstrategy-2020-02-19/ListAnalyzableServers">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAnalyzableServersOutcome ListAnalyzableServers(const Model::ListAnalyzableServersRequest& request) const;
+        virtual Model::ListAnalyzableServersOutcome ListAnalyzableServers(const Model::ListAnalyzableServersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAnalyzableServers that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAnalyzableServersRequestT = Model::ListAnalyzableServersRequest>
-        Model::ListAnalyzableServersOutcomeCallable ListAnalyzableServersCallable(const ListAnalyzableServersRequestT& request) const
+        Model::ListAnalyzableServersOutcomeCallable ListAnalyzableServersCallable(const ListAnalyzableServersRequestT& request = {}) const
         {
             return SubmitCallable(&MigrationHubStrategyRecommendationsClient::ListAnalyzableServers, request);
         }
@@ -364,7 +376,7 @@ namespace MigrationHubStrategyRecommendations
          * An Async wrapper for ListAnalyzableServers that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAnalyzableServersRequestT = Model::ListAnalyzableServersRequest>
-        void ListAnalyzableServersAsync(const ListAnalyzableServersRequestT& request, const ListAnalyzableServersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAnalyzableServersAsync(const ListAnalyzableServersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAnalyzableServersRequestT& request = {}) const
         {
             return SubmitAsync(&MigrationHubStrategyRecommendationsClient::ListAnalyzableServers, request, handler, context);
         }
@@ -375,13 +387,13 @@ namespace MigrationHubStrategyRecommendations
          * href="http://docs.aws.amazon.com/goto/WebAPI/migrationhubstrategy-2020-02-19/ListApplicationComponents">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListApplicationComponentsOutcome ListApplicationComponents(const Model::ListApplicationComponentsRequest& request) const;
+        virtual Model::ListApplicationComponentsOutcome ListApplicationComponents(const Model::ListApplicationComponentsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListApplicationComponents that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListApplicationComponentsRequestT = Model::ListApplicationComponentsRequest>
-        Model::ListApplicationComponentsOutcomeCallable ListApplicationComponentsCallable(const ListApplicationComponentsRequestT& request) const
+        Model::ListApplicationComponentsOutcomeCallable ListApplicationComponentsCallable(const ListApplicationComponentsRequestT& request = {}) const
         {
             return SubmitCallable(&MigrationHubStrategyRecommendationsClient::ListApplicationComponents, request);
         }
@@ -390,7 +402,7 @@ namespace MigrationHubStrategyRecommendations
          * An Async wrapper for ListApplicationComponents that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListApplicationComponentsRequestT = Model::ListApplicationComponentsRequest>
-        void ListApplicationComponentsAsync(const ListApplicationComponentsRequestT& request, const ListApplicationComponentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListApplicationComponentsAsync(const ListApplicationComponentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListApplicationComponentsRequestT& request = {}) const
         {
             return SubmitAsync(&MigrationHubStrategyRecommendationsClient::ListApplicationComponents, request, handler, context);
         }
@@ -401,13 +413,13 @@ namespace MigrationHubStrategyRecommendations
          * href="http://docs.aws.amazon.com/goto/WebAPI/migrationhubstrategy-2020-02-19/ListCollectors">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListCollectorsOutcome ListCollectors(const Model::ListCollectorsRequest& request) const;
+        virtual Model::ListCollectorsOutcome ListCollectors(const Model::ListCollectorsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListCollectors that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListCollectorsRequestT = Model::ListCollectorsRequest>
-        Model::ListCollectorsOutcomeCallable ListCollectorsCallable(const ListCollectorsRequestT& request) const
+        Model::ListCollectorsOutcomeCallable ListCollectorsCallable(const ListCollectorsRequestT& request = {}) const
         {
             return SubmitCallable(&MigrationHubStrategyRecommendationsClient::ListCollectors, request);
         }
@@ -416,7 +428,7 @@ namespace MigrationHubStrategyRecommendations
          * An Async wrapper for ListCollectors that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListCollectorsRequestT = Model::ListCollectorsRequest>
-        void ListCollectorsAsync(const ListCollectorsRequestT& request, const ListCollectorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListCollectorsAsync(const ListCollectorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListCollectorsRequestT& request = {}) const
         {
             return SubmitAsync(&MigrationHubStrategyRecommendationsClient::ListCollectors, request, handler, context);
         }
@@ -427,13 +439,13 @@ namespace MigrationHubStrategyRecommendations
          * href="http://docs.aws.amazon.com/goto/WebAPI/migrationhubstrategy-2020-02-19/ListImportFileTask">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListImportFileTaskOutcome ListImportFileTask(const Model::ListImportFileTaskRequest& request) const;
+        virtual Model::ListImportFileTaskOutcome ListImportFileTask(const Model::ListImportFileTaskRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListImportFileTask that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListImportFileTaskRequestT = Model::ListImportFileTaskRequest>
-        Model::ListImportFileTaskOutcomeCallable ListImportFileTaskCallable(const ListImportFileTaskRequestT& request) const
+        Model::ListImportFileTaskOutcomeCallable ListImportFileTaskCallable(const ListImportFileTaskRequestT& request = {}) const
         {
             return SubmitCallable(&MigrationHubStrategyRecommendationsClient::ListImportFileTask, request);
         }
@@ -442,7 +454,7 @@ namespace MigrationHubStrategyRecommendations
          * An Async wrapper for ListImportFileTask that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListImportFileTaskRequestT = Model::ListImportFileTaskRequest>
-        void ListImportFileTaskAsync(const ListImportFileTaskRequestT& request, const ListImportFileTaskResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListImportFileTaskAsync(const ListImportFileTaskResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListImportFileTaskRequestT& request = {}) const
         {
             return SubmitAsync(&MigrationHubStrategyRecommendationsClient::ListImportFileTask, request, handler, context);
         }
@@ -452,13 +464,13 @@ namespace MigrationHubStrategyRecommendations
          * href="http://docs.aws.amazon.com/goto/WebAPI/migrationhubstrategy-2020-02-19/ListServers">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListServersOutcome ListServers(const Model::ListServersRequest& request) const;
+        virtual Model::ListServersOutcome ListServers(const Model::ListServersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListServers that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListServersRequestT = Model::ListServersRequest>
-        Model::ListServersOutcomeCallable ListServersCallable(const ListServersRequestT& request) const
+        Model::ListServersOutcomeCallable ListServersCallable(const ListServersRequestT& request = {}) const
         {
             return SubmitCallable(&MigrationHubStrategyRecommendationsClient::ListServers, request);
         }
@@ -467,7 +479,7 @@ namespace MigrationHubStrategyRecommendations
          * An Async wrapper for ListServers that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListServersRequestT = Model::ListServersRequest>
-        void ListServersAsync(const ListServersRequestT& request, const ListServersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListServersAsync(const ListServersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListServersRequestT& request = {}) const
         {
             return SubmitAsync(&MigrationHubStrategyRecommendationsClient::ListServers, request, handler, context);
         }
@@ -478,13 +490,13 @@ namespace MigrationHubStrategyRecommendations
          * href="http://docs.aws.amazon.com/goto/WebAPI/migrationhubstrategy-2020-02-19/PutPortfolioPreferences">AWS
          * API Reference</a></p>
          */
-        virtual Model::PutPortfolioPreferencesOutcome PutPortfolioPreferences(const Model::PutPortfolioPreferencesRequest& request) const;
+        virtual Model::PutPortfolioPreferencesOutcome PutPortfolioPreferences(const Model::PutPortfolioPreferencesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for PutPortfolioPreferences that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename PutPortfolioPreferencesRequestT = Model::PutPortfolioPreferencesRequest>
-        Model::PutPortfolioPreferencesOutcomeCallable PutPortfolioPreferencesCallable(const PutPortfolioPreferencesRequestT& request) const
+        Model::PutPortfolioPreferencesOutcomeCallable PutPortfolioPreferencesCallable(const PutPortfolioPreferencesRequestT& request = {}) const
         {
             return SubmitCallable(&MigrationHubStrategyRecommendationsClient::PutPortfolioPreferences, request);
         }
@@ -493,7 +505,7 @@ namespace MigrationHubStrategyRecommendations
          * An Async wrapper for PutPortfolioPreferences that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename PutPortfolioPreferencesRequestT = Model::PutPortfolioPreferencesRequest>
-        void PutPortfolioPreferencesAsync(const PutPortfolioPreferencesRequestT& request, const PutPortfolioPreferencesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void PutPortfolioPreferencesAsync(const PutPortfolioPreferencesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const PutPortfolioPreferencesRequestT& request = {}) const
         {
             return SubmitAsync(&MigrationHubStrategyRecommendationsClient::PutPortfolioPreferences, request, handler, context);
         }
@@ -504,13 +516,13 @@ namespace MigrationHubStrategyRecommendations
          * href="http://docs.aws.amazon.com/goto/WebAPI/migrationhubstrategy-2020-02-19/StartAssessment">AWS
          * API Reference</a></p>
          */
-        virtual Model::StartAssessmentOutcome StartAssessment(const Model::StartAssessmentRequest& request) const;
+        virtual Model::StartAssessmentOutcome StartAssessment(const Model::StartAssessmentRequest& request = {}) const;
 
         /**
          * A Callable wrapper for StartAssessment that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename StartAssessmentRequestT = Model::StartAssessmentRequest>
-        Model::StartAssessmentOutcomeCallable StartAssessmentCallable(const StartAssessmentRequestT& request) const
+        Model::StartAssessmentOutcomeCallable StartAssessmentCallable(const StartAssessmentRequestT& request = {}) const
         {
             return SubmitCallable(&MigrationHubStrategyRecommendationsClient::StartAssessment, request);
         }
@@ -519,7 +531,7 @@ namespace MigrationHubStrategyRecommendations
          * An Async wrapper for StartAssessment that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename StartAssessmentRequestT = Model::StartAssessmentRequest>
-        void StartAssessmentAsync(const StartAssessmentRequestT& request, const StartAssessmentResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void StartAssessmentAsync(const StartAssessmentResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const StartAssessmentRequestT& request = {}) const
         {
             return SubmitAsync(&MigrationHubStrategyRecommendationsClient::StartAssessment, request, handler, context);
         }
@@ -554,13 +566,13 @@ namespace MigrationHubStrategyRecommendations
          * href="http://docs.aws.amazon.com/goto/WebAPI/migrationhubstrategy-2020-02-19/StartRecommendationReportGeneration">AWS
          * API Reference</a></p>
          */
-        virtual Model::StartRecommendationReportGenerationOutcome StartRecommendationReportGeneration(const Model::StartRecommendationReportGenerationRequest& request) const;
+        virtual Model::StartRecommendationReportGenerationOutcome StartRecommendationReportGeneration(const Model::StartRecommendationReportGenerationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for StartRecommendationReportGeneration that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename StartRecommendationReportGenerationRequestT = Model::StartRecommendationReportGenerationRequest>
-        Model::StartRecommendationReportGenerationOutcomeCallable StartRecommendationReportGenerationCallable(const StartRecommendationReportGenerationRequestT& request) const
+        Model::StartRecommendationReportGenerationOutcomeCallable StartRecommendationReportGenerationCallable(const StartRecommendationReportGenerationRequestT& request = {}) const
         {
             return SubmitCallable(&MigrationHubStrategyRecommendationsClient::StartRecommendationReportGeneration, request);
         }
@@ -569,7 +581,7 @@ namespace MigrationHubStrategyRecommendations
          * An Async wrapper for StartRecommendationReportGeneration that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename StartRecommendationReportGenerationRequestT = Model::StartRecommendationReportGenerationRequest>
-        void StartRecommendationReportGenerationAsync(const StartRecommendationReportGenerationRequestT& request, const StartRecommendationReportGenerationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void StartRecommendationReportGenerationAsync(const StartRecommendationReportGenerationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const StartRecommendationReportGenerationRequestT& request = {}) const
         {
             return SubmitAsync(&MigrationHubStrategyRecommendationsClient::StartRecommendationReportGeneration, request, handler, context);
         }
@@ -657,11 +669,7 @@ namespace MigrationHubStrategyRecommendations
       std::shared_ptr<MigrationHubStrategyRecommendationsEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<MigrationHubStrategyRecommendationsClient>;
-      void init(const MigrationHubStrategyRecommendationsClientConfiguration& clientConfiguration);
 
-      MigrationHubStrategyRecommendationsClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<MigrationHubStrategyRecommendationsEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace MigrationHubStrategyRecommendations

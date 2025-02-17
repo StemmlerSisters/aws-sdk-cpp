@@ -35,113 +35,38 @@ namespace Model
     AWS_WAFV2_API Aws::Http::HeaderValueCollection GetRequestSpecificHeaders() const override;
 
 
+    ///@{
     /**
      * <p>The Amazon Resource Name (ARN) of the web ACL.</p>
      */
     inline const Aws::String& GetWebACLArn() const{ return m_webACLArn; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the web ACL.</p>
-     */
     inline bool WebACLArnHasBeenSet() const { return m_webACLArnHasBeenSet; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the web ACL.</p>
-     */
     inline void SetWebACLArn(const Aws::String& value) { m_webACLArnHasBeenSet = true; m_webACLArn = value; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the web ACL.</p>
-     */
     inline void SetWebACLArn(Aws::String&& value) { m_webACLArnHasBeenSet = true; m_webACLArn = std::move(value); }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the web ACL.</p>
-     */
     inline void SetWebACLArn(const char* value) { m_webACLArnHasBeenSet = true; m_webACLArn.assign(value); }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the web ACL.</p>
-     */
     inline ListResourcesForWebACLRequest& WithWebACLArn(const Aws::String& value) { SetWebACLArn(value); return *this;}
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the web ACL.</p>
-     */
     inline ListResourcesForWebACLRequest& WithWebACLArn(Aws::String&& value) { SetWebACLArn(std::move(value)); return *this;}
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the web ACL.</p>
-     */
     inline ListResourcesForWebACLRequest& WithWebACLArn(const char* value) { SetWebACLArn(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p>Used for web ACLs that are scoped for regional applications. A regional
-     * application can be an Application Load Balancer (ALB), an Amazon API Gateway
-     * REST API, an AppSync GraphQL API, an Amazon Cognito user pool, an App Runner
-     * service, or an Amazon Web Services Verified Access instance. </p>  <p>If
-     * you don't provide a resource type, the call uses the resource type
+     * <p>Retrieves the web ACLs that are used by the specified resource type. </p>
+     * <p>For Amazon CloudFront, don't use this call. Instead, use the CloudFront call
+     * <code>ListDistributionsByWebACLId</code>. For information, see <a
+     * href="https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_ListDistributionsByWebACLId.html">ListDistributionsByWebACLId</a>
+     * in the <i>Amazon CloudFront API Reference</i>. </p>  <p>If you don't
+     * provide a resource type, the call uses the resource type
      * <code>APPLICATION_LOAD_BALANCER</code>. </p>  <p>Default:
      * <code>APPLICATION_LOAD_BALANCER</code> </p>
      */
     inline const ResourceType& GetResourceType() const{ return m_resourceType; }
-
-    /**
-     * <p>Used for web ACLs that are scoped for regional applications. A regional
-     * application can be an Application Load Balancer (ALB), an Amazon API Gateway
-     * REST API, an AppSync GraphQL API, an Amazon Cognito user pool, an App Runner
-     * service, or an Amazon Web Services Verified Access instance. </p>  <p>If
-     * you don't provide a resource type, the call uses the resource type
-     * <code>APPLICATION_LOAD_BALANCER</code>. </p>  <p>Default:
-     * <code>APPLICATION_LOAD_BALANCER</code> </p>
-     */
     inline bool ResourceTypeHasBeenSet() const { return m_resourceTypeHasBeenSet; }
-
-    /**
-     * <p>Used for web ACLs that are scoped for regional applications. A regional
-     * application can be an Application Load Balancer (ALB), an Amazon API Gateway
-     * REST API, an AppSync GraphQL API, an Amazon Cognito user pool, an App Runner
-     * service, or an Amazon Web Services Verified Access instance. </p>  <p>If
-     * you don't provide a resource type, the call uses the resource type
-     * <code>APPLICATION_LOAD_BALANCER</code>. </p>  <p>Default:
-     * <code>APPLICATION_LOAD_BALANCER</code> </p>
-     */
     inline void SetResourceType(const ResourceType& value) { m_resourceTypeHasBeenSet = true; m_resourceType = value; }
-
-    /**
-     * <p>Used for web ACLs that are scoped for regional applications. A regional
-     * application can be an Application Load Balancer (ALB), an Amazon API Gateway
-     * REST API, an AppSync GraphQL API, an Amazon Cognito user pool, an App Runner
-     * service, or an Amazon Web Services Verified Access instance. </p>  <p>If
-     * you don't provide a resource type, the call uses the resource type
-     * <code>APPLICATION_LOAD_BALANCER</code>. </p>  <p>Default:
-     * <code>APPLICATION_LOAD_BALANCER</code> </p>
-     */
     inline void SetResourceType(ResourceType&& value) { m_resourceTypeHasBeenSet = true; m_resourceType = std::move(value); }
-
-    /**
-     * <p>Used for web ACLs that are scoped for regional applications. A regional
-     * application can be an Application Load Balancer (ALB), an Amazon API Gateway
-     * REST API, an AppSync GraphQL API, an Amazon Cognito user pool, an App Runner
-     * service, or an Amazon Web Services Verified Access instance. </p>  <p>If
-     * you don't provide a resource type, the call uses the resource type
-     * <code>APPLICATION_LOAD_BALANCER</code>. </p>  <p>Default:
-     * <code>APPLICATION_LOAD_BALANCER</code> </p>
-     */
     inline ListResourcesForWebACLRequest& WithResourceType(const ResourceType& value) { SetResourceType(value); return *this;}
-
-    /**
-     * <p>Used for web ACLs that are scoped for regional applications. A regional
-     * application can be an Application Load Balancer (ALB), an Amazon API Gateway
-     * REST API, an AppSync GraphQL API, an Amazon Cognito user pool, an App Runner
-     * service, or an Amazon Web Services Verified Access instance. </p>  <p>If
-     * you don't provide a resource type, the call uses the resource type
-     * <code>APPLICATION_LOAD_BALANCER</code>. </p>  <p>Default:
-     * <code>APPLICATION_LOAD_BALANCER</code> </p>
-     */
     inline ListResourcesForWebACLRequest& WithResourceType(ResourceType&& value) { SetResourceType(std::move(value)); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_webACLArn;

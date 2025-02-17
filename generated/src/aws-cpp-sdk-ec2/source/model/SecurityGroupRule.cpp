@@ -36,27 +36,13 @@ SecurityGroupRule::SecurityGroupRule() :
     m_prefixListIdHasBeenSet(false),
     m_referencedGroupInfoHasBeenSet(false),
     m_descriptionHasBeenSet(false),
-    m_tagsHasBeenSet(false)
+    m_tagsHasBeenSet(false),
+    m_securityGroupRuleArnHasBeenSet(false)
 {
 }
 
-SecurityGroupRule::SecurityGroupRule(const XmlNode& xmlNode) : 
-    m_securityGroupRuleIdHasBeenSet(false),
-    m_groupIdHasBeenSet(false),
-    m_groupOwnerIdHasBeenSet(false),
-    m_isEgress(false),
-    m_isEgressHasBeenSet(false),
-    m_ipProtocolHasBeenSet(false),
-    m_fromPort(0),
-    m_fromPortHasBeenSet(false),
-    m_toPort(0),
-    m_toPortHasBeenSet(false),
-    m_cidrIpv4HasBeenSet(false),
-    m_cidrIpv6HasBeenSet(false),
-    m_prefixListIdHasBeenSet(false),
-    m_referencedGroupInfoHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_tagsHasBeenSet(false)
+SecurityGroupRule::SecurityGroupRule(const XmlNode& xmlNode)
+  : SecurityGroupRule()
 {
   *this = xmlNode;
 }
@@ -151,6 +137,12 @@ SecurityGroupRule& SecurityGroupRule::operator =(const XmlNode& xmlNode)
 
       m_tagsHasBeenSet = true;
     }
+    XmlNode securityGroupRuleArnNode = resultNode.FirstChild("securityGroupRuleArn");
+    if(!securityGroupRuleArnNode.IsNull())
+    {
+      m_securityGroupRuleArn = Aws::Utils::Xml::DecodeEscapedXmlText(securityGroupRuleArnNode.GetText());
+      m_securityGroupRuleArnHasBeenSet = true;
+    }
   }
 
   return *this;
@@ -231,6 +223,11 @@ void SecurityGroupRule::OutputToStream(Aws::OStream& oStream, const char* locati
       }
   }
 
+  if(m_securityGroupRuleArnHasBeenSet)
+  {
+      oStream << location << index << locationValue << ".SecurityGroupRuleArn=" << StringUtils::URLEncode(m_securityGroupRuleArn.c_str()) << "&";
+  }
+
 }
 
 void SecurityGroupRule::OutputToStream(Aws::OStream& oStream, const char* location) const
@@ -294,6 +291,10 @@ void SecurityGroupRule::OutputToStream(Aws::OStream& oStream, const char* locati
         tagsSs << location <<  ".TagSet." << tagsIdx++;
         item.OutputToStream(oStream, tagsSs.str().c_str());
       }
+  }
+  if(m_securityGroupRuleArnHasBeenSet)
+  {
+      oStream << location << ".SecurityGroupRuleArn=" << StringUtils::URLEncode(m_securityGroupRuleArn.c_str()) << "&";
   }
 }
 

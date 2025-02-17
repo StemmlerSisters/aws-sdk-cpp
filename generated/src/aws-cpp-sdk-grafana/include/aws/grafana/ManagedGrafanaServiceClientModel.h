@@ -43,6 +43,8 @@
 #include <aws/grafana/model/UpdateWorkspaceResult.h>
 #include <aws/grafana/model/UpdateWorkspaceAuthenticationResult.h>
 #include <aws/grafana/model/UpdateWorkspaceConfigurationResult.h>
+#include <aws/grafana/model/ListWorkspacesRequest.h>
+#include <aws/grafana/model/ListVersionsRequest.h>
 /* End of service model headers required in ManagedGrafanaClient header */
 
 namespace Aws
@@ -76,7 +78,7 @@ namespace Aws
 
   namespace ManagedGrafana
   {
-    using ManagedGrafanaClientConfiguration = Aws::Client::GenericClientConfiguration<false>;
+    using ManagedGrafanaClientConfiguration = Aws::Client::GenericClientConfiguration;
     using ManagedGrafanaEndpointProviderBase = Aws::ManagedGrafana::Endpoint::ManagedGrafanaEndpointProviderBase;
     using ManagedGrafanaEndpointProvider = Aws::ManagedGrafana::Endpoint::ManagedGrafanaEndpointProvider;
 

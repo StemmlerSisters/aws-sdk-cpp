@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/ssm-contacts/SSMContacts_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/ssm-contacts/SSMContactsServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/ssm-contacts/SSMContactsErrorMarshaller.h>
 
 namespace Aws
 {
 namespace SSMContacts
 {
+  AWS_SSMCONTACTS_API extern const char SERVICE_NAME[];
   /**
    * <p>Systems Manager Incident Manager is an incident management console designed
    * to help users mitigate and recover from incidents affecting their Amazon Web
@@ -26,12 +30,20 @@ namespace SSMContacts
    * critical incidents, Incident Manager automates response plans and enables
    * responder team escalation.</p>
    */
-  class AWS_SSMCONTACTS_API SSMContactsClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<SSMContactsClient>
+  class AWS_SSMCONTACTS_API SSMContactsClient : smithy::client::AwsSmithyClientT<Aws::SSMContacts::SERVICE_NAME,
+      Aws::SSMContacts::SSMContactsClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      SSMContactsEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::SSMContactsErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<SSMContactsClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "SSM Contacts"; }
 
       typedef SSMContactsClientConfiguration ClientConfigurationType;
       typedef SSMContactsEndpointProvider EndpointProviderType;
@@ -592,13 +604,13 @@ namespace SSMContacts
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-contacts-2021-05-03/ListContacts">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListContactsOutcome ListContacts(const Model::ListContactsRequest& request) const;
+        virtual Model::ListContactsOutcome ListContacts(const Model::ListContactsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListContacts that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListContactsRequestT = Model::ListContactsRequest>
-        Model::ListContactsOutcomeCallable ListContactsCallable(const ListContactsRequestT& request) const
+        Model::ListContactsOutcomeCallable ListContactsCallable(const ListContactsRequestT& request = {}) const
         {
             return SubmitCallable(&SSMContactsClient::ListContacts, request);
         }
@@ -607,7 +619,7 @@ namespace SSMContacts
          * An Async wrapper for ListContacts that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListContactsRequestT = Model::ListContactsRequest>
-        void ListContactsAsync(const ListContactsRequestT& request, const ListContactsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListContactsAsync(const ListContactsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListContactsRequestT& request = {}) const
         {
             return SubmitAsync(&SSMContactsClient::ListContacts, request, handler, context);
         }
@@ -618,13 +630,13 @@ namespace SSMContacts
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-contacts-2021-05-03/ListEngagements">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListEngagementsOutcome ListEngagements(const Model::ListEngagementsRequest& request) const;
+        virtual Model::ListEngagementsOutcome ListEngagements(const Model::ListEngagementsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListEngagements that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListEngagementsRequestT = Model::ListEngagementsRequest>
-        Model::ListEngagementsOutcomeCallable ListEngagementsCallable(const ListEngagementsRequestT& request) const
+        Model::ListEngagementsOutcomeCallable ListEngagementsCallable(const ListEngagementsRequestT& request = {}) const
         {
             return SubmitCallable(&SSMContactsClient::ListEngagements, request);
         }
@@ -633,7 +645,7 @@ namespace SSMContacts
          * An Async wrapper for ListEngagements that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListEngagementsRequestT = Model::ListEngagementsRequest>
-        void ListEngagementsAsync(const ListEngagementsRequestT& request, const ListEngagementsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListEngagementsAsync(const ListEngagementsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListEngagementsRequestT& request = {}) const
         {
             return SubmitAsync(&SSMContactsClient::ListEngagements, request, handler, context);
         }
@@ -830,13 +842,13 @@ namespace SSMContacts
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-contacts-2021-05-03/ListRotations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListRotationsOutcome ListRotations(const Model::ListRotationsRequest& request) const;
+        virtual Model::ListRotationsOutcome ListRotations(const Model::ListRotationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListRotations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListRotationsRequestT = Model::ListRotationsRequest>
-        Model::ListRotationsOutcomeCallable ListRotationsCallable(const ListRotationsRequestT& request) const
+        Model::ListRotationsOutcomeCallable ListRotationsCallable(const ListRotationsRequestT& request = {}) const
         {
             return SubmitCallable(&SSMContactsClient::ListRotations, request);
         }
@@ -845,7 +857,7 @@ namespace SSMContacts
          * An Async wrapper for ListRotations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListRotationsRequestT = Model::ListRotationsRequest>
-        void ListRotationsAsync(const ListRotationsRequestT& request, const ListRotationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListRotationsAsync(const ListRotationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListRotationsRequestT& request = {}) const
         {
             return SubmitAsync(&SSMContactsClient::ListRotations, request, handler, context);
         }
@@ -1119,11 +1131,7 @@ namespace SSMContacts
       std::shared_ptr<SSMContactsEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<SSMContactsClient>;
-      void init(const SSMContactsClientConfiguration& clientConfiguration);
 
-      SSMContactsClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<SSMContactsEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace SSMContacts

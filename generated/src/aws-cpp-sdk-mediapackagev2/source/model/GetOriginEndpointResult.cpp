@@ -23,9 +23,8 @@ GetOriginEndpointResult::GetOriginEndpointResult() :
 {
 }
 
-GetOriginEndpointResult::GetOriginEndpointResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_containerType(ContainerType::NOT_SET),
-    m_startoverWindowSeconds(0)
+GetOriginEndpointResult::GetOriginEndpointResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetOriginEndpointResult()
 {
   *this = result;
 }
@@ -111,6 +110,21 @@ GetOriginEndpointResult& GetOriginEndpointResult::operator =(const Aws::AmazonWe
     }
   }
 
+  if(jsonValue.ValueExists("DashManifests"))
+  {
+    Aws::Utils::Array<JsonView> dashManifestsJsonList = jsonValue.GetArray("DashManifests");
+    for(unsigned dashManifestsIndex = 0; dashManifestsIndex < dashManifestsJsonList.GetLength(); ++dashManifestsIndex)
+    {
+      m_dashManifests.push_back(dashManifestsJsonList[dashManifestsIndex].AsObject());
+    }
+  }
+
+  if(jsonValue.ValueExists("ForceEndpointErrorConfiguration"))
+  {
+    m_forceEndpointErrorConfiguration = jsonValue.GetObject("ForceEndpointErrorConfiguration");
+
+  }
+
   if(jsonValue.ValueExists("ETag"))
   {
     m_eTag = jsonValue.GetString("ETag");
@@ -123,15 +137,6 @@ GetOriginEndpointResult& GetOriginEndpointResult::operator =(const Aws::AmazonWe
     for(auto& tagsItem : tagsJsonMap)
     {
       m_tags[tagsItem.first] = tagsItem.second.AsString();
-    }
-  }
-
-  if(jsonValue.ValueExists("DashManifests"))
-  {
-    Aws::Utils::Array<JsonView> dashManifestsJsonList = jsonValue.GetArray("DashManifests");
-    for(unsigned dashManifestsIndex = 0; dashManifestsIndex < dashManifestsJsonList.GetLength(); ++dashManifestsIndex)
-    {
-      m_dashManifests.push_back(dashManifestsJsonList[dashManifestsIndex].AsObject());
     }
   }
 

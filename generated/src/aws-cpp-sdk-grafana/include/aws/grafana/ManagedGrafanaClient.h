@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/grafana/ManagedGrafana_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/grafana/ManagedGrafanaServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/grafana/ManagedGrafanaErrorMarshaller.h>
 
 namespace Aws
 {
 namespace ManagedGrafana
 {
+  AWS_MANAGEDGRAFANA_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon Managed Grafana is a fully managed and secure data visualization
    * service that you can use to instantly query, correlate, and visualize
@@ -26,12 +30,20 @@ namespace ManagedGrafana
    * visualizations to analyze your metrics, logs, and traces without having to
    * build, package, or deploy any hardware to run Grafana servers. </p>
    */
-  class AWS_MANAGEDGRAFANA_API ManagedGrafanaClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<ManagedGrafanaClient>
+  class AWS_MANAGEDGRAFANA_API ManagedGrafanaClient : smithy::client::AwsSmithyClientT<Aws::ManagedGrafana::SERVICE_NAME,
+      Aws::ManagedGrafana::ManagedGrafanaClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      ManagedGrafanaEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::ManagedGrafanaErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<ManagedGrafanaClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "grafana"; }
 
       typedef ManagedGrafanaClientConfiguration ClientConfigurationType;
       typedef ManagedGrafanaEndpointProvider EndpointProviderType;
@@ -530,13 +542,13 @@ namespace ManagedGrafana
          * href="http://docs.aws.amazon.com/goto/WebAPI/grafana-2020-08-18/ListVersions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListVersionsOutcome ListVersions(const Model::ListVersionsRequest& request) const;
+        virtual Model::ListVersionsOutcome ListVersions(const Model::ListVersionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListVersions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListVersionsRequestT = Model::ListVersionsRequest>
-        Model::ListVersionsOutcomeCallable ListVersionsCallable(const ListVersionsRequestT& request) const
+        Model::ListVersionsOutcomeCallable ListVersionsCallable(const ListVersionsRequestT& request = {}) const
         {
             return SubmitCallable(&ManagedGrafanaClient::ListVersions, request);
         }
@@ -545,7 +557,7 @@ namespace ManagedGrafana
          * An Async wrapper for ListVersions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListVersionsRequestT = Model::ListVersionsRequest>
-        void ListVersionsAsync(const ListVersionsRequestT& request, const ListVersionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListVersionsAsync(const ListVersionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListVersionsRequestT& request = {}) const
         {
             return SubmitAsync(&ManagedGrafanaClient::ListVersions, request, handler, context);
         }
@@ -615,13 +627,13 @@ namespace ManagedGrafana
          * href="http://docs.aws.amazon.com/goto/WebAPI/grafana-2020-08-18/ListWorkspaces">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListWorkspacesOutcome ListWorkspaces(const Model::ListWorkspacesRequest& request) const;
+        virtual Model::ListWorkspacesOutcome ListWorkspaces(const Model::ListWorkspacesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListWorkspaces that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListWorkspacesRequestT = Model::ListWorkspacesRequest>
-        Model::ListWorkspacesOutcomeCallable ListWorkspacesCallable(const ListWorkspacesRequestT& request) const
+        Model::ListWorkspacesOutcomeCallable ListWorkspacesCallable(const ListWorkspacesRequestT& request = {}) const
         {
             return SubmitCallable(&ManagedGrafanaClient::ListWorkspaces, request);
         }
@@ -630,7 +642,7 @@ namespace ManagedGrafana
          * An Async wrapper for ListWorkspaces that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListWorkspacesRequestT = Model::ListWorkspacesRequest>
-        void ListWorkspacesAsync(const ListWorkspacesRequestT& request, const ListWorkspacesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListWorkspacesAsync(const ListWorkspacesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListWorkspacesRequestT& request = {}) const
         {
             return SubmitAsync(&ManagedGrafanaClient::ListWorkspaces, request, handler, context);
         }
@@ -811,11 +823,7 @@ namespace ManagedGrafana
       std::shared_ptr<ManagedGrafanaEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<ManagedGrafanaClient>;
-      void init(const ManagedGrafanaClientConfiguration& clientConfiguration);
 
-      ManagedGrafanaClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<ManagedGrafanaEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace ManagedGrafana

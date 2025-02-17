@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/groundstation/GroundStation_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/groundstation/GroundStationServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/groundstation/GroundStationErrorMarshaller.h>
 
 namespace Aws
 {
 namespace GroundStation
 {
+  AWS_GROUNDSTATION_API extern const char SERVICE_NAME[];
   /**
    * <p>Welcome to the AWS Ground Station API Reference. AWS Ground Station is a
    * fully managed service that enables you to control satellite communications,
@@ -22,12 +26,20 @@ namespace GroundStation
    * efficiently and cost-effectively without having to build or manage your own
    * ground station infrastructure.</p>
    */
-  class AWS_GROUNDSTATION_API GroundStationClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<GroundStationClient>
+  class AWS_GROUNDSTATION_API GroundStationClient : smithy::client::AwsSmithyClientT<Aws::GroundStation::SERVICE_NAME,
+      Aws::GroundStation::GroundStationClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      GroundStationEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::GroundStationErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<GroundStationClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "GroundStation"; }
 
       typedef GroundStationClientConfiguration ClientConfigurationType;
       typedef GroundStationEndpointProvider EndpointProviderType;
@@ -525,13 +537,13 @@ namespace GroundStation
          * href="http://docs.aws.amazon.com/goto/WebAPI/groundstation-2019-05-23/ListConfigs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListConfigsOutcome ListConfigs(const Model::ListConfigsRequest& request) const;
+        virtual Model::ListConfigsOutcome ListConfigs(const Model::ListConfigsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListConfigs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListConfigsRequestT = Model::ListConfigsRequest>
-        Model::ListConfigsOutcomeCallable ListConfigsCallable(const ListConfigsRequestT& request) const
+        Model::ListConfigsOutcomeCallable ListConfigsCallable(const ListConfigsRequestT& request = {}) const
         {
             return SubmitCallable(&GroundStationClient::ListConfigs, request);
         }
@@ -540,7 +552,7 @@ namespace GroundStation
          * An Async wrapper for ListConfigs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListConfigsRequestT = Model::ListConfigsRequest>
-        void ListConfigsAsync(const ListConfigsRequestT& request, const ListConfigsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListConfigsAsync(const ListConfigsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListConfigsRequestT& request = {}) const
         {
             return SubmitAsync(&GroundStationClient::ListConfigs, request, handler, context);
         }
@@ -579,13 +591,13 @@ namespace GroundStation
          * href="http://docs.aws.amazon.com/goto/WebAPI/groundstation-2019-05-23/ListDataflowEndpointGroups">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDataflowEndpointGroupsOutcome ListDataflowEndpointGroups(const Model::ListDataflowEndpointGroupsRequest& request) const;
+        virtual Model::ListDataflowEndpointGroupsOutcome ListDataflowEndpointGroups(const Model::ListDataflowEndpointGroupsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDataflowEndpointGroups that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDataflowEndpointGroupsRequestT = Model::ListDataflowEndpointGroupsRequest>
-        Model::ListDataflowEndpointGroupsOutcomeCallable ListDataflowEndpointGroupsCallable(const ListDataflowEndpointGroupsRequestT& request) const
+        Model::ListDataflowEndpointGroupsOutcomeCallable ListDataflowEndpointGroupsCallable(const ListDataflowEndpointGroupsRequestT& request = {}) const
         {
             return SubmitCallable(&GroundStationClient::ListDataflowEndpointGroups, request);
         }
@@ -594,7 +606,7 @@ namespace GroundStation
          * An Async wrapper for ListDataflowEndpointGroups that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDataflowEndpointGroupsRequestT = Model::ListDataflowEndpointGroupsRequest>
-        void ListDataflowEndpointGroupsAsync(const ListDataflowEndpointGroupsRequestT& request, const ListDataflowEndpointGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDataflowEndpointGroupsAsync(const ListDataflowEndpointGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDataflowEndpointGroupsRequestT& request = {}) const
         {
             return SubmitAsync(&GroundStationClient::ListDataflowEndpointGroups, request, handler, context);
         }
@@ -629,13 +641,13 @@ namespace GroundStation
          * href="http://docs.aws.amazon.com/goto/WebAPI/groundstation-2019-05-23/ListGroundStations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListGroundStationsOutcome ListGroundStations(const Model::ListGroundStationsRequest& request) const;
+        virtual Model::ListGroundStationsOutcome ListGroundStations(const Model::ListGroundStationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListGroundStations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListGroundStationsRequestT = Model::ListGroundStationsRequest>
-        Model::ListGroundStationsOutcomeCallable ListGroundStationsCallable(const ListGroundStationsRequestT& request) const
+        Model::ListGroundStationsOutcomeCallable ListGroundStationsCallable(const ListGroundStationsRequestT& request = {}) const
         {
             return SubmitCallable(&GroundStationClient::ListGroundStations, request);
         }
@@ -644,7 +656,7 @@ namespace GroundStation
          * An Async wrapper for ListGroundStations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListGroundStationsRequestT = Model::ListGroundStationsRequest>
-        void ListGroundStationsAsync(const ListGroundStationsRequestT& request, const ListGroundStationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListGroundStationsAsync(const ListGroundStationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListGroundStationsRequestT& request = {}) const
         {
             return SubmitAsync(&GroundStationClient::ListGroundStations, request, handler, context);
         }
@@ -654,13 +666,13 @@ namespace GroundStation
          * href="http://docs.aws.amazon.com/goto/WebAPI/groundstation-2019-05-23/ListMissionProfiles">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListMissionProfilesOutcome ListMissionProfiles(const Model::ListMissionProfilesRequest& request) const;
+        virtual Model::ListMissionProfilesOutcome ListMissionProfiles(const Model::ListMissionProfilesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListMissionProfiles that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListMissionProfilesRequestT = Model::ListMissionProfilesRequest>
-        Model::ListMissionProfilesOutcomeCallable ListMissionProfilesCallable(const ListMissionProfilesRequestT& request) const
+        Model::ListMissionProfilesOutcomeCallable ListMissionProfilesCallable(const ListMissionProfilesRequestT& request = {}) const
         {
             return SubmitCallable(&GroundStationClient::ListMissionProfiles, request);
         }
@@ -669,7 +681,7 @@ namespace GroundStation
          * An Async wrapper for ListMissionProfiles that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListMissionProfilesRequestT = Model::ListMissionProfilesRequest>
-        void ListMissionProfilesAsync(const ListMissionProfilesRequestT& request, const ListMissionProfilesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListMissionProfilesAsync(const ListMissionProfilesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListMissionProfilesRequestT& request = {}) const
         {
             return SubmitAsync(&GroundStationClient::ListMissionProfiles, request, handler, context);
         }
@@ -679,13 +691,13 @@ namespace GroundStation
          * href="http://docs.aws.amazon.com/goto/WebAPI/groundstation-2019-05-23/ListSatellites">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListSatellitesOutcome ListSatellites(const Model::ListSatellitesRequest& request) const;
+        virtual Model::ListSatellitesOutcome ListSatellites(const Model::ListSatellitesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListSatellites that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListSatellitesRequestT = Model::ListSatellitesRequest>
-        Model::ListSatellitesOutcomeCallable ListSatellitesCallable(const ListSatellitesRequestT& request) const
+        Model::ListSatellitesOutcomeCallable ListSatellitesCallable(const ListSatellitesRequestT& request = {}) const
         {
             return SubmitCallable(&GroundStationClient::ListSatellites, request);
         }
@@ -694,7 +706,7 @@ namespace GroundStation
          * An Async wrapper for ListSatellites that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListSatellitesRequestT = Model::ListSatellitesRequest>
-        void ListSatellitesAsync(const ListSatellitesRequestT& request, const ListSatellitesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListSatellitesAsync(const ListSatellitesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListSatellitesRequestT& request = {}) const
         {
             return SubmitAsync(&GroundStationClient::ListSatellites, request, handler, context);
         }
@@ -939,11 +951,7 @@ namespace GroundStation
       std::shared_ptr<GroundStationEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<GroundStationClient>;
-      void init(const GroundStationClientConfiguration& clientConfiguration);
 
-      GroundStationClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<GroundStationEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace GroundStation

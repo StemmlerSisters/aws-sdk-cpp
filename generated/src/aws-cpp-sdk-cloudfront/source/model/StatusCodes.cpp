@@ -27,10 +27,8 @@ StatusCodes::StatusCodes() :
 {
 }
 
-StatusCodes::StatusCodes(const XmlNode& xmlNode) : 
-    m_quantity(0),
-    m_quantityHasBeenSet(false),
-    m_itemsHasBeenSet(false)
+StatusCodes::StatusCodes(const XmlNode& xmlNode)
+  : StatusCodes()
 {
   *this = xmlNode;
 }
@@ -53,7 +51,7 @@ StatusCodes& StatusCodes::operator =(const XmlNode& xmlNode)
       XmlNode itemsMember = itemsNode.FirstChild("StatusCode");
       while(!itemsMember.IsNull())
       {
-         m_items.push_back(StringUtils::ConvertToInt32(StringUtils::Trim(itemsMember.GetText().c_str()).c_str()));
+        m_items.push_back(StringUtils::ConvertToInt32(StringUtils::Trim(itemsMember.GetText().c_str()).c_str()));
         itemsMember = itemsMember.NextNode("StatusCode");
       }
 

@@ -27,18 +27,13 @@ ReceiptAction::ReceiptAction() :
     m_lambdaActionHasBeenSet(false),
     m_stopActionHasBeenSet(false),
     m_addHeaderActionHasBeenSet(false),
-    m_sNSActionHasBeenSet(false)
+    m_sNSActionHasBeenSet(false),
+    m_connectActionHasBeenSet(false)
 {
 }
 
-ReceiptAction::ReceiptAction(const XmlNode& xmlNode) : 
-    m_s3ActionHasBeenSet(false),
-    m_bounceActionHasBeenSet(false),
-    m_workmailActionHasBeenSet(false),
-    m_lambdaActionHasBeenSet(false),
-    m_stopActionHasBeenSet(false),
-    m_addHeaderActionHasBeenSet(false),
-    m_sNSActionHasBeenSet(false)
+ReceiptAction::ReceiptAction(const XmlNode& xmlNode)
+  : ReceiptAction()
 {
   *this = xmlNode;
 }
@@ -90,6 +85,12 @@ ReceiptAction& ReceiptAction::operator =(const XmlNode& xmlNode)
     {
       m_sNSAction = sNSActionNode;
       m_sNSActionHasBeenSet = true;
+    }
+    XmlNode connectActionNode = resultNode.FirstChild("ConnectAction");
+    if(!connectActionNode.IsNull())
+    {
+      m_connectAction = connectActionNode;
+      m_connectActionHasBeenSet = true;
     }
   }
 
@@ -147,6 +148,13 @@ void ReceiptAction::OutputToStream(Aws::OStream& oStream, const char* location, 
       m_sNSAction.OutputToStream(oStream, sNSActionLocationAndMemberSs.str().c_str());
   }
 
+  if(m_connectActionHasBeenSet)
+  {
+      Aws::StringStream connectActionLocationAndMemberSs;
+      connectActionLocationAndMemberSs << location << index << locationValue << ".ConnectAction";
+      m_connectAction.OutputToStream(oStream, connectActionLocationAndMemberSs.str().c_str());
+  }
+
 }
 
 void ReceiptAction::OutputToStream(Aws::OStream& oStream, const char* location) const
@@ -192,6 +200,12 @@ void ReceiptAction::OutputToStream(Aws::OStream& oStream, const char* location) 
       Aws::String sNSActionLocationAndMember(location);
       sNSActionLocationAndMember += ".SNSAction";
       m_sNSAction.OutputToStream(oStream, sNSActionLocationAndMember.c_str());
+  }
+  if(m_connectActionHasBeenSet)
+  {
+      Aws::String connectActionLocationAndMember(location);
+      connectActionLocationAndMember += ".ConnectAction";
+      m_connectAction.OutputToStream(oStream, connectActionLocationAndMember.c_str());
   }
 }
 

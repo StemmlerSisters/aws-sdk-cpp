@@ -27,10 +27,8 @@ CacheParameterGroupStatus::CacheParameterGroupStatus() :
 {
 }
 
-CacheParameterGroupStatus::CacheParameterGroupStatus(const XmlNode& xmlNode) : 
-    m_cacheParameterGroupNameHasBeenSet(false),
-    m_parameterApplyStatusHasBeenSet(false),
-    m_cacheNodeIdsToRebootHasBeenSet(false)
+CacheParameterGroupStatus::CacheParameterGroupStatus(const XmlNode& xmlNode)
+  : CacheParameterGroupStatus()
 {
   *this = xmlNode;
 }
@@ -87,7 +85,7 @@ void CacheParameterGroupStatus::OutputToStream(Aws::OStream& oStream, const char
       unsigned cacheNodeIdsToRebootIdx = 1;
       for(auto& item : m_cacheNodeIdsToReboot)
       {
-        oStream << location << index << locationValue << ".CacheNodeId." << cacheNodeIdsToRebootIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
+        oStream << location << index << locationValue << ".CacheNodeIdsToReboot.CacheNodeId." << cacheNodeIdsToRebootIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
       }
   }
 

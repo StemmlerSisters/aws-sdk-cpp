@@ -28,21 +28,13 @@ EcsTaskDetails::EcsTaskDetails() :
     m_tagsHasBeenSet(false),
     m_volumesHasBeenSet(false),
     m_containersHasBeenSet(false),
-    m_groupHasBeenSet(false)
+    m_groupHasBeenSet(false),
+    m_launchTypeHasBeenSet(false)
 {
 }
 
-EcsTaskDetails::EcsTaskDetails(JsonView jsonValue) : 
-    m_arnHasBeenSet(false),
-    m_definitionArnHasBeenSet(false),
-    m_versionHasBeenSet(false),
-    m_taskCreatedAtHasBeenSet(false),
-    m_startedAtHasBeenSet(false),
-    m_startedByHasBeenSet(false),
-    m_tagsHasBeenSet(false),
-    m_volumesHasBeenSet(false),
-    m_containersHasBeenSet(false),
-    m_groupHasBeenSet(false)
+EcsTaskDetails::EcsTaskDetails(JsonView jsonValue)
+  : EcsTaskDetails()
 {
   *this = jsonValue;
 }
@@ -128,6 +120,13 @@ EcsTaskDetails& EcsTaskDetails::operator =(JsonView jsonValue)
     m_groupHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("launchType"))
+  {
+    m_launchType = jsonValue.GetString("launchType");
+
+    m_launchTypeHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -205,6 +204,12 @@ JsonValue EcsTaskDetails::Jsonize() const
   if(m_groupHasBeenSet)
   {
    payload.WithString("group", m_group);
+
+  }
+
+  if(m_launchTypeHasBeenSet)
+  {
+   payload.WithString("launchType", m_launchType);
 
   }
 

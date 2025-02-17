@@ -19,32 +19,31 @@ namespace Model
 {
 
 EnvironmentDetailsIdentifiers::EnvironmentDetailsIdentifiers() : 
-    m_environmentIdHasBeenSet(false),
-    m_jobIdHasBeenSet(false)
+    m_jobIdHasBeenSet(false),
+    m_environmentIdHasBeenSet(false)
 {
 }
 
-EnvironmentDetailsIdentifiers::EnvironmentDetailsIdentifiers(JsonView jsonValue) : 
-    m_environmentIdHasBeenSet(false),
-    m_jobIdHasBeenSet(false)
+EnvironmentDetailsIdentifiers::EnvironmentDetailsIdentifiers(JsonView jsonValue)
+  : EnvironmentDetailsIdentifiers()
 {
   *this = jsonValue;
 }
 
 EnvironmentDetailsIdentifiers& EnvironmentDetailsIdentifiers::operator =(JsonView jsonValue)
 {
-  if(jsonValue.ValueExists("environmentId"))
-  {
-    m_environmentId = jsonValue.GetString("environmentId");
-
-    m_environmentIdHasBeenSet = true;
-  }
-
   if(jsonValue.ValueExists("jobId"))
   {
     m_jobId = jsonValue.GetString("jobId");
 
     m_jobIdHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("environmentId"))
+  {
+    m_environmentId = jsonValue.GetString("environmentId");
+
+    m_environmentIdHasBeenSet = true;
   }
 
   return *this;
@@ -54,15 +53,15 @@ JsonValue EnvironmentDetailsIdentifiers::Jsonize() const
 {
   JsonValue payload;
 
-  if(m_environmentIdHasBeenSet)
-  {
-   payload.WithString("environmentId", m_environmentId);
-
-  }
-
   if(m_jobIdHasBeenSet)
   {
    payload.WithString("jobId", m_jobId);
+
+  }
+
+  if(m_environmentIdHasBeenSet)
+  {
+   payload.WithString("environmentId", m_environmentId);
 
   }
 

@@ -23,9 +23,8 @@ GetTemplateResult::GetTemplateResult() :
 {
 }
 
-GetTemplateResult::GetTemplateResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_deleted(false),
-    m_status(TemplateStatus::NOT_SET)
+GetTemplateResult::GetTemplateResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetTemplateResult()
 {
   *this = result;
 }
@@ -75,6 +74,15 @@ GetTemplateResult& GetTemplateResult::operator =(const Aws::AmazonWebServiceResu
     for(unsigned requiredFieldsIndex = 0; requiredFieldsIndex < requiredFieldsJsonList.GetLength(); ++requiredFieldsIndex)
     {
       m_requiredFields.push_back(requiredFieldsJsonList[requiredFieldsIndex].AsObject());
+    }
+  }
+
+  if(jsonValue.ValueExists("rules"))
+  {
+    Aws::Utils::Array<JsonView> rulesJsonList = jsonValue.GetArray("rules");
+    for(unsigned rulesIndex = 0; rulesIndex < rulesJsonList.GetLength(); ++rulesIndex)
+    {
+      m_rules.push_back(rulesJsonList[rulesIndex].AsObject());
     }
   }
 

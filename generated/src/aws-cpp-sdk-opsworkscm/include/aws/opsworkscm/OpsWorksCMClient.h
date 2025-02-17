@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/opsworkscm/OpsWorksCM_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/opsworkscm/OpsWorksCMServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/opsworkscm/OpsWorksCMErrorMarshaller.h>
 
 namespace Aws
 {
 namespace OpsWorksCM
 {
+  AWS_OPSWORKSCM_API extern const char SERVICE_NAME[];
   /**
    * <fullname>AWS OpsWorks CM</fullname> <p>AWS OpsWorks for configuration
    * management (CM) is a service that runs and manages configuration management
@@ -59,12 +63,20 @@ namespace OpsWorksCM
    * <b>Throttling limits</b> </p> <p>All API operations allow for five requests per
    * second with a burst of 10 requests per second.</p>
    */
-  class AWS_OPSWORKSCM_API OpsWorksCMClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<OpsWorksCMClient>
+  class AWS_OPSWORKSCM_API OpsWorksCMClient : smithy::client::AwsSmithyClientT<Aws::OpsWorksCM::SERVICE_NAME,
+      Aws::OpsWorksCM::OpsWorksCMClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      OpsWorksCMEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::OpsWorksCMErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<OpsWorksCMClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "OpsWorksCM"; }
 
       typedef OpsWorksCMClientConfiguration ClientConfigurationType;
       typedef OpsWorksCMEndpointProvider EndpointProviderType;
@@ -314,13 +326,13 @@ namespace OpsWorksCM
          * href="http://docs.aws.amazon.com/goto/WebAPI/opsworkscm-2016-11-01/DescribeAccountAttributes">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeAccountAttributesOutcome DescribeAccountAttributes(const Model::DescribeAccountAttributesRequest& request) const;
+        virtual Model::DescribeAccountAttributesOutcome DescribeAccountAttributes(const Model::DescribeAccountAttributesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeAccountAttributes that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeAccountAttributesRequestT = Model::DescribeAccountAttributesRequest>
-        Model::DescribeAccountAttributesOutcomeCallable DescribeAccountAttributesCallable(const DescribeAccountAttributesRequestT& request) const
+        Model::DescribeAccountAttributesOutcomeCallable DescribeAccountAttributesCallable(const DescribeAccountAttributesRequestT& request = {}) const
         {
             return SubmitCallable(&OpsWorksCMClient::DescribeAccountAttributes, request);
         }
@@ -329,7 +341,7 @@ namespace OpsWorksCM
          * An Async wrapper for DescribeAccountAttributes that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeAccountAttributesRequestT = Model::DescribeAccountAttributesRequest>
-        void DescribeAccountAttributesAsync(const DescribeAccountAttributesRequestT& request, const DescribeAccountAttributesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeAccountAttributesAsync(const DescribeAccountAttributesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeAccountAttributesRequestT& request = {}) const
         {
             return SubmitAsync(&OpsWorksCMClient::DescribeAccountAttributes, request, handler, context);
         }
@@ -344,13 +356,13 @@ namespace OpsWorksCM
          * href="http://docs.aws.amazon.com/goto/WebAPI/opsworkscm-2016-11-01/DescribeBackups">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeBackupsOutcome DescribeBackups(const Model::DescribeBackupsRequest& request) const;
+        virtual Model::DescribeBackupsOutcome DescribeBackups(const Model::DescribeBackupsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeBackups that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeBackupsRequestT = Model::DescribeBackupsRequest>
-        Model::DescribeBackupsOutcomeCallable DescribeBackupsCallable(const DescribeBackupsRequestT& request) const
+        Model::DescribeBackupsOutcomeCallable DescribeBackupsCallable(const DescribeBackupsRequestT& request = {}) const
         {
             return SubmitCallable(&OpsWorksCMClient::DescribeBackups, request);
         }
@@ -359,7 +371,7 @@ namespace OpsWorksCM
          * An Async wrapper for DescribeBackups that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeBackupsRequestT = Model::DescribeBackupsRequest>
-        void DescribeBackupsAsync(const DescribeBackupsRequestT& request, const DescribeBackupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeBackupsAsync(const DescribeBackupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeBackupsRequestT& request = {}) const
         {
             return SubmitAsync(&OpsWorksCMClient::DescribeBackups, request, handler, context);
         }
@@ -432,13 +444,13 @@ namespace OpsWorksCM
          * href="http://docs.aws.amazon.com/goto/WebAPI/opsworkscm-2016-11-01/DescribeServers">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeServersOutcome DescribeServers(const Model::DescribeServersRequest& request) const;
+        virtual Model::DescribeServersOutcome DescribeServers(const Model::DescribeServersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeServers that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeServersRequestT = Model::DescribeServersRequest>
-        Model::DescribeServersOutcomeCallable DescribeServersCallable(const DescribeServersRequestT& request) const
+        Model::DescribeServersOutcomeCallable DescribeServersCallable(const DescribeServersRequestT& request = {}) const
         {
             return SubmitCallable(&OpsWorksCMClient::DescribeServers, request);
         }
@@ -447,7 +459,7 @@ namespace OpsWorksCM
          * An Async wrapper for DescribeServers that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeServersRequestT = Model::DescribeServersRequest>
-        void DescribeServersAsync(const DescribeServersRequestT& request, const DescribeServersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeServersAsync(const DescribeServersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeServersRequestT& request = {}) const
         {
             return SubmitAsync(&OpsWorksCMClient::DescribeServers, request, handler, context);
         }
@@ -734,11 +746,7 @@ namespace OpsWorksCM
       std::shared_ptr<OpsWorksCMEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<OpsWorksCMClient>;
-      void init(const OpsWorksCMClientConfiguration& clientConfiguration);
 
-      OpsWorksCMClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<OpsWorksCMEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace OpsWorksCM

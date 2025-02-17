@@ -35,54 +35,32 @@ namespace Model
     AWS_DEADLINE_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
-    /**
-     * <p>The maximum amount of memory (in MiB).</p>
-     */
-    inline int GetMax() const{ return m_max; }
-
-    /**
-     * <p>The maximum amount of memory (in MiB).</p>
-     */
-    inline bool MaxHasBeenSet() const { return m_maxHasBeenSet; }
-
-    /**
-     * <p>The maximum amount of memory (in MiB).</p>
-     */
-    inline void SetMax(int value) { m_maxHasBeenSet = true; m_max = value; }
-
-    /**
-     * <p>The maximum amount of memory (in MiB).</p>
-     */
-    inline MemoryMiBRange& WithMax(int value) { SetMax(value); return *this;}
-
-
+    ///@{
     /**
      * <p>The minimum amount of memory (in MiB).</p>
      */
     inline int GetMin() const{ return m_min; }
-
-    /**
-     * <p>The minimum amount of memory (in MiB).</p>
-     */
     inline bool MinHasBeenSet() const { return m_minHasBeenSet; }
-
-    /**
-     * <p>The minimum amount of memory (in MiB).</p>
-     */
     inline void SetMin(int value) { m_minHasBeenSet = true; m_min = value; }
-
-    /**
-     * <p>The minimum amount of memory (in MiB).</p>
-     */
     inline MemoryMiBRange& WithMin(int value) { SetMin(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The maximum amount of memory (in MiB).</p>
+     */
+    inline int GetMax() const{ return m_max; }
+    inline bool MaxHasBeenSet() const { return m_maxHasBeenSet; }
+    inline void SetMax(int value) { m_maxHasBeenSet = true; m_max = value; }
+    inline MemoryMiBRange& WithMax(int value) { SetMax(value); return *this;}
+    ///@}
   private:
-
-    int m_max;
-    bool m_maxHasBeenSet = false;
 
     int m_min;
     bool m_minHasBeenSet = false;
+
+    int m_max;
+    bool m_maxHasBeenSet = false;
   };
 
 } // namespace Model

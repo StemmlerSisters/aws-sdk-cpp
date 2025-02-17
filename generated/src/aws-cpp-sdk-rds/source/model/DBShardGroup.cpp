@@ -26,27 +26,21 @@ DBShardGroup::DBShardGroup() :
     m_dBClusterIdentifierHasBeenSet(false),
     m_maxACU(0.0),
     m_maxACUHasBeenSet(false),
+    m_minACU(0.0),
+    m_minACUHasBeenSet(false),
     m_computeRedundancy(0),
     m_computeRedundancyHasBeenSet(false),
     m_statusHasBeenSet(false),
     m_publiclyAccessible(false),
     m_publiclyAccessibleHasBeenSet(false),
-    m_endpointHasBeenSet(false)
+    m_endpointHasBeenSet(false),
+    m_dBShardGroupArnHasBeenSet(false),
+    m_tagListHasBeenSet(false)
 {
 }
 
-DBShardGroup::DBShardGroup(const XmlNode& xmlNode) : 
-    m_dBShardGroupResourceIdHasBeenSet(false),
-    m_dBShardGroupIdentifierHasBeenSet(false),
-    m_dBClusterIdentifierHasBeenSet(false),
-    m_maxACU(0.0),
-    m_maxACUHasBeenSet(false),
-    m_computeRedundancy(0),
-    m_computeRedundancyHasBeenSet(false),
-    m_statusHasBeenSet(false),
-    m_publiclyAccessible(false),
-    m_publiclyAccessibleHasBeenSet(false),
-    m_endpointHasBeenSet(false)
+DBShardGroup::DBShardGroup(const XmlNode& xmlNode)
+  : DBShardGroup()
 {
   *this = xmlNode;
 }
@@ -81,6 +75,12 @@ DBShardGroup& DBShardGroup::operator =(const XmlNode& xmlNode)
       m_maxACU = StringUtils::ConvertToDouble(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(maxACUNode.GetText()).c_str()).c_str());
       m_maxACUHasBeenSet = true;
     }
+    XmlNode minACUNode = resultNode.FirstChild("MinACU");
+    if(!minACUNode.IsNull())
+    {
+      m_minACU = StringUtils::ConvertToDouble(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(minACUNode.GetText()).c_str()).c_str());
+      m_minACUHasBeenSet = true;
+    }
     XmlNode computeRedundancyNode = resultNode.FirstChild("ComputeRedundancy");
     if(!computeRedundancyNode.IsNull())
     {
@@ -104,6 +104,24 @@ DBShardGroup& DBShardGroup::operator =(const XmlNode& xmlNode)
     {
       m_endpoint = Aws::Utils::Xml::DecodeEscapedXmlText(endpointNode.GetText());
       m_endpointHasBeenSet = true;
+    }
+    XmlNode dBShardGroupArnNode = resultNode.FirstChild("DBShardGroupArn");
+    if(!dBShardGroupArnNode.IsNull())
+    {
+      m_dBShardGroupArn = Aws::Utils::Xml::DecodeEscapedXmlText(dBShardGroupArnNode.GetText());
+      m_dBShardGroupArnHasBeenSet = true;
+    }
+    XmlNode tagListNode = resultNode.FirstChild("TagList");
+    if(!tagListNode.IsNull())
+    {
+      XmlNode tagListMember = tagListNode.FirstChild("Tag");
+      while(!tagListMember.IsNull())
+      {
+        m_tagList.push_back(tagListMember);
+        tagListMember = tagListMember.NextNode("Tag");
+      }
+
+      m_tagListHasBeenSet = true;
     }
   }
 
@@ -132,6 +150,11 @@ void DBShardGroup::OutputToStream(Aws::OStream& oStream, const char* location, u
         oStream << location << index << locationValue << ".MaxACU=" << StringUtils::URLEncode(m_maxACU) << "&";
   }
 
+  if(m_minACUHasBeenSet)
+  {
+        oStream << location << index << locationValue << ".MinACU=" << StringUtils::URLEncode(m_minACU) << "&";
+  }
+
   if(m_computeRedundancyHasBeenSet)
   {
       oStream << location << index << locationValue << ".ComputeRedundancy=" << m_computeRedundancy << "&";
@@ -150,6 +173,22 @@ void DBShardGroup::OutputToStream(Aws::OStream& oStream, const char* location, u
   if(m_endpointHasBeenSet)
   {
       oStream << location << index << locationValue << ".Endpoint=" << StringUtils::URLEncode(m_endpoint.c_str()) << "&";
+  }
+
+  if(m_dBShardGroupArnHasBeenSet)
+  {
+      oStream << location << index << locationValue << ".DBShardGroupArn=" << StringUtils::URLEncode(m_dBShardGroupArn.c_str()) << "&";
+  }
+
+  if(m_tagListHasBeenSet)
+  {
+      unsigned tagListIdx = 1;
+      for(auto& item : m_tagList)
+      {
+        Aws::StringStream tagListSs;
+        tagListSs << location << index << locationValue << ".TagList.Tag." << tagListIdx++;
+        item.OutputToStream(oStream, tagListSs.str().c_str());
+      }
   }
 
   Aws::StringStream responseMetadataLocationAndMemberSs;
@@ -175,6 +214,10 @@ void DBShardGroup::OutputToStream(Aws::OStream& oStream, const char* location) c
   {
         oStream << location << ".MaxACU=" << StringUtils::URLEncode(m_maxACU) << "&";
   }
+  if(m_minACUHasBeenSet)
+  {
+        oStream << location << ".MinACU=" << StringUtils::URLEncode(m_minACU) << "&";
+  }
   if(m_computeRedundancyHasBeenSet)
   {
       oStream << location << ".ComputeRedundancy=" << m_computeRedundancy << "&";
@@ -190,6 +233,20 @@ void DBShardGroup::OutputToStream(Aws::OStream& oStream, const char* location) c
   if(m_endpointHasBeenSet)
   {
       oStream << location << ".Endpoint=" << StringUtils::URLEncode(m_endpoint.c_str()) << "&";
+  }
+  if(m_dBShardGroupArnHasBeenSet)
+  {
+      oStream << location << ".DBShardGroupArn=" << StringUtils::URLEncode(m_dBShardGroupArn.c_str()) << "&";
+  }
+  if(m_tagListHasBeenSet)
+  {
+      unsigned tagListIdx = 1;
+      for(auto& item : m_tagList)
+      {
+        Aws::StringStream tagListSs;
+        tagListSs << location <<  ".Tag." << tagListIdx++;
+        item.OutputToStream(oStream, tagListSs.str().c_str());
+      }
   }
   Aws::String responseMetadataLocationAndMember(location);
   responseMetadataLocationAndMember += ".ResponseMetadata";

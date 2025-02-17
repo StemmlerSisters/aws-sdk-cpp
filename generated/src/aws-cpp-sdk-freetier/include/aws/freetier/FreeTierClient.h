@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/freetier/FreeTier_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/freetier/FreeTierServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/freetier/FreeTierErrorMarshaller.h>
 
 namespace Aws
 {
 namespace FreeTier
 {
+  AWS_FREETIER_API extern const char SERVICE_NAME[];
   /**
    * <p>You can use the Amazon Web Services Free Tier API to query programmatically
    * your Free Tier usage data.</p> <p>Free Tier tracks your monthly usage data for
@@ -26,12 +30,20 @@ namespace FreeTier
    * href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-free-tier.html">Using
    * the Amazon Web Services Free Tier</a> in the <i>Billing User Guide</i>.</p>
    */
-  class AWS_FREETIER_API FreeTierClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<FreeTierClient>
+  class AWS_FREETIER_API FreeTierClient : smithy::client::AwsSmithyClientT<Aws::FreeTier::SERVICE_NAME,
+      Aws::FreeTier::FreeTierClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      FreeTierEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::FreeTierErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<FreeTierClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "FreeTier"; }
 
       typedef FreeTierClientConfiguration ClientConfigurationType;
       typedef FreeTierEndpointProvider EndpointProviderType;
@@ -90,13 +102,13 @@ namespace FreeTier
          * href="http://docs.aws.amazon.com/goto/WebAPI/freetier-2023-09-07/GetFreeTierUsage">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetFreeTierUsageOutcome GetFreeTierUsage(const Model::GetFreeTierUsageRequest& request) const;
+        virtual Model::GetFreeTierUsageOutcome GetFreeTierUsage(const Model::GetFreeTierUsageRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetFreeTierUsage that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetFreeTierUsageRequestT = Model::GetFreeTierUsageRequest>
-        Model::GetFreeTierUsageOutcomeCallable GetFreeTierUsageCallable(const GetFreeTierUsageRequestT& request) const
+        Model::GetFreeTierUsageOutcomeCallable GetFreeTierUsageCallable(const GetFreeTierUsageRequestT& request = {}) const
         {
             return SubmitCallable(&FreeTierClient::GetFreeTierUsage, request);
         }
@@ -105,7 +117,7 @@ namespace FreeTier
          * An Async wrapper for GetFreeTierUsage that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetFreeTierUsageRequestT = Model::GetFreeTierUsageRequest>
-        void GetFreeTierUsageAsync(const GetFreeTierUsageRequestT& request, const GetFreeTierUsageResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetFreeTierUsageAsync(const GetFreeTierUsageResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetFreeTierUsageRequestT& request = {}) const
         {
             return SubmitAsync(&FreeTierClient::GetFreeTierUsage, request, handler, context);
         }
@@ -115,11 +127,7 @@ namespace FreeTier
       std::shared_ptr<FreeTierEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<FreeTierClient>;
-      void init(const FreeTierClientConfiguration& clientConfiguration);
 
-      FreeTierClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<FreeTierEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace FreeTier

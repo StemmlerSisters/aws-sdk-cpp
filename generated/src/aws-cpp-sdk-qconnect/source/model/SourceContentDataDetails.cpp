@@ -19,6 +19,7 @@ namespace Model
 {
 
 SourceContentDataDetails::SourceContentDataDetails() : 
+    m_citationSpanHasBeenSet(false),
     m_idHasBeenSet(false),
     m_rankingDataHasBeenSet(false),
     m_textDataHasBeenSet(false),
@@ -27,18 +28,21 @@ SourceContentDataDetails::SourceContentDataDetails() :
 {
 }
 
-SourceContentDataDetails::SourceContentDataDetails(JsonView jsonValue) : 
-    m_idHasBeenSet(false),
-    m_rankingDataHasBeenSet(false),
-    m_textDataHasBeenSet(false),
-    m_type(SourceContentType::NOT_SET),
-    m_typeHasBeenSet(false)
+SourceContentDataDetails::SourceContentDataDetails(JsonView jsonValue)
+  : SourceContentDataDetails()
 {
   *this = jsonValue;
 }
 
 SourceContentDataDetails& SourceContentDataDetails::operator =(JsonView jsonValue)
 {
+  if(jsonValue.ValueExists("citationSpan"))
+  {
+    m_citationSpan = jsonValue.GetObject("citationSpan");
+
+    m_citationSpanHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("id"))
   {
     m_id = jsonValue.GetString("id");
@@ -73,6 +77,12 @@ SourceContentDataDetails& SourceContentDataDetails::operator =(JsonView jsonValu
 JsonValue SourceContentDataDetails::Jsonize() const
 {
   JsonValue payload;
+
+  if(m_citationSpanHasBeenSet)
+  {
+   payload.WithObject("citationSpan", m_citationSpan.Jsonize());
+
+  }
 
   if(m_idHasBeenSet)
   {

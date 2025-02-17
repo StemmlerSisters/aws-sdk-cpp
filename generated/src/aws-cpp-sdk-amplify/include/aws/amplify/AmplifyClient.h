@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/amplify/Amplify_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/amplify/AmplifyServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/amplify/AmplifyErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Amplify
 {
+  AWS_AMPLIFY_API extern const char SERVICE_NAME[];
   /**
    * <p>Amplify enables developers to develop and deploy cloud-powered mobile and web
    * apps. Amplify Hosting provides a continuous delivery and hosting service for web
@@ -25,12 +29,20 @@ namespace Amplify
    * information, see the <a href="https://docs.amplify.aws/">Amplify Framework.</a>
    * </p>
    */
-  class AWS_AMPLIFY_API AmplifyClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<AmplifyClient>
+  class AWS_AMPLIFY_API AmplifyClient : smithy::client::AwsSmithyClientT<Aws::Amplify::SERVICE_NAME,
+      Aws::Amplify::AmplifyClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      AmplifyEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::AmplifyErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<AmplifyClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Amplify"; }
 
       typedef AmplifyClientConfiguration ClientConfigurationType;
       typedef AmplifyEndpointProvider EndpointProviderType;
@@ -112,9 +124,9 @@ namespace Amplify
          * <p>Creates a new backend environment for an Amplify app. </p> <p>This API is
          * available only to Amplify Gen 1 applications where the backend is created using
          * Amplify Studio or the Amplify command line interface (CLI). This API isn’t
-         * available to applications created using the Amplify Gen 2 public preview. When
-         * you deploy an application with Amplify Gen 2, you provision the app's backend
-         * infrastructure using Typescript code.</p><p><h3>See Also:</h3>   <a
+         * available to Amplify Gen 2 applications. When you deploy an application with
+         * Amplify Gen 2, you provision the app's backend infrastructure using Typescript
+         * code.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/amplify-2017-07-25/CreateBackendEnvironment">AWS
          * API Reference</a></p>
          */
@@ -165,8 +177,8 @@ namespace Amplify
 
         /**
          * <p>Creates a deployment for a manually deployed Amplify app. Manually deployed
-         * apps are not connected to a repository. </p> <p>The maximum duration between the
-         * <code>CreateDeployment</code> call and the <code>StartDeployment</code> call
+         * apps are not connected to a Git repository. </p> <p>The maximum duration between
+         * the <code>CreateDeployment</code> call and the <code>StartDeployment</code> call
          * cannot exceed 8 hours. If the duration exceeds 8 hours, the
          * <code>StartDeployment</code> call and the associated <code>Job</code> will
          * fail.</p><p><h3>See Also:</h3>   <a
@@ -272,11 +284,11 @@ namespace Amplify
 
         /**
          * <p>Deletes a backend environment for an Amplify app. </p> <p>This API is
-         * available only to Amplify Gen 1 applications where the backend was created using
+         * available only to Amplify Gen 1 applications where the backend is created using
          * Amplify Studio or the Amplify command line interface (CLI). This API isn’t
-         * available to applications created using the Amplify Gen 2 public preview. When
-         * you deploy an application with Amplify Gen 2, you provision the app's backend
-         * infrastructure using Typescript code.</p><p><h3>See Also:</h3>   <a
+         * available to Amplify Gen 2 applications. When you deploy an application with
+         * Amplify Gen 2, you provision the app's backend infrastructure using Typescript
+         * code.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/amplify-2017-07-25/DeleteBackendEnvironment">AWS
          * API Reference</a></p>
          */
@@ -481,11 +493,11 @@ namespace Amplify
 
         /**
          * <p>Returns a backend environment for an Amplify app. </p> <p>This API is
-         * available only to Amplify Gen 1 applications where the backend was created using
+         * available only to Amplify Gen 1 applications where the backend is created using
          * Amplify Studio or the Amplify command line interface (CLI). This API isn’t
-         * available to applications created using the Amplify Gen 2 public preview. When
-         * you deploy an application with Amplify Gen 2, you provision the app's backend
-         * infrastructure using Typescript code.</p><p><h3>See Also:</h3>   <a
+         * available to Amplify Gen 2 applications. When you deploy an application with
+         * Amplify Gen 2, you provision the app's backend infrastructure using Typescript
+         * code.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/amplify-2017-07-25/GetBackendEnvironment">AWS
          * API Reference</a></p>
          */
@@ -616,13 +628,13 @@ namespace Amplify
          * href="http://docs.aws.amazon.com/goto/WebAPI/amplify-2017-07-25/ListApps">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAppsOutcome ListApps(const Model::ListAppsRequest& request) const;
+        virtual Model::ListAppsOutcome ListApps(const Model::ListAppsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListApps that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAppsRequestT = Model::ListAppsRequest>
-        Model::ListAppsOutcomeCallable ListAppsCallable(const ListAppsRequestT& request) const
+        Model::ListAppsOutcomeCallable ListAppsCallable(const ListAppsRequestT& request = {}) const
         {
             return SubmitCallable(&AmplifyClient::ListApps, request);
         }
@@ -631,7 +643,7 @@ namespace Amplify
          * An Async wrapper for ListApps that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAppsRequestT = Model::ListAppsRequest>
-        void ListAppsAsync(const ListAppsRequestT& request, const ListAppsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAppsAsync(const ListAppsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAppsRequestT& request = {}) const
         {
             return SubmitAsync(&AmplifyClient::ListApps, request, handler, context);
         }
@@ -664,11 +676,11 @@ namespace Amplify
 
         /**
          * <p>Lists the backend environments for an Amplify app. </p> <p>This API is
-         * available only to Amplify Gen 1 applications where the backend was created using
+         * available only to Amplify Gen 1 applications where the backend is created using
          * Amplify Studio or the Amplify command line interface (CLI). This API isn’t
-         * available to applications created using the Amplify Gen 2 public preview. When
-         * you deploy an application with Amplify Gen 2, you provision the app's backend
-         * infrastructure using Typescript code.</p><p><h3>See Also:</h3>   <a
+         * available to Amplify Gen 2 applications. When you deploy an application with
+         * Amplify Gen 2, you provision the app's backend infrastructure using Typescript
+         * code.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/amplify-2017-07-25/ListBackendEnvironments">AWS
          * API Reference</a></p>
          */
@@ -821,7 +833,7 @@ namespace Amplify
 
         /**
          * <p>Starts a deployment for a manually deployed app. Manually deployed apps are
-         * not connected to a repository. </p> <p>The maximum duration between the
+         * not connected to a Git repository. </p> <p>The maximum duration between the
          * <code>CreateDeployment</code> call and the <code>StartDeployment</code> call
          * cannot exceed 8 hours. If the duration exceeds 8 hours, the
          * <code>StartDeployment</code> call and the associated <code>Job</code> will
@@ -1057,11 +1069,7 @@ namespace Amplify
       std::shared_ptr<AmplifyEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<AmplifyClient>;
-      void init(const AmplifyClientConfiguration& clientConfiguration);
 
-      AmplifyClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<AmplifyEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Amplify

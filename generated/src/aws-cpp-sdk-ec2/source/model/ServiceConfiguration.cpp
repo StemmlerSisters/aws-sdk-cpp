@@ -39,30 +39,15 @@ ServiceConfiguration::ServiceConfiguration() :
     m_privateDnsNameConfigurationHasBeenSet(false),
     m_payerResponsibility(PayerResponsibility::NOT_SET),
     m_payerResponsibilityHasBeenSet(false),
-    m_tagsHasBeenSet(false)
+    m_tagsHasBeenSet(false),
+    m_supportedRegionsHasBeenSet(false),
+    m_remoteAccessEnabled(false),
+    m_remoteAccessEnabledHasBeenSet(false)
 {
 }
 
-ServiceConfiguration::ServiceConfiguration(const XmlNode& xmlNode) : 
-    m_serviceTypeHasBeenSet(false),
-    m_serviceIdHasBeenSet(false),
-    m_serviceNameHasBeenSet(false),
-    m_serviceState(ServiceState::NOT_SET),
-    m_serviceStateHasBeenSet(false),
-    m_availabilityZonesHasBeenSet(false),
-    m_acceptanceRequired(false),
-    m_acceptanceRequiredHasBeenSet(false),
-    m_managesVpcEndpoints(false),
-    m_managesVpcEndpointsHasBeenSet(false),
-    m_networkLoadBalancerArnsHasBeenSet(false),
-    m_gatewayLoadBalancerArnsHasBeenSet(false),
-    m_supportedIpAddressTypesHasBeenSet(false),
-    m_baseEndpointDnsNamesHasBeenSet(false),
-    m_privateDnsNameHasBeenSet(false),
-    m_privateDnsNameConfigurationHasBeenSet(false),
-    m_payerResponsibility(PayerResponsibility::NOT_SET),
-    m_payerResponsibilityHasBeenSet(false),
-    m_tagsHasBeenSet(false)
+ServiceConfiguration::ServiceConfiguration(const XmlNode& xmlNode)
+  : ServiceConfiguration()
 {
   *this = xmlNode;
 }
@@ -205,6 +190,24 @@ ServiceConfiguration& ServiceConfiguration::operator =(const XmlNode& xmlNode)
 
       m_tagsHasBeenSet = true;
     }
+    XmlNode supportedRegionsNode = resultNode.FirstChild("supportedRegionSet");
+    if(!supportedRegionsNode.IsNull())
+    {
+      XmlNode supportedRegionsMember = supportedRegionsNode.FirstChild("item");
+      while(!supportedRegionsMember.IsNull())
+      {
+        m_supportedRegions.push_back(supportedRegionsMember);
+        supportedRegionsMember = supportedRegionsMember.NextNode("item");
+      }
+
+      m_supportedRegionsHasBeenSet = true;
+    }
+    XmlNode remoteAccessEnabledNode = resultNode.FirstChild("remoteAccessEnabled");
+    if(!remoteAccessEnabledNode.IsNull())
+    {
+      m_remoteAccessEnabled = StringUtils::ConvertToBool(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(remoteAccessEnabledNode.GetText()).c_str()).c_str());
+      m_remoteAccessEnabledHasBeenSet = true;
+    }
   }
 
   return *this;
@@ -321,6 +324,22 @@ void ServiceConfiguration::OutputToStream(Aws::OStream& oStream, const char* loc
       }
   }
 
+  if(m_supportedRegionsHasBeenSet)
+  {
+      unsigned supportedRegionsIdx = 1;
+      for(auto& item : m_supportedRegions)
+      {
+        Aws::StringStream supportedRegionsSs;
+        supportedRegionsSs << location << index << locationValue << ".SupportedRegionSet." << supportedRegionsIdx++;
+        item.OutputToStream(oStream, supportedRegionsSs.str().c_str());
+      }
+  }
+
+  if(m_remoteAccessEnabledHasBeenSet)
+  {
+      oStream << location << index << locationValue << ".RemoteAccessEnabled=" << std::boolalpha << m_remoteAccessEnabled << "&";
+  }
+
 }
 
 void ServiceConfiguration::OutputToStream(Aws::OStream& oStream, const char* location) const
@@ -418,6 +437,20 @@ void ServiceConfiguration::OutputToStream(Aws::OStream& oStream, const char* loc
         tagsSs << location <<  ".TagSet." << tagsIdx++;
         item.OutputToStream(oStream, tagsSs.str().c_str());
       }
+  }
+  if(m_supportedRegionsHasBeenSet)
+  {
+      unsigned supportedRegionsIdx = 1;
+      for(auto& item : m_supportedRegions)
+      {
+        Aws::StringStream supportedRegionsSs;
+        supportedRegionsSs << location <<  ".SupportedRegionSet." << supportedRegionsIdx++;
+        item.OutputToStream(oStream, supportedRegionsSs.str().c_str());
+      }
+  }
+  if(m_remoteAccessEnabledHasBeenSet)
+  {
+      oStream << location << ".RemoteAccessEnabled=" << std::boolalpha << m_remoteAccessEnabled << "&";
   }
 }
 

@@ -18,7 +18,12 @@ BatchExecuteStatementRequest::BatchExecuteStatementRequest() :
     m_clusterIdentifierHasBeenSet(false),
     m_databaseHasBeenSet(false),
     m_dbUserHasBeenSet(false),
+    m_resultFormat(ResultFormatString::NOT_SET),
+    m_resultFormatHasBeenSet(false),
     m_secretArnHasBeenSet(false),
+    m_sessionIdHasBeenSet(false),
+    m_sessionKeepAliveSeconds(0),
+    m_sessionKeepAliveSecondsHasBeenSet(false),
     m_sqlsHasBeenSet(false),
     m_statementNameHasBeenSet(false),
     m_withEvent(false),
@@ -55,9 +60,26 @@ Aws::String BatchExecuteStatementRequest::SerializePayload() const
 
   }
 
+  if(m_resultFormatHasBeenSet)
+  {
+   payload.WithString("ResultFormat", ResultFormatStringMapper::GetNameForResultFormatString(m_resultFormat));
+  }
+
   if(m_secretArnHasBeenSet)
   {
    payload.WithString("SecretArn", m_secretArn);
+
+  }
+
+  if(m_sessionIdHasBeenSet)
+  {
+   payload.WithString("SessionId", m_sessionId);
+
+  }
+
+  if(m_sessionKeepAliveSecondsHasBeenSet)
+  {
+   payload.WithInteger("SessionKeepAliveSeconds", m_sessionKeepAliveSeconds);
 
   }
 

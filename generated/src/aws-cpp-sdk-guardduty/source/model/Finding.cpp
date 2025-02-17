@@ -35,28 +35,13 @@ Finding::Finding() :
     m_severityHasBeenSet(false),
     m_titleHasBeenSet(false),
     m_typeHasBeenSet(false),
-    m_updatedAtHasBeenSet(false)
+    m_updatedAtHasBeenSet(false),
+    m_associatedAttackSequenceArnHasBeenSet(false)
 {
 }
 
-Finding::Finding(JsonView jsonValue) : 
-    m_accountIdHasBeenSet(false),
-    m_arnHasBeenSet(false),
-    m_confidence(0.0),
-    m_confidenceHasBeenSet(false),
-    m_createdAtHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_idHasBeenSet(false),
-    m_partitionHasBeenSet(false),
-    m_regionHasBeenSet(false),
-    m_resourceHasBeenSet(false),
-    m_schemaVersionHasBeenSet(false),
-    m_serviceHasBeenSet(false),
-    m_severity(0.0),
-    m_severityHasBeenSet(false),
-    m_titleHasBeenSet(false),
-    m_typeHasBeenSet(false),
-    m_updatedAtHasBeenSet(false)
+Finding::Finding(JsonView jsonValue)
+  : Finding()
 {
   *this = jsonValue;
 }
@@ -168,6 +153,13 @@ Finding& Finding::operator =(JsonView jsonValue)
     m_updatedAtHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("associatedAttackSequenceArn"))
+  {
+    m_associatedAttackSequenceArn = jsonValue.GetString("associatedAttackSequenceArn");
+
+    m_associatedAttackSequenceArnHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -262,6 +254,12 @@ JsonValue Finding::Jsonize() const
   if(m_updatedAtHasBeenSet)
   {
    payload.WithString("updatedAt", m_updatedAt);
+
+  }
+
+  if(m_associatedAttackSequenceArnHasBeenSet)
+  {
+   payload.WithString("associatedAttackSequenceArn", m_associatedAttackSequenceArn);
 
   }
 

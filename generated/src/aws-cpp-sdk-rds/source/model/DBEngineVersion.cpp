@@ -63,54 +63,13 @@ DBEngineVersion::DBEngineVersion() :
     m_supportsLocalWriteForwarding(false),
     m_supportsLocalWriteForwardingHasBeenSet(false),
     m_supportsIntegrations(false),
-    m_supportsIntegrationsHasBeenSet(false)
+    m_supportsIntegrationsHasBeenSet(false),
+    m_serverlessV2FeaturesSupportHasBeenSet(false)
 {
 }
 
-DBEngineVersion::DBEngineVersion(const XmlNode& xmlNode) : 
-    m_engineHasBeenSet(false),
-    m_engineVersionHasBeenSet(false),
-    m_dBParameterGroupFamilyHasBeenSet(false),
-    m_dBEngineDescriptionHasBeenSet(false),
-    m_dBEngineVersionDescriptionHasBeenSet(false),
-    m_defaultCharacterSetHasBeenSet(false),
-    m_imageHasBeenSet(false),
-    m_dBEngineMediaTypeHasBeenSet(false),
-    m_supportedCharacterSetsHasBeenSet(false),
-    m_supportedNcharCharacterSetsHasBeenSet(false),
-    m_validUpgradeTargetHasBeenSet(false),
-    m_supportedTimezonesHasBeenSet(false),
-    m_exportableLogTypesHasBeenSet(false),
-    m_supportsLogExportsToCloudwatchLogs(false),
-    m_supportsLogExportsToCloudwatchLogsHasBeenSet(false),
-    m_supportsReadReplica(false),
-    m_supportsReadReplicaHasBeenSet(false),
-    m_supportedEngineModesHasBeenSet(false),
-    m_supportedFeatureNamesHasBeenSet(false),
-    m_statusHasBeenSet(false),
-    m_supportsParallelQuery(false),
-    m_supportsParallelQueryHasBeenSet(false),
-    m_supportsGlobalDatabases(false),
-    m_supportsGlobalDatabasesHasBeenSet(false),
-    m_majorEngineVersionHasBeenSet(false),
-    m_databaseInstallationFilesS3BucketNameHasBeenSet(false),
-    m_databaseInstallationFilesS3PrefixHasBeenSet(false),
-    m_dBEngineVersionArnHasBeenSet(false),
-    m_kMSKeyIdHasBeenSet(false),
-    m_createTimeHasBeenSet(false),
-    m_tagListHasBeenSet(false),
-    m_supportsBabelfish(false),
-    m_supportsBabelfishHasBeenSet(false),
-    m_customDBEngineVersionManifestHasBeenSet(false),
-    m_supportsLimitlessDatabase(false),
-    m_supportsLimitlessDatabaseHasBeenSet(false),
-    m_supportsCertificateRotationWithoutRestart(false),
-    m_supportsCertificateRotationWithoutRestartHasBeenSet(false),
-    m_supportedCACertificateIdentifiersHasBeenSet(false),
-    m_supportsLocalWriteForwarding(false),
-    m_supportsLocalWriteForwardingHasBeenSet(false),
-    m_supportsIntegrations(false),
-    m_supportsIntegrationsHasBeenSet(false)
+DBEngineVersion::DBEngineVersion(const XmlNode& xmlNode)
+  : DBEngineVersion()
 {
   *this = xmlNode;
 }
@@ -379,6 +338,12 @@ DBEngineVersion& DBEngineVersion::operator =(const XmlNode& xmlNode)
       m_supportsIntegrations = StringUtils::ConvertToBool(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(supportsIntegrationsNode.GetText()).c_str()).c_str());
       m_supportsIntegrationsHasBeenSet = true;
     }
+    XmlNode serverlessV2FeaturesSupportNode = resultNode.FirstChild("ServerlessV2FeaturesSupport");
+    if(!serverlessV2FeaturesSupportNode.IsNull())
+    {
+      m_serverlessV2FeaturesSupport = serverlessV2FeaturesSupportNode;
+      m_serverlessV2FeaturesSupportHasBeenSet = true;
+    }
   }
 
   return *this;
@@ -436,7 +401,7 @@ void DBEngineVersion::OutputToStream(Aws::OStream& oStream, const char* location
       for(auto& item : m_supportedCharacterSets)
       {
         Aws::StringStream supportedCharacterSetsSs;
-        supportedCharacterSetsSs << location << index << locationValue << ".CharacterSet." << supportedCharacterSetsIdx++;
+        supportedCharacterSetsSs << location << index << locationValue << ".SupportedCharacterSets.CharacterSet." << supportedCharacterSetsIdx++;
         item.OutputToStream(oStream, supportedCharacterSetsSs.str().c_str());
       }
   }
@@ -447,7 +412,7 @@ void DBEngineVersion::OutputToStream(Aws::OStream& oStream, const char* location
       for(auto& item : m_supportedNcharCharacterSets)
       {
         Aws::StringStream supportedNcharCharacterSetsSs;
-        supportedNcharCharacterSetsSs << location << index << locationValue << ".CharacterSet." << supportedNcharCharacterSetsIdx++;
+        supportedNcharCharacterSetsSs << location << index << locationValue << ".SupportedNcharCharacterSets.CharacterSet." << supportedNcharCharacterSetsIdx++;
         item.OutputToStream(oStream, supportedNcharCharacterSetsSs.str().c_str());
       }
   }
@@ -458,7 +423,7 @@ void DBEngineVersion::OutputToStream(Aws::OStream& oStream, const char* location
       for(auto& item : m_validUpgradeTarget)
       {
         Aws::StringStream validUpgradeTargetSs;
-        validUpgradeTargetSs << location << index << locationValue << ".UpgradeTarget." << validUpgradeTargetIdx++;
+        validUpgradeTargetSs << location << index << locationValue << ".ValidUpgradeTarget.UpgradeTarget." << validUpgradeTargetIdx++;
         item.OutputToStream(oStream, validUpgradeTargetSs.str().c_str());
       }
   }
@@ -469,7 +434,7 @@ void DBEngineVersion::OutputToStream(Aws::OStream& oStream, const char* location
       for(auto& item : m_supportedTimezones)
       {
         Aws::StringStream supportedTimezonesSs;
-        supportedTimezonesSs << location << index << locationValue << ".Timezone." << supportedTimezonesIdx++;
+        supportedTimezonesSs << location << index << locationValue << ".SupportedTimezones.Timezone." << supportedTimezonesIdx++;
         item.OutputToStream(oStream, supportedTimezonesSs.str().c_str());
       }
   }
@@ -562,7 +527,7 @@ void DBEngineVersion::OutputToStream(Aws::OStream& oStream, const char* location
       for(auto& item : m_tagList)
       {
         Aws::StringStream tagListSs;
-        tagListSs << location << index << locationValue << ".Tag." << tagListIdx++;
+        tagListSs << location << index << locationValue << ".TagList.Tag." << tagListIdx++;
         item.OutputToStream(oStream, tagListSs.str().c_str());
       }
   }
@@ -604,6 +569,13 @@ void DBEngineVersion::OutputToStream(Aws::OStream& oStream, const char* location
   if(m_supportsIntegrationsHasBeenSet)
   {
       oStream << location << index << locationValue << ".SupportsIntegrations=" << std::boolalpha << m_supportsIntegrations << "&";
+  }
+
+  if(m_serverlessV2FeaturesSupportHasBeenSet)
+  {
+      Aws::StringStream serverlessV2FeaturesSupportLocationAndMemberSs;
+      serverlessV2FeaturesSupportLocationAndMemberSs << location << index << locationValue << ".ServerlessV2FeaturesSupport";
+      m_serverlessV2FeaturesSupport.OutputToStream(oStream, serverlessV2FeaturesSupportLocationAndMemberSs.str().c_str());
   }
 
   Aws::StringStream responseMetadataLocationAndMemberSs;
@@ -798,6 +770,12 @@ void DBEngineVersion::OutputToStream(Aws::OStream& oStream, const char* location
   if(m_supportsIntegrationsHasBeenSet)
   {
       oStream << location << ".SupportsIntegrations=" << std::boolalpha << m_supportsIntegrations << "&";
+  }
+  if(m_serverlessV2FeaturesSupportHasBeenSet)
+  {
+      Aws::String serverlessV2FeaturesSupportLocationAndMember(location);
+      serverlessV2FeaturesSupportLocationAndMember += ".ServerlessV2FeaturesSupport";
+      m_serverlessV2FeaturesSupport.OutputToStream(oStream, serverlessV2FeaturesSupportLocationAndMember.c_str());
   }
   Aws::String responseMetadataLocationAndMember(location);
   responseMetadataLocationAndMember += ".ResponseMetadata";

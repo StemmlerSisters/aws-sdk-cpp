@@ -21,14 +21,17 @@ namespace Model
 DataCatalogSummary::DataCatalogSummary() : 
     m_catalogNameHasBeenSet(false),
     m_type(DataCatalogType::NOT_SET),
-    m_typeHasBeenSet(false)
+    m_typeHasBeenSet(false),
+    m_status(DataCatalogStatus::NOT_SET),
+    m_statusHasBeenSet(false),
+    m_connectionType(ConnectionType::NOT_SET),
+    m_connectionTypeHasBeenSet(false),
+    m_errorHasBeenSet(false)
 {
 }
 
-DataCatalogSummary::DataCatalogSummary(JsonView jsonValue) : 
-    m_catalogNameHasBeenSet(false),
-    m_type(DataCatalogType::NOT_SET),
-    m_typeHasBeenSet(false)
+DataCatalogSummary::DataCatalogSummary(JsonView jsonValue)
+  : DataCatalogSummary()
 {
   *this = jsonValue;
 }
@@ -49,6 +52,27 @@ DataCatalogSummary& DataCatalogSummary::operator =(JsonView jsonValue)
     m_typeHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("Status"))
+  {
+    m_status = DataCatalogStatusMapper::GetDataCatalogStatusForName(jsonValue.GetString("Status"));
+
+    m_statusHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("ConnectionType"))
+  {
+    m_connectionType = ConnectionTypeMapper::GetConnectionTypeForName(jsonValue.GetString("ConnectionType"));
+
+    m_connectionTypeHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("Error"))
+  {
+    m_error = jsonValue.GetString("Error");
+
+    m_errorHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -65,6 +89,22 @@ JsonValue DataCatalogSummary::Jsonize() const
   if(m_typeHasBeenSet)
   {
    payload.WithString("Type", DataCatalogTypeMapper::GetNameForDataCatalogType(m_type));
+  }
+
+  if(m_statusHasBeenSet)
+  {
+   payload.WithString("Status", DataCatalogStatusMapper::GetNameForDataCatalogStatus(m_status));
+  }
+
+  if(m_connectionTypeHasBeenSet)
+  {
+   payload.WithString("ConnectionType", ConnectionTypeMapper::GetNameForConnectionType(m_connectionType));
+  }
+
+  if(m_errorHasBeenSet)
+  {
+   payload.WithString("Error", m_error);
+
   }
 
   return payload;

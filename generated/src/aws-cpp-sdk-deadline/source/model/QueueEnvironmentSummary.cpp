@@ -19,24 +19,28 @@ namespace Model
 {
 
 QueueEnvironmentSummary::QueueEnvironmentSummary() : 
+    m_queueEnvironmentIdHasBeenSet(false),
     m_nameHasBeenSet(false),
     m_priority(0),
-    m_priorityHasBeenSet(false),
-    m_queueEnvironmentIdHasBeenSet(false)
+    m_priorityHasBeenSet(false)
 {
 }
 
-QueueEnvironmentSummary::QueueEnvironmentSummary(JsonView jsonValue) : 
-    m_nameHasBeenSet(false),
-    m_priority(0),
-    m_priorityHasBeenSet(false),
-    m_queueEnvironmentIdHasBeenSet(false)
+QueueEnvironmentSummary::QueueEnvironmentSummary(JsonView jsonValue)
+  : QueueEnvironmentSummary()
 {
   *this = jsonValue;
 }
 
 QueueEnvironmentSummary& QueueEnvironmentSummary::operator =(JsonView jsonValue)
 {
+  if(jsonValue.ValueExists("queueEnvironmentId"))
+  {
+    m_queueEnvironmentId = jsonValue.GetString("queueEnvironmentId");
+
+    m_queueEnvironmentIdHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("name"))
   {
     m_name = jsonValue.GetString("name");
@@ -51,19 +55,18 @@ QueueEnvironmentSummary& QueueEnvironmentSummary::operator =(JsonView jsonValue)
     m_priorityHasBeenSet = true;
   }
 
-  if(jsonValue.ValueExists("queueEnvironmentId"))
-  {
-    m_queueEnvironmentId = jsonValue.GetString("queueEnvironmentId");
-
-    m_queueEnvironmentIdHasBeenSet = true;
-  }
-
   return *this;
 }
 
 JsonValue QueueEnvironmentSummary::Jsonize() const
 {
   JsonValue payload;
+
+  if(m_queueEnvironmentIdHasBeenSet)
+  {
+   payload.WithString("queueEnvironmentId", m_queueEnvironmentId);
+
+  }
 
   if(m_nameHasBeenSet)
   {
@@ -74,12 +77,6 @@ JsonValue QueueEnvironmentSummary::Jsonize() const
   if(m_priorityHasBeenSet)
   {
    payload.WithInteger("priority", m_priority);
-
-  }
-
-  if(m_queueEnvironmentIdHasBeenSet)
-  {
-   payload.WithString("queueEnvironmentId", m_queueEnvironmentId);
 
   }
 

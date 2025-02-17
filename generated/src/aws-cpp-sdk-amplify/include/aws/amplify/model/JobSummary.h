@@ -9,6 +9,7 @@
 #include <aws/core/utils/DateTime.h>
 #include <aws/amplify/model/JobStatus.h>
 #include <aws/amplify/model/JobType.h>
+#include <aws/amplify/model/SourceUrlType.h>
 #include <utility>
 
 namespace Aws
@@ -41,348 +42,159 @@ namespace Model
     AWS_AMPLIFY_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p> The Amazon Resource Name (ARN) for the job. </p>
      */
     inline const Aws::String& GetJobArn() const{ return m_jobArn; }
-
-    /**
-     * <p> The Amazon Resource Name (ARN) for the job. </p>
-     */
     inline bool JobArnHasBeenSet() const { return m_jobArnHasBeenSet; }
-
-    /**
-     * <p> The Amazon Resource Name (ARN) for the job. </p>
-     */
     inline void SetJobArn(const Aws::String& value) { m_jobArnHasBeenSet = true; m_jobArn = value; }
-
-    /**
-     * <p> The Amazon Resource Name (ARN) for the job. </p>
-     */
     inline void SetJobArn(Aws::String&& value) { m_jobArnHasBeenSet = true; m_jobArn = std::move(value); }
-
-    /**
-     * <p> The Amazon Resource Name (ARN) for the job. </p>
-     */
     inline void SetJobArn(const char* value) { m_jobArnHasBeenSet = true; m_jobArn.assign(value); }
-
-    /**
-     * <p> The Amazon Resource Name (ARN) for the job. </p>
-     */
     inline JobSummary& WithJobArn(const Aws::String& value) { SetJobArn(value); return *this;}
-
-    /**
-     * <p> The Amazon Resource Name (ARN) for the job. </p>
-     */
     inline JobSummary& WithJobArn(Aws::String&& value) { SetJobArn(std::move(value)); return *this;}
-
-    /**
-     * <p> The Amazon Resource Name (ARN) for the job. </p>
-     */
     inline JobSummary& WithJobArn(const char* value) { SetJobArn(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p> The unique ID for the job. </p>
      */
     inline const Aws::String& GetJobId() const{ return m_jobId; }
-
-    /**
-     * <p> The unique ID for the job. </p>
-     */
     inline bool JobIdHasBeenSet() const { return m_jobIdHasBeenSet; }
-
-    /**
-     * <p> The unique ID for the job. </p>
-     */
     inline void SetJobId(const Aws::String& value) { m_jobIdHasBeenSet = true; m_jobId = value; }
-
-    /**
-     * <p> The unique ID for the job. </p>
-     */
     inline void SetJobId(Aws::String&& value) { m_jobIdHasBeenSet = true; m_jobId = std::move(value); }
-
-    /**
-     * <p> The unique ID for the job. </p>
-     */
     inline void SetJobId(const char* value) { m_jobIdHasBeenSet = true; m_jobId.assign(value); }
-
-    /**
-     * <p> The unique ID for the job. </p>
-     */
     inline JobSummary& WithJobId(const Aws::String& value) { SetJobId(value); return *this;}
-
-    /**
-     * <p> The unique ID for the job. </p>
-     */
     inline JobSummary& WithJobId(Aws::String&& value) { SetJobId(std::move(value)); return *this;}
-
-    /**
-     * <p> The unique ID for the job. </p>
-     */
     inline JobSummary& WithJobId(const char* value) { SetJobId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p> The commit ID from a third-party repository provider for the job. </p>
      */
     inline const Aws::String& GetCommitId() const{ return m_commitId; }
-
-    /**
-     * <p> The commit ID from a third-party repository provider for the job. </p>
-     */
     inline bool CommitIdHasBeenSet() const { return m_commitIdHasBeenSet; }
-
-    /**
-     * <p> The commit ID from a third-party repository provider for the job. </p>
-     */
     inline void SetCommitId(const Aws::String& value) { m_commitIdHasBeenSet = true; m_commitId = value; }
-
-    /**
-     * <p> The commit ID from a third-party repository provider for the job. </p>
-     */
     inline void SetCommitId(Aws::String&& value) { m_commitIdHasBeenSet = true; m_commitId = std::move(value); }
-
-    /**
-     * <p> The commit ID from a third-party repository provider for the job. </p>
-     */
     inline void SetCommitId(const char* value) { m_commitIdHasBeenSet = true; m_commitId.assign(value); }
-
-    /**
-     * <p> The commit ID from a third-party repository provider for the job. </p>
-     */
     inline JobSummary& WithCommitId(const Aws::String& value) { SetCommitId(value); return *this;}
-
-    /**
-     * <p> The commit ID from a third-party repository provider for the job. </p>
-     */
     inline JobSummary& WithCommitId(Aws::String&& value) { SetCommitId(std::move(value)); return *this;}
-
-    /**
-     * <p> The commit ID from a third-party repository provider for the job. </p>
-     */
     inline JobSummary& WithCommitId(const char* value) { SetCommitId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p> The commit message from a third-party repository provider for the job. </p>
      */
     inline const Aws::String& GetCommitMessage() const{ return m_commitMessage; }
-
-    /**
-     * <p> The commit message from a third-party repository provider for the job. </p>
-     */
     inline bool CommitMessageHasBeenSet() const { return m_commitMessageHasBeenSet; }
-
-    /**
-     * <p> The commit message from a third-party repository provider for the job. </p>
-     */
     inline void SetCommitMessage(const Aws::String& value) { m_commitMessageHasBeenSet = true; m_commitMessage = value; }
-
-    /**
-     * <p> The commit message from a third-party repository provider for the job. </p>
-     */
     inline void SetCommitMessage(Aws::String&& value) { m_commitMessageHasBeenSet = true; m_commitMessage = std::move(value); }
-
-    /**
-     * <p> The commit message from a third-party repository provider for the job. </p>
-     */
     inline void SetCommitMessage(const char* value) { m_commitMessageHasBeenSet = true; m_commitMessage.assign(value); }
-
-    /**
-     * <p> The commit message from a third-party repository provider for the job. </p>
-     */
     inline JobSummary& WithCommitMessage(const Aws::String& value) { SetCommitMessage(value); return *this;}
-
-    /**
-     * <p> The commit message from a third-party repository provider for the job. </p>
-     */
     inline JobSummary& WithCommitMessage(Aws::String&& value) { SetCommitMessage(std::move(value)); return *this;}
-
-    /**
-     * <p> The commit message from a third-party repository provider for the job. </p>
-     */
     inline JobSummary& WithCommitMessage(const char* value) { SetCommitMessage(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p> The commit date and time for the job. </p>
+     * <p>The commit date and time for the job. </p>
      */
     inline const Aws::Utils::DateTime& GetCommitTime() const{ return m_commitTime; }
-
-    /**
-     * <p> The commit date and time for the job. </p>
-     */
     inline bool CommitTimeHasBeenSet() const { return m_commitTimeHasBeenSet; }
-
-    /**
-     * <p> The commit date and time for the job. </p>
-     */
     inline void SetCommitTime(const Aws::Utils::DateTime& value) { m_commitTimeHasBeenSet = true; m_commitTime = value; }
-
-    /**
-     * <p> The commit date and time for the job. </p>
-     */
     inline void SetCommitTime(Aws::Utils::DateTime&& value) { m_commitTimeHasBeenSet = true; m_commitTime = std::move(value); }
-
-    /**
-     * <p> The commit date and time for the job. </p>
-     */
     inline JobSummary& WithCommitTime(const Aws::Utils::DateTime& value) { SetCommitTime(value); return *this;}
-
-    /**
-     * <p> The commit date and time for the job. </p>
-     */
     inline JobSummary& WithCommitTime(Aws::Utils::DateTime&& value) { SetCommitTime(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p> The start date and time for the job. </p>
      */
     inline const Aws::Utils::DateTime& GetStartTime() const{ return m_startTime; }
-
-    /**
-     * <p> The start date and time for the job. </p>
-     */
     inline bool StartTimeHasBeenSet() const { return m_startTimeHasBeenSet; }
-
-    /**
-     * <p> The start date and time for the job. </p>
-     */
     inline void SetStartTime(const Aws::Utils::DateTime& value) { m_startTimeHasBeenSet = true; m_startTime = value; }
-
-    /**
-     * <p> The start date and time for the job. </p>
-     */
     inline void SetStartTime(Aws::Utils::DateTime&& value) { m_startTimeHasBeenSet = true; m_startTime = std::move(value); }
-
-    /**
-     * <p> The start date and time for the job. </p>
-     */
     inline JobSummary& WithStartTime(const Aws::Utils::DateTime& value) { SetStartTime(value); return *this;}
-
-    /**
-     * <p> The start date and time for the job. </p>
-     */
     inline JobSummary& WithStartTime(Aws::Utils::DateTime&& value) { SetStartTime(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p> The current status for the job. </p>
      */
     inline const JobStatus& GetStatus() const{ return m_status; }
-
-    /**
-     * <p> The current status for the job. </p>
-     */
     inline bool StatusHasBeenSet() const { return m_statusHasBeenSet; }
-
-    /**
-     * <p> The current status for the job. </p>
-     */
     inline void SetStatus(const JobStatus& value) { m_statusHasBeenSet = true; m_status = value; }
-
-    /**
-     * <p> The current status for the job. </p>
-     */
     inline void SetStatus(JobStatus&& value) { m_statusHasBeenSet = true; m_status = std::move(value); }
-
-    /**
-     * <p> The current status for the job. </p>
-     */
     inline JobSummary& WithStatus(const JobStatus& value) { SetStatus(value); return *this;}
-
-    /**
-     * <p> The current status for the job. </p>
-     */
     inline JobSummary& WithStatus(JobStatus&& value) { SetStatus(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p> The end date and time for the job. </p>
      */
     inline const Aws::Utils::DateTime& GetEndTime() const{ return m_endTime; }
-
-    /**
-     * <p> The end date and time for the job. </p>
-     */
     inline bool EndTimeHasBeenSet() const { return m_endTimeHasBeenSet; }
-
-    /**
-     * <p> The end date and time for the job. </p>
-     */
     inline void SetEndTime(const Aws::Utils::DateTime& value) { m_endTimeHasBeenSet = true; m_endTime = value; }
-
-    /**
-     * <p> The end date and time for the job. </p>
-     */
     inline void SetEndTime(Aws::Utils::DateTime&& value) { m_endTimeHasBeenSet = true; m_endTime = std::move(value); }
-
-    /**
-     * <p> The end date and time for the job. </p>
-     */
     inline JobSummary& WithEndTime(const Aws::Utils::DateTime& value) { SetEndTime(value); return *this;}
-
-    /**
-     * <p> The end date and time for the job. </p>
-     */
     inline JobSummary& WithEndTime(Aws::Utils::DateTime&& value) { SetEndTime(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p> The type for the job. If the value is <code>RELEASE</code>, the job was
-     * manually released from its source by using the <code>StartJob</code> API. If the
-     * value is <code>RETRY</code>, the job was manually retried using the
+     * manually released from its source by using the <code>StartJob</code> API. This
+     * value is available only for apps that are connected to a repository.</p> <p>If
+     * the value is <code>RETRY</code>, the job was manually retried using the
      * <code>StartJob</code> API. If the value is <code>WEB_HOOK</code>, the job was
-     * automatically triggered by webhooks. </p>
+     * automatically triggered by webhooks. If the value is <code>MANUAL</code>, the
+     * job is for a manually deployed app. Manually deployed apps are not connected to
+     * a Git repository.</p>
      */
     inline const JobType& GetJobType() const{ return m_jobType; }
-
-    /**
-     * <p> The type for the job. If the value is <code>RELEASE</code>, the job was
-     * manually released from its source by using the <code>StartJob</code> API. If the
-     * value is <code>RETRY</code>, the job was manually retried using the
-     * <code>StartJob</code> API. If the value is <code>WEB_HOOK</code>, the job was
-     * automatically triggered by webhooks. </p>
-     */
     inline bool JobTypeHasBeenSet() const { return m_jobTypeHasBeenSet; }
-
-    /**
-     * <p> The type for the job. If the value is <code>RELEASE</code>, the job was
-     * manually released from its source by using the <code>StartJob</code> API. If the
-     * value is <code>RETRY</code>, the job was manually retried using the
-     * <code>StartJob</code> API. If the value is <code>WEB_HOOK</code>, the job was
-     * automatically triggered by webhooks. </p>
-     */
     inline void SetJobType(const JobType& value) { m_jobTypeHasBeenSet = true; m_jobType = value; }
-
-    /**
-     * <p> The type for the job. If the value is <code>RELEASE</code>, the job was
-     * manually released from its source by using the <code>StartJob</code> API. If the
-     * value is <code>RETRY</code>, the job was manually retried using the
-     * <code>StartJob</code> API. If the value is <code>WEB_HOOK</code>, the job was
-     * automatically triggered by webhooks. </p>
-     */
     inline void SetJobType(JobType&& value) { m_jobTypeHasBeenSet = true; m_jobType = std::move(value); }
-
-    /**
-     * <p> The type for the job. If the value is <code>RELEASE</code>, the job was
-     * manually released from its source by using the <code>StartJob</code> API. If the
-     * value is <code>RETRY</code>, the job was manually retried using the
-     * <code>StartJob</code> API. If the value is <code>WEB_HOOK</code>, the job was
-     * automatically triggered by webhooks. </p>
-     */
     inline JobSummary& WithJobType(const JobType& value) { SetJobType(value); return *this;}
-
-    /**
-     * <p> The type for the job. If the value is <code>RELEASE</code>, the job was
-     * manually released from its source by using the <code>StartJob</code> API. If the
-     * value is <code>RETRY</code>, the job was manually retried using the
-     * <code>StartJob</code> API. If the value is <code>WEB_HOOK</code>, the job was
-     * automatically triggered by webhooks. </p>
-     */
     inline JobSummary& WithJobType(JobType&& value) { SetJobType(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The source URL for the files to deploy. The source URL can be either an HTTP
+     * GET URL that is publicly accessible and downloads a single .zip file, or an
+     * Amazon S3 bucket and prefix.</p>
+     */
+    inline const Aws::String& GetSourceUrl() const{ return m_sourceUrl; }
+    inline bool SourceUrlHasBeenSet() const { return m_sourceUrlHasBeenSet; }
+    inline void SetSourceUrl(const Aws::String& value) { m_sourceUrlHasBeenSet = true; m_sourceUrl = value; }
+    inline void SetSourceUrl(Aws::String&& value) { m_sourceUrlHasBeenSet = true; m_sourceUrl = std::move(value); }
+    inline void SetSourceUrl(const char* value) { m_sourceUrlHasBeenSet = true; m_sourceUrl.assign(value); }
+    inline JobSummary& WithSourceUrl(const Aws::String& value) { SetSourceUrl(value); return *this;}
+    inline JobSummary& WithSourceUrl(Aws::String&& value) { SetSourceUrl(std::move(value)); return *this;}
+    inline JobSummary& WithSourceUrl(const char* value) { SetSourceUrl(value); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>The type of source specified by the <code>sourceURL</code>. If the value is
+     * <code>ZIP</code>, the source is a .zip file. If the value is
+     * <code>BUCKET_PREFIX</code>, the source is an Amazon S3 bucket and prefix. If no
+     * value is specified, the default is <code>ZIP</code>.</p>
+     */
+    inline const SourceUrlType& GetSourceUrlType() const{ return m_sourceUrlType; }
+    inline bool SourceUrlTypeHasBeenSet() const { return m_sourceUrlTypeHasBeenSet; }
+    inline void SetSourceUrlType(const SourceUrlType& value) { m_sourceUrlTypeHasBeenSet = true; m_sourceUrlType = value; }
+    inline void SetSourceUrlType(SourceUrlType&& value) { m_sourceUrlTypeHasBeenSet = true; m_sourceUrlType = std::move(value); }
+    inline JobSummary& WithSourceUrlType(const SourceUrlType& value) { SetSourceUrlType(value); return *this;}
+    inline JobSummary& WithSourceUrlType(SourceUrlType&& value) { SetSourceUrlType(std::move(value)); return *this;}
+    ///@}
   private:
 
     Aws::String m_jobArn;
@@ -411,6 +223,12 @@ namespace Model
 
     JobType m_jobType;
     bool m_jobTypeHasBeenSet = false;
+
+    Aws::String m_sourceUrl;
+    bool m_sourceUrlHasBeenSet = false;
+
+    SourceUrlType m_sourceUrlType;
+    bool m_sourceUrlTypeHasBeenSet = false;
   };
 
 } // namespace Model

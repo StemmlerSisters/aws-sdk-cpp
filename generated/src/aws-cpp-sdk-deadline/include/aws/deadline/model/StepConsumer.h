@@ -5,8 +5,8 @@
 
 #pragma once
 #include <aws/deadline/Deadline_EXPORTS.h>
-#include <aws/deadline/model/DependencyConsumerResolutionStatus.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
+#include <aws/deadline/model/DependencyConsumerResolutionStatus.h>
 #include <utility>
 
 namespace Aws
@@ -38,84 +38,38 @@ namespace Model
     AWS_DEADLINE_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
-    /**
-     * <p>The step consumer status.</p>
-     */
-    inline const DependencyConsumerResolutionStatus& GetStatus() const{ return m_status; }
-
-    /**
-     * <p>The step consumer status.</p>
-     */
-    inline bool StatusHasBeenSet() const { return m_statusHasBeenSet; }
-
-    /**
-     * <p>The step consumer status.</p>
-     */
-    inline void SetStatus(const DependencyConsumerResolutionStatus& value) { m_statusHasBeenSet = true; m_status = value; }
-
-    /**
-     * <p>The step consumer status.</p>
-     */
-    inline void SetStatus(DependencyConsumerResolutionStatus&& value) { m_statusHasBeenSet = true; m_status = std::move(value); }
-
-    /**
-     * <p>The step consumer status.</p>
-     */
-    inline StepConsumer& WithStatus(const DependencyConsumerResolutionStatus& value) { SetStatus(value); return *this;}
-
-    /**
-     * <p>The step consumer status.</p>
-     */
-    inline StepConsumer& WithStatus(DependencyConsumerResolutionStatus&& value) { SetStatus(std::move(value)); return *this;}
-
-
+    ///@{
     /**
      * <p>The step ID.</p>
      */
     inline const Aws::String& GetStepId() const{ return m_stepId; }
-
-    /**
-     * <p>The step ID.</p>
-     */
     inline bool StepIdHasBeenSet() const { return m_stepIdHasBeenSet; }
-
-    /**
-     * <p>The step ID.</p>
-     */
     inline void SetStepId(const Aws::String& value) { m_stepIdHasBeenSet = true; m_stepId = value; }
-
-    /**
-     * <p>The step ID.</p>
-     */
     inline void SetStepId(Aws::String&& value) { m_stepIdHasBeenSet = true; m_stepId = std::move(value); }
-
-    /**
-     * <p>The step ID.</p>
-     */
     inline void SetStepId(const char* value) { m_stepIdHasBeenSet = true; m_stepId.assign(value); }
-
-    /**
-     * <p>The step ID.</p>
-     */
     inline StepConsumer& WithStepId(const Aws::String& value) { SetStepId(value); return *this;}
-
-    /**
-     * <p>The step ID.</p>
-     */
     inline StepConsumer& WithStepId(Aws::String&& value) { SetStepId(std::move(value)); return *this;}
-
-    /**
-     * <p>The step ID.</p>
-     */
     inline StepConsumer& WithStepId(const char* value) { SetStepId(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The step consumer status.</p>
+     */
+    inline const DependencyConsumerResolutionStatus& GetStatus() const{ return m_status; }
+    inline bool StatusHasBeenSet() const { return m_statusHasBeenSet; }
+    inline void SetStatus(const DependencyConsumerResolutionStatus& value) { m_statusHasBeenSet = true; m_status = value; }
+    inline void SetStatus(DependencyConsumerResolutionStatus&& value) { m_statusHasBeenSet = true; m_status = std::move(value); }
+    inline StepConsumer& WithStatus(const DependencyConsumerResolutionStatus& value) { SetStatus(value); return *this;}
+    inline StepConsumer& WithStatus(DependencyConsumerResolutionStatus&& value) { SetStatus(std::move(value)); return *this;}
+    ///@}
   private:
-
-    DependencyConsumerResolutionStatus m_status;
-    bool m_statusHasBeenSet = false;
 
     Aws::String m_stepId;
     bool m_stepIdHasBeenSet = false;
+
+    DependencyConsumerResolutionStatus m_status;
+    bool m_statusHasBeenSet = false;
   };
 
 } // namespace Model

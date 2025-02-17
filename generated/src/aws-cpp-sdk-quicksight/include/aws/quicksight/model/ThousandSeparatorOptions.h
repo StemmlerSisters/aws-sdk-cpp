@@ -7,6 +7,7 @@
 #include <aws/quicksight/QuickSight_EXPORTS.h>
 #include <aws/quicksight/model/NumericSeparatorSymbol.h>
 #include <aws/quicksight/model/Visibility.h>
+#include <aws/quicksight/model/DigitGroupingStyle.h>
 #include <utility>
 
 namespace Aws
@@ -39,67 +40,45 @@ namespace Model
     AWS_QUICKSIGHT_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>Determines the thousands separator symbol.</p>
      */
     inline const NumericSeparatorSymbol& GetSymbol() const{ return m_symbol; }
-
-    /**
-     * <p>Determines the thousands separator symbol.</p>
-     */
     inline bool SymbolHasBeenSet() const { return m_symbolHasBeenSet; }
-
-    /**
-     * <p>Determines the thousands separator symbol.</p>
-     */
     inline void SetSymbol(const NumericSeparatorSymbol& value) { m_symbolHasBeenSet = true; m_symbol = value; }
-
-    /**
-     * <p>Determines the thousands separator symbol.</p>
-     */
     inline void SetSymbol(NumericSeparatorSymbol&& value) { m_symbolHasBeenSet = true; m_symbol = std::move(value); }
-
-    /**
-     * <p>Determines the thousands separator symbol.</p>
-     */
     inline ThousandSeparatorOptions& WithSymbol(const NumericSeparatorSymbol& value) { SetSymbol(value); return *this;}
-
-    /**
-     * <p>Determines the thousands separator symbol.</p>
-     */
     inline ThousandSeparatorOptions& WithSymbol(NumericSeparatorSymbol&& value) { SetSymbol(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Determines the visibility of the thousands separator.</p>
      */
     inline const Visibility& GetVisibility() const{ return m_visibility; }
-
-    /**
-     * <p>Determines the visibility of the thousands separator.</p>
-     */
     inline bool VisibilityHasBeenSet() const { return m_visibilityHasBeenSet; }
-
-    /**
-     * <p>Determines the visibility of the thousands separator.</p>
-     */
     inline void SetVisibility(const Visibility& value) { m_visibilityHasBeenSet = true; m_visibility = value; }
-
-    /**
-     * <p>Determines the visibility of the thousands separator.</p>
-     */
     inline void SetVisibility(Visibility&& value) { m_visibilityHasBeenSet = true; m_visibility = std::move(value); }
-
-    /**
-     * <p>Determines the visibility of the thousands separator.</p>
-     */
     inline ThousandSeparatorOptions& WithVisibility(const Visibility& value) { SetVisibility(value); return *this;}
-
-    /**
-     * <p>Determines the visibility of the thousands separator.</p>
-     */
     inline ThousandSeparatorOptions& WithVisibility(Visibility&& value) { SetVisibility(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>Determines the way numbers are styled to accommodate different readability
+     * standards. The <code>DEFAULT</code> value uses the standard international
+     * grouping system and groups numbers by the thousands. The <code>LAKHS</code>
+     * value uses the Indian numbering system and groups numbers by lakhs and
+     * crores.</p>
+     */
+    inline const DigitGroupingStyle& GetGroupingStyle() const{ return m_groupingStyle; }
+    inline bool GroupingStyleHasBeenSet() const { return m_groupingStyleHasBeenSet; }
+    inline void SetGroupingStyle(const DigitGroupingStyle& value) { m_groupingStyleHasBeenSet = true; m_groupingStyle = value; }
+    inline void SetGroupingStyle(DigitGroupingStyle&& value) { m_groupingStyleHasBeenSet = true; m_groupingStyle = std::move(value); }
+    inline ThousandSeparatorOptions& WithGroupingStyle(const DigitGroupingStyle& value) { SetGroupingStyle(value); return *this;}
+    inline ThousandSeparatorOptions& WithGroupingStyle(DigitGroupingStyle&& value) { SetGroupingStyle(std::move(value)); return *this;}
+    ///@}
   private:
 
     NumericSeparatorSymbol m_symbol;
@@ -107,6 +86,9 @@ namespace Model
 
     Visibility m_visibility;
     bool m_visibilityHasBeenSet = false;
+
+    DigitGroupingStyle m_groupingStyle;
+    bool m_groupingStyleHasBeenSet = false;
   };
 
 } // namespace Model

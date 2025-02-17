@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/clouddirectory/CloudDirectory_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/clouddirectory/CloudDirectoryServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/clouddirectory/CloudDirectoryErrorMarshaller.h>
 
 namespace Aws
 {
 namespace CloudDirectory
 {
+  AWS_CLOUDDIRECTORY_API extern const char SERVICE_NAME[];
   /**
    * <fullname>Amazon Cloud Directory</fullname> <p>Amazon Cloud Directory is a
    * component of the AWS Directory Service that simplifies the development and
@@ -27,12 +31,20 @@ namespace CloudDirectory
    * href="https://docs.aws.amazon.com/clouddirectory/latest/developerguide/what_is_cloud_directory.html">Amazon
    * Cloud Directory Developer Guide</a>.</p>
    */
-  class AWS_CLOUDDIRECTORY_API CloudDirectoryClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<CloudDirectoryClient>
+  class AWS_CLOUDDIRECTORY_API CloudDirectoryClient : smithy::client::AwsSmithyClientT<Aws::CloudDirectory::SERVICE_NAME,
+      Aws::CloudDirectory::CloudDirectoryClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      CloudDirectoryEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::CloudDirectoryErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<CloudDirectoryClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "CloudDirectory"; }
 
       typedef CloudDirectoryClientConfiguration ClientConfigurationType;
       typedef CloudDirectoryEndpointProvider EndpointProviderType;
@@ -1033,13 +1045,13 @@ namespace CloudDirectory
          * href="http://docs.aws.amazon.com/goto/WebAPI/clouddirectory-2017-01-11/ListDevelopmentSchemaArns">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDevelopmentSchemaArnsOutcome ListDevelopmentSchemaArns(const Model::ListDevelopmentSchemaArnsRequest& request) const;
+        virtual Model::ListDevelopmentSchemaArnsOutcome ListDevelopmentSchemaArns(const Model::ListDevelopmentSchemaArnsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDevelopmentSchemaArns that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDevelopmentSchemaArnsRequestT = Model::ListDevelopmentSchemaArnsRequest>
-        Model::ListDevelopmentSchemaArnsOutcomeCallable ListDevelopmentSchemaArnsCallable(const ListDevelopmentSchemaArnsRequestT& request) const
+        Model::ListDevelopmentSchemaArnsOutcomeCallable ListDevelopmentSchemaArnsCallable(const ListDevelopmentSchemaArnsRequestT& request = {}) const
         {
             return SubmitCallable(&CloudDirectoryClient::ListDevelopmentSchemaArns, request);
         }
@@ -1048,7 +1060,7 @@ namespace CloudDirectory
          * An Async wrapper for ListDevelopmentSchemaArns that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDevelopmentSchemaArnsRequestT = Model::ListDevelopmentSchemaArnsRequest>
-        void ListDevelopmentSchemaArnsAsync(const ListDevelopmentSchemaArnsRequestT& request, const ListDevelopmentSchemaArnsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDevelopmentSchemaArnsAsync(const ListDevelopmentSchemaArnsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDevelopmentSchemaArnsRequestT& request = {}) const
         {
             return SubmitAsync(&CloudDirectoryClient::ListDevelopmentSchemaArns, request, handler, context);
         }
@@ -1058,13 +1070,13 @@ namespace CloudDirectory
          * href="http://docs.aws.amazon.com/goto/WebAPI/clouddirectory-2017-01-11/ListDirectories">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDirectoriesOutcome ListDirectories(const Model::ListDirectoriesRequest& request) const;
+        virtual Model::ListDirectoriesOutcome ListDirectories(const Model::ListDirectoriesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDirectories that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDirectoriesRequestT = Model::ListDirectoriesRequest>
-        Model::ListDirectoriesOutcomeCallable ListDirectoriesCallable(const ListDirectoriesRequestT& request) const
+        Model::ListDirectoriesOutcomeCallable ListDirectoriesCallable(const ListDirectoriesRequestT& request = {}) const
         {
             return SubmitCallable(&CloudDirectoryClient::ListDirectories, request);
         }
@@ -1073,7 +1085,7 @@ namespace CloudDirectory
          * An Async wrapper for ListDirectories that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDirectoriesRequestT = Model::ListDirectoriesRequest>
-        void ListDirectoriesAsync(const ListDirectoriesRequestT& request, const ListDirectoriesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDirectoriesAsync(const ListDirectoriesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDirectoriesRequestT& request = {}) const
         {
             return SubmitAsync(&CloudDirectoryClient::ListDirectories, request, handler, context);
         }
@@ -1190,13 +1202,13 @@ namespace CloudDirectory
          * href="http://docs.aws.amazon.com/goto/WebAPI/clouddirectory-2017-01-11/ListManagedSchemaArns">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListManagedSchemaArnsOutcome ListManagedSchemaArns(const Model::ListManagedSchemaArnsRequest& request) const;
+        virtual Model::ListManagedSchemaArnsOutcome ListManagedSchemaArns(const Model::ListManagedSchemaArnsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListManagedSchemaArns that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListManagedSchemaArnsRequestT = Model::ListManagedSchemaArnsRequest>
-        Model::ListManagedSchemaArnsOutcomeCallable ListManagedSchemaArnsCallable(const ListManagedSchemaArnsRequestT& request) const
+        Model::ListManagedSchemaArnsOutcomeCallable ListManagedSchemaArnsCallable(const ListManagedSchemaArnsRequestT& request = {}) const
         {
             return SubmitCallable(&CloudDirectoryClient::ListManagedSchemaArns, request);
         }
@@ -1205,7 +1217,7 @@ namespace CloudDirectory
          * An Async wrapper for ListManagedSchemaArns that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListManagedSchemaArnsRequestT = Model::ListManagedSchemaArnsRequest>
-        void ListManagedSchemaArnsAsync(const ListManagedSchemaArnsRequestT& request, const ListManagedSchemaArnsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListManagedSchemaArnsAsync(const ListManagedSchemaArnsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListManagedSchemaArnsRequestT& request = {}) const
         {
             return SubmitAsync(&CloudDirectoryClient::ListManagedSchemaArns, request, handler, context);
         }
@@ -1411,13 +1423,13 @@ namespace CloudDirectory
          * href="http://docs.aws.amazon.com/goto/WebAPI/clouddirectory-2017-01-11/ListPublishedSchemaArns">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListPublishedSchemaArnsOutcome ListPublishedSchemaArns(const Model::ListPublishedSchemaArnsRequest& request) const;
+        virtual Model::ListPublishedSchemaArnsOutcome ListPublishedSchemaArns(const Model::ListPublishedSchemaArnsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListPublishedSchemaArns that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListPublishedSchemaArnsRequestT = Model::ListPublishedSchemaArnsRequest>
-        Model::ListPublishedSchemaArnsOutcomeCallable ListPublishedSchemaArnsCallable(const ListPublishedSchemaArnsRequestT& request) const
+        Model::ListPublishedSchemaArnsOutcomeCallable ListPublishedSchemaArnsCallable(const ListPublishedSchemaArnsRequestT& request = {}) const
         {
             return SubmitCallable(&CloudDirectoryClient::ListPublishedSchemaArns, request);
         }
@@ -1426,7 +1438,7 @@ namespace CloudDirectory
          * An Async wrapper for ListPublishedSchemaArns that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListPublishedSchemaArnsRequestT = Model::ListPublishedSchemaArnsRequest>
-        void ListPublishedSchemaArnsAsync(const ListPublishedSchemaArnsRequestT& request, const ListPublishedSchemaArnsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListPublishedSchemaArnsAsync(const ListPublishedSchemaArnsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListPublishedSchemaArnsRequestT& request = {}) const
         {
             return SubmitAsync(&CloudDirectoryClient::ListPublishedSchemaArns, request, handler, context);
         }
@@ -1876,11 +1888,7 @@ namespace CloudDirectory
       std::shared_ptr<CloudDirectoryEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<CloudDirectoryClient>;
-      void init(const CloudDirectoryClientConfiguration& clientConfiguration);
 
-      CloudDirectoryClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<CloudDirectoryEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace CloudDirectory

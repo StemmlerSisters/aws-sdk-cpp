@@ -36,47 +36,7 @@ namespace Model
 
   public:
 
-    /**
-     * <p>The ID of the conversion task.</p>
-     */
-    inline const Aws::String& GetConversionTaskId() const{ return m_conversionTaskId; }
-
-    /**
-     * <p>The ID of the conversion task.</p>
-     */
-    inline bool ConversionTaskIdHasBeenSet() const { return m_conversionTaskIdHasBeenSet; }
-
-    /**
-     * <p>The ID of the conversion task.</p>
-     */
-    inline void SetConversionTaskId(const Aws::String& value) { m_conversionTaskIdHasBeenSet = true; m_conversionTaskId = value; }
-
-    /**
-     * <p>The ID of the conversion task.</p>
-     */
-    inline void SetConversionTaskId(Aws::String&& value) { m_conversionTaskIdHasBeenSet = true; m_conversionTaskId = std::move(value); }
-
-    /**
-     * <p>The ID of the conversion task.</p>
-     */
-    inline void SetConversionTaskId(const char* value) { m_conversionTaskIdHasBeenSet = true; m_conversionTaskId.assign(value); }
-
-    /**
-     * <p>The ID of the conversion task.</p>
-     */
-    inline CancelConversionTaskRequest& WithConversionTaskId(const Aws::String& value) { SetConversionTaskId(value); return *this;}
-
-    /**
-     * <p>The ID of the conversion task.</p>
-     */
-    inline CancelConversionTaskRequest& WithConversionTaskId(Aws::String&& value) { SetConversionTaskId(std::move(value)); return *this;}
-
-    /**
-     * <p>The ID of the conversion task.</p>
-     */
-    inline CancelConversionTaskRequest& WithConversionTaskId(const char* value) { SetConversionTaskId(value); return *this;}
-
-
+    ///@{
     /**
      * <p>Checks whether you have the required permissions for the action, without
      * actually making the request, and provides an error response. If you have the
@@ -84,79 +44,45 @@ namespace Model
      * Otherwise, it is <code>UnauthorizedOperation</code>.</p>
      */
     inline bool GetDryRun() const{ return m_dryRun; }
-
-    /**
-     * <p>Checks whether you have the required permissions for the action, without
-     * actually making the request, and provides an error response. If you have the
-     * required permissions, the error response is <code>DryRunOperation</code>.
-     * Otherwise, it is <code>UnauthorizedOperation</code>.</p>
-     */
     inline bool DryRunHasBeenSet() const { return m_dryRunHasBeenSet; }
-
-    /**
-     * <p>Checks whether you have the required permissions for the action, without
-     * actually making the request, and provides an error response. If you have the
-     * required permissions, the error response is <code>DryRunOperation</code>.
-     * Otherwise, it is <code>UnauthorizedOperation</code>.</p>
-     */
     inline void SetDryRun(bool value) { m_dryRunHasBeenSet = true; m_dryRun = value; }
-
-    /**
-     * <p>Checks whether you have the required permissions for the action, without
-     * actually making the request, and provides an error response. If you have the
-     * required permissions, the error response is <code>DryRunOperation</code>.
-     * Otherwise, it is <code>UnauthorizedOperation</code>.</p>
-     */
     inline CancelConversionTaskRequest& WithDryRun(bool value) { SetDryRun(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The ID of the conversion task.</p>
+     */
+    inline const Aws::String& GetConversionTaskId() const{ return m_conversionTaskId; }
+    inline bool ConversionTaskIdHasBeenSet() const { return m_conversionTaskIdHasBeenSet; }
+    inline void SetConversionTaskId(const Aws::String& value) { m_conversionTaskIdHasBeenSet = true; m_conversionTaskId = value; }
+    inline void SetConversionTaskId(Aws::String&& value) { m_conversionTaskIdHasBeenSet = true; m_conversionTaskId = std::move(value); }
+    inline void SetConversionTaskId(const char* value) { m_conversionTaskIdHasBeenSet = true; m_conversionTaskId.assign(value); }
+    inline CancelConversionTaskRequest& WithConversionTaskId(const Aws::String& value) { SetConversionTaskId(value); return *this;}
+    inline CancelConversionTaskRequest& WithConversionTaskId(Aws::String&& value) { SetConversionTaskId(std::move(value)); return *this;}
+    inline CancelConversionTaskRequest& WithConversionTaskId(const char* value) { SetConversionTaskId(value); return *this;}
+    ///@}
 
+    ///@{
     /**
      * <p>The reason for canceling the conversion task.</p>
      */
     inline const Aws::String& GetReasonMessage() const{ return m_reasonMessage; }
-
-    /**
-     * <p>The reason for canceling the conversion task.</p>
-     */
     inline bool ReasonMessageHasBeenSet() const { return m_reasonMessageHasBeenSet; }
-
-    /**
-     * <p>The reason for canceling the conversion task.</p>
-     */
     inline void SetReasonMessage(const Aws::String& value) { m_reasonMessageHasBeenSet = true; m_reasonMessage = value; }
-
-    /**
-     * <p>The reason for canceling the conversion task.</p>
-     */
     inline void SetReasonMessage(Aws::String&& value) { m_reasonMessageHasBeenSet = true; m_reasonMessage = std::move(value); }
-
-    /**
-     * <p>The reason for canceling the conversion task.</p>
-     */
     inline void SetReasonMessage(const char* value) { m_reasonMessageHasBeenSet = true; m_reasonMessage.assign(value); }
-
-    /**
-     * <p>The reason for canceling the conversion task.</p>
-     */
     inline CancelConversionTaskRequest& WithReasonMessage(const Aws::String& value) { SetReasonMessage(value); return *this;}
-
-    /**
-     * <p>The reason for canceling the conversion task.</p>
-     */
     inline CancelConversionTaskRequest& WithReasonMessage(Aws::String&& value) { SetReasonMessage(std::move(value)); return *this;}
-
-    /**
-     * <p>The reason for canceling the conversion task.</p>
-     */
     inline CancelConversionTaskRequest& WithReasonMessage(const char* value) { SetReasonMessage(value); return *this;}
-
+    ///@}
   private:
-
-    Aws::String m_conversionTaskId;
-    bool m_conversionTaskIdHasBeenSet = false;
 
     bool m_dryRun;
     bool m_dryRunHasBeenSet = false;
+
+    Aws::String m_conversionTaskId;
+    bool m_conversionTaskIdHasBeenSet = false;
 
     Aws::String m_reasonMessage;
     bool m_reasonMessageHasBeenSet = false;

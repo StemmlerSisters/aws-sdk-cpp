@@ -28,6 +28,9 @@
 #include <aws/savingsplans/model/ReturnSavingsPlanResult.h>
 #include <aws/savingsplans/model/TagResourceResult.h>
 #include <aws/savingsplans/model/UntagResourceResult.h>
+#include <aws/savingsplans/model/DescribeSavingsPlansOfferingRatesRequest.h>
+#include <aws/savingsplans/model/DescribeSavingsPlansOfferingsRequest.h>
+#include <aws/savingsplans/model/DescribeSavingsPlansRequest.h>
 /* End of service model headers required in SavingsPlansClient header */
 
 namespace Aws
@@ -61,7 +64,7 @@ namespace Aws
 
   namespace SavingsPlans
   {
-    using SavingsPlansClientConfiguration = Aws::Client::GenericClientConfiguration<false>;
+    using SavingsPlansClientConfiguration = Aws::Client::GenericClientConfiguration;
     using SavingsPlansEndpointProviderBase = Aws::SavingsPlans::Endpoint::SavingsPlansEndpointProviderBase;
     using SavingsPlansEndpointProvider = Aws::SavingsPlans::Endpoint::SavingsPlansEndpointProvider;
 

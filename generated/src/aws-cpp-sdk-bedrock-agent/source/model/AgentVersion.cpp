@@ -20,6 +20,8 @@ namespace Model
 
 AgentVersion::AgentVersion() : 
     m_agentArnHasBeenSet(false),
+    m_agentCollaboration(AgentCollaboration::NOT_SET),
+    m_agentCollaborationHasBeenSet(false),
     m_agentIdHasBeenSet(false),
     m_agentNameHasBeenSet(false),
     m_agentResourceRoleArnHasBeenSet(false),
@@ -34,6 +36,7 @@ AgentVersion::AgentVersion() :
     m_idleSessionTTLInSeconds(0),
     m_idleSessionTTLInSecondsHasBeenSet(false),
     m_instructionHasBeenSet(false),
+    m_memoryConfigurationHasBeenSet(false),
     m_promptOverrideConfigurationHasBeenSet(false),
     m_recommendedActionsHasBeenSet(false),
     m_updatedAtHasBeenSet(false),
@@ -41,26 +44,8 @@ AgentVersion::AgentVersion() :
 {
 }
 
-AgentVersion::AgentVersion(JsonView jsonValue) : 
-    m_agentArnHasBeenSet(false),
-    m_agentIdHasBeenSet(false),
-    m_agentNameHasBeenSet(false),
-    m_agentResourceRoleArnHasBeenSet(false),
-    m_agentStatus(AgentStatus::NOT_SET),
-    m_agentStatusHasBeenSet(false),
-    m_createdAtHasBeenSet(false),
-    m_customerEncryptionKeyArnHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_failureReasonsHasBeenSet(false),
-    m_foundationModelHasBeenSet(false),
-    m_guardrailConfigurationHasBeenSet(false),
-    m_idleSessionTTLInSeconds(0),
-    m_idleSessionTTLInSecondsHasBeenSet(false),
-    m_instructionHasBeenSet(false),
-    m_promptOverrideConfigurationHasBeenSet(false),
-    m_recommendedActionsHasBeenSet(false),
-    m_updatedAtHasBeenSet(false),
-    m_versionHasBeenSet(false)
+AgentVersion::AgentVersion(JsonView jsonValue)
+  : AgentVersion()
 {
   *this = jsonValue;
 }
@@ -72,6 +57,13 @@ AgentVersion& AgentVersion::operator =(JsonView jsonValue)
     m_agentArn = jsonValue.GetString("agentArn");
 
     m_agentArnHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("agentCollaboration"))
+  {
+    m_agentCollaboration = AgentCollaborationMapper::GetAgentCollaborationForName(jsonValue.GetString("agentCollaboration"));
+
+    m_agentCollaborationHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("agentId"))
@@ -161,6 +153,13 @@ AgentVersion& AgentVersion::operator =(JsonView jsonValue)
     m_instructionHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("memoryConfiguration"))
+  {
+    m_memoryConfiguration = jsonValue.GetObject("memoryConfiguration");
+
+    m_memoryConfigurationHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("promptOverrideConfiguration"))
   {
     m_promptOverrideConfiguration = jsonValue.GetObject("promptOverrideConfiguration");
@@ -203,6 +202,11 @@ JsonValue AgentVersion::Jsonize() const
   {
    payload.WithString("agentArn", m_agentArn);
 
+  }
+
+  if(m_agentCollaborationHasBeenSet)
+  {
+   payload.WithString("agentCollaboration", AgentCollaborationMapper::GetNameForAgentCollaboration(m_agentCollaboration));
   }
 
   if(m_agentIdHasBeenSet)
@@ -277,6 +281,12 @@ JsonValue AgentVersion::Jsonize() const
   if(m_instructionHasBeenSet)
   {
    payload.WithString("instruction", m_instruction);
+
+  }
+
+  if(m_memoryConfigurationHasBeenSet)
+  {
+   payload.WithObject("memoryConfiguration", m_memoryConfiguration.Jsonize());
 
   }
 

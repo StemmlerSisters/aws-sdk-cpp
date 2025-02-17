@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/scheduler/Scheduler_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/scheduler/SchedulerServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/scheduler/SchedulerErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Scheduler
 {
+  AWS_SCHEDULER_API extern const char SERVICE_NAME[];
   /**
    * <p> Amazon EventBridge Scheduler is a serverless scheduler that allows you to
    * create, run, and manage tasks from one central, managed service. EventBridge
@@ -23,12 +27,20 @@ namespace Scheduler
    * reference lists the available API actions, and data types for EventBridge
    * Scheduler. </p>
    */
-  class AWS_SCHEDULER_API SchedulerClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<SchedulerClient>
+  class AWS_SCHEDULER_API SchedulerClient : smithy::client::AwsSmithyClientT<Aws::Scheduler::SERVICE_NAME,
+      Aws::Scheduler::SchedulerClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      SchedulerEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::SchedulerErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<SchedulerClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Scheduler"; }
 
       typedef SchedulerClientConfiguration ClientConfigurationType;
       typedef SchedulerEndpointProvider EndpointProviderType;
@@ -244,13 +256,13 @@ namespace Scheduler
          * href="http://docs.aws.amazon.com/goto/WebAPI/scheduler-2021-06-30/ListScheduleGroups">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListScheduleGroupsOutcome ListScheduleGroups(const Model::ListScheduleGroupsRequest& request) const;
+        virtual Model::ListScheduleGroupsOutcome ListScheduleGroups(const Model::ListScheduleGroupsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListScheduleGroups that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListScheduleGroupsRequestT = Model::ListScheduleGroupsRequest>
-        Model::ListScheduleGroupsOutcomeCallable ListScheduleGroupsCallable(const ListScheduleGroupsRequestT& request) const
+        Model::ListScheduleGroupsOutcomeCallable ListScheduleGroupsCallable(const ListScheduleGroupsRequestT& request = {}) const
         {
             return SubmitCallable(&SchedulerClient::ListScheduleGroups, request);
         }
@@ -259,7 +271,7 @@ namespace Scheduler
          * An Async wrapper for ListScheduleGroups that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListScheduleGroupsRequestT = Model::ListScheduleGroupsRequest>
-        void ListScheduleGroupsAsync(const ListScheduleGroupsRequestT& request, const ListScheduleGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListScheduleGroupsAsync(const ListScheduleGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListScheduleGroupsRequestT& request = {}) const
         {
             return SubmitAsync(&SchedulerClient::ListScheduleGroups, request, handler, context);
         }
@@ -270,13 +282,13 @@ namespace Scheduler
          * href="http://docs.aws.amazon.com/goto/WebAPI/scheduler-2021-06-30/ListSchedules">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListSchedulesOutcome ListSchedules(const Model::ListSchedulesRequest& request) const;
+        virtual Model::ListSchedulesOutcome ListSchedules(const Model::ListSchedulesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListSchedules that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListSchedulesRequestT = Model::ListSchedulesRequest>
-        Model::ListSchedulesOutcomeCallable ListSchedulesCallable(const ListSchedulesRequestT& request) const
+        Model::ListSchedulesOutcomeCallable ListSchedulesCallable(const ListSchedulesRequestT& request = {}) const
         {
             return SubmitCallable(&SchedulerClient::ListSchedules, request);
         }
@@ -285,7 +297,7 @@ namespace Scheduler
          * An Async wrapper for ListSchedules that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListSchedulesRequestT = Model::ListSchedulesRequest>
-        void ListSchedulesAsync(const ListSchedulesRequestT& request, const ListSchedulesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListSchedulesAsync(const ListSchedulesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListSchedulesRequestT& request = {}) const
         {
             return SubmitAsync(&SchedulerClient::ListSchedules, request, handler, context);
         }
@@ -406,11 +418,7 @@ namespace Scheduler
       std::shared_ptr<SchedulerEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<SchedulerClient>;
-      void init(const SchedulerClientConfiguration& clientConfiguration);
 
-      SchedulerClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<SchedulerEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Scheduler

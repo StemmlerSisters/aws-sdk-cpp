@@ -41,7 +41,26 @@ namespace Model
     ZeroRearmCount,
     InPlaceUpgrade,
     AntiVirusInstalled,
-    UEFINotSupported
+    UEFINotSupported,
+    UnknownError,
+    AppXPackagesInstalled,
+    ReservedStorageInUse,
+    AdditionalDrivesPresent,
+    WindowsUpdatesRequired,
+    SysPrepFileMissing,
+    UserProfileMissing,
+    InsufficientDiskSpace,
+    EnvironmentVariablesPathMissingEntries,
+    DomainAccountServicesFound,
+    InvalidIp,
+    RemoteDesktopServicesDisabled,
+    WindowsModulesInstallerDisabled,
+    AmazonSsmAgentEnabled,
+    UnsupportedSecurityProtocol,
+    MultipleUserProfiles,
+    StagedAppxPackage,
+    UnsupportedOsUpgrade,
+    InsufficientRearmCount
   };
 
 namespace WorkspaceImageErrorDetailCodeMapper

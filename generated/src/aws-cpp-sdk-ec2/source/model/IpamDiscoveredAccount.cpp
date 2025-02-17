@@ -25,16 +25,13 @@ IpamDiscoveredAccount::IpamDiscoveredAccount() :
     m_discoveryRegionHasBeenSet(false),
     m_failureReasonHasBeenSet(false),
     m_lastAttemptedDiscoveryTimeHasBeenSet(false),
-    m_lastSuccessfulDiscoveryTimeHasBeenSet(false)
+    m_lastSuccessfulDiscoveryTimeHasBeenSet(false),
+    m_organizationalUnitIdHasBeenSet(false)
 {
 }
 
-IpamDiscoveredAccount::IpamDiscoveredAccount(const XmlNode& xmlNode) : 
-    m_accountIdHasBeenSet(false),
-    m_discoveryRegionHasBeenSet(false),
-    m_failureReasonHasBeenSet(false),
-    m_lastAttemptedDiscoveryTimeHasBeenSet(false),
-    m_lastSuccessfulDiscoveryTimeHasBeenSet(false)
+IpamDiscoveredAccount::IpamDiscoveredAccount(const XmlNode& xmlNode)
+  : IpamDiscoveredAccount()
 {
   *this = xmlNode;
 }
@@ -75,6 +72,12 @@ IpamDiscoveredAccount& IpamDiscoveredAccount::operator =(const XmlNode& xmlNode)
       m_lastSuccessfulDiscoveryTime = DateTime(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(lastSuccessfulDiscoveryTimeNode.GetText()).c_str()).c_str(), Aws::Utils::DateFormat::ISO_8601);
       m_lastSuccessfulDiscoveryTimeHasBeenSet = true;
     }
+    XmlNode organizationalUnitIdNode = resultNode.FirstChild("organizationalUnitId");
+    if(!organizationalUnitIdNode.IsNull())
+    {
+      m_organizationalUnitId = Aws::Utils::Xml::DecodeEscapedXmlText(organizationalUnitIdNode.GetText());
+      m_organizationalUnitIdHasBeenSet = true;
+    }
   }
 
   return *this;
@@ -109,6 +112,11 @@ void IpamDiscoveredAccount::OutputToStream(Aws::OStream& oStream, const char* lo
       oStream << location << index << locationValue << ".LastSuccessfulDiscoveryTime=" << StringUtils::URLEncode(m_lastSuccessfulDiscoveryTime.ToGmtString(Aws::Utils::DateFormat::ISO_8601).c_str()) << "&";
   }
 
+  if(m_organizationalUnitIdHasBeenSet)
+  {
+      oStream << location << index << locationValue << ".OrganizationalUnitId=" << StringUtils::URLEncode(m_organizationalUnitId.c_str()) << "&";
+  }
+
 }
 
 void IpamDiscoveredAccount::OutputToStream(Aws::OStream& oStream, const char* location) const
@@ -134,6 +142,10 @@ void IpamDiscoveredAccount::OutputToStream(Aws::OStream& oStream, const char* lo
   if(m_lastSuccessfulDiscoveryTimeHasBeenSet)
   {
       oStream << location << ".LastSuccessfulDiscoveryTime=" << StringUtils::URLEncode(m_lastSuccessfulDiscoveryTime.ToGmtString(Aws::Utils::DateFormat::ISO_8601).c_str()) << "&";
+  }
+  if(m_organizationalUnitIdHasBeenSet)
+  {
+      oStream << location << ".OrganizationalUnitId=" << StringUtils::URLEncode(m_organizationalUnitId.c_str()) << "&";
   }
 }
 

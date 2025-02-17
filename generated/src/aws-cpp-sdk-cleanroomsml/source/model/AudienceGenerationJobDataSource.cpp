@@ -20,13 +20,14 @@ namespace Model
 
 AudienceGenerationJobDataSource::AudienceGenerationJobDataSource() : 
     m_dataSourceHasBeenSet(false),
-    m_roleArnHasBeenSet(false)
+    m_roleArnHasBeenSet(false),
+    m_sqlParametersHasBeenSet(false),
+    m_sqlComputeConfigurationHasBeenSet(false)
 {
 }
 
-AudienceGenerationJobDataSource::AudienceGenerationJobDataSource(JsonView jsonValue) : 
-    m_dataSourceHasBeenSet(false),
-    m_roleArnHasBeenSet(false)
+AudienceGenerationJobDataSource::AudienceGenerationJobDataSource(JsonView jsonValue)
+  : AudienceGenerationJobDataSource()
 {
   *this = jsonValue;
 }
@@ -47,6 +48,20 @@ AudienceGenerationJobDataSource& AudienceGenerationJobDataSource::operator =(Jso
     m_roleArnHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("sqlParameters"))
+  {
+    m_sqlParameters = jsonValue.GetObject("sqlParameters");
+
+    m_sqlParametersHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("sqlComputeConfiguration"))
+  {
+    m_sqlComputeConfiguration = jsonValue.GetObject("sqlComputeConfiguration");
+
+    m_sqlComputeConfigurationHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -63,6 +78,18 @@ JsonValue AudienceGenerationJobDataSource::Jsonize() const
   if(m_roleArnHasBeenSet)
   {
    payload.WithString("roleArn", m_roleArn);
+
+  }
+
+  if(m_sqlParametersHasBeenSet)
+  {
+   payload.WithObject("sqlParameters", m_sqlParameters.Jsonize());
+
+  }
+
+  if(m_sqlComputeConfigurationHasBeenSet)
+  {
+   payload.WithObject("sqlComputeConfiguration", m_sqlComputeConfiguration.Jsonize());
 
   }
 

@@ -20,13 +20,14 @@ namespace Model
 
 VoiceRecordingConfiguration::VoiceRecordingConfiguration() : 
     m_voiceRecordingTrack(VoiceRecordingTrack::NOT_SET),
-    m_voiceRecordingTrackHasBeenSet(false)
+    m_voiceRecordingTrackHasBeenSet(false),
+    m_ivrRecordingTrack(IvrRecordingTrack::NOT_SET),
+    m_ivrRecordingTrackHasBeenSet(false)
 {
 }
 
-VoiceRecordingConfiguration::VoiceRecordingConfiguration(JsonView jsonValue) : 
-    m_voiceRecordingTrack(VoiceRecordingTrack::NOT_SET),
-    m_voiceRecordingTrackHasBeenSet(false)
+VoiceRecordingConfiguration::VoiceRecordingConfiguration(JsonView jsonValue)
+  : VoiceRecordingConfiguration()
 {
   *this = jsonValue;
 }
@@ -40,6 +41,13 @@ VoiceRecordingConfiguration& VoiceRecordingConfiguration::operator =(JsonView js
     m_voiceRecordingTrackHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("IvrRecordingTrack"))
+  {
+    m_ivrRecordingTrack = IvrRecordingTrackMapper::GetIvrRecordingTrackForName(jsonValue.GetString("IvrRecordingTrack"));
+
+    m_ivrRecordingTrackHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -50,6 +58,11 @@ JsonValue VoiceRecordingConfiguration::Jsonize() const
   if(m_voiceRecordingTrackHasBeenSet)
   {
    payload.WithString("VoiceRecordingTrack", VoiceRecordingTrackMapper::GetNameForVoiceRecordingTrack(m_voiceRecordingTrack));
+  }
+
+  if(m_ivrRecordingTrackHasBeenSet)
+  {
+   payload.WithString("IvrRecordingTrack", IvrRecordingTrackMapper::GetNameForIvrRecordingTrack(m_ivrRecordingTrack));
   }
 
   return payload;

@@ -45,38 +45,14 @@ MicrosoftSQLServerSettings::MicrosoftSQLServerSettings() :
     m_tlogAccessMode(TlogAccessMode::NOT_SET),
     m_tlogAccessModeHasBeenSet(false),
     m_forceLobLookup(false),
-    m_forceLobLookupHasBeenSet(false)
+    m_forceLobLookupHasBeenSet(false),
+    m_authenticationMethod(SqlServerAuthenticationMethod::NOT_SET),
+    m_authenticationMethodHasBeenSet(false)
 {
 }
 
-MicrosoftSQLServerSettings::MicrosoftSQLServerSettings(JsonView jsonValue) : 
-    m_port(0),
-    m_portHasBeenSet(false),
-    m_bcpPacketSize(0),
-    m_bcpPacketSizeHasBeenSet(false),
-    m_databaseNameHasBeenSet(false),
-    m_controlTablesFileGroupHasBeenSet(false),
-    m_passwordHasBeenSet(false),
-    m_querySingleAlwaysOnNode(false),
-    m_querySingleAlwaysOnNodeHasBeenSet(false),
-    m_readBackupOnly(false),
-    m_readBackupOnlyHasBeenSet(false),
-    m_safeguardPolicy(SafeguardPolicy::NOT_SET),
-    m_safeguardPolicyHasBeenSet(false),
-    m_serverNameHasBeenSet(false),
-    m_usernameHasBeenSet(false),
-    m_useBcpFullLoad(false),
-    m_useBcpFullLoadHasBeenSet(false),
-    m_useThirdPartyBackupDevice(false),
-    m_useThirdPartyBackupDeviceHasBeenSet(false),
-    m_secretsManagerAccessRoleArnHasBeenSet(false),
-    m_secretsManagerSecretIdHasBeenSet(false),
-    m_trimSpaceInChar(false),
-    m_trimSpaceInCharHasBeenSet(false),
-    m_tlogAccessMode(TlogAccessMode::NOT_SET),
-    m_tlogAccessModeHasBeenSet(false),
-    m_forceLobLookup(false),
-    m_forceLobLookupHasBeenSet(false)
+MicrosoftSQLServerSettings::MicrosoftSQLServerSettings(JsonView jsonValue)
+  : MicrosoftSQLServerSettings()
 {
   *this = jsonValue;
 }
@@ -202,6 +178,13 @@ MicrosoftSQLServerSettings& MicrosoftSQLServerSettings::operator =(JsonView json
     m_forceLobLookupHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("AuthenticationMethod"))
+  {
+    m_authenticationMethod = SqlServerAuthenticationMethodMapper::GetSqlServerAuthenticationMethodForName(jsonValue.GetString("AuthenticationMethod"));
+
+    m_authenticationMethodHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -307,6 +290,11 @@ JsonValue MicrosoftSQLServerSettings::Jsonize() const
   {
    payload.WithBool("ForceLobLookup", m_forceLobLookup);
 
+  }
+
+  if(m_authenticationMethodHasBeenSet)
+  {
+   payload.WithString("AuthenticationMethod", SqlServerAuthenticationMethodMapper::GetNameForSqlServerAuthenticationMethod(m_authenticationMethod));
   }
 
   return payload;

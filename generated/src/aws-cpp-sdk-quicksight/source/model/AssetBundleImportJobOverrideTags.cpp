@@ -24,17 +24,13 @@ AssetBundleImportJobOverrideTags::AssetBundleImportJobOverrideTags() :
     m_dataSetsHasBeenSet(false),
     m_themesHasBeenSet(false),
     m_analysesHasBeenSet(false),
-    m_dashboardsHasBeenSet(false)
+    m_dashboardsHasBeenSet(false),
+    m_foldersHasBeenSet(false)
 {
 }
 
-AssetBundleImportJobOverrideTags::AssetBundleImportJobOverrideTags(JsonView jsonValue) : 
-    m_vPCConnectionsHasBeenSet(false),
-    m_dataSourcesHasBeenSet(false),
-    m_dataSetsHasBeenSet(false),
-    m_themesHasBeenSet(false),
-    m_analysesHasBeenSet(false),
-    m_dashboardsHasBeenSet(false)
+AssetBundleImportJobOverrideTags::AssetBundleImportJobOverrideTags(JsonView jsonValue)
+  : AssetBundleImportJobOverrideTags()
 {
   *this = jsonValue;
 }
@@ -99,6 +95,16 @@ AssetBundleImportJobOverrideTags& AssetBundleImportJobOverrideTags::operator =(J
       m_dashboards.push_back(dashboardsJsonList[dashboardsIndex].AsObject());
     }
     m_dashboardsHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("Folders"))
+  {
+    Aws::Utils::Array<JsonView> foldersJsonList = jsonValue.GetArray("Folders");
+    for(unsigned foldersIndex = 0; foldersIndex < foldersJsonList.GetLength(); ++foldersIndex)
+    {
+      m_folders.push_back(foldersJsonList[foldersIndex].AsObject());
+    }
+    m_foldersHasBeenSet = true;
   }
 
   return *this;
@@ -171,6 +177,17 @@ JsonValue AssetBundleImportJobOverrideTags::Jsonize() const
      dashboardsJsonList[dashboardsIndex].AsObject(m_dashboards[dashboardsIndex].Jsonize());
    }
    payload.WithArray("Dashboards", std::move(dashboardsJsonList));
+
+  }
+
+  if(m_foldersHasBeenSet)
+  {
+   Aws::Utils::Array<JsonValue> foldersJsonList(m_folders.size());
+   for(unsigned foldersIndex = 0; foldersIndex < foldersJsonList.GetLength(); ++foldersIndex)
+   {
+     foldersJsonList[foldersIndex].AsObject(m_folders[foldersIndex].Jsonize());
+   }
+   payload.WithArray("Folders", std::move(foldersJsonList));
 
   }
 

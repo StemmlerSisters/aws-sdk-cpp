@@ -28,11 +28,8 @@ EventInfoMap::EventInfoMap() :
 {
 }
 
-EventInfoMap::EventInfoMap(const XmlNode& xmlNode) : 
-    m_eventIdHasBeenSet(false),
-    m_eventCategoriesHasBeenSet(false),
-    m_eventDescriptionHasBeenSet(false),
-    m_severityHasBeenSet(false)
+EventInfoMap::EventInfoMap(const XmlNode& xmlNode)
+  : EventInfoMap()
 {
   *this = xmlNode;
 }
@@ -90,7 +87,7 @@ void EventInfoMap::OutputToStream(Aws::OStream& oStream, const char* location, u
       unsigned eventCategoriesIdx = 1;
       for(auto& item : m_eventCategories)
       {
-        oStream << location << index << locationValue << ".EventCategory." << eventCategoriesIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
+        oStream << location << index << locationValue << ".EventCategories.EventCategory." << eventCategoriesIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
       }
   }
 

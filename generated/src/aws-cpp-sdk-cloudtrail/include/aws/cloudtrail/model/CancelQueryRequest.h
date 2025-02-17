@@ -34,58 +34,41 @@ namespace Model
     AWS_CLOUDTRAIL_API Aws::Http::HeaderValueCollection GetRequestSpecificHeaders() const override;
 
 
+    ///@{
     /**
      * <p>The ID of the query that you want to cancel. The <code>QueryId</code> comes
      * from the response of a <code>StartQuery</code> operation.</p>
      */
     inline const Aws::String& GetQueryId() const{ return m_queryId; }
-
-    /**
-     * <p>The ID of the query that you want to cancel. The <code>QueryId</code> comes
-     * from the response of a <code>StartQuery</code> operation.</p>
-     */
     inline bool QueryIdHasBeenSet() const { return m_queryIdHasBeenSet; }
-
-    /**
-     * <p>The ID of the query that you want to cancel. The <code>QueryId</code> comes
-     * from the response of a <code>StartQuery</code> operation.</p>
-     */
     inline void SetQueryId(const Aws::String& value) { m_queryIdHasBeenSet = true; m_queryId = value; }
-
-    /**
-     * <p>The ID of the query that you want to cancel. The <code>QueryId</code> comes
-     * from the response of a <code>StartQuery</code> operation.</p>
-     */
     inline void SetQueryId(Aws::String&& value) { m_queryIdHasBeenSet = true; m_queryId = std::move(value); }
-
-    /**
-     * <p>The ID of the query that you want to cancel. The <code>QueryId</code> comes
-     * from the response of a <code>StartQuery</code> operation.</p>
-     */
     inline void SetQueryId(const char* value) { m_queryIdHasBeenSet = true; m_queryId.assign(value); }
-
-    /**
-     * <p>The ID of the query that you want to cancel. The <code>QueryId</code> comes
-     * from the response of a <code>StartQuery</code> operation.</p>
-     */
     inline CancelQueryRequest& WithQueryId(const Aws::String& value) { SetQueryId(value); return *this;}
-
-    /**
-     * <p>The ID of the query that you want to cancel. The <code>QueryId</code> comes
-     * from the response of a <code>StartQuery</code> operation.</p>
-     */
     inline CancelQueryRequest& WithQueryId(Aws::String&& value) { SetQueryId(std::move(value)); return *this;}
-
-    /**
-     * <p>The ID of the query that you want to cancel. The <code>QueryId</code> comes
-     * from the response of a <code>StartQuery</code> operation.</p>
-     */
     inline CancelQueryRequest& WithQueryId(const char* value) { SetQueryId(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p> The account ID of the event data store owner. </p>
+     */
+    inline const Aws::String& GetEventDataStoreOwnerAccountId() const{ return m_eventDataStoreOwnerAccountId; }
+    inline bool EventDataStoreOwnerAccountIdHasBeenSet() const { return m_eventDataStoreOwnerAccountIdHasBeenSet; }
+    inline void SetEventDataStoreOwnerAccountId(const Aws::String& value) { m_eventDataStoreOwnerAccountIdHasBeenSet = true; m_eventDataStoreOwnerAccountId = value; }
+    inline void SetEventDataStoreOwnerAccountId(Aws::String&& value) { m_eventDataStoreOwnerAccountIdHasBeenSet = true; m_eventDataStoreOwnerAccountId = std::move(value); }
+    inline void SetEventDataStoreOwnerAccountId(const char* value) { m_eventDataStoreOwnerAccountIdHasBeenSet = true; m_eventDataStoreOwnerAccountId.assign(value); }
+    inline CancelQueryRequest& WithEventDataStoreOwnerAccountId(const Aws::String& value) { SetEventDataStoreOwnerAccountId(value); return *this;}
+    inline CancelQueryRequest& WithEventDataStoreOwnerAccountId(Aws::String&& value) { SetEventDataStoreOwnerAccountId(std::move(value)); return *this;}
+    inline CancelQueryRequest& WithEventDataStoreOwnerAccountId(const char* value) { SetEventDataStoreOwnerAccountId(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_queryId;
     bool m_queryIdHasBeenSet = false;
+
+    Aws::String m_eventDataStoreOwnerAccountId;
+    bool m_eventDataStoreOwnerAccountIdHasBeenSet = false;
   };
 
 } // namespace Model

@@ -32,104 +32,62 @@ namespace Model
     AWS_CONNECT_API CreateContactFlowResult& operator=(const Aws::AmazonWebServiceResult<Aws::Utils::Json::JsonValue>& result);
 
 
+    ///@{
     /**
      * <p>The identifier of the flow.</p>
      */
     inline const Aws::String& GetContactFlowId() const{ return m_contactFlowId; }
-
-    /**
-     * <p>The identifier of the flow.</p>
-     */
     inline void SetContactFlowId(const Aws::String& value) { m_contactFlowId = value; }
-
-    /**
-     * <p>The identifier of the flow.</p>
-     */
     inline void SetContactFlowId(Aws::String&& value) { m_contactFlowId = std::move(value); }
-
-    /**
-     * <p>The identifier of the flow.</p>
-     */
     inline void SetContactFlowId(const char* value) { m_contactFlowId.assign(value); }
-
-    /**
-     * <p>The identifier of the flow.</p>
-     */
     inline CreateContactFlowResult& WithContactFlowId(const Aws::String& value) { SetContactFlowId(value); return *this;}
-
-    /**
-     * <p>The identifier of the flow.</p>
-     */
     inline CreateContactFlowResult& WithContactFlowId(Aws::String&& value) { SetContactFlowId(std::move(value)); return *this;}
-
-    /**
-     * <p>The identifier of the flow.</p>
-     */
     inline CreateContactFlowResult& WithContactFlowId(const char* value) { SetContactFlowId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The Amazon Resource Name (ARN) of the flow.</p>
      */
     inline const Aws::String& GetContactFlowArn() const{ return m_contactFlowArn; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the flow.</p>
-     */
     inline void SetContactFlowArn(const Aws::String& value) { m_contactFlowArn = value; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the flow.</p>
-     */
     inline void SetContactFlowArn(Aws::String&& value) { m_contactFlowArn = std::move(value); }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the flow.</p>
-     */
     inline void SetContactFlowArn(const char* value) { m_contactFlowArn.assign(value); }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the flow.</p>
-     */
     inline CreateContactFlowResult& WithContactFlowArn(const Aws::String& value) { SetContactFlowArn(value); return *this;}
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the flow.</p>
-     */
     inline CreateContactFlowResult& WithContactFlowArn(Aws::String&& value) { SetContactFlowArn(std::move(value)); return *this;}
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the flow.</p>
-     */
     inline CreateContactFlowResult& WithContactFlowArn(const char* value) { SetContactFlowArn(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>Indicates the checksum value of the latest published flow content.</p>
+     */
+    inline const Aws::String& GetFlowContentSha256() const{ return m_flowContentSha256; }
+    inline void SetFlowContentSha256(const Aws::String& value) { m_flowContentSha256 = value; }
+    inline void SetFlowContentSha256(Aws::String&& value) { m_flowContentSha256 = std::move(value); }
+    inline void SetFlowContentSha256(const char* value) { m_flowContentSha256.assign(value); }
+    inline CreateContactFlowResult& WithFlowContentSha256(const Aws::String& value) { SetFlowContentSha256(value); return *this;}
+    inline CreateContactFlowResult& WithFlowContentSha256(Aws::String&& value) { SetFlowContentSha256(std::move(value)); return *this;}
+    inline CreateContactFlowResult& WithFlowContentSha256(const char* value) { SetFlowContentSha256(value); return *this;}
+    ///@}
 
+    ///@{
     
     inline const Aws::String& GetRequestId() const{ return m_requestId; }
-
-    
     inline void SetRequestId(const Aws::String& value) { m_requestId = value; }
-
-    
     inline void SetRequestId(Aws::String&& value) { m_requestId = std::move(value); }
-
-    
     inline void SetRequestId(const char* value) { m_requestId.assign(value); }
-
-    
     inline CreateContactFlowResult& WithRequestId(const Aws::String& value) { SetRequestId(value); return *this;}
-
-    
     inline CreateContactFlowResult& WithRequestId(Aws::String&& value) { SetRequestId(std::move(value)); return *this;}
-
-    
     inline CreateContactFlowResult& WithRequestId(const char* value) { SetRequestId(value); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_contactFlowId;
 
     Aws::String m_contactFlowArn;
+
+    Aws::String m_flowContentSha256;
 
     Aws::String m_requestId;
   };

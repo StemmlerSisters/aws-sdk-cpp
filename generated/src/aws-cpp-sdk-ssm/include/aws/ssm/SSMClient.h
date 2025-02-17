@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/ssm/SSM_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/ssm/SSMServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/ssm/SSMErrorMarshaller.h>
 
 namespace Aws
 {
 namespace SSM
 {
+  AWS_SSM_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon Web Services Systems Manager is the operations hub for your Amazon Web
    * Services applications and resources and a secure end-to-end management solution
@@ -24,31 +28,39 @@ namespace SSM
    * Services Systems Manager User Guide</a>. To get started, see <a
    * href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-setting-up.html">Setting
    * up Amazon Web Services Systems Manager</a>.</p> <p class="title"> <b>Related
-   * resources</b> </p> <ul> <li> <p>For information about each of the capabilities
-   * that comprise Systems Manager, see <a
-   * href="https://docs.aws.amazon.com/systems-manager/latest/userguide/what-is-systems-manager.html#systems-manager-capabilities">Systems
-   * Manager capabilities</a> in the <i>Amazon Web Services Systems Manager User
+   * resources</b> </p> <ul> <li> <p>For information about each of the tools that
+   * comprise Systems Manager, see <a
+   * href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-tools.html">Using
+   * Systems Manager tools</a> in the <i>Amazon Web Services Systems Manager User
    * Guide</i>.</p> </li> <li> <p>For details about predefined runbooks for
-   * Automation, a capability of Amazon Web Services Systems Manager, see the <i> <a
+   * Automation, a tool in Amazon Web Services Systems Manager, see the <i> <a
    * href="https://docs.aws.amazon.com/systems-manager-automation-runbooks/latest/userguide/automation-runbook-reference.html">Systems
    * Manager Automation runbook reference</a> </i>.</p> </li> <li> <p>For information
-   * about AppConfig, a capability of Systems Manager, see the <i> <a
+   * about AppConfig, a tool in Systems Manager, see the <i> <a
    * href="https://docs.aws.amazon.com/appconfig/latest/userguide/">AppConfig User
    * Guide</a> </i> and the <i> <a
    * href="https://docs.aws.amazon.com/appconfig/2019-10-09/APIReference/">AppConfig
    * API Reference</a> </i>.</p> </li> <li> <p>For information about Incident
-   * Manager, a capability of Systems Manager, see the <i> <a
+   * Manager, a tool in Systems Manager, see the <i> <a
    * href="https://docs.aws.amazon.com/incident-manager/latest/userguide/">Systems
    * Manager Incident Manager User Guide</a> </i> and the <i> <a
    * href="https://docs.aws.amazon.com/incident-manager/latest/APIReference/">Systems
    * Manager Incident Manager API Reference</a> </i>.</p> </li> </ul>
    */
-  class AWS_SSM_API SSMClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<SSMClient>
+  class AWS_SSM_API SSMClient : smithy::client::AwsSmithyClientT<Aws::SSM::SERVICE_NAME,
+      Aws::SSM::SSMClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      SSMEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::SSMErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<SSMClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "SSM"; }
 
       typedef SSMClientConfiguration ClientConfigurationType;
       typedef SSMEndpointProvider EndpointProviderType;
@@ -151,8 +163,8 @@ namespace SSM
         /**
          * <p>Associates a related item to a Systems Manager OpsCenter OpsItem. For
          * example, you can associate an Incident Manager incident or analysis with an
-         * OpsItem. Incident Manager and OpsCenter are capabilities of Amazon Web Services
-         * Systems Manager.</p><p><h3>See Also:</h3>   <a
+         * OpsItem. Incident Manager and OpsCenter are tools in Amazon Web Services Systems
+         * Manager.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/AssociateOpsItemRelatedItem">AWS
          * API Reference</a></p>
          */
@@ -234,16 +246,16 @@ namespace SSM
          * <p>Generates an activation code and activation ID you can use to register your
          * on-premises servers, edge devices, or virtual machine (VM) with Amazon Web
          * Services Systems Manager. Registering these machines with Systems Manager makes
-         * it possible to manage them using Systems Manager capabilities. You use the
-         * activation code and ID when installing SSM Agent on machines in your hybrid
-         * environment. For more information about requirements for managing on-premises
-         * machines using Systems Manager, see <a
-         * href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-managedinstances.html">Setting
-         * up Amazon Web Services Systems Manager for hybrid and multicloud
-         * environments</a> in the <i>Amazon Web Services Systems Manager User Guide</i>.
-         * </p>  <p>Amazon Elastic Compute Cloud (Amazon EC2) instances, edge
-         * devices, and on-premises servers and VMs that are configured for Systems Manager
-         * are all called <i>managed nodes</i>.</p> <p><h3>See Also:</h3>   <a
+         * it possible to manage them using Systems Manager tools. You use the activation
+         * code and ID when installing SSM Agent on machines in your hybrid environment.
+         * For more information about requirements for managing on-premises machines using
+         * Systems Manager, see <a
+         * href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-hybrid-multicloud.html">Using
+         * Amazon Web Services Systems Manager in hybrid and multicloud environments</a> in
+         * the <i>Amazon Web Services Systems Manager User Guide</i>. </p>  <p>Amazon
+         * Elastic Compute Cloud (Amazon EC2) instances, edge devices, and on-premises
+         * servers and VMs that are configured for Systems Manager are all called
+         * <i>managed nodes</i>.</p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/CreateActivation">AWS
          * API Reference</a></p>
          */
@@ -274,13 +286,13 @@ namespace SSM
          * ports must be closed. For static targets, the association specifies a schedule
          * for when the configuration is reapplied. For dynamic targets, such as an Amazon
          * Web Services resource group or an Amazon Web Services autoscaling group, State
-         * Manager, a capability of Amazon Web Services Systems Manager applies the
-         * configuration when new managed nodes are added to the group. The association
-         * also specifies actions to take when applying the configuration. For example, an
-         * association for anti-virus software might run once a day. If the software isn't
-         * installed, then State Manager installs it. If the software is installed, but the
-         * service isn't running, then the association might instruct State Manager to
-         * start the service. </p><p><h3>See Also:</h3>   <a
+         * Manager, a tool in Amazon Web Services Systems Manager applies the configuration
+         * when new managed nodes are added to the group. The association also specifies
+         * actions to take when applying the configuration. For example, an association for
+         * anti-virus software might run once a day. If the software isn't installed, then
+         * State Manager installs it. If the software is installed, but the service isn't
+         * running, then the association might instruct State Manager to start the service.
+         * </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/CreateAssociation">AWS
          * API Reference</a></p>
          */
@@ -340,7 +352,7 @@ namespace SSM
          * defines the actions that Systems Manager performs on your managed nodes. For
          * more information about SSM documents, including information about supported
          * schemas, features, and syntax, see <a
-         * href="https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-ssm-docs.html">Amazon
+         * href="https://docs.aws.amazon.com/systems-manager/latest/userguide/documents.html">Amazon
          * Web Services Systems Manager Documents</a> in the <i>Amazon Web Services Systems
          * Manager User Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/CreateDocument">AWS
@@ -495,8 +507,8 @@ namespace SSM
          * <code>SyncToDestination</code> type to synchronize Inventory data from multiple
          * Amazon Web Services Regions to a single Amazon Simple Storage Service (Amazon
          * S3) bucket. For more information, see <a
-         * href="https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-inventory-datasync.html">Configuring
-         * resource data sync for Inventory</a> in the <i>Amazon Web Services Systems
+         * href="https://docs.aws.amazon.com/systems-manager/latest/userguide/inventory-create-resource-data-sync.html">Creating
+         * a resource data sync for Inventory</a> in the <i>Amazon Web Services Systems
          * Manager User Guide</i>.</p> <p>You can configure Systems Manager Explorer to use
          * the <code>SyncFromSource</code> type to synchronize operational work items
          * (OpsItems) and operational data (OpsData) from multiple Amazon Web Services
@@ -577,13 +589,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/DeleteAssociation">AWS
          * API Reference</a></p>
          */
-        virtual Model::DeleteAssociationOutcome DeleteAssociation(const Model::DeleteAssociationRequest& request) const;
+        virtual Model::DeleteAssociationOutcome DeleteAssociation(const Model::DeleteAssociationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DeleteAssociation that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DeleteAssociationRequestT = Model::DeleteAssociationRequest>
-        Model::DeleteAssociationOutcomeCallable DeleteAssociationCallable(const DeleteAssociationRequestT& request) const
+        Model::DeleteAssociationOutcomeCallable DeleteAssociationCallable(const DeleteAssociationRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::DeleteAssociation, request);
         }
@@ -592,7 +604,7 @@ namespace SSM
          * An Async wrapper for DeleteAssociation that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DeleteAssociationRequestT = Model::DeleteAssociationRequest>
-        void DeleteAssociationAsync(const DeleteAssociationRequestT& request, const DeleteAssociationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DeleteAssociationAsync(const DeleteAssociationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DeleteAssociationRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::DeleteAssociation, request, handler, context);
         }
@@ -998,13 +1010,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/DescribeActivations">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeActivationsOutcome DescribeActivations(const Model::DescribeActivationsRequest& request) const;
+        virtual Model::DescribeActivationsOutcome DescribeActivations(const Model::DescribeActivationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeActivations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeActivationsRequestT = Model::DescribeActivationsRequest>
-        Model::DescribeActivationsOutcomeCallable DescribeActivationsCallable(const DescribeActivationsRequestT& request) const
+        Model::DescribeActivationsOutcomeCallable DescribeActivationsCallable(const DescribeActivationsRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::DescribeActivations, request);
         }
@@ -1013,7 +1025,7 @@ namespace SSM
          * An Async wrapper for DescribeActivations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeActivationsRequestT = Model::DescribeActivationsRequest>
-        void DescribeActivationsAsync(const DescribeActivationsRequestT& request, const DescribeActivationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeActivationsAsync(const DescribeActivationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeActivationsRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::DescribeActivations, request, handler, context);
         }
@@ -1026,13 +1038,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/DescribeAssociation">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeAssociationOutcome DescribeAssociation(const Model::DescribeAssociationRequest& request) const;
+        virtual Model::DescribeAssociationOutcome DescribeAssociation(const Model::DescribeAssociationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeAssociation that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeAssociationRequestT = Model::DescribeAssociationRequest>
-        Model::DescribeAssociationOutcomeCallable DescribeAssociationCallable(const DescribeAssociationRequestT& request) const
+        Model::DescribeAssociationOutcomeCallable DescribeAssociationCallable(const DescribeAssociationRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::DescribeAssociation, request);
         }
@@ -1041,7 +1053,7 @@ namespace SSM
          * An Async wrapper for DescribeAssociation that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeAssociationRequestT = Model::DescribeAssociationRequest>
-        void DescribeAssociationAsync(const DescribeAssociationRequestT& request, const DescribeAssociationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeAssociationAsync(const DescribeAssociationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeAssociationRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::DescribeAssociation, request, handler, context);
         }
@@ -1104,13 +1116,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/DescribeAutomationExecutions">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeAutomationExecutionsOutcome DescribeAutomationExecutions(const Model::DescribeAutomationExecutionsRequest& request) const;
+        virtual Model::DescribeAutomationExecutionsOutcome DescribeAutomationExecutions(const Model::DescribeAutomationExecutionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeAutomationExecutions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeAutomationExecutionsRequestT = Model::DescribeAutomationExecutionsRequest>
-        Model::DescribeAutomationExecutionsOutcomeCallable DescribeAutomationExecutionsCallable(const DescribeAutomationExecutionsRequestT& request) const
+        Model::DescribeAutomationExecutionsOutcomeCallable DescribeAutomationExecutionsCallable(const DescribeAutomationExecutionsRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::DescribeAutomationExecutions, request);
         }
@@ -1119,7 +1131,7 @@ namespace SSM
          * An Async wrapper for DescribeAutomationExecutions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeAutomationExecutionsRequestT = Model::DescribeAutomationExecutionsRequest>
-        void DescribeAutomationExecutionsAsync(const DescribeAutomationExecutionsRequestT& request, const DescribeAutomationExecutionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeAutomationExecutionsAsync(const DescribeAutomationExecutionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeAutomationExecutionsRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::DescribeAutomationExecutions, request, handler, context);
         }
@@ -1158,13 +1170,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/DescribeAvailablePatches">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeAvailablePatchesOutcome DescribeAvailablePatches(const Model::DescribeAvailablePatchesRequest& request) const;
+        virtual Model::DescribeAvailablePatchesOutcome DescribeAvailablePatches(const Model::DescribeAvailablePatchesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeAvailablePatches that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeAvailablePatchesRequestT = Model::DescribeAvailablePatchesRequest>
-        Model::DescribeAvailablePatchesOutcomeCallable DescribeAvailablePatchesCallable(const DescribeAvailablePatchesRequestT& request) const
+        Model::DescribeAvailablePatchesOutcomeCallable DescribeAvailablePatchesCallable(const DescribeAvailablePatchesRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::DescribeAvailablePatches, request);
         }
@@ -1173,7 +1185,7 @@ namespace SSM
          * An Async wrapper for DescribeAvailablePatches that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeAvailablePatchesRequestT = Model::DescribeAvailablePatchesRequest>
-        void DescribeAvailablePatchesAsync(const DescribeAvailablePatchesRequestT& request, const DescribeAvailablePatchesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeAvailablePatchesAsync(const DescribeAvailablePatchesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeAvailablePatchesRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::DescribeAvailablePatches, request, handler, context);
         }
@@ -1318,20 +1330,20 @@ namespace SSM
          * returns information for those managed nodes. If you don't specify node IDs, it
          * returns information for all your managed nodes. If you specify a node ID that
          * isn't valid or a node that you don't own, you receive an error.</p> 
-         * <p>The <code>IamRole</code> field returned for this API operation is the
-         * Identity and Access Management (IAM) role assigned to on-premises managed nodes.
-         * This operation does not return the IAM role for EC2 instances.</p>
-         * <p><h3>See Also:</h3>   <a
+         * <p>The <code>IamRole</code> field returned for this API operation is the role
+         * assigned to an Amazon EC2 instance configured with a Systems Manager Quick Setup
+         * host management configuration or the role assigned to an on-premises managed
+         * node.</p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/DescribeInstanceInformation">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeInstanceInformationOutcome DescribeInstanceInformation(const Model::DescribeInstanceInformationRequest& request) const;
+        virtual Model::DescribeInstanceInformationOutcome DescribeInstanceInformation(const Model::DescribeInstanceInformationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeInstanceInformation that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeInstanceInformationRequestT = Model::DescribeInstanceInformationRequest>
-        Model::DescribeInstanceInformationOutcomeCallable DescribeInstanceInformationCallable(const DescribeInstanceInformationRequestT& request) const
+        Model::DescribeInstanceInformationOutcomeCallable DescribeInstanceInformationCallable(const DescribeInstanceInformationRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::DescribeInstanceInformation, request);
         }
@@ -1340,7 +1352,7 @@ namespace SSM
          * An Async wrapper for DescribeInstanceInformation that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeInstanceInformationRequestT = Model::DescribeInstanceInformationRequest>
-        void DescribeInstanceInformationAsync(const DescribeInstanceInformationRequestT& request, const DescribeInstanceInformationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeInstanceInformationAsync(const DescribeInstanceInformationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeInstanceInformationRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::DescribeInstanceInformation, request, handler, context);
         }
@@ -1430,13 +1442,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/DescribeInstanceProperties">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeInstancePropertiesOutcome DescribeInstanceProperties(const Model::DescribeInstancePropertiesRequest& request) const;
+        virtual Model::DescribeInstancePropertiesOutcome DescribeInstanceProperties(const Model::DescribeInstancePropertiesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeInstanceProperties that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeInstancePropertiesRequestT = Model::DescribeInstancePropertiesRequest>
-        Model::DescribeInstancePropertiesOutcomeCallable DescribeInstancePropertiesCallable(const DescribeInstancePropertiesRequestT& request) const
+        Model::DescribeInstancePropertiesOutcomeCallable DescribeInstancePropertiesCallable(const DescribeInstancePropertiesRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::DescribeInstanceProperties, request);
         }
@@ -1445,7 +1457,7 @@ namespace SSM
          * An Async wrapper for DescribeInstanceProperties that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeInstancePropertiesRequestT = Model::DescribeInstancePropertiesRequest>
-        void DescribeInstancePropertiesAsync(const DescribeInstancePropertiesRequestT& request, const DescribeInstancePropertiesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeInstancePropertiesAsync(const DescribeInstancePropertiesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeInstancePropertiesRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::DescribeInstanceProperties, request, handler, context);
         }
@@ -1456,13 +1468,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/DescribeInventoryDeletions">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeInventoryDeletionsOutcome DescribeInventoryDeletions(const Model::DescribeInventoryDeletionsRequest& request) const;
+        virtual Model::DescribeInventoryDeletionsOutcome DescribeInventoryDeletions(const Model::DescribeInventoryDeletionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeInventoryDeletions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeInventoryDeletionsRequestT = Model::DescribeInventoryDeletionsRequest>
-        Model::DescribeInventoryDeletionsOutcomeCallable DescribeInventoryDeletionsCallable(const DescribeInventoryDeletionsRequestT& request) const
+        Model::DescribeInventoryDeletionsOutcomeCallable DescribeInventoryDeletionsCallable(const DescribeInventoryDeletionsRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::DescribeInventoryDeletions, request);
         }
@@ -1471,7 +1483,7 @@ namespace SSM
          * An Async wrapper for DescribeInventoryDeletions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeInventoryDeletionsRequestT = Model::DescribeInventoryDeletionsRequest>
-        void DescribeInventoryDeletionsAsync(const DescribeInventoryDeletionsRequestT& request, const DescribeInventoryDeletionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeInventoryDeletionsAsync(const DescribeInventoryDeletionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeInventoryDeletionsRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::DescribeInventoryDeletions, request, handler, context);
         }
@@ -1563,13 +1575,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/DescribeMaintenanceWindowSchedule">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeMaintenanceWindowScheduleOutcome DescribeMaintenanceWindowSchedule(const Model::DescribeMaintenanceWindowScheduleRequest& request) const;
+        virtual Model::DescribeMaintenanceWindowScheduleOutcome DescribeMaintenanceWindowSchedule(const Model::DescribeMaintenanceWindowScheduleRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeMaintenanceWindowSchedule that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeMaintenanceWindowScheduleRequestT = Model::DescribeMaintenanceWindowScheduleRequest>
-        Model::DescribeMaintenanceWindowScheduleOutcomeCallable DescribeMaintenanceWindowScheduleCallable(const DescribeMaintenanceWindowScheduleRequestT& request) const
+        Model::DescribeMaintenanceWindowScheduleOutcomeCallable DescribeMaintenanceWindowScheduleCallable(const DescribeMaintenanceWindowScheduleRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::DescribeMaintenanceWindowSchedule, request);
         }
@@ -1578,7 +1590,7 @@ namespace SSM
          * An Async wrapper for DescribeMaintenanceWindowSchedule that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeMaintenanceWindowScheduleRequestT = Model::DescribeMaintenanceWindowScheduleRequest>
-        void DescribeMaintenanceWindowScheduleAsync(const DescribeMaintenanceWindowScheduleRequestT& request, const DescribeMaintenanceWindowScheduleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeMaintenanceWindowScheduleAsync(const DescribeMaintenanceWindowScheduleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeMaintenanceWindowScheduleRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::DescribeMaintenanceWindowSchedule, request, handler, context);
         }
@@ -1645,13 +1657,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/DescribeMaintenanceWindows">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeMaintenanceWindowsOutcome DescribeMaintenanceWindows(const Model::DescribeMaintenanceWindowsRequest& request) const;
+        virtual Model::DescribeMaintenanceWindowsOutcome DescribeMaintenanceWindows(const Model::DescribeMaintenanceWindowsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeMaintenanceWindows that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeMaintenanceWindowsRequestT = Model::DescribeMaintenanceWindowsRequest>
-        Model::DescribeMaintenanceWindowsOutcomeCallable DescribeMaintenanceWindowsCallable(const DescribeMaintenanceWindowsRequestT& request) const
+        Model::DescribeMaintenanceWindowsOutcomeCallable DescribeMaintenanceWindowsCallable(const DescribeMaintenanceWindowsRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::DescribeMaintenanceWindows, request);
         }
@@ -1660,7 +1672,7 @@ namespace SSM
          * An Async wrapper for DescribeMaintenanceWindows that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeMaintenanceWindowsRequestT = Model::DescribeMaintenanceWindowsRequest>
-        void DescribeMaintenanceWindowsAsync(const DescribeMaintenanceWindowsRequestT& request, const DescribeMaintenanceWindowsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeMaintenanceWindowsAsync(const DescribeMaintenanceWindowsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeMaintenanceWindowsRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::DescribeMaintenanceWindows, request, handler, context);
         }
@@ -1706,13 +1718,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/DescribeOpsItems">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeOpsItemsOutcome DescribeOpsItems(const Model::DescribeOpsItemsRequest& request) const;
+        virtual Model::DescribeOpsItemsOutcome DescribeOpsItems(const Model::DescribeOpsItemsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeOpsItems that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeOpsItemsRequestT = Model::DescribeOpsItemsRequest>
-        Model::DescribeOpsItemsOutcomeCallable DescribeOpsItemsCallable(const DescribeOpsItemsRequestT& request) const
+        Model::DescribeOpsItemsOutcomeCallable DescribeOpsItemsCallable(const DescribeOpsItemsRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::DescribeOpsItems, request);
         }
@@ -1721,7 +1733,7 @@ namespace SSM
          * An Async wrapper for DescribeOpsItems that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeOpsItemsRequestT = Model::DescribeOpsItemsRequest>
-        void DescribeOpsItemsAsync(const DescribeOpsItemsRequestT& request, const DescribeOpsItemsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeOpsItemsAsync(const DescribeOpsItemsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeOpsItemsRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::DescribeOpsItems, request, handler, context);
         }
@@ -1745,13 +1757,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/DescribeParameters">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeParametersOutcome DescribeParameters(const Model::DescribeParametersRequest& request) const;
+        virtual Model::DescribeParametersOutcome DescribeParameters(const Model::DescribeParametersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeParameters that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeParametersRequestT = Model::DescribeParametersRequest>
-        Model::DescribeParametersOutcomeCallable DescribeParametersCallable(const DescribeParametersRequestT& request) const
+        Model::DescribeParametersOutcomeCallable DescribeParametersCallable(const DescribeParametersRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::DescribeParameters, request);
         }
@@ -1760,7 +1772,7 @@ namespace SSM
          * An Async wrapper for DescribeParameters that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeParametersRequestT = Model::DescribeParametersRequest>
-        void DescribeParametersAsync(const DescribeParametersRequestT& request, const DescribeParametersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeParametersAsync(const DescribeParametersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeParametersRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::DescribeParameters, request, handler, context);
         }
@@ -1771,13 +1783,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/DescribePatchBaselines">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribePatchBaselinesOutcome DescribePatchBaselines(const Model::DescribePatchBaselinesRequest& request) const;
+        virtual Model::DescribePatchBaselinesOutcome DescribePatchBaselines(const Model::DescribePatchBaselinesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribePatchBaselines that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribePatchBaselinesRequestT = Model::DescribePatchBaselinesRequest>
-        Model::DescribePatchBaselinesOutcomeCallable DescribePatchBaselinesCallable(const DescribePatchBaselinesRequestT& request) const
+        Model::DescribePatchBaselinesOutcomeCallable DescribePatchBaselinesCallable(const DescribePatchBaselinesRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::DescribePatchBaselines, request);
         }
@@ -1786,7 +1798,7 @@ namespace SSM
          * An Async wrapper for DescribePatchBaselines that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribePatchBaselinesRequestT = Model::DescribePatchBaselinesRequest>
-        void DescribePatchBaselinesAsync(const DescribePatchBaselinesRequestT& request, const DescribePatchBaselinesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribePatchBaselinesAsync(const DescribePatchBaselinesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribePatchBaselinesRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::DescribePatchBaselines, request, handler, context);
         }
@@ -1823,13 +1835,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/DescribePatchGroups">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribePatchGroupsOutcome DescribePatchGroups(const Model::DescribePatchGroupsRequest& request) const;
+        virtual Model::DescribePatchGroupsOutcome DescribePatchGroups(const Model::DescribePatchGroupsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribePatchGroups that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribePatchGroupsRequestT = Model::DescribePatchGroupsRequest>
-        Model::DescribePatchGroupsOutcomeCallable DescribePatchGroupsCallable(const DescribePatchGroupsRequestT& request) const
+        Model::DescribePatchGroupsOutcomeCallable DescribePatchGroupsCallable(const DescribePatchGroupsRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::DescribePatchGroups, request);
         }
@@ -1838,7 +1850,7 @@ namespace SSM
          * An Async wrapper for DescribePatchGroups that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribePatchGroupsRequestT = Model::DescribePatchGroupsRequest>
-        void DescribePatchGroupsAsync(const DescribePatchGroupsRequestT& request, const DescribePatchGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribePatchGroupsAsync(const DescribePatchGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribePatchGroupsRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::DescribePatchGroups, request, handler, context);
         }
@@ -1853,6 +1865,8 @@ namespace SSM
          * major operating system type:</p> <dl> <dt>AMAZON_LINUX</dt> <dd> <p>Valid
          * properties: <code>PRODUCT</code> | <code>CLASSIFICATION</code> |
          * <code>SEVERITY</code> </p> </dd> <dt>AMAZON_LINUX_2</dt> <dd> <p>Valid
+         * properties: <code>PRODUCT</code> | <code>CLASSIFICATION</code> |
+         * <code>SEVERITY</code> </p> </dd> <dt>AMAZON_LINUX_2023</dt> <dd> <p>Valid
          * properties: <code>PRODUCT</code> | <code>CLASSIFICATION</code> |
          * <code>SEVERITY</code> </p> </dd> <dt>CENTOS</dt> <dd> <p>Valid properties:
          * <code>PRODUCT</code> | <code>CLASSIFICATION</code> | <code>SEVERITY</code> </p>
@@ -1921,8 +1935,8 @@ namespace SSM
         /**
          * <p>Deletes the association between an OpsItem and a related item. For example,
          * this API operation can delete an Incident Manager incident from an OpsItem.
-         * Incident Manager is a capability of Amazon Web Services Systems
-         * Manager.</p><p><h3>See Also:</h3>   <a
+         * Incident Manager is a tool in Amazon Web Services Systems Manager.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/DisassociateOpsItemRelatedItem">AWS
          * API Reference</a></p>
          */
@@ -1983,7 +1997,7 @@ namespace SSM
          * the command returns the status of <code>OPEN</code> only if all calendars in the
          * request are open. If one or more calendars in the request are closed, the status
          * returned is <code>CLOSED</code>.</p> <p>For more information about Change
-         * Calendar, a capability of Amazon Web Services Systems Manager, see <a
+         * Calendar, a tool in Amazon Web Services Systems Manager, see <a
          * href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-change-calendar.html">Amazon
          * Web Services Systems Manager Change Calendar</a> in the <i>Amazon Web Services
          * Systems Manager User Guide</i>.</p><p><h3>See Also:</h3>   <a
@@ -2012,7 +2026,12 @@ namespace SSM
 
         /**
          * <p>Returns detailed information about command execution for an invocation or
-         * plugin.</p> <p> <code>GetCommandInvocation</code> only gives the execution
+         * plugin. The Run Command API follows an eventual consistency model, due to the
+         * distributed nature of the system supporting the API. This means that the result
+         * of an API command you run that affects your resources might not be immediately
+         * visible to all subsequent commands you run. You should keep this in mind when
+         * you carry out an API command that immediately follows a previous API
+         * command.</p> <p> <code>GetCommandInvocation</code> only gives the execution
          * status of a plugin in a document. To get the command execution status on a
          * specific managed node, use <a>ListCommandInvocations</a>. To get the command
          * execution status across managed nodes, use <a>ListCommands</a>.</p><p><h3>See
@@ -2076,13 +2095,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/GetDefaultPatchBaseline">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetDefaultPatchBaselineOutcome GetDefaultPatchBaseline(const Model::GetDefaultPatchBaselineRequest& request) const;
+        virtual Model::GetDefaultPatchBaselineOutcome GetDefaultPatchBaseline(const Model::GetDefaultPatchBaselineRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetDefaultPatchBaseline that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetDefaultPatchBaselineRequestT = Model::GetDefaultPatchBaselineRequest>
-        Model::GetDefaultPatchBaselineOutcomeCallable GetDefaultPatchBaselineCallable(const GetDefaultPatchBaselineRequestT& request) const
+        Model::GetDefaultPatchBaselineOutcomeCallable GetDefaultPatchBaselineCallable(const GetDefaultPatchBaselineRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::GetDefaultPatchBaseline, request);
         }
@@ -2091,7 +2110,7 @@ namespace SSM
          * An Async wrapper for GetDefaultPatchBaseline that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetDefaultPatchBaselineRequestT = Model::GetDefaultPatchBaselineRequest>
-        void GetDefaultPatchBaselineAsync(const GetDefaultPatchBaselineRequestT& request, const GetDefaultPatchBaselineResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetDefaultPatchBaselineAsync(const GetDefaultPatchBaselineResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetDefaultPatchBaselineRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::GetDefaultPatchBaseline, request, handler, context);
         }
@@ -2103,11 +2122,11 @@ namespace SSM
          * such as with the Command Line Interface (CLI), the system attempts to use your
          * local Amazon Web Services credentials and the operation fails. To avoid this,
          * you can run the command in the Amazon Web Services Systems Manager console. Use
-         * Run Command, a capability of Amazon Web Services Systems Manager, with an SSM
-         * document that enables you to target a managed node with a script or command. For
-         * example, run the command using the <code>AWS-RunShellScript</code> document or
-         * the <code>AWS-RunPowerShellScript</code> document.</p> <p><h3>See
-         * Also:</h3>   <a
+         * Run Command, a tool in Amazon Web Services Systems Manager, with an SSM document
+         * that enables you to target a managed node with a script or command. For example,
+         * run the command using the <code>AWS-RunShellScript</code> document or the
+         * <code>AWS-RunPowerShellScript</code> document.</p> <p><h3>See Also:</h3> 
+         * <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/GetDeployablePatchSnapshotForInstance">AWS
          * API Reference</a></p>
          */
@@ -2158,18 +2177,45 @@ namespace SSM
         }
 
         /**
+         * <p>Initiates the process of retrieving an existing preview that shows the
+         * effects that running a specified Automation runbook would have on the targeted
+         * resources.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/GetExecutionPreview">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetExecutionPreviewOutcome GetExecutionPreview(const Model::GetExecutionPreviewRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetExecutionPreview that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetExecutionPreviewRequestT = Model::GetExecutionPreviewRequest>
+        Model::GetExecutionPreviewOutcomeCallable GetExecutionPreviewCallable(const GetExecutionPreviewRequestT& request) const
+        {
+            return SubmitCallable(&SSMClient::GetExecutionPreview, request);
+        }
+
+        /**
+         * An Async wrapper for GetExecutionPreview that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetExecutionPreviewRequestT = Model::GetExecutionPreviewRequest>
+        void GetExecutionPreviewAsync(const GetExecutionPreviewRequestT& request, const GetExecutionPreviewResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SSMClient::GetExecutionPreview, request, handler, context);
+        }
+
+        /**
          * <p>Query inventory information. This includes managed node status, such as
          * <code>Stopped</code> or <code>Terminated</code>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/GetInventory">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetInventoryOutcome GetInventory(const Model::GetInventoryRequest& request) const;
+        virtual Model::GetInventoryOutcome GetInventory(const Model::GetInventoryRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetInventory that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetInventoryRequestT = Model::GetInventoryRequest>
-        Model::GetInventoryOutcomeCallable GetInventoryCallable(const GetInventoryRequestT& request) const
+        Model::GetInventoryOutcomeCallable GetInventoryCallable(const GetInventoryRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::GetInventory, request);
         }
@@ -2178,7 +2224,7 @@ namespace SSM
          * An Async wrapper for GetInventory that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetInventoryRequestT = Model::GetInventoryRequest>
-        void GetInventoryAsync(const GetInventoryRequestT& request, const GetInventoryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetInventoryAsync(const GetInventoryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetInventoryRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::GetInventory, request, handler, context);
         }
@@ -2190,13 +2236,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/GetInventorySchema">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetInventorySchemaOutcome GetInventorySchema(const Model::GetInventorySchemaRequest& request) const;
+        virtual Model::GetInventorySchemaOutcome GetInventorySchema(const Model::GetInventorySchemaRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetInventorySchema that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetInventorySchemaRequestT = Model::GetInventorySchemaRequest>
-        Model::GetInventorySchemaOutcomeCallable GetInventorySchemaCallable(const GetInventorySchemaRequestT& request) const
+        Model::GetInventorySchemaOutcomeCallable GetInventorySchemaCallable(const GetInventorySchemaRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::GetInventorySchema, request);
         }
@@ -2205,7 +2251,7 @@ namespace SSM
          * An Async wrapper for GetInventorySchema that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetInventorySchemaRequestT = Model::GetInventorySchemaRequest>
-        void GetInventorySchemaAsync(const GetInventorySchemaRequestT& request, const GetInventorySchemaResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetInventorySchemaAsync(const GetInventorySchemaResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetInventorySchemaRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::GetInventorySchema, request, handler, context);
         }
@@ -2417,13 +2463,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/GetOpsSummary">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetOpsSummaryOutcome GetOpsSummary(const Model::GetOpsSummaryRequest& request) const;
+        virtual Model::GetOpsSummaryOutcome GetOpsSummary(const Model::GetOpsSummaryRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetOpsSummary that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetOpsSummaryRequestT = Model::GetOpsSummaryRequest>
-        Model::GetOpsSummaryOutcomeCallable GetOpsSummaryCallable(const GetOpsSummaryRequestT& request) const
+        Model::GetOpsSummaryOutcomeCallable GetOpsSummaryCallable(const GetOpsSummaryRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::GetOpsSummary, request);
         }
@@ -2432,7 +2478,7 @@ namespace SSM
          * An Async wrapper for GetOpsSummary that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetOpsSummaryRequestT = Model::GetOpsSummaryRequest>
-        void GetOpsSummaryAsync(const GetOpsSummaryRequestT& request, const GetOpsSummaryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetOpsSummaryAsync(const GetOpsSummaryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetOpsSummaryRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::GetOpsSummary, request, handler, context);
         }
@@ -2521,15 +2567,15 @@ namespace SSM
         }
 
         /**
-         * <p>Retrieve information about one or more parameters in a specific hierarchy.
-         * </p> <p>Request results are returned on a best-effort basis. If you specify
-         * <code>MaxResults</code> in the request, the response includes information up to
-         * the limit specified. The number of items returned, however, can be between zero
-         * and the value of <code>MaxResults</code>. If the service reaches an internal
-         * limit while processing the results, it stops the operation and returns the
-         * matching values up to that point and a <code>NextToken</code>. You can specify
-         * the <code>NextToken</code> in a subsequent call to get the next set of
-         * results.</p><p><h3>See Also:</h3>   <a
+         * <p>Retrieve information about one or more parameters under a specified level in
+         * a hierarchy. </p> <p>Request results are returned on a best-effort basis. If you
+         * specify <code>MaxResults</code> in the request, the response includes
+         * information up to the limit specified. The number of items returned, however,
+         * can be between zero and the value of <code>MaxResults</code>. If the service
+         * reaches an internal limit while processing the results, it stops the operation
+         * and returns the matching values up to that point and a <code>NextToken</code>.
+         * You can specify the <code>NextToken</code> in a subsequent call to get the next
+         * set of results.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/GetParametersByPath">AWS
          * API Reference</a></p>
          */
@@ -2746,18 +2792,18 @@ namespace SSM
          * <p>Returns all State Manager associations in the current Amazon Web Services
          * account and Amazon Web Services Region. You can limit the results to a specific
          * State Manager association document or managed node by specifying a filter. State
-         * Manager is a capability of Amazon Web Services Systems Manager.</p><p><h3>See
+         * Manager is a tool in Amazon Web Services Systems Manager.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/ListAssociations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAssociationsOutcome ListAssociations(const Model::ListAssociationsRequest& request) const;
+        virtual Model::ListAssociationsOutcome ListAssociations(const Model::ListAssociationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAssociations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAssociationsRequestT = Model::ListAssociationsRequest>
-        Model::ListAssociationsOutcomeCallable ListAssociationsCallable(const ListAssociationsRequestT& request) const
+        Model::ListAssociationsOutcomeCallable ListAssociationsCallable(const ListAssociationsRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::ListAssociations, request);
         }
@@ -2766,7 +2812,7 @@ namespace SSM
          * An Async wrapper for ListAssociations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAssociationsRequestT = Model::ListAssociationsRequest>
-        void ListAssociationsAsync(const ListAssociationsRequestT& request, const ListAssociationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAssociationsAsync(const ListAssociationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAssociationsRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::ListAssociations, request, handler, context);
         }
@@ -2781,13 +2827,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/ListCommandInvocations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListCommandInvocationsOutcome ListCommandInvocations(const Model::ListCommandInvocationsRequest& request) const;
+        virtual Model::ListCommandInvocationsOutcome ListCommandInvocations(const Model::ListCommandInvocationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListCommandInvocations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListCommandInvocationsRequestT = Model::ListCommandInvocationsRequest>
-        Model::ListCommandInvocationsOutcomeCallable ListCommandInvocationsCallable(const ListCommandInvocationsRequestT& request) const
+        Model::ListCommandInvocationsOutcomeCallable ListCommandInvocationsCallable(const ListCommandInvocationsRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::ListCommandInvocations, request);
         }
@@ -2796,7 +2842,7 @@ namespace SSM
          * An Async wrapper for ListCommandInvocations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListCommandInvocationsRequestT = Model::ListCommandInvocationsRequest>
-        void ListCommandInvocationsAsync(const ListCommandInvocationsRequestT& request, const ListCommandInvocationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListCommandInvocationsAsync(const ListCommandInvocationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListCommandInvocationsRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::ListCommandInvocations, request, handler, context);
         }
@@ -2807,13 +2853,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/ListCommands">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListCommandsOutcome ListCommands(const Model::ListCommandsRequest& request) const;
+        virtual Model::ListCommandsOutcome ListCommands(const Model::ListCommandsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListCommands that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListCommandsRequestT = Model::ListCommandsRequest>
-        Model::ListCommandsOutcomeCallable ListCommandsCallable(const ListCommandsRequestT& request) const
+        Model::ListCommandsOutcomeCallable ListCommandsCallable(const ListCommandsRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::ListCommands, request);
         }
@@ -2822,7 +2868,7 @@ namespace SSM
          * An Async wrapper for ListCommands that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListCommandsRequestT = Model::ListCommandsRequest>
-        void ListCommandsAsync(const ListCommandsRequestT& request, const ListCommandsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListCommandsAsync(const ListCommandsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListCommandsRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::ListCommands, request, handler, context);
         }
@@ -2835,13 +2881,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/ListComplianceItems">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListComplianceItemsOutcome ListComplianceItems(const Model::ListComplianceItemsRequest& request) const;
+        virtual Model::ListComplianceItemsOutcome ListComplianceItems(const Model::ListComplianceItemsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListComplianceItems that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListComplianceItemsRequestT = Model::ListComplianceItemsRequest>
-        Model::ListComplianceItemsOutcomeCallable ListComplianceItemsCallable(const ListComplianceItemsRequestT& request) const
+        Model::ListComplianceItemsOutcomeCallable ListComplianceItemsCallable(const ListComplianceItemsRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::ListComplianceItems, request);
         }
@@ -2850,7 +2896,7 @@ namespace SSM
          * An Async wrapper for ListComplianceItems that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListComplianceItemsRequestT = Model::ListComplianceItemsRequest>
-        void ListComplianceItemsAsync(const ListComplianceItemsRequestT& request, const ListComplianceItemsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListComplianceItemsAsync(const ListComplianceItemsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListComplianceItemsRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::ListComplianceItems, request, handler, context);
         }
@@ -2863,13 +2909,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/ListComplianceSummaries">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListComplianceSummariesOutcome ListComplianceSummaries(const Model::ListComplianceSummariesRequest& request) const;
+        virtual Model::ListComplianceSummariesOutcome ListComplianceSummaries(const Model::ListComplianceSummariesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListComplianceSummaries that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListComplianceSummariesRequestT = Model::ListComplianceSummariesRequest>
-        Model::ListComplianceSummariesOutcomeCallable ListComplianceSummariesCallable(const ListComplianceSummariesRequestT& request) const
+        Model::ListComplianceSummariesOutcomeCallable ListComplianceSummariesCallable(const ListComplianceSummariesRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::ListComplianceSummaries, request);
         }
@@ -2878,7 +2924,7 @@ namespace SSM
          * An Async wrapper for ListComplianceSummaries that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListComplianceSummariesRequestT = Model::ListComplianceSummariesRequest>
-        void ListComplianceSummariesAsync(const ListComplianceSummariesRequestT& request, const ListComplianceSummariesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListComplianceSummariesAsync(const ListComplianceSummariesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListComplianceSummariesRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::ListComplianceSummaries, request, handler, context);
         }
@@ -2941,13 +2987,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/ListDocuments">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDocumentsOutcome ListDocuments(const Model::ListDocumentsRequest& request) const;
+        virtual Model::ListDocumentsOutcome ListDocuments(const Model::ListDocumentsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDocuments that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDocumentsRequestT = Model::ListDocumentsRequest>
-        Model::ListDocumentsOutcomeCallable ListDocumentsCallable(const ListDocumentsRequestT& request) const
+        Model::ListDocumentsOutcomeCallable ListDocumentsCallable(const ListDocumentsRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::ListDocuments, request);
         }
@@ -2956,7 +3002,7 @@ namespace SSM
          * An Async wrapper for ListDocuments that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDocumentsRequestT = Model::ListDocumentsRequest>
-        void ListDocumentsAsync(const ListDocumentsRequestT& request, const ListDocumentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDocumentsAsync(const ListDocumentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDocumentsRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::ListDocuments, request, handler, context);
         }
@@ -2988,6 +3034,59 @@ namespace SSM
         }
 
         /**
+         * <p>Takes in filters and returns a list of managed nodes matching the filter
+         * criteria.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/ListNodes">AWS API
+         * Reference</a></p>
+         */
+        virtual Model::ListNodesOutcome ListNodes(const Model::ListNodesRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for ListNodes that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListNodesRequestT = Model::ListNodesRequest>
+        Model::ListNodesOutcomeCallable ListNodesCallable(const ListNodesRequestT& request = {}) const
+        {
+            return SubmitCallable(&SSMClient::ListNodes, request);
+        }
+
+        /**
+         * An Async wrapper for ListNodes that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListNodesRequestT = Model::ListNodesRequest>
+        void ListNodesAsync(const ListNodesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListNodesRequestT& request = {}) const
+        {
+            return SubmitAsync(&SSMClient::ListNodes, request, handler, context);
+        }
+
+        /**
+         * <p>Generates a summary of managed instance/node metadata based on the filters
+         * and aggregators you specify. Results are grouped by the input aggregator you
+         * specify.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/ListNodesSummary">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListNodesSummaryOutcome ListNodesSummary(const Model::ListNodesSummaryRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListNodesSummary that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListNodesSummaryRequestT = Model::ListNodesSummaryRequest>
+        Model::ListNodesSummaryOutcomeCallable ListNodesSummaryCallable(const ListNodesSummaryRequestT& request) const
+        {
+            return SubmitCallable(&SSMClient::ListNodesSummary, request);
+        }
+
+        /**
+         * An Async wrapper for ListNodesSummary that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListNodesSummaryRequestT = Model::ListNodesSummaryRequest>
+        void ListNodesSummaryAsync(const ListNodesSummaryRequestT& request, const ListNodesSummaryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SSMClient::ListNodesSummary, request, handler, context);
+        }
+
+        /**
          * <p>Returns a list of all OpsItem events in the current Amazon Web Services
          * Region and Amazon Web Services account. You can limit the results to events
          * associated with specific OpsItems by specifying a filter.</p><p><h3>See
@@ -2995,13 +3094,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/ListOpsItemEvents">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListOpsItemEventsOutcome ListOpsItemEvents(const Model::ListOpsItemEventsRequest& request) const;
+        virtual Model::ListOpsItemEventsOutcome ListOpsItemEvents(const Model::ListOpsItemEventsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListOpsItemEvents that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListOpsItemEventsRequestT = Model::ListOpsItemEventsRequest>
-        Model::ListOpsItemEventsOutcomeCallable ListOpsItemEventsCallable(const ListOpsItemEventsRequestT& request) const
+        Model::ListOpsItemEventsOutcomeCallable ListOpsItemEventsCallable(const ListOpsItemEventsRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::ListOpsItemEvents, request);
         }
@@ -3010,25 +3109,25 @@ namespace SSM
          * An Async wrapper for ListOpsItemEvents that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListOpsItemEventsRequestT = Model::ListOpsItemEventsRequest>
-        void ListOpsItemEventsAsync(const ListOpsItemEventsRequestT& request, const ListOpsItemEventsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListOpsItemEventsAsync(const ListOpsItemEventsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListOpsItemEventsRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::ListOpsItemEvents, request, handler, context);
         }
 
         /**
          * <p>Lists all related-item resources associated with a Systems Manager OpsCenter
-         * OpsItem. OpsCenter is a capability of Amazon Web Services Systems
+         * OpsItem. OpsCenter is a tool in Amazon Web Services Systems
          * Manager.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/ListOpsItemRelatedItems">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListOpsItemRelatedItemsOutcome ListOpsItemRelatedItems(const Model::ListOpsItemRelatedItemsRequest& request) const;
+        virtual Model::ListOpsItemRelatedItemsOutcome ListOpsItemRelatedItems(const Model::ListOpsItemRelatedItemsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListOpsItemRelatedItems that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListOpsItemRelatedItemsRequestT = Model::ListOpsItemRelatedItemsRequest>
-        Model::ListOpsItemRelatedItemsOutcomeCallable ListOpsItemRelatedItemsCallable(const ListOpsItemRelatedItemsRequestT& request) const
+        Model::ListOpsItemRelatedItemsOutcomeCallable ListOpsItemRelatedItemsCallable(const ListOpsItemRelatedItemsRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::ListOpsItemRelatedItems, request);
         }
@@ -3037,7 +3136,7 @@ namespace SSM
          * An Async wrapper for ListOpsItemRelatedItems that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListOpsItemRelatedItemsRequestT = Model::ListOpsItemRelatedItemsRequest>
-        void ListOpsItemRelatedItemsAsync(const ListOpsItemRelatedItemsRequestT& request, const ListOpsItemRelatedItemsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListOpsItemRelatedItemsAsync(const ListOpsItemRelatedItemsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListOpsItemRelatedItemsRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::ListOpsItemRelatedItems, request, handler, context);
         }
@@ -3049,13 +3148,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/ListOpsMetadata">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListOpsMetadataOutcome ListOpsMetadata(const Model::ListOpsMetadataRequest& request) const;
+        virtual Model::ListOpsMetadataOutcome ListOpsMetadata(const Model::ListOpsMetadataRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListOpsMetadata that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListOpsMetadataRequestT = Model::ListOpsMetadataRequest>
-        Model::ListOpsMetadataOutcomeCallable ListOpsMetadataCallable(const ListOpsMetadataRequestT& request) const
+        Model::ListOpsMetadataOutcomeCallable ListOpsMetadataCallable(const ListOpsMetadataRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::ListOpsMetadata, request);
         }
@@ -3064,7 +3163,7 @@ namespace SSM
          * An Async wrapper for ListOpsMetadata that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListOpsMetadataRequestT = Model::ListOpsMetadataRequest>
-        void ListOpsMetadataAsync(const ListOpsMetadataRequestT& request, const ListOpsMetadataResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListOpsMetadataAsync(const ListOpsMetadataResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListOpsMetadataRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::ListOpsMetadata, request, handler, context);
         }
@@ -3077,13 +3176,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/ListResourceComplianceSummaries">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListResourceComplianceSummariesOutcome ListResourceComplianceSummaries(const Model::ListResourceComplianceSummariesRequest& request) const;
+        virtual Model::ListResourceComplianceSummariesOutcome ListResourceComplianceSummaries(const Model::ListResourceComplianceSummariesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListResourceComplianceSummaries that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListResourceComplianceSummariesRequestT = Model::ListResourceComplianceSummariesRequest>
-        Model::ListResourceComplianceSummariesOutcomeCallable ListResourceComplianceSummariesCallable(const ListResourceComplianceSummariesRequestT& request) const
+        Model::ListResourceComplianceSummariesOutcomeCallable ListResourceComplianceSummariesCallable(const ListResourceComplianceSummariesRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::ListResourceComplianceSummaries, request);
         }
@@ -3092,7 +3191,7 @@ namespace SSM
          * An Async wrapper for ListResourceComplianceSummaries that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListResourceComplianceSummariesRequestT = Model::ListResourceComplianceSummariesRequest>
-        void ListResourceComplianceSummariesAsync(const ListResourceComplianceSummariesRequestT& request, const ListResourceComplianceSummariesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListResourceComplianceSummariesAsync(const ListResourceComplianceSummariesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListResourceComplianceSummariesRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::ListResourceComplianceSummaries, request, handler, context);
         }
@@ -3111,13 +3210,13 @@ namespace SSM
          * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/ListResourceDataSync">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListResourceDataSyncOutcome ListResourceDataSync(const Model::ListResourceDataSyncRequest& request) const;
+        virtual Model::ListResourceDataSyncOutcome ListResourceDataSync(const Model::ListResourceDataSyncRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListResourceDataSync that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListResourceDataSyncRequestT = Model::ListResourceDataSyncRequest>
-        Model::ListResourceDataSyncOutcomeCallable ListResourceDataSyncCallable(const ListResourceDataSyncRequestT& request) const
+        Model::ListResourceDataSyncOutcomeCallable ListResourceDataSyncCallable(const ListResourceDataSyncRequestT& request = {}) const
         {
             return SubmitCallable(&SSMClient::ListResourceDataSync, request);
         }
@@ -3126,7 +3225,7 @@ namespace SSM
          * An Async wrapper for ListResourceDataSync that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListResourceDataSyncRequestT = Model::ListResourceDataSyncRequest>
-        void ListResourceDataSyncAsync(const ListResourceDataSyncRequestT& request, const ListResourceDataSyncResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListResourceDataSyncAsync(const ListResourceDataSyncResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListResourceDataSyncRequestT& request = {}) const
         {
             return SubmitAsync(&SSMClient::ListResourceDataSync, request, handler, context);
         }
@@ -3673,6 +3772,33 @@ namespace SSM
         void StartChangeRequestExecutionAsync(const StartChangeRequestExecutionRequestT& request, const StartChangeRequestExecutionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&SSMClient::StartChangeRequestExecution, request, handler, context);
+        }
+
+        /**
+         * <p>Initiates the process of creating a preview showing the effects that running
+         * a specified Automation runbook would have on the targeted
+         * resources.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/ssm-2014-11-06/StartExecutionPreview">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::StartExecutionPreviewOutcome StartExecutionPreview(const Model::StartExecutionPreviewRequest& request) const;
+
+        /**
+         * A Callable wrapper for StartExecutionPreview that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename StartExecutionPreviewRequestT = Model::StartExecutionPreviewRequest>
+        Model::StartExecutionPreviewOutcomeCallable StartExecutionPreviewCallable(const StartExecutionPreviewRequestT& request) const
+        {
+            return SubmitCallable(&SSMClient::StartExecutionPreview, request);
+        }
+
+        /**
+         * An Async wrapper for StartExecutionPreview that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename StartExecutionPreviewRequestT = Model::StartExecutionPreviewRequest>
+        void StartExecutionPreviewAsync(const StartExecutionPreviewRequestT& request, const StartExecutionPreviewResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SSMClient::StartExecutionPreview, request, handler, context);
         }
 
         /**
@@ -4254,11 +4380,7 @@ namespace SSM
       std::shared_ptr<SSMEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<SSMClient>;
-      void init(const SSMClientConfiguration& clientConfiguration);
 
-      SSMClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<SSMEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace SSM

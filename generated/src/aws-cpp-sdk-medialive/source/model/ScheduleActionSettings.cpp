@@ -33,26 +33,14 @@ ScheduleActionSettings::ScheduleActionSettings() :
     m_staticImageActivateSettingsHasBeenSet(false),
     m_staticImageDeactivateSettingsHasBeenSet(false),
     m_staticImageOutputActivateSettingsHasBeenSet(false),
-    m_staticImageOutputDeactivateSettingsHasBeenSet(false)
+    m_staticImageOutputDeactivateSettingsHasBeenSet(false),
+    m_id3SegmentTaggingSettingsHasBeenSet(false),
+    m_timedMetadataSettingsHasBeenSet(false)
 {
 }
 
-ScheduleActionSettings::ScheduleActionSettings(JsonView jsonValue) : 
-    m_hlsId3SegmentTaggingSettingsHasBeenSet(false),
-    m_hlsTimedMetadataSettingsHasBeenSet(false),
-    m_inputPrepareSettingsHasBeenSet(false),
-    m_inputSwitchSettingsHasBeenSet(false),
-    m_motionGraphicsImageActivateSettingsHasBeenSet(false),
-    m_motionGraphicsImageDeactivateSettingsHasBeenSet(false),
-    m_pauseStateSettingsHasBeenSet(false),
-    m_scte35InputSettingsHasBeenSet(false),
-    m_scte35ReturnToNetworkSettingsHasBeenSet(false),
-    m_scte35SpliceInsertSettingsHasBeenSet(false),
-    m_scte35TimeSignalSettingsHasBeenSet(false),
-    m_staticImageActivateSettingsHasBeenSet(false),
-    m_staticImageDeactivateSettingsHasBeenSet(false),
-    m_staticImageOutputActivateSettingsHasBeenSet(false),
-    m_staticImageOutputDeactivateSettingsHasBeenSet(false)
+ScheduleActionSettings::ScheduleActionSettings(JsonView jsonValue)
+  : ScheduleActionSettings()
 {
   *this = jsonValue;
 }
@@ -164,6 +152,20 @@ ScheduleActionSettings& ScheduleActionSettings::operator =(JsonView jsonValue)
     m_staticImageOutputDeactivateSettingsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("id3SegmentTaggingSettings"))
+  {
+    m_id3SegmentTaggingSettings = jsonValue.GetObject("id3SegmentTaggingSettings");
+
+    m_id3SegmentTaggingSettingsHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("timedMetadataSettings"))
+  {
+    m_timedMetadataSettings = jsonValue.GetObject("timedMetadataSettings");
+
+    m_timedMetadataSettingsHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -258,6 +260,18 @@ JsonValue ScheduleActionSettings::Jsonize() const
   if(m_staticImageOutputDeactivateSettingsHasBeenSet)
   {
    payload.WithObject("staticImageOutputDeactivateSettings", m_staticImageOutputDeactivateSettings.Jsonize());
+
+  }
+
+  if(m_id3SegmentTaggingSettingsHasBeenSet)
+  {
+   payload.WithObject("id3SegmentTaggingSettings", m_id3SegmentTaggingSettings.Jsonize());
+
+  }
+
+  if(m_timedMetadataSettingsHasBeenSet)
+  {
+   payload.WithObject("timedMetadataSettings", m_timedMetadataSettings.Jsonize());
 
   }
 

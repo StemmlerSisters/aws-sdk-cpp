@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/kms/KMS_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/kms/KMSServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/kms/KMSErrorMarshaller.h>
 
 namespace Aws
 {
 namespace KMS
 {
+  AWS_KMS_API extern const char SERVICE_NAME[];
   /**
    * <fullname>Key Management Service</fullname> <p>Key Management Service (KMS) is
    * an encryption and key management web service. This guide describes the KMS
@@ -79,12 +83,20 @@ namespace KMS
    * <a>GenerateDataKey</a> </p> </li> <li> <p>
    * <a>GenerateDataKeyWithoutPlaintext</a> </p> </li> </ul>
    */
-  class AWS_KMS_API KMSClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<KMSClient>
+  class AWS_KMS_API KMSClient : smithy::client::AwsSmithyClientT<Aws::KMS::SERVICE_NAME,
+      Aws::KMS::KMSClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      KMSEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::KMSErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<KMSClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "KMS"; }
 
       typedef KMSClientConfiguration ClientConfigurationType;
       typedef KMSEndpointProvider EndpointProviderType;
@@ -542,10 +554,15 @@ namespace KMS
          * contain an RSA key pair, Elliptic Curve (ECC) key pair, or an SM2 key pair
          * (China Regions only). The private key in an asymmetric KMS key never leaves KMS
          * unencrypted. However, you can use the <a>GetPublicKey</a> operation to download
-         * the public key so it can be used outside of KMS. KMS keys with RSA or SM2 key
-         * pairs can be used to encrypt or decrypt data or sign and verify messages (but
-         * not both). KMS keys with ECC key pairs can be used only to sign and verify
-         * messages. For information about asymmetric KMS keys, see <a
+         * the public key so it can be used outside of KMS. Each KMS key can have only one
+         * key usage. KMS keys with RSA key pairs can be used to encrypt and decrypt data
+         * or sign and verify messages (but not both). KMS keys with NIST-recommended ECC
+         * key pairs can be used to sign and verify messages or derive shared secrets (but
+         * not both). KMS keys with <code>ECC_SECG_P256K1</code> can be used only to sign
+         * and verify messages. KMS keys with SM2 key pairs (China Regions only) can be
+         * used to either encrypt and decrypt data, sign and verify messages, or derive
+         * shared secrets (you must choose one key usage type). For information about
+         * asymmetric KMS keys, see <a
          * href="https://docs.aws.amazon.com/kms/latest/developerguide/symmetric-asymmetric.html">Asymmetric
          * KMS keys</a> in the <i>Key Management Service Developer Guide</i>.</p> <p> </p>
          * </dd> <dt>HMAC KMS key</dt> <dd> <p>To create an HMAC KMS key, set the
@@ -655,13 +672,13 @@ namespace KMS
          * href="http://docs.aws.amazon.com/goto/WebAPI/kms-2014-11-01/CreateKey">AWS API
          * Reference</a></p>
          */
-        virtual Model::CreateKeyOutcome CreateKey(const Model::CreateKeyRequest& request) const;
+        virtual Model::CreateKeyOutcome CreateKey(const Model::CreateKeyRequest& request = {}) const;
 
         /**
          * A Callable wrapper for CreateKey that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename CreateKeyRequestT = Model::CreateKeyRequest>
-        Model::CreateKeyOutcomeCallable CreateKeyCallable(const CreateKeyRequestT& request) const
+        Model::CreateKeyOutcomeCallable CreateKeyCallable(const CreateKeyRequestT& request = {}) const
         {
             return SubmitCallable(&KMSClient::CreateKey, request);
         }
@@ -670,7 +687,7 @@ namespace KMS
          * An Async wrapper for CreateKey that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename CreateKeyRequestT = Model::CreateKeyRequest>
-        void CreateKeyAsync(const CreateKeyRequestT& request, const CreateKeyResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void CreateKeyAsync(const CreateKeyResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const CreateKeyRequestT& request = {}) const
         {
             return SubmitAsync(&KMSClient::CreateKey, request, handler, context);
         }
@@ -930,6 +947,87 @@ namespace KMS
         }
 
         /**
+         * <p>Derives a shared secret using a key agreement algorithm.</p>  <p>You
+         * must use an asymmetric NIST-recommended elliptic curve (ECC) or SM2 (China
+         * Regions only) KMS key pair with a <code>KeyUsage</code> value of
+         * <code>KEY_AGREEMENT</code> to call DeriveSharedSecret.</p> 
+         * <p>DeriveSharedSecret uses the <a
+         * href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-56Ar3.pdf#page=60">Elliptic
+         * Curve Cryptography Cofactor Diffie-Hellman Primitive</a> (ECDH) to establish a
+         * key agreement between two peers by deriving a shared secret from their elliptic
+         * curve public-private key pairs. You can use the raw shared secret that
+         * DeriveSharedSecret returns to derive a symmetric key that can encrypt and
+         * decrypt data that is sent between the two peers, or that can generate and verify
+         * HMACs. KMS recommends that you follow <a
+         * href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-56Cr2.pdf">NIST
+         * recommendations for key derivation</a> when using the raw shared secret to
+         * derive a symmetric key.</p> <p>The following workflow demonstrates how to
+         * establish key agreement over an insecure communication channel using
+         * DeriveSharedSecret.</p> <ol> <li> <p> <b>Alice</b> calls <a>CreateKey</a> to
+         * create an asymmetric KMS key pair with a <code>KeyUsage</code> value of
+         * <code>KEY_AGREEMENT</code>.</p> <p>The asymmetric KMS key must use a
+         * NIST-recommended elliptic curve (ECC) or SM2 (China Regions only) key spec.</p>
+         * </li> <li> <p> <b>Bob</b> creates an elliptic curve key pair.</p> <p>Bob can
+         * call <a>CreateKey</a> to create an asymmetric KMS key pair or generate a key
+         * pair outside of KMS. Bob's key pair must use the same NIST-recommended elliptic
+         * curve (ECC) or SM2 (China Regions ony) curve as Alice.</p> </li> <li> <p>Alice
+         * and Bob <b>exchange their public keys</b> through an insecure communication
+         * channel (like the internet).</p> <p>Use <a>GetPublicKey</a> to download the
+         * public key of your asymmetric KMS key pair.</p>  <p>KMS strongly
+         * recommends verifying that the public key you receive came from the expected
+         * party before using it to derive a shared secret.</p>  </li> <li> <p>
+         * <b>Alice</b> calls DeriveSharedSecret.</p> <p>KMS uses the private key from the
+         * KMS key pair generated in <b>Step 1</b>, Bob's public key, and the Elliptic
+         * Curve Cryptography Cofactor Diffie-Hellman Primitive to derive the shared
+         * secret. The private key in your KMS key pair never leaves KMS unencrypted.
+         * DeriveSharedSecret returns the raw shared secret.</p> </li> <li> <p> <b>Bob</b>
+         * uses the Elliptic Curve Cryptography Cofactor Diffie-Hellman Primitive to
+         * calculate the same raw secret using his private key and Alice's public key.</p>
+         * </li> </ol> <p>To derive a shared secret you must provide a key agreement
+         * algorithm, the private key of the caller's asymmetric NIST-recommended elliptic
+         * curve or SM2 (China Regions only) KMS key pair, and the public key from your
+         * peer's NIST-recommended elliptic curve or SM2 (China Regions only) key pair. The
+         * public key can be from another asymmetric KMS key pair or from a key pair
+         * generated outside of KMS, but both key pairs must be on the same elliptic
+         * curve.</p> <p>The KMS key that you use for this operation must be in a
+         * compatible key state. For details, see <a
+         * href="https://docs.aws.amazon.com/kms/latest/developerguide/key-state.html">Key
+         * states of KMS keys</a> in the <i>Key Management Service Developer Guide</i>.</p>
+         * <p> <b>Cross-account use</b>: Yes. To perform this operation with a KMS key in a
+         * different Amazon Web Services account, specify the key ARN or alias ARN in the
+         * value of the <code>KeyId</code> parameter.</p> <p> <b>Required permissions</b>:
+         * <a
+         * href="https://docs.aws.amazon.com/kms/latest/developerguide/kms-api-permissions-reference.html">kms:DeriveSharedSecret</a>
+         * (key policy)</p> <p> <b>Related operations:</b> </p> <ul> <li> <p>
+         * <a>CreateKey</a> </p> </li> <li> <p> <a>GetPublicKey</a> </p> </li> <li> <p>
+         * <a>DescribeKey</a> </p> </li> </ul> <p> <b>Eventual consistency</b>: The KMS API
+         * follows an eventual consistency model. For more information, see <a
+         * href="https://docs.aws.amazon.com/kms/latest/developerguide/programming-eventual-consistency.html">KMS
+         * eventual consistency</a>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/kms-2014-11-01/DeriveSharedSecret">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeriveSharedSecretOutcome DeriveSharedSecret(const Model::DeriveSharedSecretRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeriveSharedSecret that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeriveSharedSecretRequestT = Model::DeriveSharedSecretRequest>
+        Model::DeriveSharedSecretOutcomeCallable DeriveSharedSecretCallable(const DeriveSharedSecretRequestT& request) const
+        {
+            return SubmitCallable(&KMSClient::DeriveSharedSecret, request);
+        }
+
+        /**
+         * An Async wrapper for DeriveSharedSecret that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeriveSharedSecretRequestT = Model::DeriveSharedSecretRequest>
+        void DeriveSharedSecretAsync(const DeriveSharedSecretRequestT& request, const DeriveSharedSecretResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&KMSClient::DeriveSharedSecret, request, handler, context);
+        }
+
+        /**
          * <p>Gets information about <a
          * href="https://docs.aws.amazon.com/kms/latest/developerguide/custom-key-store-overview.html">custom
          * key stores</a> in the account and Region.</p> <p> This operation is part of the
@@ -977,13 +1075,13 @@ namespace KMS
          * href="http://docs.aws.amazon.com/goto/WebAPI/kms-2014-11-01/DescribeCustomKeyStores">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeCustomKeyStoresOutcome DescribeCustomKeyStores(const Model::DescribeCustomKeyStoresRequest& request) const;
+        virtual Model::DescribeCustomKeyStoresOutcome DescribeCustomKeyStores(const Model::DescribeCustomKeyStoresRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeCustomKeyStores that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeCustomKeyStoresRequestT = Model::DescribeCustomKeyStoresRequest>
-        Model::DescribeCustomKeyStoresOutcomeCallable DescribeCustomKeyStoresCallable(const DescribeCustomKeyStoresRequestT& request) const
+        Model::DescribeCustomKeyStoresOutcomeCallable DescribeCustomKeyStoresCallable(const DescribeCustomKeyStoresRequestT& request = {}) const
         {
             return SubmitCallable(&KMSClient::DescribeCustomKeyStores, request);
         }
@@ -992,7 +1090,7 @@ namespace KMS
          * An Async wrapper for DescribeCustomKeyStores that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeCustomKeyStoresRequestT = Model::DescribeCustomKeyStoresRequest>
-        void DescribeCustomKeyStoresAsync(const DescribeCustomKeyStoresRequestT& request, const DescribeCustomKeyStoresResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeCustomKeyStoresAsync(const DescribeCustomKeyStoresResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeCustomKeyStoresRequestT& request = {}) const
         {
             return SubmitAsync(&KMSClient::DescribeCustomKeyStores, request, handler, context);
         }
@@ -1880,13 +1978,13 @@ namespace KMS
          * href="http://docs.aws.amazon.com/goto/WebAPI/kms-2014-11-01/GenerateRandom">AWS
          * API Reference</a></p>
          */
-        virtual Model::GenerateRandomOutcome GenerateRandom(const Model::GenerateRandomRequest& request) const;
+        virtual Model::GenerateRandomOutcome GenerateRandom(const Model::GenerateRandomRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GenerateRandom that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GenerateRandomRequestT = Model::GenerateRandomRequest>
-        Model::GenerateRandomOutcomeCallable GenerateRandomCallable(const GenerateRandomRequestT& request) const
+        Model::GenerateRandomOutcomeCallable GenerateRandomCallable(const GenerateRandomRequestT& request = {}) const
         {
             return SubmitCallable(&KMSClient::GenerateRandom, request);
         }
@@ -1895,7 +1993,7 @@ namespace KMS
          * An Async wrapper for GenerateRandom that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GenerateRandomRequestT = Model::GenerateRandomRequest>
-        void GenerateRandomAsync(const GenerateRandomRequestT& request, const GenerateRandomResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GenerateRandomAsync(const GenerateRandomResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GenerateRandomRequestT& request = {}) const
         {
             return SubmitAsync(&KMSClient::GenerateRandom, request, handler, context);
         }
@@ -2041,18 +2139,18 @@ namespace KMS
          * the original key material</a> into a KMS key whose key material expired or was
          * deleted.</p> <p> <code>GetParametersForImport</code> returns the items that you
          * need to import your key material.</p> <ul> <li> <p>The public key (or "wrapping
-         * key") of an asymmetric key pair that KMS generates.</p> <p>You will use this
-         * public key to encrypt ("wrap") your key material while it's in transit to KMS.
-         * </p> </li> <li> <p>A import token that ensures that KMS can decrypt your key
-         * material and associate it with the correct KMS key.</p> </li> </ul> <p>The
-         * public key and its import token are permanently linked and must be used
-         * together. Each public key and import token set is valid for 24 hours. The
-         * expiration date and time appear in the <code>ParametersValidTo</code> field in
-         * the <code>GetParametersForImport</code> response. You cannot use an expired
-         * public key or import token in an <a>ImportKeyMaterial</a> request. If your key
-         * and token expire, send another <code>GetParametersForImport</code> request.</p>
-         * <p> <code>GetParametersForImport</code> requires the following information:</p>
-         * <ul> <li> <p>The key ID of the KMS key for which you are importing the key
+         * key") of an RSA key pair that KMS generates.</p> <p>You will use this public key
+         * to encrypt ("wrap") your key material while it's in transit to KMS. </p> </li>
+         * <li> <p>A import token that ensures that KMS can decrypt your key material and
+         * associate it with the correct KMS key.</p> </li> </ul> <p>The public key and its
+         * import token are permanently linked and must be used together. Each public key
+         * and import token set is valid for 24 hours. The expiration date and time appear
+         * in the <code>ParametersValidTo</code> field in the
+         * <code>GetParametersForImport</code> response. You cannot use an expired public
+         * key or import token in an <a>ImportKeyMaterial</a> request. If your key and
+         * token expire, send another <code>GetParametersForImport</code> request.</p> <p>
+         * <code>GetParametersForImport</code> requires the following information:</p> <ul>
+         * <li> <p>The key ID of the KMS key for which you are importing the key
          * material.</p> </li> <li> <p>The key spec of the public key ("wrapping key") that
          * you will use to encrypt your key material during import.</p> </li> <li> <p>The
          * wrapping algorithm that you will use with the public key to encrypt your key
@@ -2117,7 +2215,8 @@ namespace KMS
          * The type of key material in the public key, such as <code>RSA_4096</code> or
          * <code>ECC_NIST_P521</code>.</p> </li> <li> <p> <a
          * href="https://docs.aws.amazon.com/kms/latest/APIReference/API_GetPublicKey.html#KMS-GetPublicKey-response-KeyUsage">KeyUsage</a>:
-         * Whether the key is used for encryption or signing.</p> </li> <li> <p> <a
+         * Whether the key is used for encryption, signing, or deriving a shared
+         * secret.</p> </li> <li> <p> <a
          * href="https://docs.aws.amazon.com/kms/latest/APIReference/API_GetPublicKey.html#KMS-GetPublicKey-response-EncryptionAlgorithms">EncryptionAlgorithms</a>
          * or <a
          * href="https://docs.aws.amazon.com/kms/latest/APIReference/API_GetPublicKey.html#KMS-GetPublicKey-response-SigningAlgorithms">SigningAlgorithms</a>:
@@ -2315,13 +2414,13 @@ namespace KMS
          * href="http://docs.aws.amazon.com/goto/WebAPI/kms-2014-11-01/ListAliases">AWS API
          * Reference</a></p>
          */
-        virtual Model::ListAliasesOutcome ListAliases(const Model::ListAliasesRequest& request) const;
+        virtual Model::ListAliasesOutcome ListAliases(const Model::ListAliasesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAliases that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAliasesRequestT = Model::ListAliasesRequest>
-        Model::ListAliasesOutcomeCallable ListAliasesCallable(const ListAliasesRequestT& request) const
+        Model::ListAliasesOutcomeCallable ListAliasesCallable(const ListAliasesRequestT& request = {}) const
         {
             return SubmitCallable(&KMSClient::ListAliases, request);
         }
@@ -2330,7 +2429,7 @@ namespace KMS
          * An Async wrapper for ListAliases that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAliasesRequestT = Model::ListAliasesRequest>
-        void ListAliasesAsync(const ListAliasesRequestT& request, const ListAliasesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAliasesAsync(const ListAliasesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAliasesRequestT& request = {}) const
         {
             return SubmitAsync(&KMSClient::ListAliases, request, handler, context);
         }
@@ -2479,13 +2578,13 @@ namespace KMS
          * href="http://docs.aws.amazon.com/goto/WebAPI/kms-2014-11-01/ListKeys">AWS API
          * Reference</a></p>
          */
-        virtual Model::ListKeysOutcome ListKeys(const Model::ListKeysRequest& request) const;
+        virtual Model::ListKeysOutcome ListKeys(const Model::ListKeysRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListKeys that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListKeysRequestT = Model::ListKeysRequest>
-        Model::ListKeysOutcomeCallable ListKeysCallable(const ListKeysRequestT& request) const
+        Model::ListKeysOutcomeCallable ListKeysCallable(const ListKeysRequestT& request = {}) const
         {
             return SubmitCallable(&KMSClient::ListKeys, request);
         }
@@ -2494,7 +2593,7 @@ namespace KMS
          * An Async wrapper for ListKeys that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListKeysRequestT = Model::ListKeysRequest>
-        void ListKeysAsync(const ListKeysRequestT& request, const ListKeysResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListKeysAsync(const ListKeysResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListKeysRequestT& request = {}) const
         {
             return SubmitAsync(&KMSClient::ListKeys, request, handler, context);
         }
@@ -2879,13 +2978,13 @@ namespace KMS
          * href="http://docs.aws.amazon.com/goto/WebAPI/kms-2014-11-01/RetireGrant">AWS API
          * Reference</a></p>
          */
-        virtual Model::RetireGrantOutcome RetireGrant(const Model::RetireGrantRequest& request) const;
+        virtual Model::RetireGrantOutcome RetireGrant(const Model::RetireGrantRequest& request = {}) const;
 
         /**
          * A Callable wrapper for RetireGrant that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename RetireGrantRequestT = Model::RetireGrantRequest>
-        Model::RetireGrantOutcomeCallable RetireGrantCallable(const RetireGrantRequestT& request) const
+        Model::RetireGrantOutcomeCallable RetireGrantCallable(const RetireGrantRequestT& request = {}) const
         {
             return SubmitCallable(&KMSClient::RetireGrant, request);
         }
@@ -2894,7 +2993,7 @@ namespace KMS
          * An Async wrapper for RetireGrant that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename RetireGrantRequestT = Model::RetireGrantRequest>
-        void RetireGrantAsync(const RetireGrantRequestT& request, const RetireGrantResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void RetireGrantAsync(const RetireGrantResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const RetireGrantRequestT& request = {}) const
         {
             return SubmitAsync(&KMSClient::RetireGrant, request, handler, context);
         }
@@ -3709,11 +3808,7 @@ namespace KMS
       std::shared_ptr<KMSEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<KMSClient>;
-      void init(const KMSClientConfiguration& clientConfiguration);
 
-      KMSClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<KMSEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace KMS

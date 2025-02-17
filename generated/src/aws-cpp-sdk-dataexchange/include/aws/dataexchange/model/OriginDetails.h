@@ -37,50 +37,40 @@ namespace Model
     AWS_DATAEXCHANGE_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The product ID of the origin of the data set.</p>
      */
     inline const Aws::String& GetProductId() const{ return m_productId; }
-
-    /**
-     * <p>The product ID of the origin of the data set.</p>
-     */
     inline bool ProductIdHasBeenSet() const { return m_productIdHasBeenSet; }
-
-    /**
-     * <p>The product ID of the origin of the data set.</p>
-     */
     inline void SetProductId(const Aws::String& value) { m_productIdHasBeenSet = true; m_productId = value; }
-
-    /**
-     * <p>The product ID of the origin of the data set.</p>
-     */
     inline void SetProductId(Aws::String&& value) { m_productIdHasBeenSet = true; m_productId = std::move(value); }
-
-    /**
-     * <p>The product ID of the origin of the data set.</p>
-     */
     inline void SetProductId(const char* value) { m_productIdHasBeenSet = true; m_productId.assign(value); }
-
-    /**
-     * <p>The product ID of the origin of the data set.</p>
-     */
     inline OriginDetails& WithProductId(const Aws::String& value) { SetProductId(value); return *this;}
-
-    /**
-     * <p>The product ID of the origin of the data set.</p>
-     */
     inline OriginDetails& WithProductId(Aws::String&& value) { SetProductId(std::move(value)); return *this;}
-
-    /**
-     * <p>The product ID of the origin of the data set.</p>
-     */
     inline OriginDetails& WithProductId(const char* value) { SetProductId(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The ID of the data grant.</p>
+     */
+    inline const Aws::String& GetDataGrantId() const{ return m_dataGrantId; }
+    inline bool DataGrantIdHasBeenSet() const { return m_dataGrantIdHasBeenSet; }
+    inline void SetDataGrantId(const Aws::String& value) { m_dataGrantIdHasBeenSet = true; m_dataGrantId = value; }
+    inline void SetDataGrantId(Aws::String&& value) { m_dataGrantIdHasBeenSet = true; m_dataGrantId = std::move(value); }
+    inline void SetDataGrantId(const char* value) { m_dataGrantIdHasBeenSet = true; m_dataGrantId.assign(value); }
+    inline OriginDetails& WithDataGrantId(const Aws::String& value) { SetDataGrantId(value); return *this;}
+    inline OriginDetails& WithDataGrantId(Aws::String&& value) { SetDataGrantId(std::move(value)); return *this;}
+    inline OriginDetails& WithDataGrantId(const char* value) { SetDataGrantId(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_productId;
     bool m_productIdHasBeenSet = false;
+
+    Aws::String m_dataGrantId;
+    bool m_dataGrantIdHasBeenSet = false;
   };
 
 } // namespace Model

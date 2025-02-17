@@ -20,17 +20,14 @@ namespace Model
 
 AwsCredentials::AwsCredentials() : 
     m_accessKeyIdHasBeenSet(false),
-    m_expirationHasBeenSet(false),
     m_secretAccessKeyHasBeenSet(false),
-    m_sessionTokenHasBeenSet(false)
+    m_sessionTokenHasBeenSet(false),
+    m_expirationHasBeenSet(false)
 {
 }
 
-AwsCredentials::AwsCredentials(JsonView jsonValue) : 
-    m_accessKeyIdHasBeenSet(false),
-    m_expirationHasBeenSet(false),
-    m_secretAccessKeyHasBeenSet(false),
-    m_sessionTokenHasBeenSet(false)
+AwsCredentials::AwsCredentials(JsonView jsonValue)
+  : AwsCredentials()
 {
   *this = jsonValue;
 }
@@ -42,13 +39,6 @@ AwsCredentials& AwsCredentials::operator =(JsonView jsonValue)
     m_accessKeyId = jsonValue.GetString("accessKeyId");
 
     m_accessKeyIdHasBeenSet = true;
-  }
-
-  if(jsonValue.ValueExists("expiration"))
-  {
-    m_expiration = jsonValue.GetString("expiration");
-
-    m_expirationHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("secretAccessKey"))
@@ -65,6 +55,13 @@ AwsCredentials& AwsCredentials::operator =(JsonView jsonValue)
     m_sessionTokenHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("expiration"))
+  {
+    m_expiration = jsonValue.GetString("expiration");
+
+    m_expirationHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -78,11 +75,6 @@ JsonValue AwsCredentials::Jsonize() const
 
   }
 
-  if(m_expirationHasBeenSet)
-  {
-   payload.WithString("expiration", m_expiration.ToGmtString(Aws::Utils::DateFormat::ISO_8601));
-  }
-
   if(m_secretAccessKeyHasBeenSet)
   {
    payload.WithString("secretAccessKey", m_secretAccessKey);
@@ -93,6 +85,11 @@ JsonValue AwsCredentials::Jsonize() const
   {
    payload.WithString("sessionToken", m_sessionToken);
 
+  }
+
+  if(m_expirationHasBeenSet)
+  {
+   payload.WithString("expiration", m_expiration.ToGmtString(Aws::Utils::DateFormat::ISO_8601));
   }
 
   return payload;

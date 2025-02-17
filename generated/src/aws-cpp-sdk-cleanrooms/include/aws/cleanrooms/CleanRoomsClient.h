@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/cleanrooms/CleanRooms_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/cleanrooms/CleanRoomsServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/cleanrooms/CleanRoomsErrorMarshaller.h>
 
 namespace Aws
 {
 namespace CleanRooms
 {
+  AWS_CLEANROOMS_API extern const char SERVICE_NAME[];
   /**
    * <p>Welcome to the <i>Clean Rooms API Reference</i>.</p> <p>Clean Rooms is an
    * Amazon Web Services service that helps multiple parties to join their data
@@ -29,12 +33,20 @@ namespace CleanRooms
    * href="https://docs.aws.amazon.com/clean-rooms/latest/sql-reference/sql-reference.html">Clean
    * Rooms SQL Reference</a>.</p>
    */
-  class AWS_CLEANROOMS_API CleanRoomsClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<CleanRoomsClient>
+  class AWS_CLEANROOMS_API CleanRoomsClient : smithy::client::AwsSmithyClientT<Aws::CleanRooms::SERVICE_NAME,
+      Aws::CleanRooms::CleanRoomsClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      CleanRoomsEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::CleanRoomsErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<CleanRoomsClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "CleanRooms"; }
 
       typedef CleanRoomsClientConfiguration ClientConfigurationType;
       typedef CleanRoomsEndpointProvider EndpointProviderType;
@@ -319,6 +331,82 @@ namespace CleanRooms
         }
 
         /**
+         * <p> Creates a new analysis rule for an associated configured
+         * table.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/CreateConfiguredTableAssociationAnalysisRule">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateConfiguredTableAssociationAnalysisRuleOutcome CreateConfiguredTableAssociationAnalysisRule(const Model::CreateConfiguredTableAssociationAnalysisRuleRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateConfiguredTableAssociationAnalysisRule that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateConfiguredTableAssociationAnalysisRuleRequestT = Model::CreateConfiguredTableAssociationAnalysisRuleRequest>
+        Model::CreateConfiguredTableAssociationAnalysisRuleOutcomeCallable CreateConfiguredTableAssociationAnalysisRuleCallable(const CreateConfiguredTableAssociationAnalysisRuleRequestT& request) const
+        {
+            return SubmitCallable(&CleanRoomsClient::CreateConfiguredTableAssociationAnalysisRule, request);
+        }
+
+        /**
+         * An Async wrapper for CreateConfiguredTableAssociationAnalysisRule that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateConfiguredTableAssociationAnalysisRuleRequestT = Model::CreateConfiguredTableAssociationAnalysisRuleRequest>
+        void CreateConfiguredTableAssociationAnalysisRuleAsync(const CreateConfiguredTableAssociationAnalysisRuleRequestT& request, const CreateConfiguredTableAssociationAnalysisRuleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CleanRoomsClient::CreateConfiguredTableAssociationAnalysisRule, request, handler, context);
+        }
+
+        /**
+         * <p>Creates an ID mapping table.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/CreateIdMappingTable">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateIdMappingTableOutcome CreateIdMappingTable(const Model::CreateIdMappingTableRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateIdMappingTable that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateIdMappingTableRequestT = Model::CreateIdMappingTableRequest>
+        Model::CreateIdMappingTableOutcomeCallable CreateIdMappingTableCallable(const CreateIdMappingTableRequestT& request) const
+        {
+            return SubmitCallable(&CleanRoomsClient::CreateIdMappingTable, request);
+        }
+
+        /**
+         * An Async wrapper for CreateIdMappingTable that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateIdMappingTableRequestT = Model::CreateIdMappingTableRequest>
+        void CreateIdMappingTableAsync(const CreateIdMappingTableRequestT& request, const CreateIdMappingTableResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CleanRoomsClient::CreateIdMappingTable, request, handler, context);
+        }
+
+        /**
+         * <p>Creates an ID namespace association.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/CreateIdNamespaceAssociation">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateIdNamespaceAssociationOutcome CreateIdNamespaceAssociation(const Model::CreateIdNamespaceAssociationRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateIdNamespaceAssociation that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateIdNamespaceAssociationRequestT = Model::CreateIdNamespaceAssociationRequest>
+        Model::CreateIdNamespaceAssociationOutcomeCallable CreateIdNamespaceAssociationCallable(const CreateIdNamespaceAssociationRequestT& request) const
+        {
+            return SubmitCallable(&CleanRoomsClient::CreateIdNamespaceAssociation, request);
+        }
+
+        /**
+         * An Async wrapper for CreateIdNamespaceAssociation that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateIdNamespaceAssociationRequestT = Model::CreateIdNamespaceAssociationRequest>
+        void CreateIdNamespaceAssociationAsync(const CreateIdNamespaceAssociationRequestT& request, const CreateIdNamespaceAssociationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CleanRoomsClient::CreateIdNamespaceAssociation, request, handler, context);
+        }
+
+        /**
          * <p>Creates a membership for a specific collaboration identifier and joins the
          * collaboration.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/CreateMembership">AWS
@@ -525,6 +613,82 @@ namespace CleanRooms
         }
 
         /**
+         * <p>Deletes an analysis rule for a configured table association.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/DeleteConfiguredTableAssociationAnalysisRule">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteConfiguredTableAssociationAnalysisRuleOutcome DeleteConfiguredTableAssociationAnalysisRule(const Model::DeleteConfiguredTableAssociationAnalysisRuleRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteConfiguredTableAssociationAnalysisRule that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteConfiguredTableAssociationAnalysisRuleRequestT = Model::DeleteConfiguredTableAssociationAnalysisRuleRequest>
+        Model::DeleteConfiguredTableAssociationAnalysisRuleOutcomeCallable DeleteConfiguredTableAssociationAnalysisRuleCallable(const DeleteConfiguredTableAssociationAnalysisRuleRequestT& request) const
+        {
+            return SubmitCallable(&CleanRoomsClient::DeleteConfiguredTableAssociationAnalysisRule, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteConfiguredTableAssociationAnalysisRule that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteConfiguredTableAssociationAnalysisRuleRequestT = Model::DeleteConfiguredTableAssociationAnalysisRuleRequest>
+        void DeleteConfiguredTableAssociationAnalysisRuleAsync(const DeleteConfiguredTableAssociationAnalysisRuleRequestT& request, const DeleteConfiguredTableAssociationAnalysisRuleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CleanRoomsClient::DeleteConfiguredTableAssociationAnalysisRule, request, handler, context);
+        }
+
+        /**
+         * <p>Deletes an ID mapping table.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/DeleteIdMappingTable">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteIdMappingTableOutcome DeleteIdMappingTable(const Model::DeleteIdMappingTableRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteIdMappingTable that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteIdMappingTableRequestT = Model::DeleteIdMappingTableRequest>
+        Model::DeleteIdMappingTableOutcomeCallable DeleteIdMappingTableCallable(const DeleteIdMappingTableRequestT& request) const
+        {
+            return SubmitCallable(&CleanRoomsClient::DeleteIdMappingTable, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteIdMappingTable that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteIdMappingTableRequestT = Model::DeleteIdMappingTableRequest>
+        void DeleteIdMappingTableAsync(const DeleteIdMappingTableRequestT& request, const DeleteIdMappingTableResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CleanRoomsClient::DeleteIdMappingTable, request, handler, context);
+        }
+
+        /**
+         * <p>Deletes an ID namespace association.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/DeleteIdNamespaceAssociation">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteIdNamespaceAssociationOutcome DeleteIdNamespaceAssociation(const Model::DeleteIdNamespaceAssociationRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteIdNamespaceAssociation that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteIdNamespaceAssociationRequestT = Model::DeleteIdNamespaceAssociationRequest>
+        Model::DeleteIdNamespaceAssociationOutcomeCallable DeleteIdNamespaceAssociationCallable(const DeleteIdNamespaceAssociationRequestT& request) const
+        {
+            return SubmitCallable(&CleanRoomsClient::DeleteIdNamespaceAssociation, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteIdNamespaceAssociation that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteIdNamespaceAssociationRequestT = Model::DeleteIdNamespaceAssociationRequest>
+        void DeleteIdNamespaceAssociationAsync(const DeleteIdNamespaceAssociationRequestT& request, const DeleteIdNamespaceAssociationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CleanRoomsClient::DeleteIdNamespaceAssociation, request, handler, context);
+        }
+
+        /**
          * <p>Removes the specified member from a collaboration. The removed member is
          * placed in the Removed status and can't interact with the collaboration. The
          * removed member's data is inaccessible to active members of the
@@ -707,6 +871,32 @@ namespace CleanRooms
         }
 
         /**
+         * <p>Retrieves an ID namespace association from a specific
+         * collaboration.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/GetCollaborationIdNamespaceAssociation">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetCollaborationIdNamespaceAssociationOutcome GetCollaborationIdNamespaceAssociation(const Model::GetCollaborationIdNamespaceAssociationRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetCollaborationIdNamespaceAssociation that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetCollaborationIdNamespaceAssociationRequestT = Model::GetCollaborationIdNamespaceAssociationRequest>
+        Model::GetCollaborationIdNamespaceAssociationOutcomeCallable GetCollaborationIdNamespaceAssociationCallable(const GetCollaborationIdNamespaceAssociationRequestT& request) const
+        {
+            return SubmitCallable(&CleanRoomsClient::GetCollaborationIdNamespaceAssociation, request);
+        }
+
+        /**
+         * An Async wrapper for GetCollaborationIdNamespaceAssociation that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetCollaborationIdNamespaceAssociationRequestT = Model::GetCollaborationIdNamespaceAssociationRequest>
+        void GetCollaborationIdNamespaceAssociationAsync(const GetCollaborationIdNamespaceAssociationRequestT& request, const GetCollaborationIdNamespaceAssociationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CleanRoomsClient::GetCollaborationIdNamespaceAssociation, request, handler, context);
+        }
+
+        /**
          * <p>Returns details about a specified privacy budget template.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/GetCollaborationPrivacyBudgetTemplate">AWS
@@ -831,6 +1021,82 @@ namespace CleanRooms
         void GetConfiguredTableAssociationAsync(const GetConfiguredTableAssociationRequestT& request, const GetConfiguredTableAssociationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&CleanRoomsClient::GetConfiguredTableAssociation, request, handler, context);
+        }
+
+        /**
+         * <p> Retrieves the analysis rule for a configured table
+         * association.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/GetConfiguredTableAssociationAnalysisRule">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetConfiguredTableAssociationAnalysisRuleOutcome GetConfiguredTableAssociationAnalysisRule(const Model::GetConfiguredTableAssociationAnalysisRuleRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetConfiguredTableAssociationAnalysisRule that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetConfiguredTableAssociationAnalysisRuleRequestT = Model::GetConfiguredTableAssociationAnalysisRuleRequest>
+        Model::GetConfiguredTableAssociationAnalysisRuleOutcomeCallable GetConfiguredTableAssociationAnalysisRuleCallable(const GetConfiguredTableAssociationAnalysisRuleRequestT& request) const
+        {
+            return SubmitCallable(&CleanRoomsClient::GetConfiguredTableAssociationAnalysisRule, request);
+        }
+
+        /**
+         * An Async wrapper for GetConfiguredTableAssociationAnalysisRule that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetConfiguredTableAssociationAnalysisRuleRequestT = Model::GetConfiguredTableAssociationAnalysisRuleRequest>
+        void GetConfiguredTableAssociationAnalysisRuleAsync(const GetConfiguredTableAssociationAnalysisRuleRequestT& request, const GetConfiguredTableAssociationAnalysisRuleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CleanRoomsClient::GetConfiguredTableAssociationAnalysisRule, request, handler, context);
+        }
+
+        /**
+         * <p>Retrieves an ID mapping table.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/GetIdMappingTable">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetIdMappingTableOutcome GetIdMappingTable(const Model::GetIdMappingTableRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetIdMappingTable that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetIdMappingTableRequestT = Model::GetIdMappingTableRequest>
+        Model::GetIdMappingTableOutcomeCallable GetIdMappingTableCallable(const GetIdMappingTableRequestT& request) const
+        {
+            return SubmitCallable(&CleanRoomsClient::GetIdMappingTable, request);
+        }
+
+        /**
+         * An Async wrapper for GetIdMappingTable that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetIdMappingTableRequestT = Model::GetIdMappingTableRequest>
+        void GetIdMappingTableAsync(const GetIdMappingTableRequestT& request, const GetIdMappingTableResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CleanRoomsClient::GetIdMappingTable, request, handler, context);
+        }
+
+        /**
+         * <p>Retrieves an ID namespace association.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/GetIdNamespaceAssociation">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetIdNamespaceAssociationOutcome GetIdNamespaceAssociation(const Model::GetIdNamespaceAssociationRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetIdNamespaceAssociation that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetIdNamespaceAssociationRequestT = Model::GetIdNamespaceAssociationRequest>
+        Model::GetIdNamespaceAssociationOutcomeCallable GetIdNamespaceAssociationCallable(const GetIdNamespaceAssociationRequestT& request) const
+        {
+            return SubmitCallable(&CleanRoomsClient::GetIdNamespaceAssociation, request);
+        }
+
+        /**
+         * An Async wrapper for GetIdNamespaceAssociation that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetIdNamespaceAssociationRequestT = Model::GetIdNamespaceAssociationRequest>
+        void GetIdNamespaceAssociationAsync(const GetIdNamespaceAssociationRequestT& request, const GetIdNamespaceAssociationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CleanRoomsClient::GetIdNamespaceAssociation, request, handler, context);
         }
 
         /**
@@ -1039,6 +1305,32 @@ namespace CleanRooms
         }
 
         /**
+         * <p>Returns a list of the ID namespace associations in a
+         * collaboration.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/ListCollaborationIdNamespaceAssociations">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListCollaborationIdNamespaceAssociationsOutcome ListCollaborationIdNamespaceAssociations(const Model::ListCollaborationIdNamespaceAssociationsRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListCollaborationIdNamespaceAssociations that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListCollaborationIdNamespaceAssociationsRequestT = Model::ListCollaborationIdNamespaceAssociationsRequest>
+        Model::ListCollaborationIdNamespaceAssociationsOutcomeCallable ListCollaborationIdNamespaceAssociationsCallable(const ListCollaborationIdNamespaceAssociationsRequestT& request) const
+        {
+            return SubmitCallable(&CleanRoomsClient::ListCollaborationIdNamespaceAssociations, request);
+        }
+
+        /**
+         * An Async wrapper for ListCollaborationIdNamespaceAssociations that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListCollaborationIdNamespaceAssociationsRequestT = Model::ListCollaborationIdNamespaceAssociationsRequest>
+        void ListCollaborationIdNamespaceAssociationsAsync(const ListCollaborationIdNamespaceAssociationsRequestT& request, const ListCollaborationIdNamespaceAssociationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CleanRoomsClient::ListCollaborationIdNamespaceAssociations, request, handler, context);
+        }
+
+        /**
          * <p>Returns an array that summarizes each privacy budget template in a specified
          * collaboration.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/ListCollaborationPrivacyBudgetTemplates">AWS
@@ -1097,13 +1389,13 @@ namespace CleanRooms
          * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/ListCollaborations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListCollaborationsOutcome ListCollaborations(const Model::ListCollaborationsRequest& request) const;
+        virtual Model::ListCollaborationsOutcome ListCollaborations(const Model::ListCollaborationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListCollaborations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListCollaborationsRequestT = Model::ListCollaborationsRequest>
-        Model::ListCollaborationsOutcomeCallable ListCollaborationsCallable(const ListCollaborationsRequestT& request) const
+        Model::ListCollaborationsOutcomeCallable ListCollaborationsCallable(const ListCollaborationsRequestT& request = {}) const
         {
             return SubmitCallable(&CleanRoomsClient::ListCollaborations, request);
         }
@@ -1112,7 +1404,7 @@ namespace CleanRooms
          * An Async wrapper for ListCollaborations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListCollaborationsRequestT = Model::ListCollaborationsRequest>
-        void ListCollaborationsAsync(const ListCollaborationsRequestT& request, const ListCollaborationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListCollaborationsAsync(const ListCollaborationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListCollaborationsRequestT& request = {}) const
         {
             return SubmitAsync(&CleanRoomsClient::ListCollaborations, request, handler, context);
         }
@@ -1174,13 +1466,13 @@ namespace CleanRooms
          * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/ListConfiguredTables">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListConfiguredTablesOutcome ListConfiguredTables(const Model::ListConfiguredTablesRequest& request) const;
+        virtual Model::ListConfiguredTablesOutcome ListConfiguredTables(const Model::ListConfiguredTablesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListConfiguredTables that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListConfiguredTablesRequestT = Model::ListConfiguredTablesRequest>
-        Model::ListConfiguredTablesOutcomeCallable ListConfiguredTablesCallable(const ListConfiguredTablesRequestT& request) const
+        Model::ListConfiguredTablesOutcomeCallable ListConfiguredTablesCallable(const ListConfiguredTablesRequestT& request = {}) const
         {
             return SubmitCallable(&CleanRoomsClient::ListConfiguredTables, request);
         }
@@ -1189,9 +1481,59 @@ namespace CleanRooms
          * An Async wrapper for ListConfiguredTables that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListConfiguredTablesRequestT = Model::ListConfiguredTablesRequest>
-        void ListConfiguredTablesAsync(const ListConfiguredTablesRequestT& request, const ListConfiguredTablesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListConfiguredTablesAsync(const ListConfiguredTablesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListConfiguredTablesRequestT& request = {}) const
         {
             return SubmitAsync(&CleanRoomsClient::ListConfiguredTables, request, handler, context);
+        }
+
+        /**
+         * <p>Returns a list of ID mapping tables.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/ListIdMappingTables">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListIdMappingTablesOutcome ListIdMappingTables(const Model::ListIdMappingTablesRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListIdMappingTables that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListIdMappingTablesRequestT = Model::ListIdMappingTablesRequest>
+        Model::ListIdMappingTablesOutcomeCallable ListIdMappingTablesCallable(const ListIdMappingTablesRequestT& request) const
+        {
+            return SubmitCallable(&CleanRoomsClient::ListIdMappingTables, request);
+        }
+
+        /**
+         * An Async wrapper for ListIdMappingTables that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListIdMappingTablesRequestT = Model::ListIdMappingTablesRequest>
+        void ListIdMappingTablesAsync(const ListIdMappingTablesRequestT& request, const ListIdMappingTablesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CleanRoomsClient::ListIdMappingTables, request, handler, context);
+        }
+
+        /**
+         * <p>Returns a list of ID namespace associations.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/ListIdNamespaceAssociations">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListIdNamespaceAssociationsOutcome ListIdNamespaceAssociations(const Model::ListIdNamespaceAssociationsRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListIdNamespaceAssociations that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListIdNamespaceAssociationsRequestT = Model::ListIdNamespaceAssociationsRequest>
+        Model::ListIdNamespaceAssociationsOutcomeCallable ListIdNamespaceAssociationsCallable(const ListIdNamespaceAssociationsRequestT& request) const
+        {
+            return SubmitCallable(&CleanRoomsClient::ListIdNamespaceAssociations, request);
+        }
+
+        /**
+         * An Async wrapper for ListIdNamespaceAssociations that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListIdNamespaceAssociationsRequestT = Model::ListIdNamespaceAssociationsRequest>
+        void ListIdNamespaceAssociationsAsync(const ListIdNamespaceAssociationsRequestT& request, const ListIdNamespaceAssociationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CleanRoomsClient::ListIdNamespaceAssociations, request, handler, context);
         }
 
         /**
@@ -1225,13 +1567,13 @@ namespace CleanRooms
          * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/ListMemberships">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListMembershipsOutcome ListMemberships(const Model::ListMembershipsRequest& request) const;
+        virtual Model::ListMembershipsOutcome ListMemberships(const Model::ListMembershipsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListMemberships that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListMembershipsRequestT = Model::ListMembershipsRequest>
-        Model::ListMembershipsOutcomeCallable ListMembershipsCallable(const ListMembershipsRequestT& request) const
+        Model::ListMembershipsOutcomeCallable ListMembershipsCallable(const ListMembershipsRequestT& request = {}) const
         {
             return SubmitCallable(&CleanRoomsClient::ListMemberships, request);
         }
@@ -1240,7 +1582,7 @@ namespace CleanRooms
          * An Async wrapper for ListMemberships that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListMembershipsRequestT = Model::ListMembershipsRequest>
-        void ListMembershipsAsync(const ListMembershipsRequestT& request, const ListMembershipsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListMembershipsAsync(const ListMembershipsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListMembershipsRequestT& request = {}) const
         {
             return SubmitAsync(&CleanRoomsClient::ListMemberships, request, handler, context);
         }
@@ -1373,6 +1715,32 @@ namespace CleanRooms
         void ListTagsForResourceAsync(const ListTagsForResourceRequestT& request, const ListTagsForResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&CleanRoomsClient::ListTagsForResource, request, handler, context);
+        }
+
+        /**
+         * <p>Defines the information that's necessary to populate an ID mapping
+         * table.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/PopulateIdMappingTable">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::PopulateIdMappingTableOutcome PopulateIdMappingTable(const Model::PopulateIdMappingTableRequest& request) const;
+
+        /**
+         * A Callable wrapper for PopulateIdMappingTable that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename PopulateIdMappingTableRequestT = Model::PopulateIdMappingTableRequest>
+        Model::PopulateIdMappingTableOutcomeCallable PopulateIdMappingTableCallable(const PopulateIdMappingTableRequestT& request) const
+        {
+            return SubmitCallable(&CleanRoomsClient::PopulateIdMappingTable, request);
+        }
+
+        /**
+         * An Async wrapper for PopulateIdMappingTable that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename PopulateIdMappingTableRequestT = Model::PopulateIdMappingTableRequest>
+        void PopulateIdMappingTableAsync(const PopulateIdMappingTableRequestT& request, const PopulateIdMappingTableResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CleanRoomsClient::PopulateIdMappingTable, request, handler, context);
         }
 
         /**
@@ -1630,6 +1998,84 @@ namespace CleanRooms
         }
 
         /**
+         * <p> Updates the analysis rule for a configured table association.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/UpdateConfiguredTableAssociationAnalysisRule">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateConfiguredTableAssociationAnalysisRuleOutcome UpdateConfiguredTableAssociationAnalysisRule(const Model::UpdateConfiguredTableAssociationAnalysisRuleRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateConfiguredTableAssociationAnalysisRule that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateConfiguredTableAssociationAnalysisRuleRequestT = Model::UpdateConfiguredTableAssociationAnalysisRuleRequest>
+        Model::UpdateConfiguredTableAssociationAnalysisRuleOutcomeCallable UpdateConfiguredTableAssociationAnalysisRuleCallable(const UpdateConfiguredTableAssociationAnalysisRuleRequestT& request) const
+        {
+            return SubmitCallable(&CleanRoomsClient::UpdateConfiguredTableAssociationAnalysisRule, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateConfiguredTableAssociationAnalysisRule that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateConfiguredTableAssociationAnalysisRuleRequestT = Model::UpdateConfiguredTableAssociationAnalysisRuleRequest>
+        void UpdateConfiguredTableAssociationAnalysisRuleAsync(const UpdateConfiguredTableAssociationAnalysisRuleRequestT& request, const UpdateConfiguredTableAssociationAnalysisRuleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CleanRoomsClient::UpdateConfiguredTableAssociationAnalysisRule, request, handler, context);
+        }
+
+        /**
+         * <p>Provides the details that are necessary to update an ID mapping
+         * table.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/UpdateIdMappingTable">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateIdMappingTableOutcome UpdateIdMappingTable(const Model::UpdateIdMappingTableRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateIdMappingTable that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateIdMappingTableRequestT = Model::UpdateIdMappingTableRequest>
+        Model::UpdateIdMappingTableOutcomeCallable UpdateIdMappingTableCallable(const UpdateIdMappingTableRequestT& request) const
+        {
+            return SubmitCallable(&CleanRoomsClient::UpdateIdMappingTable, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateIdMappingTable that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateIdMappingTableRequestT = Model::UpdateIdMappingTableRequest>
+        void UpdateIdMappingTableAsync(const UpdateIdMappingTableRequestT& request, const UpdateIdMappingTableResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CleanRoomsClient::UpdateIdMappingTable, request, handler, context);
+        }
+
+        /**
+         * <p>Provides the details that are necessary to update an ID namespace
+         * association.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/UpdateIdNamespaceAssociation">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateIdNamespaceAssociationOutcome UpdateIdNamespaceAssociation(const Model::UpdateIdNamespaceAssociationRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateIdNamespaceAssociation that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateIdNamespaceAssociationRequestT = Model::UpdateIdNamespaceAssociationRequest>
+        Model::UpdateIdNamespaceAssociationOutcomeCallable UpdateIdNamespaceAssociationCallable(const UpdateIdNamespaceAssociationRequestT& request) const
+        {
+            return SubmitCallable(&CleanRoomsClient::UpdateIdNamespaceAssociation, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateIdNamespaceAssociation that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateIdNamespaceAssociationRequestT = Model::UpdateIdNamespaceAssociationRequest>
+        void UpdateIdNamespaceAssociationAsync(const UpdateIdNamespaceAssociationRequestT& request, const UpdateIdNamespaceAssociationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CleanRoomsClient::UpdateIdNamespaceAssociation, request, handler, context);
+        }
+
+        /**
          * <p>Updates a membership.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cleanrooms-2022-02-17/UpdateMembership">AWS
          * API Reference</a></p>
@@ -1711,11 +2157,7 @@ namespace CleanRooms
       std::shared_ptr<CleanRoomsEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<CleanRoomsClient>;
-      void init(const CleanRoomsClientConfiguration& clientConfiguration);
 
-      CleanRoomsClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<CleanRoomsEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace CleanRooms

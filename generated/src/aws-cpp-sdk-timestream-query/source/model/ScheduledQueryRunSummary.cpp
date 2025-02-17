@@ -24,19 +24,14 @@ ScheduledQueryRunSummary::ScheduledQueryRunSummary() :
     m_runStatus(ScheduledQueryRunStatus::NOT_SET),
     m_runStatusHasBeenSet(false),
     m_executionStatsHasBeenSet(false),
+    m_queryInsightsResponseHasBeenSet(false),
     m_errorReportLocationHasBeenSet(false),
     m_failureReasonHasBeenSet(false)
 {
 }
 
-ScheduledQueryRunSummary::ScheduledQueryRunSummary(JsonView jsonValue) : 
-    m_invocationTimeHasBeenSet(false),
-    m_triggerTimeHasBeenSet(false),
-    m_runStatus(ScheduledQueryRunStatus::NOT_SET),
-    m_runStatusHasBeenSet(false),
-    m_executionStatsHasBeenSet(false),
-    m_errorReportLocationHasBeenSet(false),
-    m_failureReasonHasBeenSet(false)
+ScheduledQueryRunSummary::ScheduledQueryRunSummary(JsonView jsonValue)
+  : ScheduledQueryRunSummary()
 {
   *this = jsonValue;
 }
@@ -69,6 +64,13 @@ ScheduledQueryRunSummary& ScheduledQueryRunSummary::operator =(JsonView jsonValu
     m_executionStats = jsonValue.GetObject("ExecutionStats");
 
     m_executionStatsHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("QueryInsightsResponse"))
+  {
+    m_queryInsightsResponse = jsonValue.GetObject("QueryInsightsResponse");
+
+    m_queryInsightsResponseHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("ErrorReportLocation"))
@@ -110,6 +112,12 @@ JsonValue ScheduledQueryRunSummary::Jsonize() const
   if(m_executionStatsHasBeenSet)
   {
    payload.WithObject("ExecutionStats", m_executionStats.Jsonize());
+
+  }
+
+  if(m_queryInsightsResponseHasBeenSet)
+  {
+   payload.WithObject("QueryInsightsResponse", m_queryInsightsResponse.Jsonize());
 
   }
 

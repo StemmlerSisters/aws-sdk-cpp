@@ -18,12 +18,13 @@ using namespace Aws::Utils;
 using namespace Aws;
 
 GetSerialConsoleAccessStatusResponse::GetSerialConsoleAccessStatusResponse() : 
-    m_serialConsoleAccessEnabled(false)
+    m_serialConsoleAccessEnabled(false),
+    m_managedBy(ManagedBy::NOT_SET)
 {
 }
 
-GetSerialConsoleAccessStatusResponse::GetSerialConsoleAccessStatusResponse(const Aws::AmazonWebServiceResult<XmlDocument>& result) : 
-    m_serialConsoleAccessEnabled(false)
+GetSerialConsoleAccessStatusResponse::GetSerialConsoleAccessStatusResponse(const Aws::AmazonWebServiceResult<XmlDocument>& result)
+  : GetSerialConsoleAccessStatusResponse()
 {
   *this = result;
 }
@@ -44,6 +45,11 @@ GetSerialConsoleAccessStatusResponse& GetSerialConsoleAccessStatusResponse::oper
     if(!serialConsoleAccessEnabledNode.IsNull())
     {
       m_serialConsoleAccessEnabled = StringUtils::ConvertToBool(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(serialConsoleAccessEnabledNode.GetText()).c_str()).c_str());
+    }
+    XmlNode managedByNode = resultNode.FirstChild("managedBy");
+    if(!managedByNode.IsNull())
+    {
+      m_managedBy = ManagedByMapper::GetManagedByForName(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(managedByNode.GetText()).c_str()).c_str());
     }
   }
 

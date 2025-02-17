@@ -25,8 +25,11 @@ namespace Model
 {
 
   /**
-   * <p>Provides the configuration information for a token.</p><p><h3>See Also:</h3> 
-   * <a
+   * <p>Provides the configuration information for a token.</p>  <p>If
+   * you're using an Amazon Kendra Gen AI Enterprise Edition index and you try to use
+   * <code>UserTokenConfigurations</code> to configure user context policy, Amazon
+   * Kendra returns a <code>ValidationException</code> error.</p>
+   * <p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/kendra-2019-02-03/UserTokenConfiguration">AWS
    * API Reference</a></p>
    */
@@ -39,67 +42,29 @@ namespace Model
     AWS_KENDRA_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>Information about the JWT token type configuration.</p>
      */
     inline const JwtTokenTypeConfiguration& GetJwtTokenTypeConfiguration() const{ return m_jwtTokenTypeConfiguration; }
-
-    /**
-     * <p>Information about the JWT token type configuration.</p>
-     */
     inline bool JwtTokenTypeConfigurationHasBeenSet() const { return m_jwtTokenTypeConfigurationHasBeenSet; }
-
-    /**
-     * <p>Information about the JWT token type configuration.</p>
-     */
     inline void SetJwtTokenTypeConfiguration(const JwtTokenTypeConfiguration& value) { m_jwtTokenTypeConfigurationHasBeenSet = true; m_jwtTokenTypeConfiguration = value; }
-
-    /**
-     * <p>Information about the JWT token type configuration.</p>
-     */
     inline void SetJwtTokenTypeConfiguration(JwtTokenTypeConfiguration&& value) { m_jwtTokenTypeConfigurationHasBeenSet = true; m_jwtTokenTypeConfiguration = std::move(value); }
-
-    /**
-     * <p>Information about the JWT token type configuration.</p>
-     */
     inline UserTokenConfiguration& WithJwtTokenTypeConfiguration(const JwtTokenTypeConfiguration& value) { SetJwtTokenTypeConfiguration(value); return *this;}
-
-    /**
-     * <p>Information about the JWT token type configuration.</p>
-     */
     inline UserTokenConfiguration& WithJwtTokenTypeConfiguration(JwtTokenTypeConfiguration&& value) { SetJwtTokenTypeConfiguration(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Information about the JSON token type configuration.</p>
      */
     inline const JsonTokenTypeConfiguration& GetJsonTokenTypeConfiguration() const{ return m_jsonTokenTypeConfiguration; }
-
-    /**
-     * <p>Information about the JSON token type configuration.</p>
-     */
     inline bool JsonTokenTypeConfigurationHasBeenSet() const { return m_jsonTokenTypeConfigurationHasBeenSet; }
-
-    /**
-     * <p>Information about the JSON token type configuration.</p>
-     */
     inline void SetJsonTokenTypeConfiguration(const JsonTokenTypeConfiguration& value) { m_jsonTokenTypeConfigurationHasBeenSet = true; m_jsonTokenTypeConfiguration = value; }
-
-    /**
-     * <p>Information about the JSON token type configuration.</p>
-     */
     inline void SetJsonTokenTypeConfiguration(JsonTokenTypeConfiguration&& value) { m_jsonTokenTypeConfigurationHasBeenSet = true; m_jsonTokenTypeConfiguration = std::move(value); }
-
-    /**
-     * <p>Information about the JSON token type configuration.</p>
-     */
     inline UserTokenConfiguration& WithJsonTokenTypeConfiguration(const JsonTokenTypeConfiguration& value) { SetJsonTokenTypeConfiguration(value); return *this;}
-
-    /**
-     * <p>Information about the JSON token type configuration.</p>
-     */
     inline UserTokenConfiguration& WithJsonTokenTypeConfiguration(JsonTokenTypeConfiguration&& value) { SetJsonTokenTypeConfiguration(std::move(value)); return *this;}
-
+    ///@}
   private:
 
     JwtTokenTypeConfiguration m_jwtTokenTypeConfiguration;

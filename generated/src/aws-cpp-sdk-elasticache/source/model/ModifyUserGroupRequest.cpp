@@ -13,7 +13,8 @@ using namespace Aws::Utils;
 ModifyUserGroupRequest::ModifyUserGroupRequest() : 
     m_userGroupIdHasBeenSet(false),
     m_userIdsToAddHasBeenSet(false),
-    m_userIdsToRemoveHasBeenSet(false)
+    m_userIdsToRemoveHasBeenSet(false),
+    m_engineHasBeenSet(false)
 {
 }
 
@@ -28,24 +29,43 @@ Aws::String ModifyUserGroupRequest::SerializePayload() const
 
   if(m_userIdsToAddHasBeenSet)
   {
-    unsigned userIdsToAddCount = 1;
-    for(auto& item : m_userIdsToAdd)
+    if (m_userIdsToAdd.empty())
     {
-      ss << "UserIdsToAdd.member." << userIdsToAddCount << "="
-          << StringUtils::URLEncode(item.c_str()) << "&";
-      userIdsToAddCount++;
+      ss << "UserIdsToAdd=&";
+    }
+    else
+    {
+      unsigned userIdsToAddCount = 1;
+      for(auto& item : m_userIdsToAdd)
+      {
+        ss << "UserIdsToAdd.member." << userIdsToAddCount << "="
+            << StringUtils::URLEncode(item.c_str()) << "&";
+        userIdsToAddCount++;
+      }
     }
   }
 
   if(m_userIdsToRemoveHasBeenSet)
   {
-    unsigned userIdsToRemoveCount = 1;
-    for(auto& item : m_userIdsToRemove)
+    if (m_userIdsToRemove.empty())
     {
-      ss << "UserIdsToRemove.member." << userIdsToRemoveCount << "="
-          << StringUtils::URLEncode(item.c_str()) << "&";
-      userIdsToRemoveCount++;
+      ss << "UserIdsToRemove=&";
     }
+    else
+    {
+      unsigned userIdsToRemoveCount = 1;
+      for(auto& item : m_userIdsToRemove)
+      {
+        ss << "UserIdsToRemove.member." << userIdsToRemoveCount << "="
+            << StringUtils::URLEncode(item.c_str()) << "&";
+        userIdsToRemoveCount++;
+      }
+    }
+  }
+
+  if(m_engineHasBeenSet)
+  {
+    ss << "Engine=" << StringUtils::URLEncode(m_engine.c_str()) << "&";
   }
 
   ss << "Version=2015-02-02";

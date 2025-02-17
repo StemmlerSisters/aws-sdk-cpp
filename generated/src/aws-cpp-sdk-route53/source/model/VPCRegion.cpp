@@ -49,12 +49,16 @@ namespace Aws
         static const int sa_east_1_HASH = HashingUtils::HashString("sa-east-1");
         static const int ca_central_1_HASH = HashingUtils::HashString("ca-central-1");
         static const int cn_north_1_HASH = HashingUtils::HashString("cn-north-1");
+        static const int cn_northwest_1_HASH = HashingUtils::HashString("cn-northwest-1");
         static const int af_south_1_HASH = HashingUtils::HashString("af-south-1");
         static const int eu_south_1_HASH = HashingUtils::HashString("eu-south-1");
         static const int eu_south_2_HASH = HashingUtils::HashString("eu-south-2");
         static const int ap_southeast_4_HASH = HashingUtils::HashString("ap-southeast-4");
         static const int il_central_1_HASH = HashingUtils::HashString("il-central-1");
         static const int ca_west_1_HASH = HashingUtils::HashString("ca-west-1");
+        static const int ap_southeast_5_HASH = HashingUtils::HashString("ap-southeast-5");
+        static const int mx_central_1_HASH = HashingUtils::HashString("mx-central-1");
+        static const int ap_southeast_7_HASH = HashingUtils::HashString("ap-southeast-7");
 
 
         VPCRegion GetVPCRegionForName(const Aws::String& name)
@@ -176,6 +180,10 @@ namespace Aws
           {
             return VPCRegion::cn_north_1;
           }
+          else if (hashCode == cn_northwest_1_HASH)
+          {
+            return VPCRegion::cn_northwest_1;
+          }
           else if (hashCode == af_south_1_HASH)
           {
             return VPCRegion::af_south_1;
@@ -199,6 +207,18 @@ namespace Aws
           else if (hashCode == ca_west_1_HASH)
           {
             return VPCRegion::ca_west_1;
+          }
+          else if (hashCode == ap_southeast_5_HASH)
+          {
+            return VPCRegion::ap_southeast_5;
+          }
+          else if (hashCode == mx_central_1_HASH)
+          {
+            return VPCRegion::mx_central_1;
+          }
+          else if (hashCode == ap_southeast_7_HASH)
+          {
+            return VPCRegion::ap_southeast_7;
           }
           EnumParseOverflowContainer* overflowContainer = Aws::GetEnumOverflowContainer();
           if(overflowContainer)
@@ -274,6 +294,8 @@ namespace Aws
             return "ca-central-1";
           case VPCRegion::cn_north_1:
             return "cn-north-1";
+          case VPCRegion::cn_northwest_1:
+            return "cn-northwest-1";
           case VPCRegion::af_south_1:
             return "af-south-1";
           case VPCRegion::eu_south_1:
@@ -286,6 +308,12 @@ namespace Aws
             return "il-central-1";
           case VPCRegion::ca_west_1:
             return "ca-west-1";
+          case VPCRegion::ap_southeast_5:
+            return "ap-southeast-5";
+          case VPCRegion::mx_central_1:
+            return "mx-central-1";
+          case VPCRegion::ap_southeast_7:
+            return "ap-southeast-7";
           default:
             EnumParseOverflowContainer* overflowContainer = Aws::GetEnumOverflowContainer();
             if(overflowContainer)

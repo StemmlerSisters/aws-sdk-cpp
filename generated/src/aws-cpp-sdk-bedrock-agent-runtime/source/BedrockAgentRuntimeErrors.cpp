@@ -7,6 +7,7 @@
 #include <aws/core/utils/HashingUtils.h>
 #include <aws/bedrock-agent-runtime/BedrockAgentRuntimeErrors.h>
 #include <aws/bedrock-agent-runtime/model/BadGatewayException.h>
+#include <aws/bedrock-agent-runtime/model/InternalServerException.h>
 #include <aws/bedrock-agent-runtime/model/DependencyFailedException.h>
 
 using namespace Aws::Client;
@@ -24,6 +25,12 @@ template<> AWS_BEDROCKAGENTRUNTIME_API BadGatewayException BedrockAgentRuntimeEr
   return BadGatewayException(this->GetJsonPayload().View());
 }
 
+template<> AWS_BEDROCKAGENTRUNTIME_API InternalServerException BedrockAgentRuntimeError::GetModeledError()
+{
+  assert(this->GetErrorType() == BedrockAgentRuntimeErrors::INTERNAL_SERVER);
+  return InternalServerException(this->GetJsonPayload().View());
+}
+
 template<> AWS_BEDROCKAGENTRUNTIME_API DependencyFailedException BedrockAgentRuntimeError::GetModeledError()
 {
   assert(this->GetErrorType() == BedrockAgentRuntimeErrors::DEPENDENCY_FAILED);
@@ -38,6 +45,7 @@ static const int BAD_GATEWAY_HASH = HashingUtils::HashString("BadGatewayExceptio
 static const int SERVICE_QUOTA_EXCEEDED_HASH = HashingUtils::HashString("ServiceQuotaExceededException");
 static const int INTERNAL_SERVER_HASH = HashingUtils::HashString("InternalServerException");
 static const int DEPENDENCY_FAILED_HASH = HashingUtils::HashString("DependencyFailedException");
+static const int MODEL_NOT_READY_HASH = HashingUtils::HashString("ModelNotReadyException");
 
 
 AWSError<CoreErrors> GetErrorForName(const char* errorName)
@@ -63,6 +71,10 @@ AWSError<CoreErrors> GetErrorForName(const char* errorName)
   else if (hashCode == DEPENDENCY_FAILED_HASH)
   {
     return AWSError<CoreErrors>(static_cast<CoreErrors>(BedrockAgentRuntimeErrors::DEPENDENCY_FAILED), RetryableType::NOT_RETRYABLE);
+  }
+  else if (hashCode == MODEL_NOT_READY_HASH)
+  {
+    return AWSError<CoreErrors>(static_cast<CoreErrors>(BedrockAgentRuntimeErrors::MODEL_NOT_READY), RetryableType::NOT_RETRYABLE);
   }
   return AWSError<CoreErrors>(CoreErrors::UNKNOWN, false);
 }

@@ -8,6 +8,7 @@
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/outposts/model/ComputeAssetState.h>
 #include <aws/core/utils/memory/stl/AWSVector.h>
+#include <aws/outposts/model/AssetInstanceTypeCapacity.h>
 #include <utility>
 
 namespace Aws
@@ -39,47 +40,21 @@ namespace Model
     AWS_OUTPOSTS_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p> The host ID of the Dedicated Host on the asset. </p>
      */
     inline const Aws::String& GetHostId() const{ return m_hostId; }
-
-    /**
-     * <p> The host ID of the Dedicated Host on the asset. </p>
-     */
     inline bool HostIdHasBeenSet() const { return m_hostIdHasBeenSet; }
-
-    /**
-     * <p> The host ID of the Dedicated Host on the asset. </p>
-     */
     inline void SetHostId(const Aws::String& value) { m_hostIdHasBeenSet = true; m_hostId = value; }
-
-    /**
-     * <p> The host ID of the Dedicated Host on the asset. </p>
-     */
     inline void SetHostId(Aws::String&& value) { m_hostIdHasBeenSet = true; m_hostId = std::move(value); }
-
-    /**
-     * <p> The host ID of the Dedicated Host on the asset. </p>
-     */
     inline void SetHostId(const char* value) { m_hostIdHasBeenSet = true; m_hostId.assign(value); }
-
-    /**
-     * <p> The host ID of the Dedicated Host on the asset. </p>
-     */
     inline ComputeAttributes& WithHostId(const Aws::String& value) { SetHostId(value); return *this;}
-
-    /**
-     * <p> The host ID of the Dedicated Host on the asset. </p>
-     */
     inline ComputeAttributes& WithHostId(Aws::String&& value) { SetHostId(std::move(value)); return *this;}
-
-    /**
-     * <p> The host ID of the Dedicated Host on the asset. </p>
-     */
     inline ComputeAttributes& WithHostId(const char* value) { SetHostId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The state.</p> <ul> <li> <p>ACTIVE - The asset is available and can provide
      * capacity for new compute resources.</p> </li> <li> <p>ISOLATED - The asset is
@@ -90,117 +65,53 @@ namespace Model
      * resources that must be stopped before the asset can be replaced.</p> </li> </ul>
      */
     inline const ComputeAssetState& GetState() const{ return m_state; }
-
-    /**
-     * <p>The state.</p> <ul> <li> <p>ACTIVE - The asset is available and can provide
-     * capacity for new compute resources.</p> </li> <li> <p>ISOLATED - The asset is
-     * undergoing maintenance and can't provide capacity for new compute resources.
-     * Existing compute resources on the asset are not affected.</p> </li> <li>
-     * <p>RETIRING - The underlying hardware for the asset is degraded. Capacity for
-     * new compute resources is reduced. Amazon Web Services sends notifications for
-     * resources that must be stopped before the asset can be replaced.</p> </li> </ul>
-     */
     inline bool StateHasBeenSet() const { return m_stateHasBeenSet; }
-
-    /**
-     * <p>The state.</p> <ul> <li> <p>ACTIVE - The asset is available and can provide
-     * capacity for new compute resources.</p> </li> <li> <p>ISOLATED - The asset is
-     * undergoing maintenance and can't provide capacity for new compute resources.
-     * Existing compute resources on the asset are not affected.</p> </li> <li>
-     * <p>RETIRING - The underlying hardware for the asset is degraded. Capacity for
-     * new compute resources is reduced. Amazon Web Services sends notifications for
-     * resources that must be stopped before the asset can be replaced.</p> </li> </ul>
-     */
     inline void SetState(const ComputeAssetState& value) { m_stateHasBeenSet = true; m_state = value; }
-
-    /**
-     * <p>The state.</p> <ul> <li> <p>ACTIVE - The asset is available and can provide
-     * capacity for new compute resources.</p> </li> <li> <p>ISOLATED - The asset is
-     * undergoing maintenance and can't provide capacity for new compute resources.
-     * Existing compute resources on the asset are not affected.</p> </li> <li>
-     * <p>RETIRING - The underlying hardware for the asset is degraded. Capacity for
-     * new compute resources is reduced. Amazon Web Services sends notifications for
-     * resources that must be stopped before the asset can be replaced.</p> </li> </ul>
-     */
     inline void SetState(ComputeAssetState&& value) { m_stateHasBeenSet = true; m_state = std::move(value); }
-
-    /**
-     * <p>The state.</p> <ul> <li> <p>ACTIVE - The asset is available and can provide
-     * capacity for new compute resources.</p> </li> <li> <p>ISOLATED - The asset is
-     * undergoing maintenance and can't provide capacity for new compute resources.
-     * Existing compute resources on the asset are not affected.</p> </li> <li>
-     * <p>RETIRING - The underlying hardware for the asset is degraded. Capacity for
-     * new compute resources is reduced. Amazon Web Services sends notifications for
-     * resources that must be stopped before the asset can be replaced.</p> </li> </ul>
-     */
     inline ComputeAttributes& WithState(const ComputeAssetState& value) { SetState(value); return *this;}
-
-    /**
-     * <p>The state.</p> <ul> <li> <p>ACTIVE - The asset is available and can provide
-     * capacity for new compute resources.</p> </li> <li> <p>ISOLATED - The asset is
-     * undergoing maintenance and can't provide capacity for new compute resources.
-     * Existing compute resources on the asset are not affected.</p> </li> <li>
-     * <p>RETIRING - The underlying hardware for the asset is degraded. Capacity for
-     * new compute resources is reduced. Amazon Web Services sends notifications for
-     * resources that must be stopped before the asset can be replaced.</p> </li> </ul>
-     */
     inline ComputeAttributes& WithState(ComputeAssetState&& value) { SetState(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>A list of the names of instance families that are currently associated with a
      * given asset.</p>
      */
     inline const Aws::Vector<Aws::String>& GetInstanceFamilies() const{ return m_instanceFamilies; }
-
-    /**
-     * <p>A list of the names of instance families that are currently associated with a
-     * given asset.</p>
-     */
     inline bool InstanceFamiliesHasBeenSet() const { return m_instanceFamiliesHasBeenSet; }
-
-    /**
-     * <p>A list of the names of instance families that are currently associated with a
-     * given asset.</p>
-     */
     inline void SetInstanceFamilies(const Aws::Vector<Aws::String>& value) { m_instanceFamiliesHasBeenSet = true; m_instanceFamilies = value; }
-
-    /**
-     * <p>A list of the names of instance families that are currently associated with a
-     * given asset.</p>
-     */
     inline void SetInstanceFamilies(Aws::Vector<Aws::String>&& value) { m_instanceFamiliesHasBeenSet = true; m_instanceFamilies = std::move(value); }
-
-    /**
-     * <p>A list of the names of instance families that are currently associated with a
-     * given asset.</p>
-     */
     inline ComputeAttributes& WithInstanceFamilies(const Aws::Vector<Aws::String>& value) { SetInstanceFamilies(value); return *this;}
-
-    /**
-     * <p>A list of the names of instance families that are currently associated with a
-     * given asset.</p>
-     */
     inline ComputeAttributes& WithInstanceFamilies(Aws::Vector<Aws::String>&& value) { SetInstanceFamilies(std::move(value)); return *this;}
-
-    /**
-     * <p>A list of the names of instance families that are currently associated with a
-     * given asset.</p>
-     */
     inline ComputeAttributes& AddInstanceFamilies(const Aws::String& value) { m_instanceFamiliesHasBeenSet = true; m_instanceFamilies.push_back(value); return *this; }
-
-    /**
-     * <p>A list of the names of instance families that are currently associated with a
-     * given asset.</p>
-     */
     inline ComputeAttributes& AddInstanceFamilies(Aws::String&& value) { m_instanceFamiliesHasBeenSet = true; m_instanceFamilies.push_back(std::move(value)); return *this; }
-
-    /**
-     * <p>A list of the names of instance families that are currently associated with a
-     * given asset.</p>
-     */
     inline ComputeAttributes& AddInstanceFamilies(const char* value) { m_instanceFamiliesHasBeenSet = true; m_instanceFamilies.push_back(value); return *this; }
+    ///@}
 
+    ///@{
+    /**
+     * <p>The instance type capacities configured for this asset. This can be changed
+     * through a capacity task.</p>
+     */
+    inline const Aws::Vector<AssetInstanceTypeCapacity>& GetInstanceTypeCapacities() const{ return m_instanceTypeCapacities; }
+    inline bool InstanceTypeCapacitiesHasBeenSet() const { return m_instanceTypeCapacitiesHasBeenSet; }
+    inline void SetInstanceTypeCapacities(const Aws::Vector<AssetInstanceTypeCapacity>& value) { m_instanceTypeCapacitiesHasBeenSet = true; m_instanceTypeCapacities = value; }
+    inline void SetInstanceTypeCapacities(Aws::Vector<AssetInstanceTypeCapacity>&& value) { m_instanceTypeCapacitiesHasBeenSet = true; m_instanceTypeCapacities = std::move(value); }
+    inline ComputeAttributes& WithInstanceTypeCapacities(const Aws::Vector<AssetInstanceTypeCapacity>& value) { SetInstanceTypeCapacities(value); return *this;}
+    inline ComputeAttributes& WithInstanceTypeCapacities(Aws::Vector<AssetInstanceTypeCapacity>&& value) { SetInstanceTypeCapacities(std::move(value)); return *this;}
+    inline ComputeAttributes& AddInstanceTypeCapacities(const AssetInstanceTypeCapacity& value) { m_instanceTypeCapacitiesHasBeenSet = true; m_instanceTypeCapacities.push_back(value); return *this; }
+    inline ComputeAttributes& AddInstanceTypeCapacities(AssetInstanceTypeCapacity&& value) { m_instanceTypeCapacitiesHasBeenSet = true; m_instanceTypeCapacities.push_back(std::move(value)); return *this; }
+    ///@}
+
+    ///@{
+    /**
+     * <p>The maximum number of vCPUs possible for the specified asset.</p>
+     */
+    inline int GetMaxVcpus() const{ return m_maxVcpus; }
+    inline bool MaxVcpusHasBeenSet() const { return m_maxVcpusHasBeenSet; }
+    inline void SetMaxVcpus(int value) { m_maxVcpusHasBeenSet = true; m_maxVcpus = value; }
+    inline ComputeAttributes& WithMaxVcpus(int value) { SetMaxVcpus(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_hostId;
@@ -211,6 +122,12 @@ namespace Model
 
     Aws::Vector<Aws::String> m_instanceFamilies;
     bool m_instanceFamiliesHasBeenSet = false;
+
+    Aws::Vector<AssetInstanceTypeCapacity> m_instanceTypeCapacities;
+    bool m_instanceTypeCapacitiesHasBeenSet = false;
+
+    int m_maxVcpus;
+    bool m_maxVcpusHasBeenSet = false;
   };
 
 } // namespace Model

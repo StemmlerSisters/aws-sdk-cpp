@@ -10,6 +10,7 @@
 #include <aws/connect/model/ContactFlowState.h>
 #include <aws/connect/model/ContactFlowStatus.h>
 #include <aws/core/utils/memory/stl/AWSMap.h>
+#include <aws/core/utils/DateTime.h>
 #include <utility>
 
 namespace Aws
@@ -41,275 +42,101 @@ namespace Model
     AWS_CONNECT_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The Amazon Resource Name (ARN) of the flow.</p>
      */
     inline const Aws::String& GetArn() const{ return m_arn; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the flow.</p>
-     */
     inline bool ArnHasBeenSet() const { return m_arnHasBeenSet; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the flow.</p>
-     */
     inline void SetArn(const Aws::String& value) { m_arnHasBeenSet = true; m_arn = value; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the flow.</p>
-     */
     inline void SetArn(Aws::String&& value) { m_arnHasBeenSet = true; m_arn = std::move(value); }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the flow.</p>
-     */
     inline void SetArn(const char* value) { m_arnHasBeenSet = true; m_arn.assign(value); }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the flow.</p>
-     */
     inline ContactFlow& WithArn(const Aws::String& value) { SetArn(value); return *this;}
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the flow.</p>
-     */
     inline ContactFlow& WithArn(Aws::String&& value) { SetArn(std::move(value)); return *this;}
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the flow.</p>
-     */
     inline ContactFlow& WithArn(const char* value) { SetArn(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The identifier of the flow.</p>
      */
     inline const Aws::String& GetId() const{ return m_id; }
-
-    /**
-     * <p>The identifier of the flow.</p>
-     */
     inline bool IdHasBeenSet() const { return m_idHasBeenSet; }
-
-    /**
-     * <p>The identifier of the flow.</p>
-     */
     inline void SetId(const Aws::String& value) { m_idHasBeenSet = true; m_id = value; }
-
-    /**
-     * <p>The identifier of the flow.</p>
-     */
     inline void SetId(Aws::String&& value) { m_idHasBeenSet = true; m_id = std::move(value); }
-
-    /**
-     * <p>The identifier of the flow.</p>
-     */
     inline void SetId(const char* value) { m_idHasBeenSet = true; m_id.assign(value); }
-
-    /**
-     * <p>The identifier of the flow.</p>
-     */
     inline ContactFlow& WithId(const Aws::String& value) { SetId(value); return *this;}
-
-    /**
-     * <p>The identifier of the flow.</p>
-     */
     inline ContactFlow& WithId(Aws::String&& value) { SetId(std::move(value)); return *this;}
-
-    /**
-     * <p>The identifier of the flow.</p>
-     */
     inline ContactFlow& WithId(const char* value) { SetId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The name of the flow.</p>
      */
     inline const Aws::String& GetName() const{ return m_name; }
-
-    /**
-     * <p>The name of the flow.</p>
-     */
     inline bool NameHasBeenSet() const { return m_nameHasBeenSet; }
-
-    /**
-     * <p>The name of the flow.</p>
-     */
     inline void SetName(const Aws::String& value) { m_nameHasBeenSet = true; m_name = value; }
-
-    /**
-     * <p>The name of the flow.</p>
-     */
     inline void SetName(Aws::String&& value) { m_nameHasBeenSet = true; m_name = std::move(value); }
-
-    /**
-     * <p>The name of the flow.</p>
-     */
     inline void SetName(const char* value) { m_nameHasBeenSet = true; m_name.assign(value); }
-
-    /**
-     * <p>The name of the flow.</p>
-     */
     inline ContactFlow& WithName(const Aws::String& value) { SetName(value); return *this;}
-
-    /**
-     * <p>The name of the flow.</p>
-     */
     inline ContactFlow& WithName(Aws::String&& value) { SetName(std::move(value)); return *this;}
-
-    /**
-     * <p>The name of the flow.</p>
-     */
     inline ContactFlow& WithName(const char* value) { SetName(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The type of the flow. For descriptions of the available types, see <a
      * href="https://docs.aws.amazon.com/connect/latest/adminguide/create-contact-flow.html#contact-flow-types">Choose
      * a flow type</a> in the <i>Amazon Connect Administrator Guide</i>.</p>
      */
     inline const ContactFlowType& GetType() const{ return m_type; }
-
-    /**
-     * <p>The type of the flow. For descriptions of the available types, see <a
-     * href="https://docs.aws.amazon.com/connect/latest/adminguide/create-contact-flow.html#contact-flow-types">Choose
-     * a flow type</a> in the <i>Amazon Connect Administrator Guide</i>.</p>
-     */
     inline bool TypeHasBeenSet() const { return m_typeHasBeenSet; }
-
-    /**
-     * <p>The type of the flow. For descriptions of the available types, see <a
-     * href="https://docs.aws.amazon.com/connect/latest/adminguide/create-contact-flow.html#contact-flow-types">Choose
-     * a flow type</a> in the <i>Amazon Connect Administrator Guide</i>.</p>
-     */
     inline void SetType(const ContactFlowType& value) { m_typeHasBeenSet = true; m_type = value; }
-
-    /**
-     * <p>The type of the flow. For descriptions of the available types, see <a
-     * href="https://docs.aws.amazon.com/connect/latest/adminguide/create-contact-flow.html#contact-flow-types">Choose
-     * a flow type</a> in the <i>Amazon Connect Administrator Guide</i>.</p>
-     */
     inline void SetType(ContactFlowType&& value) { m_typeHasBeenSet = true; m_type = std::move(value); }
-
-    /**
-     * <p>The type of the flow. For descriptions of the available types, see <a
-     * href="https://docs.aws.amazon.com/connect/latest/adminguide/create-contact-flow.html#contact-flow-types">Choose
-     * a flow type</a> in the <i>Amazon Connect Administrator Guide</i>.</p>
-     */
     inline ContactFlow& WithType(const ContactFlowType& value) { SetType(value); return *this;}
-
-    /**
-     * <p>The type of the flow. For descriptions of the available types, see <a
-     * href="https://docs.aws.amazon.com/connect/latest/adminguide/create-contact-flow.html#contact-flow-types">Choose
-     * a flow type</a> in the <i>Amazon Connect Administrator Guide</i>.</p>
-     */
     inline ContactFlow& WithType(ContactFlowType&& value) { SetType(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The type of flow.</p>
      */
     inline const ContactFlowState& GetState() const{ return m_state; }
-
-    /**
-     * <p>The type of flow.</p>
-     */
     inline bool StateHasBeenSet() const { return m_stateHasBeenSet; }
-
-    /**
-     * <p>The type of flow.</p>
-     */
     inline void SetState(const ContactFlowState& value) { m_stateHasBeenSet = true; m_state = value; }
-
-    /**
-     * <p>The type of flow.</p>
-     */
     inline void SetState(ContactFlowState&& value) { m_stateHasBeenSet = true; m_state = std::move(value); }
-
-    /**
-     * <p>The type of flow.</p>
-     */
     inline ContactFlow& WithState(const ContactFlowState& value) { SetState(value); return *this;}
-
-    /**
-     * <p>The type of flow.</p>
-     */
     inline ContactFlow& WithState(ContactFlowState&& value) { SetState(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p>The status of the contact flow.</p>
+     * <p>The status of the flow.</p>
      */
     inline const ContactFlowStatus& GetStatus() const{ return m_status; }
-
-    /**
-     * <p>The status of the contact flow.</p>
-     */
     inline bool StatusHasBeenSet() const { return m_statusHasBeenSet; }
-
-    /**
-     * <p>The status of the contact flow.</p>
-     */
     inline void SetStatus(const ContactFlowStatus& value) { m_statusHasBeenSet = true; m_status = value; }
-
-    /**
-     * <p>The status of the contact flow.</p>
-     */
     inline void SetStatus(ContactFlowStatus&& value) { m_statusHasBeenSet = true; m_status = std::move(value); }
-
-    /**
-     * <p>The status of the contact flow.</p>
-     */
     inline ContactFlow& WithStatus(const ContactFlowStatus& value) { SetStatus(value); return *this;}
-
-    /**
-     * <p>The status of the contact flow.</p>
-     */
     inline ContactFlow& WithStatus(ContactFlowStatus&& value) { SetStatus(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The description of the flow.</p>
      */
     inline const Aws::String& GetDescription() const{ return m_description; }
-
-    /**
-     * <p>The description of the flow.</p>
-     */
     inline bool DescriptionHasBeenSet() const { return m_descriptionHasBeenSet; }
-
-    /**
-     * <p>The description of the flow.</p>
-     */
     inline void SetDescription(const Aws::String& value) { m_descriptionHasBeenSet = true; m_description = value; }
-
-    /**
-     * <p>The description of the flow.</p>
-     */
     inline void SetDescription(Aws::String&& value) { m_descriptionHasBeenSet = true; m_description = std::move(value); }
-
-    /**
-     * <p>The description of the flow.</p>
-     */
     inline void SetDescription(const char* value) { m_descriptionHasBeenSet = true; m_description.assign(value); }
-
-    /**
-     * <p>The description of the flow.</p>
-     */
     inline ContactFlow& WithDescription(const Aws::String& value) { SetDescription(value); return *this;}
-
-    /**
-     * <p>The description of the flow.</p>
-     */
     inline ContactFlow& WithDescription(Aws::String&& value) { SetDescription(std::move(value)); return *this;}
-
-    /**
-     * <p>The description of the flow.</p>
-     */
     inline ContactFlow& WithDescription(const char* value) { SetDescription(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The JSON string that represents the content of the flow. For an example, see
      * <a
@@ -318,149 +145,98 @@ namespace Model
      * length of 1. Maximum length of 256000.</p>
      */
     inline const Aws::String& GetContent() const{ return m_content; }
-
-    /**
-     * <p>The JSON string that represents the content of the flow. For an example, see
-     * <a
-     * href="https://docs.aws.amazon.com/connect/latest/APIReference/flow-language-example.html">Example
-     * flow in Amazon Connect Flow language</a>. </p> <p>Length Constraints: Minimum
-     * length of 1. Maximum length of 256000.</p>
-     */
     inline bool ContentHasBeenSet() const { return m_contentHasBeenSet; }
-
-    /**
-     * <p>The JSON string that represents the content of the flow. For an example, see
-     * <a
-     * href="https://docs.aws.amazon.com/connect/latest/APIReference/flow-language-example.html">Example
-     * flow in Amazon Connect Flow language</a>. </p> <p>Length Constraints: Minimum
-     * length of 1. Maximum length of 256000.</p>
-     */
     inline void SetContent(const Aws::String& value) { m_contentHasBeenSet = true; m_content = value; }
-
-    /**
-     * <p>The JSON string that represents the content of the flow. For an example, see
-     * <a
-     * href="https://docs.aws.amazon.com/connect/latest/APIReference/flow-language-example.html">Example
-     * flow in Amazon Connect Flow language</a>. </p> <p>Length Constraints: Minimum
-     * length of 1. Maximum length of 256000.</p>
-     */
     inline void SetContent(Aws::String&& value) { m_contentHasBeenSet = true; m_content = std::move(value); }
-
-    /**
-     * <p>The JSON string that represents the content of the flow. For an example, see
-     * <a
-     * href="https://docs.aws.amazon.com/connect/latest/APIReference/flow-language-example.html">Example
-     * flow in Amazon Connect Flow language</a>. </p> <p>Length Constraints: Minimum
-     * length of 1. Maximum length of 256000.</p>
-     */
     inline void SetContent(const char* value) { m_contentHasBeenSet = true; m_content.assign(value); }
-
-    /**
-     * <p>The JSON string that represents the content of the flow. For an example, see
-     * <a
-     * href="https://docs.aws.amazon.com/connect/latest/APIReference/flow-language-example.html">Example
-     * flow in Amazon Connect Flow language</a>. </p> <p>Length Constraints: Minimum
-     * length of 1. Maximum length of 256000.</p>
-     */
     inline ContactFlow& WithContent(const Aws::String& value) { SetContent(value); return *this;}
-
-    /**
-     * <p>The JSON string that represents the content of the flow. For an example, see
-     * <a
-     * href="https://docs.aws.amazon.com/connect/latest/APIReference/flow-language-example.html">Example
-     * flow in Amazon Connect Flow language</a>. </p> <p>Length Constraints: Minimum
-     * length of 1. Maximum length of 256000.</p>
-     */
     inline ContactFlow& WithContent(Aws::String&& value) { SetContent(std::move(value)); return *this;}
-
-    /**
-     * <p>The JSON string that represents the content of the flow. For an example, see
-     * <a
-     * href="https://docs.aws.amazon.com/connect/latest/APIReference/flow-language-example.html">Example
-     * flow in Amazon Connect Flow language</a>. </p> <p>Length Constraints: Minimum
-     * length of 1. Maximum length of 256000.</p>
-     */
     inline ContactFlow& WithContent(const char* value) { SetContent(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The tags used to organize, track, or control access for this resource. For
      * example, { "Tags": {"key1":"value1", "key2":"value2"} }.</p>
      */
     inline const Aws::Map<Aws::String, Aws::String>& GetTags() const{ return m_tags; }
-
-    /**
-     * <p>The tags used to organize, track, or control access for this resource. For
-     * example, { "Tags": {"key1":"value1", "key2":"value2"} }.</p>
-     */
     inline bool TagsHasBeenSet() const { return m_tagsHasBeenSet; }
-
-    /**
-     * <p>The tags used to organize, track, or control access for this resource. For
-     * example, { "Tags": {"key1":"value1", "key2":"value2"} }.</p>
-     */
     inline void SetTags(const Aws::Map<Aws::String, Aws::String>& value) { m_tagsHasBeenSet = true; m_tags = value; }
-
-    /**
-     * <p>The tags used to organize, track, or control access for this resource. For
-     * example, { "Tags": {"key1":"value1", "key2":"value2"} }.</p>
-     */
     inline void SetTags(Aws::Map<Aws::String, Aws::String>&& value) { m_tagsHasBeenSet = true; m_tags = std::move(value); }
-
-    /**
-     * <p>The tags used to organize, track, or control access for this resource. For
-     * example, { "Tags": {"key1":"value1", "key2":"value2"} }.</p>
-     */
     inline ContactFlow& WithTags(const Aws::Map<Aws::String, Aws::String>& value) { SetTags(value); return *this;}
-
-    /**
-     * <p>The tags used to organize, track, or control access for this resource. For
-     * example, { "Tags": {"key1":"value1", "key2":"value2"} }.</p>
-     */
     inline ContactFlow& WithTags(Aws::Map<Aws::String, Aws::String>&& value) { SetTags(std::move(value)); return *this;}
-
-    /**
-     * <p>The tags used to organize, track, or control access for this resource. For
-     * example, { "Tags": {"key1":"value1", "key2":"value2"} }.</p>
-     */
     inline ContactFlow& AddTags(const Aws::String& key, const Aws::String& value) { m_tagsHasBeenSet = true; m_tags.emplace(key, value); return *this; }
-
-    /**
-     * <p>The tags used to organize, track, or control access for this resource. For
-     * example, { "Tags": {"key1":"value1", "key2":"value2"} }.</p>
-     */
     inline ContactFlow& AddTags(Aws::String&& key, const Aws::String& value) { m_tagsHasBeenSet = true; m_tags.emplace(std::move(key), value); return *this; }
-
-    /**
-     * <p>The tags used to organize, track, or control access for this resource. For
-     * example, { "Tags": {"key1":"value1", "key2":"value2"} }.</p>
-     */
     inline ContactFlow& AddTags(const Aws::String& key, Aws::String&& value) { m_tagsHasBeenSet = true; m_tags.emplace(key, std::move(value)); return *this; }
-
-    /**
-     * <p>The tags used to organize, track, or control access for this resource. For
-     * example, { "Tags": {"key1":"value1", "key2":"value2"} }.</p>
-     */
     inline ContactFlow& AddTags(Aws::String&& key, Aws::String&& value) { m_tagsHasBeenSet = true; m_tags.emplace(std::move(key), std::move(value)); return *this; }
-
-    /**
-     * <p>The tags used to organize, track, or control access for this resource. For
-     * example, { "Tags": {"key1":"value1", "key2":"value2"} }.</p>
-     */
     inline ContactFlow& AddTags(const char* key, Aws::String&& value) { m_tagsHasBeenSet = true; m_tags.emplace(key, std::move(value)); return *this; }
-
-    /**
-     * <p>The tags used to organize, track, or control access for this resource. For
-     * example, { "Tags": {"key1":"value1", "key2":"value2"} }.</p>
-     */
     inline ContactFlow& AddTags(Aws::String&& key, const char* value) { m_tagsHasBeenSet = true; m_tags.emplace(std::move(key), value); return *this; }
-
-    /**
-     * <p>The tags used to organize, track, or control access for this resource. For
-     * example, { "Tags": {"key1":"value1", "key2":"value2"} }.</p>
-     */
     inline ContactFlow& AddTags(const char* key, const char* value) { m_tagsHasBeenSet = true; m_tags.emplace(key, value); return *this; }
+    ///@}
 
+    ///@{
+    /**
+     * <p>Indicates the checksum value of the flow content.</p>
+     */
+    inline const Aws::String& GetFlowContentSha256() const{ return m_flowContentSha256; }
+    inline bool FlowContentSha256HasBeenSet() const { return m_flowContentSha256HasBeenSet; }
+    inline void SetFlowContentSha256(const Aws::String& value) { m_flowContentSha256HasBeenSet = true; m_flowContentSha256 = value; }
+    inline void SetFlowContentSha256(Aws::String&& value) { m_flowContentSha256HasBeenSet = true; m_flowContentSha256 = std::move(value); }
+    inline void SetFlowContentSha256(const char* value) { m_flowContentSha256HasBeenSet = true; m_flowContentSha256.assign(value); }
+    inline ContactFlow& WithFlowContentSha256(const Aws::String& value) { SetFlowContentSha256(value); return *this;}
+    inline ContactFlow& WithFlowContentSha256(Aws::String&& value) { SetFlowContentSha256(std::move(value)); return *this;}
+    inline ContactFlow& WithFlowContentSha256(const char* value) { SetFlowContentSha256(value); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>The identifier of the flow version.</p>
+     */
+    inline long long GetVersion() const{ return m_version; }
+    inline bool VersionHasBeenSet() const { return m_versionHasBeenSet; }
+    inline void SetVersion(long long value) { m_versionHasBeenSet = true; m_version = value; }
+    inline ContactFlow& WithVersion(long long value) { SetVersion(value); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>The description of the flow version.</p>
+     */
+    inline const Aws::String& GetVersionDescription() const{ return m_versionDescription; }
+    inline bool VersionDescriptionHasBeenSet() const { return m_versionDescriptionHasBeenSet; }
+    inline void SetVersionDescription(const Aws::String& value) { m_versionDescriptionHasBeenSet = true; m_versionDescription = value; }
+    inline void SetVersionDescription(Aws::String&& value) { m_versionDescriptionHasBeenSet = true; m_versionDescription = std::move(value); }
+    inline void SetVersionDescription(const char* value) { m_versionDescriptionHasBeenSet = true; m_versionDescription.assign(value); }
+    inline ContactFlow& WithVersionDescription(const Aws::String& value) { SetVersionDescription(value); return *this;}
+    inline ContactFlow& WithVersionDescription(Aws::String&& value) { SetVersionDescription(std::move(value)); return *this;}
+    inline ContactFlow& WithVersionDescription(const char* value) { SetVersionDescription(value); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>The time at which the flow was last modified.</p>
+     */
+    inline const Aws::Utils::DateTime& GetLastModifiedTime() const{ return m_lastModifiedTime; }
+    inline bool LastModifiedTimeHasBeenSet() const { return m_lastModifiedTimeHasBeenSet; }
+    inline void SetLastModifiedTime(const Aws::Utils::DateTime& value) { m_lastModifiedTimeHasBeenSet = true; m_lastModifiedTime = value; }
+    inline void SetLastModifiedTime(Aws::Utils::DateTime&& value) { m_lastModifiedTimeHasBeenSet = true; m_lastModifiedTime = std::move(value); }
+    inline ContactFlow& WithLastModifiedTime(const Aws::Utils::DateTime& value) { SetLastModifiedTime(value); return *this;}
+    inline ContactFlow& WithLastModifiedTime(Aws::Utils::DateTime&& value) { SetLastModifiedTime(std::move(value)); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>The region in which the flow was last modified</p>
+     */
+    inline const Aws::String& GetLastModifiedRegion() const{ return m_lastModifiedRegion; }
+    inline bool LastModifiedRegionHasBeenSet() const { return m_lastModifiedRegionHasBeenSet; }
+    inline void SetLastModifiedRegion(const Aws::String& value) { m_lastModifiedRegionHasBeenSet = true; m_lastModifiedRegion = value; }
+    inline void SetLastModifiedRegion(Aws::String&& value) { m_lastModifiedRegionHasBeenSet = true; m_lastModifiedRegion = std::move(value); }
+    inline void SetLastModifiedRegion(const char* value) { m_lastModifiedRegionHasBeenSet = true; m_lastModifiedRegion.assign(value); }
+    inline ContactFlow& WithLastModifiedRegion(const Aws::String& value) { SetLastModifiedRegion(value); return *this;}
+    inline ContactFlow& WithLastModifiedRegion(Aws::String&& value) { SetLastModifiedRegion(std::move(value)); return *this;}
+    inline ContactFlow& WithLastModifiedRegion(const char* value) { SetLastModifiedRegion(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_arn;
@@ -489,6 +265,21 @@ namespace Model
 
     Aws::Map<Aws::String, Aws::String> m_tags;
     bool m_tagsHasBeenSet = false;
+
+    Aws::String m_flowContentSha256;
+    bool m_flowContentSha256HasBeenSet = false;
+
+    long long m_version;
+    bool m_versionHasBeenSet = false;
+
+    Aws::String m_versionDescription;
+    bool m_versionDescriptionHasBeenSet = false;
+
+    Aws::Utils::DateTime m_lastModifiedTime;
+    bool m_lastModifiedTimeHasBeenSet = false;
+
+    Aws::String m_lastModifiedRegion;
+    bool m_lastModifiedRegionHasBeenSet = false;
   };
 
 } // namespace Model

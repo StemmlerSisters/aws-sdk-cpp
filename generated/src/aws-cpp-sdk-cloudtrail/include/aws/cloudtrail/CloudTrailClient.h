@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/cloudtrail/CloudTrail_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/cloudtrail/CloudTrailServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/cloudtrail/CloudTrailErrorMarshaller.h>
 
 namespace Aws
 {
 namespace CloudTrail
 {
+  AWS_CLOUDTRAIL_API extern const char SERVICE_NAME[];
   /**
    * <fullname>CloudTrail</fullname> <p>This is the CloudTrail API Reference. It
    * provides descriptions of actions, data types, common parameters, and common
@@ -36,12 +40,20 @@ namespace CloudTrail
    * User Guide</a> for information about the data that is included with each Amazon
    * Web Services API call listed in the log files.</p>
    */
-  class AWS_CLOUDTRAIL_API CloudTrailClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<CloudTrailClient>
+  class AWS_CLOUDTRAIL_API CloudTrailClient : smithy::client::AwsSmithyClientT<Aws::CloudTrail::SERVICE_NAME,
+      Aws::CloudTrail::CloudTrailClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      CloudTrailEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::CloudTrailErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<CloudTrailClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "CloudTrail"; }
 
       typedef CloudTrailClientConfiguration ClientConfigurationType;
       typedef CloudTrailEndpointProvider EndpointProviderType;
@@ -95,14 +107,14 @@ namespace CloudTrail
         virtual ~CloudTrailClient();
 
         /**
-         * <p>Adds one or more tags to a trail, event data store, or channel, up to a limit
-         * of 50. Overwrites an existing tag's value when a new value is specified for an
-         * existing tag key. Tag key names must be unique; you cannot have two keys with
-         * the same name but different values. If you specify a key without a value, the
-         * tag will be created with the specified key and a value of null. You can tag a
-         * trail or event data store that applies to all Amazon Web Services Regions only
-         * from the Region in which the trail or event data store was created (also known
-         * as its home Region).</p><p><h3>See Also:</h3>   <a
+         * <p>Adds one or more tags to a trail, event data store, dashboard, or channel, up
+         * to a limit of 50. Overwrites an existing tag's value when a new value is
+         * specified for an existing tag key. Tag key names must be unique; you cannot have
+         * two keys with the same name but different values. If you specify a key without a
+         * value, the tag will be created with the specified key and a value of null. You
+         * can tag a trail or event data store that applies to all Amazon Web Services
+         * Regions only from the Region in which the trail or event data store was created
+         * (also known as its home Region).</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/AddTags">AWS
          * API Reference</a></p>
          */
@@ -186,6 +198,57 @@ namespace CloudTrail
         }
 
         /**
+         * <p> Creates a custom dashboard or the Highlights dashboard. </p> <ul> <li> <p>
+         * <b>Custom dashboards</b> - Custom dashboards allow you to query events in any
+         * event data store type. You can add up to 10 widgets to a custom dashboard. You
+         * can manually refresh a custom dashboard, or you can set a refresh schedule.</p>
+         * </li> <li> <p> <b>Highlights dashboard</b> - You can create the Highlights
+         * dashboard to see a summary of key user activities and API usage across all your
+         * event data stores. CloudTrail Lake manages the Highlights dashboard and
+         * refreshes the dashboard every 6 hours. To create the Highlights dashboard, you
+         * must set and enable a refresh schedule.</p> </li> </ul> <p> CloudTrail runs
+         * queries to populate the dashboard's widgets during a manual or scheduled
+         * refresh. CloudTrail must be granted permissions to run the
+         * <code>StartQuery</code> operation on your behalf. To provide permissions, run
+         * the <code>PutResourcePolicy</code> operation to attach a resource-based policy
+         * to each event data store. For more information, see <a
+         * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/security_iam_resource-based-policy-examples.html#security_iam_resource-based-policy-examples-eds-dashboard">Example:
+         * Allow CloudTrail to run queries to populate a dashboard</a> in the <i>CloudTrail
+         * User Guide</i>. </p> <p> To set a refresh schedule, CloudTrail must be granted
+         * permissions to run the <code>StartDashboardRefresh</code> operation to refresh
+         * the dashboard on your behalf. To provide permissions, run the
+         * <code>PutResourcePolicy</code> operation to attach a resource-based policy to
+         * the dashboard. For more information, see <a
+         * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/security_iam_resource-based-policy-examples.html#security_iam_resource-based-policy-examples-dashboards">
+         * Resource-based policy example for a dashboard</a> in the <i>CloudTrail User
+         * Guide</i>. </p> <p>For more information about dashboards, see <a
+         * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/lake-dashboard.html">CloudTrail
+         * Lake dashboards</a> in the <i>CloudTrail User Guide</i>.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/CreateDashboard">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateDashboardOutcome CreateDashboard(const Model::CreateDashboardRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateDashboard that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateDashboardRequestT = Model::CreateDashboardRequest>
+        Model::CreateDashboardOutcomeCallable CreateDashboardCallable(const CreateDashboardRequestT& request) const
+        {
+            return SubmitCallable(&CloudTrailClient::CreateDashboard, request);
+        }
+
+        /**
+         * An Async wrapper for CreateDashboard that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateDashboardRequestT = Model::CreateDashboardRequest>
+        void CreateDashboardAsync(const CreateDashboardRequestT& request, const CreateDashboardResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CloudTrailClient::CreateDashboard, request, handler, context);
+        }
+
+        /**
          * <p>Creates a new event data store.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/CreateEventDataStore">AWS
          * API Reference</a></p>
@@ -262,6 +325,32 @@ namespace CloudTrail
         }
 
         /**
+         * <p> Deletes the specified dashboard. You cannot delete a dashboard that has
+         * termination protection enabled. </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/DeleteDashboard">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteDashboardOutcome DeleteDashboard(const Model::DeleteDashboardRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteDashboard that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteDashboardRequestT = Model::DeleteDashboardRequest>
+        Model::DeleteDashboardOutcomeCallable DeleteDashboardCallable(const DeleteDashboardRequestT& request) const
+        {
+            return SubmitCallable(&CloudTrailClient::DeleteDashboard, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteDashboard that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteDashboardRequestT = Model::DeleteDashboardRequest>
+        void DeleteDashboardAsync(const DeleteDashboardRequestT& request, const DeleteDashboardResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CloudTrailClient::DeleteDashboard, request, handler, context);
+        }
+
+        /**
          * <p>Disables the event data store specified by <code>EventDataStore</code>, which
          * accepts an event data store ARN. After you run
          * <code>DeleteEventDataStore</code>, the event data store enters a
@@ -301,8 +390,8 @@ namespace CloudTrail
         }
 
         /**
-         * <p> Deletes the resource-based policy attached to the CloudTrail channel.
-         * </p><p><h3>See Also:</h3>   <a
+         * <p> Deletes the resource-based policy attached to the CloudTrail event data
+         * store, dashboard, or channel. </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/DeleteResourcePolicy">AWS
          * API Reference</a></p>
          */
@@ -384,20 +473,22 @@ namespace CloudTrail
          * <p>Returns metadata about a query, including query run time in milliseconds,
          * number of events scanned and matched, and query status. If the query results
          * were delivered to an S3 bucket, the response also provides the S3 URI and the
-         * delivery status.</p> <p>You must specify either a <code>QueryID</code> or a
+         * delivery status.</p> <p>You must specify either <code>QueryId</code> or
          * <code>QueryAlias</code>. Specifying the <code>QueryAlias</code> parameter
-         * returns information about the last query run for the alias.</p><p><h3>See
-         * Also:</h3>   <a
+         * returns information about the last query run for the alias. You can provide
+         * <code>RefreshId</code> along with <code>QueryAlias</code> to view the query
+         * results of a dashboard query for the specified
+         * <code>RefreshId</code>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/DescribeQuery">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeQueryOutcome DescribeQuery(const Model::DescribeQueryRequest& request) const;
+        virtual Model::DescribeQueryOutcome DescribeQuery(const Model::DescribeQueryRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeQuery that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeQueryRequestT = Model::DescribeQueryRequest>
-        Model::DescribeQueryOutcomeCallable DescribeQueryCallable(const DescribeQueryRequestT& request) const
+        Model::DescribeQueryOutcomeCallable DescribeQueryCallable(const DescribeQueryRequestT& request = {}) const
         {
             return SubmitCallable(&CloudTrailClient::DescribeQuery, request);
         }
@@ -406,7 +497,7 @@ namespace CloudTrail
          * An Async wrapper for DescribeQuery that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeQueryRequestT = Model::DescribeQueryRequest>
-        void DescribeQueryAsync(const DescribeQueryRequestT& request, const DescribeQueryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeQueryAsync(const DescribeQueryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeQueryRequestT& request = {}) const
         {
             return SubmitAsync(&CloudTrailClient::DescribeQuery, request, handler, context);
         }
@@ -417,13 +508,13 @@ namespace CloudTrail
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/DescribeTrails">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeTrailsOutcome DescribeTrails(const Model::DescribeTrailsRequest& request) const;
+        virtual Model::DescribeTrailsOutcome DescribeTrails(const Model::DescribeTrailsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeTrails that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeTrailsRequestT = Model::DescribeTrailsRequest>
-        Model::DescribeTrailsOutcomeCallable DescribeTrailsCallable(const DescribeTrailsRequestT& request) const
+        Model::DescribeTrailsOutcomeCallable DescribeTrailsCallable(const DescribeTrailsRequestT& request = {}) const
         {
             return SubmitCallable(&CloudTrailClient::DescribeTrails, request);
         }
@@ -432,7 +523,7 @@ namespace CloudTrail
          * An Async wrapper for DescribeTrails that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeTrailsRequestT = Model::DescribeTrailsRequest>
-        void DescribeTrailsAsync(const DescribeTrailsRequestT& request, const DescribeTrailsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeTrailsAsync(const DescribeTrailsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeTrailsRequestT& request = {}) const
         {
             return SubmitAsync(&CloudTrailClient::DescribeTrails, request, handler, context);
         }
@@ -510,6 +601,43 @@ namespace CloudTrail
         }
 
         /**
+         * <p> Generates a query from a natural language prompt. This operation uses
+         * generative artificial intelligence (generative AI) to produce a ready-to-use SQL
+         * query from the prompt. </p> <p>The prompt can be a question or a statement about
+         * the event data in your event data store. For example, you can enter prompts like
+         * "What are my top errors in the past month?" and “Give me a list of users that
+         * used SNS.”</p> <p>The prompt must be in English. For information about
+         * limitations, permissions, and supported Regions, see <a
+         * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/lake-query-generator.html">Create
+         * CloudTrail Lake queries from natural language prompts</a> in the <i>CloudTrail
+         * </i> user guide.</p>  <p>Do not include any personally identifying,
+         * confidential, or sensitive information in your prompts.</p> <p>This feature uses
+         * generative AI large language models (LLMs); we recommend double-checking the LLM
+         * response.</p> <p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/GenerateQuery">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GenerateQueryOutcome GenerateQuery(const Model::GenerateQueryRequest& request) const;
+
+        /**
+         * A Callable wrapper for GenerateQuery that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GenerateQueryRequestT = Model::GenerateQueryRequest>
+        Model::GenerateQueryOutcomeCallable GenerateQueryCallable(const GenerateQueryRequestT& request) const
+        {
+            return SubmitCallable(&CloudTrailClient::GenerateQuery, request);
+        }
+
+        /**
+         * An Async wrapper for GenerateQuery that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GenerateQueryRequestT = Model::GenerateQueryRequest>
+        void GenerateQueryAsync(const GenerateQueryRequestT& request, const GenerateQueryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CloudTrailClient::GenerateQuery, request, handler, context);
+        }
+
+        /**
          * <p> Returns information about a specific channel. </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/GetChannel">AWS
          * API Reference</a></p>
@@ -532,6 +660,31 @@ namespace CloudTrail
         void GetChannelAsync(const GetChannelRequestT& request, const GetChannelResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&CloudTrailClient::GetChannel, request, handler, context);
+        }
+
+        /**
+         * <p> Returns the specified dashboard. </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/GetDashboard">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetDashboardOutcome GetDashboard(const Model::GetDashboardRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetDashboard that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetDashboardRequestT = Model::GetDashboardRequest>
+        Model::GetDashboardOutcomeCallable GetDashboardCallable(const GetDashboardRequestT& request) const
+        {
+            return SubmitCallable(&CloudTrailClient::GetDashboard, request);
+        }
+
+        /**
+         * An Async wrapper for GetDashboard that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetDashboardRequestT = Model::GetDashboardRequest>
+        void GetDashboardAsync(const GetDashboardRequestT& request, const GetDashboardResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CloudTrailClient::GetDashboard, request, handler, context);
         }
 
         /**
@@ -564,16 +717,20 @@ namespace CloudTrail
          * <p>Describes the settings for the event selectors that you configured for your
          * trail. The information returned for your event selectors includes the
          * following:</p> <ul> <li> <p>If your event selector includes read-only events,
-         * write-only events, or all events. This applies to both management events and
-         * data events.</p> </li> <li> <p>If your event selector includes management
-         * events.</p> </li> <li> <p>If your event selector includes data events, the
-         * resources on which you are logging data events.</p> </li> </ul> <p>For more
-         * information about logging management and data events, see the following topics
-         * in the <i>CloudTrail User Guide</i>:</p> <ul> <li> <p> <a
+         * write-only events, or all events. This applies to management events, data
+         * events, and network activity events.</p> </li> <li> <p>If your event selector
+         * includes management events.</p> </li> <li> <p>If your event selector includes
+         * network activity events, the event sources for which you are logging network
+         * activity events.</p> </li> <li> <p>If your event selector includes data events,
+         * the resources on which you are logging data events.</p> </li> </ul> <p>For more
+         * information about logging management, data, and network activity events, see the
+         * following topics in the <i>CloudTrail User Guide</i>:</p> <ul> <li> <p> <a
          * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-events-with-cloudtrail.html">Logging
          * management events</a> </p> </li> <li> <p> <a
          * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-data-events-with-cloudtrail.html">Logging
-         * data events</a> </p> </li> </ul><p><h3>See Also:</h3>   <a
+         * data events</a> </p> </li> <li> <p> <a
+         * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-network-events-with-cloudtrail.html">Logging
+         * network activity events</a> </p> </li> </ul><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/GetEventSelectors">AWS
          * API Reference</a></p>
          */
@@ -634,19 +791,19 @@ namespace CloudTrail
          * event data store, or the <code>TrailName</code> parameter to the get Insights
          * event selectors for a trail. You cannot specify these parameters together.</p>
          * <p>For more information, see <a
-         * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-insights-events-with-cloudtrail.html">Logging
-         * CloudTrail Insights events</a> in the <i>CloudTrail User
-         * Guide</i>.</p><p><h3>See Also:</h3>   <a
+         * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-insights-events-with-cloudtrail.html">Working
+         * with CloudTrail Insights</a> in the <i>CloudTrail User Guide</i>.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/GetInsightSelectors">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetInsightSelectorsOutcome GetInsightSelectors(const Model::GetInsightSelectorsRequest& request) const;
+        virtual Model::GetInsightSelectorsOutcome GetInsightSelectors(const Model::GetInsightSelectorsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetInsightSelectors that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetInsightSelectorsRequestT = Model::GetInsightSelectorsRequest>
-        Model::GetInsightSelectorsOutcomeCallable GetInsightSelectorsCallable(const GetInsightSelectorsRequestT& request) const
+        Model::GetInsightSelectorsOutcomeCallable GetInsightSelectorsCallable(const GetInsightSelectorsRequestT& request = {}) const
         {
             return SubmitCallable(&CloudTrailClient::GetInsightSelectors, request);
         }
@@ -655,7 +812,7 @@ namespace CloudTrail
          * An Async wrapper for GetInsightSelectors that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetInsightSelectorsRequestT = Model::GetInsightSelectorsRequest>
-        void GetInsightSelectorsAsync(const GetInsightSelectorsRequestT& request, const GetInsightSelectorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetInsightSelectorsAsync(const GetInsightSelectorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetInsightSelectorsRequestT& request = {}) const
         {
             return SubmitAsync(&CloudTrailClient::GetInsightSelectors, request, handler, context);
         }
@@ -689,7 +846,8 @@ namespace CloudTrail
 
         /**
          * <p> Retrieves the JSON text of the resource-based policy document attached to
-         * the CloudTrail channel. </p><p><h3>See Also:</h3>   <a
+         * the CloudTrail event data store, dashboard, or channel. </p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/GetResourcePolicy">AWS
          * API Reference</a></p>
          */
@@ -774,13 +932,13 @@ namespace CloudTrail
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/ListChannels">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListChannelsOutcome ListChannels(const Model::ListChannelsRequest& request) const;
+        virtual Model::ListChannelsOutcome ListChannels(const Model::ListChannelsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListChannels that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListChannelsRequestT = Model::ListChannelsRequest>
-        Model::ListChannelsOutcomeCallable ListChannelsCallable(const ListChannelsRequestT& request) const
+        Model::ListChannelsOutcomeCallable ListChannelsCallable(const ListChannelsRequestT& request = {}) const
         {
             return SubmitCallable(&CloudTrailClient::ListChannels, request);
         }
@@ -789,9 +947,35 @@ namespace CloudTrail
          * An Async wrapper for ListChannels that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListChannelsRequestT = Model::ListChannelsRequest>
-        void ListChannelsAsync(const ListChannelsRequestT& request, const ListChannelsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListChannelsAsync(const ListChannelsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListChannelsRequestT& request = {}) const
         {
             return SubmitAsync(&CloudTrailClient::ListChannels, request, handler, context);
+        }
+
+        /**
+         * <p> Returns information about all dashboards in the account, in the current
+         * Region. </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/ListDashboards">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListDashboardsOutcome ListDashboards(const Model::ListDashboardsRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for ListDashboards that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListDashboardsRequestT = Model::ListDashboardsRequest>
+        Model::ListDashboardsOutcomeCallable ListDashboardsCallable(const ListDashboardsRequestT& request = {}) const
+        {
+            return SubmitCallable(&CloudTrailClient::ListDashboards, request);
+        }
+
+        /**
+         * An Async wrapper for ListDashboards that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListDashboardsRequestT = Model::ListDashboardsRequest>
+        void ListDashboardsAsync(const ListDashboardsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDashboardsRequestT& request = {}) const
+        {
+            return SubmitAsync(&CloudTrailClient::ListDashboards, request, handler, context);
         }
 
         /**
@@ -800,13 +984,13 @@ namespace CloudTrail
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/ListEventDataStores">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListEventDataStoresOutcome ListEventDataStores(const Model::ListEventDataStoresRequest& request) const;
+        virtual Model::ListEventDataStoresOutcome ListEventDataStores(const Model::ListEventDataStoresRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListEventDataStores that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListEventDataStoresRequestT = Model::ListEventDataStoresRequest>
-        Model::ListEventDataStoresOutcomeCallable ListEventDataStoresCallable(const ListEventDataStoresRequestT& request) const
+        Model::ListEventDataStoresOutcomeCallable ListEventDataStoresCallable(const ListEventDataStoresRequestT& request = {}) const
         {
             return SubmitCallable(&CloudTrailClient::ListEventDataStores, request);
         }
@@ -815,7 +999,7 @@ namespace CloudTrail
          * An Async wrapper for ListEventDataStores that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListEventDataStoresRequestT = Model::ListEventDataStoresRequest>
-        void ListEventDataStoresAsync(const ListEventDataStoresRequestT& request, const ListEventDataStoresResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListEventDataStoresAsync(const ListEventDataStoresResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListEventDataStoresRequestT& request = {}) const
         {
             return SubmitAsync(&CloudTrailClient::ListEventDataStores, request, handler, context);
         }
@@ -853,13 +1037,13 @@ namespace CloudTrail
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/ListImports">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListImportsOutcome ListImports(const Model::ListImportsRequest& request) const;
+        virtual Model::ListImportsOutcome ListImports(const Model::ListImportsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListImports that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListImportsRequestT = Model::ListImportsRequest>
-        Model::ListImportsOutcomeCallable ListImportsCallable(const ListImportsRequestT& request) const
+        Model::ListImportsOutcomeCallable ListImportsCallable(const ListImportsRequestT& request = {}) const
         {
             return SubmitCallable(&CloudTrailClient::ListImports, request);
         }
@@ -868,7 +1052,7 @@ namespace CloudTrail
          * An Async wrapper for ListImports that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListImportsRequestT = Model::ListImportsRequest>
-        void ListImportsAsync(const ListImportsRequestT& request, const ListImportsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListImportsAsync(const ListImportsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListImportsRequestT& request = {}) const
         {
             return SubmitAsync(&CloudTrailClient::ListImports, request, handler, context);
         }
@@ -922,13 +1106,13 @@ namespace CloudTrail
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/ListPublicKeys">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListPublicKeysOutcome ListPublicKeys(const Model::ListPublicKeysRequest& request) const;
+        virtual Model::ListPublicKeysOutcome ListPublicKeys(const Model::ListPublicKeysRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListPublicKeys that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListPublicKeysRequestT = Model::ListPublicKeysRequest>
-        Model::ListPublicKeysOutcomeCallable ListPublicKeysCallable(const ListPublicKeysRequestT& request) const
+        Model::ListPublicKeysOutcomeCallable ListPublicKeysCallable(const ListPublicKeysRequestT& request = {}) const
         {
             return SubmitCallable(&CloudTrailClient::ListPublicKeys, request);
         }
@@ -937,7 +1121,7 @@ namespace CloudTrail
          * An Async wrapper for ListPublicKeys that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListPublicKeysRequestT = Model::ListPublicKeysRequest>
-        void ListPublicKeysAsync(const ListPublicKeysRequestT& request, const ListPublicKeysResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListPublicKeysAsync(const ListPublicKeysResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListPublicKeysRequestT& request = {}) const
         {
             return SubmitAsync(&CloudTrailClient::ListPublicKeys, request, handler, context);
         }
@@ -975,8 +1159,8 @@ namespace CloudTrail
         }
 
         /**
-         * <p>Lists the tags for the specified trails, event data stores, or channels in
-         * the current Region.</p><p><h3>See Also:</h3>   <a
+         * <p>Lists the tags for the specified trails, event data stores, dashboards, or
+         * channels in the current Region.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/ListTags">AWS
          * API Reference</a></p>
          */
@@ -1005,13 +1189,13 @@ namespace CloudTrail
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/ListTrails">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListTrailsOutcome ListTrails(const Model::ListTrailsRequest& request) const;
+        virtual Model::ListTrailsOutcome ListTrails(const Model::ListTrailsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListTrails that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListTrailsRequestT = Model::ListTrailsRequest>
-        Model::ListTrailsOutcomeCallable ListTrailsCallable(const ListTrailsRequestT& request) const
+        Model::ListTrailsOutcomeCallable ListTrailsCallable(const ListTrailsRequestT& request = {}) const
         {
             return SubmitCallable(&CloudTrailClient::ListTrails, request);
         }
@@ -1020,7 +1204,7 @@ namespace CloudTrail
          * An Async wrapper for ListTrails that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListTrailsRequestT = Model::ListTrailsRequest>
-        void ListTrailsAsync(const ListTrailsRequestT& request, const ListTrailsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListTrailsAsync(const ListTrailsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListTrailsRequestT& request = {}) const
         {
             return SubmitAsync(&CloudTrailClient::ListTrails, request, handler, context);
         }
@@ -1050,13 +1234,13 @@ namespace CloudTrail
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/LookupEvents">AWS
          * API Reference</a></p>
          */
-        virtual Model::LookupEventsOutcome LookupEvents(const Model::LookupEventsRequest& request) const;
+        virtual Model::LookupEventsOutcome LookupEvents(const Model::LookupEventsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for LookupEvents that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename LookupEventsRequestT = Model::LookupEventsRequest>
-        Model::LookupEventsOutcomeCallable LookupEventsCallable(const LookupEventsRequestT& request) const
+        Model::LookupEventsOutcomeCallable LookupEventsCallable(const LookupEventsRequestT& request = {}) const
         {
             return SubmitCallable(&CloudTrailClient::LookupEvents, request);
         }
@@ -1065,52 +1249,58 @@ namespace CloudTrail
          * An Async wrapper for LookupEvents that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename LookupEventsRequestT = Model::LookupEventsRequest>
-        void LookupEventsAsync(const LookupEventsRequestT& request, const LookupEventsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void LookupEventsAsync(const LookupEventsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const LookupEventsRequestT& request = {}) const
         {
             return SubmitAsync(&CloudTrailClient::LookupEvents, request, handler, context);
         }
 
         /**
-         * <p>Configures an event selector or advanced event selectors for your trail. Use
-         * event selectors or advanced event selectors to specify management and data event
-         * settings for your trail. If you want your trail to log Insights events, be sure
-         * the event selector enables logging of the Insights event types you want
-         * configured for your trail. For more information about logging Insights events,
-         * see <a
-         * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-insights-events-with-cloudtrail.html">Logging
-         * Insights events for trails</a> in the <i>CloudTrail User Guide</i>. By default,
+         * <p>Configures event selectors (also referred to as <i>basic event selectors</i>)
+         * or advanced event selectors for your trail. You can use either
+         * <code>AdvancedEventSelectors</code> or <code>EventSelectors</code>, but not
+         * both. If you apply <code>AdvancedEventSelectors</code> to a trail, any existing
+         * <code>EventSelectors</code> are overwritten.</p> <p>You can use
+         * <code>AdvancedEventSelectors</code> to log management events, data events for
+         * all resource types, and network activity events.</p> <p>You can use
+         * <code>EventSelectors</code> to log management events and data events for the
+         * following resource types:</p> <ul> <li> <p> <code>AWS::DynamoDB::Table</code>
+         * </p> </li> <li> <p> <code>AWS::Lambda::Function</code> </p> </li> <li> <p>
+         * <code>AWS::S3::Object</code> </p> </li> </ul> <p>You can't use
+         * <code>EventSelectors</code> to log network activity events.</p> <p>If you want
+         * your trail to log Insights events, be sure the event selector or advanced event
+         * selector enables logging of the Insights event types you want configured for
+         * your trail. For more information about logging Insights events, see <a
+         * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-insights-events-with-cloudtrail.html">Working
+         * with CloudTrail Insights</a> in the <i>CloudTrail User Guide</i>. By default,
          * trails created without specific event selectors are configured to log all read
-         * and write management events, and no data events.</p> <p>When an event occurs in
-         * your account, CloudTrail evaluates the event selectors or advanced event
-         * selectors in all trails. For each trail, if the event matches any event
-         * selector, the trail processes and logs the event. If the event doesn't match any
-         * event selector, the trail doesn't log the event.</p> <p>Example</p> <ol> <li>
-         * <p>You create an event selector for a trail and specify that you want write-only
-         * events.</p> </li> <li> <p>The EC2 <code>GetConsoleOutput</code> and
-         * <code>RunInstances</code> API operations occur in your account.</p> </li> <li>
-         * <p>CloudTrail evaluates whether the events match your event selectors.</p> </li>
-         * <li> <p>The <code>RunInstances</code> is a write-only event and it matches your
-         * event selector. The trail logs the event.</p> </li> <li> <p>The
-         * <code>GetConsoleOutput</code> is a read-only event that doesn't match your event
-         * selector. The trail doesn't log the event. </p> </li> </ol> <p>The
-         * <code>PutEventSelectors</code> operation must be called from the Region in which
-         * the trail was created; otherwise, an <code>InvalidHomeRegionException</code>
-         * exception is thrown.</p> <p>You can configure up to five event selectors for
-         * each trail. For more information, see <a
+         * and write management events, and no data events or network activity events.</p>
+         * <p>When an event occurs in your account, CloudTrail evaluates the event
+         * selectors or advanced event selectors in all trails. For each trail, if the
+         * event matches any event selector, the trail processes and logs the event. If the
+         * event doesn't match any event selector, the trail doesn't log the event.</p>
+         * <p>Example</p> <ol> <li> <p>You create an event selector for a trail and specify
+         * that you want to log write-only events.</p> </li> <li> <p>The EC2
+         * <code>GetConsoleOutput</code> and <code>RunInstances</code> API operations occur
+         * in your account.</p> </li> <li> <p>CloudTrail evaluates whether the events match
+         * your event selectors.</p> </li> <li> <p>The <code>RunInstances</code> is a
+         * write-only event and it matches your event selector. The trail logs the
+         * event.</p> </li> <li> <p>The <code>GetConsoleOutput</code> is a read-only event
+         * that doesn't match your event selector. The trail doesn't log the event. </p>
+         * </li> </ol> <p>The <code>PutEventSelectors</code> operation must be called from
+         * the Region in which the trail was created; otherwise, an
+         * <code>InvalidHomeRegionException</code> exception is thrown.</p> <p>You can
+         * configure up to five event selectors for each trail.</p> <p>You can add advanced
+         * event selectors, and conditions for your advanced event selectors, up to a
+         * maximum of 500 values for all conditions and selectors on a trail. For more
+         * information, see <a
          * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-events-with-cloudtrail.html">Logging
          * management events</a>, <a
          * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-data-events-with-cloudtrail.html">Logging
-         * data events</a>, and <a
+         * data events</a>, <a
+         * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-network-events-with-cloudtrail.html">Logging
+         * network activity events</a>, and <a
          * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/WhatIsCloudTrail-Limits.html">Quotas
-         * in CloudTrail</a> in the <i>CloudTrail User Guide</i>.</p> <p>You can add
-         * advanced event selectors, and conditions for your advanced event selectors, up
-         * to a maximum of 500 values for all conditions and selectors on a trail. You can
-         * use either <code>AdvancedEventSelectors</code> or <code>EventSelectors</code>,
-         * but not both. If you apply <code>AdvancedEventSelectors</code> to a trail, any
-         * existing <code>EventSelectors</code> are overwritten. For more information about
-         * advanced event selectors, see <a
-         * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-data-events-with-cloudtrail.html">Logging
-         * data events</a> in the <i>CloudTrail User Guide</i>.</p><p><h3>See Also:</h3>  
+         * in CloudTrail</a> in the <i>CloudTrail User Guide</i>.</p><p><h3>See Also:</h3> 
          * <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/PutEventSelectors">AWS
          * API Reference</a></p>
@@ -1158,9 +1348,9 @@ namespace CloudTrail
          * management events. You can call <code>GetEventDataStore</code> on an event data
          * store to check whether the event data store logs management events.</p> <p>For
          * more information, see <a
-         * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-insights-events-with-cloudtrail.html">Logging
-         * CloudTrail Insights events</a> in the <i>CloudTrail User
-         * Guide</i>.</p><p><h3>See Also:</h3>   <a
+         * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-insights-events-with-cloudtrail.html">Working
+         * with CloudTrail Insights</a> in the <i>CloudTrail User Guide</i>.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/PutInsightSelectors">AWS
          * API Reference</a></p>
          */
@@ -1185,9 +1375,9 @@ namespace CloudTrail
         }
 
         /**
-         * <p> Attaches a resource-based permission policy to a CloudTrail channel that is
-         * used for an integration with an event source outside of Amazon Web Services. For
-         * more information about resource-based policies, see <a
+         * <p> Attaches a resource-based permission policy to a CloudTrail event data
+         * store, dashboard, or channel. For more information about resource-based
+         * policies, see <a
          * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/security_iam_resource-based-policy-examples.html">CloudTrail
          * resource-based policy examples</a> in the <i>CloudTrail User Guide</i>.
          * </p><p><h3>See Also:</h3>   <a
@@ -1242,7 +1432,7 @@ namespace CloudTrail
         }
 
         /**
-         * <p>Removes the specified tags from a trail, event data store, or
+         * <p>Removes the specified tags from a trail, event data store, dashboard, or
          * channel.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/RemoveTags">AWS
          * API Reference</a></p>
@@ -1297,11 +1487,72 @@ namespace CloudTrail
         }
 
         /**
+         * <p> Searches sample queries and returns a list of sample queries that are sorted
+         * by relevance. To search for sample queries, provide a natural language
+         * <code>SearchPhrase</code> in English. </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/SearchSampleQueries">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::SearchSampleQueriesOutcome SearchSampleQueries(const Model::SearchSampleQueriesRequest& request) const;
+
+        /**
+         * A Callable wrapper for SearchSampleQueries that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename SearchSampleQueriesRequestT = Model::SearchSampleQueriesRequest>
+        Model::SearchSampleQueriesOutcomeCallable SearchSampleQueriesCallable(const SearchSampleQueriesRequestT& request) const
+        {
+            return SubmitCallable(&CloudTrailClient::SearchSampleQueries, request);
+        }
+
+        /**
+         * An Async wrapper for SearchSampleQueries that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename SearchSampleQueriesRequestT = Model::SearchSampleQueriesRequest>
+        void SearchSampleQueriesAsync(const SearchSampleQueriesRequestT& request, const SearchSampleQueriesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CloudTrailClient::SearchSampleQueries, request, handler, context);
+        }
+
+        /**
+         * <p> Starts a refresh of the specified dashboard. </p> <p> Each time a dashboard
+         * is refreshed, CloudTrail runs queries to populate the dashboard's widgets.
+         * CloudTrail must be granted permissions to run the <code>StartQuery</code>
+         * operation on your behalf. To provide permissions, run the
+         * <code>PutResourcePolicy</code> operation to attach a resource-based policy to
+         * each event data store. For more information, see <a
+         * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/security_iam_resource-based-policy-examples.html#security_iam_resource-based-policy-examples-eds-dashboard">Example:
+         * Allow CloudTrail to run queries to populate a dashboard</a> in the <i>CloudTrail
+         * User Guide</i>. </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/StartDashboardRefresh">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::StartDashboardRefreshOutcome StartDashboardRefresh(const Model::StartDashboardRefreshRequest& request) const;
+
+        /**
+         * A Callable wrapper for StartDashboardRefresh that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename StartDashboardRefreshRequestT = Model::StartDashboardRefreshRequest>
+        Model::StartDashboardRefreshOutcomeCallable StartDashboardRefreshCallable(const StartDashboardRefreshRequestT& request) const
+        {
+            return SubmitCallable(&CloudTrailClient::StartDashboardRefresh, request);
+        }
+
+        /**
+         * An Async wrapper for StartDashboardRefresh that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename StartDashboardRefreshRequestT = Model::StartDashboardRefreshRequest>
+        void StartDashboardRefreshAsync(const StartDashboardRefreshRequestT& request, const StartDashboardRefreshResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CloudTrailClient::StartDashboardRefresh, request, handler, context);
+        }
+
+        /**
          * <p>Starts the ingestion of live events on an event data store specified as
          * either an ARN or the ID portion of the ARN. To start ingestion, the event data
          * store <code>Status</code> must be <code>STOPPED_INGESTION</code> and the
          * <code>eventCategory</code> must be <code>Management</code>, <code>Data</code>,
-         * or <code>ConfigurationItem</code>.</p><p><h3>See Also:</h3>   <a
+         * <code>NetworkActivity</code>, or <code>ConfigurationItem</code>.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/StartEventDataStoreIngestion">AWS
          * API Reference</a></p>
          */
@@ -1334,8 +1585,9 @@ namespace CloudTrail
          * in another prefix, you must include the prefix in the
          * <code>S3LocationUri</code>. For more considerations about importing trail
          * events, see <a
-         * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-copy-trail-to-lake.html#cloudtrail-trail-copy-considerations">Considerations</a>.
-         * </p> <p> When you start a new import, the <code>Destinations</code> and
+         * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-copy-trail-to-lake.html#cloudtrail-trail-copy-considerations">Considerations
+         * for copying trail events</a> in the <i>CloudTrail User Guide</i>. </p> <p> When
+         * you start a new import, the <code>Destinations</code> and
          * <code>ImportSource</code> parameters are required. Before starting a new import,
          * disable any access control lists (ACLs) attached to the source S3 bucket. For
          * more information about disabling ACLs, see <a
@@ -1349,13 +1601,13 @@ namespace CloudTrail
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/StartImport">AWS
          * API Reference</a></p>
          */
-        virtual Model::StartImportOutcome StartImport(const Model::StartImportRequest& request) const;
+        virtual Model::StartImportOutcome StartImport(const Model::StartImportRequest& request = {}) const;
 
         /**
          * A Callable wrapper for StartImport that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename StartImportRequestT = Model::StartImportRequest>
-        Model::StartImportOutcomeCallable StartImportCallable(const StartImportRequestT& request) const
+        Model::StartImportOutcomeCallable StartImportCallable(const StartImportRequestT& request = {}) const
         {
             return SubmitCallable(&CloudTrailClient::StartImport, request);
         }
@@ -1364,7 +1616,7 @@ namespace CloudTrail
          * An Async wrapper for StartImport that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename StartImportRequestT = Model::StartImportRequest>
-        void StartImportAsync(const StartImportRequestT& request, const StartImportResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void StartImportAsync(const StartImportResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const StartImportRequestT& request = {}) const
         {
             return SubmitAsync(&CloudTrailClient::StartImport, request, handler, context);
         }
@@ -1411,13 +1663,13 @@ namespace CloudTrail
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/StartQuery">AWS
          * API Reference</a></p>
          */
-        virtual Model::StartQueryOutcome StartQuery(const Model::StartQueryRequest& request) const;
+        virtual Model::StartQueryOutcome StartQuery(const Model::StartQueryRequest& request = {}) const;
 
         /**
          * A Callable wrapper for StartQuery that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename StartQueryRequestT = Model::StartQueryRequest>
-        Model::StartQueryOutcomeCallable StartQueryCallable(const StartQueryRequestT& request) const
+        Model::StartQueryOutcomeCallable StartQueryCallable(const StartQueryRequestT& request = {}) const
         {
             return SubmitCallable(&CloudTrailClient::StartQuery, request);
         }
@@ -1426,7 +1678,7 @@ namespace CloudTrail
          * An Async wrapper for StartQuery that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename StartQueryRequestT = Model::StartQueryRequest>
-        void StartQueryAsync(const StartQueryRequestT& request, const StartQueryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void StartQueryAsync(const StartQueryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const StartQueryRequestT& request = {}) const
         {
             return SubmitAsync(&CloudTrailClient::StartQuery, request, handler, context);
         }
@@ -1436,7 +1688,8 @@ namespace CloudTrail
          * an ARN or the ID portion of the ARN. To stop ingestion, the event data store
          * <code>Status</code> must be <code>ENABLED</code> and the
          * <code>eventCategory</code> must be <code>Management</code>, <code>Data</code>,
-         * or <code>ConfigurationItem</code>.</p><p><h3>See Also:</h3>   <a
+         * <code>NetworkActivity</code>, or <code>ConfigurationItem</code>.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/StopEventDataStoreIngestion">AWS
          * API Reference</a></p>
          */
@@ -1544,6 +1797,45 @@ namespace CloudTrail
         }
 
         /**
+         * <p> Updates the specified dashboard. </p> <p> To set a refresh schedule,
+         * CloudTrail must be granted permissions to run the
+         * <code>StartDashboardRefresh</code> operation to refresh the dashboard on your
+         * behalf. To provide permissions, run the <code>PutResourcePolicy</code> operation
+         * to attach a resource-based policy to the dashboard. For more information, see <a
+         * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/security_iam_resource-based-policy-examples.html#security_iam_resource-based-policy-examples-dashboards">
+         * Resource-based policy example for a dashboard</a> in the <i>CloudTrail User
+         * Guide</i>. </p> <p> CloudTrail runs queries to populate the dashboard's widgets
+         * during a manual or scheduled refresh. CloudTrail must be granted permissions to
+         * run the <code>StartQuery</code> operation on your behalf. To provide
+         * permissions, run the <code>PutResourcePolicy</code> operation to attach a
+         * resource-based policy to each event data store. For more information, see <a
+         * href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/security_iam_resource-based-policy-examples.html#security_iam_resource-based-policy-examples-eds-dashboard">Example:
+         * Allow CloudTrail to run queries to populate a dashboard</a> in the <i>CloudTrail
+         * User Guide</i>. </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/cloudtrail-2013-11-01/UpdateDashboard">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateDashboardOutcome UpdateDashboard(const Model::UpdateDashboardRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateDashboard that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateDashboardRequestT = Model::UpdateDashboardRequest>
+        Model::UpdateDashboardOutcomeCallable UpdateDashboardCallable(const UpdateDashboardRequestT& request) const
+        {
+            return SubmitCallable(&CloudTrailClient::UpdateDashboard, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateDashboard that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateDashboardRequestT = Model::UpdateDashboardRequest>
+        void UpdateDashboardAsync(const UpdateDashboardRequestT& request, const UpdateDashboardResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&CloudTrailClient::UpdateDashboard, request, handler, context);
+        }
+
+        /**
          * <p>Updates an event data store. The required <code>EventDataStore</code> value
          * is an ARN or the ID portion of the ARN. Other parameters are optional, but at
          * least one optional parameter must be specified, or CloudTrail throws an error.
@@ -1553,8 +1845,8 @@ namespace CloudTrail
          * <code>BillingMode</code> is set to <code>FIXED_RETENTION_PRICING</code>. By
          * default, <code>TerminationProtection</code> is enabled.</p> <p>For event data
          * stores for CloudTrail events, <code>AdvancedEventSelectors</code> includes or
-         * excludes management or data events in your event data store. For more
-         * information about <code>AdvancedEventSelectors</code>, see <a
+         * excludes management, data, or network activity events in your event data store.
+         * For more information about <code>AdvancedEventSelectors</code>, see <a
          * href="https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_AdvancedEventSelector.html">AdvancedEventSelectors</a>.</p>
          * <p> For event data stores for CloudTrail Insights events, Config configuration
          * items, Audit Manager evidence, or non-Amazon Web Services events,
@@ -1619,11 +1911,7 @@ namespace CloudTrail
       std::shared_ptr<CloudTrailEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<CloudTrailClient>;
-      void init(const CloudTrailClientConfiguration& clientConfiguration);
 
-      CloudTrailClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<CloudTrailEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace CloudTrail

@@ -24,7 +24,11 @@ namespace Model
 {
 
   /**
-   * <p>A destination for events that were processed successfully.</p><p><h3>See
+   * <p>A destination for events that were processed successfully.</p> <p>To retain
+   * records of successful <a
+   * href="https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html#invocation-async-destinations">asynchronous
+   * invocations</a>, you can configure an Amazon SNS topic, Amazon SQS queue, Lambda
+   * function, or Amazon EventBridge event bus as the destination.</p><p><h3>See
    * Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/lambda-2015-03-31/OnSuccess">AWS
    * API Reference</a></p>
@@ -38,46 +42,19 @@ namespace Model
     AWS_LAMBDA_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The Amazon Resource Name (ARN) of the destination resource.</p>
      */
     inline const Aws::String& GetDestination() const{ return m_destination; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the destination resource.</p>
-     */
     inline bool DestinationHasBeenSet() const { return m_destinationHasBeenSet; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the destination resource.</p>
-     */
     inline void SetDestination(const Aws::String& value) { m_destinationHasBeenSet = true; m_destination = value; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the destination resource.</p>
-     */
     inline void SetDestination(Aws::String&& value) { m_destinationHasBeenSet = true; m_destination = std::move(value); }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the destination resource.</p>
-     */
     inline void SetDestination(const char* value) { m_destinationHasBeenSet = true; m_destination.assign(value); }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the destination resource.</p>
-     */
     inline OnSuccess& WithDestination(const Aws::String& value) { SetDestination(value); return *this;}
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the destination resource.</p>
-     */
     inline OnSuccess& WithDestination(Aws::String&& value) { SetDestination(std::move(value)); return *this;}
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the destination resource.</p>
-     */
     inline OnSuccess& WithDestination(const char* value) { SetDestination(value); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_destination;

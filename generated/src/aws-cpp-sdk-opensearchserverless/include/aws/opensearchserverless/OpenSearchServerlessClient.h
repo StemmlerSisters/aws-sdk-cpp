@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/opensearchserverless/OpenSearchServerless_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/opensearchserverless/OpenSearchServerlessServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/opensearchserverless/OpenSearchServerlessErrorMarshaller.h>
 
 namespace Aws
 {
 namespace OpenSearchServerless
 {
+  AWS_OPENSEARCHSERVERLESS_API extern const char SERVICE_NAME[];
   /**
    * <p>Use the Amazon OpenSearch Serverless API to create, configure, and manage
    * OpenSearch Serverless collections and security policies.</p> <p>OpenSearch
@@ -27,12 +31,20 @@ namespace OpenSearchServerless
    * href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless-overview.html">What
    * is Amazon OpenSearch Serverless?</a> </p>
    */
-  class AWS_OPENSEARCHSERVERLESS_API OpenSearchServerlessClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<OpenSearchServerlessClient>
+  class AWS_OPENSEARCHSERVERLESS_API OpenSearchServerlessClient : smithy::client::AwsSmithyClientT<Aws::OpenSearchServerless::SERVICE_NAME,
+      Aws::OpenSearchServerless::OpenSearchServerlessClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      OpenSearchServerlessEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::OpenSearchServerlessErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<OpenSearchServerlessClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "OpenSearchServerless"; }
 
       typedef OpenSearchServerlessClientConfiguration ClientConfigurationType;
       typedef OpenSearchServerlessEndpointProvider EndpointProviderType;
@@ -94,13 +106,13 @@ namespace OpenSearchServerless
          * href="http://docs.aws.amazon.com/goto/WebAPI/opensearchserverless-2021-11-01/BatchGetCollection">AWS
          * API Reference</a></p>
          */
-        virtual Model::BatchGetCollectionOutcome BatchGetCollection(const Model::BatchGetCollectionRequest& request) const;
+        virtual Model::BatchGetCollectionOutcome BatchGetCollection(const Model::BatchGetCollectionRequest& request = {}) const;
 
         /**
          * A Callable wrapper for BatchGetCollection that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename BatchGetCollectionRequestT = Model::BatchGetCollectionRequest>
-        Model::BatchGetCollectionOutcomeCallable BatchGetCollectionCallable(const BatchGetCollectionRequestT& request) const
+        Model::BatchGetCollectionOutcomeCallable BatchGetCollectionCallable(const BatchGetCollectionRequestT& request = {}) const
         {
             return SubmitCallable(&OpenSearchServerlessClient::BatchGetCollection, request);
         }
@@ -109,7 +121,7 @@ namespace OpenSearchServerless
          * An Async wrapper for BatchGetCollection that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename BatchGetCollectionRequestT = Model::BatchGetCollectionRequest>
-        void BatchGetCollectionAsync(const BatchGetCollectionRequestT& request, const BatchGetCollectionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void BatchGetCollectionAsync(const BatchGetCollectionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const BatchGetCollectionRequestT& request = {}) const
         {
             return SubmitAsync(&OpenSearchServerlessClient::BatchGetCollection, request, handler, context);
         }
@@ -580,13 +592,13 @@ namespace OpenSearchServerless
          * href="http://docs.aws.amazon.com/goto/WebAPI/opensearchserverless-2021-11-01/GetAccountSettings">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetAccountSettingsOutcome GetAccountSettings(const Model::GetAccountSettingsRequest& request) const;
+        virtual Model::GetAccountSettingsOutcome GetAccountSettings(const Model::GetAccountSettingsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetAccountSettings that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetAccountSettingsRequestT = Model::GetAccountSettingsRequest>
-        Model::GetAccountSettingsOutcomeCallable GetAccountSettingsCallable(const GetAccountSettingsRequestT& request) const
+        Model::GetAccountSettingsOutcomeCallable GetAccountSettingsCallable(const GetAccountSettingsRequestT& request = {}) const
         {
             return SubmitCallable(&OpenSearchServerlessClient::GetAccountSettings, request);
         }
@@ -595,7 +607,7 @@ namespace OpenSearchServerless
          * An Async wrapper for GetAccountSettings that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetAccountSettingsRequestT = Model::GetAccountSettingsRequest>
-        void GetAccountSettingsAsync(const GetAccountSettingsRequestT& request, const GetAccountSettingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetAccountSettingsAsync(const GetAccountSettingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetAccountSettingsRequestT& request = {}) const
         {
             return SubmitAsync(&OpenSearchServerlessClient::GetAccountSettings, request, handler, context);
         }
@@ -607,13 +619,13 @@ namespace OpenSearchServerless
          * href="http://docs.aws.amazon.com/goto/WebAPI/opensearchserverless-2021-11-01/GetPoliciesStats">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetPoliciesStatsOutcome GetPoliciesStats(const Model::GetPoliciesStatsRequest& request) const;
+        virtual Model::GetPoliciesStatsOutcome GetPoliciesStats(const Model::GetPoliciesStatsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetPoliciesStats that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetPoliciesStatsRequestT = Model::GetPoliciesStatsRequest>
-        Model::GetPoliciesStatsOutcomeCallable GetPoliciesStatsCallable(const GetPoliciesStatsRequestT& request) const
+        Model::GetPoliciesStatsOutcomeCallable GetPoliciesStatsCallable(const GetPoliciesStatsRequestT& request = {}) const
         {
             return SubmitCallable(&OpenSearchServerlessClient::GetPoliciesStats, request);
         }
@@ -622,7 +634,7 @@ namespace OpenSearchServerless
          * An Async wrapper for GetPoliciesStats that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetPoliciesStatsRequestT = Model::GetPoliciesStatsRequest>
-        void GetPoliciesStatsAsync(const GetPoliciesStatsRequestT& request, const GetPoliciesStatsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetPoliciesStatsAsync(const GetPoliciesStatsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetPoliciesStatsRequestT& request = {}) const
         {
             return SubmitAsync(&OpenSearchServerlessClient::GetPoliciesStats, request, handler, context);
         }
@@ -721,13 +733,13 @@ namespace OpenSearchServerless
          * href="http://docs.aws.amazon.com/goto/WebAPI/opensearchserverless-2021-11-01/ListCollections">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListCollectionsOutcome ListCollections(const Model::ListCollectionsRequest& request) const;
+        virtual Model::ListCollectionsOutcome ListCollections(const Model::ListCollectionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListCollections that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListCollectionsRequestT = Model::ListCollectionsRequest>
-        Model::ListCollectionsOutcomeCallable ListCollectionsCallable(const ListCollectionsRequestT& request) const
+        Model::ListCollectionsOutcomeCallable ListCollectionsCallable(const ListCollectionsRequestT& request = {}) const
         {
             return SubmitCallable(&OpenSearchServerlessClient::ListCollections, request);
         }
@@ -736,7 +748,7 @@ namespace OpenSearchServerless
          * An Async wrapper for ListCollections that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListCollectionsRequestT = Model::ListCollectionsRequest>
-        void ListCollectionsAsync(const ListCollectionsRequestT& request, const ListCollectionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListCollectionsAsync(const ListCollectionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListCollectionsRequestT& request = {}) const
         {
             return SubmitAsync(&OpenSearchServerlessClient::ListCollections, request, handler, context);
         }
@@ -861,13 +873,13 @@ namespace OpenSearchServerless
          * href="http://docs.aws.amazon.com/goto/WebAPI/opensearchserverless-2021-11-01/ListVpcEndpoints">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListVpcEndpointsOutcome ListVpcEndpoints(const Model::ListVpcEndpointsRequest& request) const;
+        virtual Model::ListVpcEndpointsOutcome ListVpcEndpoints(const Model::ListVpcEndpointsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListVpcEndpoints that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListVpcEndpointsRequestT = Model::ListVpcEndpointsRequest>
-        Model::ListVpcEndpointsOutcomeCallable ListVpcEndpointsCallable(const ListVpcEndpointsRequestT& request) const
+        Model::ListVpcEndpointsOutcomeCallable ListVpcEndpointsCallable(const ListVpcEndpointsRequestT& request = {}) const
         {
             return SubmitCallable(&OpenSearchServerlessClient::ListVpcEndpoints, request);
         }
@@ -876,7 +888,7 @@ namespace OpenSearchServerless
          * An Async wrapper for ListVpcEndpoints that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListVpcEndpointsRequestT = Model::ListVpcEndpointsRequest>
-        void ListVpcEndpointsAsync(const ListVpcEndpointsRequestT& request, const ListVpcEndpointsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListVpcEndpointsAsync(const ListVpcEndpointsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListVpcEndpointsRequestT& request = {}) const
         {
             return SubmitAsync(&OpenSearchServerlessClient::ListVpcEndpoints, request, handler, context);
         }
@@ -974,13 +986,13 @@ namespace OpenSearchServerless
          * href="http://docs.aws.amazon.com/goto/WebAPI/opensearchserverless-2021-11-01/UpdateAccountSettings">AWS
          * API Reference</a></p>
          */
-        virtual Model::UpdateAccountSettingsOutcome UpdateAccountSettings(const Model::UpdateAccountSettingsRequest& request) const;
+        virtual Model::UpdateAccountSettingsOutcome UpdateAccountSettings(const Model::UpdateAccountSettingsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for UpdateAccountSettings that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename UpdateAccountSettingsRequestT = Model::UpdateAccountSettingsRequest>
-        Model::UpdateAccountSettingsOutcomeCallable UpdateAccountSettingsCallable(const UpdateAccountSettingsRequestT& request) const
+        Model::UpdateAccountSettingsOutcomeCallable UpdateAccountSettingsCallable(const UpdateAccountSettingsRequestT& request = {}) const
         {
             return SubmitCallable(&OpenSearchServerlessClient::UpdateAccountSettings, request);
         }
@@ -989,7 +1001,7 @@ namespace OpenSearchServerless
          * An Async wrapper for UpdateAccountSettings that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename UpdateAccountSettingsRequestT = Model::UpdateAccountSettingsRequest>
-        void UpdateAccountSettingsAsync(const UpdateAccountSettingsRequestT& request, const UpdateAccountSettingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void UpdateAccountSettingsAsync(const UpdateAccountSettingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const UpdateAccountSettingsRequestT& request = {}) const
         {
             return SubmitAsync(&OpenSearchServerlessClient::UpdateAccountSettings, request, handler, context);
         }
@@ -1139,11 +1151,7 @@ namespace OpenSearchServerless
       std::shared_ptr<OpenSearchServerlessEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<OpenSearchServerlessClient>;
-      void init(const OpenSearchServerlessClientConfiguration& clientConfiguration);
 
-      OpenSearchServerlessClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<OpenSearchServerlessEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace OpenSearchServerless

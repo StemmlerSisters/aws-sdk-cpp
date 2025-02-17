@@ -22,6 +22,8 @@ namespace Aws
 
         static const int CSV_HASH = HashingUtils::HashString("CSV");
         static const int OPEN_CYPHER_HASH = HashingUtils::HashString("OPEN_CYPHER");
+        static const int PARQUET_HASH = HashingUtils::HashString("PARQUET");
+        static const int NTRIPLES_HASH = HashingUtils::HashString("NTRIPLES");
 
 
         Format GetFormatForName(const Aws::String& name)
@@ -34,6 +36,14 @@ namespace Aws
           else if (hashCode == OPEN_CYPHER_HASH)
           {
             return Format::OPEN_CYPHER;
+          }
+          else if (hashCode == PARQUET_HASH)
+          {
+            return Format::PARQUET;
+          }
+          else if (hashCode == NTRIPLES_HASH)
+          {
+            return Format::NTRIPLES;
           }
           EnumParseOverflowContainer* overflowContainer = Aws::GetEnumOverflowContainer();
           if(overflowContainer)
@@ -55,6 +65,10 @@ namespace Aws
             return "CSV";
           case Format::OPEN_CYPHER:
             return "OPEN_CYPHER";
+          case Format::PARQUET:
+            return "PARQUET";
+          case Format::NTRIPLES:
+            return "NTRIPLES";
           default:
             EnumParseOverflowContainer* overflowContainer = Aws::GetEnumOverflowContainer();
             if(overflowContainer)

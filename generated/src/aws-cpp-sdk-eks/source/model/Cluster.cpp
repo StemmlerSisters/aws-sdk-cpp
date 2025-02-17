@@ -40,33 +40,17 @@ Cluster::Cluster() :
     m_idHasBeenSet(false),
     m_healthHasBeenSet(false),
     m_outpostConfigHasBeenSet(false),
-    m_accessConfigHasBeenSet(false)
+    m_accessConfigHasBeenSet(false),
+    m_upgradePolicyHasBeenSet(false),
+    m_zonalShiftConfigHasBeenSet(false),
+    m_remoteNetworkConfigHasBeenSet(false),
+    m_computeConfigHasBeenSet(false),
+    m_storageConfigHasBeenSet(false)
 {
 }
 
-Cluster::Cluster(JsonView jsonValue) : 
-    m_nameHasBeenSet(false),
-    m_arnHasBeenSet(false),
-    m_createdAtHasBeenSet(false),
-    m_versionHasBeenSet(false),
-    m_endpointHasBeenSet(false),
-    m_roleArnHasBeenSet(false),
-    m_resourcesVpcConfigHasBeenSet(false),
-    m_kubernetesNetworkConfigHasBeenSet(false),
-    m_loggingHasBeenSet(false),
-    m_identityHasBeenSet(false),
-    m_status(ClusterStatus::NOT_SET),
-    m_statusHasBeenSet(false),
-    m_certificateAuthorityHasBeenSet(false),
-    m_clientRequestTokenHasBeenSet(false),
-    m_platformVersionHasBeenSet(false),
-    m_tagsHasBeenSet(false),
-    m_encryptionConfigHasBeenSet(false),
-    m_connectorConfigHasBeenSet(false),
-    m_idHasBeenSet(false),
-    m_healthHasBeenSet(false),
-    m_outpostConfigHasBeenSet(false),
-    m_accessConfigHasBeenSet(false)
+Cluster::Cluster(JsonView jsonValue)
+  : Cluster()
 {
   *this = jsonValue;
 }
@@ -226,6 +210,41 @@ Cluster& Cluster::operator =(JsonView jsonValue)
     m_accessConfigHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("upgradePolicy"))
+  {
+    m_upgradePolicy = jsonValue.GetObject("upgradePolicy");
+
+    m_upgradePolicyHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("zonalShiftConfig"))
+  {
+    m_zonalShiftConfig = jsonValue.GetObject("zonalShiftConfig");
+
+    m_zonalShiftConfigHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("remoteNetworkConfig"))
+  {
+    m_remoteNetworkConfig = jsonValue.GetObject("remoteNetworkConfig");
+
+    m_remoteNetworkConfigHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("computeConfig"))
+  {
+    m_computeConfig = jsonValue.GetObject("computeConfig");
+
+    m_computeConfigHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("storageConfig"))
+  {
+    m_storageConfig = jsonValue.GetObject("storageConfig");
+
+    m_storageConfigHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -364,6 +383,36 @@ JsonValue Cluster::Jsonize() const
   if(m_accessConfigHasBeenSet)
   {
    payload.WithObject("accessConfig", m_accessConfig.Jsonize());
+
+  }
+
+  if(m_upgradePolicyHasBeenSet)
+  {
+   payload.WithObject("upgradePolicy", m_upgradePolicy.Jsonize());
+
+  }
+
+  if(m_zonalShiftConfigHasBeenSet)
+  {
+   payload.WithObject("zonalShiftConfig", m_zonalShiftConfig.Jsonize());
+
+  }
+
+  if(m_remoteNetworkConfigHasBeenSet)
+  {
+   payload.WithObject("remoteNetworkConfig", m_remoteNetworkConfig.Jsonize());
+
+  }
+
+  if(m_computeConfigHasBeenSet)
+  {
+   payload.WithObject("computeConfig", m_computeConfig.Jsonize());
+
+  }
+
+  if(m_storageConfigHasBeenSet)
+  {
+   payload.WithObject("storageConfig", m_storageConfig.Jsonize());
 
   }
 

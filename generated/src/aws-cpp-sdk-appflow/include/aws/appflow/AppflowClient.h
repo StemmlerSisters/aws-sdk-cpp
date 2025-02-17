@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/appflow/Appflow_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/appflow/AppflowServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/appflow/AppflowErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Appflow
 {
+  AWS_APPFLOW_API extern const char SERVICE_NAME[];
   /**
    * <p>Welcome to the Amazon AppFlow API reference. This guide is for developers who
    * need detailed information about the Amazon AppFlow API operations, data types,
@@ -44,12 +48,20 @@ namespace Appflow
    * href="https://help.salesforce.com/articleView?id=remoteaccess_authenticate.htm">
    * <i>Authorize Apps with OAuth</i> </a> documentation.</p>
    */
-  class AWS_APPFLOW_API AppflowClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<AppflowClient>
+  class AWS_APPFLOW_API AppflowClient : smithy::client::AwsSmithyClientT<Aws::Appflow::SERVICE_NAME,
+      Aws::Appflow::AppflowClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      AppflowEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::AppflowErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<AppflowClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Appflow"; }
 
       typedef AppflowClientConfiguration ClientConfigurationType;
       typedef AppflowEndpointProvider EndpointProviderType;
@@ -321,13 +333,13 @@ namespace Appflow
          * href="http://docs.aws.amazon.com/goto/WebAPI/appflow-2020-08-23/DescribeConnectorProfiles">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeConnectorProfilesOutcome DescribeConnectorProfiles(const Model::DescribeConnectorProfilesRequest& request) const;
+        virtual Model::DescribeConnectorProfilesOutcome DescribeConnectorProfiles(const Model::DescribeConnectorProfilesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeConnectorProfiles that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeConnectorProfilesRequestT = Model::DescribeConnectorProfilesRequest>
-        Model::DescribeConnectorProfilesOutcomeCallable DescribeConnectorProfilesCallable(const DescribeConnectorProfilesRequestT& request) const
+        Model::DescribeConnectorProfilesOutcomeCallable DescribeConnectorProfilesCallable(const DescribeConnectorProfilesRequestT& request = {}) const
         {
             return SubmitCallable(&AppflowClient::DescribeConnectorProfiles, request);
         }
@@ -336,7 +348,7 @@ namespace Appflow
          * An Async wrapper for DescribeConnectorProfiles that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeConnectorProfilesRequestT = Model::DescribeConnectorProfilesRequest>
-        void DescribeConnectorProfilesAsync(const DescribeConnectorProfilesRequestT& request, const DescribeConnectorProfilesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeConnectorProfilesAsync(const DescribeConnectorProfilesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeConnectorProfilesRequestT& request = {}) const
         {
             return SubmitAsync(&AppflowClient::DescribeConnectorProfiles, request, handler, context);
         }
@@ -352,13 +364,13 @@ namespace Appflow
          * href="http://docs.aws.amazon.com/goto/WebAPI/appflow-2020-08-23/DescribeConnectors">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeConnectorsOutcome DescribeConnectors(const Model::DescribeConnectorsRequest& request) const;
+        virtual Model::DescribeConnectorsOutcome DescribeConnectors(const Model::DescribeConnectorsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeConnectors that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeConnectorsRequestT = Model::DescribeConnectorsRequest>
-        Model::DescribeConnectorsOutcomeCallable DescribeConnectorsCallable(const DescribeConnectorsRequestT& request) const
+        Model::DescribeConnectorsOutcomeCallable DescribeConnectorsCallable(const DescribeConnectorsRequestT& request = {}) const
         {
             return SubmitCallable(&AppflowClient::DescribeConnectors, request);
         }
@@ -367,7 +379,7 @@ namespace Appflow
          * An Async wrapper for DescribeConnectors that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeConnectorsRequestT = Model::DescribeConnectorsRequest>
-        void DescribeConnectorsAsync(const DescribeConnectorsRequestT& request, const DescribeConnectorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeConnectorsAsync(const DescribeConnectorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeConnectorsRequestT& request = {}) const
         {
             return SubmitAsync(&AppflowClient::DescribeConnectors, request, handler, context);
         }
@@ -430,13 +442,13 @@ namespace Appflow
          * href="http://docs.aws.amazon.com/goto/WebAPI/appflow-2020-08-23/ListConnectorEntities">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListConnectorEntitiesOutcome ListConnectorEntities(const Model::ListConnectorEntitiesRequest& request) const;
+        virtual Model::ListConnectorEntitiesOutcome ListConnectorEntities(const Model::ListConnectorEntitiesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListConnectorEntities that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListConnectorEntitiesRequestT = Model::ListConnectorEntitiesRequest>
-        Model::ListConnectorEntitiesOutcomeCallable ListConnectorEntitiesCallable(const ListConnectorEntitiesRequestT& request) const
+        Model::ListConnectorEntitiesOutcomeCallable ListConnectorEntitiesCallable(const ListConnectorEntitiesRequestT& request = {}) const
         {
             return SubmitCallable(&AppflowClient::ListConnectorEntities, request);
         }
@@ -445,7 +457,7 @@ namespace Appflow
          * An Async wrapper for ListConnectorEntities that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListConnectorEntitiesRequestT = Model::ListConnectorEntitiesRequest>
-        void ListConnectorEntitiesAsync(const ListConnectorEntitiesRequestT& request, const ListConnectorEntitiesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListConnectorEntitiesAsync(const ListConnectorEntitiesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListConnectorEntitiesRequestT& request = {}) const
         {
             return SubmitAsync(&AppflowClient::ListConnectorEntities, request, handler, context);
         }
@@ -458,13 +470,13 @@ namespace Appflow
          * href="http://docs.aws.amazon.com/goto/WebAPI/appflow-2020-08-23/ListConnectors">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListConnectorsOutcome ListConnectors(const Model::ListConnectorsRequest& request) const;
+        virtual Model::ListConnectorsOutcome ListConnectors(const Model::ListConnectorsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListConnectors that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListConnectorsRequestT = Model::ListConnectorsRequest>
-        Model::ListConnectorsOutcomeCallable ListConnectorsCallable(const ListConnectorsRequestT& request) const
+        Model::ListConnectorsOutcomeCallable ListConnectorsCallable(const ListConnectorsRequestT& request = {}) const
         {
             return SubmitCallable(&AppflowClient::ListConnectors, request);
         }
@@ -473,7 +485,7 @@ namespace Appflow
          * An Async wrapper for ListConnectors that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListConnectorsRequestT = Model::ListConnectorsRequest>
-        void ListConnectorsAsync(const ListConnectorsRequestT& request, const ListConnectorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListConnectorsAsync(const ListConnectorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListConnectorsRequestT& request = {}) const
         {
             return SubmitAsync(&AppflowClient::ListConnectors, request, handler, context);
         }
@@ -484,13 +496,13 @@ namespace Appflow
          * href="http://docs.aws.amazon.com/goto/WebAPI/appflow-2020-08-23/ListFlows">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListFlowsOutcome ListFlows(const Model::ListFlowsRequest& request) const;
+        virtual Model::ListFlowsOutcome ListFlows(const Model::ListFlowsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListFlows that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListFlowsRequestT = Model::ListFlowsRequest>
-        Model::ListFlowsOutcomeCallable ListFlowsCallable(const ListFlowsRequestT& request) const
+        Model::ListFlowsOutcomeCallable ListFlowsCallable(const ListFlowsRequestT& request = {}) const
         {
             return SubmitCallable(&AppflowClient::ListFlows, request);
         }
@@ -499,7 +511,7 @@ namespace Appflow
          * An Async wrapper for ListFlows that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListFlowsRequestT = Model::ListFlowsRequest>
-        void ListFlowsAsync(const ListFlowsRequestT& request, const ListFlowsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListFlowsAsync(const ListFlowsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListFlowsRequestT& request = {}) const
         {
             return SubmitAsync(&AppflowClient::ListFlows, request, handler, context);
         }
@@ -537,13 +549,13 @@ namespace Appflow
          * href="http://docs.aws.amazon.com/goto/WebAPI/appflow-2020-08-23/RegisterConnector">AWS
          * API Reference</a></p>
          */
-        virtual Model::RegisterConnectorOutcome RegisterConnector(const Model::RegisterConnectorRequest& request) const;
+        virtual Model::RegisterConnectorOutcome RegisterConnector(const Model::RegisterConnectorRequest& request = {}) const;
 
         /**
          * A Callable wrapper for RegisterConnector that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename RegisterConnectorRequestT = Model::RegisterConnectorRequest>
-        Model::RegisterConnectorOutcomeCallable RegisterConnectorCallable(const RegisterConnectorRequestT& request) const
+        Model::RegisterConnectorOutcomeCallable RegisterConnectorCallable(const RegisterConnectorRequestT& request = {}) const
         {
             return SubmitCallable(&AppflowClient::RegisterConnector, request);
         }
@@ -552,7 +564,7 @@ namespace Appflow
          * An Async wrapper for RegisterConnector that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename RegisterConnectorRequestT = Model::RegisterConnectorRequest>
-        void RegisterConnectorAsync(const RegisterConnectorRequestT& request, const RegisterConnectorResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void RegisterConnectorAsync(const RegisterConnectorResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const RegisterConnectorRequestT& request = {}) const
         {
             return SubmitAsync(&AppflowClient::RegisterConnector, request, handler, context);
         }
@@ -570,13 +582,13 @@ namespace Appflow
          * href="http://docs.aws.amazon.com/goto/WebAPI/appflow-2020-08-23/ResetConnectorMetadataCache">AWS
          * API Reference</a></p>
          */
-        virtual Model::ResetConnectorMetadataCacheOutcome ResetConnectorMetadataCache(const Model::ResetConnectorMetadataCacheRequest& request) const;
+        virtual Model::ResetConnectorMetadataCacheOutcome ResetConnectorMetadataCache(const Model::ResetConnectorMetadataCacheRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ResetConnectorMetadataCache that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ResetConnectorMetadataCacheRequestT = Model::ResetConnectorMetadataCacheRequest>
-        Model::ResetConnectorMetadataCacheOutcomeCallable ResetConnectorMetadataCacheCallable(const ResetConnectorMetadataCacheRequestT& request) const
+        Model::ResetConnectorMetadataCacheOutcomeCallable ResetConnectorMetadataCacheCallable(const ResetConnectorMetadataCacheRequestT& request = {}) const
         {
             return SubmitCallable(&AppflowClient::ResetConnectorMetadataCache, request);
         }
@@ -585,7 +597,7 @@ namespace Appflow
          * An Async wrapper for ResetConnectorMetadataCache that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ResetConnectorMetadataCacheRequestT = Model::ResetConnectorMetadataCacheRequest>
-        void ResetConnectorMetadataCacheAsync(const ResetConnectorMetadataCacheRequestT& request, const ResetConnectorMetadataCacheResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ResetConnectorMetadataCacheAsync(const ResetConnectorMetadataCacheResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ResetConnectorMetadataCacheRequestT& request = {}) const
         {
             return SubmitAsync(&AppflowClient::ResetConnectorMetadataCache, request, handler, context);
         }
@@ -806,11 +818,7 @@ namespace Appflow
       std::shared_ptr<AppflowEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<AppflowClient>;
-      void init(const AppflowClientConfiguration& clientConfiguration);
 
-      AppflowClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<AppflowEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Appflow

@@ -24,17 +24,13 @@ PieChartVisual::PieChartVisual() :
     m_subtitleHasBeenSet(false),
     m_chartConfigurationHasBeenSet(false),
     m_actionsHasBeenSet(false),
-    m_columnHierarchiesHasBeenSet(false)
+    m_columnHierarchiesHasBeenSet(false),
+    m_visualContentAltTextHasBeenSet(false)
 {
 }
 
-PieChartVisual::PieChartVisual(JsonView jsonValue) : 
-    m_visualIdHasBeenSet(false),
-    m_titleHasBeenSet(false),
-    m_subtitleHasBeenSet(false),
-    m_chartConfigurationHasBeenSet(false),
-    m_actionsHasBeenSet(false),
-    m_columnHierarchiesHasBeenSet(false)
+PieChartVisual::PieChartVisual(JsonView jsonValue)
+  : PieChartVisual()
 {
   *this = jsonValue;
 }
@@ -89,6 +85,13 @@ PieChartVisual& PieChartVisual::operator =(JsonView jsonValue)
     m_columnHierarchiesHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("VisualContentAltText"))
+  {
+    m_visualContentAltText = jsonValue.GetString("VisualContentAltText");
+
+    m_visualContentAltTextHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -139,6 +142,12 @@ JsonValue PieChartVisual::Jsonize() const
      columnHierarchiesJsonList[columnHierarchiesIndex].AsObject(m_columnHierarchies[columnHierarchiesIndex].Jsonize());
    }
    payload.WithArray("ColumnHierarchies", std::move(columnHierarchiesJsonList));
+
+  }
+
+  if(m_visualContentAltTextHasBeenSet)
+  {
+   payload.WithString("VisualContentAltText", m_visualContentAltText);
 
   }
 

@@ -20,6 +20,7 @@ namespace Model
 
 BridgeNetworkSource::BridgeNetworkSource() : 
     m_multicastIpHasBeenSet(false),
+    m_multicastSourceSettingsHasBeenSet(false),
     m_nameHasBeenSet(false),
     m_networkNameHasBeenSet(false),
     m_port(0),
@@ -29,14 +30,8 @@ BridgeNetworkSource::BridgeNetworkSource() :
 {
 }
 
-BridgeNetworkSource::BridgeNetworkSource(JsonView jsonValue) : 
-    m_multicastIpHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_networkNameHasBeenSet(false),
-    m_port(0),
-    m_portHasBeenSet(false),
-    m_protocol(Protocol::NOT_SET),
-    m_protocolHasBeenSet(false)
+BridgeNetworkSource::BridgeNetworkSource(JsonView jsonValue)
+  : BridgeNetworkSource()
 {
   *this = jsonValue;
 }
@@ -48,6 +43,13 @@ BridgeNetworkSource& BridgeNetworkSource::operator =(JsonView jsonValue)
     m_multicastIp = jsonValue.GetString("multicastIp");
 
     m_multicastIpHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("multicastSourceSettings"))
+  {
+    m_multicastSourceSettings = jsonValue.GetObject("multicastSourceSettings");
+
+    m_multicastSourceSettingsHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("name"))
@@ -88,6 +90,12 @@ JsonValue BridgeNetworkSource::Jsonize() const
   if(m_multicastIpHasBeenSet)
   {
    payload.WithString("multicastIp", m_multicastIp);
+
+  }
+
+  if(m_multicastSourceSettingsHasBeenSet)
+  {
+   payload.WithObject("multicastSourceSettings", m_multicastSourceSettings.Jsonize());
 
   }
 

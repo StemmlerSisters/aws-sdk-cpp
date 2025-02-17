@@ -23,14 +23,14 @@ namespace Model
 OriginGroup::OriginGroup() : 
     m_idHasBeenSet(false),
     m_failoverCriteriaHasBeenSet(false),
-    m_membersHasBeenSet(false)
+    m_membersHasBeenSet(false),
+    m_selectionCriteria(OriginGroupSelectionCriteria::NOT_SET),
+    m_selectionCriteriaHasBeenSet(false)
 {
 }
 
-OriginGroup::OriginGroup(const XmlNode& xmlNode) : 
-    m_idHasBeenSet(false),
-    m_failoverCriteriaHasBeenSet(false),
-    m_membersHasBeenSet(false)
+OriginGroup::OriginGroup(const XmlNode& xmlNode)
+  : OriginGroup()
 {
   *this = xmlNode;
 }
@@ -59,6 +59,12 @@ OriginGroup& OriginGroup::operator =(const XmlNode& xmlNode)
       m_members = membersNode;
       m_membersHasBeenSet = true;
     }
+    XmlNode selectionCriteriaNode = resultNode.FirstChild("SelectionCriteria");
+    if(!selectionCriteriaNode.IsNull())
+    {
+      m_selectionCriteria = OriginGroupSelectionCriteriaMapper::GetOriginGroupSelectionCriteriaForName(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(selectionCriteriaNode.GetText()).c_str()).c_str());
+      m_selectionCriteriaHasBeenSet = true;
+    }
   }
 
   return *this;
@@ -83,6 +89,12 @@ void OriginGroup::AddToNode(XmlNode& parentNode) const
   {
    XmlNode membersNode = parentNode.CreateChildElement("Members");
    m_members.AddToNode(membersNode);
+  }
+
+  if(m_selectionCriteriaHasBeenSet)
+  {
+   XmlNode selectionCriteriaNode = parentNode.CreateChildElement("SelectionCriteria");
+   selectionCriteriaNode.SetText(OriginGroupSelectionCriteriaMapper::GetNameForOriginGroupSelectionCriteria(m_selectionCriteria));
   }
 
 }

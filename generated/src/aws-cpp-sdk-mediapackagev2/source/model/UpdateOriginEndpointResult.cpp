@@ -23,9 +23,8 @@ UpdateOriginEndpointResult::UpdateOriginEndpointResult() :
 {
 }
 
-UpdateOriginEndpointResult::UpdateOriginEndpointResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_containerType(ContainerType::NOT_SET),
-    m_startoverWindowSeconds(0)
+UpdateOriginEndpointResult::UpdateOriginEndpointResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : UpdateOriginEndpointResult()
 {
   *this = result;
 }
@@ -109,6 +108,12 @@ UpdateOriginEndpointResult& UpdateOriginEndpointResult::operator =(const Aws::Am
     {
       m_lowLatencyHlsManifests.push_back(lowLatencyHlsManifestsJsonList[lowLatencyHlsManifestsIndex].AsObject());
     }
+  }
+
+  if(jsonValue.ValueExists("ForceEndpointErrorConfiguration"))
+  {
+    m_forceEndpointErrorConfiguration = jsonValue.GetObject("ForceEndpointErrorConfiguration");
+
   }
 
   if(jsonValue.ValueExists("ETag"))

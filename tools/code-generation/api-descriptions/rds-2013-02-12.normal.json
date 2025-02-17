@@ -10,7 +10,8 @@
     "serviceId":"RDS",
     "signatureVersion":"v4",
     "uid":"rds-2013-02-12",
-    "xmlNamespace":"http://rds.amazonaws.com/doc/2013-02-12/"
+    "xmlNamespace":"http://rds.amazonaws.com/doc/2013-02-12/",
+    "auth":["aws.auth#sigv4"]
   },
   "operations":{
     "AddSourceIdentifierToSubscription":{
@@ -376,7 +377,8 @@
         "resultWrapper":"DescribeDBLogFilesResult"
       },
       "errors":[
-        {"shape":"DBInstanceNotFoundFault"}
+        {"shape":"DBInstanceNotFoundFault"},
+        {"shape":"DBInstanceNotReadyFault"}
       ]
     },
     "DescribeDBParameterGroups":{
@@ -587,6 +589,7 @@
       },
       "errors":[
         {"shape":"DBInstanceNotFoundFault"},
+        {"shape":"DBInstanceNotReadyFault"},
         {"shape":"DBLogFileNotFoundFault"}
       ]
     },
@@ -1277,6 +1280,17 @@
         "code":"DBInstanceNotFound",
         "httpStatusCode":404,
         "senderFault":true
+      },
+      "exception":true
+    },
+    "DBInstanceNotReadyFault":{
+      "type":"structure",
+      "members":{
+      },
+      "documentation":"<p>An attempt to download or examine log files didn't succeed because an Aurora Serverless v2 instance was paused.</p>",
+      "error":{
+        "code":"DBInstanceNotReady",
+        "httpStatusCode":503
       },
       "exception":true
     },

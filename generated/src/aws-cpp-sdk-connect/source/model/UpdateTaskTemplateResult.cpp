@@ -22,8 +22,8 @@ UpdateTaskTemplateResult::UpdateTaskTemplateResult() :
 {
 }
 
-UpdateTaskTemplateResult::UpdateTaskTemplateResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_status(TaskTemplateStatus::NOT_SET)
+UpdateTaskTemplateResult::UpdateTaskTemplateResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : UpdateTaskTemplateResult()
 {
   *this = result;
 }
@@ -64,6 +64,12 @@ UpdateTaskTemplateResult& UpdateTaskTemplateResult::operator =(const Aws::Amazon
   if(jsonValue.ValueExists("ContactFlowId"))
   {
     m_contactFlowId = jsonValue.GetString("ContactFlowId");
+
+  }
+
+  if(jsonValue.ValueExists("SelfAssignFlowId"))
+  {
+    m_selfAssignFlowId = jsonValue.GetString("SelfAssignFlowId");
 
   }
 

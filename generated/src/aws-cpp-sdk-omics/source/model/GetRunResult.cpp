@@ -18,6 +18,7 @@ using namespace Aws::Utils;
 using namespace Aws;
 
 GetRunResult::GetRunResult() : 
+    m_cacheBehavior(CacheBehavior::NOT_SET),
     m_status(RunStatus::NOT_SET),
     m_workflowType(WorkflowType::NOT_SET),
     m_priority(0),
@@ -29,15 +30,8 @@ GetRunResult::GetRunResult() :
 {
 }
 
-GetRunResult::GetRunResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_status(RunStatus::NOT_SET),
-    m_workflowType(WorkflowType::NOT_SET),
-    m_priority(0),
-    m_storageCapacity(0),
-    m_logLevel(RunLogLevel::NOT_SET),
-    m_accelerators(Accelerators::NOT_SET),
-    m_retentionMode(RunRetentionMode::NOT_SET),
-    m_storageType(StorageType::NOT_SET)
+GetRunResult::GetRunResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetRunResult()
 {
   *this = result;
 }
@@ -54,6 +48,24 @@ GetRunResult& GetRunResult::operator =(const Aws::AmazonWebServiceResult<JsonVal
   if(jsonValue.ValueExists("id"))
   {
     m_id = jsonValue.GetString("id");
+
+  }
+
+  if(jsonValue.ValueExists("cacheId"))
+  {
+    m_cacheId = jsonValue.GetString("cacheId");
+
+  }
+
+  if(jsonValue.ValueExists("cacheBehavior"))
+  {
+    m_cacheBehavior = CacheBehaviorMapper::GetCacheBehaviorForName(jsonValue.GetString("cacheBehavior"));
+
+  }
+
+  if(jsonValue.ValueExists("engineVersion"))
+  {
+    m_engineVersion = jsonValue.GetString("engineVersion");
 
   }
 

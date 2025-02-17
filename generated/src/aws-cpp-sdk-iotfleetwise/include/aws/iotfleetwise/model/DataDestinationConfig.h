@@ -7,6 +7,7 @@
 #include <aws/iotfleetwise/IoTFleetWise_EXPORTS.h>
 #include <aws/iotfleetwise/model/S3Config.h>
 #include <aws/iotfleetwise/model/TimestreamConfig.h>
+#include <aws/iotfleetwise/model/MqttTopicConfig.h>
 #include <utility>
 
 namespace Aws
@@ -25,9 +26,9 @@ namespace Model
 {
 
   /**
-   * <p>The destination where the Amazon Web Services IoT FleetWise campaign sends
-   * data. You can send data to be stored in Amazon S3 or Amazon
-   * Timestream.</p><p><h3>See Also:</h3>   <a
+   * <p>The destination where the campaign sends data. You can send data to an MQTT
+   * topic, or store it in Amazon S3 or Amazon Timestream.</p><p><h3>See Also:</h3>  
+   * <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/iotfleetwise-2021-06-17/DataDestinationConfig">AWS
    * API Reference</a></p>
    */
@@ -40,73 +41,47 @@ namespace Model
     AWS_IOTFLEETWISE_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The Amazon S3 bucket where the Amazon Web Services IoT FleetWise campaign
      * sends data.</p>
      */
     inline const S3Config& GetS3Config() const{ return m_s3Config; }
-
-    /**
-     * <p>The Amazon S3 bucket where the Amazon Web Services IoT FleetWise campaign
-     * sends data.</p>
-     */
     inline bool S3ConfigHasBeenSet() const { return m_s3ConfigHasBeenSet; }
-
-    /**
-     * <p>The Amazon S3 bucket where the Amazon Web Services IoT FleetWise campaign
-     * sends data.</p>
-     */
     inline void SetS3Config(const S3Config& value) { m_s3ConfigHasBeenSet = true; m_s3Config = value; }
-
-    /**
-     * <p>The Amazon S3 bucket where the Amazon Web Services IoT FleetWise campaign
-     * sends data.</p>
-     */
     inline void SetS3Config(S3Config&& value) { m_s3ConfigHasBeenSet = true; m_s3Config = std::move(value); }
-
-    /**
-     * <p>The Amazon S3 bucket where the Amazon Web Services IoT FleetWise campaign
-     * sends data.</p>
-     */
     inline DataDestinationConfig& WithS3Config(const S3Config& value) { SetS3Config(value); return *this;}
-
-    /**
-     * <p>The Amazon S3 bucket where the Amazon Web Services IoT FleetWise campaign
-     * sends data.</p>
-     */
     inline DataDestinationConfig& WithS3Config(S3Config&& value) { SetS3Config(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The Amazon Timestream table where the campaign sends data.</p>
      */
     inline const TimestreamConfig& GetTimestreamConfig() const{ return m_timestreamConfig; }
-
-    /**
-     * <p>The Amazon Timestream table where the campaign sends data.</p>
-     */
     inline bool TimestreamConfigHasBeenSet() const { return m_timestreamConfigHasBeenSet; }
-
-    /**
-     * <p>The Amazon Timestream table where the campaign sends data.</p>
-     */
     inline void SetTimestreamConfig(const TimestreamConfig& value) { m_timestreamConfigHasBeenSet = true; m_timestreamConfig = value; }
-
-    /**
-     * <p>The Amazon Timestream table where the campaign sends data.</p>
-     */
     inline void SetTimestreamConfig(TimestreamConfig&& value) { m_timestreamConfigHasBeenSet = true; m_timestreamConfig = std::move(value); }
-
-    /**
-     * <p>The Amazon Timestream table where the campaign sends data.</p>
-     */
     inline DataDestinationConfig& WithTimestreamConfig(const TimestreamConfig& value) { SetTimestreamConfig(value); return *this;}
-
-    /**
-     * <p>The Amazon Timestream table where the campaign sends data.</p>
-     */
     inline DataDestinationConfig& WithTimestreamConfig(TimestreamConfig&& value) { SetTimestreamConfig(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The MQTT topic to which the Amazon Web Services IoT FleetWise campaign routes
+     * data.</p>  <p>Access to certain Amazon Web Services IoT FleetWise
+     * features is currently gated. For more information, see <a
+     * href="https://docs.aws.amazon.com/iot-fleetwise/latest/developerguide/fleetwise-regions.html">Amazon
+     * Web Services Region and feature availability</a> in the <i>Amazon Web Services
+     * IoT FleetWise Developer Guide</i>.</p> 
+     */
+    inline const MqttTopicConfig& GetMqttTopicConfig() const{ return m_mqttTopicConfig; }
+    inline bool MqttTopicConfigHasBeenSet() const { return m_mqttTopicConfigHasBeenSet; }
+    inline void SetMqttTopicConfig(const MqttTopicConfig& value) { m_mqttTopicConfigHasBeenSet = true; m_mqttTopicConfig = value; }
+    inline void SetMqttTopicConfig(MqttTopicConfig&& value) { m_mqttTopicConfigHasBeenSet = true; m_mqttTopicConfig = std::move(value); }
+    inline DataDestinationConfig& WithMqttTopicConfig(const MqttTopicConfig& value) { SetMqttTopicConfig(value); return *this;}
+    inline DataDestinationConfig& WithMqttTopicConfig(MqttTopicConfig&& value) { SetMqttTopicConfig(std::move(value)); return *this;}
+    ///@}
   private:
 
     S3Config m_s3Config;
@@ -114,6 +89,9 @@ namespace Model
 
     TimestreamConfig m_timestreamConfig;
     bool m_timestreamConfigHasBeenSet = false;
+
+    MqttTopicConfig m_mqttTopicConfig;
+    bool m_mqttTopicConfigHasBeenSet = false;
   };
 
 } // namespace Model

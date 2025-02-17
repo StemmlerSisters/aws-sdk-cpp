@@ -87,80 +87,16 @@ H265Settings::H265Settings() :
     m_tileWidth(0),
     m_tileWidthHasBeenSet(false),
     m_treeblockSize(H265TreeblockSize::NOT_SET),
-    m_treeblockSizeHasBeenSet(false)
+    m_treeblockSizeHasBeenSet(false),
+    m_minQp(0),
+    m_minQpHasBeenSet(false),
+    m_deblocking(H265Deblocking::NOT_SET),
+    m_deblockingHasBeenSet(false)
 {
 }
 
-H265Settings::H265Settings(JsonView jsonValue) : 
-    m_adaptiveQuantization(H265AdaptiveQuantization::NOT_SET),
-    m_adaptiveQuantizationHasBeenSet(false),
-    m_afdSignaling(AfdSignaling::NOT_SET),
-    m_afdSignalingHasBeenSet(false),
-    m_alternativeTransferFunction(H265AlternativeTransferFunction::NOT_SET),
-    m_alternativeTransferFunctionHasBeenSet(false),
-    m_bitrate(0),
-    m_bitrateHasBeenSet(false),
-    m_bufSize(0),
-    m_bufSizeHasBeenSet(false),
-    m_colorMetadata(H265ColorMetadata::NOT_SET),
-    m_colorMetadataHasBeenSet(false),
-    m_colorSpaceSettingsHasBeenSet(false),
-    m_filterSettingsHasBeenSet(false),
-    m_fixedAfd(FixedAfd::NOT_SET),
-    m_fixedAfdHasBeenSet(false),
-    m_flickerAq(H265FlickerAq::NOT_SET),
-    m_flickerAqHasBeenSet(false),
-    m_framerateDenominator(0),
-    m_framerateDenominatorHasBeenSet(false),
-    m_framerateNumerator(0),
-    m_framerateNumeratorHasBeenSet(false),
-    m_gopClosedCadence(0),
-    m_gopClosedCadenceHasBeenSet(false),
-    m_gopSize(0.0),
-    m_gopSizeHasBeenSet(false),
-    m_gopSizeUnits(H265GopSizeUnits::NOT_SET),
-    m_gopSizeUnitsHasBeenSet(false),
-    m_level(H265Level::NOT_SET),
-    m_levelHasBeenSet(false),
-    m_lookAheadRateControl(H265LookAheadRateControl::NOT_SET),
-    m_lookAheadRateControlHasBeenSet(false),
-    m_maxBitrate(0),
-    m_maxBitrateHasBeenSet(false),
-    m_minIInterval(0),
-    m_minIIntervalHasBeenSet(false),
-    m_parDenominator(0),
-    m_parDenominatorHasBeenSet(false),
-    m_parNumerator(0),
-    m_parNumeratorHasBeenSet(false),
-    m_profile(H265Profile::NOT_SET),
-    m_profileHasBeenSet(false),
-    m_qvbrQualityLevel(0),
-    m_qvbrQualityLevelHasBeenSet(false),
-    m_rateControlMode(H265RateControlMode::NOT_SET),
-    m_rateControlModeHasBeenSet(false),
-    m_scanType(H265ScanType::NOT_SET),
-    m_scanTypeHasBeenSet(false),
-    m_sceneChangeDetect(H265SceneChangeDetect::NOT_SET),
-    m_sceneChangeDetectHasBeenSet(false),
-    m_slices(0),
-    m_slicesHasBeenSet(false),
-    m_tier(H265Tier::NOT_SET),
-    m_tierHasBeenSet(false),
-    m_timecodeInsertion(H265TimecodeInsertionBehavior::NOT_SET),
-    m_timecodeInsertionHasBeenSet(false),
-    m_timecodeBurninSettingsHasBeenSet(false),
-    m_mvOverPictureBoundaries(H265MvOverPictureBoundaries::NOT_SET),
-    m_mvOverPictureBoundariesHasBeenSet(false),
-    m_mvTemporalPredictor(H265MvTemporalPredictor::NOT_SET),
-    m_mvTemporalPredictorHasBeenSet(false),
-    m_tileHeight(0),
-    m_tileHeightHasBeenSet(false),
-    m_tilePadding(H265TilePadding::NOT_SET),
-    m_tilePaddingHasBeenSet(false),
-    m_tileWidth(0),
-    m_tileWidthHasBeenSet(false),
-    m_treeblockSize(H265TreeblockSize::NOT_SET),
-    m_treeblockSizeHasBeenSet(false)
+H265Settings::H265Settings(JsonView jsonValue)
+  : H265Settings()
 {
   *this = jsonValue;
 }
@@ -419,6 +355,20 @@ H265Settings& H265Settings::operator =(JsonView jsonValue)
     m_treeblockSizeHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("minQp"))
+  {
+    m_minQp = jsonValue.GetInteger("minQp");
+
+    m_minQpHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("deblocking"))
+  {
+    m_deblocking = H265DeblockingMapper::GetH265DeblockingForName(jsonValue.GetString("deblocking"));
+
+    m_deblockingHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -621,6 +571,17 @@ JsonValue H265Settings::Jsonize() const
   if(m_treeblockSizeHasBeenSet)
   {
    payload.WithString("treeblockSize", H265TreeblockSizeMapper::GetNameForH265TreeblockSize(m_treeblockSize));
+  }
+
+  if(m_minQpHasBeenSet)
+  {
+   payload.WithInteger("minQp", m_minQp);
+
+  }
+
+  if(m_deblockingHasBeenSet)
+  {
+   payload.WithString("deblocking", H265DeblockingMapper::GetNameForH265Deblocking(m_deblocking));
   }
 
   return payload;

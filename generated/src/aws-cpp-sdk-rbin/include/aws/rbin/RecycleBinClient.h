@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/rbin/RecycleBin_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/rbin/RecycleBinServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/rbin/RecycleBinErrorMarshaller.h>
 
 namespace Aws
 {
 namespace RecycleBin
 {
+  AWS_RECYCLEBIN_API extern const char SERVICE_NAME[];
   /**
    * <p>This is the <i>Recycle Bin API Reference</i>. This documentation provides
    * descriptions and syntax for each of the actions and data types in Recycle
@@ -31,12 +35,20 @@ namespace RecycleBin
    * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/recycle-bin.html">
    * Recycle Bin</a> in the <i>Amazon Elastic Compute Cloud User Guide</i>.</p>
    */
-  class AWS_RECYCLEBIN_API RecycleBinClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<RecycleBinClient>
+  class AWS_RECYCLEBIN_API RecycleBinClient : smithy::client::AwsSmithyClientT<Aws::RecycleBin::SERVICE_NAME,
+      Aws::RecycleBin::RecycleBinClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      RecycleBinEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::RecycleBinErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<RecycleBinClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "rbin"; }
 
       typedef RecycleBinClientConfiguration ClientConfigurationType;
       typedef RecycleBinEndpointProvider EndpointProviderType;
@@ -90,10 +102,22 @@ namespace RecycleBin
         virtual ~RecycleBinClient();
 
         /**
-         * <p>Creates a Recycle Bin retention rule. For more information, see <a
-         * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/recycle-bin-working-with-rules.html#recycle-bin-create-rule">
-         * Create Recycle Bin retention rules</a> in the <i>Amazon Elastic Compute Cloud
-         * User Guide</i>.</p><p><h3>See Also:</h3>   <a
+         * <p>Creates a Recycle Bin retention rule. You can create two types of retention
+         * rules:</p> <ul> <li> <p> <b>Tag-level retention rules</b> - These retention
+         * rules use resource tags to identify the resources to protect. For each retention
+         * rule, you specify one or more tag key and value pairs. Resources (of the
+         * specified type) that have at least one of these tag key and value pairs are
+         * automatically retained in the Recycle Bin upon deletion. Use this type of
+         * retention rule to protect specific resources in your account based on their
+         * tags.</p> </li> <li> <p> <b>Region-level retention rules</b> - These retention
+         * rules, by default, apply to all of the resources (of the specified type) in the
+         * Region, even if the resources are not tagged. However, you can specify exclusion
+         * tags to exclude resources that have specific tags. Use this type of retention
+         * rule to protect all resources of a specific type in a Region.</p> </li> </ul>
+         * <p>For more information, see <a
+         * href="https://docs.aws.amazon.com/ebs/latest/userguide/recycle-bin.html"> Create
+         * Recycle Bin retention rules</a> in the <i>Amazon EBS User
+         * Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/rbin-2021-06-15/CreateRule">AWS API
          * Reference</a></p>
          */
@@ -221,8 +245,10 @@ namespace RecycleBin
         }
 
         /**
-         * <p>Locks a retention rule. A locked retention rule can't be modified or
-         * deleted.</p><p><h3>See Also:</h3>   <a
+         * <p>Locks a Region-level retention rule. A locked retention rule can't be
+         * modified or deleted.</p>  <p>You can't lock tag-level retention rules, or
+         * Region-level retention rules that have exclusion tags.</p> <p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/rbin-2021-06-15/LockRule">AWS API
          * Reference</a></p>
          */
@@ -359,11 +385,7 @@ namespace RecycleBin
       std::shared_ptr<RecycleBinEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<RecycleBinClient>;
-      void init(const RecycleBinClientConfiguration& clientConfiguration);
 
-      RecycleBinClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<RecycleBinEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace RecycleBin

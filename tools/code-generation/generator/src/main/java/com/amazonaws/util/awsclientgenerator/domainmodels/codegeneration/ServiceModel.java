@@ -31,19 +31,14 @@ public class ServiceModel {
     Map<String, Operation> operations;
     boolean enableVirtualOperations;
     Collection<Error> serviceErrors;
-
-    @Getter(AccessLevel.PRIVATE)
-    @Setter(AccessLevel.PRIVATE)
-    Set<String> inputShapes = new HashSet<>();
-
-    @Getter(AccessLevel.PRIVATE)
-    @Setter(AccessLevel.PRIVATE)
-    Set<String> outputShapes = new HashSet<>();
-
-
+    Collection<CustomPresignedUtility> presigners;
 
     public boolean hasStreamingRequestShapes() {
         return shapes.values().parallelStream().anyMatch(shape -> shape.isRequest() && (shape.hasStreamMembers() || shape.hasEventStreamMembers()));
+    }
+
+    public boolean hasEventStreamingRequestShapes() {
+        return shapes.values().parallelStream().anyMatch(shape -> shape.isRequest() && shape.hasEventStreamMembers());
     }
 
     public Collection<Error> getNonCoreServiceErrors() {
@@ -71,7 +66,29 @@ public class ServiceModel {
         return operations.values().parallelStream().allMatch(operation -> operation.getSignerName().equals("Aws::Auth::BEARER_SIGNER"));
     }
 
-    String endpointRules;
+    public boolean hasServiceSpecificClientConfig() {
+        return metadata.getServiceId().equalsIgnoreCase("S3") ||
+                metadata.getServiceId().equalsIgnoreCase("S3-CRT") ||
+                metadata.getServiceId().equalsIgnoreCase("S3 Control") ||
+                metadata.isHasEndpointDiscoveryTrait() ||
+                endpointRuleSetModel.getParameters().containsKey("AccountId") || endpointRuleSetModel.getParameters().containsKey("AccountIdEndpointMode");
+    }
+
+    public Operation getOperationForRequestShapeName(String requestShapeName) {
+        for (Map.Entry<String, Operation> opEntry : operations.entrySet()) {
+            Operation op = opEntry.getValue();
+            if (op.getRequest() != null && op.getRequest().getShape().getName() == requestShapeName) {
+                return op;
+            }
+        }
+        return null;
+    }
+
+    String endpointRules; // as a blob
+    EndpointRuleSetModel endpointRuleSetModel;
     EndpointTests endpointTests;
     ClientContextParams clientContextParams;
+    boolean useSmithyClient;
+    List<String> authSchemes;
+    String rawEndpointRules;
 }

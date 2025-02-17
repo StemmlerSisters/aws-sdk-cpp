@@ -30,25 +30,14 @@ ScalingPolicy::ScalingPolicy() :
     m_policyTypeHasBeenSet(false),
     m_stepScalingPolicyConfigurationHasBeenSet(false),
     m_targetTrackingScalingPolicyConfigurationHasBeenSet(false),
+    m_predictiveScalingPolicyConfigurationHasBeenSet(false),
     m_alarmsHasBeenSet(false),
     m_creationTimeHasBeenSet(false)
 {
 }
 
-ScalingPolicy::ScalingPolicy(JsonView jsonValue) : 
-    m_policyARNHasBeenSet(false),
-    m_policyNameHasBeenSet(false),
-    m_serviceNamespace(ServiceNamespace::NOT_SET),
-    m_serviceNamespaceHasBeenSet(false),
-    m_resourceIdHasBeenSet(false),
-    m_scalableDimension(ScalableDimension::NOT_SET),
-    m_scalableDimensionHasBeenSet(false),
-    m_policyType(PolicyType::NOT_SET),
-    m_policyTypeHasBeenSet(false),
-    m_stepScalingPolicyConfigurationHasBeenSet(false),
-    m_targetTrackingScalingPolicyConfigurationHasBeenSet(false),
-    m_alarmsHasBeenSet(false),
-    m_creationTimeHasBeenSet(false)
+ScalingPolicy::ScalingPolicy(JsonView jsonValue)
+  : ScalingPolicy()
 {
   *this = jsonValue;
 }
@@ -109,6 +98,13 @@ ScalingPolicy& ScalingPolicy::operator =(JsonView jsonValue)
     m_targetTrackingScalingPolicyConfiguration = jsonValue.GetObject("TargetTrackingScalingPolicyConfiguration");
 
     m_targetTrackingScalingPolicyConfigurationHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("PredictiveScalingPolicyConfiguration"))
+  {
+    m_predictiveScalingPolicyConfiguration = jsonValue.GetObject("PredictiveScalingPolicyConfiguration");
+
+    m_predictiveScalingPolicyConfigurationHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("Alarms"))
@@ -177,6 +173,12 @@ JsonValue ScalingPolicy::Jsonize() const
   if(m_targetTrackingScalingPolicyConfigurationHasBeenSet)
   {
    payload.WithObject("TargetTrackingScalingPolicyConfiguration", m_targetTrackingScalingPolicyConfiguration.Jsonize());
+
+  }
+
+  if(m_predictiveScalingPolicyConfigurationHasBeenSet)
+  {
+   payload.WithObject("PredictiveScalingPolicyConfiguration", m_predictiveScalingPolicyConfiguration.Jsonize());
 
   }
 

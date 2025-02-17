@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/amp/PrometheusService_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/amp/PrometheusServiceServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/amp/PrometheusServiceErrorMarshaller.h>
 
 namespace Aws
 {
 namespace PrometheusService
 {
+  AWS_PROMETHEUSSERVICE_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon Managed Service for Prometheus is a serverless, Prometheus-compatible
    * monitoring service for container metrics that makes it easier to securely
@@ -33,12 +37,20 @@ namespace PrometheusService
    * href="https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-APIReference.html#AMP-APIReference-Prometheus-Compatible-Apis">Prometheus-compatible
    * API</a> to work within your Prometheus workspace.</p> </li> </ul>
    */
-  class AWS_PROMETHEUSSERVICE_API PrometheusServiceClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<PrometheusServiceClient>
+  class AWS_PROMETHEUSSERVICE_API PrometheusServiceClient : smithy::client::AwsSmithyClientT<Aws::PrometheusService::SERVICE_NAME,
+      Aws::PrometheusService::PrometheusServiceClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      PrometheusServiceEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::PrometheusServiceErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<PrometheusServiceClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "amp"; }
 
       typedef PrometheusServiceClientConfiguration ClientConfigurationType;
       typedef PrometheusServiceEndpointProvider EndpointProviderType;
@@ -180,22 +192,21 @@ namespace PrometheusService
          * <p>The <code>CreateScraper</code> operation creates a scraper to collect
          * metrics. A scraper pulls metrics from Prometheus-compatible sources within an
          * Amazon EKS cluster, and sends them to your Amazon Managed Service for Prometheus
-         * workspace. You can configure the scraper to control what metrics are collected,
-         * and what transformations are applied prior to sending them to your
-         * workspace.</p> <p>If needed, an IAM role will be created for you that gives
-         * Amazon Managed Service for Prometheus access to the metrics in your cluster. For
-         * more information, see <a
-         * href="https://docs.aws.amazon.com/prometheus/latest/userguide/using-service-linked-roles.html#using-service-linked-roles-prom-scraper">Using
-         * roles for scraping metrics from EKS</a> in the <i>Amazon Managed Service for
-         * Prometheus User Guide</i>.</p> <p>You cannot update a scraper. If you want to
-         * change the configuration of the scraper, create a new scraper and delete the old
-         * one.</p> <p>The <code>scrapeConfiguration</code> parameter contains the
-         * base64-encoded version of the YAML configuration file.</p>  <p>For more
+         * workspace. Scrapers are flexible, and can be configured to control what metrics
+         * are collected, the frequency of collection, what transformations are applied to
+         * the metrics, and more.</p> <p>An IAM role will be created for you that Amazon
+         * Managed Service for Prometheus uses to access the metrics in your cluster. You
+         * must configure this role with a policy that allows it to scrape metrics from
+         * your cluster. For more information, see <a
+         * href="https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-collector-how-to.html#AMP-collector-eks-setup">Configuring
+         * your Amazon EKS cluster</a> in the <i>Amazon Managed Service for Prometheus User
+         * Guide</i>.</p> <p>The <code>scrapeConfiguration</code> parameter contains the
+         * base-64 encoded YAML configuration for the scraper.</p>  <p>For more
          * information about collectors, including what metrics are collected, and how to
          * configure the scraper, see <a
-         * href="https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-collector.html">Amazon
-         * Web Services managed collectors</a> in the <i>Amazon Managed Service for
-         * Prometheus User Guide</i>.</p> <p><h3>See Also:</h3>   <a
+         * href="https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-collector-how-to.html">Using
+         * an Amazon Web Services managed collector</a> in the <i>Amazon Managed Service
+         * for Prometheus User Guide</i>.</p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/amp-2020-08-01/CreateScraper">AWS
          * API Reference</a></p>
          */
@@ -226,13 +237,13 @@ namespace PrometheusService
          * href="http://docs.aws.amazon.com/goto/WebAPI/amp-2020-08-01/CreateWorkspace">AWS
          * API Reference</a></p>
          */
-        virtual Model::CreateWorkspaceOutcome CreateWorkspace(const Model::CreateWorkspaceRequest& request) const;
+        virtual Model::CreateWorkspaceOutcome CreateWorkspace(const Model::CreateWorkspaceRequest& request = {}) const;
 
         /**
          * A Callable wrapper for CreateWorkspace that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename CreateWorkspaceRequestT = Model::CreateWorkspaceRequest>
-        Model::CreateWorkspaceOutcomeCallable CreateWorkspaceCallable(const CreateWorkspaceRequestT& request) const
+        Model::CreateWorkspaceOutcomeCallable CreateWorkspaceCallable(const CreateWorkspaceRequestT& request = {}) const
         {
             return SubmitCallable(&PrometheusServiceClient::CreateWorkspace, request);
         }
@@ -241,7 +252,7 @@ namespace PrometheusService
          * An Async wrapper for CreateWorkspace that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename CreateWorkspaceRequestT = Model::CreateWorkspaceRequest>
-        void CreateWorkspaceAsync(const CreateWorkspaceRequestT& request, const CreateWorkspaceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void CreateWorkspaceAsync(const CreateWorkspaceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const CreateWorkspaceRequestT& request = {}) const
         {
             return SubmitAsync(&PrometheusServiceClient::CreateWorkspace, request, handler, context);
         }
@@ -515,13 +526,13 @@ namespace PrometheusService
          * href="http://docs.aws.amazon.com/goto/WebAPI/amp-2020-08-01/GetDefaultScraperConfiguration">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetDefaultScraperConfigurationOutcome GetDefaultScraperConfiguration(const Model::GetDefaultScraperConfigurationRequest& request) const;
+        virtual Model::GetDefaultScraperConfigurationOutcome GetDefaultScraperConfiguration(const Model::GetDefaultScraperConfigurationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetDefaultScraperConfiguration that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetDefaultScraperConfigurationRequestT = Model::GetDefaultScraperConfigurationRequest>
-        Model::GetDefaultScraperConfigurationOutcomeCallable GetDefaultScraperConfigurationCallable(const GetDefaultScraperConfigurationRequestT& request) const
+        Model::GetDefaultScraperConfigurationOutcomeCallable GetDefaultScraperConfigurationCallable(const GetDefaultScraperConfigurationRequestT& request = {}) const
         {
             return SubmitCallable(&PrometheusServiceClient::GetDefaultScraperConfiguration, request);
         }
@@ -530,7 +541,7 @@ namespace PrometheusService
          * An Async wrapper for GetDefaultScraperConfiguration that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetDefaultScraperConfigurationRequestT = Model::GetDefaultScraperConfigurationRequest>
-        void GetDefaultScraperConfigurationAsync(const GetDefaultScraperConfigurationRequestT& request, const GetDefaultScraperConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetDefaultScraperConfigurationAsync(const GetDefaultScraperConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetDefaultScraperConfigurationRequestT& request = {}) const
         {
             return SubmitAsync(&PrometheusServiceClient::GetDefaultScraperConfiguration, request, handler, context);
         }
@@ -568,13 +579,13 @@ namespace PrometheusService
          * href="http://docs.aws.amazon.com/goto/WebAPI/amp-2020-08-01/ListScrapers">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListScrapersOutcome ListScrapers(const Model::ListScrapersRequest& request) const;
+        virtual Model::ListScrapersOutcome ListScrapers(const Model::ListScrapersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListScrapers that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListScrapersRequestT = Model::ListScrapersRequest>
-        Model::ListScrapersOutcomeCallable ListScrapersCallable(const ListScrapersRequestT& request) const
+        Model::ListScrapersOutcomeCallable ListScrapersCallable(const ListScrapersRequestT& request = {}) const
         {
             return SubmitCallable(&PrometheusServiceClient::ListScrapers, request);
         }
@@ -583,7 +594,7 @@ namespace PrometheusService
          * An Async wrapper for ListScrapers that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListScrapersRequestT = Model::ListScrapersRequest>
-        void ListScrapersAsync(const ListScrapersRequestT& request, const ListScrapersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListScrapersAsync(const ListScrapersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListScrapersRequestT& request = {}) const
         {
             return SubmitAsync(&PrometheusServiceClient::ListScrapers, request, handler, context);
         }
@@ -591,8 +602,8 @@ namespace PrometheusService
         /**
          * <p>The <code>ListTagsForResource</code> operation returns the tags that are
          * associated with an Amazon Managed Service for Prometheus resource. Currently,
-         * the only resources that can be tagged are workspaces and rule groups namespaces.
-         * </p><p><h3>See Also:</h3>   <a
+         * the only resources that can be tagged are scrapers, workspaces, and rule groups
+         * namespaces. </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/amp-2020-08-01/ListTagsForResource">AWS
          * API Reference</a></p>
          */
@@ -623,13 +634,13 @@ namespace PrometheusService
          * href="http://docs.aws.amazon.com/goto/WebAPI/amp-2020-08-01/ListWorkspaces">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListWorkspacesOutcome ListWorkspaces(const Model::ListWorkspacesRequest& request) const;
+        virtual Model::ListWorkspacesOutcome ListWorkspaces(const Model::ListWorkspacesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListWorkspaces that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListWorkspacesRequestT = Model::ListWorkspacesRequest>
-        Model::ListWorkspacesOutcomeCallable ListWorkspacesCallable(const ListWorkspacesRequestT& request) const
+        Model::ListWorkspacesOutcomeCallable ListWorkspacesCallable(const ListWorkspacesRequestT& request = {}) const
         {
             return SubmitCallable(&PrometheusServiceClient::ListWorkspaces, request);
         }
@@ -638,7 +649,7 @@ namespace PrometheusService
          * An Async wrapper for ListWorkspaces that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListWorkspacesRequestT = Model::ListWorkspacesRequest>
-        void ListWorkspacesAsync(const ListWorkspacesRequestT& request, const ListWorkspacesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListWorkspacesAsync(const ListWorkspacesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListWorkspacesRequestT& request = {}) const
         {
             return SubmitAsync(&PrometheusServiceClient::ListWorkspaces, request, handler, context);
         }
@@ -704,12 +715,12 @@ namespace PrometheusService
 
         /**
          * <p>The <code>TagResource</code> operation associates tags with an Amazon Managed
-         * Service for Prometheus resource. The only resources that can be tagged are
-         * workspaces and rule groups namespaces. </p> <p>If you specify a new tag key for
-         * the resource, this tag is appended to the list of tags associated with the
+         * Service for Prometheus resource. The only resources that can be tagged are rule
+         * groups namespaces, scrapers, and workspaces.</p> <p>If you specify a new tag key
+         * for the resource, this tag is appended to the list of tags associated with the
          * resource. If you specify a tag key that is already associated with the resource,
-         * the new tag value that you specify replaces the previous value for that
-         * tag.</p><p><h3>See Also:</h3>   <a
+         * the new tag value that you specify replaces the previous value for that tag. To
+         * remove a tag, use <code>UntagResource</code>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/amp-2020-08-01/TagResource">AWS API
          * Reference</a></p>
          */
@@ -735,8 +746,8 @@ namespace PrometheusService
 
         /**
          * <p>Removes the specified tags from an Amazon Managed Service for Prometheus
-         * resource. The only resources that can be tagged are workspaces and rule groups
-         * namespaces. </p><p><h3>See Also:</h3>   <a
+         * resource. The only resources that can be tagged are rule groups namespaces,
+         * scrapers, and workspaces. </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/amp-2020-08-01/UntagResource">AWS
          * API Reference</a></p>
          */
@@ -787,6 +798,33 @@ namespace PrometheusService
         }
 
         /**
+         * <p>Updates an existing scraper.</p> <p>You can't use this function to update the
+         * source from which the scraper is collecting metrics. To change the source,
+         * delete the scraper and create a new one.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/amp-2020-08-01/UpdateScraper">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateScraperOutcome UpdateScraper(const Model::UpdateScraperRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateScraper that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateScraperRequestT = Model::UpdateScraperRequest>
+        Model::UpdateScraperOutcomeCallable UpdateScraperCallable(const UpdateScraperRequestT& request) const
+        {
+            return SubmitCallable(&PrometheusServiceClient::UpdateScraper, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateScraper that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateScraperRequestT = Model::UpdateScraperRequest>
+        void UpdateScraperAsync(const UpdateScraperRequestT& request, const UpdateScraperResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&PrometheusServiceClient::UpdateScraper, request, handler, context);
+        }
+
+        /**
          * <p>Updates the alias of an existing workspace. </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/amp-2020-08-01/UpdateWorkspaceAlias">AWS
          * API Reference</a></p>
@@ -816,11 +854,7 @@ namespace PrometheusService
       std::shared_ptr<PrometheusServiceEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<PrometheusServiceClient>;
-      void init(const PrometheusServiceClientConfiguration& clientConfiguration);
 
-      PrometheusServiceClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<PrometheusServiceEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace PrometheusService

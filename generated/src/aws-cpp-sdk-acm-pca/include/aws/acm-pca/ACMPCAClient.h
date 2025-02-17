@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/acm-pca/ACMPCA_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/acm-pca/ACMPCAServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/acm-pca/ACMPCAErrorMarshaller.h>
 
 namespace Aws
 {
 namespace ACMPCA
 {
+  AWS_ACMPCA_API extern const char SERVICE_NAME[];
   /**
    * <p>This is the <i>Amazon Web Services Private Certificate Authority API
    * Reference</i>. It provides descriptions, syntax, and usage examples for each of
@@ -39,12 +43,20 @@ namespace ACMPCA
    * href="https://console.aws.amazon.com/servicequotas/">Service Quotas</a>
    * console.</p>
    */
-  class AWS_ACMPCA_API ACMPCAClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<ACMPCAClient>
+  class AWS_ACMPCA_API ACMPCAClient : smithy::client::AwsSmithyClientT<Aws::ACMPCA::SERVICE_NAME,
+      Aws::ACMPCA::ACMPCAClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      ACMPCAEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::ACMPCAErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<ACMPCAClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "ACM PCA"; }
 
       typedef ACMPCAClientConfiguration ClientConfigurationType;
       typedef ACMPCAEndpointProvider EndpointProviderType;
@@ -117,7 +129,7 @@ namespace ACMPCA
          * policies for CRLs in Amazon S3</a>.</p>  <p>Amazon Web Services Private
          * CA assets that are stored in Amazon S3 can be protected with encryption. For
          * more information, see <a
-         * href="https://docs.aws.amazon.com/privateca/latest/userguide/PcaCreateCa.html#crl-encryption">Encrypting
+         * href="https://docs.aws.amazon.com/privateca/latest/userguide/crl-planning.html#crl-encryption">Encrypting
          * Your CRLs</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/acm-pca-2017-08-22/CreateCertificateAuthority">AWS
          * API Reference</a></p>
@@ -144,19 +156,18 @@ namespace ACMPCA
 
         /**
          * <p>Creates an audit report that lists every time that your CA private key is
-         * used. The report is saved in the Amazon S3 bucket that you specify on input. The
-         * <a
+         * used to issue a certificate. The <a
          * href="https://docs.aws.amazon.com/privateca/latest/APIReference/API_IssueCertificate.html">IssueCertificate</a>
          * and <a
          * href="https://docs.aws.amazon.com/privateca/latest/APIReference/API_RevokeCertificate.html">RevokeCertificate</a>
-         * actions use the private key. </p>  <p>Both Amazon Web Services Private CA
-         * and the IAM principal must have permission to write to the S3 bucket that you
-         * specify. If the IAM principal making the call does not have permission to write
-         * to the bucket, then an exception is thrown. For more information, see <a
-         * href="https://docs.aws.amazon.com/privateca/latest/userguide/crl-planning.html#s3-policies">Access
-         * policies for CRLs in Amazon S3</a>.</p>  <p>Amazon Web Services Private
-         * CA assets that are stored in Amazon S3 can be protected with encryption. For
-         * more information, see <a
+         * actions use the private key.</p> <p>To save the audit report to your designated
+         * Amazon S3 bucket, you must create a bucket policy that grants Amazon Web
+         * Services Private CA permission to access and write to it. For an example policy,
+         * see <a
+         * href="https://docs.aws.amazon.com/privateca/latest/userguide/PcaAuditReport.html#s3-access">Prepare
+         * an Amazon S3 bucket for audit reports</a>.</p> <p>Amazon Web Services Private CA
+         * assets that are stored in Amazon S3 can be protected with encryption. For more
+         * information, see <a
          * href="https://docs.aws.amazon.com/privateca/latest/userguide/PcaAuditReport.html#audit-report-encryption">Encrypting
          * Your Audit Reports</a>.</p>  <p>You can generate a maximum of one report
          * every 30 minutes.</p> <p><h3>See Also:</h3>   <a
@@ -631,19 +642,20 @@ namespace ACMPCA
          * size of a certificate chain is 2 MB.</p> </li> </ul> <p> <i>Enforcement of
          * Critical Constraints</i> </p> <p>Amazon Web Services Private CA allows the
          * following extensions to be marked critical in the imported CA certificate or
-         * chain.</p> <ul> <li> <p>Basic constraints (<i>must</i> be marked critical)</p>
-         * </li> <li> <p>Subject alternative names</p> </li> <li> <p>Key usage</p> </li>
-         * <li> <p>Extended key usage</p> </li> <li> <p>Authority key identifier</p> </li>
-         * <li> <p>Subject key identifier</p> </li> <li> <p>Issuer alternative name</p>
-         * </li> <li> <p>Subject directory attributes</p> </li> <li> <p>Subject information
-         * access</p> </li> <li> <p>Certificate policies</p> </li> <li> <p>Policy
-         * mappings</p> </li> <li> <p>Inhibit anyPolicy</p> </li> </ul> <p>Amazon Web
-         * Services Private CA rejects the following extensions when they are marked
-         * critical in an imported CA certificate or chain.</p> <ul> <li> <p>Name
-         * constraints</p> </li> <li> <p>Policy constraints</p> </li> <li> <p>CRL
-         * distribution points</p> </li> <li> <p>Authority information access</p> </li>
-         * <li> <p>Freshest CRL</p> </li> <li> <p>Any other extension</p> </li>
-         * </ul><p><h3>See Also:</h3>   <a
+         * chain.</p> <ul> <li> <p>Authority key identifier</p> </li> <li> <p>Basic
+         * constraints (<i>must</i> be marked critical)</p> </li> <li> <p>Certificate
+         * policies</p> </li> <li> <p>Extended key usage</p> </li> <li> <p>Inhibit
+         * anyPolicy</p> </li> <li> <p>Issuer alternative name</p> </li> <li> <p>Key
+         * usage</p> </li> <li> <p>Name constraints</p> </li> <li> <p>Policy mappings</p>
+         * </li> <li> <p>Subject alternative name</p> </li> <li> <p>Subject directory
+         * attributes</p> </li> <li> <p>Subject key identifier</p> </li> <li> <p>Subject
+         * information access</p> </li> </ul> <p>Amazon Web Services Private CA rejects the
+         * following extensions when they are marked critical in an imported CA certificate
+         * or chain.</p> <ul> <li> <p>Authority information access</p> </li> <li> <p>CRL
+         * distribution points</p> </li> <li> <p>Freshest CRL</p> </li> <li> <p>Policy
+         * constraints</p> </li> </ul> <p>Amazon Web Services Private Certificate Authority
+         * will also reject any other extension marked as critical not contained on the
+         * preceding list of allowed extensions.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/acm-pca-2017-08-22/ImportCertificateAuthorityCertificate">AWS
          * API Reference</a></p>
          */
@@ -707,13 +719,13 @@ namespace ACMPCA
          * href="http://docs.aws.amazon.com/goto/WebAPI/acm-pca-2017-08-22/ListCertificateAuthorities">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListCertificateAuthoritiesOutcome ListCertificateAuthorities(const Model::ListCertificateAuthoritiesRequest& request) const;
+        virtual Model::ListCertificateAuthoritiesOutcome ListCertificateAuthorities(const Model::ListCertificateAuthoritiesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListCertificateAuthorities that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListCertificateAuthoritiesRequestT = Model::ListCertificateAuthoritiesRequest>
-        Model::ListCertificateAuthoritiesOutcomeCallable ListCertificateAuthoritiesCallable(const ListCertificateAuthoritiesRequestT& request) const
+        Model::ListCertificateAuthoritiesOutcomeCallable ListCertificateAuthoritiesCallable(const ListCertificateAuthoritiesRequestT& request = {}) const
         {
             return SubmitCallable(&ACMPCAClient::ListCertificateAuthorities, request);
         }
@@ -722,7 +734,7 @@ namespace ACMPCA
          * An Async wrapper for ListCertificateAuthorities that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListCertificateAuthoritiesRequestT = Model::ListCertificateAuthoritiesRequest>
-        void ListCertificateAuthoritiesAsync(const ListCertificateAuthoritiesRequestT& request, const ListCertificateAuthoritiesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListCertificateAuthoritiesAsync(const ListCertificateAuthoritiesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListCertificateAuthoritiesRequestT& request = {}) const
         {
             return SubmitAsync(&ACMPCAClient::ListCertificateAuthorities, request, handler, context);
         }
@@ -1059,11 +1071,7 @@ namespace ACMPCA
       std::shared_ptr<ACMPCAEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<ACMPCAClient>;
-      void init(const ACMPCAClientConfiguration& clientConfiguration);
 
-      ACMPCAClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<ACMPCAEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace ACMPCA

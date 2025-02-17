@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/applicationcostprofiler/ApplicationCostProfiler_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/applicationcostprofiler/ApplicationCostProfilerServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/applicationcostprofiler/ApplicationCostProfilerErrorMarshaller.h>
 
 namespace Aws
 {
 namespace ApplicationCostProfiler
 {
+  AWS_APPLICATIONCOSTPROFILER_API extern const char SERVICE_NAME[];
   /**
    * <p>This reference provides descriptions of the AWS Application Cost Profiler
    * API.</p> <p>The AWS Application Cost Profiler API provides programmatic access
@@ -24,12 +28,20 @@ namespace ApplicationCostProfiler
    * href="https://docs.aws.amazon.com/application-cost-profiler/latest/userguide/introduction.html">AWS
    * Application Cost Profiler User Guide</a>.</p>
    */
-  class AWS_APPLICATIONCOSTPROFILER_API ApplicationCostProfilerClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<ApplicationCostProfilerClient>
+  class AWS_APPLICATIONCOSTPROFILER_API ApplicationCostProfilerClient : smithy::client::AwsSmithyClientT<Aws::ApplicationCostProfiler::SERVICE_NAME,
+      Aws::ApplicationCostProfiler::ApplicationCostProfilerClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      ApplicationCostProfilerEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::ApplicationCostProfilerErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<ApplicationCostProfilerClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "ApplicationCostProfiler"; }
 
       typedef ApplicationCostProfilerClientConfiguration ClientConfigurationType;
       typedef ApplicationCostProfilerEndpointProvider EndpointProviderType;
@@ -170,13 +182,13 @@ namespace ApplicationCostProfiler
          * href="http://docs.aws.amazon.com/goto/WebAPI/AWSApplicationCostProfiler-2020-09-10/ListReportDefinitions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListReportDefinitionsOutcome ListReportDefinitions(const Model::ListReportDefinitionsRequest& request) const;
+        virtual Model::ListReportDefinitionsOutcome ListReportDefinitions(const Model::ListReportDefinitionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListReportDefinitions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListReportDefinitionsRequestT = Model::ListReportDefinitionsRequest>
-        Model::ListReportDefinitionsOutcomeCallable ListReportDefinitionsCallable(const ListReportDefinitionsRequestT& request) const
+        Model::ListReportDefinitionsOutcomeCallable ListReportDefinitionsCallable(const ListReportDefinitionsRequestT& request = {}) const
         {
             return SubmitCallable(&ApplicationCostProfilerClient::ListReportDefinitions, request);
         }
@@ -185,7 +197,7 @@ namespace ApplicationCostProfiler
          * An Async wrapper for ListReportDefinitions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListReportDefinitionsRequestT = Model::ListReportDefinitionsRequest>
-        void ListReportDefinitionsAsync(const ListReportDefinitionsRequestT& request, const ListReportDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListReportDefinitionsAsync(const ListReportDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListReportDefinitionsRequestT& request = {}) const
         {
             return SubmitAsync(&ApplicationCostProfilerClient::ListReportDefinitions, request, handler, context);
         }
@@ -247,11 +259,7 @@ namespace ApplicationCostProfiler
       std::shared_ptr<ApplicationCostProfilerEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<ApplicationCostProfilerClient>;
-      void init(const ApplicationCostProfilerClientConfiguration& clientConfiguration);
 
-      ApplicationCostProfilerClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<ApplicationCostProfilerEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace ApplicationCostProfiler

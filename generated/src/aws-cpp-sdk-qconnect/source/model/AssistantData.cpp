@@ -19,6 +19,7 @@ namespace Model
 {
 
 AssistantData::AssistantData() : 
+    m_aiAgentConfigurationHasBeenSet(false),
     m_assistantArnHasBeenSet(false),
     m_assistantIdHasBeenSet(false),
     m_capabilityConfigurationHasBeenSet(false),
@@ -34,25 +35,24 @@ AssistantData::AssistantData() :
 {
 }
 
-AssistantData::AssistantData(JsonView jsonValue) : 
-    m_assistantArnHasBeenSet(false),
-    m_assistantIdHasBeenSet(false),
-    m_capabilityConfigurationHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_integrationConfigurationHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_serverSideEncryptionConfigurationHasBeenSet(false),
-    m_status(AssistantStatus::NOT_SET),
-    m_statusHasBeenSet(false),
-    m_tagsHasBeenSet(false),
-    m_type(AssistantType::NOT_SET),
-    m_typeHasBeenSet(false)
+AssistantData::AssistantData(JsonView jsonValue)
+  : AssistantData()
 {
   *this = jsonValue;
 }
 
 AssistantData& AssistantData::operator =(JsonView jsonValue)
 {
+  if(jsonValue.ValueExists("aiAgentConfiguration"))
+  {
+    Aws::Map<Aws::String, JsonView> aiAgentConfigurationJsonMap = jsonValue.GetObject("aiAgentConfiguration").GetAllObjects();
+    for(auto& aiAgentConfigurationItem : aiAgentConfigurationJsonMap)
+    {
+      m_aiAgentConfiguration[AIAgentTypeMapper::GetAIAgentTypeForName(aiAgentConfigurationItem.first)] = aiAgentConfigurationItem.second.AsObject();
+    }
+    m_aiAgentConfigurationHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("assistantArn"))
   {
     m_assistantArn = jsonValue.GetString("assistantArn");
@@ -132,6 +132,17 @@ AssistantData& AssistantData::operator =(JsonView jsonValue)
 JsonValue AssistantData::Jsonize() const
 {
   JsonValue payload;
+
+  if(m_aiAgentConfigurationHasBeenSet)
+  {
+   JsonValue aiAgentConfigurationJsonMap;
+   for(auto& aiAgentConfigurationItem : m_aiAgentConfiguration)
+   {
+     aiAgentConfigurationJsonMap.WithObject(AIAgentTypeMapper::GetNameForAIAgentType(aiAgentConfigurationItem.first), aiAgentConfigurationItem.second.Jsonize());
+   }
+   payload.WithObject("aiAgentConfiguration", std::move(aiAgentConfigurationJsonMap));
+
+  }
 
   if(m_assistantArnHasBeenSet)
   {

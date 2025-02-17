@@ -35,28 +35,13 @@ InfrastructureConfiguration::InfrastructureConfiguration() :
     m_dateUpdatedHasBeenSet(false),
     m_resourceTagsHasBeenSet(false),
     m_instanceMetadataOptionsHasBeenSet(false),
-    m_tagsHasBeenSet(false)
+    m_tagsHasBeenSet(false),
+    m_placementHasBeenSet(false)
 {
 }
 
-InfrastructureConfiguration::InfrastructureConfiguration(JsonView jsonValue) : 
-    m_arnHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_instanceTypesHasBeenSet(false),
-    m_instanceProfileNameHasBeenSet(false),
-    m_securityGroupIdsHasBeenSet(false),
-    m_subnetIdHasBeenSet(false),
-    m_loggingHasBeenSet(false),
-    m_keyPairHasBeenSet(false),
-    m_terminateInstanceOnFailure(false),
-    m_terminateInstanceOnFailureHasBeenSet(false),
-    m_snsTopicArnHasBeenSet(false),
-    m_dateCreatedHasBeenSet(false),
-    m_dateUpdatedHasBeenSet(false),
-    m_resourceTagsHasBeenSet(false),
-    m_instanceMetadataOptionsHasBeenSet(false),
-    m_tagsHasBeenSet(false)
+InfrastructureConfiguration::InfrastructureConfiguration(JsonView jsonValue)
+  : InfrastructureConfiguration()
 {
   *this = jsonValue;
 }
@@ -187,6 +172,13 @@ InfrastructureConfiguration& InfrastructureConfiguration::operator =(JsonView js
     m_tagsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("placement"))
+  {
+    m_placement = jsonValue.GetObject("placement");
+
+    m_placementHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -307,6 +299,12 @@ JsonValue InfrastructureConfiguration::Jsonize() const
      tagsJsonMap.WithString(tagsItem.first, tagsItem.second);
    }
    payload.WithObject("tags", std::move(tagsJsonMap));
+
+  }
+
+  if(m_placementHasBeenSet)
+  {
+   payload.WithObject("placement", m_placement.Jsonize());
 
   }
 

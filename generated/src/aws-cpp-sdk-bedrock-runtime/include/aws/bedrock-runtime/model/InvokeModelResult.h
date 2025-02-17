@@ -8,6 +8,7 @@
 #include <aws/core/utils/stream/ResponseStream.h>
 #include <aws/core/utils/Array.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
+#include <aws/bedrock-runtime/model/PerformanceConfigLatency.h>
 #include <utility>
 
 namespace Aws
@@ -37,6 +38,7 @@ namespace Model
 
 
 
+    ///@{
     /**
      * <p>Inference response from the model in the format specified in the
      * <code>contentType</code> header. To see the format and content of the request
@@ -45,79 +47,51 @@ namespace Model
      * parameters</a>.</p>
      */
     inline Aws::IOStream& GetBody() const { return m_body.GetUnderlyingStream(); }
-
-    /**
-     * <p>Inference response from the model in the format specified in the
-     * <code>contentType</code> header. To see the format and content of the request
-     * and response bodies for different models, refer to <a
-     * href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters.html">Inference
-     * parameters</a>.</p>
-     */
     inline void ReplaceBody(Aws::IOStream* body) { m_body = Aws::Utils::Stream::ResponseStream(body); }
 
+    ///@}
 
+    ///@{
     /**
      * <p>The MIME type of the inference result.</p>
      */
     inline const Aws::String& GetContentType() const{ return m_contentType; }
-
-    /**
-     * <p>The MIME type of the inference result.</p>
-     */
     inline void SetContentType(const Aws::String& value) { m_contentType = value; }
-
-    /**
-     * <p>The MIME type of the inference result.</p>
-     */
     inline void SetContentType(Aws::String&& value) { m_contentType = std::move(value); }
-
-    /**
-     * <p>The MIME type of the inference result.</p>
-     */
     inline void SetContentType(const char* value) { m_contentType.assign(value); }
-
-    /**
-     * <p>The MIME type of the inference result.</p>
-     */
     inline InvokeModelResult& WithContentType(const Aws::String& value) { SetContentType(value); return *this;}
-
-    /**
-     * <p>The MIME type of the inference result.</p>
-     */
     inline InvokeModelResult& WithContentType(Aws::String&& value) { SetContentType(std::move(value)); return *this;}
-
-    /**
-     * <p>The MIME type of the inference result.</p>
-     */
     inline InvokeModelResult& WithContentType(const char* value) { SetContentType(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>Model performance settings for the request.</p>
+     */
+    inline const PerformanceConfigLatency& GetPerformanceConfigLatency() const{ return m_performanceConfigLatency; }
+    inline void SetPerformanceConfigLatency(const PerformanceConfigLatency& value) { m_performanceConfigLatency = value; }
+    inline void SetPerformanceConfigLatency(PerformanceConfigLatency&& value) { m_performanceConfigLatency = std::move(value); }
+    inline InvokeModelResult& WithPerformanceConfigLatency(const PerformanceConfigLatency& value) { SetPerformanceConfigLatency(value); return *this;}
+    inline InvokeModelResult& WithPerformanceConfigLatency(PerformanceConfigLatency&& value) { SetPerformanceConfigLatency(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
     
     inline const Aws::String& GetRequestId() const{ return m_requestId; }
-
-    
     inline void SetRequestId(const Aws::String& value) { m_requestId = value; }
-
-    
     inline void SetRequestId(Aws::String&& value) { m_requestId = std::move(value); }
-
-    
     inline void SetRequestId(const char* value) { m_requestId.assign(value); }
-
-    
     inline InvokeModelResult& WithRequestId(const Aws::String& value) { SetRequestId(value); return *this;}
-
-    
     inline InvokeModelResult& WithRequestId(Aws::String&& value) { SetRequestId(std::move(value)); return *this;}
-
-    
     inline InvokeModelResult& WithRequestId(const char* value) { SetRequestId(value); return *this;}
-
+    ///@}
   private:
 
     Aws::Utils::Stream::ResponseStream m_body;
 
     Aws::String m_contentType;
+
+    PerformanceConfigLatency m_performanceConfigLatency;
 
     Aws::String m_requestId;
   };

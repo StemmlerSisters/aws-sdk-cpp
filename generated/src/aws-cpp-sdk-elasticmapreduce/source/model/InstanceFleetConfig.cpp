@@ -28,21 +28,13 @@ InstanceFleetConfig::InstanceFleetConfig() :
     m_targetSpotCapacityHasBeenSet(false),
     m_instanceTypeConfigsHasBeenSet(false),
     m_launchSpecificationsHasBeenSet(false),
-    m_resizeSpecificationsHasBeenSet(false)
+    m_resizeSpecificationsHasBeenSet(false),
+    m_contextHasBeenSet(false)
 {
 }
 
-InstanceFleetConfig::InstanceFleetConfig(JsonView jsonValue) : 
-    m_nameHasBeenSet(false),
-    m_instanceFleetType(InstanceFleetType::NOT_SET),
-    m_instanceFleetTypeHasBeenSet(false),
-    m_targetOnDemandCapacity(0),
-    m_targetOnDemandCapacityHasBeenSet(false),
-    m_targetSpotCapacity(0),
-    m_targetSpotCapacityHasBeenSet(false),
-    m_instanceTypeConfigsHasBeenSet(false),
-    m_launchSpecificationsHasBeenSet(false),
-    m_resizeSpecificationsHasBeenSet(false)
+InstanceFleetConfig::InstanceFleetConfig(JsonView jsonValue)
+  : InstanceFleetConfig()
 {
   *this = jsonValue;
 }
@@ -101,6 +93,13 @@ InstanceFleetConfig& InstanceFleetConfig::operator =(JsonView jsonValue)
     m_resizeSpecificationsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("Context"))
+  {
+    m_context = jsonValue.GetString("Context");
+
+    m_contextHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -151,6 +150,12 @@ JsonValue InstanceFleetConfig::Jsonize() const
   if(m_resizeSpecificationsHasBeenSet)
   {
    payload.WithObject("ResizeSpecifications", m_resizeSpecifications.Jsonize());
+
+  }
+
+  if(m_contextHasBeenSet)
+  {
+   payload.WithString("Context", m_context);
 
   }
 

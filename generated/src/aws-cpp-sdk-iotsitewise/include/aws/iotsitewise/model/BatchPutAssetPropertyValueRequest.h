@@ -33,55 +33,37 @@ namespace Model
     AWS_IOTSITEWISE_API Aws::String SerializePayload() const override;
 
 
+    ///@{
+    /**
+     * <p>This setting enables partial ingestion at entry-level. If set to
+     * <code>true</code>, we ingest all TQVs not resulting in an error. If set to
+     * <code>false</code>, an invalid TQV fails ingestion of the entire entry that
+     * contains it.</p>
+     */
+    inline bool GetEnablePartialEntryProcessing() const{ return m_enablePartialEntryProcessing; }
+    inline bool EnablePartialEntryProcessingHasBeenSet() const { return m_enablePartialEntryProcessingHasBeenSet; }
+    inline void SetEnablePartialEntryProcessing(bool value) { m_enablePartialEntryProcessingHasBeenSet = true; m_enablePartialEntryProcessing = value; }
+    inline BatchPutAssetPropertyValueRequest& WithEnablePartialEntryProcessing(bool value) { SetEnablePartialEntryProcessing(value); return *this;}
+    ///@}
+
+    ///@{
     /**
      * <p>The list of asset property value entries for the batch put request. You can
      * specify up to 10 entries per request.</p>
      */
     inline const Aws::Vector<PutAssetPropertyValueEntry>& GetEntries() const{ return m_entries; }
-
-    /**
-     * <p>The list of asset property value entries for the batch put request. You can
-     * specify up to 10 entries per request.</p>
-     */
     inline bool EntriesHasBeenSet() const { return m_entriesHasBeenSet; }
-
-    /**
-     * <p>The list of asset property value entries for the batch put request. You can
-     * specify up to 10 entries per request.</p>
-     */
     inline void SetEntries(const Aws::Vector<PutAssetPropertyValueEntry>& value) { m_entriesHasBeenSet = true; m_entries = value; }
-
-    /**
-     * <p>The list of asset property value entries for the batch put request. You can
-     * specify up to 10 entries per request.</p>
-     */
     inline void SetEntries(Aws::Vector<PutAssetPropertyValueEntry>&& value) { m_entriesHasBeenSet = true; m_entries = std::move(value); }
-
-    /**
-     * <p>The list of asset property value entries for the batch put request. You can
-     * specify up to 10 entries per request.</p>
-     */
     inline BatchPutAssetPropertyValueRequest& WithEntries(const Aws::Vector<PutAssetPropertyValueEntry>& value) { SetEntries(value); return *this;}
-
-    /**
-     * <p>The list of asset property value entries for the batch put request. You can
-     * specify up to 10 entries per request.</p>
-     */
     inline BatchPutAssetPropertyValueRequest& WithEntries(Aws::Vector<PutAssetPropertyValueEntry>&& value) { SetEntries(std::move(value)); return *this;}
-
-    /**
-     * <p>The list of asset property value entries for the batch put request. You can
-     * specify up to 10 entries per request.</p>
-     */
     inline BatchPutAssetPropertyValueRequest& AddEntries(const PutAssetPropertyValueEntry& value) { m_entriesHasBeenSet = true; m_entries.push_back(value); return *this; }
-
-    /**
-     * <p>The list of asset property value entries for the batch put request. You can
-     * specify up to 10 entries per request.</p>
-     */
     inline BatchPutAssetPropertyValueRequest& AddEntries(PutAssetPropertyValueEntry&& value) { m_entriesHasBeenSet = true; m_entries.push_back(std::move(value)); return *this; }
-
+    ///@}
   private:
+
+    bool m_enablePartialEntryProcessing;
+    bool m_enablePartialEntryProcessingHasBeenSet = false;
 
     Aws::Vector<PutAssetPropertyValueEntry> m_entries;
     bool m_entriesHasBeenSet = false;

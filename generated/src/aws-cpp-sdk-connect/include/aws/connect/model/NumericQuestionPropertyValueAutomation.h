@@ -30,7 +30,7 @@ namespace Model
    * and maximum value of 5.</p> </li> <li> <p> Duration labels, such as
    * <code>NON_TALK_TIME</code>, <code>CONTACT_DURATION</code>,
    * <code>AGENT_INTERACTION_DURATION</code>, <code>CUSTOMER_HOLD_TIME</code> have a
-   * minimum value of 0 and maximum value of 28800.</p> </li> <li> <p>Percentages
+   * minimum value of 0 and maximum value of 63072000.</p> </li> <li> <p>Percentages
    * have a minimum value of 0 and maximum value of 100. </p> </li> <li> <p>
    * <code>NUMBER_OF_INTERRUPTIONS</code> has a minimum value of 0 and maximum value
    * of 1000.</p> </li> </ul><p><h3>See Also:</h3>   <a
@@ -46,36 +46,17 @@ namespace Model
     AWS_CONNECT_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The property label of the automation.</p>
      */
     inline const NumericQuestionPropertyAutomationLabel& GetLabel() const{ return m_label; }
-
-    /**
-     * <p>The property label of the automation.</p>
-     */
     inline bool LabelHasBeenSet() const { return m_labelHasBeenSet; }
-
-    /**
-     * <p>The property label of the automation.</p>
-     */
     inline void SetLabel(const NumericQuestionPropertyAutomationLabel& value) { m_labelHasBeenSet = true; m_label = value; }
-
-    /**
-     * <p>The property label of the automation.</p>
-     */
     inline void SetLabel(NumericQuestionPropertyAutomationLabel&& value) { m_labelHasBeenSet = true; m_label = std::move(value); }
-
-    /**
-     * <p>The property label of the automation.</p>
-     */
     inline NumericQuestionPropertyValueAutomation& WithLabel(const NumericQuestionPropertyAutomationLabel& value) { SetLabel(value); return *this;}
-
-    /**
-     * <p>The property label of the automation.</p>
-     */
     inline NumericQuestionPropertyValueAutomation& WithLabel(NumericQuestionPropertyAutomationLabel&& value) { SetLabel(std::move(value)); return *this;}
-
+    ///@}
   private:
 
     NumericQuestionPropertyAutomationLabel m_label;

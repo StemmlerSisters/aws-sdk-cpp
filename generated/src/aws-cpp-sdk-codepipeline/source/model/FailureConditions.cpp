@@ -20,13 +20,14 @@ namespace Model
 
 FailureConditions::FailureConditions() : 
     m_result(Result::NOT_SET),
-    m_resultHasBeenSet(false)
+    m_resultHasBeenSet(false),
+    m_retryConfigurationHasBeenSet(false),
+    m_conditionsHasBeenSet(false)
 {
 }
 
-FailureConditions::FailureConditions(JsonView jsonValue) : 
-    m_result(Result::NOT_SET),
-    m_resultHasBeenSet(false)
+FailureConditions::FailureConditions(JsonView jsonValue)
+  : FailureConditions()
 {
   *this = jsonValue;
 }
@@ -40,6 +41,23 @@ FailureConditions& FailureConditions::operator =(JsonView jsonValue)
     m_resultHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("retryConfiguration"))
+  {
+    m_retryConfiguration = jsonValue.GetObject("retryConfiguration");
+
+    m_retryConfigurationHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("conditions"))
+  {
+    Aws::Utils::Array<JsonView> conditionsJsonList = jsonValue.GetArray("conditions");
+    for(unsigned conditionsIndex = 0; conditionsIndex < conditionsJsonList.GetLength(); ++conditionsIndex)
+    {
+      m_conditions.push_back(conditionsJsonList[conditionsIndex].AsObject());
+    }
+    m_conditionsHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -50,6 +68,23 @@ JsonValue FailureConditions::Jsonize() const
   if(m_resultHasBeenSet)
   {
    payload.WithString("result", ResultMapper::GetNameForResult(m_result));
+  }
+
+  if(m_retryConfigurationHasBeenSet)
+  {
+   payload.WithObject("retryConfiguration", m_retryConfiguration.Jsonize());
+
+  }
+
+  if(m_conditionsHasBeenSet)
+  {
+   Aws::Utils::Array<JsonValue> conditionsJsonList(m_conditions.size());
+   for(unsigned conditionsIndex = 0; conditionsIndex < conditionsJsonList.GetLength(); ++conditionsIndex)
+   {
+     conditionsJsonList[conditionsIndex].AsObject(m_conditions[conditionsIndex].Jsonize());
+   }
+   payload.WithArray("conditions", std::move(conditionsJsonList));
+
   }
 
   return payload;

@@ -22,8 +22,8 @@ DescribeDraftAppVersionResourcesImportStatusResult::DescribeDraftAppVersionResou
 {
 }
 
-DescribeDraftAppVersionResourcesImportStatusResult::DescribeDraftAppVersionResourcesImportStatusResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_status(ResourceImportStatusType::NOT_SET)
+DescribeDraftAppVersionResourcesImportStatusResult::DescribeDraftAppVersionResourcesImportStatusResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : DescribeDraftAppVersionResourcesImportStatusResult()
 {
   *this = result;
 }
@@ -41,6 +41,15 @@ DescribeDraftAppVersionResourcesImportStatusResult& DescribeDraftAppVersionResou
   {
     m_appVersion = jsonValue.GetString("appVersion");
 
+  }
+
+  if(jsonValue.ValueExists("errorDetails"))
+  {
+    Aws::Utils::Array<JsonView> errorDetailsJsonList = jsonValue.GetArray("errorDetails");
+    for(unsigned errorDetailsIndex = 0; errorDetailsIndex < errorDetailsJsonList.GetLength(); ++errorDetailsIndex)
+    {
+      m_errorDetails.push_back(errorDetailsJsonList[errorDetailsIndex].AsObject());
+    }
   }
 
   if(jsonValue.ValueExists("errorMessage"))

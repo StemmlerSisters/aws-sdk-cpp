@@ -22,8 +22,8 @@ RestoreAnalysisResult::RestoreAnalysisResult() :
 {
 }
 
-RestoreAnalysisResult::RestoreAnalysisResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_status(0)
+RestoreAnalysisResult::RestoreAnalysisResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : RestoreAnalysisResult()
 {
   *this = result;
 }
@@ -41,6 +41,15 @@ RestoreAnalysisResult& RestoreAnalysisResult::operator =(const Aws::AmazonWebSer
   {
     m_analysisId = jsonValue.GetString("AnalysisId");
 
+  }
+
+  if(jsonValue.ValueExists("RestorationFailedFolderArns"))
+  {
+    Aws::Utils::Array<JsonView> restorationFailedFolderArnsJsonList = jsonValue.GetArray("RestorationFailedFolderArns");
+    for(unsigned restorationFailedFolderArnsIndex = 0; restorationFailedFolderArnsIndex < restorationFailedFolderArnsJsonList.GetLength(); ++restorationFailedFolderArnsIndex)
+    {
+      m_restorationFailedFolderArns.push_back(restorationFailedFolderArnsJsonList[restorationFailedFolderArnsIndex].AsString());
+    }
   }
 
 

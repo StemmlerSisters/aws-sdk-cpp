@@ -51,6 +51,7 @@
 #include <aws/docdb/model/DescribeOrderableDBInstanceOptionsResult.h>
 #include <aws/docdb/model/DescribePendingMaintenanceActionsResult.h>
 #include <aws/docdb/model/FailoverDBClusterResult.h>
+#include <aws/docdb/model/FailoverGlobalClusterResult.h>
 #include <aws/docdb/model/ListTagsForResourceResult.h>
 #include <aws/docdb/model/ModifyDBClusterResult.h>
 #include <aws/docdb/model/ModifyDBClusterParameterGroupResult.h>
@@ -68,6 +69,19 @@
 #include <aws/docdb/model/StartDBClusterResult.h>
 #include <aws/docdb/model/StopDBClusterResult.h>
 #include <aws/docdb/model/SwitchoverGlobalClusterResult.h>
+#include <aws/docdb/model/DescribeEventSubscriptionsRequest.h>
+#include <aws/docdb/model/DescribeDBInstancesRequest.h>
+#include <aws/docdb/model/DescribeCertificatesRequest.h>
+#include <aws/docdb/model/DescribeDBClustersRequest.h>
+#include <aws/docdb/model/DescribeEventCategoriesRequest.h>
+#include <aws/docdb/model/DescribeDBClusterParameterGroupsRequest.h>
+#include <aws/docdb/model/DescribeDBEngineVersionsRequest.h>
+#include <aws/docdb/model/DescribePendingMaintenanceActionsRequest.h>
+#include <aws/docdb/model/DescribeEventsRequest.h>
+#include <aws/docdb/model/DescribeGlobalClustersRequest.h>
+#include <aws/docdb/model/DescribeDBSubnetGroupsRequest.h>
+#include <aws/docdb/model/DescribeDBClusterSnapshotsRequest.h>
+#include <aws/docdb/model/FailoverDBClusterRequest.h>
 #include <aws/core/NoResult.h>
 /* End of service model headers required in DocDBClient header */
 
@@ -102,7 +116,7 @@ namespace Aws
 
   namespace DocDB
   {
-    using DocDBClientConfiguration = Aws::Client::GenericClientConfiguration<false>;
+    using DocDBClientConfiguration = Aws::Client::GenericClientConfiguration;
     using DocDBEndpointProviderBase = Aws::DocDB::Endpoint::DocDBEndpointProviderBase;
     using DocDBEndpointProvider = Aws::DocDB::Endpoint::DocDBEndpointProvider;
 
@@ -145,6 +159,7 @@ namespace Aws
       class DescribeOrderableDBInstanceOptionsRequest;
       class DescribePendingMaintenanceActionsRequest;
       class FailoverDBClusterRequest;
+      class FailoverGlobalClusterRequest;
       class ListTagsForResourceRequest;
       class ModifyDBClusterRequest;
       class ModifyDBClusterParameterGroupRequest;
@@ -202,6 +217,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<DescribeOrderableDBInstanceOptionsResult, DocDBError> DescribeOrderableDBInstanceOptionsOutcome;
       typedef Aws::Utils::Outcome<DescribePendingMaintenanceActionsResult, DocDBError> DescribePendingMaintenanceActionsOutcome;
       typedef Aws::Utils::Outcome<FailoverDBClusterResult, DocDBError> FailoverDBClusterOutcome;
+      typedef Aws::Utils::Outcome<FailoverGlobalClusterResult, DocDBError> FailoverGlobalClusterOutcome;
       typedef Aws::Utils::Outcome<ListTagsForResourceResult, DocDBError> ListTagsForResourceOutcome;
       typedef Aws::Utils::Outcome<ModifyDBClusterResult, DocDBError> ModifyDBClusterOutcome;
       typedef Aws::Utils::Outcome<ModifyDBClusterParameterGroupResult, DocDBError> ModifyDBClusterParameterGroupOutcome;
@@ -259,6 +275,7 @@ namespace Aws
       typedef std::future<DescribeOrderableDBInstanceOptionsOutcome> DescribeOrderableDBInstanceOptionsOutcomeCallable;
       typedef std::future<DescribePendingMaintenanceActionsOutcome> DescribePendingMaintenanceActionsOutcomeCallable;
       typedef std::future<FailoverDBClusterOutcome> FailoverDBClusterOutcomeCallable;
+      typedef std::future<FailoverGlobalClusterOutcome> FailoverGlobalClusterOutcomeCallable;
       typedef std::future<ListTagsForResourceOutcome> ListTagsForResourceOutcomeCallable;
       typedef std::future<ModifyDBClusterOutcome> ModifyDBClusterOutcomeCallable;
       typedef std::future<ModifyDBClusterParameterGroupOutcome> ModifyDBClusterParameterGroupOutcomeCallable;
@@ -319,6 +336,7 @@ namespace Aws
     typedef std::function<void(const DocDBClient*, const Model::DescribeOrderableDBInstanceOptionsRequest&, const Model::DescribeOrderableDBInstanceOptionsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeOrderableDBInstanceOptionsResponseReceivedHandler;
     typedef std::function<void(const DocDBClient*, const Model::DescribePendingMaintenanceActionsRequest&, const Model::DescribePendingMaintenanceActionsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribePendingMaintenanceActionsResponseReceivedHandler;
     typedef std::function<void(const DocDBClient*, const Model::FailoverDBClusterRequest&, const Model::FailoverDBClusterOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > FailoverDBClusterResponseReceivedHandler;
+    typedef std::function<void(const DocDBClient*, const Model::FailoverGlobalClusterRequest&, const Model::FailoverGlobalClusterOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > FailoverGlobalClusterResponseReceivedHandler;
     typedef std::function<void(const DocDBClient*, const Model::ListTagsForResourceRequest&, const Model::ListTagsForResourceOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListTagsForResourceResponseReceivedHandler;
     typedef std::function<void(const DocDBClient*, const Model::ModifyDBClusterRequest&, const Model::ModifyDBClusterOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ModifyDBClusterResponseReceivedHandler;
     typedef std::function<void(const DocDBClient*, const Model::ModifyDBClusterParameterGroupRequest&, const Model::ModifyDBClusterParameterGroupOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ModifyDBClusterParameterGroupResponseReceivedHandler;

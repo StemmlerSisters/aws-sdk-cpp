@@ -6,24 +6,36 @@
 #pragma once
 #include <aws/kinesis-video-archived-media/KinesisVideoArchivedMedia_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/kinesis-video-archived-media/KinesisVideoArchivedMediaServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/kinesis-video-archived-media/KinesisVideoArchivedMediaErrorMarshaller.h>
 
 namespace Aws
 {
 namespace KinesisVideoArchivedMedia
 {
+  AWS_KINESISVIDEOARCHIVEDMEDIA_API extern const char SERVICE_NAME[];
   /**
    * <p/>
    */
-  class AWS_KINESISVIDEOARCHIVEDMEDIA_API KinesisVideoArchivedMediaClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<KinesisVideoArchivedMediaClient>
+  class AWS_KINESISVIDEOARCHIVEDMEDIA_API KinesisVideoArchivedMediaClient : smithy::client::AwsSmithyClientT<Aws::KinesisVideoArchivedMedia::SERVICE_NAME,
+      Aws::KinesisVideoArchivedMedia::KinesisVideoArchivedMediaClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      KinesisVideoArchivedMediaEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::KinesisVideoArchivedMediaErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<KinesisVideoArchivedMediaClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Kinesis Video Archived Media"; }
 
       typedef KinesisVideoArchivedMediaClientConfiguration ClientConfigurationType;
       typedef KinesisVideoArchivedMediaEndpointProvider EndpointProviderType;
@@ -237,13 +249,13 @@ namespace KinesisVideoArchivedMedia
          * href="http://docs.aws.amazon.com/goto/WebAPI/kinesis-video-archived-media-2017-09-30/GetDASHStreamingSessionURL">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetDASHStreamingSessionURLOutcome GetDASHStreamingSessionURL(const Model::GetDASHStreamingSessionURLRequest& request) const;
+        virtual Model::GetDASHStreamingSessionURLOutcome GetDASHStreamingSessionURL(const Model::GetDASHStreamingSessionURLRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetDASHStreamingSessionURL that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetDASHStreamingSessionURLRequestT = Model::GetDASHStreamingSessionURLRequest>
-        Model::GetDASHStreamingSessionURLOutcomeCallable GetDASHStreamingSessionURLCallable(const GetDASHStreamingSessionURLRequestT& request) const
+        Model::GetDASHStreamingSessionURLOutcomeCallable GetDASHStreamingSessionURLCallable(const GetDASHStreamingSessionURLRequestT& request = {}) const
         {
             return SubmitCallable(&KinesisVideoArchivedMediaClient::GetDASHStreamingSessionURL, request);
         }
@@ -252,7 +264,7 @@ namespace KinesisVideoArchivedMedia
          * An Async wrapper for GetDASHStreamingSessionURL that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetDASHStreamingSessionURLRequestT = Model::GetDASHStreamingSessionURLRequest>
-        void GetDASHStreamingSessionURLAsync(const GetDASHStreamingSessionURLRequestT& request, const GetDASHStreamingSessionURLResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetDASHStreamingSessionURLAsync(const GetDASHStreamingSessionURLResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetDASHStreamingSessionURLRequestT& request = {}) const
         {
             return SubmitAsync(&KinesisVideoArchivedMediaClient::GetDASHStreamingSessionURL, request, handler, context);
         }
@@ -389,13 +401,13 @@ namespace KinesisVideoArchivedMedia
          * href="http://docs.aws.amazon.com/goto/WebAPI/kinesis-video-archived-media-2017-09-30/GetHLSStreamingSessionURL">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetHLSStreamingSessionURLOutcome GetHLSStreamingSessionURL(const Model::GetHLSStreamingSessionURLRequest& request) const;
+        virtual Model::GetHLSStreamingSessionURLOutcome GetHLSStreamingSessionURL(const Model::GetHLSStreamingSessionURLRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetHLSStreamingSessionURL that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetHLSStreamingSessionURLRequestT = Model::GetHLSStreamingSessionURLRequest>
-        Model::GetHLSStreamingSessionURLOutcomeCallable GetHLSStreamingSessionURLCallable(const GetHLSStreamingSessionURLRequestT& request) const
+        Model::GetHLSStreamingSessionURLOutcomeCallable GetHLSStreamingSessionURLCallable(const GetHLSStreamingSessionURLRequestT& request = {}) const
         {
             return SubmitCallable(&KinesisVideoArchivedMediaClient::GetHLSStreamingSessionURL, request);
         }
@@ -404,7 +416,7 @@ namespace KinesisVideoArchivedMedia
          * An Async wrapper for GetHLSStreamingSessionURL that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetHLSStreamingSessionURLRequestT = Model::GetHLSStreamingSessionURLRequest>
-        void GetHLSStreamingSessionURLAsync(const GetHLSStreamingSessionURLRequestT& request, const GetHLSStreamingSessionURLResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetHLSStreamingSessionURLAsync(const GetHLSStreamingSessionURLResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetHLSStreamingSessionURLRequestT& request = {}) const
         {
             return SubmitAsync(&KinesisVideoArchivedMediaClient::GetHLSStreamingSessionURL, request, handler, context);
         }
@@ -510,13 +522,13 @@ namespace KinesisVideoArchivedMedia
          * href="http://docs.aws.amazon.com/goto/WebAPI/kinesis-video-archived-media-2017-09-30/ListFragments">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListFragmentsOutcome ListFragments(const Model::ListFragmentsRequest& request) const;
+        virtual Model::ListFragmentsOutcome ListFragments(const Model::ListFragmentsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListFragments that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListFragmentsRequestT = Model::ListFragmentsRequest>
-        Model::ListFragmentsOutcomeCallable ListFragmentsCallable(const ListFragmentsRequestT& request) const
+        Model::ListFragmentsOutcomeCallable ListFragmentsCallable(const ListFragmentsRequestT& request = {}) const
         {
             return SubmitCallable(&KinesisVideoArchivedMediaClient::ListFragments, request);
         }
@@ -525,7 +537,7 @@ namespace KinesisVideoArchivedMedia
          * An Async wrapper for ListFragments that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListFragmentsRequestT = Model::ListFragmentsRequest>
-        void ListFragmentsAsync(const ListFragmentsRequestT& request, const ListFragmentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListFragmentsAsync(const ListFragmentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListFragmentsRequestT& request = {}) const
         {
             return SubmitAsync(&KinesisVideoArchivedMediaClient::ListFragments, request, handler, context);
         }
@@ -535,11 +547,7 @@ namespace KinesisVideoArchivedMedia
       std::shared_ptr<KinesisVideoArchivedMediaEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<KinesisVideoArchivedMediaClient>;
-      void init(const KinesisVideoArchivedMediaClientConfiguration& clientConfiguration);
 
-      KinesisVideoArchivedMediaClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<KinesisVideoArchivedMediaEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace KinesisVideoArchivedMedia

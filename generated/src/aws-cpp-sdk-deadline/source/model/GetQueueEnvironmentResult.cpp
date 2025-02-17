@@ -23,9 +23,8 @@ GetQueueEnvironmentResult::GetQueueEnvironmentResult() :
 {
 }
 
-GetQueueEnvironmentResult::GetQueueEnvironmentResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_priority(0),
-    m_templateType(EnvironmentTemplateType::NOT_SET)
+GetQueueEnvironmentResult::GetQueueEnvironmentResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetQueueEnvironmentResult()
 {
   *this = result;
 }
@@ -33,15 +32,9 @@ GetQueueEnvironmentResult::GetQueueEnvironmentResult(const Aws::AmazonWebService
 GetQueueEnvironmentResult& GetQueueEnvironmentResult::operator =(const Aws::AmazonWebServiceResult<JsonValue>& result)
 {
   JsonView jsonValue = result.GetPayload().View();
-  if(jsonValue.ValueExists("createdAt"))
+  if(jsonValue.ValueExists("queueEnvironmentId"))
   {
-    m_createdAt = jsonValue.GetString("createdAt");
-
-  }
-
-  if(jsonValue.ValueExists("createdBy"))
-  {
-    m_createdBy = jsonValue.GetString("createdBy");
+    m_queueEnvironmentId = jsonValue.GetString("queueEnvironmentId");
 
   }
 
@@ -57,9 +50,9 @@ GetQueueEnvironmentResult& GetQueueEnvironmentResult::operator =(const Aws::Amaz
 
   }
 
-  if(jsonValue.ValueExists("queueEnvironmentId"))
+  if(jsonValue.ValueExists("templateType"))
   {
-    m_queueEnvironmentId = jsonValue.GetString("queueEnvironmentId");
+    m_templateType = EnvironmentTemplateTypeMapper::GetEnvironmentTemplateTypeForName(jsonValue.GetString("templateType"));
 
   }
 
@@ -69,9 +62,15 @@ GetQueueEnvironmentResult& GetQueueEnvironmentResult::operator =(const Aws::Amaz
 
   }
 
-  if(jsonValue.ValueExists("templateType"))
+  if(jsonValue.ValueExists("createdAt"))
   {
-    m_templateType = EnvironmentTemplateTypeMapper::GetEnvironmentTemplateTypeForName(jsonValue.GetString("templateType"));
+    m_createdAt = jsonValue.GetString("createdAt");
+
+  }
+
+  if(jsonValue.ValueExists("createdBy"))
+  {
+    m_createdBy = jsonValue.GetString("createdBy");
 
   }
 

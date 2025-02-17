@@ -18,12 +18,15 @@
 /* End of generic header includes */
 
 /* Service model headers required in RepostspaceClient header */
+#include <aws/repostspace/model/BatchAddRoleResult.h>
+#include <aws/repostspace/model/BatchRemoveRoleResult.h>
 #include <aws/repostspace/model/CreateSpaceResult.h>
 #include <aws/repostspace/model/GetSpaceResult.h>
 #include <aws/repostspace/model/ListSpacesResult.h>
 #include <aws/repostspace/model/ListTagsForResourceResult.h>
 #include <aws/repostspace/model/TagResourceResult.h>
 #include <aws/repostspace/model/UntagResourceResult.h>
+#include <aws/repostspace/model/ListSpacesRequest.h>
 #include <aws/core/NoResult.h>
 /* End of service model headers required in RepostspaceClient header */
 
@@ -58,13 +61,15 @@ namespace Aws
 
   namespace repostspace
   {
-    using RepostspaceClientConfiguration = Aws::Client::GenericClientConfiguration<false>;
+    using RepostspaceClientConfiguration = Aws::Client::GenericClientConfiguration;
     using RepostspaceEndpointProviderBase = Aws::repostspace::Endpoint::RepostspaceEndpointProviderBase;
     using RepostspaceEndpointProvider = Aws::repostspace::Endpoint::RepostspaceEndpointProvider;
 
     namespace Model
     {
       /* Service model forward declarations required in RepostspaceClient header */
+      class BatchAddRoleRequest;
+      class BatchRemoveRoleRequest;
       class CreateSpaceRequest;
       class DeleteSpaceRequest;
       class DeregisterAdminRequest;
@@ -79,6 +84,8 @@ namespace Aws
       /* End of service model forward declarations required in RepostspaceClient header */
 
       /* Service model Outcome class definitions */
+      typedef Aws::Utils::Outcome<BatchAddRoleResult, RepostspaceError> BatchAddRoleOutcome;
+      typedef Aws::Utils::Outcome<BatchRemoveRoleResult, RepostspaceError> BatchRemoveRoleOutcome;
       typedef Aws::Utils::Outcome<CreateSpaceResult, RepostspaceError> CreateSpaceOutcome;
       typedef Aws::Utils::Outcome<Aws::NoResult, RepostspaceError> DeleteSpaceOutcome;
       typedef Aws::Utils::Outcome<Aws::NoResult, RepostspaceError> DeregisterAdminOutcome;
@@ -93,6 +100,8 @@ namespace Aws
       /* End of service model Outcome class definitions */
 
       /* Service model Outcome callable definitions */
+      typedef std::future<BatchAddRoleOutcome> BatchAddRoleOutcomeCallable;
+      typedef std::future<BatchRemoveRoleOutcome> BatchRemoveRoleOutcomeCallable;
       typedef std::future<CreateSpaceOutcome> CreateSpaceOutcomeCallable;
       typedef std::future<DeleteSpaceOutcome> DeleteSpaceOutcomeCallable;
       typedef std::future<DeregisterAdminOutcome> DeregisterAdminOutcomeCallable;
@@ -110,6 +119,8 @@ namespace Aws
     class RepostspaceClient;
 
     /* Service model async handlers definitions */
+    typedef std::function<void(const RepostspaceClient*, const Model::BatchAddRoleRequest&, const Model::BatchAddRoleOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > BatchAddRoleResponseReceivedHandler;
+    typedef std::function<void(const RepostspaceClient*, const Model::BatchRemoveRoleRequest&, const Model::BatchRemoveRoleOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > BatchRemoveRoleResponseReceivedHandler;
     typedef std::function<void(const RepostspaceClient*, const Model::CreateSpaceRequest&, const Model::CreateSpaceOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateSpaceResponseReceivedHandler;
     typedef std::function<void(const RepostspaceClient*, const Model::DeleteSpaceRequest&, const Model::DeleteSpaceOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteSpaceResponseReceivedHandler;
     typedef std::function<void(const RepostspaceClient*, const Model::DeregisterAdminRequest&, const Model::DeregisterAdminOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeregisterAdminResponseReceivedHandler;

@@ -9,6 +9,7 @@
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/core/utils/memory/stl/AWSMap.h>
 #include <utility>
+#include <aws/core/utils/UUID.h>
 
 namespace Aws
 {
@@ -37,135 +38,66 @@ namespace Model
     AWS_MEDIALIVE_API Aws::String SerializePayload() const override;
 
 
+    ///@{
     /**
      * A resource's optional description.
      */
     inline const Aws::String& GetDescription() const{ return m_description; }
-
-    /**
-     * A resource's optional description.
-     */
     inline bool DescriptionHasBeenSet() const { return m_descriptionHasBeenSet; }
-
-    /**
-     * A resource's optional description.
-     */
     inline void SetDescription(const Aws::String& value) { m_descriptionHasBeenSet = true; m_description = value; }
-
-    /**
-     * A resource's optional description.
-     */
     inline void SetDescription(Aws::String&& value) { m_descriptionHasBeenSet = true; m_description = std::move(value); }
-
-    /**
-     * A resource's optional description.
-     */
     inline void SetDescription(const char* value) { m_descriptionHasBeenSet = true; m_description.assign(value); }
-
-    /**
-     * A resource's optional description.
-     */
     inline CreateCloudWatchAlarmTemplateGroupRequest& WithDescription(const Aws::String& value) { SetDescription(value); return *this;}
-
-    /**
-     * A resource's optional description.
-     */
     inline CreateCloudWatchAlarmTemplateGroupRequest& WithDescription(Aws::String&& value) { SetDescription(std::move(value)); return *this;}
-
-    /**
-     * A resource's optional description.
-     */
     inline CreateCloudWatchAlarmTemplateGroupRequest& WithDescription(const char* value) { SetDescription(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * A resource's name. Names must be unique within the scope of a resource type in a
      * specific region.
      */
     inline const Aws::String& GetName() const{ return m_name; }
-
-    /**
-     * A resource's name. Names must be unique within the scope of a resource type in a
-     * specific region.
-     */
     inline bool NameHasBeenSet() const { return m_nameHasBeenSet; }
-
-    /**
-     * A resource's name. Names must be unique within the scope of a resource type in a
-     * specific region.
-     */
     inline void SetName(const Aws::String& value) { m_nameHasBeenSet = true; m_name = value; }
-
-    /**
-     * A resource's name. Names must be unique within the scope of a resource type in a
-     * specific region.
-     */
     inline void SetName(Aws::String&& value) { m_nameHasBeenSet = true; m_name = std::move(value); }
-
-    /**
-     * A resource's name. Names must be unique within the scope of a resource type in a
-     * specific region.
-     */
     inline void SetName(const char* value) { m_nameHasBeenSet = true; m_name.assign(value); }
-
-    /**
-     * A resource's name. Names must be unique within the scope of a resource type in a
-     * specific region.
-     */
     inline CreateCloudWatchAlarmTemplateGroupRequest& WithName(const Aws::String& value) { SetName(value); return *this;}
-
-    /**
-     * A resource's name. Names must be unique within the scope of a resource type in a
-     * specific region.
-     */
     inline CreateCloudWatchAlarmTemplateGroupRequest& WithName(Aws::String&& value) { SetName(std::move(value)); return *this;}
-
-    /**
-     * A resource's name. Names must be unique within the scope of a resource type in a
-     * specific region.
-     */
     inline CreateCloudWatchAlarmTemplateGroupRequest& WithName(const char* value) { SetName(value); return *this;}
+    ///@}
 
-
+    ///@{
     
     inline const Aws::Map<Aws::String, Aws::String>& GetTags() const{ return m_tags; }
-
-    
     inline bool TagsHasBeenSet() const { return m_tagsHasBeenSet; }
-
-    
     inline void SetTags(const Aws::Map<Aws::String, Aws::String>& value) { m_tagsHasBeenSet = true; m_tags = value; }
-
-    
     inline void SetTags(Aws::Map<Aws::String, Aws::String>&& value) { m_tagsHasBeenSet = true; m_tags = std::move(value); }
-
-    
     inline CreateCloudWatchAlarmTemplateGroupRequest& WithTags(const Aws::Map<Aws::String, Aws::String>& value) { SetTags(value); return *this;}
-
-    
     inline CreateCloudWatchAlarmTemplateGroupRequest& WithTags(Aws::Map<Aws::String, Aws::String>&& value) { SetTags(std::move(value)); return *this;}
-
-    
     inline CreateCloudWatchAlarmTemplateGroupRequest& AddTags(const Aws::String& key, const Aws::String& value) { m_tagsHasBeenSet = true; m_tags.emplace(key, value); return *this; }
-
-    
     inline CreateCloudWatchAlarmTemplateGroupRequest& AddTags(Aws::String&& key, const Aws::String& value) { m_tagsHasBeenSet = true; m_tags.emplace(std::move(key), value); return *this; }
-
-    
     inline CreateCloudWatchAlarmTemplateGroupRequest& AddTags(const Aws::String& key, Aws::String&& value) { m_tagsHasBeenSet = true; m_tags.emplace(key, std::move(value)); return *this; }
-
-    
     inline CreateCloudWatchAlarmTemplateGroupRequest& AddTags(Aws::String&& key, Aws::String&& value) { m_tagsHasBeenSet = true; m_tags.emplace(std::move(key), std::move(value)); return *this; }
-
-    
     inline CreateCloudWatchAlarmTemplateGroupRequest& AddTags(const char* key, Aws::String&& value) { m_tagsHasBeenSet = true; m_tags.emplace(key, std::move(value)); return *this; }
-
-    
     inline CreateCloudWatchAlarmTemplateGroupRequest& AddTags(Aws::String&& key, const char* value) { m_tagsHasBeenSet = true; m_tags.emplace(std::move(key), value); return *this; }
-
-    
     inline CreateCloudWatchAlarmTemplateGroupRequest& AddTags(const char* key, const char* value) { m_tagsHasBeenSet = true; m_tags.emplace(key, value); return *this; }
+    ///@}
 
+    ///@{
+    /**
+     * An ID that you assign to a create request. This ID ensures idempotency when
+     * creating resources.
+     */
+    inline const Aws::String& GetRequestId() const{ return m_requestId; }
+    inline bool RequestIdHasBeenSet() const { return m_requestIdHasBeenSet; }
+    inline void SetRequestId(const Aws::String& value) { m_requestIdHasBeenSet = true; m_requestId = value; }
+    inline void SetRequestId(Aws::String&& value) { m_requestIdHasBeenSet = true; m_requestId = std::move(value); }
+    inline void SetRequestId(const char* value) { m_requestIdHasBeenSet = true; m_requestId.assign(value); }
+    inline CreateCloudWatchAlarmTemplateGroupRequest& WithRequestId(const Aws::String& value) { SetRequestId(value); return *this;}
+    inline CreateCloudWatchAlarmTemplateGroupRequest& WithRequestId(Aws::String&& value) { SetRequestId(std::move(value)); return *this;}
+    inline CreateCloudWatchAlarmTemplateGroupRequest& WithRequestId(const char* value) { SetRequestId(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_description;
@@ -176,6 +108,9 @@ namespace Model
 
     Aws::Map<Aws::String, Aws::String> m_tags;
     bool m_tagsHasBeenSet = false;
+
+    Aws::String m_requestId;
+    bool m_requestIdHasBeenSet = false;
   };
 
 } // namespace Model
