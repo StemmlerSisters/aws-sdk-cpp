@@ -12,7 +12,10 @@ using namespace Aws::Utils;
 
 PutMetricDataRequest::PutMetricDataRequest() : 
     m_namespaceHasBeenSet(false),
-    m_metricDataHasBeenSet(false)
+    m_metricDataHasBeenSet(false),
+    m_entityMetricDataHasBeenSet(false),
+    m_strictEntityValidation(false),
+    m_strictEntityValidationHasBeenSet(false)
 {
 }
 
@@ -27,12 +30,41 @@ Aws::String PutMetricDataRequest::SerializePayload() const
 
   if(m_metricDataHasBeenSet)
   {
-    unsigned metricDataCount = 1;
-    for(auto& item : m_metricData)
+    if (m_metricData.empty())
     {
-      item.OutputToStream(ss, "MetricData.member.", metricDataCount, "");
-      metricDataCount++;
+      ss << "MetricData=&";
     }
+    else
+    {
+      unsigned metricDataCount = 1;
+      for(auto& item : m_metricData)
+      {
+        item.OutputToStream(ss, "MetricData.member.", metricDataCount, "");
+        metricDataCount++;
+      }
+    }
+  }
+
+  if(m_entityMetricDataHasBeenSet)
+  {
+    if (m_entityMetricData.empty())
+    {
+      ss << "EntityMetricData=&";
+    }
+    else
+    {
+      unsigned entityMetricDataCount = 1;
+      for(auto& item : m_entityMetricData)
+      {
+        item.OutputToStream(ss, "EntityMetricData.member.", entityMetricDataCount, "");
+        entityMetricDataCount++;
+      }
+    }
+  }
+
+  if(m_strictEntityValidationHasBeenSet)
+  {
+    ss << "StrictEntityValidation=" << std::boolalpha << m_strictEntityValidation << "&";
   }
 
   ss << "Version=2010-08-01";

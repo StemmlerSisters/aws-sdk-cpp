@@ -21,24 +21,17 @@ namespace Model
 FleetMember::FleetMember() : 
     m_farmIdHasBeenSet(false),
     m_fleetIdHasBeenSet(false),
-    m_identityStoreIdHasBeenSet(false),
-    m_membershipLevel(MembershipLevel::NOT_SET),
-    m_membershipLevelHasBeenSet(false),
     m_principalIdHasBeenSet(false),
     m_principalType(PrincipalType::NOT_SET),
-    m_principalTypeHasBeenSet(false)
+    m_principalTypeHasBeenSet(false),
+    m_identityStoreIdHasBeenSet(false),
+    m_membershipLevel(MembershipLevel::NOT_SET),
+    m_membershipLevelHasBeenSet(false)
 {
 }
 
-FleetMember::FleetMember(JsonView jsonValue) : 
-    m_farmIdHasBeenSet(false),
-    m_fleetIdHasBeenSet(false),
-    m_identityStoreIdHasBeenSet(false),
-    m_membershipLevel(MembershipLevel::NOT_SET),
-    m_membershipLevelHasBeenSet(false),
-    m_principalIdHasBeenSet(false),
-    m_principalType(PrincipalType::NOT_SET),
-    m_principalTypeHasBeenSet(false)
+FleetMember::FleetMember(JsonView jsonValue)
+  : FleetMember()
 {
   *this = jsonValue;
 }
@@ -59,20 +52,6 @@ FleetMember& FleetMember::operator =(JsonView jsonValue)
     m_fleetIdHasBeenSet = true;
   }
 
-  if(jsonValue.ValueExists("identityStoreId"))
-  {
-    m_identityStoreId = jsonValue.GetString("identityStoreId");
-
-    m_identityStoreIdHasBeenSet = true;
-  }
-
-  if(jsonValue.ValueExists("membershipLevel"))
-  {
-    m_membershipLevel = MembershipLevelMapper::GetMembershipLevelForName(jsonValue.GetString("membershipLevel"));
-
-    m_membershipLevelHasBeenSet = true;
-  }
-
   if(jsonValue.ValueExists("principalId"))
   {
     m_principalId = jsonValue.GetString("principalId");
@@ -85,6 +64,20 @@ FleetMember& FleetMember::operator =(JsonView jsonValue)
     m_principalType = PrincipalTypeMapper::GetPrincipalTypeForName(jsonValue.GetString("principalType"));
 
     m_principalTypeHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("identityStoreId"))
+  {
+    m_identityStoreId = jsonValue.GetString("identityStoreId");
+
+    m_identityStoreIdHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("membershipLevel"))
+  {
+    m_membershipLevel = MembershipLevelMapper::GetMembershipLevelForName(jsonValue.GetString("membershipLevel"));
+
+    m_membershipLevelHasBeenSet = true;
   }
 
   return *this;
@@ -106,17 +99,6 @@ JsonValue FleetMember::Jsonize() const
 
   }
 
-  if(m_identityStoreIdHasBeenSet)
-  {
-   payload.WithString("identityStoreId", m_identityStoreId);
-
-  }
-
-  if(m_membershipLevelHasBeenSet)
-  {
-   payload.WithString("membershipLevel", MembershipLevelMapper::GetNameForMembershipLevel(m_membershipLevel));
-  }
-
   if(m_principalIdHasBeenSet)
   {
    payload.WithString("principalId", m_principalId);
@@ -126,6 +108,17 @@ JsonValue FleetMember::Jsonize() const
   if(m_principalTypeHasBeenSet)
   {
    payload.WithString("principalType", PrincipalTypeMapper::GetNameForPrincipalType(m_principalType));
+  }
+
+  if(m_identityStoreIdHasBeenSet)
+  {
+   payload.WithString("identityStoreId", m_identityStoreId);
+
+  }
+
+  if(m_membershipLevelHasBeenSet)
+  {
+   payload.WithString("membershipLevel", MembershipLevelMapper::GetNameForMembershipLevel(m_membershipLevel));
   }
 
   return payload;

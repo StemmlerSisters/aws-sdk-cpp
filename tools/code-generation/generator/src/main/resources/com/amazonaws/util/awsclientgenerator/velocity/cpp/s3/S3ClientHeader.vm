@@ -24,6 +24,7 @@
 \#include <aws/$metadata.projectName/${metadata.classNamePrefix}ServiceClientModel.h>
 #if($serviceNamespace == "S3Crt")
 \#include <aws/$metadata.projectName/S3ExpressIdentityProvider.h>
+\#include <aws/$metadata.projectName/S3CrtIdentityProviderAdapter.h>
 #end
 #set($signPayloadsOptional = true)
 #set($virtualAddressingSupported = true)
@@ -205,6 +206,7 @@ namespace ${rootNamespace}
           std::shared_ptr<Aws::Http::HttpRequest> request;
           std::shared_ptr<Aws::Http::HttpResponse> response;
           std::shared_ptr<Aws::Crt::Http::HttpRequest> crtHttpRequest;
+          Aws::UniquePtr<struct aws_s3_checksum_config> checksumConfig;
         };
 
         Aws::Client::XmlOutcome GenerateXmlOutcome(const std::shared_ptr<Http::HttpResponse>& response) const;
@@ -223,18 +225,18 @@ namespace ${rootNamespace}
           std::shared_ptr<Aws::Utils::Threading::Semaphore> clientShutdownSem;
         };
 
-        static void CrtClientShutdownCallback(void *data) {
-          auto *wrappedData = static_cast<CrtClientShutdownCallbackDataWrapper*>(data);
-          if (wrappedData->fn)
-          {
-            wrappedData->fn(wrappedData->data);
-          }
-          wrappedData->clientShutdownSem->Release();
-        }
+        static void CrtClientShutdownCallback(void *data);
+        void CancelCrtRequestAsync(aws_s3_meta_request *meta_request) const;
+        static int S3CrtRequestHeadersCallback(aws_s3_meta_request *meta_request, const struct aws_http_headers *headers, int response_status, void *user_data);
+        static int S3CrtRequestGetBodyCallback(struct aws_s3_meta_request *meta_request, const struct aws_byte_cursor *body, uint64_t range_start, void *user_data);
+        static void S3CrtRequestProgressCallback(struct aws_s3_meta_request *meta_request, const struct aws_s3_meta_request_progress *progress, void *user_data);
+        static void S3CrtRequestFinishCallback(struct aws_s3_meta_request *meta_request, const struct aws_s3_meta_request_result *meta_request_result, void *user_data);
 
+        void InitCrtEndpointFromUri(aws_uri &endpoint_uri, const Aws::Http::URI &uri) const;
+        
         void InitCommonCrtRequestOption(CrtRequestCallbackUserData *userData,
                                         aws_s3_meta_request_options *options,
-                                        const Aws::AmazonWebServiceRequest *requset,
+                                        const Aws::AmazonWebServiceRequest *request,
                                         const Aws::Http::URI &uri, Aws::Http::HttpMethod method) const;
 #else
 #if(!$serviceModel.endpointRules)
@@ -261,7 +263,6 @@ namespace ${rootNamespace}
         ${metadata.classNamePrefix}ClientConfiguration m_clientConfiguration;
 #end
 #end
-        std::shared_ptr<Utils::Threading::Executor> m_executor;
 #if($serviceNamespace == "S3Crt")
         struct aws_s3_client* m_s3CrtClient = {};
         struct aws_signing_config_aws m_s3CrtSigningConfig = {};
@@ -291,6 +292,7 @@ namespace ${rootNamespace}
 #end
 #if($serviceNamespace == "S3Crt")
         std::shared_ptr<S3ExpressIdentityProvider> m_identityProvider;
+        S3CrtIdentityProviderUserData m_identityProviderUserData{m_identityProvider};
 #end
     };
 

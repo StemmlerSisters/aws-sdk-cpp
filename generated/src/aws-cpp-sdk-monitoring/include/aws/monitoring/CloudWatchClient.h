@@ -149,13 +149,13 @@ namespace CloudWatch
          * href="http://docs.aws.amazon.com/goto/WebAPI/monitoring-2010-08-01/DeleteAnomalyDetector">AWS
          * API Reference</a></p>
          */
-        virtual Model::DeleteAnomalyDetectorOutcome DeleteAnomalyDetector(const Model::DeleteAnomalyDetectorRequest& request) const;
+        virtual Model::DeleteAnomalyDetectorOutcome DeleteAnomalyDetector(const Model::DeleteAnomalyDetectorRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DeleteAnomalyDetector that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DeleteAnomalyDetectorRequestT = Model::DeleteAnomalyDetectorRequest>
-        Model::DeleteAnomalyDetectorOutcomeCallable DeleteAnomalyDetectorCallable(const DeleteAnomalyDetectorRequestT& request) const
+        Model::DeleteAnomalyDetectorOutcomeCallable DeleteAnomalyDetectorCallable(const DeleteAnomalyDetectorRequestT& request = {}) const
         {
             return SubmitCallable(&CloudWatchClient::DeleteAnomalyDetector, request);
         }
@@ -164,7 +164,7 @@ namespace CloudWatch
          * An Async wrapper for DeleteAnomalyDetector that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DeleteAnomalyDetectorRequestT = Model::DeleteAnomalyDetectorRequest>
-        void DeleteAnomalyDetectorAsync(const DeleteAnomalyDetectorRequestT& request, const DeleteAnomalyDetectorResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DeleteAnomalyDetectorAsync(const DeleteAnomalyDetectorResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DeleteAnomalyDetectorRequestT& request = {}) const
         {
             return SubmitAsync(&CloudWatchClient::DeleteAnomalyDetector, request, handler, context);
         }
@@ -263,13 +263,13 @@ namespace CloudWatch
          * href="http://docs.aws.amazon.com/goto/WebAPI/monitoring-2010-08-01/DescribeAlarmHistory">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeAlarmHistoryOutcome DescribeAlarmHistory(const Model::DescribeAlarmHistoryRequest& request) const;
+        virtual Model::DescribeAlarmHistoryOutcome DescribeAlarmHistory(const Model::DescribeAlarmHistoryRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeAlarmHistory that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeAlarmHistoryRequestT = Model::DescribeAlarmHistoryRequest>
-        Model::DescribeAlarmHistoryOutcomeCallable DescribeAlarmHistoryCallable(const DescribeAlarmHistoryRequestT& request) const
+        Model::DescribeAlarmHistoryOutcomeCallable DescribeAlarmHistoryCallable(const DescribeAlarmHistoryRequestT& request = {}) const
         {
             return SubmitCallable(&CloudWatchClient::DescribeAlarmHistory, request);
         }
@@ -278,7 +278,7 @@ namespace CloudWatch
          * An Async wrapper for DescribeAlarmHistory that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeAlarmHistoryRequestT = Model::DescribeAlarmHistoryRequest>
-        void DescribeAlarmHistoryAsync(const DescribeAlarmHistoryRequestT& request, const DescribeAlarmHistoryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeAlarmHistoryAsync(const DescribeAlarmHistoryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeAlarmHistoryRequestT& request = {}) const
         {
             return SubmitAsync(&CloudWatchClient::DescribeAlarmHistory, request, handler, context);
         }
@@ -294,13 +294,13 @@ namespace CloudWatch
          * href="http://docs.aws.amazon.com/goto/WebAPI/monitoring-2010-08-01/DescribeAlarms">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeAlarmsOutcome DescribeAlarms(const Model::DescribeAlarmsRequest& request) const;
+        virtual Model::DescribeAlarmsOutcome DescribeAlarms(const Model::DescribeAlarmsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeAlarms that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeAlarmsRequestT = Model::DescribeAlarmsRequest>
-        Model::DescribeAlarmsOutcomeCallable DescribeAlarmsCallable(const DescribeAlarmsRequestT& request) const
+        Model::DescribeAlarmsOutcomeCallable DescribeAlarmsCallable(const DescribeAlarmsRequestT& request = {}) const
         {
             return SubmitCallable(&CloudWatchClient::DescribeAlarms, request);
         }
@@ -309,7 +309,7 @@ namespace CloudWatch
          * An Async wrapper for DescribeAlarms that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeAlarmsRequestT = Model::DescribeAlarmsRequest>
-        void DescribeAlarmsAsync(const DescribeAlarmsRequestT& request, const DescribeAlarmsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeAlarmsAsync(const DescribeAlarmsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeAlarmsRequestT& request = {}) const
         {
             return SubmitAsync(&CloudWatchClient::DescribeAlarms, request, handler, context);
         }
@@ -354,13 +354,13 @@ namespace CloudWatch
          * href="http://docs.aws.amazon.com/goto/WebAPI/monitoring-2010-08-01/DescribeAnomalyDetectors">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeAnomalyDetectorsOutcome DescribeAnomalyDetectors(const Model::DescribeAnomalyDetectorsRequest& request) const;
+        virtual Model::DescribeAnomalyDetectorsOutcome DescribeAnomalyDetectors(const Model::DescribeAnomalyDetectorsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeAnomalyDetectors that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeAnomalyDetectorsRequestT = Model::DescribeAnomalyDetectorsRequest>
-        Model::DescribeAnomalyDetectorsOutcomeCallable DescribeAnomalyDetectorsCallable(const DescribeAnomalyDetectorsRequestT& request) const
+        Model::DescribeAnomalyDetectorsOutcomeCallable DescribeAnomalyDetectorsCallable(const DescribeAnomalyDetectorsRequestT& request = {}) const
         {
             return SubmitCallable(&CloudWatchClient::DescribeAnomalyDetectors, request);
         }
@@ -369,7 +369,7 @@ namespace CloudWatch
          * An Async wrapper for DescribeAnomalyDetectors that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeAnomalyDetectorsRequestT = Model::DescribeAnomalyDetectorsRequest>
-        void DescribeAnomalyDetectorsAsync(const DescribeAnomalyDetectorsRequestT& request, const DescribeAnomalyDetectorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeAnomalyDetectorsAsync(const DescribeAnomalyDetectorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeAnomalyDetectorsRequestT& request = {}) const
         {
             return SubmitAsync(&CloudWatchClient::DescribeAnomalyDetectors, request, handler, context);
         }
@@ -383,13 +383,13 @@ namespace CloudWatch
          * href="http://docs.aws.amazon.com/goto/WebAPI/monitoring-2010-08-01/DescribeInsightRules">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeInsightRulesOutcome DescribeInsightRules(const Model::DescribeInsightRulesRequest& request) const;
+        virtual Model::DescribeInsightRulesOutcome DescribeInsightRules(const Model::DescribeInsightRulesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeInsightRules that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeInsightRulesRequestT = Model::DescribeInsightRulesRequest>
-        Model::DescribeInsightRulesOutcomeCallable DescribeInsightRulesCallable(const DescribeInsightRulesRequestT& request) const
+        Model::DescribeInsightRulesOutcomeCallable DescribeInsightRulesCallable(const DescribeInsightRulesRequestT& request = {}) const
         {
             return SubmitCallable(&CloudWatchClient::DescribeInsightRules, request);
         }
@@ -398,7 +398,7 @@ namespace CloudWatch
          * An Async wrapper for DescribeInsightRules that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeInsightRulesRequestT = Model::DescribeInsightRulesRequest>
-        void DescribeInsightRulesAsync(const DescribeInsightRulesRequestT& request, const DescribeInsightRulesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeInsightRulesAsync(const DescribeInsightRulesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeInsightRulesRequestT& request = {}) const
         {
             return SubmitAsync(&CloudWatchClient::DescribeInsightRules, request, handler, context);
         }
@@ -790,13 +790,13 @@ namespace CloudWatch
          * href="http://docs.aws.amazon.com/goto/WebAPI/monitoring-2010-08-01/ListDashboards">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDashboardsOutcome ListDashboards(const Model::ListDashboardsRequest& request) const;
+        virtual Model::ListDashboardsOutcome ListDashboards(const Model::ListDashboardsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDashboards that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDashboardsRequestT = Model::ListDashboardsRequest>
-        Model::ListDashboardsOutcomeCallable ListDashboardsCallable(const ListDashboardsRequestT& request) const
+        Model::ListDashboardsOutcomeCallable ListDashboardsCallable(const ListDashboardsRequestT& request = {}) const
         {
             return SubmitCallable(&CloudWatchClient::ListDashboards, request);
         }
@@ -805,7 +805,7 @@ namespace CloudWatch
          * An Async wrapper for ListDashboards that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDashboardsRequestT = Model::ListDashboardsRequest>
-        void ListDashboardsAsync(const ListDashboardsRequestT& request, const ListDashboardsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDashboardsAsync(const ListDashboardsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDashboardsRequestT& request = {}) const
         {
             return SubmitAsync(&CloudWatchClient::ListDashboards, request, handler, context);
         }
@@ -842,13 +842,13 @@ namespace CloudWatch
          * href="http://docs.aws.amazon.com/goto/WebAPI/monitoring-2010-08-01/ListMetricStreams">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListMetricStreamsOutcome ListMetricStreams(const Model::ListMetricStreamsRequest& request) const;
+        virtual Model::ListMetricStreamsOutcome ListMetricStreams(const Model::ListMetricStreamsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListMetricStreams that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListMetricStreamsRequestT = Model::ListMetricStreamsRequest>
-        Model::ListMetricStreamsOutcomeCallable ListMetricStreamsCallable(const ListMetricStreamsRequestT& request) const
+        Model::ListMetricStreamsOutcomeCallable ListMetricStreamsCallable(const ListMetricStreamsRequestT& request = {}) const
         {
             return SubmitCallable(&CloudWatchClient::ListMetricStreams, request);
         }
@@ -857,7 +857,7 @@ namespace CloudWatch
          * An Async wrapper for ListMetricStreams that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListMetricStreamsRequestT = Model::ListMetricStreamsRequest>
-        void ListMetricStreamsAsync(const ListMetricStreamsRequestT& request, const ListMetricStreamsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListMetricStreamsAsync(const ListMetricStreamsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListMetricStreamsRequestT& request = {}) const
         {
             return SubmitAsync(&CloudWatchClient::ListMetricStreams, request, handler, context);
         }
@@ -888,13 +888,13 @@ namespace CloudWatch
          * href="http://docs.aws.amazon.com/goto/WebAPI/monitoring-2010-08-01/ListMetrics">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListMetricsOutcome ListMetrics(const Model::ListMetricsRequest& request) const;
+        virtual Model::ListMetricsOutcome ListMetrics(const Model::ListMetricsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListMetrics that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListMetricsRequestT = Model::ListMetricsRequest>
-        Model::ListMetricsOutcomeCallable ListMetricsCallable(const ListMetricsRequestT& request) const
+        Model::ListMetricsOutcomeCallable ListMetricsCallable(const ListMetricsRequestT& request = {}) const
         {
             return SubmitCallable(&CloudWatchClient::ListMetrics, request);
         }
@@ -903,7 +903,7 @@ namespace CloudWatch
          * An Async wrapper for ListMetrics that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListMetricsRequestT = Model::ListMetricsRequest>
-        void ListMetricsAsync(const ListMetricsRequestT& request, const ListMetricsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListMetricsAsync(const ListMetricsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListMetricsRequestT& request = {}) const
         {
             return SubmitAsync(&CloudWatchClient::ListMetrics, request, handler, context);
         }
@@ -947,13 +947,13 @@ namespace CloudWatch
          * href="http://docs.aws.amazon.com/goto/WebAPI/monitoring-2010-08-01/PutAnomalyDetector">AWS
          * API Reference</a></p>
          */
-        virtual Model::PutAnomalyDetectorOutcome PutAnomalyDetector(const Model::PutAnomalyDetectorRequest& request) const;
+        virtual Model::PutAnomalyDetectorOutcome PutAnomalyDetector(const Model::PutAnomalyDetectorRequest& request = {}) const;
 
         /**
          * A Callable wrapper for PutAnomalyDetector that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename PutAnomalyDetectorRequestT = Model::PutAnomalyDetectorRequest>
-        Model::PutAnomalyDetectorOutcomeCallable PutAnomalyDetectorCallable(const PutAnomalyDetectorRequestT& request) const
+        Model::PutAnomalyDetectorOutcomeCallable PutAnomalyDetectorCallable(const PutAnomalyDetectorRequestT& request = {}) const
         {
             return SubmitCallable(&CloudWatchClient::PutAnomalyDetector, request);
         }
@@ -962,7 +962,7 @@ namespace CloudWatch
          * An Async wrapper for PutAnomalyDetector that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename PutAnomalyDetectorRequestT = Model::PutAnomalyDetectorRequest>
-        void PutAnomalyDetectorAsync(const PutAnomalyDetectorRequestT& request, const PutAnomalyDetectorResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void PutAnomalyDetectorAsync(const PutAnomalyDetectorResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const PutAnomalyDetectorRequestT& request = {}) const
         {
             return SubmitAsync(&CloudWatchClient::PutAnomalyDetector, request, handler, context);
         }
@@ -1204,27 +1204,35 @@ namespace CloudWatch
         }
 
         /**
-         * <p>Publishes metric data points to Amazon CloudWatch. CloudWatch associates the
-         * data points with the specified metric. If the specified metric does not exist,
-         * CloudWatch creates the metric. When CloudWatch creates a metric, it can take up
-         * to fifteen minutes for the metric to appear in calls to <a
+         * <p>Publishes metric data to Amazon CloudWatch. CloudWatch associates the data
+         * with the specified metric. If the specified metric does not exist, CloudWatch
+         * creates the metric. When CloudWatch creates a metric, it can take up to fifteen
+         * minutes for the metric to appear in calls to <a
          * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_ListMetrics.html">ListMetrics</a>.</p>
-         * <p>You can publish either individual data points in the <code>Value</code>
-         * field, or arrays of values and the number of times each value occurred during
-         * the period by using the <code>Values</code> and <code>Counts</code> fields in
-         * the <code>MetricData</code> structure. Using the <code>Values</code> and
+         * <p>You can publish metrics with associated entity data (so that related
+         * telemetry can be found and viewed together), or publish metric data by itself.
+         * To send entity data with your metrics, use the <code>EntityMetricData</code>
+         * parameter. To send metrics without entity data, use the <code>MetricData</code>
+         * parameter. The <code>EntityMetricData</code> structure includes
+         * <code>MetricData</code> structures for the metric data.</p> <p>You can publish
+         * either individual values in the <code>Value</code> field, or arrays of values
+         * and the number of times each value occurred during the period by using the
+         * <code>Values</code> and <code>Counts</code> fields in the
+         * <code>MetricData</code> structure. Using the <code>Values</code> and
          * <code>Counts</code> method enables you to publish up to 150 values per metric
          * with one <code>PutMetricData</code> request, and supports retrieving percentile
          * statistics on this data.</p> <p>Each <code>PutMetricData</code> request is
          * limited to 1 MB in size for HTTP POST requests. You can send a payload
          * compressed by gzip. Each request is also limited to no more than 1000 different
-         * metrics.</p> <p>Although the <code>Value</code> parameter accepts numbers of
-         * type <code>Double</code>, CloudWatch rejects values that are either too small or
-         * too large. Values must be in the range of -2^360 to 2^360. In addition, special
-         * values (for example, NaN, +Infinity, -Infinity) are not supported.</p> <p>You
-         * can use up to 30 dimensions per metric to further clarify what data the metric
-         * collects. Each dimension consists of a Name and Value pair. For more information
-         * about specifying dimensions, see <a
+         * metrics (across both the <code>MetricData</code> and
+         * <code>EntityMetricData</code> properties).</p> <p>Although the
+         * <code>Value</code> parameter accepts numbers of type <code>Double</code>,
+         * CloudWatch rejects values that are either too small or too large. Values must be
+         * in the range of -2^360 to 2^360. In addition, special values (for example, NaN,
+         * +Infinity, -Infinity) are not supported.</p> <p>You can use up to 30 dimensions
+         * per metric to further clarify what data the metric collects. Each dimension
+         * consists of a Name and Value pair. For more information about specifying
+         * dimensions, see <a
          * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html">Publishing
          * Metrics</a> in the <i>Amazon CloudWatch User Guide</i>.</p> <p>You specify the
          * time stamp to be associated with each data point. You can specify time stamps
@@ -1235,7 +1243,7 @@ namespace CloudWatch
          * or <a
          * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html">GetMetricStatistics</a>
          * from the time they are submitted. Data points with time stamps between 3 and 24
-         * hours ago can take as much as 2 hours to become available for for <a
+         * hours ago can take as much as 2 hours to become available for <a
          * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricData.html">GetMetricData</a>
          * or <a
          * href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html">GetMetricStatistics</a>.</p>
@@ -1485,7 +1493,6 @@ namespace CloudWatch
         void init(const CloudWatchClientConfiguration& clientConfiguration);
 
         CloudWatchClientConfiguration m_clientConfiguration;
-        std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
         std::shared_ptr<CloudWatchEndpointProviderBase> m_endpointProvider;
   };
 

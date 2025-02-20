@@ -20,6 +20,8 @@ CreateUserSettingsRequest::CreateUserSettingsRequest() :
     m_copyAllowed(EnabledType::NOT_SET),
     m_copyAllowedHasBeenSet(false),
     m_customerManagedKeyHasBeenSet(false),
+    m_deepLinkAllowed(EnabledType::NOT_SET),
+    m_deepLinkAllowedHasBeenSet(false),
     m_disconnectTimeoutInMinutes(0),
     m_disconnectTimeoutInMinutesHasBeenSet(false),
     m_downloadAllowed(EnabledType::NOT_SET),
@@ -31,6 +33,7 @@ CreateUserSettingsRequest::CreateUserSettingsRequest() :
     m_printAllowed(EnabledType::NOT_SET),
     m_printAllowedHasBeenSet(false),
     m_tagsHasBeenSet(false),
+    m_toolbarConfigurationHasBeenSet(false),
     m_uploadAllowed(EnabledType::NOT_SET),
     m_uploadAllowedHasBeenSet(false)
 {
@@ -74,6 +77,11 @@ Aws::String CreateUserSettingsRequest::SerializePayload() const
 
   }
 
+  if(m_deepLinkAllowedHasBeenSet)
+  {
+   payload.WithString("deepLinkAllowed", EnabledTypeMapper::GetNameForEnabledType(m_deepLinkAllowed));
+  }
+
   if(m_disconnectTimeoutInMinutesHasBeenSet)
   {
    payload.WithInteger("disconnectTimeoutInMinutes", m_disconnectTimeoutInMinutes);
@@ -109,6 +117,12 @@ Aws::String CreateUserSettingsRequest::SerializePayload() const
      tagsJsonList[tagsIndex].AsObject(m_tags[tagsIndex].Jsonize());
    }
    payload.WithArray("tags", std::move(tagsJsonList));
+
+  }
+
+  if(m_toolbarConfigurationHasBeenSet)
+  {
+   payload.WithObject("toolbarConfiguration", m_toolbarConfiguration.Jsonize());
 
   }
 

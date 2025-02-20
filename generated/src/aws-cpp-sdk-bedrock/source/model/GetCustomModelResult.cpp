@@ -22,8 +22,8 @@ GetCustomModelResult::GetCustomModelResult() :
 {
 }
 
-GetCustomModelResult::GetCustomModelResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_customizationType(CustomizationType::NOT_SET)
+GetCustomModelResult::GetCustomModelResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetCustomModelResult()
 {
   *this = result;
 }
@@ -118,6 +118,12 @@ GetCustomModelResult& GetCustomModelResult::operator =(const Aws::AmazonWebServi
   if(jsonValue.ValueExists("creationTime"))
   {
     m_creationTime = jsonValue.GetString("creationTime");
+
+  }
+
+  if(jsonValue.ValueExists("customizationConfig"))
+  {
+    m_customizationConfig = jsonValue.GetObject("customizationConfig");
 
   }
 

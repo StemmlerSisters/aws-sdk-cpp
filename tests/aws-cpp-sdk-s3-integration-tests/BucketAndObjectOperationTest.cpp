@@ -87,6 +87,7 @@ namespace
     static std::string BASE_EVENT_STREAM_LARGE_FILE_TEST_BUCKET_NAME = "largeeventstream";
     static std::string BASE_EVENT_STREAM_ERRORS_IN_EVENT_TEST_BUCKET_NAME = "errorsinevent";
     static std::string BASE_CHECKSUMS_BUCKET_NAME = "checksums";
+    static std::string BASE_CONTENT_ENCODING_BUCKET_NAME = "contentencoding";
     static std::string BASE_CROSS_REGION_BUCKET_NAME = "crossregion";
     static std::string BASE_ENDPOINT_OVERRIDE_BUCKET_NAME = "endpointoverride";
     static const char* ALLOCATION_TAG = "BucketAndObjectOperationTest";
@@ -115,32 +116,31 @@ namespace
 
     void EnsureUniqueBucketNames()
     {
-        Aws::Vector<std::reference_wrapper<std::string>> TEST_BUCKETS =
-            {
-              std::ref(BASE_CREATE_BUCKET_TEST_NAME),
-              std::ref(BASE_DNS_UNFRIENDLY_TEST_NAME),
-              std::ref(BASE_LOCATION_BUCKET_TEST_NAME),
-              std::ref(BASE_OBJECTS_BUCKET_NAME),
-              std::ref(BASE_OBJECTS_NEWLINE_BUCKET_NAME),
-              std::ref(BASE_PUT_OBJECTS_BUCKET_NAME),
-              std::ref(BASE_PUT_WEIRD_CHARSETS_OBJECTS_BUCKET_NAME),
-              std::ref(BASE_PUT_OBJECTS_PRESIGNED_URLS_BUCKET_NAME),
-              std::ref(BASE_PUT_MULTIPART_BUCKET_NAME),
-              std::ref(BASE_OBJECT_LOCK_BUCKET_NAME),
-              std::ref(BASE_ERRORS_TESTING_BUCKET),
-              std::ref(BASE_INTERRUPT_TESTING_BUCKET),
-              std::ref(BASE_EVENT_STREAM_TEST_BUCKET_NAME),
-              std::ref(BASE_EVENT_STREAM_LARGE_FILE_TEST_BUCKET_NAME),
-              std::ref(BASE_EVENT_STREAM_ERRORS_IN_EVENT_TEST_BUCKET_NAME),
-              std::ref(BASE_CHECKSUMS_BUCKET_NAME),
-              std::ref(BASE_CROSS_REGION_BUCKET_NAME),
-              std::ref(BASE_ENDPOINT_OVERRIDE_BUCKET_NAME),
-            };
+      Aws::Vector<std::reference_wrapper<std::string>> TEST_BUCKETS = {
+          std::ref(BASE_CREATE_BUCKET_TEST_NAME),
+          std::ref(BASE_DNS_UNFRIENDLY_TEST_NAME),
+          std::ref(BASE_LOCATION_BUCKET_TEST_NAME),
+          std::ref(BASE_OBJECTS_BUCKET_NAME),
+          std::ref(BASE_OBJECTS_NEWLINE_BUCKET_NAME),
+          std::ref(BASE_PUT_OBJECTS_BUCKET_NAME),
+          std::ref(BASE_PUT_WEIRD_CHARSETS_OBJECTS_BUCKET_NAME),
+          std::ref(BASE_PUT_OBJECTS_PRESIGNED_URLS_BUCKET_NAME),
+          std::ref(BASE_PUT_MULTIPART_BUCKET_NAME),
+          std::ref(BASE_OBJECT_LOCK_BUCKET_NAME),
+          std::ref(BASE_ERRORS_TESTING_BUCKET),
+          std::ref(BASE_INTERRUPT_TESTING_BUCKET),
+          std::ref(BASE_EVENT_STREAM_TEST_BUCKET_NAME),
+          std::ref(BASE_EVENT_STREAM_LARGE_FILE_TEST_BUCKET_NAME),
+          std::ref(BASE_EVENT_STREAM_ERRORS_IN_EVENT_TEST_BUCKET_NAME),
+          std::ref(BASE_CHECKSUMS_BUCKET_NAME),
+          std::ref(BASE_CONTENT_ENCODING_BUCKET_NAME),
+          std::ref(BASE_CROSS_REGION_BUCKET_NAME),
+          std::ref(BASE_ENDPOINT_OVERRIDE_BUCKET_NAME),
+      };
 
-        for (auto& testBucketName : TEST_BUCKETS)
-        {
-            AppendUUID(testBucketName);
-        }
+      for (auto& testBucketName : TEST_BUCKETS) {
+        AppendUUID(testBucketName);
+      }
     }
 
     class RetryFiveTimesRetryStrategy: public Aws::Client::RetryStrategy
@@ -150,13 +150,37 @@ namespace
         long CalculateDelayBeforeNextRetry(const AWSError<CoreErrors>&, long) const override { return 0; }
     };
 
+    class S3TestClient : public S3Client
+    {
+        public:
+        template<typename ...ARGS>
+        explicit S3TestClient(ARGS... args) : S3Client(std::forward<ARGS>(args)...) {}
+
+        S3TestClient(const S3TestClient&) = default;
+        S3TestClient(S3TestClient&&) noexcept = default;
+        S3TestClient& operator=(const S3TestClient&) = default;
+        S3TestClient& operator=(S3TestClient&&) noexcept = default;
+
+        void DisableRequestProcessing()
+        {
+            S3Client::DisableRequestProcessing();
+        }
+
+        void EnableRequestProcessing()
+        {
+            S3Client::EnableRequestProcessing();
+        }
+
+        ~S3TestClient(){}
+    };
+
     class BucketAndObjectOperationTest : public Aws::Testing::AwsCppSdkGTestSuite
     {
-    protected:
-        std::shared_ptr<S3Client> Client;
-        std::shared_ptr<S3Client> globalClient;
-        std::shared_ptr<S3Client> oregonClient;
-        std::shared_ptr<S3Client> retryClient;
+        protected:
+        std::shared_ptr<S3TestClient> Client;
+        std::shared_ptr<S3TestClient> globalClient;
+        std::shared_ptr<S3TestClient> oregonClient;
+        std::shared_ptr<S3TestClient> retryClient;
         std::shared_ptr<HttpClientFactory> ClientFactory;
         std::shared_ptr<HttpClient> m_HttpClient;
         std::shared_ptr<Aws::Utils::RateLimits::RateLimiterInterface> Limiter;
@@ -188,22 +212,21 @@ namespace
                 config.proxyPort = PROXY_PORT;
             }
 
-            Client = Aws::MakeShared<S3Client>(ALLOCATION_TAG,
-                    Aws::MakeShared<DefaultAWSCredentialsProviderChain>(ALLOCATION_TAG), config,
+            Client = Aws::MakeShared<S3TestClient>(ALLOCATION_TAG, Aws::MakeShared<DefaultAWSCredentialsProviderChain>(ALLOCATION_TAG), config,
                         AWSAuthV4Signer::PayloadSigningPolicy::Never /*signPayloads*/, true /*useVirtualAddressing*/, Aws::S3::US_EAST_1_REGIONAL_ENDPOINT_OPTION::LEGACY);
             config.region = Aws::Region::AWS_GLOBAL;
-            globalClient = Aws::MakeShared<S3Client>(ALLOCATION_TAG,
+            globalClient = Aws::MakeShared<S3TestClient>(ALLOCATION_TAG,
                 Aws::MakeShared<DefaultAWSCredentialsProviderChain>(ALLOCATION_TAG), config,
                     AWSAuthV4Signer::PayloadSigningPolicy::Never /*signPayloads*/, true /*useVirtualAddressing*/);
             config.region = Aws::Region::US_WEST_2;
             config.useDualStack = true;
-            oregonClient = Aws::MakeShared<S3Client>(ALLOCATION_TAG,
+            oregonClient = Aws::MakeShared<S3TestClient>(ALLOCATION_TAG,
                     Aws::MakeShared<DefaultAWSCredentialsProviderChain>(ALLOCATION_TAG), config,
                         AWSAuthV4Signer::PayloadSigningPolicy::Never /*signPayloads*/, true /*useVirtualAddressing*/);
             m_HttpClient = Aws::Http::CreateHttpClient(config);
 
             config.retryStrategy = Aws::MakeShared<RetryFiveTimesRetryStrategy>(ALLOCATION_TAG);
-            retryClient = Aws::MakeShared<S3Client>(ALLOCATION_TAG,
+            retryClient = Aws::MakeShared<S3TestClient>(ALLOCATION_TAG,
                     Aws::MakeShared<DefaultAWSCredentialsProviderChain>(ALLOCATION_TAG), config,
                         AWSAuthV4Signer::PayloadSigningPolicy::Never /*signPayloads*/, true /*useVirtualAddressing*/);
             // Using client side monitoring for endpoint override testing.
@@ -280,7 +303,7 @@ namespace
             ASSERT_STREQ(ss.str().c_str(), outcome.GetResult().GetETag().c_str());
         }
 
-        static void TagTestBucket(const Aws::String& bucketName, const std::shared_ptr<Aws::S3::S3Client>& client) {
+        static void TagTestBucket(const Aws::String& bucketName, const std::shared_ptr<S3TestClient>& client) {
             ASSERT_TRUE(!bucketName.empty());
             ASSERT_TRUE(client);
 
@@ -293,11 +316,11 @@ namespace
             tagging.AddTagSet(tag);
             taggingRequest.SetTagging(tagging);
 
-            auto taggingOutcome = CallOperationWithUnconditionalRetry(client.get(), &Aws::S3::S3Client::PutBucketTagging, taggingRequest);
+            auto taggingOutcome = CallOperationWithUnconditionalRetry<S3TestClient,PutBucketTaggingOutcome,PutBucketTaggingRequest>(client.get(), &S3TestClient::PutBucketTagging, taggingRequest);
             AWS_ASSERT_SUCCESS(taggingOutcome);
         }
 
-        bool WaitForBucketToPropagate(const Aws::String& bucketName, std::shared_ptr<S3Client>& client)
+        bool WaitForBucketToPropagate(const Aws::String& bucketName, std::shared_ptr<S3TestClient>& client)
         {
             if (!client)
             {
@@ -365,7 +388,7 @@ namespace
             return false;
         }
 
-        CreateBucketOutcome CreateBucket(const CreateBucketRequest& request, std::shared_ptr<S3Client> client = nullptr)
+        CreateBucketOutcome CreateBucket(const CreateBucketRequest& request, std::shared_ptr<S3TestClient> client = nullptr)
         {
             if (!client)
             {
@@ -433,7 +456,7 @@ namespace
                 DeleteBucketRequest deleteBucketRequest;
                 deleteBucketRequest.SetBucket(bucketName);
 
-                auto deleteBucketOutcome = CallOperationWithUnconditionalRetry(Client.get(), &Aws::S3::S3Client::DeleteBucket, deleteBucketRequest);
+                auto deleteBucketOutcome = CallOperationWithUnconditionalRetry<S3TestClient,DeleteBucketOutcome,DeleteBucketRequest>(Client.get(), &S3TestClient::DeleteBucket, deleteBucketRequest);
                 AWS_EXPECT_SUCCESS(deleteBucketOutcome);
             }
         }
@@ -961,6 +984,7 @@ namespace
         ss.str("");
         ss << getObjectOutcome.GetResult().GetBody().rdbuf();
         ASSERT_STREQ("Test Object", ss.str().c_str());
+        EXPECT_TRUE(getObjectOutcome.GetResult().GetCacheControl().empty());
 
         HeadObjectRequest headObjectRequest;
         headObjectRequest.SetBucket(fullBucketName);
@@ -2516,5 +2540,97 @@ namespace
                 ASSERT_TRUE(response.IsSuccess());
             }
         }
+    }
+
+    TEST_F(BucketAndObjectOperationTest, PutObjectChecksumWithGuarunteedChunkedObject) {
+      struct ChecksumTestCase {
+        std::function<PutObjectRequest(PutObjectRequest)> chucksumRequestMutator;
+        String body;
+      };
+
+      const String fullBucketName = CalculateBucketName(BASE_CHECKSUMS_BUCKET_NAME.c_str());
+      SCOPED_TRACE(Aws::String("FullBucketName ") + fullBucketName);
+      CreateBucketRequest createBucketRequest;
+      createBucketRequest.SetBucket(fullBucketName);
+      createBucketRequest.SetACL(BucketCannedACL::private_);
+      CreateBucketOutcome createBucketOutcome = CreateBucket(createBucketRequest);
+      AWS_ASSERT_SUCCESS(createBucketOutcome);
+
+      Vector<ChecksumTestCase> testCases{
+          {[](PutObjectRequest request) -> PutObjectRequest { return request.WithChecksumAlgorithm(ChecksumAlgorithm::CRC32); },
+           Aws::String(1024 * 1024, 'e')},
+          {[](PutObjectRequest request) -> PutObjectRequest { return request.WithChecksumAlgorithm(ChecksumAlgorithm::CRC32C); },
+           Aws::String(1024 * 1024, 'l')},
+          {[](PutObjectRequest request) -> PutObjectRequest { return request.WithChecksumAlgorithm(ChecksumAlgorithm::SHA1); },
+           Aws::String(1024 * 1024, 'd')},
+          {[](PutObjectRequest request) -> PutObjectRequest { return request.WithChecksumAlgorithm(ChecksumAlgorithm::SHA256); },
+           Aws::String(1024 * 1024, 'a')}};
+
+      for (const auto& testCase : testCases) {
+        auto request = testCase.chucksumRequestMutator(PutObjectRequest().WithBucket(fullBucketName).WithKey("Metaphor"));
+        std::shared_ptr<IOStream> body =
+            Aws::MakeShared<StringStream>(ALLOCATION_TAG, testCase.body, std::ios_base::in | std::ios_base::binary);
+        request.SetBody(body);
+        const auto response = Client->PutObject(request);
+        AWS_EXPECT_SUCCESS(response);
+      }
+    }
+
+    TEST_F(BucketAndObjectOperationTest, ContentEncodingShouldPersistOnChunkedRequest) {
+      const String fullBucketName = CalculateBucketName(BASE_CONTENT_ENCODING_BUCKET_NAME.c_str());
+      SCOPED_TRACE(Aws::String("FullBucketName ") + fullBucketName);
+      CreateBucketRequest createBucketRequest;
+      createBucketRequest.SetBucket(fullBucketName);
+      createBucketRequest.SetACL(BucketCannedACL::private_);
+      CreateBucketOutcome createBucketOutcome = CreateBucket(createBucketRequest);
+      AWS_EXPECT_SUCCESS(createBucketOutcome);
+
+      auto request = PutObjectRequest()
+                         .WithBucket(fullBucketName)
+                         .WithKey("euchronia")
+                         .WithContentEncoding("gzip")
+                         .WithChecksumAlgorithm(ChecksumAlgorithm::CRC32);
+
+      std::shared_ptr<Aws::IOStream> body =
+          Aws::MakeShared<Aws::StringStream>(ALLOCATION_TAG, "another day passes, and the age of a new king draws near");
+
+      request.SetBody(body);
+
+      const auto putOutcome = Client->PutObject(request);
+      AWS_EXPECT_SUCCESS(putOutcome);
+
+      const auto headOutcome = Client->HeadObject(HeadObjectRequest().WithBucket(fullBucketName).WithKey("euchronia"));
+      AWS_EXPECT_SUCCESS(headOutcome);
+      EXPECT_EQ(headOutcome.GetResult().GetContentEncoding(), "gzip");
+    }
+
+    TEST_F(BucketAndObjectOperationTest, TestHeaderResponse) {
+      ClientConfiguration configuration;
+      configuration.region = "us-east-1";
+      configuration.enableHttpClientTrace = true;
+      std::shared_ptr<S3TestClient> client =  Aws::MakeShared<S3TestClient>("test",configuration);
+      const String fullBucketName = CalculateBucketName(BASE_CONTENT_ENCODING_BUCKET_NAME.c_str());
+      CreateBucketRequest createBucketRequest;
+      createBucketRequest.SetBucket(fullBucketName);
+      createBucketRequest.SetACL(BucketCannedACL::private_);
+      CreateBucketOutcome createBucketOutcome = CreateBucket(createBucketRequest,client);
+      AWS_EXPECT_SUCCESS(createBucketOutcome);
+      Aws::S3::Model::GetObjectRequest request;
+      request.SetBucket(fullBucketName);
+      request.SetKey("one_object_that_does_not_exist_in_the_bucket"); // <== we should get 404 when calling GetResponseCode
+      request.SetHeadersReceivedEventHandler (
+      [] (
+          const Aws::Http::HttpRequest * ,
+          Aws::Http::HttpResponse * response
+      ) {
+          ::std::cout <<  "response headers received: "
+              << response->GetResponseCode ( )
+          << ::std::endl;
+          EXPECT_EQ(response->GetResponseCode(), Aws::Http::HttpResponseCode::NOT_FOUND );
+      }
+      );
+      Aws::S3::Model::GetObjectOutcome outcome =
+              client->GetObject(request);
+      EXPECT_FALSE(outcome.IsSuccess());
     }
 }

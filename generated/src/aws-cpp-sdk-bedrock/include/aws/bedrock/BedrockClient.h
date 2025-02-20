@@ -6,25 +6,37 @@
 #pragma once
 #include <aws/bedrock/Bedrock_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/bedrock/BedrockServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/bedrock/BedrockErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Bedrock
 {
+  AWS_BEDROCK_API extern const char SERVICE_NAME[];
   /**
    * <p>Describes the API operations for creating, managing, fine-turning, and
    * evaluating Amazon Bedrock models.</p>
    */
-  class AWS_BEDROCK_API BedrockClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<BedrockClient>
+  class AWS_BEDROCK_API BedrockClient : smithy::client::AwsSmithyClientT<Aws::Bedrock::SERVICE_NAME,
+      Aws::Bedrock::BedrockClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      BedrockEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::BedrockErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<BedrockClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Bedrock"; }
 
       typedef BedrockClientConfiguration ClientConfigurationType;
       typedef BedrockEndpointProvider EndpointProviderType;
@@ -78,11 +90,35 @@ namespace Bedrock
         virtual ~BedrockClient();
 
         /**
-         * <p>API operation for creating and managing Amazon Bedrock automatic model
-         * evaluation jobs and model evaluation jobs that use human workers. To learn more
-         * about the requirements for creating a model evaluation job see, <a
-         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation.html">Model
-         * evaluations</a>.</p><p><h3>See Also:</h3>   <a
+         * <p>Deletes a batch of evaluation jobs. An evaluation job can only be deleted if
+         * it has following status <code>FAILED</code>, <code>COMPLETED</code>, and
+         * <code>STOPPED</code>. You can request up to 25 model evaluation jobs be deleted
+         * in a single request.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/BatchDeleteEvaluationJob">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::BatchDeleteEvaluationJobOutcome BatchDeleteEvaluationJob(const Model::BatchDeleteEvaluationJobRequest& request) const;
+
+        /**
+         * A Callable wrapper for BatchDeleteEvaluationJob that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename BatchDeleteEvaluationJobRequestT = Model::BatchDeleteEvaluationJobRequest>
+        Model::BatchDeleteEvaluationJobOutcomeCallable BatchDeleteEvaluationJobCallable(const BatchDeleteEvaluationJobRequestT& request) const
+        {
+            return SubmitCallable(&BedrockClient::BatchDeleteEvaluationJob, request);
+        }
+
+        /**
+         * An Async wrapper for BatchDeleteEvaluationJob that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename BatchDeleteEvaluationJobRequestT = Model::BatchDeleteEvaluationJobRequest>
+        void BatchDeleteEvaluationJobAsync(const BatchDeleteEvaluationJobRequestT& request, const BatchDeleteEvaluationJobResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&BedrockClient::BatchDeleteEvaluationJob, request, handler, context);
+        }
+
+        /**
+         * <p>Creates an evaluation job.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/CreateEvaluationJob">AWS
          * API Reference</a></p>
          */
@@ -107,38 +143,26 @@ namespace Bedrock
         }
 
         /**
-         * <p>Creates a guardrail to block topics and to filter out harmful content.</p>
-         * <ul> <li> <p>Specify a <code>name</code> and optional
-         * <code>description</code>.</p> </li> <li> <p>Specify messages for when the
-         * guardrail successfully blocks a prompt or a model response in the
-         * <code>blockedInputMessaging</code> and <code>blockedOutputsMessaging</code>
-         * fields.</p> </li> <li> <p>Specify topics for the guardrail to deny in the
-         * <code>topicPolicyConfig</code> object. Each <a
-         * href="https://docs.aws.amazon.com/bedrock/latest/APIReference/API_GuardrailTopicConfig.html">GuardrailTopicConfig</a>
-         * object in the <code>topicsConfig</code> list pertains to one topic.</p> <ul>
-         * <li> <p>Give a <code>name</code> and <code>description</code> so that the
-         * guardrail can properly identify the topic.</p> </li> <li> <p>Specify
-         * <code>DENY</code> in the <code>type</code> field.</p> </li> <li> <p>(Optional)
-         * Provide up to five prompts that you would categorize as belonging to the topic
-         * in the <code>examples</code> list.</p> </li> </ul> </li> <li> <p>Specify filter
-         * strengths for the harmful categories defined in Amazon Bedrock in the
-         * <code>contentPolicyConfig</code> object. Each <a
-         * href="https://docs.aws.amazon.com/bedrock/latest/APIReference/API_GuardrailContentFilterConfig.html">GuardrailContentFilterConfig</a>
-         * object in the <code>filtersConfig</code> list pertains to a harmful category.
-         * For more information, see <a
-         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-filters">Content
-         * filters</a>. For more information about the fields in a content filter, see <a
-         * href="https://docs.aws.amazon.com/bedrock/latest/APIReference/API_GuardrailContentFilterConfig.html">GuardrailContentFilterConfig</a>.</p>
-         * <ul> <li> <p>Specify the category in the <code>type</code> field.</p> </li> <li>
-         * <p>Specify the strength of the filter for prompts in the
-         * <code>inputStrength</code> field and for model responses in the
-         * <code>strength</code> field of the <a
-         * href="https://docs.aws.amazon.com/bedrock/latest/APIReference/API_GuardrailContentFilterConfig.html">GuardrailContentFilterConfig</a>.</p>
-         * </li> </ul> </li> <li> <p>(Optional) For security, include the ARN of a KMS key
-         * in the <code>kmsKeyId</code> field.</p> </li> <li> <p>(Optional) Attach any tags
-         * to the guardrail in the <code>tags</code> object. For more information, see <a
-         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/tagging">Tag
-         * resources</a>.</p> </li> </ul><p><h3>See Also:</h3>   <a
+         * <p>Creates a guardrail to block topics and to implement safeguards for your
+         * generative AI applications.</p> <p>You can configure the following policies in a
+         * guardrail to avoid undesirable and harmful content, filter out denied topics and
+         * words, and remove sensitive information for privacy protection.</p> <ul> <li>
+         * <p> <b>Content filters</b> - Adjust filter strengths to block input prompts or
+         * model responses containing harmful content.</p> </li> <li> <p> <b>Denied
+         * topics</b> - Define a set of topics that are undesirable in the context of your
+         * application. These topics will be blocked if detected in user queries or model
+         * responses.</p> </li> <li> <p> <b>Word filters</b> - Configure filters to block
+         * undesirable words, phrases, and profanity. Such words can include offensive
+         * terms, competitor names etc.</p> </li> <li> <p> <b>Sensitive information
+         * filters</b> - Block or mask sensitive information such as personally
+         * identifiable information (PII) or custom regex in user inputs and model
+         * responses.</p> </li> </ul> <p>In addition to the above policies, you can also
+         * configure the messages to be returned to the user if a user input or model
+         * response is in violation of the policies defined in the guardrail.</p> <p>For
+         * more information, see <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html">Amazon
+         * Bedrock Guardrails</a> in the <i>Amazon Bedrock User Guide</i>.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/CreateGuardrail">AWS
          * API Reference</a></p>
          */
@@ -190,6 +214,95 @@ namespace Bedrock
         }
 
         /**
+         * <p>Creates an application inference profile to track metrics and costs when
+         * invoking a model. To create an application inference profile for a foundation
+         * model in one region, specify the ARN of the model in that region. To create an
+         * application inference profile for a foundation model across multiple regions,
+         * specify the ARN of the system-defined inference profile that contains the
+         * regions that you want to route requests to. For more information, see <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html">Increase
+         * throughput and resilience with cross-region inference in Amazon Bedrock</a>. in
+         * the Amazon Bedrock User Guide.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/CreateInferenceProfile">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateInferenceProfileOutcome CreateInferenceProfile(const Model::CreateInferenceProfileRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateInferenceProfile that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateInferenceProfileRequestT = Model::CreateInferenceProfileRequest>
+        Model::CreateInferenceProfileOutcomeCallable CreateInferenceProfileCallable(const CreateInferenceProfileRequestT& request) const
+        {
+            return SubmitCallable(&BedrockClient::CreateInferenceProfile, request);
+        }
+
+        /**
+         * An Async wrapper for CreateInferenceProfile that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateInferenceProfileRequestT = Model::CreateInferenceProfileRequest>
+        void CreateInferenceProfileAsync(const CreateInferenceProfileRequestT& request, const CreateInferenceProfileResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&BedrockClient::CreateInferenceProfile, request, handler, context);
+        }
+
+        /**
+         * <p>Creates an endpoint for a model from Amazon Bedrock Marketplace. The endpoint
+         * is hosted by Amazon SageMaker.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/CreateMarketplaceModelEndpoint">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateMarketplaceModelEndpointOutcome CreateMarketplaceModelEndpoint(const Model::CreateMarketplaceModelEndpointRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateMarketplaceModelEndpoint that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateMarketplaceModelEndpointRequestT = Model::CreateMarketplaceModelEndpointRequest>
+        Model::CreateMarketplaceModelEndpointOutcomeCallable CreateMarketplaceModelEndpointCallable(const CreateMarketplaceModelEndpointRequestT& request) const
+        {
+            return SubmitCallable(&BedrockClient::CreateMarketplaceModelEndpoint, request);
+        }
+
+        /**
+         * An Async wrapper for CreateMarketplaceModelEndpoint that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateMarketplaceModelEndpointRequestT = Model::CreateMarketplaceModelEndpointRequest>
+        void CreateMarketplaceModelEndpointAsync(const CreateMarketplaceModelEndpointRequestT& request, const CreateMarketplaceModelEndpointResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&BedrockClient::CreateMarketplaceModelEndpoint, request, handler, context);
+        }
+
+        /**
+         * <p>Copies a model to another region so that it can be used there. For more
+         * information, see <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/copy-model.html">Copy
+         * models to be used in other regions</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/CreateModelCopyJob">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateModelCopyJobOutcome CreateModelCopyJob(const Model::CreateModelCopyJobRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateModelCopyJob that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateModelCopyJobRequestT = Model::CreateModelCopyJobRequest>
+        Model::CreateModelCopyJobOutcomeCallable CreateModelCopyJobCallable(const CreateModelCopyJobRequestT& request) const
+        {
+            return SubmitCallable(&BedrockClient::CreateModelCopyJob, request);
+        }
+
+        /**
+         * An Async wrapper for CreateModelCopyJob that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateModelCopyJobRequestT = Model::CreateModelCopyJobRequest>
+        void CreateModelCopyJobAsync(const CreateModelCopyJobRequestT& request, const CreateModelCopyJobResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&BedrockClient::CreateModelCopyJob, request, handler, context);
+        }
+
+        /**
          * <p>Creates a fine-tuning job to customize a base model.</p> <p>You specify the
          * base foundation model and the location of the training data. After the
          * model-customization job completes successfully, your custom model resource will
@@ -202,7 +315,9 @@ namespace Bedrock
          * To monitor a job, use the <code>GetModelCustomizationJob</code> operation to
          * retrieve the job status.</p> <p>For more information, see <a
          * href="https://docs.aws.amazon.com/bedrock/latest/userguide/custom-models.html">Custom
-         * models</a> in the Amazon Bedrock User Guide.</p><p><h3>See Also:</h3>   <a
+         * models</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/CreateModelCustomizationJob">AWS
          * API Reference</a></p>
          */
@@ -227,12 +342,75 @@ namespace Bedrock
         }
 
         /**
+         * <p>Creates a model import job to import model that you have customized in other
+         * environments, such as Amazon SageMaker. For more information, see <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-customization-import-model.html">Import
+         * a customized model</a> </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/CreateModelImportJob">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateModelImportJobOutcome CreateModelImportJob(const Model::CreateModelImportJobRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateModelImportJob that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateModelImportJobRequestT = Model::CreateModelImportJobRequest>
+        Model::CreateModelImportJobOutcomeCallable CreateModelImportJobCallable(const CreateModelImportJobRequestT& request) const
+        {
+            return SubmitCallable(&BedrockClient::CreateModelImportJob, request);
+        }
+
+        /**
+         * An Async wrapper for CreateModelImportJob that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateModelImportJobRequestT = Model::CreateModelImportJobRequest>
+        void CreateModelImportJobAsync(const CreateModelImportJobRequestT& request, const CreateModelImportJobResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&BedrockClient::CreateModelImportJob, request, handler, context);
+        }
+
+        /**
+         * <p>Creates a batch inference job to invoke a model on multiple prompts. Format
+         * your data according to <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/batch-inference-data">Format
+         * your inference data</a> and upload it to an Amazon S3 bucket. For more
+         * information, see <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/batch-inference.html">Process
+         * multiple prompts with batch inference</a>.</p> <p>The response returns a
+         * <code>jobArn</code> that you can use to stop or get details about the
+         * job.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/CreateModelInvocationJob">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateModelInvocationJobOutcome CreateModelInvocationJob(const Model::CreateModelInvocationJobRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateModelInvocationJob that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateModelInvocationJobRequestT = Model::CreateModelInvocationJobRequest>
+        Model::CreateModelInvocationJobOutcomeCallable CreateModelInvocationJobCallable(const CreateModelInvocationJobRequestT& request) const
+        {
+            return SubmitCallable(&BedrockClient::CreateModelInvocationJob, request);
+        }
+
+        /**
+         * An Async wrapper for CreateModelInvocationJob that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateModelInvocationJobRequestT = Model::CreateModelInvocationJobRequest>
+        void CreateModelInvocationJobAsync(const CreateModelInvocationJobRequestT& request, const CreateModelInvocationJobResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&BedrockClient::CreateModelInvocationJob, request, handler, context);
+        }
+
+        /**
          * <p>Creates dedicated throughput for a base or custom model with the model units
          * and for the duration that you specify. For pricing details, see <a
          * href="http://aws.amazon.com/bedrock/pricing/">Amazon Bedrock Pricing</a>. For
          * more information, see <a
          * href="https://docs.aws.amazon.com/bedrock/latest/userguide/prov-throughput.html">Provisioned
-         * Throughput</a> in the Amazon Bedrock User Guide.</p><p><h3>See Also:</h3>   <a
+         * Throughput</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/CreateProvisionedModelThroughput">AWS
          * API Reference</a></p>
          */
@@ -259,7 +437,9 @@ namespace Bedrock
         /**
          * <p>Deletes a custom model that you created earlier. For more information, see <a
          * href="https://docs.aws.amazon.com/bedrock/latest/userguide/custom-models.html">Custom
-         * models</a> in the Amazon Bedrock User Guide.</p><p><h3>See Also:</h3>   <a
+         * models</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/DeleteCustomModel">AWS
          * API Reference</a></p>
          */
@@ -314,17 +494,101 @@ namespace Bedrock
         }
 
         /**
+         * <p>Deletes a custom model that you imported earlier. For more information, see
+         * <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-customization-import-model.html">Import
+         * a customized model</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>. </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/DeleteImportedModel">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteImportedModelOutcome DeleteImportedModel(const Model::DeleteImportedModelRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteImportedModel that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteImportedModelRequestT = Model::DeleteImportedModelRequest>
+        Model::DeleteImportedModelOutcomeCallable DeleteImportedModelCallable(const DeleteImportedModelRequestT& request) const
+        {
+            return SubmitCallable(&BedrockClient::DeleteImportedModel, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteImportedModel that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteImportedModelRequestT = Model::DeleteImportedModelRequest>
+        void DeleteImportedModelAsync(const DeleteImportedModelRequestT& request, const DeleteImportedModelResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&BedrockClient::DeleteImportedModel, request, handler, context);
+        }
+
+        /**
+         * <p>Deletes an application inference profile. For more information, see <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html">Increase
+         * throughput and resilience with cross-region inference in Amazon Bedrock</a>. in
+         * the Amazon Bedrock User Guide.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/DeleteInferenceProfile">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteInferenceProfileOutcome DeleteInferenceProfile(const Model::DeleteInferenceProfileRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteInferenceProfile that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteInferenceProfileRequestT = Model::DeleteInferenceProfileRequest>
+        Model::DeleteInferenceProfileOutcomeCallable DeleteInferenceProfileCallable(const DeleteInferenceProfileRequestT& request) const
+        {
+            return SubmitCallable(&BedrockClient::DeleteInferenceProfile, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteInferenceProfile that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteInferenceProfileRequestT = Model::DeleteInferenceProfileRequest>
+        void DeleteInferenceProfileAsync(const DeleteInferenceProfileRequestT& request, const DeleteInferenceProfileResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&BedrockClient::DeleteInferenceProfile, request, handler, context);
+        }
+
+        /**
+         * <p>Deletes an endpoint for a model from Amazon Bedrock
+         * Marketplace.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/DeleteMarketplaceModelEndpoint">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteMarketplaceModelEndpointOutcome DeleteMarketplaceModelEndpoint(const Model::DeleteMarketplaceModelEndpointRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteMarketplaceModelEndpoint that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteMarketplaceModelEndpointRequestT = Model::DeleteMarketplaceModelEndpointRequest>
+        Model::DeleteMarketplaceModelEndpointOutcomeCallable DeleteMarketplaceModelEndpointCallable(const DeleteMarketplaceModelEndpointRequestT& request) const
+        {
+            return SubmitCallable(&BedrockClient::DeleteMarketplaceModelEndpoint, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteMarketplaceModelEndpoint that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteMarketplaceModelEndpointRequestT = Model::DeleteMarketplaceModelEndpointRequest>
+        void DeleteMarketplaceModelEndpointAsync(const DeleteMarketplaceModelEndpointRequestT& request, const DeleteMarketplaceModelEndpointResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&BedrockClient::DeleteMarketplaceModelEndpoint, request, handler, context);
+        }
+
+        /**
          * <p>Delete the invocation logging. </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/DeleteModelInvocationLoggingConfiguration">AWS
          * API Reference</a></p>
          */
-        virtual Model::DeleteModelInvocationLoggingConfigurationOutcome DeleteModelInvocationLoggingConfiguration(const Model::DeleteModelInvocationLoggingConfigurationRequest& request) const;
+        virtual Model::DeleteModelInvocationLoggingConfigurationOutcome DeleteModelInvocationLoggingConfiguration(const Model::DeleteModelInvocationLoggingConfigurationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DeleteModelInvocationLoggingConfiguration that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DeleteModelInvocationLoggingConfigurationRequestT = Model::DeleteModelInvocationLoggingConfigurationRequest>
-        Model::DeleteModelInvocationLoggingConfigurationOutcomeCallable DeleteModelInvocationLoggingConfigurationCallable(const DeleteModelInvocationLoggingConfigurationRequestT& request) const
+        Model::DeleteModelInvocationLoggingConfigurationOutcomeCallable DeleteModelInvocationLoggingConfigurationCallable(const DeleteModelInvocationLoggingConfigurationRequestT& request = {}) const
         {
             return SubmitCallable(&BedrockClient::DeleteModelInvocationLoggingConfiguration, request);
         }
@@ -333,7 +597,7 @@ namespace Bedrock
          * An Async wrapper for DeleteModelInvocationLoggingConfiguration that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DeleteModelInvocationLoggingConfigurationRequestT = Model::DeleteModelInvocationLoggingConfigurationRequest>
-        void DeleteModelInvocationLoggingConfigurationAsync(const DeleteModelInvocationLoggingConfigurationRequestT& request, const DeleteModelInvocationLoggingConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DeleteModelInvocationLoggingConfigurationAsync(const DeleteModelInvocationLoggingConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DeleteModelInvocationLoggingConfigurationRequestT& request = {}) const
         {
             return SubmitAsync(&BedrockClient::DeleteModelInvocationLoggingConfiguration, request, handler, context);
         }
@@ -342,7 +606,9 @@ namespace Bedrock
          * <p>Deletes a Provisioned Throughput. You can't delete a Provisioned Throughput
          * before the commitment term is over. For more information, see <a
          * href="https://docs.aws.amazon.com/bedrock/latest/userguide/prov-throughput.html">Provisioned
-         * Throughput</a> in the Amazon Bedrock User Guide.</p><p><h3>See Also:</h3>   <a
+         * Throughput</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/DeleteProvisionedModelThroughput">AWS
          * API Reference</a></p>
          */
@@ -367,10 +633,39 @@ namespace Bedrock
         }
 
         /**
+         * <p>Deregisters an endpoint for a model from Amazon Bedrock Marketplace. This
+         * operation removes the endpoint's association with Amazon Bedrock but does not
+         * delete the underlying Amazon SageMaker endpoint.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/DeregisterMarketplaceModelEndpoint">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeregisterMarketplaceModelEndpointOutcome DeregisterMarketplaceModelEndpoint(const Model::DeregisterMarketplaceModelEndpointRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeregisterMarketplaceModelEndpoint that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeregisterMarketplaceModelEndpointRequestT = Model::DeregisterMarketplaceModelEndpointRequest>
+        Model::DeregisterMarketplaceModelEndpointOutcomeCallable DeregisterMarketplaceModelEndpointCallable(const DeregisterMarketplaceModelEndpointRequestT& request) const
+        {
+            return SubmitCallable(&BedrockClient::DeregisterMarketplaceModelEndpoint, request);
+        }
+
+        /**
+         * An Async wrapper for DeregisterMarketplaceModelEndpoint that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeregisterMarketplaceModelEndpointRequestT = Model::DeregisterMarketplaceModelEndpointRequest>
+        void DeregisterMarketplaceModelEndpointAsync(const DeregisterMarketplaceModelEndpointRequestT& request, const DeregisterMarketplaceModelEndpointResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&BedrockClient::DeregisterMarketplaceModelEndpoint, request, handler, context);
+        }
+
+        /**
          * <p>Get the properties associated with a Amazon Bedrock custom model that you
          * have created.For more information, see <a
          * href="https://docs.aws.amazon.com/bedrock/latest/userguide/custom-models.html">Custom
-         * models</a> in the Amazon Bedrock User Guide.</p><p><h3>See Also:</h3>   <a
+         * models</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/GetCustomModel">AWS
          * API Reference</a></p>
          */
@@ -395,10 +690,8 @@ namespace Bedrock
         }
 
         /**
-         * <p>Retrieves the properties associated with a model evaluation job, including
-         * the status of the job. For more information, see <a
-         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/latest/userguide/model-evaluation.html">Model
-         * evaluations</a>.</p><p><h3>See Also:</h3>   <a
+         * <p>Gets information about an evaluation job, such as the status of the
+         * job.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/GetEvaluationJob">AWS
          * API Reference</a></p>
          */
@@ -476,10 +769,121 @@ namespace Bedrock
         }
 
         /**
+         * <p>Gets properties associated with a customized model you imported.
+         * </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/GetImportedModel">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetImportedModelOutcome GetImportedModel(const Model::GetImportedModelRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetImportedModel that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetImportedModelRequestT = Model::GetImportedModelRequest>
+        Model::GetImportedModelOutcomeCallable GetImportedModelCallable(const GetImportedModelRequestT& request) const
+        {
+            return SubmitCallable(&BedrockClient::GetImportedModel, request);
+        }
+
+        /**
+         * An Async wrapper for GetImportedModel that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetImportedModelRequestT = Model::GetImportedModelRequest>
+        void GetImportedModelAsync(const GetImportedModelRequestT& request, const GetImportedModelResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&BedrockClient::GetImportedModel, request, handler, context);
+        }
+
+        /**
+         * <p>Gets information about an inference profile. For more information, see <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html">Increase
+         * throughput and resilience with cross-region inference in Amazon Bedrock</a>. in
+         * the Amazon Bedrock User Guide.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/GetInferenceProfile">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetInferenceProfileOutcome GetInferenceProfile(const Model::GetInferenceProfileRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetInferenceProfile that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetInferenceProfileRequestT = Model::GetInferenceProfileRequest>
+        Model::GetInferenceProfileOutcomeCallable GetInferenceProfileCallable(const GetInferenceProfileRequestT& request) const
+        {
+            return SubmitCallable(&BedrockClient::GetInferenceProfile, request);
+        }
+
+        /**
+         * An Async wrapper for GetInferenceProfile that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetInferenceProfileRequestT = Model::GetInferenceProfileRequest>
+        void GetInferenceProfileAsync(const GetInferenceProfileRequestT& request, const GetInferenceProfileResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&BedrockClient::GetInferenceProfile, request, handler, context);
+        }
+
+        /**
+         * <p>Retrieves details about a specific endpoint for a model from Amazon Bedrock
+         * Marketplace.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/GetMarketplaceModelEndpoint">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetMarketplaceModelEndpointOutcome GetMarketplaceModelEndpoint(const Model::GetMarketplaceModelEndpointRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetMarketplaceModelEndpoint that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetMarketplaceModelEndpointRequestT = Model::GetMarketplaceModelEndpointRequest>
+        Model::GetMarketplaceModelEndpointOutcomeCallable GetMarketplaceModelEndpointCallable(const GetMarketplaceModelEndpointRequestT& request) const
+        {
+            return SubmitCallable(&BedrockClient::GetMarketplaceModelEndpoint, request);
+        }
+
+        /**
+         * An Async wrapper for GetMarketplaceModelEndpoint that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetMarketplaceModelEndpointRequestT = Model::GetMarketplaceModelEndpointRequest>
+        void GetMarketplaceModelEndpointAsync(const GetMarketplaceModelEndpointRequestT& request, const GetMarketplaceModelEndpointResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&BedrockClient::GetMarketplaceModelEndpoint, request, handler, context);
+        }
+
+        /**
+         * <p>Retrieves information about a model copy job. For more information, see <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/copy-model.html">Copy
+         * models to be used in other regions</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/GetModelCopyJob">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetModelCopyJobOutcome GetModelCopyJob(const Model::GetModelCopyJobRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetModelCopyJob that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetModelCopyJobRequestT = Model::GetModelCopyJobRequest>
+        Model::GetModelCopyJobOutcomeCallable GetModelCopyJobCallable(const GetModelCopyJobRequestT& request) const
+        {
+            return SubmitCallable(&BedrockClient::GetModelCopyJob, request);
+        }
+
+        /**
+         * An Async wrapper for GetModelCopyJob that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetModelCopyJobRequestT = Model::GetModelCopyJobRequest>
+        void GetModelCopyJobAsync(const GetModelCopyJobRequestT& request, const GetModelCopyJobResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&BedrockClient::GetModelCopyJob, request, handler, context);
+        }
+
+        /**
          * <p>Retrieves the properties associated with a model-customization job, including
          * the status of the job. For more information, see <a
          * href="https://docs.aws.amazon.com/bedrock/latest/userguide/custom-models.html">Custom
-         * models</a> in the Amazon Bedrock User Guide.</p><p><h3>See Also:</h3>   <a
+         * models</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/GetModelCustomizationJob">AWS
          * API Reference</a></p>
          */
@@ -504,18 +908,75 @@ namespace Bedrock
         }
 
         /**
+         * <p>Retrieves the properties associated with import model job, including the
+         * status of the job. For more information, see <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-customization-import-model.html">Import
+         * a customized model</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/GetModelImportJob">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetModelImportJobOutcome GetModelImportJob(const Model::GetModelImportJobRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetModelImportJob that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetModelImportJobRequestT = Model::GetModelImportJobRequest>
+        Model::GetModelImportJobOutcomeCallable GetModelImportJobCallable(const GetModelImportJobRequestT& request) const
+        {
+            return SubmitCallable(&BedrockClient::GetModelImportJob, request);
+        }
+
+        /**
+         * An Async wrapper for GetModelImportJob that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetModelImportJobRequestT = Model::GetModelImportJobRequest>
+        void GetModelImportJobAsync(const GetModelImportJobRequestT& request, const GetModelImportJobResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&BedrockClient::GetModelImportJob, request, handler, context);
+        }
+
+        /**
+         * <p>Gets details about a batch inference job. For more information, see <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/batch-inference-monitor">Monitor
+         * batch inference jobs</a> </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/GetModelInvocationJob">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetModelInvocationJobOutcome GetModelInvocationJob(const Model::GetModelInvocationJobRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetModelInvocationJob that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetModelInvocationJobRequestT = Model::GetModelInvocationJobRequest>
+        Model::GetModelInvocationJobOutcomeCallable GetModelInvocationJobCallable(const GetModelInvocationJobRequestT& request) const
+        {
+            return SubmitCallable(&BedrockClient::GetModelInvocationJob, request);
+        }
+
+        /**
+         * An Async wrapper for GetModelInvocationJob that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetModelInvocationJobRequestT = Model::GetModelInvocationJobRequest>
+        void GetModelInvocationJobAsync(const GetModelInvocationJobRequestT& request, const GetModelInvocationJobResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&BedrockClient::GetModelInvocationJob, request, handler, context);
+        }
+
+        /**
          * <p>Get the current configuration values for model invocation
          * logging.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/GetModelInvocationLoggingConfiguration">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetModelInvocationLoggingConfigurationOutcome GetModelInvocationLoggingConfiguration(const Model::GetModelInvocationLoggingConfigurationRequest& request) const;
+        virtual Model::GetModelInvocationLoggingConfigurationOutcome GetModelInvocationLoggingConfiguration(const Model::GetModelInvocationLoggingConfigurationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetModelInvocationLoggingConfiguration that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetModelInvocationLoggingConfigurationRequestT = Model::GetModelInvocationLoggingConfigurationRequest>
-        Model::GetModelInvocationLoggingConfigurationOutcomeCallable GetModelInvocationLoggingConfigurationCallable(const GetModelInvocationLoggingConfigurationRequestT& request) const
+        Model::GetModelInvocationLoggingConfigurationOutcomeCallable GetModelInvocationLoggingConfigurationCallable(const GetModelInvocationLoggingConfigurationRequestT& request = {}) const
         {
             return SubmitCallable(&BedrockClient::GetModelInvocationLoggingConfiguration, request);
         }
@@ -524,15 +985,42 @@ namespace Bedrock
          * An Async wrapper for GetModelInvocationLoggingConfiguration that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetModelInvocationLoggingConfigurationRequestT = Model::GetModelInvocationLoggingConfigurationRequest>
-        void GetModelInvocationLoggingConfigurationAsync(const GetModelInvocationLoggingConfigurationRequestT& request, const GetModelInvocationLoggingConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetModelInvocationLoggingConfigurationAsync(const GetModelInvocationLoggingConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetModelInvocationLoggingConfigurationRequestT& request = {}) const
         {
             return SubmitAsync(&BedrockClient::GetModelInvocationLoggingConfiguration, request, handler, context);
         }
 
         /**
+         * <p>Retrieves details about a prompt router.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/GetPromptRouter">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetPromptRouterOutcome GetPromptRouter(const Model::GetPromptRouterRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetPromptRouter that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetPromptRouterRequestT = Model::GetPromptRouterRequest>
+        Model::GetPromptRouterOutcomeCallable GetPromptRouterCallable(const GetPromptRouterRequestT& request) const
+        {
+            return SubmitCallable(&BedrockClient::GetPromptRouter, request);
+        }
+
+        /**
+         * An Async wrapper for GetPromptRouter that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetPromptRouterRequestT = Model::GetPromptRouterRequest>
+        void GetPromptRouterAsync(const GetPromptRouterRequestT& request, const GetPromptRouterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&BedrockClient::GetPromptRouter, request, handler, context);
+        }
+
+        /**
          * <p>Returns details for a Provisioned Throughput. For more information, see <a
          * href="https://docs.aws.amazon.com/bedrock/latest/userguide/prov-throughput.html">Provisioned
-         * Throughput</a> in the Amazon Bedrock User Guide.</p><p><h3>See Also:</h3>   <a
+         * Throughput</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/GetProvisionedModelThroughput">AWS
          * API Reference</a></p>
          */
@@ -561,17 +1049,19 @@ namespace Bedrock
          * <code>CreateModelCustomizationJob</code> operation.</p> <p>For more information,
          * see <a
          * href="https://docs.aws.amazon.com/bedrock/latest/userguide/custom-models.html">Custom
-         * models</a> in the Amazon Bedrock User Guide.</p><p><h3>See Also:</h3>   <a
+         * models</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/ListCustomModels">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListCustomModelsOutcome ListCustomModels(const Model::ListCustomModelsRequest& request) const;
+        virtual Model::ListCustomModelsOutcome ListCustomModels(const Model::ListCustomModelsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListCustomModels that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListCustomModelsRequestT = Model::ListCustomModelsRequest>
-        Model::ListCustomModelsOutcomeCallable ListCustomModelsCallable(const ListCustomModelsRequestT& request) const
+        Model::ListCustomModelsOutcomeCallable ListCustomModelsCallable(const ListCustomModelsRequestT& request = {}) const
         {
             return SubmitCallable(&BedrockClient::ListCustomModels, request);
         }
@@ -580,23 +1070,23 @@ namespace Bedrock
          * An Async wrapper for ListCustomModels that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListCustomModelsRequestT = Model::ListCustomModelsRequest>
-        void ListCustomModelsAsync(const ListCustomModelsRequestT& request, const ListCustomModelsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListCustomModelsAsync(const ListCustomModelsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListCustomModelsRequestT& request = {}) const
         {
             return SubmitAsync(&BedrockClient::ListCustomModels, request, handler, context);
         }
 
         /**
-         * <p>Lists model evaluation jobs.</p><p><h3>See Also:</h3>   <a
+         * <p>Lists all existing evaluation jobs.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/ListEvaluationJobs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListEvaluationJobsOutcome ListEvaluationJobs(const Model::ListEvaluationJobsRequest& request) const;
+        virtual Model::ListEvaluationJobsOutcome ListEvaluationJobs(const Model::ListEvaluationJobsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListEvaluationJobs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListEvaluationJobsRequestT = Model::ListEvaluationJobsRequest>
-        Model::ListEvaluationJobsOutcomeCallable ListEvaluationJobsCallable(const ListEvaluationJobsRequestT& request) const
+        Model::ListEvaluationJobsOutcomeCallable ListEvaluationJobsCallable(const ListEvaluationJobsRequestT& request = {}) const
         {
             return SubmitCallable(&BedrockClient::ListEvaluationJobs, request);
         }
@@ -605,7 +1095,7 @@ namespace Bedrock
          * An Async wrapper for ListEvaluationJobs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListEvaluationJobsRequestT = Model::ListEvaluationJobsRequest>
-        void ListEvaluationJobsAsync(const ListEvaluationJobsRequestT& request, const ListEvaluationJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListEvaluationJobsAsync(const ListEvaluationJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListEvaluationJobsRequestT& request = {}) const
         {
             return SubmitAsync(&BedrockClient::ListEvaluationJobs, request, handler, context);
         }
@@ -614,17 +1104,19 @@ namespace Bedrock
          * <p>Lists Amazon Bedrock foundation models that you can use. You can filter the
          * results with the request parameters. For more information, see <a
          * href="https://docs.aws.amazon.com/bedrock/latest/userguide/foundation-models.html">Foundation
-         * models</a> in the Amazon Bedrock User Guide.</p><p><h3>See Also:</h3>   <a
+         * models</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/ListFoundationModels">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListFoundationModelsOutcome ListFoundationModels(const Model::ListFoundationModelsRequest& request) const;
+        virtual Model::ListFoundationModelsOutcome ListFoundationModels(const Model::ListFoundationModelsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListFoundationModels that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListFoundationModelsRequestT = Model::ListFoundationModelsRequest>
-        Model::ListFoundationModelsOutcomeCallable ListFoundationModelsCallable(const ListFoundationModelsRequestT& request) const
+        Model::ListFoundationModelsOutcomeCallable ListFoundationModelsCallable(const ListFoundationModelsRequestT& request = {}) const
         {
             return SubmitCallable(&BedrockClient::ListFoundationModels, request);
         }
@@ -633,7 +1125,7 @@ namespace Bedrock
          * An Async wrapper for ListFoundationModels that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListFoundationModelsRequestT = Model::ListFoundationModelsRequest>
-        void ListFoundationModelsAsync(const ListFoundationModelsRequestT& request, const ListFoundationModelsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListFoundationModelsAsync(const ListFoundationModelsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListFoundationModelsRequestT& request = {}) const
         {
             return SubmitAsync(&BedrockClient::ListFoundationModels, request, handler, context);
         }
@@ -651,13 +1143,13 @@ namespace Bedrock
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/ListGuardrails">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListGuardrailsOutcome ListGuardrails(const Model::ListGuardrailsRequest& request) const;
+        virtual Model::ListGuardrailsOutcome ListGuardrails(const Model::ListGuardrailsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListGuardrails that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListGuardrailsRequestT = Model::ListGuardrailsRequest>
-        Model::ListGuardrailsOutcomeCallable ListGuardrailsCallable(const ListGuardrailsRequestT& request) const
+        Model::ListGuardrailsOutcomeCallable ListGuardrailsCallable(const ListGuardrailsRequestT& request = {}) const
         {
             return SubmitCallable(&BedrockClient::ListGuardrails, request);
         }
@@ -666,9 +1158,124 @@ namespace Bedrock
          * An Async wrapper for ListGuardrails that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListGuardrailsRequestT = Model::ListGuardrailsRequest>
-        void ListGuardrailsAsync(const ListGuardrailsRequestT& request, const ListGuardrailsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListGuardrailsAsync(const ListGuardrailsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListGuardrailsRequestT& request = {}) const
         {
             return SubmitAsync(&BedrockClient::ListGuardrails, request, handler, context);
+        }
+
+        /**
+         * <p>Returns a list of models you've imported. You can filter the results to
+         * return based on one or more criteria. For more information, see <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-customization-import-model.html">Import
+         * a customized model</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/ListImportedModels">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListImportedModelsOutcome ListImportedModels(const Model::ListImportedModelsRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for ListImportedModels that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListImportedModelsRequestT = Model::ListImportedModelsRequest>
+        Model::ListImportedModelsOutcomeCallable ListImportedModelsCallable(const ListImportedModelsRequestT& request = {}) const
+        {
+            return SubmitCallable(&BedrockClient::ListImportedModels, request);
+        }
+
+        /**
+         * An Async wrapper for ListImportedModels that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListImportedModelsRequestT = Model::ListImportedModelsRequest>
+        void ListImportedModelsAsync(const ListImportedModelsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListImportedModelsRequestT& request = {}) const
+        {
+            return SubmitAsync(&BedrockClient::ListImportedModels, request, handler, context);
+        }
+
+        /**
+         * <p>Returns a list of inference profiles that you can use. For more information,
+         * see <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html">Increase
+         * throughput and resilience with cross-region inference in Amazon Bedrock</a>. in
+         * the Amazon Bedrock User Guide.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/ListInferenceProfiles">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListInferenceProfilesOutcome ListInferenceProfiles(const Model::ListInferenceProfilesRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for ListInferenceProfiles that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListInferenceProfilesRequestT = Model::ListInferenceProfilesRequest>
+        Model::ListInferenceProfilesOutcomeCallable ListInferenceProfilesCallable(const ListInferenceProfilesRequestT& request = {}) const
+        {
+            return SubmitCallable(&BedrockClient::ListInferenceProfiles, request);
+        }
+
+        /**
+         * An Async wrapper for ListInferenceProfiles that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListInferenceProfilesRequestT = Model::ListInferenceProfilesRequest>
+        void ListInferenceProfilesAsync(const ListInferenceProfilesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListInferenceProfilesRequestT& request = {}) const
+        {
+            return SubmitAsync(&BedrockClient::ListInferenceProfiles, request, handler, context);
+        }
+
+        /**
+         * <p>Lists the endpoints for models from Amazon Bedrock Marketplace in your Amazon
+         * Web Services account.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/ListMarketplaceModelEndpoints">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListMarketplaceModelEndpointsOutcome ListMarketplaceModelEndpoints(const Model::ListMarketplaceModelEndpointsRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for ListMarketplaceModelEndpoints that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListMarketplaceModelEndpointsRequestT = Model::ListMarketplaceModelEndpointsRequest>
+        Model::ListMarketplaceModelEndpointsOutcomeCallable ListMarketplaceModelEndpointsCallable(const ListMarketplaceModelEndpointsRequestT& request = {}) const
+        {
+            return SubmitCallable(&BedrockClient::ListMarketplaceModelEndpoints, request);
+        }
+
+        /**
+         * An Async wrapper for ListMarketplaceModelEndpoints that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListMarketplaceModelEndpointsRequestT = Model::ListMarketplaceModelEndpointsRequest>
+        void ListMarketplaceModelEndpointsAsync(const ListMarketplaceModelEndpointsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListMarketplaceModelEndpointsRequestT& request = {}) const
+        {
+            return SubmitAsync(&BedrockClient::ListMarketplaceModelEndpoints, request, handler, context);
+        }
+
+        /**
+         * <p>Returns a list of model copy jobs that you have submitted. You can filter the
+         * jobs to return based on one or more criteria. For more information, see <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/copy-model.html">Copy
+         * models to be used in other regions</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/ListModelCopyJobs">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListModelCopyJobsOutcome ListModelCopyJobs(const Model::ListModelCopyJobsRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for ListModelCopyJobs that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListModelCopyJobsRequestT = Model::ListModelCopyJobsRequest>
+        Model::ListModelCopyJobsOutcomeCallable ListModelCopyJobsCallable(const ListModelCopyJobsRequestT& request = {}) const
+        {
+            return SubmitCallable(&BedrockClient::ListModelCopyJobs, request);
+        }
+
+        /**
+         * An Async wrapper for ListModelCopyJobs that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListModelCopyJobsRequestT = Model::ListModelCopyJobsRequest>
+        void ListModelCopyJobsAsync(const ListModelCopyJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListModelCopyJobsRequestT& request = {}) const
+        {
+            return SubmitAsync(&BedrockClient::ListModelCopyJobs, request, handler, context);
         }
 
         /**
@@ -676,17 +1283,19 @@ namespace Bedrock
          * filter the jobs to return based on one or more criteria.</p> <p>For more
          * information, see <a
          * href="https://docs.aws.amazon.com/bedrock/latest/userguide/custom-models.html">Custom
-         * models</a> in the Amazon Bedrock User Guide.</p><p><h3>See Also:</h3>   <a
+         * models</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/ListModelCustomizationJobs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListModelCustomizationJobsOutcome ListModelCustomizationJobs(const Model::ListModelCustomizationJobsRequest& request) const;
+        virtual Model::ListModelCustomizationJobsOutcome ListModelCustomizationJobs(const Model::ListModelCustomizationJobsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListModelCustomizationJobs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListModelCustomizationJobsRequestT = Model::ListModelCustomizationJobsRequest>
-        Model::ListModelCustomizationJobsOutcomeCallable ListModelCustomizationJobsCallable(const ListModelCustomizationJobsRequestT& request) const
+        Model::ListModelCustomizationJobsOutcomeCallable ListModelCustomizationJobsCallable(const ListModelCustomizationJobsRequestT& request = {}) const
         {
             return SubmitCallable(&BedrockClient::ListModelCustomizationJobs, request);
         }
@@ -695,26 +1304,110 @@ namespace Bedrock
          * An Async wrapper for ListModelCustomizationJobs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListModelCustomizationJobsRequestT = Model::ListModelCustomizationJobsRequest>
-        void ListModelCustomizationJobsAsync(const ListModelCustomizationJobsRequestT& request, const ListModelCustomizationJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListModelCustomizationJobsAsync(const ListModelCustomizationJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListModelCustomizationJobsRequestT& request = {}) const
         {
             return SubmitAsync(&BedrockClient::ListModelCustomizationJobs, request, handler, context);
+        }
+
+        /**
+         * <p>Returns a list of import jobs you've submitted. You can filter the results to
+         * return based on one or more criteria. For more information, see <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-customization-import-model.html">Import
+         * a customized model</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/ListModelImportJobs">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListModelImportJobsOutcome ListModelImportJobs(const Model::ListModelImportJobsRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for ListModelImportJobs that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListModelImportJobsRequestT = Model::ListModelImportJobsRequest>
+        Model::ListModelImportJobsOutcomeCallable ListModelImportJobsCallable(const ListModelImportJobsRequestT& request = {}) const
+        {
+            return SubmitCallable(&BedrockClient::ListModelImportJobs, request);
+        }
+
+        /**
+         * An Async wrapper for ListModelImportJobs that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListModelImportJobsRequestT = Model::ListModelImportJobsRequest>
+        void ListModelImportJobsAsync(const ListModelImportJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListModelImportJobsRequestT& request = {}) const
+        {
+            return SubmitAsync(&BedrockClient::ListModelImportJobs, request, handler, context);
+        }
+
+        /**
+         * <p>Lists all batch inference jobs in the account. For more information, see <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/batch-inference-view.html">View
+         * details about a batch inference job</a>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/ListModelInvocationJobs">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListModelInvocationJobsOutcome ListModelInvocationJobs(const Model::ListModelInvocationJobsRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for ListModelInvocationJobs that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListModelInvocationJobsRequestT = Model::ListModelInvocationJobsRequest>
+        Model::ListModelInvocationJobsOutcomeCallable ListModelInvocationJobsCallable(const ListModelInvocationJobsRequestT& request = {}) const
+        {
+            return SubmitCallable(&BedrockClient::ListModelInvocationJobs, request);
+        }
+
+        /**
+         * An Async wrapper for ListModelInvocationJobs that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListModelInvocationJobsRequestT = Model::ListModelInvocationJobsRequest>
+        void ListModelInvocationJobsAsync(const ListModelInvocationJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListModelInvocationJobsRequestT& request = {}) const
+        {
+            return SubmitAsync(&BedrockClient::ListModelInvocationJobs, request, handler, context);
+        }
+
+        /**
+         * <p>Retrieves a list of prompt routers.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/ListPromptRouters">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListPromptRoutersOutcome ListPromptRouters(const Model::ListPromptRoutersRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for ListPromptRouters that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListPromptRoutersRequestT = Model::ListPromptRoutersRequest>
+        Model::ListPromptRoutersOutcomeCallable ListPromptRoutersCallable(const ListPromptRoutersRequestT& request = {}) const
+        {
+            return SubmitCallable(&BedrockClient::ListPromptRouters, request);
+        }
+
+        /**
+         * An Async wrapper for ListPromptRouters that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListPromptRoutersRequestT = Model::ListPromptRoutersRequest>
+        void ListPromptRoutersAsync(const ListPromptRoutersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListPromptRoutersRequestT& request = {}) const
+        {
+            return SubmitAsync(&BedrockClient::ListPromptRouters, request, handler, context);
         }
 
         /**
          * <p>Lists the Provisioned Throughputs in the account. For more information, see
          * <a
          * href="https://docs.aws.amazon.com/bedrock/latest/userguide/prov-throughput.html">Provisioned
-         * Throughput</a> in the Amazon Bedrock User Guide.</p><p><h3>See Also:</h3>   <a
+         * Throughput</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/ListProvisionedModelThroughputs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListProvisionedModelThroughputsOutcome ListProvisionedModelThroughputs(const Model::ListProvisionedModelThroughputsRequest& request) const;
+        virtual Model::ListProvisionedModelThroughputsOutcome ListProvisionedModelThroughputs(const Model::ListProvisionedModelThroughputsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListProvisionedModelThroughputs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListProvisionedModelThroughputsRequestT = Model::ListProvisionedModelThroughputsRequest>
-        Model::ListProvisionedModelThroughputsOutcomeCallable ListProvisionedModelThroughputsCallable(const ListProvisionedModelThroughputsRequestT& request) const
+        Model::ListProvisionedModelThroughputsOutcomeCallable ListProvisionedModelThroughputsCallable(const ListProvisionedModelThroughputsRequestT& request = {}) const
         {
             return SubmitCallable(&BedrockClient::ListProvisionedModelThroughputs, request);
         }
@@ -723,7 +1416,7 @@ namespace Bedrock
          * An Async wrapper for ListProvisionedModelThroughputs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListProvisionedModelThroughputsRequestT = Model::ListProvisionedModelThroughputsRequest>
-        void ListProvisionedModelThroughputsAsync(const ListProvisionedModelThroughputsRequestT& request, const ListProvisionedModelThroughputsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListProvisionedModelThroughputsAsync(const ListProvisionedModelThroughputsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListProvisionedModelThroughputsRequestT& request = {}) const
         {
             return SubmitAsync(&BedrockClient::ListProvisionedModelThroughputs, request, handler, context);
         }
@@ -731,8 +1424,10 @@ namespace Bedrock
         /**
          * <p>List the tags associated with the specified resource.</p> <p>For more
          * information, see <a
-         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/tagging.html">Tagging
-         * resources</a> in the Amazon Bedrock User Guide.</p><p><h3>See Also:</h3>   <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Tagging
+         * resources</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/ListTagsForResource">AWS
          * API Reference</a></p>
          */
@@ -783,7 +1478,35 @@ namespace Bedrock
         }
 
         /**
-         * <p>Stops an in progress model evaluation job.</p><p><h3>See Also:</h3>   <a
+         * <p>Registers an existing Amazon SageMaker endpoint with Amazon Bedrock
+         * Marketplace, allowing it to be used with Amazon Bedrock APIs.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/RegisterMarketplaceModelEndpoint">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::RegisterMarketplaceModelEndpointOutcome RegisterMarketplaceModelEndpoint(const Model::RegisterMarketplaceModelEndpointRequest& request) const;
+
+        /**
+         * A Callable wrapper for RegisterMarketplaceModelEndpoint that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename RegisterMarketplaceModelEndpointRequestT = Model::RegisterMarketplaceModelEndpointRequest>
+        Model::RegisterMarketplaceModelEndpointOutcomeCallable RegisterMarketplaceModelEndpointCallable(const RegisterMarketplaceModelEndpointRequestT& request) const
+        {
+            return SubmitCallable(&BedrockClient::RegisterMarketplaceModelEndpoint, request);
+        }
+
+        /**
+         * An Async wrapper for RegisterMarketplaceModelEndpoint that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename RegisterMarketplaceModelEndpointRequestT = Model::RegisterMarketplaceModelEndpointRequest>
+        void RegisterMarketplaceModelEndpointAsync(const RegisterMarketplaceModelEndpointRequestT& request, const RegisterMarketplaceModelEndpointResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&BedrockClient::RegisterMarketplaceModelEndpoint, request, handler, context);
+        }
+
+        /**
+         * <p>Stops an evaluation job that is current being created or
+         * running.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/StopEvaluationJob">AWS
          * API Reference</a></p>
          */
@@ -810,7 +1533,9 @@ namespace Bedrock
         /**
          * <p>Stops an active model customization job. For more information, see <a
          * href="https://docs.aws.amazon.com/bedrock/latest/userguide/custom-models.html">Custom
-         * models</a> in the Amazon Bedrock User Guide.</p><p><h3>See Also:</h3>   <a
+         * models</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/StopModelCustomizationJob">AWS
          * API Reference</a></p>
          */
@@ -835,9 +1560,39 @@ namespace Bedrock
         }
 
         /**
+         * <p>Stops a batch inference job. You're only charged for tokens that were already
+         * processed. For more information, see <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/batch-inference-stop.html">Stop
+         * a batch inference job</a>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/StopModelInvocationJob">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::StopModelInvocationJobOutcome StopModelInvocationJob(const Model::StopModelInvocationJobRequest& request) const;
+
+        /**
+         * A Callable wrapper for StopModelInvocationJob that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename StopModelInvocationJobRequestT = Model::StopModelInvocationJobRequest>
+        Model::StopModelInvocationJobOutcomeCallable StopModelInvocationJobCallable(const StopModelInvocationJobRequestT& request) const
+        {
+            return SubmitCallable(&BedrockClient::StopModelInvocationJob, request);
+        }
+
+        /**
+         * An Async wrapper for StopModelInvocationJob that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename StopModelInvocationJobRequestT = Model::StopModelInvocationJobRequest>
+        void StopModelInvocationJobAsync(const StopModelInvocationJobRequestT& request, const StopModelInvocationJobResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&BedrockClient::StopModelInvocationJob, request, handler, context);
+        }
+
+        /**
          * <p>Associate tags with a resource. For more information, see <a
-         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/tagging.html">Tagging
-         * resources</a> in the Amazon Bedrock User Guide.</p><p><h3>See Also:</h3>   <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Tagging
+         * resources</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/TagResource">AWS
          * API Reference</a></p>
          */
@@ -863,8 +1618,10 @@ namespace Bedrock
 
         /**
          * <p>Remove one or more tags from a resource. For more information, see <a
-         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/tagging.html">Tagging
-         * resources</a> in the Amazon Bedrock User Guide.</p><p><h3>See Also:</h3>   <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Tagging
+         * resources</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/UntagResource">AWS
          * API Reference</a></p>
          */
@@ -907,7 +1664,7 @@ namespace Bedrock
          * href="https://docs.aws.amazon.com/bedrock/latest/APIReference/API_GuardrailContentFilterConfig.html">GuardrailContentFilterConfig</a>
          * object in the <code>filtersConfig</code> list pertains to a harmful category.
          * For more information, see <a
-         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-filters">Content
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-content-filters">Content
          * filters</a>. For more information about the fields in a content filter, see <a
          * href="https://docs.aws.amazon.com/bedrock/latest/APIReference/API_GuardrailContentFilterConfig.html">GuardrailContentFilterConfig</a>.</p>
          * <ul> <li> <p>Specify the category in the <code>type</code> field.</p> </li> <li>
@@ -916,10 +1673,7 @@ namespace Bedrock
          * <code>strength</code> field of the <a
          * href="https://docs.aws.amazon.com/bedrock/latest/APIReference/API_GuardrailContentFilterConfig.html">GuardrailContentFilterConfig</a>.</p>
          * </li> </ul> </li> <li> <p>(Optional) For security, include the ARN of a KMS key
-         * in the <code>kmsKeyId</code> field.</p> </li> <li> <p>(Optional) Attach any tags
-         * to the guardrail in the <code>tags</code> object. For more information, see <a
-         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/tagging">Tag
-         * resources</a>.</p> </li> </ul><p><h3>See Also:</h3>   <a
+         * in the <code>kmsKeyId</code> field.</p> </li> </ul><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/UpdateGuardrail">AWS
          * API Reference</a></p>
          */
@@ -944,10 +1698,38 @@ namespace Bedrock
         }
 
         /**
+         * <p>Updates the configuration of an existing endpoint for a model from Amazon
+         * Bedrock Marketplace.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/UpdateMarketplaceModelEndpoint">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateMarketplaceModelEndpointOutcome UpdateMarketplaceModelEndpoint(const Model::UpdateMarketplaceModelEndpointRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateMarketplaceModelEndpoint that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateMarketplaceModelEndpointRequestT = Model::UpdateMarketplaceModelEndpointRequest>
+        Model::UpdateMarketplaceModelEndpointOutcomeCallable UpdateMarketplaceModelEndpointCallable(const UpdateMarketplaceModelEndpointRequestT& request) const
+        {
+            return SubmitCallable(&BedrockClient::UpdateMarketplaceModelEndpoint, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateMarketplaceModelEndpoint that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateMarketplaceModelEndpointRequestT = Model::UpdateMarketplaceModelEndpointRequest>
+        void UpdateMarketplaceModelEndpointAsync(const UpdateMarketplaceModelEndpointRequestT& request, const UpdateMarketplaceModelEndpointResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&BedrockClient::UpdateMarketplaceModelEndpoint, request, handler, context);
+        }
+
+        /**
          * <p>Updates the name or associated model for a Provisioned Throughput. For more
          * information, see <a
          * href="https://docs.aws.amazon.com/bedrock/latest/userguide/prov-throughput.html">Provisioned
-         * Throughput</a> in the Amazon Bedrock User Guide.</p><p><h3>See Also:</h3>   <a
+         * Throughput</a> in the <a
+         * href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-service.html">Amazon
+         * Bedrock User Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/UpdateProvisionedModelThroughput">AWS
          * API Reference</a></p>
          */
@@ -976,11 +1758,7 @@ namespace Bedrock
       std::shared_ptr<BedrockEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<BedrockClient>;
-      void init(const BedrockClientConfiguration& clientConfiguration);
 
-      BedrockClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<BedrockEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Bedrock

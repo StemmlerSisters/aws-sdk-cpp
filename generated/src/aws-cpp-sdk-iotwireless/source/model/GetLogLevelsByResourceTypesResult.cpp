@@ -22,8 +22,8 @@ GetLogLevelsByResourceTypesResult::GetLogLevelsByResourceTypesResult() :
 {
 }
 
-GetLogLevelsByResourceTypesResult::GetLogLevelsByResourceTypesResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_defaultLogLevel(LogLevel::NOT_SET)
+GetLogLevelsByResourceTypesResult::GetLogLevelsByResourceTypesResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetLogLevelsByResourceTypesResult()
 {
   *this = result;
 }
@@ -52,6 +52,15 @@ GetLogLevelsByResourceTypesResult& GetLogLevelsByResourceTypesResult::operator =
     for(unsigned wirelessDeviceLogOptionsIndex = 0; wirelessDeviceLogOptionsIndex < wirelessDeviceLogOptionsJsonList.GetLength(); ++wirelessDeviceLogOptionsIndex)
     {
       m_wirelessDeviceLogOptions.push_back(wirelessDeviceLogOptionsJsonList[wirelessDeviceLogOptionsIndex].AsObject());
+    }
+  }
+
+  if(jsonValue.ValueExists("FuotaTaskLogOptions"))
+  {
+    Aws::Utils::Array<JsonView> fuotaTaskLogOptionsJsonList = jsonValue.GetArray("FuotaTaskLogOptions");
+    for(unsigned fuotaTaskLogOptionsIndex = 0; fuotaTaskLogOptionsIndex < fuotaTaskLogOptionsJsonList.GetLength(); ++fuotaTaskLogOptionsIndex)
+    {
+      m_fuotaTaskLogOptions.push_back(fuotaTaskLogOptionsJsonList[fuotaTaskLogOptionsIndex].AsObject());
     }
   }
 

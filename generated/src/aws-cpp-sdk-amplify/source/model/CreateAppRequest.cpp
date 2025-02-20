@@ -18,6 +18,7 @@ CreateAppRequest::CreateAppRequest() :
     m_repositoryHasBeenSet(false),
     m_platform(Platform::NOT_SET),
     m_platformHasBeenSet(false),
+    m_computeRoleArnHasBeenSet(false),
     m_iamServiceRoleArnHasBeenSet(false),
     m_oauthTokenHasBeenSet(false),
     m_accessTokenHasBeenSet(false),
@@ -36,7 +37,8 @@ CreateAppRequest::CreateAppRequest() :
     m_enableAutoBranchCreation(false),
     m_enableAutoBranchCreationHasBeenSet(false),
     m_autoBranchCreationPatternsHasBeenSet(false),
-    m_autoBranchCreationConfigHasBeenSet(false)
+    m_autoBranchCreationConfigHasBeenSet(false),
+    m_cacheConfigHasBeenSet(false)
 {
 }
 
@@ -65,6 +67,12 @@ Aws::String CreateAppRequest::SerializePayload() const
   if(m_platformHasBeenSet)
   {
    payload.WithString("platform", PlatformMapper::GetNameForPlatform(m_platform));
+  }
+
+  if(m_computeRoleArnHasBeenSet)
+  {
+   payload.WithString("computeRoleArn", m_computeRoleArn);
+
   }
 
   if(m_iamServiceRoleArnHasBeenSet)
@@ -174,6 +182,12 @@ Aws::String CreateAppRequest::SerializePayload() const
   if(m_autoBranchCreationConfigHasBeenSet)
   {
    payload.WithObject("autoBranchCreationConfig", m_autoBranchCreationConfig.Jsonize());
+
+  }
+
+  if(m_cacheConfigHasBeenSet)
+  {
+   payload.WithObject("cacheConfig", m_cacheConfig.Jsonize());
 
   }
 

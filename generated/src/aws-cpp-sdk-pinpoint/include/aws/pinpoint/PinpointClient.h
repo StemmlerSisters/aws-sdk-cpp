@@ -6,24 +6,36 @@
 #pragma once
 #include <aws/pinpoint/Pinpoint_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/pinpoint/PinpointServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/pinpoint/PinpointErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Pinpoint
 {
+  AWS_PINPOINT_API extern const char SERVICE_NAME[];
   /**
    * <p>Doc Engage API - Amazon Pinpoint API</p>
    */
-  class AWS_PINPOINT_API PinpointClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<PinpointClient>
+  class AWS_PINPOINT_API PinpointClient : smithy::client::AwsSmithyClientT<Aws::Pinpoint::SERVICE_NAME,
+      Aws::Pinpoint::PinpointClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      PinpointEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::PinpointErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<PinpointClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Pinpoint"; }
 
       typedef PinpointClientConfiguration ClientConfigurationType;
       typedef PinpointEndpointProvider EndpointProviderType;
@@ -1190,13 +1202,13 @@ namespace Pinpoint
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-2016-12-01/GetApps">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetAppsOutcome GetApps(const Model::GetAppsRequest& request) const;
+        virtual Model::GetAppsOutcome GetApps(const Model::GetAppsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetApps that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetAppsRequestT = Model::GetAppsRequest>
-        Model::GetAppsOutcomeCallable GetAppsCallable(const GetAppsRequestT& request) const
+        Model::GetAppsOutcomeCallable GetAppsCallable(const GetAppsRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointClient::GetApps, request);
         }
@@ -1205,7 +1217,7 @@ namespace Pinpoint
          * An Async wrapper for GetApps that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetAppsRequestT = Model::GetAppsRequest>
-        void GetAppsAsync(const GetAppsRequestT& request, const GetAppsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetAppsAsync(const GetAppsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetAppsRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointClient::GetApps, request, handler, context);
         }
@@ -1945,13 +1957,13 @@ namespace Pinpoint
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-2016-12-01/GetRecommenderConfigurations">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetRecommenderConfigurationsOutcome GetRecommenderConfigurations(const Model::GetRecommenderConfigurationsRequest& request) const;
+        virtual Model::GetRecommenderConfigurationsOutcome GetRecommenderConfigurations(const Model::GetRecommenderConfigurationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetRecommenderConfigurations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetRecommenderConfigurationsRequestT = Model::GetRecommenderConfigurationsRequest>
-        Model::GetRecommenderConfigurationsOutcomeCallable GetRecommenderConfigurationsCallable(const GetRecommenderConfigurationsRequestT& request) const
+        Model::GetRecommenderConfigurationsOutcomeCallable GetRecommenderConfigurationsCallable(const GetRecommenderConfigurationsRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointClient::GetRecommenderConfigurations, request);
         }
@@ -1960,7 +1972,7 @@ namespace Pinpoint
          * An Async wrapper for GetRecommenderConfigurations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetRecommenderConfigurationsRequestT = Model::GetRecommenderConfigurationsRequest>
-        void GetRecommenderConfigurationsAsync(const GetRecommenderConfigurationsRequestT& request, const GetRecommenderConfigurationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetRecommenderConfigurationsAsync(const GetRecommenderConfigurationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetRecommenderConfigurationsRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointClient::GetRecommenderConfigurations, request, handler, context);
         }
@@ -2341,13 +2353,13 @@ namespace Pinpoint
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-2016-12-01/ListTemplates">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListTemplatesOutcome ListTemplates(const Model::ListTemplatesRequest& request) const;
+        virtual Model::ListTemplatesOutcome ListTemplates(const Model::ListTemplatesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListTemplates that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListTemplatesRequestT = Model::ListTemplatesRequest>
-        Model::ListTemplatesOutcomeCallable ListTemplatesCallable(const ListTemplatesRequestT& request) const
+        Model::ListTemplatesOutcomeCallable ListTemplatesCallable(const ListTemplatesRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointClient::ListTemplates, request);
         }
@@ -2356,7 +2368,7 @@ namespace Pinpoint
          * An Async wrapper for ListTemplates that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListTemplatesRequestT = Model::ListTemplatesRequest>
-        void ListTemplatesAsync(const ListTemplatesRequestT& request, const ListTemplatesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListTemplatesAsync(const ListTemplatesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListTemplatesRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointClient::ListTemplates, request, handler, context);
         }
@@ -3256,11 +3268,7 @@ namespace Pinpoint
       std::shared_ptr<PinpointEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<PinpointClient>;
-      void init(const PinpointClientConfiguration& clientConfiguration);
 
-      PinpointClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<PinpointEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Pinpoint

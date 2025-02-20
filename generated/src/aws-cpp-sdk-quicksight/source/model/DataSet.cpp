@@ -37,30 +37,13 @@ DataSet::DataSet() :
     m_rowLevelPermissionTagConfigurationHasBeenSet(false),
     m_columnLevelPermissionRulesHasBeenSet(false),
     m_dataSetUsageConfigurationHasBeenSet(false),
-    m_datasetParametersHasBeenSet(false)
+    m_datasetParametersHasBeenSet(false),
+    m_performanceConfigurationHasBeenSet(false)
 {
 }
 
-DataSet::DataSet(JsonView jsonValue) : 
-    m_arnHasBeenSet(false),
-    m_dataSetIdHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_createdTimeHasBeenSet(false),
-    m_lastUpdatedTimeHasBeenSet(false),
-    m_physicalTableMapHasBeenSet(false),
-    m_logicalTableMapHasBeenSet(false),
-    m_outputColumnsHasBeenSet(false),
-    m_importMode(DataSetImportMode::NOT_SET),
-    m_importModeHasBeenSet(false),
-    m_consumedSpiceCapacityInBytes(0),
-    m_consumedSpiceCapacityInBytesHasBeenSet(false),
-    m_columnGroupsHasBeenSet(false),
-    m_fieldFoldersHasBeenSet(false),
-    m_rowLevelPermissionDataSetHasBeenSet(false),
-    m_rowLevelPermissionTagConfigurationHasBeenSet(false),
-    m_columnLevelPermissionRulesHasBeenSet(false),
-    m_dataSetUsageConfigurationHasBeenSet(false),
-    m_datasetParametersHasBeenSet(false)
+DataSet::DataSet(JsonView jsonValue)
+  : DataSet()
 {
   *this = jsonValue;
 }
@@ -207,6 +190,13 @@ DataSet& DataSet::operator =(JsonView jsonValue)
     m_datasetParametersHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("PerformanceConfiguration"))
+  {
+    m_performanceConfiguration = jsonValue.GetObject("PerformanceConfiguration");
+
+    m_performanceConfigurationHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -345,6 +335,12 @@ JsonValue DataSet::Jsonize() const
      datasetParametersJsonList[datasetParametersIndex].AsObject(m_datasetParameters[datasetParametersIndex].Jsonize());
    }
    payload.WithArray("DatasetParameters", std::move(datasetParametersJsonList));
+
+  }
+
+  if(m_performanceConfigurationHasBeenSet)
+  {
+   payload.WithObject("PerformanceConfiguration", m_performanceConfiguration.Jsonize());
 
   }
 

@@ -32,15 +32,8 @@ VCpuInfo::VCpuInfo() :
 {
 }
 
-VCpuInfo::VCpuInfo(const XmlNode& xmlNode) : 
-    m_defaultVCpus(0),
-    m_defaultVCpusHasBeenSet(false),
-    m_defaultCores(0),
-    m_defaultCoresHasBeenSet(false),
-    m_defaultThreadsPerCore(0),
-    m_defaultThreadsPerCoreHasBeenSet(false),
-    m_validCoresHasBeenSet(false),
-    m_validThreadsPerCoreHasBeenSet(false)
+VCpuInfo::VCpuInfo(const XmlNode& xmlNode)
+  : VCpuInfo()
 {
   *this = xmlNode;
 }
@@ -75,7 +68,7 @@ VCpuInfo& VCpuInfo::operator =(const XmlNode& xmlNode)
       XmlNode validCoresMember = validCoresNode.FirstChild("item");
       while(!validCoresMember.IsNull())
       {
-         m_validCores.push_back(StringUtils::ConvertToInt32(StringUtils::Trim(validCoresMember.GetText().c_str()).c_str()));
+        m_validCores.push_back(StringUtils::ConvertToInt32(StringUtils::Trim(validCoresMember.GetText().c_str()).c_str()));
         validCoresMember = validCoresMember.NextNode("item");
       }
 
@@ -87,7 +80,7 @@ VCpuInfo& VCpuInfo::operator =(const XmlNode& xmlNode)
       XmlNode validThreadsPerCoreMember = validThreadsPerCoreNode.FirstChild("item");
       while(!validThreadsPerCoreMember.IsNull())
       {
-         m_validThreadsPerCore.push_back(StringUtils::ConvertToInt32(StringUtils::Trim(validThreadsPerCoreMember.GetText().c_str()).c_str()));
+        m_validThreadsPerCore.push_back(StringUtils::ConvertToInt32(StringUtils::Trim(validThreadsPerCoreMember.GetText().c_str()).c_str()));
         validThreadsPerCoreMember = validThreadsPerCoreMember.NextNode("item");
       }
 

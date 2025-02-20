@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/pinpoint-email/PinpointEmail_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/pinpoint-email/PinpointEmailServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/pinpoint-email/PinpointEmailErrorMarshaller.h>
 
 namespace Aws
 {
 namespace PinpointEmail
 {
+  AWS_PINPOINTEMAIL_API extern const char SERVICE_NAME[];
   /**
    * <fullname>Amazon Pinpoint Email Service</fullname> <p>Welcome to the <i>Amazon
    * Pinpoint Email API Reference</i>. This guide provides information about the
@@ -51,12 +55,20 @@ namespace PinpointEmail
    * href="http://aws.amazon.com/about-aws/global-infrastructure/">AWS Global
    * Infrastructure</a>.</p>
    */
-  class AWS_PINPOINTEMAIL_API PinpointEmailClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<PinpointEmailClient>
+  class AWS_PINPOINTEMAIL_API PinpointEmailClient : smithy::client::AwsSmithyClientT<Aws::PinpointEmail::SERVICE_NAME,
+      Aws::PinpointEmail::PinpointEmailClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      PinpointEmailEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::PinpointEmailErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<PinpointEmailClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Pinpoint Email"; }
 
       typedef PinpointEmailClientConfiguration ClientConfigurationType;
       typedef PinpointEmailEndpointProvider EndpointProviderType;
@@ -386,13 +398,13 @@ namespace PinpointEmail
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-email-2018-07-26/GetAccount">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetAccountOutcome GetAccount(const Model::GetAccountRequest& request) const;
+        virtual Model::GetAccountOutcome GetAccount(const Model::GetAccountRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetAccount that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetAccountRequestT = Model::GetAccountRequest>
-        Model::GetAccountOutcomeCallable GetAccountCallable(const GetAccountRequestT& request) const
+        Model::GetAccountOutcomeCallable GetAccountCallable(const GetAccountRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointEmailClient::GetAccount, request);
         }
@@ -401,7 +413,7 @@ namespace PinpointEmail
          * An Async wrapper for GetAccount that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetAccountRequestT = Model::GetAccountRequest>
-        void GetAccountAsync(const GetAccountRequestT& request, const GetAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetAccountAsync(const GetAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetAccountRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointEmailClient::GetAccount, request, handler, context);
         }
@@ -528,13 +540,13 @@ namespace PinpointEmail
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-email-2018-07-26/GetDedicatedIps">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetDedicatedIpsOutcome GetDedicatedIps(const Model::GetDedicatedIpsRequest& request) const;
+        virtual Model::GetDedicatedIpsOutcome GetDedicatedIps(const Model::GetDedicatedIpsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetDedicatedIps that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetDedicatedIpsRequestT = Model::GetDedicatedIpsRequest>
-        Model::GetDedicatedIpsOutcomeCallable GetDedicatedIpsCallable(const GetDedicatedIpsRequestT& request) const
+        Model::GetDedicatedIpsOutcomeCallable GetDedicatedIpsCallable(const GetDedicatedIpsRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointEmailClient::GetDedicatedIps, request);
         }
@@ -543,7 +555,7 @@ namespace PinpointEmail
          * An Async wrapper for GetDedicatedIps that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetDedicatedIpsRequestT = Model::GetDedicatedIpsRequest>
-        void GetDedicatedIpsAsync(const GetDedicatedIpsRequestT& request, const GetDedicatedIpsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetDedicatedIpsAsync(const GetDedicatedIpsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetDedicatedIpsRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointEmailClient::GetDedicatedIps, request, handler, context);
         }
@@ -562,13 +574,13 @@ namespace PinpointEmail
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-email-2018-07-26/GetDeliverabilityDashboardOptions">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetDeliverabilityDashboardOptionsOutcome GetDeliverabilityDashboardOptions(const Model::GetDeliverabilityDashboardOptionsRequest& request) const;
+        virtual Model::GetDeliverabilityDashboardOptionsOutcome GetDeliverabilityDashboardOptions(const Model::GetDeliverabilityDashboardOptionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetDeliverabilityDashboardOptions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetDeliverabilityDashboardOptionsRequestT = Model::GetDeliverabilityDashboardOptionsRequest>
-        Model::GetDeliverabilityDashboardOptionsOutcomeCallable GetDeliverabilityDashboardOptionsCallable(const GetDeliverabilityDashboardOptionsRequestT& request) const
+        Model::GetDeliverabilityDashboardOptionsOutcomeCallable GetDeliverabilityDashboardOptionsCallable(const GetDeliverabilityDashboardOptionsRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointEmailClient::GetDeliverabilityDashboardOptions, request);
         }
@@ -577,7 +589,7 @@ namespace PinpointEmail
          * An Async wrapper for GetDeliverabilityDashboardOptions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetDeliverabilityDashboardOptionsRequestT = Model::GetDeliverabilityDashboardOptionsRequest>
-        void GetDeliverabilityDashboardOptionsAsync(const GetDeliverabilityDashboardOptionsRequestT& request, const GetDeliverabilityDashboardOptionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetDeliverabilityDashboardOptionsAsync(const GetDeliverabilityDashboardOptionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetDeliverabilityDashboardOptionsRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointEmailClient::GetDeliverabilityDashboardOptions, request, handler, context);
         }
@@ -702,13 +714,13 @@ namespace PinpointEmail
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-email-2018-07-26/ListConfigurationSets">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListConfigurationSetsOutcome ListConfigurationSets(const Model::ListConfigurationSetsRequest& request) const;
+        virtual Model::ListConfigurationSetsOutcome ListConfigurationSets(const Model::ListConfigurationSetsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListConfigurationSets that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListConfigurationSetsRequestT = Model::ListConfigurationSetsRequest>
-        Model::ListConfigurationSetsOutcomeCallable ListConfigurationSetsCallable(const ListConfigurationSetsRequestT& request) const
+        Model::ListConfigurationSetsOutcomeCallable ListConfigurationSetsCallable(const ListConfigurationSetsRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointEmailClient::ListConfigurationSets, request);
         }
@@ -717,7 +729,7 @@ namespace PinpointEmail
          * An Async wrapper for ListConfigurationSets that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListConfigurationSetsRequestT = Model::ListConfigurationSetsRequest>
-        void ListConfigurationSetsAsync(const ListConfigurationSetsRequestT& request, const ListConfigurationSetsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListConfigurationSetsAsync(const ListConfigurationSetsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListConfigurationSetsRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointEmailClient::ListConfigurationSets, request, handler, context);
         }
@@ -728,13 +740,13 @@ namespace PinpointEmail
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-email-2018-07-26/ListDedicatedIpPools">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDedicatedIpPoolsOutcome ListDedicatedIpPools(const Model::ListDedicatedIpPoolsRequest& request) const;
+        virtual Model::ListDedicatedIpPoolsOutcome ListDedicatedIpPools(const Model::ListDedicatedIpPoolsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDedicatedIpPools that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDedicatedIpPoolsRequestT = Model::ListDedicatedIpPoolsRequest>
-        Model::ListDedicatedIpPoolsOutcomeCallable ListDedicatedIpPoolsCallable(const ListDedicatedIpPoolsRequestT& request) const
+        Model::ListDedicatedIpPoolsOutcomeCallable ListDedicatedIpPoolsCallable(const ListDedicatedIpPoolsRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointEmailClient::ListDedicatedIpPools, request);
         }
@@ -743,7 +755,7 @@ namespace PinpointEmail
          * An Async wrapper for ListDedicatedIpPools that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDedicatedIpPoolsRequestT = Model::ListDedicatedIpPoolsRequest>
-        void ListDedicatedIpPoolsAsync(const ListDedicatedIpPoolsRequestT& request, const ListDedicatedIpPoolsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDedicatedIpPoolsAsync(const ListDedicatedIpPoolsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDedicatedIpPoolsRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointEmailClient::ListDedicatedIpPools, request, handler, context);
         }
@@ -756,13 +768,13 @@ namespace PinpointEmail
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-email-2018-07-26/ListDeliverabilityTestReports">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDeliverabilityTestReportsOutcome ListDeliverabilityTestReports(const Model::ListDeliverabilityTestReportsRequest& request) const;
+        virtual Model::ListDeliverabilityTestReportsOutcome ListDeliverabilityTestReports(const Model::ListDeliverabilityTestReportsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDeliverabilityTestReports that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDeliverabilityTestReportsRequestT = Model::ListDeliverabilityTestReportsRequest>
-        Model::ListDeliverabilityTestReportsOutcomeCallable ListDeliverabilityTestReportsCallable(const ListDeliverabilityTestReportsRequestT& request) const
+        Model::ListDeliverabilityTestReportsOutcomeCallable ListDeliverabilityTestReportsCallable(const ListDeliverabilityTestReportsRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointEmailClient::ListDeliverabilityTestReports, request);
         }
@@ -771,7 +783,7 @@ namespace PinpointEmail
          * An Async wrapper for ListDeliverabilityTestReports that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDeliverabilityTestReportsRequestT = Model::ListDeliverabilityTestReportsRequest>
-        void ListDeliverabilityTestReportsAsync(const ListDeliverabilityTestReportsRequestT& request, const ListDeliverabilityTestReportsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDeliverabilityTestReportsAsync(const ListDeliverabilityTestReportsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDeliverabilityTestReportsRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointEmailClient::ListDeliverabilityTestReports, request, handler, context);
         }
@@ -813,13 +825,13 @@ namespace PinpointEmail
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-email-2018-07-26/ListEmailIdentities">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListEmailIdentitiesOutcome ListEmailIdentities(const Model::ListEmailIdentitiesRequest& request) const;
+        virtual Model::ListEmailIdentitiesOutcome ListEmailIdentities(const Model::ListEmailIdentitiesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListEmailIdentities that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListEmailIdentitiesRequestT = Model::ListEmailIdentitiesRequest>
-        Model::ListEmailIdentitiesOutcomeCallable ListEmailIdentitiesCallable(const ListEmailIdentitiesRequestT& request) const
+        Model::ListEmailIdentitiesOutcomeCallable ListEmailIdentitiesCallable(const ListEmailIdentitiesRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointEmailClient::ListEmailIdentities, request);
         }
@@ -828,7 +840,7 @@ namespace PinpointEmail
          * An Async wrapper for ListEmailIdentities that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListEmailIdentitiesRequestT = Model::ListEmailIdentitiesRequest>
-        void ListEmailIdentitiesAsync(const ListEmailIdentitiesRequestT& request, const ListEmailIdentitiesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListEmailIdentitiesAsync(const ListEmailIdentitiesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListEmailIdentitiesRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointEmailClient::ListEmailIdentities, request, handler, context);
         }
@@ -869,13 +881,13 @@ namespace PinpointEmail
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-email-2018-07-26/PutAccountDedicatedIpWarmupAttributes">AWS
          * API Reference</a></p>
          */
-        virtual Model::PutAccountDedicatedIpWarmupAttributesOutcome PutAccountDedicatedIpWarmupAttributes(const Model::PutAccountDedicatedIpWarmupAttributesRequest& request) const;
+        virtual Model::PutAccountDedicatedIpWarmupAttributesOutcome PutAccountDedicatedIpWarmupAttributes(const Model::PutAccountDedicatedIpWarmupAttributesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for PutAccountDedicatedIpWarmupAttributes that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename PutAccountDedicatedIpWarmupAttributesRequestT = Model::PutAccountDedicatedIpWarmupAttributesRequest>
-        Model::PutAccountDedicatedIpWarmupAttributesOutcomeCallable PutAccountDedicatedIpWarmupAttributesCallable(const PutAccountDedicatedIpWarmupAttributesRequestT& request) const
+        Model::PutAccountDedicatedIpWarmupAttributesOutcomeCallable PutAccountDedicatedIpWarmupAttributesCallable(const PutAccountDedicatedIpWarmupAttributesRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointEmailClient::PutAccountDedicatedIpWarmupAttributes, request);
         }
@@ -884,7 +896,7 @@ namespace PinpointEmail
          * An Async wrapper for PutAccountDedicatedIpWarmupAttributes that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename PutAccountDedicatedIpWarmupAttributesRequestT = Model::PutAccountDedicatedIpWarmupAttributesRequest>
-        void PutAccountDedicatedIpWarmupAttributesAsync(const PutAccountDedicatedIpWarmupAttributesRequestT& request, const PutAccountDedicatedIpWarmupAttributesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void PutAccountDedicatedIpWarmupAttributesAsync(const PutAccountDedicatedIpWarmupAttributesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const PutAccountDedicatedIpWarmupAttributesRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointEmailClient::PutAccountDedicatedIpWarmupAttributes, request, handler, context);
         }
@@ -895,13 +907,13 @@ namespace PinpointEmail
          * href="http://docs.aws.amazon.com/goto/WebAPI/pinpoint-email-2018-07-26/PutAccountSendingAttributes">AWS
          * API Reference</a></p>
          */
-        virtual Model::PutAccountSendingAttributesOutcome PutAccountSendingAttributes(const Model::PutAccountSendingAttributesRequest& request) const;
+        virtual Model::PutAccountSendingAttributesOutcome PutAccountSendingAttributes(const Model::PutAccountSendingAttributesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for PutAccountSendingAttributes that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename PutAccountSendingAttributesRequestT = Model::PutAccountSendingAttributesRequest>
-        Model::PutAccountSendingAttributesOutcomeCallable PutAccountSendingAttributesCallable(const PutAccountSendingAttributesRequestT& request) const
+        Model::PutAccountSendingAttributesOutcomeCallable PutAccountSendingAttributesCallable(const PutAccountSendingAttributesRequestT& request = {}) const
         {
             return SubmitCallable(&PinpointEmailClient::PutAccountSendingAttributes, request);
         }
@@ -910,7 +922,7 @@ namespace PinpointEmail
          * An Async wrapper for PutAccountSendingAttributes that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename PutAccountSendingAttributesRequestT = Model::PutAccountSendingAttributesRequest>
-        void PutAccountSendingAttributesAsync(const PutAccountSendingAttributesRequestT& request, const PutAccountSendingAttributesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void PutAccountSendingAttributesAsync(const PutAccountSendingAttributesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const PutAccountSendingAttributesRequestT& request = {}) const
         {
             return SubmitAsync(&PinpointEmailClient::PutAccountSendingAttributes, request, handler, context);
         }
@@ -1326,11 +1338,7 @@ namespace PinpointEmail
       std::shared_ptr<PinpointEmailEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<PinpointEmailClient>;
-      void init(const PinpointEmailClientConfiguration& clientConfiguration);
 
-      PinpointEmailClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<PinpointEmailEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace PinpointEmail

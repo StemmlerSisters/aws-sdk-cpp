@@ -25,11 +25,8 @@ GetFuotaTaskResult::GetFuotaTaskResult() :
 {
 }
 
-GetFuotaTaskResult::GetFuotaTaskResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_status(FuotaTaskStatus::NOT_SET),
-    m_redundancyPercent(0),
-    m_fragmentSizeBytes(0),
-    m_fragmentIntervalMS(0)
+GetFuotaTaskResult::GetFuotaTaskResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetFuotaTaskResult()
 {
   *this = result;
 }
@@ -106,6 +103,12 @@ GetFuotaTaskResult& GetFuotaTaskResult::operator =(const Aws::AmazonWebServiceRe
   if(jsonValue.ValueExists("FragmentIntervalMS"))
   {
     m_fragmentIntervalMS = jsonValue.GetInteger("FragmentIntervalMS");
+
+  }
+
+  if(jsonValue.ValueExists("Descriptor"))
+  {
+    m_descriptor = jsonValue.GetString("Descriptor");
 
   }
 

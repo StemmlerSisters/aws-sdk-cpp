@@ -28,21 +28,14 @@ VoiceConnector::VoiceConnector() :
     m_requireEncryptionHasBeenSet(false),
     m_createdTimestampHasBeenSet(false),
     m_updatedTimestampHasBeenSet(false),
-    m_voiceConnectorArnHasBeenSet(false)
+    m_voiceConnectorArnHasBeenSet(false),
+    m_integrationType(VoiceConnectorIntegrationType::NOT_SET),
+    m_integrationTypeHasBeenSet(false)
 {
 }
 
-VoiceConnector::VoiceConnector(JsonView jsonValue) : 
-    m_voiceConnectorIdHasBeenSet(false),
-    m_awsRegion(VoiceConnectorAwsRegion::NOT_SET),
-    m_awsRegionHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_outboundHostNameHasBeenSet(false),
-    m_requireEncryption(false),
-    m_requireEncryptionHasBeenSet(false),
-    m_createdTimestampHasBeenSet(false),
-    m_updatedTimestampHasBeenSet(false),
-    m_voiceConnectorArnHasBeenSet(false)
+VoiceConnector::VoiceConnector(JsonView jsonValue)
+  : VoiceConnector()
 {
   *this = jsonValue;
 }
@@ -105,6 +98,13 @@ VoiceConnector& VoiceConnector::operator =(JsonView jsonValue)
     m_voiceConnectorArnHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("IntegrationType"))
+  {
+    m_integrationType = VoiceConnectorIntegrationTypeMapper::GetVoiceConnectorIntegrationTypeForName(jsonValue.GetString("IntegrationType"));
+
+    m_integrationTypeHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -155,6 +155,11 @@ JsonValue VoiceConnector::Jsonize() const
   {
    payload.WithString("VoiceConnectorArn", m_voiceConnectorArn);
 
+  }
+
+  if(m_integrationTypeHasBeenSet)
+  {
+   payload.WithString("IntegrationType", VoiceConnectorIntegrationTypeMapper::GetNameForVoiceConnectorIntegrationType(m_integrationType));
   }
 
   return payload;

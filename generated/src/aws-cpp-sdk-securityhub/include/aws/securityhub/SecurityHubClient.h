@@ -6,25 +6,29 @@
 #pragma once
 #include <aws/securityhub/SecurityHub_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/securityhub/SecurityHubServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/securityhub/SecurityHubErrorMarshaller.h>
 
 namespace Aws
 {
 namespace SecurityHub
 {
+  AWS_SECURITYHUB_API extern const char SERVICE_NAME[];
   /**
    * <p>Security Hub provides you with a comprehensive view of your security state in
    * Amazon Web Services and helps you assess your Amazon Web Services environment
    * against security industry standards and best practices.</p> <p>Security Hub
-   * collects security data across Amazon Web Services accounts, Amazon Web Services,
-   * and supported third-party products and helps you analyze your security trends
-   * and identify the highest priority security issues.</p> <p>To help you manage the
-   * security state of your organization, Security Hub supports multiple security
-   * standards. These include the Amazon Web Services Foundational Security Best
-   * Practices (FSBP) standard developed by Amazon Web Services, and external
+   * collects security data across Amazon Web Services accounts, Amazon Web Services
+   * services, and supported third-party products and helps you analyze your security
+   * trends and identify the highest priority security issues.</p> <p>To help you
+   * manage the security state of your organization, Security Hub supports multiple
+   * security standards. These include the Amazon Web Services Foundational Security
+   * Best Practices (FSBP) standard developed by Amazon Web Services, and external
    * compliance frameworks such as the Center for Internet Security (CIS), the
    * Payment Card Industry Data Security Standard (PCI DSS), and the National
    * Institute of Standards and Technology (NIST). Each standard includes several
@@ -32,13 +36,13 @@ namespace SecurityHub
    * Hub runs checks against security controls and generates control findings to help
    * you assess your compliance against security best practices.</p> <p>In addition
    * to generating control findings, Security Hub also receives findings from other
-   * Amazon Web Services, such as Amazon GuardDuty and Amazon Inspector, and
+   * Amazon Web Services services, such as Amazon GuardDuty and Amazon Inspector, and
    * supported third-party products. This gives you a single pane of glass into a
    * variety of security-related issues. You can also send Security Hub findings to
-   * other Amazon Web Services and supported third-party products.</p> <p>Security
-   * Hub offers automation features that help you triage and remediate security
-   * issues. For example, you can use automation rules to automatically update
-   * critical findings when a security check fails. You can also leverage the
+   * other Amazon Web Services services and supported third-party products.</p>
+   * <p>Security Hub offers automation features that help you triage and remediate
+   * security issues. For example, you can use automation rules to automatically
+   * update critical findings when a security check fails. You can also leverage the
    * integration with Amazon EventBridge to trigger automatic responses to specific
    * findings.</p> <p>This guide, the <i>Security Hub API Reference</i>, provides
    * information about the Security Hub API. This includes supported resources, HTTP
@@ -48,15 +52,15 @@ namespace SecurityHub
    * <i>Security Hub User Guide</i> </a>. The user guide explains key concepts and
    * provides procedures that demonstrate how to use Security Hub features. It also
    * provides information about topics such as integrating Security Hub with other
-   * Amazon Web Services.</p> <p>In addition to interacting with Security Hub by
-   * making calls to the Security Hub API, you can use a current version of an Amazon
-   * Web Services command line tool or SDK. Amazon Web Services provides tools and
-   * SDKs that consist of libraries and sample code for various languages and
+   * Amazon Web Services services.</p> <p>In addition to interacting with Security
+   * Hub by making calls to the Security Hub API, you can use a current version of an
+   * Amazon Web Services command line tool or SDK. Amazon Web Services provides tools
+   * and SDKs that consist of libraries and sample code for various languages and
    * platforms, such as PowerShell, Java, Go, Python, C++, and .NET. These tools and
    * SDKs provide convenient, programmatic access to Security Hub and other Amazon
-   * Web Services . They also handle tasks such as signing requests, managing errors,
-   * and retrying requests automatically. For information about installing and using
-   * the Amazon Web Services tools and SDKs, see <a
+   * Web Services services . They also handle tasks such as signing requests,
+   * managing errors, and retrying requests automatically. For information about
+   * installing and using the Amazon Web Services tools and SDKs, see <a
    * href="http://aws.amazon.com/developer/tools/">Tools to Build on Amazon Web
    * Services</a>.</p> <p>With the exception of operations that are related to
    * central configuration, Security Hub API requests are executed only in the Amazon
@@ -85,12 +89,20 @@ namespace SecurityHub
    * <code>RateLimit</code> of 10 requests per second. <code>BurstLimit</code> of 30
    * requests per second.</p> </li> </ul>
    */
-  class AWS_SECURITYHUB_API SecurityHubClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<SecurityHubClient>
+  class AWS_SECURITYHUB_API SecurityHubClient : smithy::client::AwsSmithyClientT<Aws::SecurityHub::SERVICE_NAME,
+      Aws::SecurityHub::SecurityHubClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      SecurityHubEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::SecurityHubErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<SecurityHubClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "SecurityHub"; }
 
       typedef SecurityHubClientConfiguration ClientConfigurationType;
       typedef SecurityHubEndpointProvider EndpointProviderType;
@@ -144,12 +156,17 @@ namespace SecurityHub
         virtual ~SecurityHubClient();
 
         /**
-         * <p>Accepts the invitation to be a member account and be monitored by the
-         * Security Hub administrator account that the invitation was sent from.</p>
-         * <p>This operation is only used by member accounts that are not added through
-         * Organizations.</p> <p>When the member account accepts the invitation, permission
-         * is granted to the administrator account to view findings generated in the member
-         * account.</p><p><h3>See Also:</h3>   <a
+         *  <p>We recommend using Organizations instead of Security Hub invitations
+         * to manage your member accounts. For information, see <a
+         * href="https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-accounts-orgs.html">Managing
+         * Security Hub administrator and member accounts with Organizations</a> in the
+         * <i>Security Hub User Guide</i>.</p>  <p>Accepts the invitation to be a
+         * member account and be monitored by the Security Hub administrator account that
+         * the invitation was sent from.</p> <p>This operation is only used by member
+         * accounts that are not added through Organizations.</p> <p>When the member
+         * account accepts the invitation, permission is granted to the administrator
+         * account to view findings generated in the member account.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/AcceptAdministratorInvitation">AWS
          * API Reference</a></p>
          */
@@ -448,7 +465,7 @@ namespace SecurityHub
          * investigation into a finding. Requested by administrator accounts or member
          * accounts. Administrator accounts can update findings for their account and their
          * member accounts. Member accounts can update findings for their account.</p>
-         * <p>Updates from <code>BatchUpdateFindings</code> do not affect the value of
+         * <p>Updates from <code>BatchUpdateFindings</code> don't affect the value of
          * <code>UpdatedAt</code> for a finding.</p> <p>Administrator and member accounts
          * can use <code>BatchUpdateFindings</code> to update the following finding fields
          * and objects.</p> <ul> <li> <p> <code>Confidence</code> </p> </li> <li> <p>
@@ -593,11 +610,13 @@ namespace SecurityHub
         }
 
         /**
-         * <p>Used to enable finding aggregation. Must be called from the aggregation
-         * Region.</p> <p>For more details about cross-Region replication, see <a
-         * href="https://docs.aws.amazon.com/securityhub/latest/userguide/finding-aggregation.html">Configuring
-         * finding aggregation</a> in the <i>Security Hub User Guide</i>. </p><p><h3>See
-         * Also:</h3>   <a
+         *  <p>The <i>aggregation Region</i> is now called the <i>home
+         * Region</i>.</p>  <p>Used to enable cross-Region aggregation. This
+         * operation can be invoked from the home Region only.</p> <p>For information about
+         * how cross-Region aggregation works, see <a
+         * href="https://docs.aws.amazon.com/securityhub/latest/userguide/finding-aggregation.html">Understanding
+         * cross-Region aggregation in Security Hub</a> in the <i>Security Hub User
+         * Guide</i>. </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/CreateFindingAggregator">AWS
          * API Reference</a></p>
          */
@@ -666,7 +685,7 @@ namespace SecurityHub
          * invitation to the member account. To send the invitation, you use the
          * <code>InviteMembers</code> operation. If the account owner accepts the
          * invitation, the account becomes a member account in Security Hub.</p>
-         * <p>Accounts that are managed using Organizations do not receive an invitation.
+         * <p>Accounts that are managed using Organizations don't receive an invitation.
          * They automatically become a member account in Security Hub.</p> <ul> <li> <p>If
          * the organization account does not have Security Hub enabled, then Security Hub
          * and the default standards are automatically enabled. Note that Security Hub
@@ -704,10 +723,15 @@ namespace SecurityHub
         }
 
         /**
-         * <p>Declines invitations to become a member account.</p> <p>A prospective member
-         * account uses this operation to decline an invitation to become a member.</p>
-         * <p>This operation is only called by member accounts that aren't part of an
-         * organization. Organization accounts don't receive invitations.</p><p><h3>See
+         *  <p>We recommend using Organizations instead of Security Hub invitations
+         * to manage your member accounts. For information, see <a
+         * href="https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-accounts-orgs.html">Managing
+         * Security Hub administrator and member accounts with Organizations</a> in the
+         * <i>Security Hub User Guide</i>.</p>  <p>Declines invitations to become a
+         * Security Hub member account.</p> <p>A prospective member account uses this
+         * operation to decline an invitation to become a member.</p> <p>Only member
+         * accounts that aren't part of an Amazon Web Services organization should use this
+         * operation. Organization accounts don't receive invitations.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/DeclineInvitations">AWS
          * API Reference</a></p>
@@ -790,10 +814,13 @@ namespace SecurityHub
         }
 
         /**
-         * <p>Deletes a finding aggregator. When you delete the finding aggregator, you
-         * stop finding aggregation.</p> <p>When you stop finding aggregation, findings
-         * that were already aggregated to the aggregation Region are still visible from
-         * the aggregation Region. New findings and finding updates are not aggregated.
+         *  <p>The <i>aggregation Region</i> is now called the <i>home
+         * Region</i>.</p>  <p>Deletes a finding aggregator. When you delete the
+         * finding aggregator, you stop cross-Region aggregation. Finding replication stops
+         * occurring from the linked Regions to the home Region.</p> <p>When you stop
+         * cross-Region aggregation, findings that were already replicated and sent to the
+         * home Region are still visible from the home Region. However, new findings and
+         * finding updates are no longer replicated and sent to the home Region.
          * </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/DeleteFindingAggregator">AWS
          * API Reference</a></p>
@@ -845,12 +872,17 @@ namespace SecurityHub
         }
 
         /**
-         * <p>Deletes invitations received by the Amazon Web Services account to become a
-         * member account.</p> <p>A Security Hub administrator account can use this
-         * operation to delete invitations sent to one or more member accounts.</p> <p>This
-         * operation is only used to delete invitations that are sent to member accounts
-         * that aren't part of an organization. Organization accounts don't receive
-         * invitations.</p><p><h3>See Also:</h3>   <a
+         *  <p>We recommend using Organizations instead of Security Hub invitations
+         * to manage your member accounts. For information, see <a
+         * href="https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-accounts-orgs.html">Managing
+         * Security Hub administrator and member accounts with Organizations</a> in the
+         * <i>Security Hub User Guide</i>.</p>  <p>Deletes invitations to become a
+         * Security Hub member account.</p> <p>A Security Hub administrator account can use
+         * this operation to delete invitations sent to one or more prospective member
+         * accounts.</p> <p>This operation is only used to delete invitations that are sent
+         * to prospective member accounts that aren't part of an Amazon Web Services
+         * organization. Organization accounts don't receive invitations.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/DeleteInvitations">AWS
          * API Reference</a></p>
          */
@@ -908,13 +940,13 @@ namespace SecurityHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/DescribeActionTargets">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeActionTargetsOutcome DescribeActionTargets(const Model::DescribeActionTargetsRequest& request) const;
+        virtual Model::DescribeActionTargetsOutcome DescribeActionTargets(const Model::DescribeActionTargetsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeActionTargets that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeActionTargetsRequestT = Model::DescribeActionTargetsRequest>
-        Model::DescribeActionTargetsOutcomeCallable DescribeActionTargetsCallable(const DescribeActionTargetsRequestT& request) const
+        Model::DescribeActionTargetsOutcomeCallable DescribeActionTargetsCallable(const DescribeActionTargetsRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::DescribeActionTargets, request);
         }
@@ -923,7 +955,7 @@ namespace SecurityHub
          * An Async wrapper for DescribeActionTargets that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeActionTargetsRequestT = Model::DescribeActionTargetsRequest>
-        void DescribeActionTargetsAsync(const DescribeActionTargetsRequestT& request, const DescribeActionTargetsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeActionTargetsAsync(const DescribeActionTargetsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeActionTargetsRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::DescribeActionTargets, request, handler, context);
         }
@@ -935,13 +967,13 @@ namespace SecurityHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/DescribeHub">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeHubOutcome DescribeHub(const Model::DescribeHubRequest& request) const;
+        virtual Model::DescribeHubOutcome DescribeHub(const Model::DescribeHubRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeHub that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeHubRequestT = Model::DescribeHubRequest>
-        Model::DescribeHubOutcomeCallable DescribeHubCallable(const DescribeHubRequestT& request) const
+        Model::DescribeHubOutcomeCallable DescribeHubCallable(const DescribeHubRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::DescribeHub, request);
         }
@@ -950,7 +982,7 @@ namespace SecurityHub
          * An Async wrapper for DescribeHub that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeHubRequestT = Model::DescribeHubRequest>
-        void DescribeHubAsync(const DescribeHubRequestT& request, const DescribeHubResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeHubAsync(const DescribeHubResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeHubRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::DescribeHub, request, handler, context);
         }
@@ -962,13 +994,13 @@ namespace SecurityHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/DescribeOrganizationConfiguration">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeOrganizationConfigurationOutcome DescribeOrganizationConfiguration(const Model::DescribeOrganizationConfigurationRequest& request) const;
+        virtual Model::DescribeOrganizationConfigurationOutcome DescribeOrganizationConfiguration(const Model::DescribeOrganizationConfigurationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeOrganizationConfiguration that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeOrganizationConfigurationRequestT = Model::DescribeOrganizationConfigurationRequest>
-        Model::DescribeOrganizationConfigurationOutcomeCallable DescribeOrganizationConfigurationCallable(const DescribeOrganizationConfigurationRequestT& request) const
+        Model::DescribeOrganizationConfigurationOutcomeCallable DescribeOrganizationConfigurationCallable(const DescribeOrganizationConfigurationRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::DescribeOrganizationConfiguration, request);
         }
@@ -977,7 +1009,7 @@ namespace SecurityHub
          * An Async wrapper for DescribeOrganizationConfiguration that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeOrganizationConfigurationRequestT = Model::DescribeOrganizationConfigurationRequest>
-        void DescribeOrganizationConfigurationAsync(const DescribeOrganizationConfigurationRequestT& request, const DescribeOrganizationConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeOrganizationConfigurationAsync(const DescribeOrganizationConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeOrganizationConfigurationRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::DescribeOrganizationConfiguration, request, handler, context);
         }
@@ -985,19 +1017,19 @@ namespace SecurityHub
         /**
          * <p>Returns information about product integrations in Security Hub.</p> <p>You
          * can optionally provide an integration ARN. If you provide an integration ARN,
-         * then the results only include that integration.</p> <p>If you do not provide an
+         * then the results only include that integration.</p> <p>If you don't provide an
          * integration ARN, then the results include all of the available product
          * integrations. </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/DescribeProducts">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeProductsOutcome DescribeProducts(const Model::DescribeProductsRequest& request) const;
+        virtual Model::DescribeProductsOutcome DescribeProducts(const Model::DescribeProductsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeProducts that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeProductsRequestT = Model::DescribeProductsRequest>
-        Model::DescribeProductsOutcomeCallable DescribeProductsCallable(const DescribeProductsRequestT& request) const
+        Model::DescribeProductsOutcomeCallable DescribeProductsCallable(const DescribeProductsRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::DescribeProducts, request);
         }
@@ -1006,7 +1038,7 @@ namespace SecurityHub
          * An Async wrapper for DescribeProducts that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeProductsRequestT = Model::DescribeProductsRequest>
-        void DescribeProductsAsync(const DescribeProductsRequestT& request, const DescribeProductsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeProductsAsync(const DescribeProductsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeProductsRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::DescribeProducts, request, handler, context);
         }
@@ -1018,13 +1050,13 @@ namespace SecurityHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/DescribeStandards">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeStandardsOutcome DescribeStandards(const Model::DescribeStandardsRequest& request) const;
+        virtual Model::DescribeStandardsOutcome DescribeStandards(const Model::DescribeStandardsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeStandards that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeStandardsRequestT = Model::DescribeStandardsRequest>
-        Model::DescribeStandardsOutcomeCallable DescribeStandardsCallable(const DescribeStandardsRequestT& request) const
+        Model::DescribeStandardsOutcomeCallable DescribeStandardsCallable(const DescribeStandardsRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::DescribeStandards, request);
         }
@@ -1033,7 +1065,7 @@ namespace SecurityHub
          * An Async wrapper for DescribeStandards that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeStandardsRequestT = Model::DescribeStandardsRequest>
-        void DescribeStandardsAsync(const DescribeStandardsRequestT& request, const DescribeStandardsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeStandardsAsync(const DescribeStandardsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeStandardsRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::DescribeStandards, request, handler, context);
         }
@@ -1132,13 +1164,13 @@ namespace SecurityHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/DisableSecurityHub">AWS
          * API Reference</a></p>
          */
-        virtual Model::DisableSecurityHubOutcome DisableSecurityHub(const Model::DisableSecurityHubRequest& request) const;
+        virtual Model::DisableSecurityHubOutcome DisableSecurityHub(const Model::DisableSecurityHubRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DisableSecurityHub that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DisableSecurityHubRequestT = Model::DisableSecurityHubRequest>
-        Model::DisableSecurityHubOutcomeCallable DisableSecurityHubCallable(const DisableSecurityHubRequestT& request) const
+        Model::DisableSecurityHubOutcomeCallable DisableSecurityHubCallable(const DisableSecurityHubRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::DisableSecurityHub, request);
         }
@@ -1147,7 +1179,7 @@ namespace SecurityHub
          * An Async wrapper for DisableSecurityHub that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DisableSecurityHubRequestT = Model::DisableSecurityHubRequest>
-        void DisableSecurityHubAsync(const DisableSecurityHubRequestT& request, const DisableSecurityHubResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DisableSecurityHubAsync(const DisableSecurityHubResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DisableSecurityHubRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::DisableSecurityHub, request, handler, context);
         }
@@ -1160,13 +1192,13 @@ namespace SecurityHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/DisassociateFromAdministratorAccount">AWS
          * API Reference</a></p>
          */
-        virtual Model::DisassociateFromAdministratorAccountOutcome DisassociateFromAdministratorAccount(const Model::DisassociateFromAdministratorAccountRequest& request) const;
+        virtual Model::DisassociateFromAdministratorAccountOutcome DisassociateFromAdministratorAccount(const Model::DisassociateFromAdministratorAccountRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DisassociateFromAdministratorAccount that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DisassociateFromAdministratorAccountRequestT = Model::DisassociateFromAdministratorAccountRequest>
-        Model::DisassociateFromAdministratorAccountOutcomeCallable DisassociateFromAdministratorAccountCallable(const DisassociateFromAdministratorAccountRequestT& request) const
+        Model::DisassociateFromAdministratorAccountOutcomeCallable DisassociateFromAdministratorAccountCallable(const DisassociateFromAdministratorAccountRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::DisassociateFromAdministratorAccount, request);
         }
@@ -1175,7 +1207,7 @@ namespace SecurityHub
          * An Async wrapper for DisassociateFromAdministratorAccount that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DisassociateFromAdministratorAccountRequestT = Model::DisassociateFromAdministratorAccountRequest>
-        void DisassociateFromAdministratorAccountAsync(const DisassociateFromAdministratorAccountRequestT& request, const DisassociateFromAdministratorAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DisassociateFromAdministratorAccountAsync(const DisassociateFromAdministratorAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DisassociateFromAdministratorAccountRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::DisassociateFromAdministratorAccount, request, handler, context);
         }
@@ -1284,13 +1316,13 @@ namespace SecurityHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/EnableSecurityHub">AWS
          * API Reference</a></p>
          */
-        virtual Model::EnableSecurityHubOutcome EnableSecurityHub(const Model::EnableSecurityHubRequest& request) const;
+        virtual Model::EnableSecurityHubOutcome EnableSecurityHub(const Model::EnableSecurityHubRequest& request = {}) const;
 
         /**
          * A Callable wrapper for EnableSecurityHub that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename EnableSecurityHubRequestT = Model::EnableSecurityHubRequest>
-        Model::EnableSecurityHubOutcomeCallable EnableSecurityHubCallable(const EnableSecurityHubRequestT& request) const
+        Model::EnableSecurityHubOutcomeCallable EnableSecurityHubCallable(const EnableSecurityHubRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::EnableSecurityHub, request);
         }
@@ -1299,7 +1331,7 @@ namespace SecurityHub
          * An Async wrapper for EnableSecurityHub that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename EnableSecurityHubRequestT = Model::EnableSecurityHubRequest>
-        void EnableSecurityHubAsync(const EnableSecurityHubRequestT& request, const EnableSecurityHubResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void EnableSecurityHubAsync(const EnableSecurityHubResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const EnableSecurityHubRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::EnableSecurityHub, request, handler, context);
         }
@@ -1312,13 +1344,13 @@ namespace SecurityHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/GetAdministratorAccount">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetAdministratorAccountOutcome GetAdministratorAccount(const Model::GetAdministratorAccountRequest& request) const;
+        virtual Model::GetAdministratorAccountOutcome GetAdministratorAccount(const Model::GetAdministratorAccountRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetAdministratorAccount that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetAdministratorAccountRequestT = Model::GetAdministratorAccountRequest>
-        Model::GetAdministratorAccountOutcomeCallable GetAdministratorAccountCallable(const GetAdministratorAccountRequestT& request) const
+        Model::GetAdministratorAccountOutcomeCallable GetAdministratorAccountCallable(const GetAdministratorAccountRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::GetAdministratorAccount, request);
         }
@@ -1327,7 +1359,7 @@ namespace SecurityHub
          * An Async wrapper for GetAdministratorAccount that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetAdministratorAccountRequestT = Model::GetAdministratorAccountRequest>
-        void GetAdministratorAccountAsync(const GetAdministratorAccountRequestT& request, const GetAdministratorAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetAdministratorAccountAsync(const GetAdministratorAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetAdministratorAccountRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::GetAdministratorAccount, request, handler, context);
         }
@@ -1393,13 +1425,13 @@ namespace SecurityHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/GetEnabledStandards">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetEnabledStandardsOutcome GetEnabledStandards(const Model::GetEnabledStandardsRequest& request) const;
+        virtual Model::GetEnabledStandardsOutcome GetEnabledStandards(const Model::GetEnabledStandardsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetEnabledStandards that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetEnabledStandardsRequestT = Model::GetEnabledStandardsRequest>
-        Model::GetEnabledStandardsOutcomeCallable GetEnabledStandardsCallable(const GetEnabledStandardsRequestT& request) const
+        Model::GetEnabledStandardsOutcomeCallable GetEnabledStandardsCallable(const GetEnabledStandardsRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::GetEnabledStandards, request);
         }
@@ -1408,14 +1440,17 @@ namespace SecurityHub
          * An Async wrapper for GetEnabledStandards that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetEnabledStandardsRequestT = Model::GetEnabledStandardsRequest>
-        void GetEnabledStandardsAsync(const GetEnabledStandardsRequestT& request, const GetEnabledStandardsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetEnabledStandardsAsync(const GetEnabledStandardsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetEnabledStandardsRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::GetEnabledStandards, request, handler, context);
         }
 
         /**
-         * <p>Returns the current finding aggregation configuration.</p><p><h3>See
-         * Also:</h3>   <a
+         *  <p>The <i>aggregation Region</i> is now called the <i>home
+         * Region</i>.</p>  <p>Returns the current configuration in the calling
+         * account for cross-Region aggregation. A finding aggregator is a resource that
+         * establishes the home Region and any linked Regions.</p><p><h3>See Also:</h3>  
+         * <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/GetFindingAggregator">AWS
          * API Reference</a></p>
          */
@@ -1468,20 +1503,19 @@ namespace SecurityHub
 
         /**
          * <p>Returns a list of findings that match the specified criteria.</p> <p>If
-         * finding aggregation is enabled, then when you call <code>GetFindings</code> from
-         * the aggregation Region, the results include all of the matching findings from
-         * both the aggregation Region and the linked Regions.</p><p><h3>See Also:</h3>  
-         * <a
+         * cross-Region aggregation is enabled, then when you call <code>GetFindings</code>
+         * from the home Region, the results include all of the matching findings from both
+         * the home Region and linked Regions.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/GetFindings">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetFindingsOutcome GetFindings(const Model::GetFindingsRequest& request) const;
+        virtual Model::GetFindingsOutcome GetFindings(const Model::GetFindingsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetFindings that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetFindingsRequestT = Model::GetFindingsRequest>
-        Model::GetFindingsOutcomeCallable GetFindingsCallable(const GetFindingsRequestT& request) const
+        Model::GetFindingsOutcomeCallable GetFindingsCallable(const GetFindingsRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::GetFindings, request);
         }
@@ -1490,7 +1524,7 @@ namespace SecurityHub
          * An Async wrapper for GetFindings that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetFindingsRequestT = Model::GetFindingsRequest>
-        void GetFindingsAsync(const GetFindingsRequestT& request, const GetFindingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetFindingsAsync(const GetFindingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetFindingsRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::GetFindings, request, handler, context);
         }
@@ -1527,13 +1561,13 @@ namespace SecurityHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/GetInsights">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetInsightsOutcome GetInsights(const Model::GetInsightsRequest& request) const;
+        virtual Model::GetInsightsOutcome GetInsights(const Model::GetInsightsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetInsights that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetInsightsRequestT = Model::GetInsightsRequest>
-        Model::GetInsightsOutcomeCallable GetInsightsCallable(const GetInsightsRequestT& request) const
+        Model::GetInsightsOutcomeCallable GetInsightsCallable(const GetInsightsRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::GetInsights, request);
         }
@@ -1542,25 +1576,29 @@ namespace SecurityHub
          * An Async wrapper for GetInsights that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetInsightsRequestT = Model::GetInsightsRequest>
-        void GetInsightsAsync(const GetInsightsRequestT& request, const GetInsightsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetInsightsAsync(const GetInsightsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetInsightsRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::GetInsights, request, handler, context);
         }
 
         /**
-         * <p>Returns the count of all Security Hub membership invitations that were sent
-         * to the current member account, not including the currently accepted invitation.
-         * </p><p><h3>See Also:</h3>   <a
+         *  <p>We recommend using Organizations instead of Security Hub invitations
+         * to manage your member accounts. For information, see <a
+         * href="https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-accounts-orgs.html">Managing
+         * Security Hub administrator and member accounts with Organizations</a> in the
+         * <i>Security Hub User Guide</i>.</p>  <p>Returns the count of all Security
+         * Hub membership invitations that were sent to the calling member account, not
+         * including the currently accepted invitation. </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/GetInvitationsCount">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetInvitationsCountOutcome GetInvitationsCount(const Model::GetInvitationsCountRequest& request) const;
+        virtual Model::GetInvitationsCountOutcome GetInvitationsCount(const Model::GetInvitationsCountRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetInvitationsCount that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetInvitationsCountRequestT = Model::GetInvitationsCountRequest>
-        Model::GetInvitationsCountOutcomeCallable GetInvitationsCountCallable(const GetInvitationsCountRequestT& request) const
+        Model::GetInvitationsCountOutcomeCallable GetInvitationsCountCallable(const GetInvitationsCountRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::GetInvitationsCount, request);
         }
@@ -1569,7 +1607,7 @@ namespace SecurityHub
          * An Async wrapper for GetInvitationsCount that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetInvitationsCountRequestT = Model::GetInvitationsCountRequest>
-        void GetInvitationsCountAsync(const GetInvitationsCountRequestT& request, const GetInvitationsCountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetInvitationsCountAsync(const GetInvitationsCountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetInvitationsCountRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::GetInvitationsCount, request, handler, context);
         }
@@ -1632,15 +1670,20 @@ namespace SecurityHub
         }
 
         /**
-         * <p>Invites other Amazon Web Services accounts to become member accounts for the
-         * Security Hub administrator account that the invitation is sent from.</p> <p>This
-         * operation is only used to invite accounts that do not belong to an organization.
-         * Organization accounts do not receive invitations.</p> <p>Before you can use this
-         * action to invite a member, you must first use the <code>CreateMembers</code>
-         * action to create the member account in Security Hub.</p> <p>When the account
-         * owner enables Security Hub and accepts the invitation to become a member
-         * account, the administrator account can view the findings generated from the
-         * member account.</p><p><h3>See Also:</h3>   <a
+         *  <p>We recommend using Organizations instead of Security Hub invitations
+         * to manage your member accounts. For information, see <a
+         * href="https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-accounts-orgs.html">Managing
+         * Security Hub administrator and member accounts with Organizations</a> in the
+         * <i>Security Hub User Guide</i>.</p>  <p>Invites other Amazon Web Services
+         * accounts to become member accounts for the Security Hub administrator account
+         * that the invitation is sent from.</p> <p>This operation is only used to invite
+         * accounts that don't belong to an Amazon Web Services organization. Organization
+         * accounts don't receive invitations.</p> <p>Before you can use this action to
+         * invite a member, you must first use the <code>CreateMembers</code> action to
+         * create the member account in Security Hub.</p> <p>When the account owner enables
+         * Security Hub and accepts the invitation to become a member account, the
+         * administrator account can view the findings generated in the member
+         * account.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/InviteMembers">AWS
          * API Reference</a></p>
          */
@@ -1670,13 +1713,13 @@ namespace SecurityHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/ListAutomationRules">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAutomationRulesOutcome ListAutomationRules(const Model::ListAutomationRulesRequest& request) const;
+        virtual Model::ListAutomationRulesOutcome ListAutomationRules(const Model::ListAutomationRulesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAutomationRules that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAutomationRulesRequestT = Model::ListAutomationRulesRequest>
-        Model::ListAutomationRulesOutcomeCallable ListAutomationRulesCallable(const ListAutomationRulesRequestT& request) const
+        Model::ListAutomationRulesOutcomeCallable ListAutomationRulesCallable(const ListAutomationRulesRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::ListAutomationRules, request);
         }
@@ -1685,7 +1728,7 @@ namespace SecurityHub
          * An Async wrapper for ListAutomationRules that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAutomationRulesRequestT = Model::ListAutomationRulesRequest>
-        void ListAutomationRulesAsync(const ListAutomationRulesRequestT& request, const ListAutomationRulesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAutomationRulesAsync(const ListAutomationRulesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAutomationRulesRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::ListAutomationRules, request, handler, context);
         }
@@ -1698,13 +1741,13 @@ namespace SecurityHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/ListConfigurationPolicies">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListConfigurationPoliciesOutcome ListConfigurationPolicies(const Model::ListConfigurationPoliciesRequest& request) const;
+        virtual Model::ListConfigurationPoliciesOutcome ListConfigurationPolicies(const Model::ListConfigurationPoliciesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListConfigurationPolicies that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListConfigurationPoliciesRequestT = Model::ListConfigurationPoliciesRequest>
-        Model::ListConfigurationPoliciesOutcomeCallable ListConfigurationPoliciesCallable(const ListConfigurationPoliciesRequestT& request) const
+        Model::ListConfigurationPoliciesOutcomeCallable ListConfigurationPoliciesCallable(const ListConfigurationPoliciesRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::ListConfigurationPolicies, request);
         }
@@ -1713,7 +1756,7 @@ namespace SecurityHub
          * An Async wrapper for ListConfigurationPolicies that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListConfigurationPoliciesRequestT = Model::ListConfigurationPoliciesRequest>
-        void ListConfigurationPoliciesAsync(const ListConfigurationPoliciesRequestT& request, const ListConfigurationPoliciesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListConfigurationPoliciesAsync(const ListConfigurationPoliciesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListConfigurationPoliciesRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::ListConfigurationPolicies, request, handler, context);
         }
@@ -1725,13 +1768,13 @@ namespace SecurityHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/ListConfigurationPolicyAssociations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListConfigurationPolicyAssociationsOutcome ListConfigurationPolicyAssociations(const Model::ListConfigurationPolicyAssociationsRequest& request) const;
+        virtual Model::ListConfigurationPolicyAssociationsOutcome ListConfigurationPolicyAssociations(const Model::ListConfigurationPolicyAssociationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListConfigurationPolicyAssociations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListConfigurationPolicyAssociationsRequestT = Model::ListConfigurationPolicyAssociationsRequest>
-        Model::ListConfigurationPolicyAssociationsOutcomeCallable ListConfigurationPolicyAssociationsCallable(const ListConfigurationPolicyAssociationsRequestT& request) const
+        Model::ListConfigurationPolicyAssociationsOutcomeCallable ListConfigurationPolicyAssociationsCallable(const ListConfigurationPolicyAssociationsRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::ListConfigurationPolicyAssociations, request);
         }
@@ -1740,7 +1783,7 @@ namespace SecurityHub
          * An Async wrapper for ListConfigurationPolicyAssociations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListConfigurationPolicyAssociationsRequestT = Model::ListConfigurationPolicyAssociationsRequest>
-        void ListConfigurationPolicyAssociationsAsync(const ListConfigurationPolicyAssociationsRequestT& request, const ListConfigurationPolicyAssociationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListConfigurationPolicyAssociationsAsync(const ListConfigurationPolicyAssociationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListConfigurationPolicyAssociationsRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::ListConfigurationPolicyAssociations, request, handler, context);
         }
@@ -1751,13 +1794,13 @@ namespace SecurityHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/ListEnabledProductsForImport">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListEnabledProductsForImportOutcome ListEnabledProductsForImport(const Model::ListEnabledProductsForImportRequest& request) const;
+        virtual Model::ListEnabledProductsForImportOutcome ListEnabledProductsForImport(const Model::ListEnabledProductsForImportRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListEnabledProductsForImport that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListEnabledProductsForImportRequestT = Model::ListEnabledProductsForImportRequest>
-        Model::ListEnabledProductsForImportOutcomeCallable ListEnabledProductsForImportCallable(const ListEnabledProductsForImportRequestT& request) const
+        Model::ListEnabledProductsForImportOutcomeCallable ListEnabledProductsForImportCallable(const ListEnabledProductsForImportRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::ListEnabledProductsForImport, request);
         }
@@ -1766,25 +1809,26 @@ namespace SecurityHub
          * An Async wrapper for ListEnabledProductsForImport that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListEnabledProductsForImportRequestT = Model::ListEnabledProductsForImportRequest>
-        void ListEnabledProductsForImportAsync(const ListEnabledProductsForImportRequestT& request, const ListEnabledProductsForImportResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListEnabledProductsForImportAsync(const ListEnabledProductsForImportResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListEnabledProductsForImportRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::ListEnabledProductsForImport, request, handler, context);
         }
 
         /**
-         * <p>If finding aggregation is enabled, then <code>ListFindingAggregators</code>
-         * returns the ARN of the finding aggregator. You can run this operation from any
+         * <p>If cross-Region aggregation is enabled, then
+         * <code>ListFindingAggregators</code> returns the Amazon Resource Name (ARN) of
+         * the finding aggregator. You can run this operation from any Amazon Web Services
          * Region.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/ListFindingAggregators">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListFindingAggregatorsOutcome ListFindingAggregators(const Model::ListFindingAggregatorsRequest& request) const;
+        virtual Model::ListFindingAggregatorsOutcome ListFindingAggregators(const Model::ListFindingAggregatorsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListFindingAggregators that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListFindingAggregatorsRequestT = Model::ListFindingAggregatorsRequest>
-        Model::ListFindingAggregatorsOutcomeCallable ListFindingAggregatorsCallable(const ListFindingAggregatorsRequestT& request) const
+        Model::ListFindingAggregatorsOutcomeCallable ListFindingAggregatorsCallable(const ListFindingAggregatorsRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::ListFindingAggregators, request);
         }
@@ -1793,26 +1837,31 @@ namespace SecurityHub
          * An Async wrapper for ListFindingAggregators that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListFindingAggregatorsRequestT = Model::ListFindingAggregatorsRequest>
-        void ListFindingAggregatorsAsync(const ListFindingAggregatorsRequestT& request, const ListFindingAggregatorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListFindingAggregatorsAsync(const ListFindingAggregatorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListFindingAggregatorsRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::ListFindingAggregators, request, handler, context);
         }
 
         /**
-         * <p>Lists all Security Hub membership invitations that were sent to the current
-         * Amazon Web Services account.</p> <p>This operation is only used by accounts that
-         * are managed by invitation. Accounts that are managed using the integration with
-         * Organizations do not receive invitations.</p><p><h3>See Also:</h3>   <a
+         *  <p>We recommend using Organizations instead of Security Hub invitations
+         * to manage your member accounts. For information, see <a
+         * href="https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-accounts-orgs.html">Managing
+         * Security Hub administrator and member accounts with Organizations</a> in the
+         * <i>Security Hub User Guide</i>.</p>  <p>Lists all Security Hub membership
+         * invitations that were sent to the calling account.</p> <p>Only accounts that are
+         * managed by invitation can use this operation. Accounts that are managed using
+         * the integration with Organizations don't receive invitations.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/ListInvitations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListInvitationsOutcome ListInvitations(const Model::ListInvitationsRequest& request) const;
+        virtual Model::ListInvitationsOutcome ListInvitations(const Model::ListInvitationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListInvitations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListInvitationsRequestT = Model::ListInvitationsRequest>
-        Model::ListInvitationsOutcomeCallable ListInvitationsCallable(const ListInvitationsRequestT& request) const
+        Model::ListInvitationsOutcomeCallable ListInvitationsCallable(const ListInvitationsRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::ListInvitations, request);
         }
@@ -1821,7 +1870,7 @@ namespace SecurityHub
          * An Async wrapper for ListInvitations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListInvitationsRequestT = Model::ListInvitationsRequest>
-        void ListInvitationsAsync(const ListInvitationsRequestT& request, const ListInvitationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListInvitationsAsync(const ListInvitationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListInvitationsRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::ListInvitations, request, handler, context);
         }
@@ -1834,13 +1883,13 @@ namespace SecurityHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/ListMembers">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListMembersOutcome ListMembers(const Model::ListMembersRequest& request) const;
+        virtual Model::ListMembersOutcome ListMembers(const Model::ListMembersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListMembers that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListMembersRequestT = Model::ListMembersRequest>
-        Model::ListMembersOutcomeCallable ListMembersCallable(const ListMembersRequestT& request) const
+        Model::ListMembersOutcomeCallable ListMembersCallable(const ListMembersRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::ListMembers, request);
         }
@@ -1849,7 +1898,7 @@ namespace SecurityHub
          * An Async wrapper for ListMembers that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListMembersRequestT = Model::ListMembersRequest>
-        void ListMembersAsync(const ListMembersRequestT& request, const ListMembersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListMembersAsync(const ListMembersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListMembersRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::ListMembers, request, handler, context);
         }
@@ -1860,13 +1909,13 @@ namespace SecurityHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/ListOrganizationAdminAccounts">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListOrganizationAdminAccountsOutcome ListOrganizationAdminAccounts(const Model::ListOrganizationAdminAccountsRequest& request) const;
+        virtual Model::ListOrganizationAdminAccountsOutcome ListOrganizationAdminAccounts(const Model::ListOrganizationAdminAccountsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListOrganizationAdminAccounts that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListOrganizationAdminAccountsRequestT = Model::ListOrganizationAdminAccountsRequest>
-        Model::ListOrganizationAdminAccountsOutcomeCallable ListOrganizationAdminAccountsCallable(const ListOrganizationAdminAccountsRequestT& request) const
+        Model::ListOrganizationAdminAccountsOutcomeCallable ListOrganizationAdminAccountsCallable(const ListOrganizationAdminAccountsRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::ListOrganizationAdminAccounts, request);
         }
@@ -1875,7 +1924,7 @@ namespace SecurityHub
          * An Async wrapper for ListOrganizationAdminAccounts that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListOrganizationAdminAccountsRequestT = Model::ListOrganizationAdminAccountsRequest>
-        void ListOrganizationAdminAccountsAsync(const ListOrganizationAdminAccountsRequestT& request, const ListOrganizationAdminAccountsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListOrganizationAdminAccountsAsync(const ListOrganizationAdminAccountsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListOrganizationAdminAccountsRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::ListOrganizationAdminAccounts, request, handler, context);
         }
@@ -1886,13 +1935,13 @@ namespace SecurityHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/ListSecurityControlDefinitions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListSecurityControlDefinitionsOutcome ListSecurityControlDefinitions(const Model::ListSecurityControlDefinitionsRequest& request) const;
+        virtual Model::ListSecurityControlDefinitionsOutcome ListSecurityControlDefinitions(const Model::ListSecurityControlDefinitionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListSecurityControlDefinitions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListSecurityControlDefinitionsRequestT = Model::ListSecurityControlDefinitionsRequest>
-        Model::ListSecurityControlDefinitionsOutcomeCallable ListSecurityControlDefinitionsCallable(const ListSecurityControlDefinitionsRequestT& request) const
+        Model::ListSecurityControlDefinitionsOutcomeCallable ListSecurityControlDefinitionsCallable(const ListSecurityControlDefinitionsRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::ListSecurityControlDefinitions, request);
         }
@@ -1901,7 +1950,7 @@ namespace SecurityHub
          * An Async wrapper for ListSecurityControlDefinitions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListSecurityControlDefinitionsRequestT = Model::ListSecurityControlDefinitionsRequest>
-        void ListSecurityControlDefinitionsAsync(const ListSecurityControlDefinitionsRequestT& request, const ListSecurityControlDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListSecurityControlDefinitionsAsync(const ListSecurityControlDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListSecurityControlDefinitionsRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::ListSecurityControlDefinitions, request, handler, context);
         }
@@ -2121,11 +2170,12 @@ namespace SecurityHub
         }
 
         /**
-         * <p>Updates the finding aggregation configuration. Used to update the Region
-         * linking mode and the list of included or excluded Regions. You cannot use
-         * <code>UpdateFindingAggregator</code> to change the aggregation Region.</p>
-         * <p>You must run <code>UpdateFindingAggregator</code> from the current
-         * aggregation Region. </p><p><h3>See Also:</h3>   <a
+         *  <p>The <i>aggregation Region</i> is now called the <i>home
+         * Region</i>.</p>  <p>Updates cross-Region aggregation settings. You can
+         * use this operation to update the Region linking mode and the list of included or
+         * excluded Amazon Web Services Regions. However, you can't use this operation to
+         * change the home Region.</p> <p>You can invoke this operation from the current
+         * home Region only. </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/UpdateFindingAggregator">AWS
          * API Reference</a></p>
          */
@@ -2152,12 +2202,14 @@ namespace SecurityHub
         /**
          * <p> <code>UpdateFindings</code> is a deprecated operation. Instead of
          * <code>UpdateFindings</code>, use the <code>BatchUpdateFindings</code>
-         * operation.</p> <p>Updates the <code>Note</code> and <code>RecordState</code> of
-         * the Security Hub-aggregated findings that the filter attributes specify. Any
-         * member account that can view the finding also sees the update to the
-         * finding.</p> <p>Finding updates made with <code>UpdateFindings</code> might not
-         * be persisted if the same finding is later updated by the finding provider
-         * through the <code>BatchImportFindings</code> operation.</p><p><h3>See Also:</h3>
+         * operation.</p> <p>The <code>UpdateFindings</code> operation updates the
+         * <code>Note</code> and <code>RecordState</code> of the Security Hub aggregated
+         * findings that the filter attributes specify. Any member account that can view
+         * the finding can also see the update to the finding.</p> <p>Finding updates made
+         * with <code>UpdateFindings</code> aren't persisted if the same finding is later
+         * updated by the finding provider through the <code>BatchImportFindings</code>
+         * operation. In addition, Security Hub doesn't record updates made with
+         * <code>UpdateFindings</code> in the finding history.</p><p><h3>See Also:</h3>  
          * <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/UpdateFindings">AWS
          * API Reference</a></p>
@@ -2265,13 +2317,13 @@ namespace SecurityHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/securityhub-2018-10-26/UpdateSecurityHubConfiguration">AWS
          * API Reference</a></p>
          */
-        virtual Model::UpdateSecurityHubConfigurationOutcome UpdateSecurityHubConfiguration(const Model::UpdateSecurityHubConfigurationRequest& request) const;
+        virtual Model::UpdateSecurityHubConfigurationOutcome UpdateSecurityHubConfiguration(const Model::UpdateSecurityHubConfigurationRequest& request = {}) const;
 
         /**
          * A Callable wrapper for UpdateSecurityHubConfiguration that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename UpdateSecurityHubConfigurationRequestT = Model::UpdateSecurityHubConfigurationRequest>
-        Model::UpdateSecurityHubConfigurationOutcomeCallable UpdateSecurityHubConfigurationCallable(const UpdateSecurityHubConfigurationRequestT& request) const
+        Model::UpdateSecurityHubConfigurationOutcomeCallable UpdateSecurityHubConfigurationCallable(const UpdateSecurityHubConfigurationRequestT& request = {}) const
         {
             return SubmitCallable(&SecurityHubClient::UpdateSecurityHubConfiguration, request);
         }
@@ -2280,7 +2332,7 @@ namespace SecurityHub
          * An Async wrapper for UpdateSecurityHubConfiguration that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename UpdateSecurityHubConfigurationRequestT = Model::UpdateSecurityHubConfigurationRequest>
-        void UpdateSecurityHubConfigurationAsync(const UpdateSecurityHubConfigurationRequestT& request, const UpdateSecurityHubConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void UpdateSecurityHubConfigurationAsync(const UpdateSecurityHubConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const UpdateSecurityHubConfigurationRequestT& request = {}) const
         {
             return SubmitAsync(&SecurityHubClient::UpdateSecurityHubConfiguration, request, handler, context);
         }
@@ -2316,11 +2368,7 @@ namespace SecurityHub
       std::shared_ptr<SecurityHubEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<SecurityHubClient>;
-      void init(const SecurityHubClientConfiguration& clientConfiguration);
 
-      SecurityHubClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<SecurityHubEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace SecurityHub

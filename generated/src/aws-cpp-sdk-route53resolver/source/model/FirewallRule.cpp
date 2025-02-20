@@ -21,6 +21,7 @@ namespace Model
 FirewallRule::FirewallRule() : 
     m_firewallRuleGroupIdHasBeenSet(false),
     m_firewallDomainListIdHasBeenSet(false),
+    m_firewallThreatProtectionIdHasBeenSet(false),
     m_nameHasBeenSet(false),
     m_priority(0),
     m_priorityHasBeenSet(false),
@@ -38,31 +39,16 @@ FirewallRule::FirewallRule() :
     m_modificationTimeHasBeenSet(false),
     m_firewallDomainRedirectionAction(FirewallDomainRedirectionAction::NOT_SET),
     m_firewallDomainRedirectionActionHasBeenSet(false),
-    m_qtypeHasBeenSet(false)
+    m_qtypeHasBeenSet(false),
+    m_dnsThreatProtection(DnsThreatProtection::NOT_SET),
+    m_dnsThreatProtectionHasBeenSet(false),
+    m_confidenceThreshold(ConfidenceThreshold::NOT_SET),
+    m_confidenceThresholdHasBeenSet(false)
 {
 }
 
-FirewallRule::FirewallRule(JsonView jsonValue) : 
-    m_firewallRuleGroupIdHasBeenSet(false),
-    m_firewallDomainListIdHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_priority(0),
-    m_priorityHasBeenSet(false),
-    m_action(Action::NOT_SET),
-    m_actionHasBeenSet(false),
-    m_blockResponse(BlockResponse::NOT_SET),
-    m_blockResponseHasBeenSet(false),
-    m_blockOverrideDomainHasBeenSet(false),
-    m_blockOverrideDnsType(BlockOverrideDnsType::NOT_SET),
-    m_blockOverrideDnsTypeHasBeenSet(false),
-    m_blockOverrideTtl(0),
-    m_blockOverrideTtlHasBeenSet(false),
-    m_creatorRequestIdHasBeenSet(false),
-    m_creationTimeHasBeenSet(false),
-    m_modificationTimeHasBeenSet(false),
-    m_firewallDomainRedirectionAction(FirewallDomainRedirectionAction::NOT_SET),
-    m_firewallDomainRedirectionActionHasBeenSet(false),
-    m_qtypeHasBeenSet(false)
+FirewallRule::FirewallRule(JsonView jsonValue)
+  : FirewallRule()
 {
   *this = jsonValue;
 }
@@ -81,6 +67,13 @@ FirewallRule& FirewallRule::operator =(JsonView jsonValue)
     m_firewallDomainListId = jsonValue.GetString("FirewallDomainListId");
 
     m_firewallDomainListIdHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("FirewallThreatProtectionId"))
+  {
+    m_firewallThreatProtectionId = jsonValue.GetString("FirewallThreatProtectionId");
+
+    m_firewallThreatProtectionIdHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("Name"))
@@ -167,6 +160,20 @@ FirewallRule& FirewallRule::operator =(JsonView jsonValue)
     m_qtypeHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("DnsThreatProtection"))
+  {
+    m_dnsThreatProtection = DnsThreatProtectionMapper::GetDnsThreatProtectionForName(jsonValue.GetString("DnsThreatProtection"));
+
+    m_dnsThreatProtectionHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("ConfidenceThreshold"))
+  {
+    m_confidenceThreshold = ConfidenceThresholdMapper::GetConfidenceThresholdForName(jsonValue.GetString("ConfidenceThreshold"));
+
+    m_confidenceThresholdHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -183,6 +190,12 @@ JsonValue FirewallRule::Jsonize() const
   if(m_firewallDomainListIdHasBeenSet)
   {
    payload.WithString("FirewallDomainListId", m_firewallDomainListId);
+
+  }
+
+  if(m_firewallThreatProtectionIdHasBeenSet)
+  {
+   payload.WithString("FirewallThreatProtectionId", m_firewallThreatProtectionId);
 
   }
 
@@ -252,6 +265,16 @@ JsonValue FirewallRule::Jsonize() const
   {
    payload.WithString("Qtype", m_qtype);
 
+  }
+
+  if(m_dnsThreatProtectionHasBeenSet)
+  {
+   payload.WithString("DnsThreatProtection", DnsThreatProtectionMapper::GetNameForDnsThreatProtection(m_dnsThreatProtection));
+  }
+
+  if(m_confidenceThresholdHasBeenSet)
+  {
+   payload.WithString("ConfidenceThreshold", ConfidenceThresholdMapper::GetNameForConfidenceThreshold(m_confidenceThreshold));
   }
 
   return payload;

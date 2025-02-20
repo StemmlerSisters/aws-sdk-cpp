@@ -63,6 +63,7 @@
 #include <aws/finspace/model/UpdateKxEnvironmentNetworkResult.h>
 #include <aws/finspace/model/UpdateKxUserResult.h>
 #include <aws/finspace/model/UpdateKxVolumeResult.h>
+#include <aws/finspace/model/ListKxEnvironmentsRequest.h>
 /* End of service model headers required in FinspaceClient header */
 
 namespace Aws
@@ -96,7 +97,7 @@ namespace Aws
 
   namespace finspace
   {
-    using FinspaceClientConfiguration = Aws::Client::GenericClientConfiguration<false>;
+    using FinspaceClientConfiguration = Aws::Client::GenericClientConfiguration;
     using FinspaceEndpointProviderBase = Aws::finspace::Endpoint::FinspaceEndpointProviderBase;
     using FinspaceEndpointProvider = Aws::finspace::Endpoint::FinspaceEndpointProvider;
 

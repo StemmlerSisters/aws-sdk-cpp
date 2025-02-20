@@ -24,10 +24,10 @@ namespace Model
 {
 
   /**
-   * <p> <b>This data type is used with the Amazon GameLift containers feature, which
-   * is currently in public preview.</b> </p> <p>A set of one or more port numbers
-   * that can be opened on the container. </p> <p> <b>Part of:</b>
-   * <a>ContainerPortConfiguration</a> </p><p><h3>See Also:</h3>   <a
+   * <p>A set of one or more port numbers that can be opened on the container. </p>
+   * <p> <b>Part of:</b> <a
+   * href="https://docs.aws.amazon.com/gamelift/latest/apireference/API_ContainerPortConfiguration.html">ContainerPortConfiguration</a>
+   * </p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/gamelift-2015-10-01/ContainerPortRange">AWS
    * API Reference</a></p>
    */
@@ -40,86 +40,39 @@ namespace Model
     AWS_GAMELIFT_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>A starting value for the range of allowed port numbers.</p>
      */
     inline int GetFromPort() const{ return m_fromPort; }
-
-    /**
-     * <p>A starting value for the range of allowed port numbers.</p>
-     */
     inline bool FromPortHasBeenSet() const { return m_fromPortHasBeenSet; }
-
-    /**
-     * <p>A starting value for the range of allowed port numbers.</p>
-     */
     inline void SetFromPort(int value) { m_fromPortHasBeenSet = true; m_fromPort = value; }
-
-    /**
-     * <p>A starting value for the range of allowed port numbers.</p>
-     */
     inline ContainerPortRange& WithFromPort(int value) { SetFromPort(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>An ending value for the range of allowed port numbers. Port numbers are
      * end-inclusive. This value must be equal to or greater than
      * <code>FromPort</code>.</p>
      */
     inline int GetToPort() const{ return m_toPort; }
-
-    /**
-     * <p>An ending value for the range of allowed port numbers. Port numbers are
-     * end-inclusive. This value must be equal to or greater than
-     * <code>FromPort</code>.</p>
-     */
     inline bool ToPortHasBeenSet() const { return m_toPortHasBeenSet; }
-
-    /**
-     * <p>An ending value for the range of allowed port numbers. Port numbers are
-     * end-inclusive. This value must be equal to or greater than
-     * <code>FromPort</code>.</p>
-     */
     inline void SetToPort(int value) { m_toPortHasBeenSet = true; m_toPort = value; }
-
-    /**
-     * <p>An ending value for the range of allowed port numbers. Port numbers are
-     * end-inclusive. This value must be equal to or greater than
-     * <code>FromPort</code>.</p>
-     */
     inline ContainerPortRange& WithToPort(int value) { SetToPort(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The network protocol that these ports support. </p>
      */
     inline const IpProtocol& GetProtocol() const{ return m_protocol; }
-
-    /**
-     * <p>The network protocol that these ports support. </p>
-     */
     inline bool ProtocolHasBeenSet() const { return m_protocolHasBeenSet; }
-
-    /**
-     * <p>The network protocol that these ports support. </p>
-     */
     inline void SetProtocol(const IpProtocol& value) { m_protocolHasBeenSet = true; m_protocol = value; }
-
-    /**
-     * <p>The network protocol that these ports support. </p>
-     */
     inline void SetProtocol(IpProtocol&& value) { m_protocolHasBeenSet = true; m_protocol = std::move(value); }
-
-    /**
-     * <p>The network protocol that these ports support. </p>
-     */
     inline ContainerPortRange& WithProtocol(const IpProtocol& value) { SetProtocol(value); return *this;}
-
-    /**
-     * <p>The network protocol that these ports support. </p>
-     */
     inline ContainerPortRange& WithProtocol(IpProtocol&& value) { SetProtocol(std::move(value)); return *this;}
-
+    ///@}
   private:
 
     int m_fromPort;

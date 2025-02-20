@@ -6,24 +6,36 @@
 #pragma once
 #include <aws/sagemaker-geospatial/SageMakerGeospatial_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/sagemaker-geospatial/SageMakerGeospatialServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/sagemaker-geospatial/SageMakerGeospatialErrorMarshaller.h>
 
 namespace Aws
 {
 namespace SageMakerGeospatial
 {
+  AWS_SAGEMAKERGEOSPATIAL_API extern const char SERVICE_NAME[];
   /**
    * <p>Provides APIs for creating and managing SageMaker geospatial resources.</p>
    */
-  class AWS_SAGEMAKERGEOSPATIAL_API SageMakerGeospatialClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<SageMakerGeospatialClient>
+  class AWS_SAGEMAKERGEOSPATIAL_API SageMakerGeospatialClient : smithy::client::AwsSmithyClientT<Aws::SageMakerGeospatial::SERVICE_NAME,
+      Aws::SageMakerGeospatial::SageMakerGeospatialClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      SageMakerGeospatialEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::SageMakerGeospatialErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<SageMakerGeospatialClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "SageMaker Geospatial"; }
 
       typedef SageMakerGeospatialClientConfiguration ClientConfigurationType;
       typedef SageMakerGeospatialEndpointProvider EndpointProviderType;
@@ -291,13 +303,13 @@ namespace SageMakerGeospatial
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-geospatial-2020-05-27/ListEarthObservationJobs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListEarthObservationJobsOutcome ListEarthObservationJobs(const Model::ListEarthObservationJobsRequest& request) const;
+        virtual Model::ListEarthObservationJobsOutcome ListEarthObservationJobs(const Model::ListEarthObservationJobsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListEarthObservationJobs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListEarthObservationJobsRequestT = Model::ListEarthObservationJobsRequest>
-        Model::ListEarthObservationJobsOutcomeCallable ListEarthObservationJobsCallable(const ListEarthObservationJobsRequestT& request) const
+        Model::ListEarthObservationJobsOutcomeCallable ListEarthObservationJobsCallable(const ListEarthObservationJobsRequestT& request = {}) const
         {
             return SubmitCallable(&SageMakerGeospatialClient::ListEarthObservationJobs, request);
         }
@@ -306,7 +318,7 @@ namespace SageMakerGeospatial
          * An Async wrapper for ListEarthObservationJobs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListEarthObservationJobsRequestT = Model::ListEarthObservationJobsRequest>
-        void ListEarthObservationJobsAsync(const ListEarthObservationJobsRequestT& request, const ListEarthObservationJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListEarthObservationJobsAsync(const ListEarthObservationJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListEarthObservationJobsRequestT& request = {}) const
         {
             return SubmitAsync(&SageMakerGeospatialClient::ListEarthObservationJobs, request, handler, context);
         }
@@ -317,13 +329,13 @@ namespace SageMakerGeospatial
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-geospatial-2020-05-27/ListRasterDataCollections">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListRasterDataCollectionsOutcome ListRasterDataCollections(const Model::ListRasterDataCollectionsRequest& request) const;
+        virtual Model::ListRasterDataCollectionsOutcome ListRasterDataCollections(const Model::ListRasterDataCollectionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListRasterDataCollections that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListRasterDataCollectionsRequestT = Model::ListRasterDataCollectionsRequest>
-        Model::ListRasterDataCollectionsOutcomeCallable ListRasterDataCollectionsCallable(const ListRasterDataCollectionsRequestT& request) const
+        Model::ListRasterDataCollectionsOutcomeCallable ListRasterDataCollectionsCallable(const ListRasterDataCollectionsRequestT& request = {}) const
         {
             return SubmitCallable(&SageMakerGeospatialClient::ListRasterDataCollections, request);
         }
@@ -332,7 +344,7 @@ namespace SageMakerGeospatial
          * An Async wrapper for ListRasterDataCollections that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListRasterDataCollectionsRequestT = Model::ListRasterDataCollectionsRequest>
-        void ListRasterDataCollectionsAsync(const ListRasterDataCollectionsRequestT& request, const ListRasterDataCollectionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListRasterDataCollectionsAsync(const ListRasterDataCollectionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListRasterDataCollectionsRequestT& request = {}) const
         {
             return SubmitAsync(&SageMakerGeospatialClient::ListRasterDataCollections, request, handler, context);
         }
@@ -367,13 +379,13 @@ namespace SageMakerGeospatial
          * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-geospatial-2020-05-27/ListVectorEnrichmentJobs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListVectorEnrichmentJobsOutcome ListVectorEnrichmentJobs(const Model::ListVectorEnrichmentJobsRequest& request) const;
+        virtual Model::ListVectorEnrichmentJobsOutcome ListVectorEnrichmentJobs(const Model::ListVectorEnrichmentJobsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListVectorEnrichmentJobs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListVectorEnrichmentJobsRequestT = Model::ListVectorEnrichmentJobsRequest>
-        Model::ListVectorEnrichmentJobsOutcomeCallable ListVectorEnrichmentJobsCallable(const ListVectorEnrichmentJobsRequestT& request) const
+        Model::ListVectorEnrichmentJobsOutcomeCallable ListVectorEnrichmentJobsCallable(const ListVectorEnrichmentJobsRequestT& request = {}) const
         {
             return SubmitCallable(&SageMakerGeospatialClient::ListVectorEnrichmentJobs, request);
         }
@@ -382,7 +394,7 @@ namespace SageMakerGeospatial
          * An Async wrapper for ListVectorEnrichmentJobs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListVectorEnrichmentJobsRequestT = Model::ListVectorEnrichmentJobsRequest>
-        void ListVectorEnrichmentJobsAsync(const ListVectorEnrichmentJobsRequestT& request, const ListVectorEnrichmentJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListVectorEnrichmentJobsAsync(const ListVectorEnrichmentJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListVectorEnrichmentJobsRequestT& request = {}) const
         {
             return SubmitAsync(&SageMakerGeospatialClient::ListVectorEnrichmentJobs, request, handler, context);
         }
@@ -574,11 +586,7 @@ namespace SageMakerGeospatial
       std::shared_ptr<SageMakerGeospatialEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<SageMakerGeospatialClient>;
-      void init(const SageMakerGeospatialClientConfiguration& clientConfiguration);
 
-      SageMakerGeospatialClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<SageMakerGeospatialEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace SageMakerGeospatial

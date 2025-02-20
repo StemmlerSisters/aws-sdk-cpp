@@ -17,9 +17,10 @@ AllocateAddressRequest::AllocateAddressRequest() :
     m_publicIpv4PoolHasBeenSet(false),
     m_networkBorderGroupHasBeenSet(false),
     m_customerOwnedIpv4PoolHasBeenSet(false),
+    m_tagSpecificationsHasBeenSet(false),
+    m_ipamPoolIdHasBeenSet(false),
     m_dryRun(false),
-    m_dryRunHasBeenSet(false),
-    m_tagSpecificationsHasBeenSet(false)
+    m_dryRunHasBeenSet(false)
 {
 }
 
@@ -52,11 +53,6 @@ Aws::String AllocateAddressRequest::SerializePayload() const
     ss << "CustomerOwnedIpv4Pool=" << StringUtils::URLEncode(m_customerOwnedIpv4Pool.c_str()) << "&";
   }
 
-  if(m_dryRunHasBeenSet)
-  {
-    ss << "DryRun=" << std::boolalpha << m_dryRun << "&";
-  }
-
   if(m_tagSpecificationsHasBeenSet)
   {
     unsigned tagSpecificationsCount = 1;
@@ -65,6 +61,16 @@ Aws::String AllocateAddressRequest::SerializePayload() const
       item.OutputToStream(ss, "TagSpecification.", tagSpecificationsCount, "");
       tagSpecificationsCount++;
     }
+  }
+
+  if(m_ipamPoolIdHasBeenSet)
+  {
+    ss << "IpamPoolId=" << StringUtils::URLEncode(m_ipamPoolId.c_str()) << "&";
+  }
+
+  if(m_dryRunHasBeenSet)
+  {
+    ss << "DryRun=" << std::boolalpha << m_dryRun << "&";
   }
 
   ss << "Version=2016-11-15";

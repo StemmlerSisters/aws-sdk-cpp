@@ -9,6 +9,7 @@
 #include <aws/core/http/HttpClientFactory.h>
 #include <aws/core/http/HttpResponse.h>
 #include <aws/core/utils/logging/LogMacros.h>
+#include <aws/core/utils/ARN.h>
 #include <aws/core/utils/StringUtils.h>
 #include <aws/core/utils/HashingUtils.h>
 #include <aws/core/platform/Environment.h>
@@ -81,7 +82,7 @@ namespace Aws
         AWSHttpResourceClient::AWSHttpResourceClient(const Aws::Client::ClientConfiguration& clientConfiguration, const char* logtag)
         : m_logtag(logtag),
           m_userAgent(Aws::Client::ComputeUserAgentString(&clientConfiguration)),
-          m_retryStrategy(clientConfiguration.retryStrategy),
+          m_retryStrategy(clientConfiguration.retryStrategy ? clientConfiguration.retryStrategy : clientConfiguration.configFactories.retryStrategyCreateFn()),
           m_httpClient(nullptr)
         {
             AWS_LOGSTREAM_INFO(m_logtag.c_str(),
@@ -200,7 +201,11 @@ namespace Aws
             m_tokenRequired(true),
             m_disableIMDSV1(clientConfiguration.disableImdsV1)
         {
-
+#if defined(DISABLE_IMDSV1)
+            AWS_UNREFERENCED_PARAM(m_disableIMDSV1);
+            m_disableIMDSV1 = true;
+            AWS_LOGSTREAM_TRACE(m_logtag.c_str(), "IMDSv1 had been disabled at the SDK build time");
+#endif
         }
 
         EC2MetadataClient::~EC2MetadataClient()
@@ -584,6 +589,15 @@ namespace Aws
                     {
                         result.creds.SetExpiration(DateTime(StringUtils::Trim(expirationNode.GetText().c_str()).c_str(), DateFormat::ISO_8601));
                     }
+                    XmlNode assumeRoleUser = credentialsNode.FirstChild("AssumedRoleUser");
+                    if (!assumeRoleUser.IsNull())
+                    {
+                      XmlNode roleArn = assumeRoleUser.FirstChild("Arn");
+                      if (!roleArn.IsNull())
+                      {
+                        result.creds.SetAccountId(ARN{roleArn.GetText()}.GetAccountId());
+                      }
+                    }
                 }
             }
             return result;
@@ -591,23 +605,29 @@ namespace Aws
 
         static const char SSO_RESOURCE_CLIENT_LOG_TAG[] = "SSOResourceClient";
         SSOCredentialsClient::SSOCredentialsClient(const Aws::Client::ClientConfiguration& clientConfiguration)
+                : SSOCredentialsClient(clientConfiguration, clientConfiguration.scheme, clientConfiguration.region)
+        {
+        }
+
+        SSOCredentialsClient::SSOCredentialsClient(const Aws::Client::ClientConfiguration& clientConfiguration, Aws::Http::Scheme scheme, const Aws::String& region)
                 : AWSHttpResourceClient(clientConfiguration, SSO_RESOURCE_CLIENT_LOG_TAG)
         {
             SetErrorMarshaller(Aws::MakeUnique<Aws::Client::JsonErrorMarshaller>(SSO_RESOURCE_CLIENT_LOG_TAG));
 
-            m_endpoint = buildEndpoint(clientConfiguration, "portal.sso.", "federation/credentials");
-            m_oidcEndpoint = buildEndpoint(clientConfiguration, "oidc.", "token");
+            m_endpoint = buildEndpoint(scheme, region, "portal.sso.", "federation/credentials");
+            m_oidcEndpoint = buildEndpoint(scheme, region, "oidc.", "token");
 
             AWS_LOGSTREAM_INFO(SSO_RESOURCE_CLIENT_LOG_TAG, "Creating SSO ResourceClient with endpoint: " << m_endpoint);
         }
 
         Aws::String SSOCredentialsClient::buildEndpoint(
-            const Aws::Client::ClientConfiguration& clientConfiguration,
+            Aws::Http::Scheme scheme,
+            const Aws::String& region,
             const Aws::String& domain,
             const Aws::String& endpoint)
         {
             Aws::StringStream ss;
-            if (clientConfiguration.scheme == Aws::Http::Scheme::HTTP)
+            if (scheme == Aws::Http::Scheme::HTTP)
             {
                 ss << "http://";
             }
@@ -618,10 +638,10 @@ namespace Aws
 
             static const int CN_NORTH_1_HASH = Aws::Utils::HashingUtils::HashString(Aws::Region::CN_NORTH_1);
             static const int CN_NORTHWEST_1_HASH = Aws::Utils::HashingUtils::HashString(Aws::Region::CN_NORTHWEST_1);
-            auto hash = Aws::Utils::HashingUtils::HashString(clientConfiguration.region.c_str());
+            auto hash = Aws::Utils::HashingUtils::HashString(region.c_str());
 
-            AWS_LOGSTREAM_DEBUG(SSO_RESOURCE_CLIENT_LOG_TAG, "Preparing SSO client for region: " << clientConfiguration.region);
-            ss << domain << clientConfiguration.region << ".amazonaws.com/" << endpoint;
+            AWS_LOGSTREAM_DEBUG(SSO_RESOURCE_CLIENT_LOG_TAG, "Preparing SSO client for region: " << region);
+            ss << domain << region << ".amazonaws.com/" << endpoint;
             if (hash == CN_NORTH_1_HASH || hash == CN_NORTHWEST_1_HASH)
             {
                 ss << ".cn";
@@ -660,6 +680,7 @@ namespace Aws
             creds.SetAWSSecretKey(roleCredentials.GetString("secretAccessKey"));
             creds.SetSessionToken(roleCredentials.GetString("sessionToken"));
             creds.SetExpiration(roleCredentials.GetInt64("expiration"));
+            creds.SetAccountId(roleCredentials.GetString("accountId"));
             SSOCredentialsClient::SSOGetRoleCredentialsResult result;
             result.creds = creds;
             return result;

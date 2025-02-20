@@ -22,8 +22,8 @@ DescribeChannelResult::DescribeChannelResult() :
 {
 }
 
-DescribeChannelResult::DescribeChannelResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_channelState(ChannelState::NOT_SET)
+DescribeChannelResult::DescribeChannelResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : DescribeChannelResult()
 {
   *this = result;
 }
@@ -35,15 +35,6 @@ DescribeChannelResult& DescribeChannelResult::operator =(const Aws::AmazonWebSer
   {
     m_arn = jsonValue.GetString("Arn");
 
-  }
-
-  if(jsonValue.ValueExists("Audiences"))
-  {
-    Aws::Utils::Array<JsonView> audiencesJsonList = jsonValue.GetArray("Audiences");
-    for(unsigned audiencesIndex = 0; audiencesIndex < audiencesJsonList.GetLength(); ++audiencesIndex)
-    {
-      m_audiences.push_back(audiencesJsonList[audiencesIndex].AsString());
-    }
   }
 
   if(jsonValue.ValueExists("ChannelName"))
@@ -73,12 +64,6 @@ DescribeChannelResult& DescribeChannelResult::operator =(const Aws::AmazonWebSer
   if(jsonValue.ValueExists("LastModifiedTime"))
   {
     m_lastModifiedTime = jsonValue.GetDouble("LastModifiedTime");
-
-  }
-
-  if(jsonValue.ValueExists("LogConfiguration"))
-  {
-    m_logConfiguration = jsonValue.GetObject("LogConfiguration");
 
   }
 
@@ -112,10 +97,25 @@ DescribeChannelResult& DescribeChannelResult::operator =(const Aws::AmazonWebSer
 
   }
 
+  if(jsonValue.ValueExists("LogConfiguration"))
+  {
+    m_logConfiguration = jsonValue.GetObject("LogConfiguration");
+
+  }
+
   if(jsonValue.ValueExists("TimeShiftConfiguration"))
   {
     m_timeShiftConfiguration = jsonValue.GetObject("TimeShiftConfiguration");
 
+  }
+
+  if(jsonValue.ValueExists("Audiences"))
+  {
+    Aws::Utils::Array<JsonView> audiencesJsonList = jsonValue.GetArray("Audiences");
+    for(unsigned audiencesIndex = 0; audiencesIndex < audiencesJsonList.GetLength(); ++audiencesIndex)
+    {
+      m_audiences.push_back(audiencesJsonList[audiencesIndex].AsString());
+    }
   }
 
 

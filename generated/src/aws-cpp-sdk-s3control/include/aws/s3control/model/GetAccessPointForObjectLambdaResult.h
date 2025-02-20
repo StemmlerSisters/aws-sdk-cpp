@@ -35,151 +35,79 @@ namespace Model
     AWS_S3CONTROL_API GetAccessPointForObjectLambdaResult& operator=(const Aws::AmazonWebServiceResult<Aws::Utils::Xml::XmlDocument>& result);
 
 
+    ///@{
     /**
      * <p>The name of the Object Lambda Access Point.</p>
      */
     inline const Aws::String& GetName() const{ return m_name; }
-
-    /**
-     * <p>The name of the Object Lambda Access Point.</p>
-     */
     inline void SetName(const Aws::String& value) { m_name = value; }
-
-    /**
-     * <p>The name of the Object Lambda Access Point.</p>
-     */
     inline void SetName(Aws::String&& value) { m_name = std::move(value); }
-
-    /**
-     * <p>The name of the Object Lambda Access Point.</p>
-     */
     inline void SetName(const char* value) { m_name.assign(value); }
-
-    /**
-     * <p>The name of the Object Lambda Access Point.</p>
-     */
     inline GetAccessPointForObjectLambdaResult& WithName(const Aws::String& value) { SetName(value); return *this;}
-
-    /**
-     * <p>The name of the Object Lambda Access Point.</p>
-     */
     inline GetAccessPointForObjectLambdaResult& WithName(Aws::String&& value) { SetName(std::move(value)); return *this;}
-
-    /**
-     * <p>The name of the Object Lambda Access Point.</p>
-     */
     inline GetAccessPointForObjectLambdaResult& WithName(const char* value) { SetName(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Configuration to block all public access. This setting is turned on and can
      * not be edited. </p>
      */
     inline const PublicAccessBlockConfiguration& GetPublicAccessBlockConfiguration() const{ return m_publicAccessBlockConfiguration; }
-
-    /**
-     * <p>Configuration to block all public access. This setting is turned on and can
-     * not be edited. </p>
-     */
     inline void SetPublicAccessBlockConfiguration(const PublicAccessBlockConfiguration& value) { m_publicAccessBlockConfiguration = value; }
-
-    /**
-     * <p>Configuration to block all public access. This setting is turned on and can
-     * not be edited. </p>
-     */
     inline void SetPublicAccessBlockConfiguration(PublicAccessBlockConfiguration&& value) { m_publicAccessBlockConfiguration = std::move(value); }
-
-    /**
-     * <p>Configuration to block all public access. This setting is turned on and can
-     * not be edited. </p>
-     */
     inline GetAccessPointForObjectLambdaResult& WithPublicAccessBlockConfiguration(const PublicAccessBlockConfiguration& value) { SetPublicAccessBlockConfiguration(value); return *this;}
-
-    /**
-     * <p>Configuration to block all public access. This setting is turned on and can
-     * not be edited. </p>
-     */
     inline GetAccessPointForObjectLambdaResult& WithPublicAccessBlockConfiguration(PublicAccessBlockConfiguration&& value) { SetPublicAccessBlockConfiguration(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The date and time when the specified Object Lambda Access Point was
      * created.</p>
      */
     inline const Aws::Utils::DateTime& GetCreationDate() const{ return m_creationDate; }
-
-    /**
-     * <p>The date and time when the specified Object Lambda Access Point was
-     * created.</p>
-     */
     inline void SetCreationDate(const Aws::Utils::DateTime& value) { m_creationDate = value; }
-
-    /**
-     * <p>The date and time when the specified Object Lambda Access Point was
-     * created.</p>
-     */
     inline void SetCreationDate(Aws::Utils::DateTime&& value) { m_creationDate = std::move(value); }
-
-    /**
-     * <p>The date and time when the specified Object Lambda Access Point was
-     * created.</p>
-     */
     inline GetAccessPointForObjectLambdaResult& WithCreationDate(const Aws::Utils::DateTime& value) { SetCreationDate(value); return *this;}
-
-    /**
-     * <p>The date and time when the specified Object Lambda Access Point was
-     * created.</p>
-     */
     inline GetAccessPointForObjectLambdaResult& WithCreationDate(Aws::Utils::DateTime&& value) { SetCreationDate(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The alias of the Object Lambda Access Point.</p>
      */
     inline const ObjectLambdaAccessPointAlias& GetAlias() const{ return m_alias; }
-
-    /**
-     * <p>The alias of the Object Lambda Access Point.</p>
-     */
     inline void SetAlias(const ObjectLambdaAccessPointAlias& value) { m_alias = value; }
-
-    /**
-     * <p>The alias of the Object Lambda Access Point.</p>
-     */
     inline void SetAlias(ObjectLambdaAccessPointAlias&& value) { m_alias = std::move(value); }
-
-    /**
-     * <p>The alias of the Object Lambda Access Point.</p>
-     */
     inline GetAccessPointForObjectLambdaResult& WithAlias(const ObjectLambdaAccessPointAlias& value) { SetAlias(value); return *this;}
-
-    /**
-     * <p>The alias of the Object Lambda Access Point.</p>
-     */
     inline GetAccessPointForObjectLambdaResult& WithAlias(ObjectLambdaAccessPointAlias&& value) { SetAlias(std::move(value)); return *this;}
+    ///@}
 
-
-    
+    ///@{
+    /**
+     * AWS Request Id value
+     */
     inline const Aws::String& GetRequestId() const{ return m_requestId; }
-
-    
     inline void SetRequestId(const Aws::String& value) { m_requestId = value; }
-
-    
     inline void SetRequestId(Aws::String&& value) { m_requestId = std::move(value); }
-
-    
     inline void SetRequestId(const char* value) { m_requestId.assign(value); }
-
-    
     inline GetAccessPointForObjectLambdaResult& WithRequestId(const Aws::String& value) { SetRequestId(value); return *this;}
-
-    
     inline GetAccessPointForObjectLambdaResult& WithRequestId(Aws::String&& value) { SetRequestId(std::move(value)); return *this;}
-
-    
     inline GetAccessPointForObjectLambdaResult& WithRequestId(const char* value) { SetRequestId(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * x-amz-id-2 header value, also known as Host Id
+     */
+    inline const Aws::String& GetHostId() const{ return m_hostId; }
+    inline void SetHostId(const Aws::String& value) { m_hostId = value; }
+    inline void SetHostId(Aws::String&& value) { m_hostId = std::move(value); }
+    inline void SetHostId(const char* value) { m_hostId.assign(value); }
+    inline GetAccessPointForObjectLambdaResult& WithHostId(const Aws::String& value) { SetHostId(value); return *this;}
+    inline GetAccessPointForObjectLambdaResult& WithHostId(Aws::String&& value) { SetHostId(std::move(value)); return *this;}
+    inline GetAccessPointForObjectLambdaResult& WithHostId(const char* value) { SetHostId(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_name;
@@ -191,6 +119,8 @@ namespace Model
     ObjectLambdaAccessPointAlias m_alias;
 
     Aws::String m_requestId;
+
+    Aws::String m_hostId;
   };
 
 } // namespace Model

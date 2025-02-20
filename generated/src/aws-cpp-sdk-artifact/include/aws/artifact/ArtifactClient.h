@@ -6,25 +6,37 @@
 #pragma once
 #include <aws/artifact/Artifact_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/artifact/ArtifactServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/artifact/ArtifactErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Artifact
 {
+  AWS_ARTIFACT_API extern const char SERVICE_NAME[];
   /**
    * <p>This reference provides descriptions of the low-level AWS Artifact Service
    * API.</p>
    */
-  class AWS_ARTIFACT_API ArtifactClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<ArtifactClient>
+  class AWS_ARTIFACT_API ArtifactClient : smithy::client::AwsSmithyClientT<Aws::Artifact::SERVICE_NAME,
+      Aws::Artifact::ArtifactClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      ArtifactEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::ArtifactErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<ArtifactClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Artifact"; }
 
       typedef ArtifactClientConfiguration ClientConfigurationType;
       typedef ArtifactEndpointProvider EndpointProviderType;
@@ -82,13 +94,13 @@ namespace Artifact
          * href="http://docs.aws.amazon.com/goto/WebAPI/artifact-2018-05-10/GetAccountSettings">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetAccountSettingsOutcome GetAccountSettings(const Model::GetAccountSettingsRequest& request) const;
+        virtual Model::GetAccountSettingsOutcome GetAccountSettings(const Model::GetAccountSettingsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetAccountSettings that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetAccountSettingsRequestT = Model::GetAccountSettingsRequest>
-        Model::GetAccountSettingsOutcomeCallable GetAccountSettingsCallable(const GetAccountSettingsRequestT& request) const
+        Model::GetAccountSettingsOutcomeCallable GetAccountSettingsCallable(const GetAccountSettingsRequestT& request = {}) const
         {
             return SubmitCallable(&ArtifactClient::GetAccountSettings, request);
         }
@@ -97,7 +109,7 @@ namespace Artifact
          * An Async wrapper for GetAccountSettings that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetAccountSettingsRequestT = Model::GetAccountSettingsRequest>
-        void GetAccountSettingsAsync(const GetAccountSettingsRequestT& request, const GetAccountSettingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetAccountSettingsAsync(const GetAccountSettingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetAccountSettingsRequestT& request = {}) const
         {
             return SubmitAsync(&ArtifactClient::GetAccountSettings, request, handler, context);
         }
@@ -179,17 +191,43 @@ namespace Artifact
         }
 
         /**
+         * <p>List active customer-agreements applicable to calling identity.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/artifact-2018-05-10/ListCustomerAgreements">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListCustomerAgreementsOutcome ListCustomerAgreements(const Model::ListCustomerAgreementsRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for ListCustomerAgreements that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListCustomerAgreementsRequestT = Model::ListCustomerAgreementsRequest>
+        Model::ListCustomerAgreementsOutcomeCallable ListCustomerAgreementsCallable(const ListCustomerAgreementsRequestT& request = {}) const
+        {
+            return SubmitCallable(&ArtifactClient::ListCustomerAgreements, request);
+        }
+
+        /**
+         * An Async wrapper for ListCustomerAgreements that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListCustomerAgreementsRequestT = Model::ListCustomerAgreementsRequest>
+        void ListCustomerAgreementsAsync(const ListCustomerAgreementsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListCustomerAgreementsRequestT& request = {}) const
+        {
+            return SubmitAsync(&ArtifactClient::ListCustomerAgreements, request, handler, context);
+        }
+
+        /**
          * <p>List available reports.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/artifact-2018-05-10/ListReports">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListReportsOutcome ListReports(const Model::ListReportsRequest& request) const;
+        virtual Model::ListReportsOutcome ListReports(const Model::ListReportsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListReports that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListReportsRequestT = Model::ListReportsRequest>
-        Model::ListReportsOutcomeCallable ListReportsCallable(const ListReportsRequestT& request) const
+        Model::ListReportsOutcomeCallable ListReportsCallable(const ListReportsRequestT& request = {}) const
         {
             return SubmitCallable(&ArtifactClient::ListReports, request);
         }
@@ -198,7 +236,7 @@ namespace Artifact
          * An Async wrapper for ListReports that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListReportsRequestT = Model::ListReportsRequest>
-        void ListReportsAsync(const ListReportsRequestT& request, const ListReportsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListReportsAsync(const ListReportsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListReportsRequestT& request = {}) const
         {
             return SubmitAsync(&ArtifactClient::ListReports, request, handler, context);
         }
@@ -208,13 +246,13 @@ namespace Artifact
          * href="http://docs.aws.amazon.com/goto/WebAPI/artifact-2018-05-10/PutAccountSettings">AWS
          * API Reference</a></p>
          */
-        virtual Model::PutAccountSettingsOutcome PutAccountSettings(const Model::PutAccountSettingsRequest& request) const;
+        virtual Model::PutAccountSettingsOutcome PutAccountSettings(const Model::PutAccountSettingsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for PutAccountSettings that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename PutAccountSettingsRequestT = Model::PutAccountSettingsRequest>
-        Model::PutAccountSettingsOutcomeCallable PutAccountSettingsCallable(const PutAccountSettingsRequestT& request) const
+        Model::PutAccountSettingsOutcomeCallable PutAccountSettingsCallable(const PutAccountSettingsRequestT& request = {}) const
         {
             return SubmitCallable(&ArtifactClient::PutAccountSettings, request);
         }
@@ -223,7 +261,7 @@ namespace Artifact
          * An Async wrapper for PutAccountSettings that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename PutAccountSettingsRequestT = Model::PutAccountSettingsRequest>
-        void PutAccountSettingsAsync(const PutAccountSettingsRequestT& request, const PutAccountSettingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void PutAccountSettingsAsync(const PutAccountSettingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const PutAccountSettingsRequestT& request = {}) const
         {
             return SubmitAsync(&ArtifactClient::PutAccountSettings, request, handler, context);
         }
@@ -233,11 +271,7 @@ namespace Artifact
       std::shared_ptr<ArtifactEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<ArtifactClient>;
-      void init(const ArtifactClientConfiguration& clientConfiguration);
 
-      ArtifactClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<ArtifactEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Artifact

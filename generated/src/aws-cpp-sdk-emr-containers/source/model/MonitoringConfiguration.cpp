@@ -19,6 +19,7 @@ namespace Model
 {
 
 MonitoringConfiguration::MonitoringConfiguration() : 
+    m_managedLogsHasBeenSet(false),
     m_persistentAppUI(PersistentAppUI::NOT_SET),
     m_persistentAppUIHasBeenSet(false),
     m_cloudWatchMonitoringConfigurationHasBeenSet(false),
@@ -27,18 +28,21 @@ MonitoringConfiguration::MonitoringConfiguration() :
 {
 }
 
-MonitoringConfiguration::MonitoringConfiguration(JsonView jsonValue) : 
-    m_persistentAppUI(PersistentAppUI::NOT_SET),
-    m_persistentAppUIHasBeenSet(false),
-    m_cloudWatchMonitoringConfigurationHasBeenSet(false),
-    m_s3MonitoringConfigurationHasBeenSet(false),
-    m_containerLogRotationConfigurationHasBeenSet(false)
+MonitoringConfiguration::MonitoringConfiguration(JsonView jsonValue)
+  : MonitoringConfiguration()
 {
   *this = jsonValue;
 }
 
 MonitoringConfiguration& MonitoringConfiguration::operator =(JsonView jsonValue)
 {
+  if(jsonValue.ValueExists("managedLogs"))
+  {
+    m_managedLogs = jsonValue.GetObject("managedLogs");
+
+    m_managedLogsHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("persistentAppUI"))
   {
     m_persistentAppUI = PersistentAppUIMapper::GetPersistentAppUIForName(jsonValue.GetString("persistentAppUI"));
@@ -73,6 +77,12 @@ MonitoringConfiguration& MonitoringConfiguration::operator =(JsonView jsonValue)
 JsonValue MonitoringConfiguration::Jsonize() const
 {
   JsonValue payload;
+
+  if(m_managedLogsHasBeenSet)
+  {
+   payload.WithObject("managedLogs", m_managedLogs.Jsonize());
+
+  }
 
   if(m_persistentAppUIHasBeenSet)
   {

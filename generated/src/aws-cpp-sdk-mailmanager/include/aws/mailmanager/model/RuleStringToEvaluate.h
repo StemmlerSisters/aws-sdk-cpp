@@ -6,6 +6,7 @@
 #pragma once
 #include <aws/mailmanager/MailManager_EXPORTS.h>
 #include <aws/mailmanager/model/RuleStringEmailAttribute.h>
+#include <aws/core/utils/memory/stl/AWSString.h>
 #include <utility>
 
 namespace Aws
@@ -38,40 +39,39 @@ namespace Model
     AWS_MAILMANAGER_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The email attribute to evaluate in a string condition expression.</p>
      */
     inline const RuleStringEmailAttribute& GetAttribute() const{ return m_attribute; }
-
-    /**
-     * <p>The email attribute to evaluate in a string condition expression.</p>
-     */
     inline bool AttributeHasBeenSet() const { return m_attributeHasBeenSet; }
-
-    /**
-     * <p>The email attribute to evaluate in a string condition expression.</p>
-     */
     inline void SetAttribute(const RuleStringEmailAttribute& value) { m_attributeHasBeenSet = true; m_attribute = value; }
-
-    /**
-     * <p>The email attribute to evaluate in a string condition expression.</p>
-     */
     inline void SetAttribute(RuleStringEmailAttribute&& value) { m_attributeHasBeenSet = true; m_attribute = std::move(value); }
-
-    /**
-     * <p>The email attribute to evaluate in a string condition expression.</p>
-     */
     inline RuleStringToEvaluate& WithAttribute(const RuleStringEmailAttribute& value) { SetAttribute(value); return *this;}
-
-    /**
-     * <p>The email attribute to evaluate in a string condition expression.</p>
-     */
     inline RuleStringToEvaluate& WithAttribute(RuleStringEmailAttribute&& value) { SetAttribute(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The email MIME X-Header attribute to evaluate in a string condition
+     * expression.</p>
+     */
+    inline const Aws::String& GetMimeHeaderAttribute() const{ return m_mimeHeaderAttribute; }
+    inline bool MimeHeaderAttributeHasBeenSet() const { return m_mimeHeaderAttributeHasBeenSet; }
+    inline void SetMimeHeaderAttribute(const Aws::String& value) { m_mimeHeaderAttributeHasBeenSet = true; m_mimeHeaderAttribute = value; }
+    inline void SetMimeHeaderAttribute(Aws::String&& value) { m_mimeHeaderAttributeHasBeenSet = true; m_mimeHeaderAttribute = std::move(value); }
+    inline void SetMimeHeaderAttribute(const char* value) { m_mimeHeaderAttributeHasBeenSet = true; m_mimeHeaderAttribute.assign(value); }
+    inline RuleStringToEvaluate& WithMimeHeaderAttribute(const Aws::String& value) { SetMimeHeaderAttribute(value); return *this;}
+    inline RuleStringToEvaluate& WithMimeHeaderAttribute(Aws::String&& value) { SetMimeHeaderAttribute(std::move(value)); return *this;}
+    inline RuleStringToEvaluate& WithMimeHeaderAttribute(const char* value) { SetMimeHeaderAttribute(value); return *this;}
+    ///@}
   private:
 
     RuleStringEmailAttribute m_attribute;
     bool m_attributeHasBeenSet = false;
+
+    Aws::String m_mimeHeaderAttribute;
+    bool m_mimeHeaderAttributeHasBeenSet = false;
   };
 
 } // namespace Model

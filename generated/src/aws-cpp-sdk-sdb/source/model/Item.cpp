@@ -27,10 +27,8 @@ Item::Item() :
 {
 }
 
-Item::Item(const XmlNode& xmlNode) : 
-    m_nameHasBeenSet(false),
-    m_alternateNameEncodingHasBeenSet(false),
-    m_attributesHasBeenSet(false)
+Item::Item(const XmlNode& xmlNode)
+  : Item()
 {
   *this = xmlNode;
 }
@@ -88,7 +86,7 @@ void Item::OutputToStream(Aws::OStream& oStream, const char* location, unsigned 
       for(auto& item : m_attributes)
       {
         Aws::StringStream attributesSs;
-        attributesSs << location << index << locationValue << ".Attribute." << attributesIdx++;
+        attributesSs << location << index << locationValue << ".Attributes.Attribute." << attributesIdx++;
         item.OutputToStream(oStream, attributesSs.str().c_str());
       }
   }

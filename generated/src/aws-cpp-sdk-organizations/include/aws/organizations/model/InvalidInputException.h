@@ -46,9 +46,10 @@ namespace Model
    * organization, or email) as a party.</p> </li> <li> <p>INVALID_PATTERN: You
    * provided a value that doesn't match the required pattern.</p> </li> <li>
    * <p>INVALID_PATTERN_TARGET_ID: You specified a policy target ID that doesn't
-   * match the required pattern.</p> </li> <li> <p>INVALID_ROLE_NAME: You provided a
-   * role name that isn't valid. A role name can't begin with the reserved prefix
-   * <code>AWSServiceRoleFor</code>.</p> </li> <li>
+   * match the required pattern.</p> </li> <li> <p>INVALID_PRINCIPAL: You specified
+   * an invalid principal element in the policy.</p> </li> <li> <p>INVALID_ROLE_NAME:
+   * You provided a role name that isn't valid. A role name can't begin with the
+   * reserved prefix <code>AWSServiceRoleFor</code>.</p> </li> <li>
    * <p>INVALID_SYNTAX_ORGANIZATION_ARN: You specified an invalid Amazon Resource
    * Name (ARN) for the organization.</p> </li> <li> <p>INVALID_SYNTAX_POLICY_ID: You
    * specified an invalid policy ID. </p> </li> <li>
@@ -63,10 +64,12 @@ namespace Model
    * parameter that is shorter than allowed.</p> </li> <li> <p>MIN_VALUE_EXCEEDED:
    * You provided a numeric parameter that has a smaller value than allowed.</p>
    * </li> <li> <p>MOVING_ACCOUNT_BETWEEN_DIFFERENT_ROOTS: You can move an account
-   * only between entities in the same root.</p> </li> <li> <p>TARGET_NOT_SUPPORTED:
-   * You can't perform the specified operation on that target entity.</p> </li> <li>
-   * <p>UNRECOGNIZED_SERVICE_PRINCIPAL: You specified a service principal that isn't
-   * recognized.</p> </li> </ul><p><h3>See Also:</h3>   <a
+   * only between entities in the same root.</p> </li> <li> <p>NON_DETACHABLE_POLICY:
+   * You can't detach this Amazon Web Services Managed Policy.</p> </li> <li>
+   * <p>TARGET_NOT_SUPPORTED: You can't perform the specified operation on that
+   * target entity.</p> </li> <li> <p>UNRECOGNIZED_SERVICE_PRINCIPAL: You specified a
+   * service principal that isn't recognized.</p> </li> </ul><p><h3>See Also:</h3>  
+   * <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/organizations-2016-11-28/InvalidInputException">AWS
    * API Reference</a></p>
    */
@@ -79,49 +82,27 @@ namespace Model
     AWS_ORGANIZATIONS_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     
     inline const Aws::String& GetMessage() const{ return m_message; }
-
-    
     inline bool MessageHasBeenSet() const { return m_messageHasBeenSet; }
-
-    
     inline void SetMessage(const Aws::String& value) { m_messageHasBeenSet = true; m_message = value; }
-
-    
     inline void SetMessage(Aws::String&& value) { m_messageHasBeenSet = true; m_message = std::move(value); }
-
-    
     inline void SetMessage(const char* value) { m_messageHasBeenSet = true; m_message.assign(value); }
-
-    
     inline InvalidInputException& WithMessage(const Aws::String& value) { SetMessage(value); return *this;}
-
-    
     inline InvalidInputException& WithMessage(Aws::String&& value) { SetMessage(std::move(value)); return *this;}
-
-    
     inline InvalidInputException& WithMessage(const char* value) { SetMessage(value); return *this;}
+    ///@}
 
-
+    ///@{
     
     inline const InvalidInputExceptionReason& GetReason() const{ return m_reason; }
-
-    
     inline bool ReasonHasBeenSet() const { return m_reasonHasBeenSet; }
-
-    
     inline void SetReason(const InvalidInputExceptionReason& value) { m_reasonHasBeenSet = true; m_reason = value; }
-
-    
     inline void SetReason(InvalidInputExceptionReason&& value) { m_reasonHasBeenSet = true; m_reason = std::move(value); }
-
-    
     inline InvalidInputException& WithReason(const InvalidInputExceptionReason& value) { SetReason(value); return *this;}
-
-    
     inline InvalidInputException& WithReason(InvalidInputExceptionReason&& value) { SetReason(std::move(value)); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_message;

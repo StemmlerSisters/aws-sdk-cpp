@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/kinesisanalyticsv2/KinesisAnalyticsV2_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/kinesisanalyticsv2/KinesisAnalyticsV2ServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/kinesisanalyticsv2/KinesisAnalyticsV2ErrorMarshaller.h>
 
 namespace Aws
 {
 namespace KinesisAnalyticsV2
 {
+  AWS_KINESISANALYTICSV2_API extern const char SERVICE_NAME[];
   /**
    *  <p>Amazon Managed Service for Apache Flink was previously known as Amazon
    * Kinesis Data Analytics for Apache Flink.</p>  <p>Amazon Managed Service
@@ -24,12 +28,20 @@ namespace KinesisAnalyticsV2
    * to perform time series analytics, feed real-time dashboards, and create
    * real-time metrics.</p>
    */
-  class AWS_KINESISANALYTICSV2_API KinesisAnalyticsV2Client : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<KinesisAnalyticsV2Client>
+  class AWS_KINESISANALYTICSV2_API KinesisAnalyticsV2Client : smithy::client::AwsSmithyClientT<Aws::KinesisAnalyticsV2::SERVICE_NAME,
+      Aws::KinesisAnalyticsV2::KinesisAnalyticsV2ClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      KinesisAnalyticsV2EndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::KinesisAnalyticsV2ErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<KinesisAnalyticsV2Client>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Kinesis Analytics V2"; }
 
       typedef KinesisAnalyticsV2ClientConfiguration ClientConfigurationType;
       typedef KinesisAnalyticsV2EndpointProvider EndpointProviderType;
@@ -574,6 +586,32 @@ namespace KinesisAnalyticsV2
         }
 
         /**
+         * Returns information about a specific operation performed on a Managed Service
+         * for Apache Flink application<p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/kinesisanalyticsv2-2018-05-23/DescribeApplicationOperation">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DescribeApplicationOperationOutcome DescribeApplicationOperation(const Model::DescribeApplicationOperationRequest& request) const;
+
+        /**
+         * A Callable wrapper for DescribeApplicationOperation that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DescribeApplicationOperationRequestT = Model::DescribeApplicationOperationRequest>
+        Model::DescribeApplicationOperationOutcomeCallable DescribeApplicationOperationCallable(const DescribeApplicationOperationRequestT& request) const
+        {
+            return SubmitCallable(&KinesisAnalyticsV2Client::DescribeApplicationOperation, request);
+        }
+
+        /**
+         * An Async wrapper for DescribeApplicationOperation that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DescribeApplicationOperationRequestT = Model::DescribeApplicationOperationRequest>
+        void DescribeApplicationOperationAsync(const DescribeApplicationOperationRequestT& request, const DescribeApplicationOperationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&KinesisAnalyticsV2Client::DescribeApplicationOperation, request, handler, context);
+        }
+
+        /**
          * <p>Returns information about a snapshot of application state data.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/kinesisanalyticsv2-2018-05-23/DescribeApplicationSnapshot">AWS
@@ -662,6 +700,32 @@ namespace KinesisAnalyticsV2
         }
 
         /**
+         * Lists information about operations performed on a Managed Service for Apache
+         * Flink application<p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/kinesisanalyticsv2-2018-05-23/ListApplicationOperations">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListApplicationOperationsOutcome ListApplicationOperations(const Model::ListApplicationOperationsRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListApplicationOperations that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListApplicationOperationsRequestT = Model::ListApplicationOperationsRequest>
+        Model::ListApplicationOperationsOutcomeCallable ListApplicationOperationsCallable(const ListApplicationOperationsRequestT& request) const
+        {
+            return SubmitCallable(&KinesisAnalyticsV2Client::ListApplicationOperations, request);
+        }
+
+        /**
+         * An Async wrapper for ListApplicationOperations that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListApplicationOperationsRequestT = Model::ListApplicationOperationsRequest>
+        void ListApplicationOperationsAsync(const ListApplicationOperationsRequestT& request, const ListApplicationOperationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&KinesisAnalyticsV2Client::ListApplicationOperations, request, handler, context);
+        }
+
+        /**
          * <p>Lists information about the current application snapshots.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/kinesisanalyticsv2-2018-05-23/ListApplicationSnapshots">AWS
@@ -726,13 +790,13 @@ namespace KinesisAnalyticsV2
          * href="http://docs.aws.amazon.com/goto/WebAPI/kinesisanalyticsv2-2018-05-23/ListApplications">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListApplicationsOutcome ListApplications(const Model::ListApplicationsRequest& request) const;
+        virtual Model::ListApplicationsOutcome ListApplications(const Model::ListApplicationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListApplications that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListApplicationsRequestT = Model::ListApplicationsRequest>
-        Model::ListApplicationsOutcomeCallable ListApplicationsCallable(const ListApplicationsRequestT& request) const
+        Model::ListApplicationsOutcomeCallable ListApplicationsCallable(const ListApplicationsRequestT& request = {}) const
         {
             return SubmitCallable(&KinesisAnalyticsV2Client::ListApplications, request);
         }
@@ -741,7 +805,7 @@ namespace KinesisAnalyticsV2
          * An Async wrapper for ListApplications that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListApplicationsRequestT = Model::ListApplicationsRequest>
-        void ListApplicationsAsync(const ListApplicationsRequestT& request, const ListApplicationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListApplicationsAsync(const ListApplicationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListApplicationsRequestT& request = {}) const
         {
             return SubmitAsync(&KinesisAnalyticsV2Client::ListApplications, request, handler, context);
         }
@@ -776,13 +840,12 @@ namespace KinesisAnalyticsV2
 
         /**
          * <p>Reverts the application to the previous running version. You can roll back an
-         * application if you suspect it is stuck in a transient status. </p> <p>You can
-         * roll back an application only if it is in the <code>UPDATING</code> or
-         * <code>AUTOSCALING</code> status.</p> <p>When you rollback an application, it
-         * loads state data from the last successful snapshot. If the application has no
-         * snapshots, Managed Service for Apache Flink rejects the rollback request.</p>
-         * <p>This action is not supported for Managed Service for Apache Flink for SQL
-         * applications.</p><p><h3>See Also:</h3>   <a
+         * application if you suspect it is stuck in a transient status or in the running
+         * status. </p> <p>You can roll back an application only if it is in the
+         * <code>UPDATING</code>, <code>AUTOSCALING</code>, or <code>RUNNING</code>
+         * statuses.</p> <p>When you rollback an application, it loads state data from the
+         * last successful snapshot. If the application has no snapshots, Managed Service
+         * for Apache Flink rejects the rollback request.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/kinesisanalyticsv2-2018-05-23/RollbackApplication">AWS
          * API Reference</a></p>
          */
@@ -997,11 +1060,7 @@ namespace KinesisAnalyticsV2
       std::shared_ptr<KinesisAnalyticsV2EndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<KinesisAnalyticsV2Client>;
-      void init(const KinesisAnalyticsV2ClientConfiguration& clientConfiguration);
 
-      KinesisAnalyticsV2ClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<KinesisAnalyticsV2EndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace KinesisAnalyticsV2

@@ -23,6 +23,7 @@ Cluster::Cluster() :
     m_descriptionHasBeenSet(false),
     m_statusHasBeenSet(false),
     m_pendingUpdatesHasBeenSet(false),
+    m_multiRegionClusterNameHasBeenSet(false),
     m_numberOfShards(0),
     m_numberOfShardsHasBeenSet(false),
     m_shardsHasBeenSet(false),
@@ -30,6 +31,7 @@ Cluster::Cluster() :
     m_availabilityModeHasBeenSet(false),
     m_clusterEndpointHasBeenSet(false),
     m_nodeTypeHasBeenSet(false),
+    m_engineHasBeenSet(false),
     m_engineVersionHasBeenSet(false),
     m_enginePatchVersionHasBeenSet(false),
     m_parameterGroupNameHasBeenSet(false),
@@ -54,39 +56,8 @@ Cluster::Cluster() :
 {
 }
 
-Cluster::Cluster(JsonView jsonValue) : 
-    m_nameHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_statusHasBeenSet(false),
-    m_pendingUpdatesHasBeenSet(false),
-    m_numberOfShards(0),
-    m_numberOfShardsHasBeenSet(false),
-    m_shardsHasBeenSet(false),
-    m_availabilityMode(AZStatus::NOT_SET),
-    m_availabilityModeHasBeenSet(false),
-    m_clusterEndpointHasBeenSet(false),
-    m_nodeTypeHasBeenSet(false),
-    m_engineVersionHasBeenSet(false),
-    m_enginePatchVersionHasBeenSet(false),
-    m_parameterGroupNameHasBeenSet(false),
-    m_parameterGroupStatusHasBeenSet(false),
-    m_securityGroupsHasBeenSet(false),
-    m_subnetGroupNameHasBeenSet(false),
-    m_tLSEnabled(false),
-    m_tLSEnabledHasBeenSet(false),
-    m_kmsKeyIdHasBeenSet(false),
-    m_aRNHasBeenSet(false),
-    m_snsTopicArnHasBeenSet(false),
-    m_snsTopicStatusHasBeenSet(false),
-    m_snapshotRetentionLimit(0),
-    m_snapshotRetentionLimitHasBeenSet(false),
-    m_maintenanceWindowHasBeenSet(false),
-    m_snapshotWindowHasBeenSet(false),
-    m_aCLNameHasBeenSet(false),
-    m_autoMinorVersionUpgrade(false),
-    m_autoMinorVersionUpgradeHasBeenSet(false),
-    m_dataTiering(DataTieringStatus::NOT_SET),
-    m_dataTieringHasBeenSet(false)
+Cluster::Cluster(JsonView jsonValue)
+  : Cluster()
 {
   *this = jsonValue;
 }
@@ -119,6 +90,13 @@ Cluster& Cluster::operator =(JsonView jsonValue)
     m_pendingUpdates = jsonValue.GetObject("PendingUpdates");
 
     m_pendingUpdatesHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("MultiRegionClusterName"))
+  {
+    m_multiRegionClusterName = jsonValue.GetString("MultiRegionClusterName");
+
+    m_multiRegionClusterNameHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("NumberOfShards"))
@@ -157,6 +135,13 @@ Cluster& Cluster::operator =(JsonView jsonValue)
     m_nodeType = jsonValue.GetString("NodeType");
 
     m_nodeTypeHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("Engine"))
+  {
+    m_engine = jsonValue.GetString("Engine");
+
+    m_engineHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("EngineVersion"))
@@ -312,6 +297,12 @@ JsonValue Cluster::Jsonize() const
 
   }
 
+  if(m_multiRegionClusterNameHasBeenSet)
+  {
+   payload.WithString("MultiRegionClusterName", m_multiRegionClusterName);
+
+  }
+
   if(m_numberOfShardsHasBeenSet)
   {
    payload.WithInteger("NumberOfShards", m_numberOfShards);
@@ -343,6 +334,12 @@ JsonValue Cluster::Jsonize() const
   if(m_nodeTypeHasBeenSet)
   {
    payload.WithString("NodeType", m_nodeType);
+
+  }
+
+  if(m_engineHasBeenSet)
+  {
+   payload.WithString("Engine", m_engine);
 
   }
 

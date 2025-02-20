@@ -34,120 +34,60 @@ namespace Model
     AWS_S3CONTROL_API ListAccessPointsResult& operator=(const Aws::AmazonWebServiceResult<Aws::Utils::Xml::XmlDocument>& result);
 
 
+    ///@{
     /**
      * <p>Contains identification and configuration information for one or more access
      * points associated with the specified bucket.</p>
      */
     inline const Aws::Vector<AccessPoint>& GetAccessPointList() const{ return m_accessPointList; }
-
-    /**
-     * <p>Contains identification and configuration information for one or more access
-     * points associated with the specified bucket.</p>
-     */
     inline void SetAccessPointList(const Aws::Vector<AccessPoint>& value) { m_accessPointList = value; }
-
-    /**
-     * <p>Contains identification and configuration information for one or more access
-     * points associated with the specified bucket.</p>
-     */
     inline void SetAccessPointList(Aws::Vector<AccessPoint>&& value) { m_accessPointList = std::move(value); }
-
-    /**
-     * <p>Contains identification and configuration information for one or more access
-     * points associated with the specified bucket.</p>
-     */
     inline ListAccessPointsResult& WithAccessPointList(const Aws::Vector<AccessPoint>& value) { SetAccessPointList(value); return *this;}
-
-    /**
-     * <p>Contains identification and configuration information for one or more access
-     * points associated with the specified bucket.</p>
-     */
     inline ListAccessPointsResult& WithAccessPointList(Aws::Vector<AccessPoint>&& value) { SetAccessPointList(std::move(value)); return *this;}
-
-    /**
-     * <p>Contains identification and configuration information for one or more access
-     * points associated with the specified bucket.</p>
-     */
     inline ListAccessPointsResult& AddAccessPointList(const AccessPoint& value) { m_accessPointList.push_back(value); return *this; }
-
-    /**
-     * <p>Contains identification and configuration information for one or more access
-     * points associated with the specified bucket.</p>
-     */
     inline ListAccessPointsResult& AddAccessPointList(AccessPoint&& value) { m_accessPointList.push_back(std::move(value)); return *this; }
+    ///@}
 
-
+    ///@{
     /**
      * <p>If the specified bucket has more access points than can be returned in one
      * call to this API, this field contains a continuation token that you can provide
      * in subsequent calls to this API to retrieve additional access points.</p>
      */
     inline const Aws::String& GetNextToken() const{ return m_nextToken; }
-
-    /**
-     * <p>If the specified bucket has more access points than can be returned in one
-     * call to this API, this field contains a continuation token that you can provide
-     * in subsequent calls to this API to retrieve additional access points.</p>
-     */
     inline void SetNextToken(const Aws::String& value) { m_nextToken = value; }
-
-    /**
-     * <p>If the specified bucket has more access points than can be returned in one
-     * call to this API, this field contains a continuation token that you can provide
-     * in subsequent calls to this API to retrieve additional access points.</p>
-     */
     inline void SetNextToken(Aws::String&& value) { m_nextToken = std::move(value); }
-
-    /**
-     * <p>If the specified bucket has more access points than can be returned in one
-     * call to this API, this field contains a continuation token that you can provide
-     * in subsequent calls to this API to retrieve additional access points.</p>
-     */
     inline void SetNextToken(const char* value) { m_nextToken.assign(value); }
-
-    /**
-     * <p>If the specified bucket has more access points than can be returned in one
-     * call to this API, this field contains a continuation token that you can provide
-     * in subsequent calls to this API to retrieve additional access points.</p>
-     */
     inline ListAccessPointsResult& WithNextToken(const Aws::String& value) { SetNextToken(value); return *this;}
-
-    /**
-     * <p>If the specified bucket has more access points than can be returned in one
-     * call to this API, this field contains a continuation token that you can provide
-     * in subsequent calls to this API to retrieve additional access points.</p>
-     */
     inline ListAccessPointsResult& WithNextToken(Aws::String&& value) { SetNextToken(std::move(value)); return *this;}
-
-    /**
-     * <p>If the specified bucket has more access points than can be returned in one
-     * call to this API, this field contains a continuation token that you can provide
-     * in subsequent calls to this API to retrieve additional access points.</p>
-     */
     inline ListAccessPointsResult& WithNextToken(const char* value) { SetNextToken(value); return *this;}
+    ///@}
 
-
-    
+    ///@{
+    /**
+     * AWS Request Id value
+     */
     inline const Aws::String& GetRequestId() const{ return m_requestId; }
-
-    
     inline void SetRequestId(const Aws::String& value) { m_requestId = value; }
-
-    
     inline void SetRequestId(Aws::String&& value) { m_requestId = std::move(value); }
-
-    
     inline void SetRequestId(const char* value) { m_requestId.assign(value); }
-
-    
     inline ListAccessPointsResult& WithRequestId(const Aws::String& value) { SetRequestId(value); return *this;}
-
-    
     inline ListAccessPointsResult& WithRequestId(Aws::String&& value) { SetRequestId(std::move(value)); return *this;}
-
-    
     inline ListAccessPointsResult& WithRequestId(const char* value) { SetRequestId(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * x-amz-id-2 header value, also known as Host Id
+     */
+    inline const Aws::String& GetHostId() const{ return m_hostId; }
+    inline void SetHostId(const Aws::String& value) { m_hostId = value; }
+    inline void SetHostId(Aws::String&& value) { m_hostId = std::move(value); }
+    inline void SetHostId(const char* value) { m_hostId.assign(value); }
+    inline ListAccessPointsResult& WithHostId(const Aws::String& value) { SetHostId(value); return *this;}
+    inline ListAccessPointsResult& WithHostId(Aws::String&& value) { SetHostId(std::move(value)); return *this;}
+    inline ListAccessPointsResult& WithHostId(const char* value) { SetHostId(value); return *this;}
+    ///@}
   private:
 
     Aws::Vector<AccessPoint> m_accessPointList;
@@ -155,6 +95,8 @@ namespace Model
     Aws::String m_nextToken;
 
     Aws::String m_requestId;
+
+    Aws::String m_hostId;
   };
 
 } // namespace Model

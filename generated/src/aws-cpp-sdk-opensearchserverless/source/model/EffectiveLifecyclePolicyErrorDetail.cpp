@@ -19,38 +19,27 @@ namespace Model
 {
 
 EffectiveLifecyclePolicyErrorDetail::EffectiveLifecyclePolicyErrorDetail() : 
-    m_errorCodeHasBeenSet(false),
-    m_errorMessageHasBeenSet(false),
-    m_resourceHasBeenSet(false),
     m_type(LifecyclePolicyType::NOT_SET),
-    m_typeHasBeenSet(false)
+    m_typeHasBeenSet(false),
+    m_resourceHasBeenSet(false),
+    m_errorMessageHasBeenSet(false),
+    m_errorCodeHasBeenSet(false)
 {
 }
 
-EffectiveLifecyclePolicyErrorDetail::EffectiveLifecyclePolicyErrorDetail(JsonView jsonValue) : 
-    m_errorCodeHasBeenSet(false),
-    m_errorMessageHasBeenSet(false),
-    m_resourceHasBeenSet(false),
-    m_type(LifecyclePolicyType::NOT_SET),
-    m_typeHasBeenSet(false)
+EffectiveLifecyclePolicyErrorDetail::EffectiveLifecyclePolicyErrorDetail(JsonView jsonValue)
+  : EffectiveLifecyclePolicyErrorDetail()
 {
   *this = jsonValue;
 }
 
 EffectiveLifecyclePolicyErrorDetail& EffectiveLifecyclePolicyErrorDetail::operator =(JsonView jsonValue)
 {
-  if(jsonValue.ValueExists("errorCode"))
+  if(jsonValue.ValueExists("type"))
   {
-    m_errorCode = jsonValue.GetString("errorCode");
+    m_type = LifecyclePolicyTypeMapper::GetLifecyclePolicyTypeForName(jsonValue.GetString("type"));
 
-    m_errorCodeHasBeenSet = true;
-  }
-
-  if(jsonValue.ValueExists("errorMessage"))
-  {
-    m_errorMessage = jsonValue.GetString("errorMessage");
-
-    m_errorMessageHasBeenSet = true;
+    m_typeHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("resource"))
@@ -60,11 +49,18 @@ EffectiveLifecyclePolicyErrorDetail& EffectiveLifecyclePolicyErrorDetail::operat
     m_resourceHasBeenSet = true;
   }
 
-  if(jsonValue.ValueExists("type"))
+  if(jsonValue.ValueExists("errorMessage"))
   {
-    m_type = LifecyclePolicyTypeMapper::GetLifecyclePolicyTypeForName(jsonValue.GetString("type"));
+    m_errorMessage = jsonValue.GetString("errorMessage");
 
-    m_typeHasBeenSet = true;
+    m_errorMessageHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("errorCode"))
+  {
+    m_errorCode = jsonValue.GetString("errorCode");
+
+    m_errorCodeHasBeenSet = true;
   }
 
   return *this;
@@ -74,9 +70,14 @@ JsonValue EffectiveLifecyclePolicyErrorDetail::Jsonize() const
 {
   JsonValue payload;
 
-  if(m_errorCodeHasBeenSet)
+  if(m_typeHasBeenSet)
   {
-   payload.WithString("errorCode", m_errorCode);
+   payload.WithString("type", LifecyclePolicyTypeMapper::GetNameForLifecyclePolicyType(m_type));
+  }
+
+  if(m_resourceHasBeenSet)
+  {
+   payload.WithString("resource", m_resource);
 
   }
 
@@ -86,15 +87,10 @@ JsonValue EffectiveLifecyclePolicyErrorDetail::Jsonize() const
 
   }
 
-  if(m_resourceHasBeenSet)
+  if(m_errorCodeHasBeenSet)
   {
-   payload.WithString("resource", m_resource);
+   payload.WithString("errorCode", m_errorCode);
 
-  }
-
-  if(m_typeHasBeenSet)
-  {
-   payload.WithString("type", LifecyclePolicyTypeMapper::GetNameForLifecyclePolicyType(m_type));
   }
 
   return payload;

@@ -38,21 +38,8 @@ Datapoint::Datapoint() :
 {
 }
 
-Datapoint::Datapoint(const XmlNode& xmlNode) : 
-    m_timestampHasBeenSet(false),
-    m_sampleCount(0.0),
-    m_sampleCountHasBeenSet(false),
-    m_average(0.0),
-    m_averageHasBeenSet(false),
-    m_sum(0.0),
-    m_sumHasBeenSet(false),
-    m_minimum(0.0),
-    m_minimumHasBeenSet(false),
-    m_maximum(0.0),
-    m_maximumHasBeenSet(false),
-    m_unit(StandardUnit::NOT_SET),
-    m_unitHasBeenSet(false),
-    m_extendedStatisticsHasBeenSet(false)
+Datapoint::Datapoint(const XmlNode& xmlNode)
+  : Datapoint()
 {
   *this = xmlNode;
 }
@@ -115,7 +102,7 @@ Datapoint& Datapoint::operator =(const XmlNode& xmlNode)
         XmlNode keyNode = extendedStatisticsEntry.FirstChild("key");
         XmlNode valueNode = extendedStatisticsEntry.FirstChild("value");
         m_extendedStatistics[keyNode.GetText()] =
-           StringUtils::ConvertToDouble(StringUtils::Trim(valueNode.GetText().c_str()).c_str());
+            StringUtils::ConvertToDouble(StringUtils::Trim(valueNode.GetText().c_str()).c_str());
         extendedStatisticsEntry = extendedStatisticsEntry.NextNode("entry");
       }
 

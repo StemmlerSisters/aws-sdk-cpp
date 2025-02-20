@@ -30,23 +30,13 @@ OriginEndpointListConfiguration::OriginEndpointListConfiguration() :
     m_modifiedAtHasBeenSet(false),
     m_hlsManifestsHasBeenSet(false),
     m_lowLatencyHlsManifestsHasBeenSet(false),
-    m_dashManifestsHasBeenSet(false)
+    m_dashManifestsHasBeenSet(false),
+    m_forceEndpointErrorConfigurationHasBeenSet(false)
 {
 }
 
-OriginEndpointListConfiguration::OriginEndpointListConfiguration(JsonView jsonValue) : 
-    m_arnHasBeenSet(false),
-    m_channelGroupNameHasBeenSet(false),
-    m_channelNameHasBeenSet(false),
-    m_originEndpointNameHasBeenSet(false),
-    m_containerType(ContainerType::NOT_SET),
-    m_containerTypeHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_createdAtHasBeenSet(false),
-    m_modifiedAtHasBeenSet(false),
-    m_hlsManifestsHasBeenSet(false),
-    m_lowLatencyHlsManifestsHasBeenSet(false),
-    m_dashManifestsHasBeenSet(false)
+OriginEndpointListConfiguration::OriginEndpointListConfiguration(JsonView jsonValue)
+  : OriginEndpointListConfiguration()
 {
   *this = jsonValue;
 }
@@ -139,6 +129,13 @@ OriginEndpointListConfiguration& OriginEndpointListConfiguration::operator =(Jso
     m_dashManifestsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("ForceEndpointErrorConfiguration"))
+  {
+    m_forceEndpointErrorConfiguration = jsonValue.GetObject("ForceEndpointErrorConfiguration");
+
+    m_forceEndpointErrorConfigurationHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -221,6 +218,12 @@ JsonValue OriginEndpointListConfiguration::Jsonize() const
      dashManifestsJsonList[dashManifestsIndex].AsObject(m_dashManifests[dashManifestsIndex].Jsonize());
    }
    payload.WithArray("DashManifests", std::move(dashManifestsJsonList));
+
+  }
+
+  if(m_forceEndpointErrorConfigurationHasBeenSet)
+  {
+   payload.WithObject("ForceEndpointErrorConfiguration", m_forceEndpointErrorConfiguration.Jsonize());
 
   }
 

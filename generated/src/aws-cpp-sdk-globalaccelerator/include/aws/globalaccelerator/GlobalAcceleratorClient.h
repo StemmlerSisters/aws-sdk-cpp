@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/globalaccelerator/GlobalAccelerator_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/globalaccelerator/GlobalAcceleratorServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/globalaccelerator/GlobalAcceleratorErrorMarshaller.h>
 
 namespace Aws
 {
 namespace GlobalAccelerator
 {
+  AWS_GLOBALACCELERATOR_API extern const char SERVICE_NAME[];
   /**
    * <fullname>Global Accelerator</fullname> <p>This is the <i>Global Accelerator API
    * Reference</i>. This guide is for developers who need detailed information about
@@ -69,12 +73,20 @@ namespace GlobalAccelerator
    * href="https://docs.aws.amazon.com/global-accelerator/latest/dg/what-is-global-accelerator.html">Global
    * Accelerator Developer Guide</a>.</p>
    */
-  class AWS_GLOBALACCELERATOR_API GlobalAcceleratorClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<GlobalAcceleratorClient>
+  class AWS_GLOBALACCELERATOR_API GlobalAcceleratorClient : smithy::client::AwsSmithyClientT<Aws::GlobalAccelerator::SERVICE_NAME,
+      Aws::GlobalAccelerator::GlobalAcceleratorClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      GlobalAcceleratorEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::GlobalAcceleratorErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<GlobalAcceleratorClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Global Accelerator"; }
 
       typedef GlobalAcceleratorClientConfiguration ClientConfigurationType;
       typedef GlobalAcceleratorEndpointProvider EndpointProviderType;
@@ -1013,13 +1025,13 @@ namespace GlobalAccelerator
          * href="http://docs.aws.amazon.com/goto/WebAPI/globalaccelerator-2018-08-08/ListAccelerators">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAcceleratorsOutcome ListAccelerators(const Model::ListAcceleratorsRequest& request) const;
+        virtual Model::ListAcceleratorsOutcome ListAccelerators(const Model::ListAcceleratorsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAccelerators that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAcceleratorsRequestT = Model::ListAcceleratorsRequest>
-        Model::ListAcceleratorsOutcomeCallable ListAcceleratorsCallable(const ListAcceleratorsRequestT& request) const
+        Model::ListAcceleratorsOutcomeCallable ListAcceleratorsCallable(const ListAcceleratorsRequestT& request = {}) const
         {
             return SubmitCallable(&GlobalAcceleratorClient::ListAccelerators, request);
         }
@@ -1028,7 +1040,7 @@ namespace GlobalAccelerator
          * An Async wrapper for ListAccelerators that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAcceleratorsRequestT = Model::ListAcceleratorsRequest>
-        void ListAcceleratorsAsync(const ListAcceleratorsRequestT& request, const ListAcceleratorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAcceleratorsAsync(const ListAcceleratorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAcceleratorsRequestT& request = {}) const
         {
             return SubmitAsync(&GlobalAcceleratorClient::ListAccelerators, request, handler, context);
         }
@@ -1041,13 +1053,13 @@ namespace GlobalAccelerator
          * href="http://docs.aws.amazon.com/goto/WebAPI/globalaccelerator-2018-08-08/ListByoipCidrs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListByoipCidrsOutcome ListByoipCidrs(const Model::ListByoipCidrsRequest& request) const;
+        virtual Model::ListByoipCidrsOutcome ListByoipCidrs(const Model::ListByoipCidrsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListByoipCidrs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListByoipCidrsRequestT = Model::ListByoipCidrsRequest>
-        Model::ListByoipCidrsOutcomeCallable ListByoipCidrsCallable(const ListByoipCidrsRequestT& request) const
+        Model::ListByoipCidrsOutcomeCallable ListByoipCidrsCallable(const ListByoipCidrsRequestT& request = {}) const
         {
             return SubmitCallable(&GlobalAcceleratorClient::ListByoipCidrs, request);
         }
@@ -1056,7 +1068,7 @@ namespace GlobalAccelerator
          * An Async wrapper for ListByoipCidrs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListByoipCidrsRequestT = Model::ListByoipCidrsRequest>
-        void ListByoipCidrsAsync(const ListByoipCidrsRequestT& request, const ListByoipCidrsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListByoipCidrsAsync(const ListByoipCidrsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListByoipCidrsRequestT& request = {}) const
         {
             return SubmitAsync(&GlobalAcceleratorClient::ListByoipCidrs, request, handler, context);
         }
@@ -1067,13 +1079,13 @@ namespace GlobalAccelerator
          * href="http://docs.aws.amazon.com/goto/WebAPI/globalaccelerator-2018-08-08/ListCrossAccountAttachments">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListCrossAccountAttachmentsOutcome ListCrossAccountAttachments(const Model::ListCrossAccountAttachmentsRequest& request) const;
+        virtual Model::ListCrossAccountAttachmentsOutcome ListCrossAccountAttachments(const Model::ListCrossAccountAttachmentsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListCrossAccountAttachments that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListCrossAccountAttachmentsRequestT = Model::ListCrossAccountAttachmentsRequest>
-        Model::ListCrossAccountAttachmentsOutcomeCallable ListCrossAccountAttachmentsCallable(const ListCrossAccountAttachmentsRequestT& request) const
+        Model::ListCrossAccountAttachmentsOutcomeCallable ListCrossAccountAttachmentsCallable(const ListCrossAccountAttachmentsRequestT& request = {}) const
         {
             return SubmitCallable(&GlobalAcceleratorClient::ListCrossAccountAttachments, request);
         }
@@ -1082,7 +1094,7 @@ namespace GlobalAccelerator
          * An Async wrapper for ListCrossAccountAttachments that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListCrossAccountAttachmentsRequestT = Model::ListCrossAccountAttachmentsRequest>
-        void ListCrossAccountAttachmentsAsync(const ListCrossAccountAttachmentsRequestT& request, const ListCrossAccountAttachmentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListCrossAccountAttachmentsAsync(const ListCrossAccountAttachmentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListCrossAccountAttachmentsRequestT& request = {}) const
         {
             return SubmitAsync(&GlobalAcceleratorClient::ListCrossAccountAttachments, request, handler, context);
         }
@@ -1096,13 +1108,13 @@ namespace GlobalAccelerator
          * href="http://docs.aws.amazon.com/goto/WebAPI/globalaccelerator-2018-08-08/ListCrossAccountResourceAccounts">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListCrossAccountResourceAccountsOutcome ListCrossAccountResourceAccounts(const Model::ListCrossAccountResourceAccountsRequest& request) const;
+        virtual Model::ListCrossAccountResourceAccountsOutcome ListCrossAccountResourceAccounts(const Model::ListCrossAccountResourceAccountsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListCrossAccountResourceAccounts that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListCrossAccountResourceAccountsRequestT = Model::ListCrossAccountResourceAccountsRequest>
-        Model::ListCrossAccountResourceAccountsOutcomeCallable ListCrossAccountResourceAccountsCallable(const ListCrossAccountResourceAccountsRequestT& request) const
+        Model::ListCrossAccountResourceAccountsOutcomeCallable ListCrossAccountResourceAccountsCallable(const ListCrossAccountResourceAccountsRequestT& request = {}) const
         {
             return SubmitCallable(&GlobalAcceleratorClient::ListCrossAccountResourceAccounts, request);
         }
@@ -1111,7 +1123,7 @@ namespace GlobalAccelerator
          * An Async wrapper for ListCrossAccountResourceAccounts that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListCrossAccountResourceAccountsRequestT = Model::ListCrossAccountResourceAccountsRequest>
-        void ListCrossAccountResourceAccountsAsync(const ListCrossAccountResourceAccountsRequestT& request, const ListCrossAccountResourceAccountsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListCrossAccountResourceAccountsAsync(const ListCrossAccountResourceAccountsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListCrossAccountResourceAccountsRequestT& request = {}) const
         {
             return SubmitAsync(&GlobalAcceleratorClient::ListCrossAccountResourceAccounts, request, handler, context);
         }
@@ -1148,13 +1160,13 @@ namespace GlobalAccelerator
          * href="http://docs.aws.amazon.com/goto/WebAPI/globalaccelerator-2018-08-08/ListCustomRoutingAccelerators">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListCustomRoutingAcceleratorsOutcome ListCustomRoutingAccelerators(const Model::ListCustomRoutingAcceleratorsRequest& request) const;
+        virtual Model::ListCustomRoutingAcceleratorsOutcome ListCustomRoutingAccelerators(const Model::ListCustomRoutingAcceleratorsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListCustomRoutingAccelerators that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListCustomRoutingAcceleratorsRequestT = Model::ListCustomRoutingAcceleratorsRequest>
-        Model::ListCustomRoutingAcceleratorsOutcomeCallable ListCustomRoutingAcceleratorsCallable(const ListCustomRoutingAcceleratorsRequestT& request) const
+        Model::ListCustomRoutingAcceleratorsOutcomeCallable ListCustomRoutingAcceleratorsCallable(const ListCustomRoutingAcceleratorsRequestT& request = {}) const
         {
             return SubmitCallable(&GlobalAcceleratorClient::ListCustomRoutingAccelerators, request);
         }
@@ -1163,7 +1175,7 @@ namespace GlobalAccelerator
          * An Async wrapper for ListCustomRoutingAccelerators that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListCustomRoutingAcceleratorsRequestT = Model::ListCustomRoutingAcceleratorsRequest>
-        void ListCustomRoutingAcceleratorsAsync(const ListCustomRoutingAcceleratorsRequestT& request, const ListCustomRoutingAcceleratorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListCustomRoutingAcceleratorsAsync(const ListCustomRoutingAcceleratorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListCustomRoutingAcceleratorsRequestT& request = {}) const
         {
             return SubmitAsync(&GlobalAcceleratorClient::ListCustomRoutingAccelerators, request, handler, context);
         }
@@ -1782,11 +1794,7 @@ namespace GlobalAccelerator
       std::shared_ptr<GlobalAcceleratorEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<GlobalAcceleratorClient>;
-      void init(const GlobalAcceleratorClientConfiguration& clientConfiguration);
 
-      GlobalAcceleratorClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<GlobalAcceleratorEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace GlobalAccelerator

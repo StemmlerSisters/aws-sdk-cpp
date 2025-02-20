@@ -23,9 +23,8 @@ DescribeConnectionResult::DescribeConnectionResult() :
 {
 }
 
-DescribeConnectionResult::DescribeConnectionResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_connectionState(ConnectionState::NOT_SET),
-    m_authorizationType(ConnectionAuthorizationType::NOT_SET)
+DescribeConnectionResult::DescribeConnectionResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : DescribeConnectionResult()
 {
   *this = result;
 }
@@ -48,6 +47,12 @@ DescribeConnectionResult& DescribeConnectionResult::operator =(const Aws::Amazon
   if(jsonValue.ValueExists("Description"))
   {
     m_description = jsonValue.GetString("Description");
+
+  }
+
+  if(jsonValue.ValueExists("InvocationConnectivityParameters"))
+  {
+    m_invocationConnectivityParameters = jsonValue.GetObject("InvocationConnectivityParameters");
 
   }
 

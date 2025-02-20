@@ -24,17 +24,14 @@ MetricFilter::MetricFilter() :
     m_metricTransformationsHasBeenSet(false),
     m_creationTime(0),
     m_creationTimeHasBeenSet(false),
-    m_logGroupNameHasBeenSet(false)
+    m_logGroupNameHasBeenSet(false),
+    m_applyOnTransformedLogs(false),
+    m_applyOnTransformedLogsHasBeenSet(false)
 {
 }
 
-MetricFilter::MetricFilter(JsonView jsonValue) : 
-    m_filterNameHasBeenSet(false),
-    m_filterPatternHasBeenSet(false),
-    m_metricTransformationsHasBeenSet(false),
-    m_creationTime(0),
-    m_creationTimeHasBeenSet(false),
-    m_logGroupNameHasBeenSet(false)
+MetricFilter::MetricFilter(JsonView jsonValue)
+  : MetricFilter()
 {
   *this = jsonValue;
 }
@@ -79,6 +76,13 @@ MetricFilter& MetricFilter::operator =(JsonView jsonValue)
     m_logGroupNameHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("applyOnTransformedLogs"))
+  {
+    m_applyOnTransformedLogs = jsonValue.GetBool("applyOnTransformedLogs");
+
+    m_applyOnTransformedLogsHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -118,6 +122,12 @@ JsonValue MetricFilter::Jsonize() const
   if(m_logGroupNameHasBeenSet)
   {
    payload.WithString("logGroupName", m_logGroupName);
+
+  }
+
+  if(m_applyOnTransformedLogsHasBeenSet)
+  {
+   payload.WithBool("applyOnTransformedLogs", m_applyOnTransformedLogs);
 
   }
 

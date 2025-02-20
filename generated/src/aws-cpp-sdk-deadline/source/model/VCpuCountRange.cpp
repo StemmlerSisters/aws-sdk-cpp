@@ -19,36 +19,33 @@ namespace Model
 {
 
 VCpuCountRange::VCpuCountRange() : 
-    m_max(0),
-    m_maxHasBeenSet(false),
     m_min(0),
-    m_minHasBeenSet(false)
+    m_minHasBeenSet(false),
+    m_max(0),
+    m_maxHasBeenSet(false)
 {
 }
 
-VCpuCountRange::VCpuCountRange(JsonView jsonValue) : 
-    m_max(0),
-    m_maxHasBeenSet(false),
-    m_min(0),
-    m_minHasBeenSet(false)
+VCpuCountRange::VCpuCountRange(JsonView jsonValue)
+  : VCpuCountRange()
 {
   *this = jsonValue;
 }
 
 VCpuCountRange& VCpuCountRange::operator =(JsonView jsonValue)
 {
-  if(jsonValue.ValueExists("max"))
-  {
-    m_max = jsonValue.GetInteger("max");
-
-    m_maxHasBeenSet = true;
-  }
-
   if(jsonValue.ValueExists("min"))
   {
     m_min = jsonValue.GetInteger("min");
 
     m_minHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("max"))
+  {
+    m_max = jsonValue.GetInteger("max");
+
+    m_maxHasBeenSet = true;
   }
 
   return *this;
@@ -58,15 +55,15 @@ JsonValue VCpuCountRange::Jsonize() const
 {
   JsonValue payload;
 
-  if(m_maxHasBeenSet)
-  {
-   payload.WithInteger("max", m_max);
-
-  }
-
   if(m_minHasBeenSet)
   {
    payload.WithInteger("min", m_min);
+
+  }
+
+  if(m_maxHasBeenSet)
+  {
+   payload.WithInteger("max", m_max);
 
   }
 

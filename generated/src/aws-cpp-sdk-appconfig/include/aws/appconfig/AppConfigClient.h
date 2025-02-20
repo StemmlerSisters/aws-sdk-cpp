@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/appconfig/AppConfig_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/appconfig/AppConfigServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/appconfig/AppConfigErrorMarshaller.h>
 
 namespace Aws
 {
 namespace AppConfig
 {
+  AWS_APPCONFIG_API extern const char SERVICE_NAME[];
   /**
    * <p>AppConfig feature flags and dynamic configurations help software builders
    * quickly and securely adjust application behavior in production environments
@@ -111,12 +115,20 @@ namespace AppConfig
    * href="http://docs.aws.amazon.com/appconfig/latest/userguide/what-is-appconfig.html">AppConfig
    * User Guide</a>.</p>
    */
-  class AWS_APPCONFIG_API AppConfigClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<AppConfigClient>
+  class AWS_APPCONFIG_API AppConfigClient : smithy::client::AwsSmithyClientT<Aws::AppConfig::SERVICE_NAME,
+      Aws::AppConfig::AppConfigClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      AppConfigEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::AppConfigErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<AppConfigClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "AppConfig"; }
 
       typedef AppConfigClientConfiguration ClientConfigurationType;
       typedef AppConfigEndpointProvider EndpointProviderType;
@@ -381,8 +393,12 @@ namespace AppConfig
         }
 
         /**
-         * <p>Creates a new configuration in the AppConfig hosted configuration
-         * store.</p><p><h3>See Also:</h3>   <a
+         * <p>Creates a new configuration in the AppConfig hosted configuration store. If
+         * you're creating a feature flag, we recommend you familiarize yourself with the
+         * JSON schema for feature flag data. For more information, see <a
+         * href="https://docs.aws.amazon.com/appconfig/latest/userguide/appconfig-creating-configuration-and-profile-feature-flags.html#appconfig-type-reference-feature-flags">Type
+         * reference for AWS.AppConfig.FeatureFlags</a> in the <i>AppConfig User
+         * Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/appconfig-2019-10-09/CreateHostedConfigurationVersion">AWS
          * API Reference</a></p>
          */
@@ -407,8 +423,7 @@ namespace AppConfig
         }
 
         /**
-         * <p>Deletes an application. Deleting an application does not delete a
-         * configuration from a host.</p><p><h3>See Also:</h3>   <a
+         * <p>Deletes an application.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/appconfig-2019-10-09/DeleteApplication">AWS
          * API Reference</a></p>
          */
@@ -433,8 +448,10 @@ namespace AppConfig
         }
 
         /**
-         * <p>Deletes a configuration profile. Deleting a configuration profile does not
-         * delete a configuration from a host.</p><p><h3>See Also:</h3>   <a
+         * <p>Deletes a configuration profile.</p> <p>To prevent users from unintentionally
+         * deleting actively-used configuration profiles, enable <a
+         * href="https://docs.aws.amazon.com/appconfig/latest/userguide/deletion-protection.html">deletion
+         * protection</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/appconfig-2019-10-09/DeleteConfigurationProfile">AWS
          * API Reference</a></p>
          */
@@ -459,8 +476,7 @@ namespace AppConfig
         }
 
         /**
-         * <p>Deletes a deployment strategy. Deleting a deployment strategy does not delete
-         * a configuration from a host.</p><p><h3>See Also:</h3>   <a
+         * <p>Deletes a deployment strategy.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/appconfig-2019-10-09/DeleteDeploymentStrategy">AWS
          * API Reference</a></p>
          */
@@ -485,8 +501,10 @@ namespace AppConfig
         }
 
         /**
-         * <p>Deletes an environment. Deleting an environment does not delete a
-         * configuration from a host.</p><p><h3>See Also:</h3>   <a
+         * <p>Deletes an environment.</p> <p>To prevent users from unintentionally deleting
+         * actively-used environments, enable <a
+         * href="https://docs.aws.amazon.com/appconfig/latest/userguide/deletion-protection.html">deletion
+         * protection</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/appconfig-2019-10-09/DeleteEnvironment">AWS
          * API Reference</a></p>
          */
@@ -586,6 +604,32 @@ namespace AppConfig
         void DeleteHostedConfigurationVersionAsync(const DeleteHostedConfigurationVersionRequestT& request, const DeleteHostedConfigurationVersionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&AppConfigClient::DeleteHostedConfigurationVersion, request, handler, context);
+        }
+
+        /**
+         * <p>Returns information about the status of the <code>DeletionProtection</code>
+         * parameter.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/appconfig-2019-10-09/GetAccountSettings">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetAccountSettingsOutcome GetAccountSettings(const Model::GetAccountSettingsRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for GetAccountSettings that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetAccountSettingsRequestT = Model::GetAccountSettingsRequest>
+        Model::GetAccountSettingsOutcomeCallable GetAccountSettingsCallable(const GetAccountSettingsRequestT& request = {}) const
+        {
+            return SubmitCallable(&AppConfigClient::GetAccountSettings, request);
+        }
+
+        /**
+         * An Async wrapper for GetAccountSettings that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetAccountSettingsRequestT = Model::GetAccountSettingsRequest>
+        void GetAccountSettingsAsync(const GetAccountSettingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetAccountSettingsRequestT& request = {}) const
+        {
+            return SubmitAsync(&AppConfigClient::GetAccountSettings, request, handler, context);
         }
 
         /**
@@ -812,13 +856,13 @@ namespace AppConfig
          * href="http://docs.aws.amazon.com/goto/WebAPI/appconfig-2019-10-09/ListApplications">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListApplicationsOutcome ListApplications(const Model::ListApplicationsRequest& request) const;
+        virtual Model::ListApplicationsOutcome ListApplications(const Model::ListApplicationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListApplications that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListApplicationsRequestT = Model::ListApplicationsRequest>
-        Model::ListApplicationsOutcomeCallable ListApplicationsCallable(const ListApplicationsRequestT& request) const
+        Model::ListApplicationsOutcomeCallable ListApplicationsCallable(const ListApplicationsRequestT& request = {}) const
         {
             return SubmitCallable(&AppConfigClient::ListApplications, request);
         }
@@ -827,7 +871,7 @@ namespace AppConfig
          * An Async wrapper for ListApplications that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListApplicationsRequestT = Model::ListApplicationsRequest>
-        void ListApplicationsAsync(const ListApplicationsRequestT& request, const ListApplicationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListApplicationsAsync(const ListApplicationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListApplicationsRequestT& request = {}) const
         {
             return SubmitAsync(&AppConfigClient::ListApplications, request, handler, context);
         }
@@ -863,13 +907,13 @@ namespace AppConfig
          * href="http://docs.aws.amazon.com/goto/WebAPI/appconfig-2019-10-09/ListDeploymentStrategies">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDeploymentStrategiesOutcome ListDeploymentStrategies(const Model::ListDeploymentStrategiesRequest& request) const;
+        virtual Model::ListDeploymentStrategiesOutcome ListDeploymentStrategies(const Model::ListDeploymentStrategiesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDeploymentStrategies that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDeploymentStrategiesRequestT = Model::ListDeploymentStrategiesRequest>
-        Model::ListDeploymentStrategiesOutcomeCallable ListDeploymentStrategiesCallable(const ListDeploymentStrategiesRequestT& request) const
+        Model::ListDeploymentStrategiesOutcomeCallable ListDeploymentStrategiesCallable(const ListDeploymentStrategiesRequestT& request = {}) const
         {
             return SubmitCallable(&AppConfigClient::ListDeploymentStrategies, request);
         }
@@ -878,7 +922,7 @@ namespace AppConfig
          * An Async wrapper for ListDeploymentStrategies that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDeploymentStrategiesRequestT = Model::ListDeploymentStrategiesRequest>
-        void ListDeploymentStrategiesAsync(const ListDeploymentStrategiesRequestT& request, const ListDeploymentStrategiesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDeploymentStrategiesAsync(const ListDeploymentStrategiesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDeploymentStrategiesRequestT& request = {}) const
         {
             return SubmitAsync(&AppConfigClient::ListDeploymentStrategies, request, handler, context);
         }
@@ -942,13 +986,13 @@ namespace AppConfig
          * href="http://docs.aws.amazon.com/goto/WebAPI/appconfig-2019-10-09/ListExtensionAssociations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListExtensionAssociationsOutcome ListExtensionAssociations(const Model::ListExtensionAssociationsRequest& request) const;
+        virtual Model::ListExtensionAssociationsOutcome ListExtensionAssociations(const Model::ListExtensionAssociationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListExtensionAssociations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListExtensionAssociationsRequestT = Model::ListExtensionAssociationsRequest>
-        Model::ListExtensionAssociationsOutcomeCallable ListExtensionAssociationsCallable(const ListExtensionAssociationsRequestT& request) const
+        Model::ListExtensionAssociationsOutcomeCallable ListExtensionAssociationsCallable(const ListExtensionAssociationsRequestT& request = {}) const
         {
             return SubmitCallable(&AppConfigClient::ListExtensionAssociations, request);
         }
@@ -957,7 +1001,7 @@ namespace AppConfig
          * An Async wrapper for ListExtensionAssociations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListExtensionAssociationsRequestT = Model::ListExtensionAssociationsRequest>
-        void ListExtensionAssociationsAsync(const ListExtensionAssociationsRequestT& request, const ListExtensionAssociationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListExtensionAssociationsAsync(const ListExtensionAssociationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListExtensionAssociationsRequestT& request = {}) const
         {
             return SubmitAsync(&AppConfigClient::ListExtensionAssociations, request, handler, context);
         }
@@ -970,13 +1014,13 @@ namespace AppConfig
          * href="http://docs.aws.amazon.com/goto/WebAPI/appconfig-2019-10-09/ListExtensions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListExtensionsOutcome ListExtensions(const Model::ListExtensionsRequest& request) const;
+        virtual Model::ListExtensionsOutcome ListExtensions(const Model::ListExtensionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListExtensions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListExtensionsRequestT = Model::ListExtensionsRequest>
-        Model::ListExtensionsOutcomeCallable ListExtensionsCallable(const ListExtensionsRequestT& request) const
+        Model::ListExtensionsOutcomeCallable ListExtensionsCallable(const ListExtensionsRequestT& request = {}) const
         {
             return SubmitCallable(&AppConfigClient::ListExtensions, request);
         }
@@ -985,14 +1029,14 @@ namespace AppConfig
          * An Async wrapper for ListExtensions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListExtensionsRequestT = Model::ListExtensionsRequest>
-        void ListExtensionsAsync(const ListExtensionsRequestT& request, const ListExtensionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListExtensionsAsync(const ListExtensionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListExtensionsRequestT& request = {}) const
         {
             return SubmitAsync(&AppConfigClient::ListExtensions, request, handler, context);
         }
 
         /**
          * <p>Lists configurations stored in the AppConfig hosted configuration store by
-         * version.</p><p><h3>See Also:</h3>   <a
+         * version. </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/appconfig-2019-10-09/ListHostedConfigurationVersions">AWS
          * API Reference</a></p>
          */
@@ -1069,8 +1113,11 @@ namespace AppConfig
 
         /**
          * <p>Stops a deployment. This API action works only on deployments that have a
-         * status of <code>DEPLOYING</code>. This action moves the deployment to a status
-         * of <code>ROLLED_BACK</code>.</p><p><h3>See Also:</h3>   <a
+         * status of <code>DEPLOYING</code>, unless an <code>AllowRevert</code> parameter
+         * is supplied. If the <code>AllowRevert</code> parameter is supplied, the status
+         * of an in-progress deployment will be <code>ROLLED_BACK</code>. The status of a
+         * completed deployment will be <code>REVERTED</code>. AppConfig only allows a
+         * revert within 72 hours of deployment completion.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/appconfig-2019-10-09/StopDeployment">AWS
          * API Reference</a></p>
          */
@@ -1146,6 +1193,32 @@ namespace AppConfig
         void UntagResourceAsync(const UntagResourceRequestT& request, const UntagResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&AppConfigClient::UntagResource, request, handler, context);
+        }
+
+        /**
+         * <p>Updates the value of the <code>DeletionProtection</code>
+         * parameter.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/appconfig-2019-10-09/UpdateAccountSettings">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateAccountSettingsOutcome UpdateAccountSettings(const Model::UpdateAccountSettingsRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for UpdateAccountSettings that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateAccountSettingsRequestT = Model::UpdateAccountSettingsRequest>
+        Model::UpdateAccountSettingsOutcomeCallable UpdateAccountSettingsCallable(const UpdateAccountSettingsRequestT& request = {}) const
+        {
+            return SubmitCallable(&AppConfigClient::UpdateAccountSettings, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateAccountSettings that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateAccountSettingsRequestT = Model::UpdateAccountSettingsRequest>
+        void UpdateAccountSettingsAsync(const UpdateAccountSettingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const UpdateAccountSettingsRequestT& request = {}) const
+        {
+            return SubmitAsync(&AppConfigClient::UpdateAccountSettings, request, handler, context);
         }
 
         /**
@@ -1334,11 +1407,7 @@ namespace AppConfig
       std::shared_ptr<AppConfigEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<AppConfigClient>;
-      void init(const AppConfigClientConfiguration& clientConfiguration);
 
-      AppConfigClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<AppConfigEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace AppConfig

@@ -29,12 +29,8 @@ HsmConfiguration::HsmConfiguration() :
 {
 }
 
-HsmConfiguration::HsmConfiguration(const XmlNode& xmlNode) : 
-    m_hsmConfigurationIdentifierHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_hsmIpAddressHasBeenSet(false),
-    m_hsmPartitionNameHasBeenSet(false),
-    m_tagsHasBeenSet(false)
+HsmConfiguration::HsmConfiguration(const XmlNode& xmlNode)
+  : HsmConfiguration()
 {
   *this = xmlNode;
 }
@@ -114,7 +110,7 @@ void HsmConfiguration::OutputToStream(Aws::OStream& oStream, const char* locatio
       for(auto& item : m_tags)
       {
         Aws::StringStream tagsSs;
-        tagsSs << location << index << locationValue << ".Tag." << tagsIdx++;
+        tagsSs << location << index << locationValue << ".Tags.Tag." << tagsIdx++;
         item.OutputToStream(oStream, tagsSs.str().c_str());
       }
   }

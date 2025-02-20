@@ -6,8 +6,8 @@
 #pragma once
 #include <aws/ec2/EC2_EXPORTS.h>
 #include <aws/ec2/EC2Request.h>
-#include <aws/ec2/model/EventType.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
+#include <aws/ec2/model/EventType.h>
 #include <aws/core/utils/DateTime.h>
 #include <utility>
 
@@ -42,6 +42,7 @@ namespace Model
 
   public:
 
+    ///@{
     /**
      * <p>Checks whether you have the required permissions for the action, without
      * actually making the request, and provides an error response. If you have the
@@ -49,63 +50,66 @@ namespace Model
      * Otherwise, it is <code>UnauthorizedOperation</code>.</p>
      */
     inline bool GetDryRun() const{ return m_dryRun; }
-
-    /**
-     * <p>Checks whether you have the required permissions for the action, without
-     * actually making the request, and provides an error response. If you have the
-     * required permissions, the error response is <code>DryRunOperation</code>.
-     * Otherwise, it is <code>UnauthorizedOperation</code>.</p>
-     */
     inline bool DryRunHasBeenSet() const { return m_dryRunHasBeenSet; }
-
-    /**
-     * <p>Checks whether you have the required permissions for the action, without
-     * actually making the request, and provides an error response. If you have the
-     * required permissions, the error response is <code>DryRunOperation</code>.
-     * Otherwise, it is <code>UnauthorizedOperation</code>.</p>
-     */
     inline void SetDryRun(bool value) { m_dryRunHasBeenSet = true; m_dryRun = value; }
-
-    /**
-     * <p>Checks whether you have the required permissions for the action, without
-     * actually making the request, and provides an error response. If you have the
-     * required permissions, the error response is <code>DryRunOperation</code>.
-     * Otherwise, it is <code>UnauthorizedOperation</code>.</p>
-     */
     inline DescribeSpotFleetRequestHistoryRequest& WithDryRun(bool value) { SetDryRun(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The ID of the Spot Fleet request.</p>
+     */
+    inline const Aws::String& GetSpotFleetRequestId() const{ return m_spotFleetRequestId; }
+    inline bool SpotFleetRequestIdHasBeenSet() const { return m_spotFleetRequestIdHasBeenSet; }
+    inline void SetSpotFleetRequestId(const Aws::String& value) { m_spotFleetRequestIdHasBeenSet = true; m_spotFleetRequestId = value; }
+    inline void SetSpotFleetRequestId(Aws::String&& value) { m_spotFleetRequestIdHasBeenSet = true; m_spotFleetRequestId = std::move(value); }
+    inline void SetSpotFleetRequestId(const char* value) { m_spotFleetRequestIdHasBeenSet = true; m_spotFleetRequestId.assign(value); }
+    inline DescribeSpotFleetRequestHistoryRequest& WithSpotFleetRequestId(const Aws::String& value) { SetSpotFleetRequestId(value); return *this;}
+    inline DescribeSpotFleetRequestHistoryRequest& WithSpotFleetRequestId(Aws::String&& value) { SetSpotFleetRequestId(std::move(value)); return *this;}
+    inline DescribeSpotFleetRequestHistoryRequest& WithSpotFleetRequestId(const char* value) { SetSpotFleetRequestId(value); return *this;}
+    ///@}
 
+    ///@{
     /**
      * <p>The type of events to describe. By default, all events are described.</p>
      */
     inline const EventType& GetEventType() const{ return m_eventType; }
-
-    /**
-     * <p>The type of events to describe. By default, all events are described.</p>
-     */
     inline bool EventTypeHasBeenSet() const { return m_eventTypeHasBeenSet; }
-
-    /**
-     * <p>The type of events to describe. By default, all events are described.</p>
-     */
     inline void SetEventType(const EventType& value) { m_eventTypeHasBeenSet = true; m_eventType = value; }
-
-    /**
-     * <p>The type of events to describe. By default, all events are described.</p>
-     */
     inline void SetEventType(EventType&& value) { m_eventTypeHasBeenSet = true; m_eventType = std::move(value); }
-
-    /**
-     * <p>The type of events to describe. By default, all events are described.</p>
-     */
     inline DescribeSpotFleetRequestHistoryRequest& WithEventType(const EventType& value) { SetEventType(value); return *this;}
-
-    /**
-     * <p>The type of events to describe. By default, all events are described.</p>
-     */
     inline DescribeSpotFleetRequestHistoryRequest& WithEventType(EventType&& value) { SetEventType(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The starting date and time for the events, in UTC format (for example,
+     * <i>YYYY</i>-<i>MM</i>-<i>DD</i>T<i>HH</i>:<i>MM</i>:<i>SS</i>Z).</p>
+     */
+    inline const Aws::Utils::DateTime& GetStartTime() const{ return m_startTime; }
+    inline bool StartTimeHasBeenSet() const { return m_startTimeHasBeenSet; }
+    inline void SetStartTime(const Aws::Utils::DateTime& value) { m_startTimeHasBeenSet = true; m_startTime = value; }
+    inline void SetStartTime(Aws::Utils::DateTime&& value) { m_startTimeHasBeenSet = true; m_startTime = std::move(value); }
+    inline DescribeSpotFleetRequestHistoryRequest& WithStartTime(const Aws::Utils::DateTime& value) { SetStartTime(value); return *this;}
+    inline DescribeSpotFleetRequestHistoryRequest& WithStartTime(Aws::Utils::DateTime&& value) { SetStartTime(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The token to include in another request to get the next page of items. This
+     * value is <code>null</code> when there are no more items to return.</p>
+     */
+    inline const Aws::String& GetNextToken() const{ return m_nextToken; }
+    inline bool NextTokenHasBeenSet() const { return m_nextTokenHasBeenSet; }
+    inline void SetNextToken(const Aws::String& value) { m_nextTokenHasBeenSet = true; m_nextToken = value; }
+    inline void SetNextToken(Aws::String&& value) { m_nextTokenHasBeenSet = true; m_nextToken = std::move(value); }
+    inline void SetNextToken(const char* value) { m_nextTokenHasBeenSet = true; m_nextToken.assign(value); }
+    inline DescribeSpotFleetRequestHistoryRequest& WithNextToken(const Aws::String& value) { SetNextToken(value); return *this;}
+    inline DescribeSpotFleetRequestHistoryRequest& WithNextToken(Aws::String&& value) { SetNextToken(std::move(value)); return *this;}
+    inline DescribeSpotFleetRequestHistoryRequest& WithNextToken(const char* value) { SetNextToken(value); return *this;}
+    ///@}
+
+    ///@{
     /**
      * <p>The maximum number of items to return for this request. To get the next page
      * of items, make another request with the token returned in the output. For more
@@ -113,177 +117,29 @@ namespace Model
      * href="https://docs.aws.amazon.com/AWSEC2/latest/APIReference/Query-Requests.html#api-pagination">Pagination</a>.</p>
      */
     inline int GetMaxResults() const{ return m_maxResults; }
-
-    /**
-     * <p>The maximum number of items to return for this request. To get the next page
-     * of items, make another request with the token returned in the output. For more
-     * information, see <a
-     * href="https://docs.aws.amazon.com/AWSEC2/latest/APIReference/Query-Requests.html#api-pagination">Pagination</a>.</p>
-     */
     inline bool MaxResultsHasBeenSet() const { return m_maxResultsHasBeenSet; }
-
-    /**
-     * <p>The maximum number of items to return for this request. To get the next page
-     * of items, make another request with the token returned in the output. For more
-     * information, see <a
-     * href="https://docs.aws.amazon.com/AWSEC2/latest/APIReference/Query-Requests.html#api-pagination">Pagination</a>.</p>
-     */
     inline void SetMaxResults(int value) { m_maxResultsHasBeenSet = true; m_maxResults = value; }
-
-    /**
-     * <p>The maximum number of items to return for this request. To get the next page
-     * of items, make another request with the token returned in the output. For more
-     * information, see <a
-     * href="https://docs.aws.amazon.com/AWSEC2/latest/APIReference/Query-Requests.html#api-pagination">Pagination</a>.</p>
-     */
     inline DescribeSpotFleetRequestHistoryRequest& WithMaxResults(int value) { SetMaxResults(value); return *this;}
-
-
-    /**
-     * <p>The token to include in another request to get the next page of items. This
-     * value is <code>null</code> when there are no more items to return.</p>
-     */
-    inline const Aws::String& GetNextToken() const{ return m_nextToken; }
-
-    /**
-     * <p>The token to include in another request to get the next page of items. This
-     * value is <code>null</code> when there are no more items to return.</p>
-     */
-    inline bool NextTokenHasBeenSet() const { return m_nextTokenHasBeenSet; }
-
-    /**
-     * <p>The token to include in another request to get the next page of items. This
-     * value is <code>null</code> when there are no more items to return.</p>
-     */
-    inline void SetNextToken(const Aws::String& value) { m_nextTokenHasBeenSet = true; m_nextToken = value; }
-
-    /**
-     * <p>The token to include in another request to get the next page of items. This
-     * value is <code>null</code> when there are no more items to return.</p>
-     */
-    inline void SetNextToken(Aws::String&& value) { m_nextTokenHasBeenSet = true; m_nextToken = std::move(value); }
-
-    /**
-     * <p>The token to include in another request to get the next page of items. This
-     * value is <code>null</code> when there are no more items to return.</p>
-     */
-    inline void SetNextToken(const char* value) { m_nextTokenHasBeenSet = true; m_nextToken.assign(value); }
-
-    /**
-     * <p>The token to include in another request to get the next page of items. This
-     * value is <code>null</code> when there are no more items to return.</p>
-     */
-    inline DescribeSpotFleetRequestHistoryRequest& WithNextToken(const Aws::String& value) { SetNextToken(value); return *this;}
-
-    /**
-     * <p>The token to include in another request to get the next page of items. This
-     * value is <code>null</code> when there are no more items to return.</p>
-     */
-    inline DescribeSpotFleetRequestHistoryRequest& WithNextToken(Aws::String&& value) { SetNextToken(std::move(value)); return *this;}
-
-    /**
-     * <p>The token to include in another request to get the next page of items. This
-     * value is <code>null</code> when there are no more items to return.</p>
-     */
-    inline DescribeSpotFleetRequestHistoryRequest& WithNextToken(const char* value) { SetNextToken(value); return *this;}
-
-
-    /**
-     * <p>The ID of the Spot Fleet request.</p>
-     */
-    inline const Aws::String& GetSpotFleetRequestId() const{ return m_spotFleetRequestId; }
-
-    /**
-     * <p>The ID of the Spot Fleet request.</p>
-     */
-    inline bool SpotFleetRequestIdHasBeenSet() const { return m_spotFleetRequestIdHasBeenSet; }
-
-    /**
-     * <p>The ID of the Spot Fleet request.</p>
-     */
-    inline void SetSpotFleetRequestId(const Aws::String& value) { m_spotFleetRequestIdHasBeenSet = true; m_spotFleetRequestId = value; }
-
-    /**
-     * <p>The ID of the Spot Fleet request.</p>
-     */
-    inline void SetSpotFleetRequestId(Aws::String&& value) { m_spotFleetRequestIdHasBeenSet = true; m_spotFleetRequestId = std::move(value); }
-
-    /**
-     * <p>The ID of the Spot Fleet request.</p>
-     */
-    inline void SetSpotFleetRequestId(const char* value) { m_spotFleetRequestIdHasBeenSet = true; m_spotFleetRequestId.assign(value); }
-
-    /**
-     * <p>The ID of the Spot Fleet request.</p>
-     */
-    inline DescribeSpotFleetRequestHistoryRequest& WithSpotFleetRequestId(const Aws::String& value) { SetSpotFleetRequestId(value); return *this;}
-
-    /**
-     * <p>The ID of the Spot Fleet request.</p>
-     */
-    inline DescribeSpotFleetRequestHistoryRequest& WithSpotFleetRequestId(Aws::String&& value) { SetSpotFleetRequestId(std::move(value)); return *this;}
-
-    /**
-     * <p>The ID of the Spot Fleet request.</p>
-     */
-    inline DescribeSpotFleetRequestHistoryRequest& WithSpotFleetRequestId(const char* value) { SetSpotFleetRequestId(value); return *this;}
-
-
-    /**
-     * <p>The starting date and time for the events, in UTC format (for example,
-     * <i>YYYY</i>-<i>MM</i>-<i>DD</i>T<i>HH</i>:<i>MM</i>:<i>SS</i>Z).</p>
-     */
-    inline const Aws::Utils::DateTime& GetStartTime() const{ return m_startTime; }
-
-    /**
-     * <p>The starting date and time for the events, in UTC format (for example,
-     * <i>YYYY</i>-<i>MM</i>-<i>DD</i>T<i>HH</i>:<i>MM</i>:<i>SS</i>Z).</p>
-     */
-    inline bool StartTimeHasBeenSet() const { return m_startTimeHasBeenSet; }
-
-    /**
-     * <p>The starting date and time for the events, in UTC format (for example,
-     * <i>YYYY</i>-<i>MM</i>-<i>DD</i>T<i>HH</i>:<i>MM</i>:<i>SS</i>Z).</p>
-     */
-    inline void SetStartTime(const Aws::Utils::DateTime& value) { m_startTimeHasBeenSet = true; m_startTime = value; }
-
-    /**
-     * <p>The starting date and time for the events, in UTC format (for example,
-     * <i>YYYY</i>-<i>MM</i>-<i>DD</i>T<i>HH</i>:<i>MM</i>:<i>SS</i>Z).</p>
-     */
-    inline void SetStartTime(Aws::Utils::DateTime&& value) { m_startTimeHasBeenSet = true; m_startTime = std::move(value); }
-
-    /**
-     * <p>The starting date and time for the events, in UTC format (for example,
-     * <i>YYYY</i>-<i>MM</i>-<i>DD</i>T<i>HH</i>:<i>MM</i>:<i>SS</i>Z).</p>
-     */
-    inline DescribeSpotFleetRequestHistoryRequest& WithStartTime(const Aws::Utils::DateTime& value) { SetStartTime(value); return *this;}
-
-    /**
-     * <p>The starting date and time for the events, in UTC format (for example,
-     * <i>YYYY</i>-<i>MM</i>-<i>DD</i>T<i>HH</i>:<i>MM</i>:<i>SS</i>Z).</p>
-     */
-    inline DescribeSpotFleetRequestHistoryRequest& WithStartTime(Aws::Utils::DateTime&& value) { SetStartTime(std::move(value)); return *this;}
-
+    ///@}
   private:
 
     bool m_dryRun;
     bool m_dryRunHasBeenSet = false;
 
+    Aws::String m_spotFleetRequestId;
+    bool m_spotFleetRequestIdHasBeenSet = false;
+
     EventType m_eventType;
     bool m_eventTypeHasBeenSet = false;
 
-    int m_maxResults;
-    bool m_maxResultsHasBeenSet = false;
+    Aws::Utils::DateTime m_startTime;
+    bool m_startTimeHasBeenSet = false;
 
     Aws::String m_nextToken;
     bool m_nextTokenHasBeenSet = false;
 
-    Aws::String m_spotFleetRequestId;
-    bool m_spotFleetRequestIdHasBeenSet = false;
-
-    Aws::Utils::DateTime m_startTime;
-    bool m_startTimeHasBeenSet = false;
+    int m_maxResults;
+    bool m_maxResultsHasBeenSet = false;
   };
 
 } // namespace Model

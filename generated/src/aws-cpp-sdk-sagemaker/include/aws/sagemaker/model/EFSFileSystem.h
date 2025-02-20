@@ -25,8 +25,8 @@ namespace Model
 
   /**
    * <p>A file system, created by you in Amazon EFS, that you assign to a user
-   * profile or space for an Amazon SageMaker Domain. Permitted users can access this
-   * file system in Amazon SageMaker Studio.</p><p><h3>See Also:</h3>   <a
+   * profile or space for an Amazon SageMaker AI Domain. Permitted users can access
+   * this file system in Amazon SageMaker AI Studio.</p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/sagemaker-2017-07-24/EFSFileSystem">AWS
    * API Reference</a></p>
    */
@@ -39,46 +39,19 @@ namespace Model
     AWS_SAGEMAKER_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The ID of your Amazon EFS file system.</p>
      */
     inline const Aws::String& GetFileSystemId() const{ return m_fileSystemId; }
-
-    /**
-     * <p>The ID of your Amazon EFS file system.</p>
-     */
     inline bool FileSystemIdHasBeenSet() const { return m_fileSystemIdHasBeenSet; }
-
-    /**
-     * <p>The ID of your Amazon EFS file system.</p>
-     */
     inline void SetFileSystemId(const Aws::String& value) { m_fileSystemIdHasBeenSet = true; m_fileSystemId = value; }
-
-    /**
-     * <p>The ID of your Amazon EFS file system.</p>
-     */
     inline void SetFileSystemId(Aws::String&& value) { m_fileSystemIdHasBeenSet = true; m_fileSystemId = std::move(value); }
-
-    /**
-     * <p>The ID of your Amazon EFS file system.</p>
-     */
     inline void SetFileSystemId(const char* value) { m_fileSystemIdHasBeenSet = true; m_fileSystemId.assign(value); }
-
-    /**
-     * <p>The ID of your Amazon EFS file system.</p>
-     */
     inline EFSFileSystem& WithFileSystemId(const Aws::String& value) { SetFileSystemId(value); return *this;}
-
-    /**
-     * <p>The ID of your Amazon EFS file system.</p>
-     */
     inline EFSFileSystem& WithFileSystemId(Aws::String&& value) { SetFileSystemId(std::move(value)); return *this;}
-
-    /**
-     * <p>The ID of your Amazon EFS file system.</p>
-     */
     inline EFSFileSystem& WithFileSystemId(const char* value) { SetFileSystemId(value); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_fileSystemId;

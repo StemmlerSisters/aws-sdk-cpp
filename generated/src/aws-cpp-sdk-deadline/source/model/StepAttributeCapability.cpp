@@ -19,30 +19,25 @@ namespace Model
 {
 
 StepAttributeCapability::StepAttributeCapability() : 
-    m_allOfHasBeenSet(false),
+    m_nameHasBeenSet(false),
     m_anyOfHasBeenSet(false),
-    m_nameHasBeenSet(false)
+    m_allOfHasBeenSet(false)
 {
 }
 
-StepAttributeCapability::StepAttributeCapability(JsonView jsonValue) : 
-    m_allOfHasBeenSet(false),
-    m_anyOfHasBeenSet(false),
-    m_nameHasBeenSet(false)
+StepAttributeCapability::StepAttributeCapability(JsonView jsonValue)
+  : StepAttributeCapability()
 {
   *this = jsonValue;
 }
 
 StepAttributeCapability& StepAttributeCapability::operator =(JsonView jsonValue)
 {
-  if(jsonValue.ValueExists("allOf"))
+  if(jsonValue.ValueExists("name"))
   {
-    Aws::Utils::Array<JsonView> allOfJsonList = jsonValue.GetArray("allOf");
-    for(unsigned allOfIndex = 0; allOfIndex < allOfJsonList.GetLength(); ++allOfIndex)
-    {
-      m_allOf.push_back(allOfJsonList[allOfIndex].AsString());
-    }
-    m_allOfHasBeenSet = true;
+    m_name = jsonValue.GetString("name");
+
+    m_nameHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("anyOf"))
@@ -55,11 +50,14 @@ StepAttributeCapability& StepAttributeCapability::operator =(JsonView jsonValue)
     m_anyOfHasBeenSet = true;
   }
 
-  if(jsonValue.ValueExists("name"))
+  if(jsonValue.ValueExists("allOf"))
   {
-    m_name = jsonValue.GetString("name");
-
-    m_nameHasBeenSet = true;
+    Aws::Utils::Array<JsonView> allOfJsonList = jsonValue.GetArray("allOf");
+    for(unsigned allOfIndex = 0; allOfIndex < allOfJsonList.GetLength(); ++allOfIndex)
+    {
+      m_allOf.push_back(allOfJsonList[allOfIndex].AsString());
+    }
+    m_allOfHasBeenSet = true;
   }
 
   return *this;
@@ -69,14 +67,9 @@ JsonValue StepAttributeCapability::Jsonize() const
 {
   JsonValue payload;
 
-  if(m_allOfHasBeenSet)
+  if(m_nameHasBeenSet)
   {
-   Aws::Utils::Array<JsonValue> allOfJsonList(m_allOf.size());
-   for(unsigned allOfIndex = 0; allOfIndex < allOfJsonList.GetLength(); ++allOfIndex)
-   {
-     allOfJsonList[allOfIndex].AsString(m_allOf[allOfIndex]);
-   }
-   payload.WithArray("allOf", std::move(allOfJsonList));
+   payload.WithString("name", m_name);
 
   }
 
@@ -91,9 +84,14 @@ JsonValue StepAttributeCapability::Jsonize() const
 
   }
 
-  if(m_nameHasBeenSet)
+  if(m_allOfHasBeenSet)
   {
-   payload.WithString("name", m_name);
+   Aws::Utils::Array<JsonValue> allOfJsonList(m_allOf.size());
+   for(unsigned allOfIndex = 0; allOfIndex < allOfJsonList.GetLength(); ++allOfIndex)
+   {
+     allOfJsonList[allOfIndex].AsString(m_allOf[allOfIndex]);
+   }
+   payload.WithArray("allOf", std::move(allOfJsonList));
 
   }
 

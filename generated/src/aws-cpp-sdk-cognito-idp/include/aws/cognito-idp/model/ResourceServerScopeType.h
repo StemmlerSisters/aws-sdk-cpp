@@ -24,7 +24,16 @@ namespace Model
 {
 
   /**
-   * <p>A resource server scope.</p><p><h3>See Also:</h3>   <a
+   * <p>One custom scope associated with a user pool resource server. This data type
+   * is a member of <code>ResourceServerScopeType</code>. For more information, see
+   * <a
+   * href="https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-define-resource-servers.html">
+   * Scopes, M2M, and API authorization with resource servers</a>. </p> <p>This data
+   * type is a request parameter of <a
+   * href="https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_CreateResourceServer.html">CreateResourceServer</a>
+   * and a response parameter of <a
+   * href="https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_DescribeResourceServer.html">DescribeResourceServer</a>.
+   * </p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/cognito-idp-2016-04-18/ResourceServerScopeType">AWS
    * API Reference</a></p>
    */
@@ -37,87 +46,37 @@ namespace Model
     AWS_COGNITOIDENTITYPROVIDER_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
-     * <p>The name of the scope.</p>
+     * <p>The name of the scope. Amazon Cognito renders custom scopes in the format
+     * <code>resourceServerIdentifier/ScopeName</code>. For example, if this parameter
+     * is <code>exampleScope</code> in the resource server with the identifier
+     * <code>exampleResourceServer</code>, you request and receive the scope
+     * <code>exampleResourceServer/exampleScope</code>.</p>
      */
     inline const Aws::String& GetScopeName() const{ return m_scopeName; }
-
-    /**
-     * <p>The name of the scope.</p>
-     */
     inline bool ScopeNameHasBeenSet() const { return m_scopeNameHasBeenSet; }
-
-    /**
-     * <p>The name of the scope.</p>
-     */
     inline void SetScopeName(const Aws::String& value) { m_scopeNameHasBeenSet = true; m_scopeName = value; }
-
-    /**
-     * <p>The name of the scope.</p>
-     */
     inline void SetScopeName(Aws::String&& value) { m_scopeNameHasBeenSet = true; m_scopeName = std::move(value); }
-
-    /**
-     * <p>The name of the scope.</p>
-     */
     inline void SetScopeName(const char* value) { m_scopeNameHasBeenSet = true; m_scopeName.assign(value); }
-
-    /**
-     * <p>The name of the scope.</p>
-     */
     inline ResourceServerScopeType& WithScopeName(const Aws::String& value) { SetScopeName(value); return *this;}
-
-    /**
-     * <p>The name of the scope.</p>
-     */
     inline ResourceServerScopeType& WithScopeName(Aws::String&& value) { SetScopeName(std::move(value)); return *this;}
-
-    /**
-     * <p>The name of the scope.</p>
-     */
     inline ResourceServerScopeType& WithScopeName(const char* value) { SetScopeName(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p>A description of the scope.</p>
+     * <p>A friendly description of a custom scope.</p>
      */
     inline const Aws::String& GetScopeDescription() const{ return m_scopeDescription; }
-
-    /**
-     * <p>A description of the scope.</p>
-     */
     inline bool ScopeDescriptionHasBeenSet() const { return m_scopeDescriptionHasBeenSet; }
-
-    /**
-     * <p>A description of the scope.</p>
-     */
     inline void SetScopeDescription(const Aws::String& value) { m_scopeDescriptionHasBeenSet = true; m_scopeDescription = value; }
-
-    /**
-     * <p>A description of the scope.</p>
-     */
     inline void SetScopeDescription(Aws::String&& value) { m_scopeDescriptionHasBeenSet = true; m_scopeDescription = std::move(value); }
-
-    /**
-     * <p>A description of the scope.</p>
-     */
     inline void SetScopeDescription(const char* value) { m_scopeDescriptionHasBeenSet = true; m_scopeDescription.assign(value); }
-
-    /**
-     * <p>A description of the scope.</p>
-     */
     inline ResourceServerScopeType& WithScopeDescription(const Aws::String& value) { SetScopeDescription(value); return *this;}
-
-    /**
-     * <p>A description of the scope.</p>
-     */
     inline ResourceServerScopeType& WithScopeDescription(Aws::String&& value) { SetScopeDescription(std::move(value)); return *this;}
-
-    /**
-     * <p>A description of the scope.</p>
-     */
     inline ResourceServerScopeType& WithScopeDescription(const char* value) { SetScopeDescription(value); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_scopeName;

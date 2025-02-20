@@ -26,19 +26,13 @@ Resource::Resource() :
     m_dataLocationHasBeenSet(false),
     m_dataCellsFilterHasBeenSet(false),
     m_lFTagHasBeenSet(false),
-    m_lFTagPolicyHasBeenSet(false)
+    m_lFTagPolicyHasBeenSet(false),
+    m_lFTagExpressionHasBeenSet(false)
 {
 }
 
-Resource::Resource(JsonView jsonValue) : 
-    m_catalogHasBeenSet(false),
-    m_databaseHasBeenSet(false),
-    m_tableHasBeenSet(false),
-    m_tableWithColumnsHasBeenSet(false),
-    m_dataLocationHasBeenSet(false),
-    m_dataCellsFilterHasBeenSet(false),
-    m_lFTagHasBeenSet(false),
-    m_lFTagPolicyHasBeenSet(false)
+Resource::Resource(JsonView jsonValue)
+  : Resource()
 {
   *this = jsonValue;
 }
@@ -101,6 +95,13 @@ Resource& Resource::operator =(JsonView jsonValue)
     m_lFTagPolicyHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("LFTagExpression"))
+  {
+    m_lFTagExpression = jsonValue.GetObject("LFTagExpression");
+
+    m_lFTagExpressionHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -153,6 +154,12 @@ JsonValue Resource::Jsonize() const
   if(m_lFTagPolicyHasBeenSet)
   {
    payload.WithObject("LFTagPolicy", m_lFTagPolicy.Jsonize());
+
+  }
+
+  if(m_lFTagExpressionHasBeenSet)
+  {
+   payload.WithObject("LFTagExpression", m_lFTagExpression.Jsonize());
 
   }
 

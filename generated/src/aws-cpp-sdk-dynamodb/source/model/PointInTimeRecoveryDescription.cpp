@@ -21,16 +21,15 @@ namespace Model
 PointInTimeRecoveryDescription::PointInTimeRecoveryDescription() : 
     m_pointInTimeRecoveryStatus(PointInTimeRecoveryStatus::NOT_SET),
     m_pointInTimeRecoveryStatusHasBeenSet(false),
+    m_recoveryPeriodInDays(0),
+    m_recoveryPeriodInDaysHasBeenSet(false),
     m_earliestRestorableDateTimeHasBeenSet(false),
     m_latestRestorableDateTimeHasBeenSet(false)
 {
 }
 
-PointInTimeRecoveryDescription::PointInTimeRecoveryDescription(JsonView jsonValue) : 
-    m_pointInTimeRecoveryStatus(PointInTimeRecoveryStatus::NOT_SET),
-    m_pointInTimeRecoveryStatusHasBeenSet(false),
-    m_earliestRestorableDateTimeHasBeenSet(false),
-    m_latestRestorableDateTimeHasBeenSet(false)
+PointInTimeRecoveryDescription::PointInTimeRecoveryDescription(JsonView jsonValue)
+  : PointInTimeRecoveryDescription()
 {
   *this = jsonValue;
 }
@@ -42,6 +41,13 @@ PointInTimeRecoveryDescription& PointInTimeRecoveryDescription::operator =(JsonV
     m_pointInTimeRecoveryStatus = PointInTimeRecoveryStatusMapper::GetPointInTimeRecoveryStatusForName(jsonValue.GetString("PointInTimeRecoveryStatus"));
 
     m_pointInTimeRecoveryStatusHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("RecoveryPeriodInDays"))
+  {
+    m_recoveryPeriodInDays = jsonValue.GetInteger("RecoveryPeriodInDays");
+
+    m_recoveryPeriodInDaysHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("EarliestRestorableDateTime"))
@@ -68,6 +74,12 @@ JsonValue PointInTimeRecoveryDescription::Jsonize() const
   if(m_pointInTimeRecoveryStatusHasBeenSet)
   {
    payload.WithString("PointInTimeRecoveryStatus", PointInTimeRecoveryStatusMapper::GetNameForPointInTimeRecoveryStatus(m_pointInTimeRecoveryStatus));
+  }
+
+  if(m_recoveryPeriodInDaysHasBeenSet)
+  {
+   payload.WithInteger("RecoveryPeriodInDays", m_recoveryPeriodInDays);
+
   }
 
   if(m_earliestRestorableDateTimeHasBeenSet)

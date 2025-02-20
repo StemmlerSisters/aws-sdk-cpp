@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/osis/OSIS_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/osis/OSISServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/osis/OSISErrorMarshaller.h>
 
 namespace Aws
 {
 namespace OSIS
 {
+  AWS_OSIS_API extern const char SERVICE_NAME[];
   /**
    * <p>Use the Amazon OpenSearch Ingestion API to create and manage ingestion
    * pipelines. OpenSearch Ingestion is a fully managed data collector that delivers
@@ -23,12 +27,20 @@ namespace OSIS
    * href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/ingestion.html">Getting
    * data into your cluster using OpenSearch Ingestion</a>.</p>
    */
-  class AWS_OSIS_API OSISClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<OSISClient>
+  class AWS_OSIS_API OSISClient : smithy::client::AwsSmithyClientT<Aws::OSIS::SERVICE_NAME,
+      Aws::OSIS::OSISClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      OSISEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::OSISErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<OSISClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "OSIS"; }
 
       typedef OSISClientConfiguration ClientConfigurationType;
       typedef OSISEndpointProvider EndpointProviderType;
@@ -228,13 +240,13 @@ namespace OSIS
          * href="http://docs.aws.amazon.com/goto/WebAPI/osis-2022-01-01/ListPipelineBlueprints">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListPipelineBlueprintsOutcome ListPipelineBlueprints(const Model::ListPipelineBlueprintsRequest& request) const;
+        virtual Model::ListPipelineBlueprintsOutcome ListPipelineBlueprints(const Model::ListPipelineBlueprintsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListPipelineBlueprints that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListPipelineBlueprintsRequestT = Model::ListPipelineBlueprintsRequest>
-        Model::ListPipelineBlueprintsOutcomeCallable ListPipelineBlueprintsCallable(const ListPipelineBlueprintsRequestT& request) const
+        Model::ListPipelineBlueprintsOutcomeCallable ListPipelineBlueprintsCallable(const ListPipelineBlueprintsRequestT& request = {}) const
         {
             return SubmitCallable(&OSISClient::ListPipelineBlueprints, request);
         }
@@ -243,7 +255,7 @@ namespace OSIS
          * An Async wrapper for ListPipelineBlueprints that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListPipelineBlueprintsRequestT = Model::ListPipelineBlueprintsRequest>
-        void ListPipelineBlueprintsAsync(const ListPipelineBlueprintsRequestT& request, const ListPipelineBlueprintsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListPipelineBlueprintsAsync(const ListPipelineBlueprintsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListPipelineBlueprintsRequestT& request = {}) const
         {
             return SubmitAsync(&OSISClient::ListPipelineBlueprints, request, handler, context);
         }
@@ -256,13 +268,13 @@ namespace OSIS
          * href="http://docs.aws.amazon.com/goto/WebAPI/osis-2022-01-01/ListPipelines">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListPipelinesOutcome ListPipelines(const Model::ListPipelinesRequest& request) const;
+        virtual Model::ListPipelinesOutcome ListPipelines(const Model::ListPipelinesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListPipelines that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListPipelinesRequestT = Model::ListPipelinesRequest>
-        Model::ListPipelinesOutcomeCallable ListPipelinesCallable(const ListPipelinesRequestT& request) const
+        Model::ListPipelinesOutcomeCallable ListPipelinesCallable(const ListPipelinesRequestT& request = {}) const
         {
             return SubmitCallable(&OSISClient::ListPipelines, request);
         }
@@ -271,7 +283,7 @@ namespace OSIS
          * An Async wrapper for ListPipelines that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListPipelinesRequestT = Model::ListPipelinesRequest>
-        void ListPipelinesAsync(const ListPipelinesRequestT& request, const ListPipelinesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListPipelinesAsync(const ListPipelinesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListPipelinesRequestT& request = {}) const
         {
             return SubmitAsync(&OSISClient::ListPipelines, request, handler, context);
         }
@@ -473,11 +485,7 @@ namespace OSIS
       std::shared_ptr<OSISEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<OSISClient>;
-      void init(const OSISClientConfiguration& clientConfiguration);
 
-      OSISClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<OSISEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace OSIS

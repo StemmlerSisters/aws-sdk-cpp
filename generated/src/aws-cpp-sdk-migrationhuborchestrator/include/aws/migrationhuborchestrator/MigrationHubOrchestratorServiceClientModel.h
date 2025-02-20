@@ -49,6 +49,9 @@
 #include <aws/migrationhuborchestrator/model/UpdateWorkflowResult.h>
 #include <aws/migrationhuborchestrator/model/UpdateWorkflowStepResult.h>
 #include <aws/migrationhuborchestrator/model/UpdateWorkflowStepGroupResult.h>
+#include <aws/migrationhuborchestrator/model/ListWorkflowsRequest.h>
+#include <aws/migrationhuborchestrator/model/ListPluginsRequest.h>
+#include <aws/migrationhuborchestrator/model/ListTemplatesRequest.h>
 /* End of service model headers required in MigrationHubOrchestratorClient header */
 
 namespace Aws
@@ -82,7 +85,7 @@ namespace Aws
 
   namespace MigrationHubOrchestrator
   {
-    using MigrationHubOrchestratorClientConfiguration = Aws::Client::GenericClientConfiguration<false>;
+    using MigrationHubOrchestratorClientConfiguration = Aws::Client::GenericClientConfiguration;
     using MigrationHubOrchestratorEndpointProviderBase = Aws::MigrationHubOrchestrator::Endpoint::MigrationHubOrchestratorEndpointProviderBase;
     using MigrationHubOrchestratorEndpointProvider = Aws::MigrationHubOrchestrator::Endpoint::MigrationHubOrchestratorEndpointProvider;
 

@@ -26,19 +26,18 @@ Webhook::Webhook() :
     m_filterGroupsHasBeenSet(false),
     m_buildType(WebhookBuildType::NOT_SET),
     m_buildTypeHasBeenSet(false),
-    m_lastModifiedSecretHasBeenSet(false)
+    m_manualCreation(false),
+    m_manualCreationHasBeenSet(false),
+    m_lastModifiedSecretHasBeenSet(false),
+    m_scopeConfigurationHasBeenSet(false),
+    m_status(WebhookStatus::NOT_SET),
+    m_statusHasBeenSet(false),
+    m_statusMessageHasBeenSet(false)
 {
 }
 
-Webhook::Webhook(JsonView jsonValue) : 
-    m_urlHasBeenSet(false),
-    m_payloadUrlHasBeenSet(false),
-    m_secretHasBeenSet(false),
-    m_branchFilterHasBeenSet(false),
-    m_filterGroupsHasBeenSet(false),
-    m_buildType(WebhookBuildType::NOT_SET),
-    m_buildTypeHasBeenSet(false),
-    m_lastModifiedSecretHasBeenSet(false)
+Webhook::Webhook(JsonView jsonValue)
+  : Webhook()
 {
   *this = jsonValue;
 }
@@ -97,11 +96,39 @@ Webhook& Webhook::operator =(JsonView jsonValue)
     m_buildTypeHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("manualCreation"))
+  {
+    m_manualCreation = jsonValue.GetBool("manualCreation");
+
+    m_manualCreationHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("lastModifiedSecret"))
   {
     m_lastModifiedSecret = jsonValue.GetDouble("lastModifiedSecret");
 
     m_lastModifiedSecretHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("scopeConfiguration"))
+  {
+    m_scopeConfiguration = jsonValue.GetObject("scopeConfiguration");
+
+    m_scopeConfigurationHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("status"))
+  {
+    m_status = WebhookStatusMapper::GetWebhookStatusForName(jsonValue.GetString("status"));
+
+    m_statusHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("statusMessage"))
+  {
+    m_statusMessage = jsonValue.GetString("statusMessage");
+
+    m_statusMessageHasBeenSet = true;
   }
 
   return *this;
@@ -156,9 +183,32 @@ JsonValue Webhook::Jsonize() const
    payload.WithString("buildType", WebhookBuildTypeMapper::GetNameForWebhookBuildType(m_buildType));
   }
 
+  if(m_manualCreationHasBeenSet)
+  {
+   payload.WithBool("manualCreation", m_manualCreation);
+
+  }
+
   if(m_lastModifiedSecretHasBeenSet)
   {
    payload.WithDouble("lastModifiedSecret", m_lastModifiedSecret.SecondsWithMSPrecision());
+  }
+
+  if(m_scopeConfigurationHasBeenSet)
+  {
+   payload.WithObject("scopeConfiguration", m_scopeConfiguration.Jsonize());
+
+  }
+
+  if(m_statusHasBeenSet)
+  {
+   payload.WithString("status", WebhookStatusMapper::GetNameForWebhookStatus(m_status));
+  }
+
+  if(m_statusMessageHasBeenSet)
+  {
+   payload.WithString("statusMessage", m_statusMessage);
+
   }
 
   return payload;

@@ -36,29 +36,13 @@ Compute::Compute() :
     m_gameLiftServiceSdkEndpointHasBeenSet(false),
     m_gameLiftAgentEndpointHasBeenSet(false),
     m_instanceIdHasBeenSet(false),
-    m_containerAttributesHasBeenSet(false)
+    m_containerAttributesHasBeenSet(false),
+    m_gameServerContainerGroupDefinitionArnHasBeenSet(false)
 {
 }
 
-Compute::Compute(JsonView jsonValue) : 
-    m_fleetIdHasBeenSet(false),
-    m_fleetArnHasBeenSet(false),
-    m_computeNameHasBeenSet(false),
-    m_computeArnHasBeenSet(false),
-    m_ipAddressHasBeenSet(false),
-    m_dnsNameHasBeenSet(false),
-    m_computeStatus(ComputeStatus::NOT_SET),
-    m_computeStatusHasBeenSet(false),
-    m_locationHasBeenSet(false),
-    m_creationTimeHasBeenSet(false),
-    m_operatingSystem(OperatingSystem::NOT_SET),
-    m_operatingSystemHasBeenSet(false),
-    m_type(EC2InstanceType::NOT_SET),
-    m_typeHasBeenSet(false),
-    m_gameLiftServiceSdkEndpointHasBeenSet(false),
-    m_gameLiftAgentEndpointHasBeenSet(false),
-    m_instanceIdHasBeenSet(false),
-    m_containerAttributesHasBeenSet(false)
+Compute::Compute(JsonView jsonValue)
+  : Compute()
 {
   *this = jsonValue;
 }
@@ -165,9 +149,19 @@ Compute& Compute::operator =(JsonView jsonValue)
 
   if(jsonValue.ValueExists("ContainerAttributes"))
   {
-    m_containerAttributes = jsonValue.GetObject("ContainerAttributes");
-
+    Aws::Utils::Array<JsonView> containerAttributesJsonList = jsonValue.GetArray("ContainerAttributes");
+    for(unsigned containerAttributesIndex = 0; containerAttributesIndex < containerAttributesJsonList.GetLength(); ++containerAttributesIndex)
+    {
+      m_containerAttributes.push_back(containerAttributesJsonList[containerAttributesIndex].AsObject());
+    }
     m_containerAttributesHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("GameServerContainerGroupDefinitionArn"))
+  {
+    m_gameServerContainerGroupDefinitionArn = jsonValue.GetString("GameServerContainerGroupDefinitionArn");
+
+    m_gameServerContainerGroupDefinitionArnHasBeenSet = true;
   }
 
   return *this;
@@ -259,7 +253,18 @@ JsonValue Compute::Jsonize() const
 
   if(m_containerAttributesHasBeenSet)
   {
-   payload.WithObject("ContainerAttributes", m_containerAttributes.Jsonize());
+   Aws::Utils::Array<JsonValue> containerAttributesJsonList(m_containerAttributes.size());
+   for(unsigned containerAttributesIndex = 0; containerAttributesIndex < containerAttributesJsonList.GetLength(); ++containerAttributesIndex)
+   {
+     containerAttributesJsonList[containerAttributesIndex].AsObject(m_containerAttributes[containerAttributesIndex].Jsonize());
+   }
+   payload.WithArray("ContainerAttributes", std::move(containerAttributesJsonList));
+
+  }
+
+  if(m_gameServerContainerGroupDefinitionArnHasBeenSet)
+  {
+   payload.WithString("GameServerContainerGroupDefinitionArn", m_gameServerContainerGroupDefinitionArn);
 
   }
 

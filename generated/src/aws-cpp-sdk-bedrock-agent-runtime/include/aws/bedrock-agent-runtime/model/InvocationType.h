@@ -18,7 +18,9 @@ namespace Model
     NOT_SET,
     ACTION_GROUP,
     KNOWLEDGE_BASE,
-    FINISH
+    FINISH,
+    ACTION_GROUP_CODE_INTERPRETER,
+    AGENT_COLLABORATOR
   };
 
 namespace InvocationTypeMapper

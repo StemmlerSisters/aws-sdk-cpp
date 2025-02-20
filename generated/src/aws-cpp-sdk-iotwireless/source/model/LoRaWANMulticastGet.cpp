@@ -26,19 +26,13 @@ LoRaWANMulticastGet::LoRaWANMulticastGet() :
     m_numberOfDevicesRequested(0),
     m_numberOfDevicesRequestedHasBeenSet(false),
     m_numberOfDevicesInGroup(0),
-    m_numberOfDevicesInGroupHasBeenSet(false)
+    m_numberOfDevicesInGroupHasBeenSet(false),
+    m_participatingGatewaysHasBeenSet(false)
 {
 }
 
-LoRaWANMulticastGet::LoRaWANMulticastGet(JsonView jsonValue) : 
-    m_rfRegion(SupportedRfRegion::NOT_SET),
-    m_rfRegionHasBeenSet(false),
-    m_dlClass(DlClass::NOT_SET),
-    m_dlClassHasBeenSet(false),
-    m_numberOfDevicesRequested(0),
-    m_numberOfDevicesRequestedHasBeenSet(false),
-    m_numberOfDevicesInGroup(0),
-    m_numberOfDevicesInGroupHasBeenSet(false)
+LoRaWANMulticastGet::LoRaWANMulticastGet(JsonView jsonValue)
+  : LoRaWANMulticastGet()
 {
   *this = jsonValue;
 }
@@ -73,6 +67,13 @@ LoRaWANMulticastGet& LoRaWANMulticastGet::operator =(JsonView jsonValue)
     m_numberOfDevicesInGroupHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("ParticipatingGateways"))
+  {
+    m_participatingGateways = jsonValue.GetObject("ParticipatingGateways");
+
+    m_participatingGatewaysHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -99,6 +100,12 @@ JsonValue LoRaWANMulticastGet::Jsonize() const
   if(m_numberOfDevicesInGroupHasBeenSet)
   {
    payload.WithInteger("NumberOfDevicesInGroup", m_numberOfDevicesInGroup);
+
+  }
+
+  if(m_participatingGatewaysHasBeenSet)
+  {
+   payload.WithObject("ParticipatingGateways", m_participatingGateways.Jsonize());
 
   }
 

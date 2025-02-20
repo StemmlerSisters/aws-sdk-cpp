@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/autoscaling-plans/AutoScalingPlans_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/autoscaling-plans/AutoScalingPlansServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/autoscaling-plans/AutoScalingPlansErrorMarshaller.h>
 
 namespace Aws
 {
 namespace AutoScalingPlans
 {
+  AWS_AUTOSCALINGPLANS_API extern const char SERVICE_NAME[];
   /**
    * <fullname>AWS Auto Scaling</fullname> <p>Use AWS Auto Scaling to create scaling
    * plans for your applications to automatically scale your scalable AWS resources.
@@ -32,12 +36,20 @@ namespace AutoScalingPlans
    * href="https://docs.aws.amazon.com/autoscaling/plans/userguide/what-is-aws-auto-scaling.html">AWS
    * Auto Scaling User Guide</a>. </p>
    */
-  class AWS_AUTOSCALINGPLANS_API AutoScalingPlansClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<AutoScalingPlansClient>
+  class AWS_AUTOSCALINGPLANS_API AutoScalingPlansClient : smithy::client::AwsSmithyClientT<Aws::AutoScalingPlans::SERVICE_NAME,
+      Aws::AutoScalingPlans::AutoScalingPlansClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      AutoScalingPlansEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::AutoScalingPlansErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<AutoScalingPlansClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Auto Scaling Plans"; }
 
       typedef AutoScalingPlansClientConfiguration ClientConfigurationType;
       typedef AutoScalingPlansEndpointProvider EndpointProviderType;
@@ -175,13 +187,13 @@ namespace AutoScalingPlans
          * href="http://docs.aws.amazon.com/goto/WebAPI/autoscaling-plans-2018-01-06/DescribeScalingPlans">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeScalingPlansOutcome DescribeScalingPlans(const Model::DescribeScalingPlansRequest& request) const;
+        virtual Model::DescribeScalingPlansOutcome DescribeScalingPlans(const Model::DescribeScalingPlansRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeScalingPlans that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeScalingPlansRequestT = Model::DescribeScalingPlansRequest>
-        Model::DescribeScalingPlansOutcomeCallable DescribeScalingPlansCallable(const DescribeScalingPlansRequestT& request) const
+        Model::DescribeScalingPlansOutcomeCallable DescribeScalingPlansCallable(const DescribeScalingPlansRequestT& request = {}) const
         {
             return SubmitCallable(&AutoScalingPlansClient::DescribeScalingPlans, request);
         }
@@ -190,7 +202,7 @@ namespace AutoScalingPlans
          * An Async wrapper for DescribeScalingPlans that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeScalingPlansRequestT = Model::DescribeScalingPlansRequest>
-        void DescribeScalingPlansAsync(const DescribeScalingPlansRequestT& request, const DescribeScalingPlansResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeScalingPlansAsync(const DescribeScalingPlansResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeScalingPlansRequestT& request = {}) const
         {
             return SubmitAsync(&AutoScalingPlansClient::DescribeScalingPlans, request, handler, context);
         }
@@ -255,11 +267,7 @@ namespace AutoScalingPlans
       std::shared_ptr<AutoScalingPlansEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<AutoScalingPlansClient>;
-      void init(const AutoScalingPlansClientConfiguration& clientConfiguration);
 
-      AutoScalingPlansClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<AutoScalingPlansEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace AutoScalingPlans

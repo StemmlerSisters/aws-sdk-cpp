@@ -22,8 +22,8 @@ GetKeyspaceResult::GetKeyspaceResult() :
 {
 }
 
-GetKeyspaceResult::GetKeyspaceResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_replicationStrategy(Rs::NOT_SET)
+GetKeyspaceResult::GetKeyspaceResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetKeyspaceResult()
 {
   *this = result;
 }
@@ -55,6 +55,15 @@ GetKeyspaceResult& GetKeyspaceResult::operator =(const Aws::AmazonWebServiceResu
     for(unsigned replicationRegionsIndex = 0; replicationRegionsIndex < replicationRegionsJsonList.GetLength(); ++replicationRegionsIndex)
     {
       m_replicationRegions.push_back(replicationRegionsJsonList[replicationRegionsIndex].AsString());
+    }
+  }
+
+  if(jsonValue.ValueExists("replicationGroupStatuses"))
+  {
+    Aws::Utils::Array<JsonView> replicationGroupStatusesJsonList = jsonValue.GetArray("replicationGroupStatuses");
+    for(unsigned replicationGroupStatusesIndex = 0; replicationGroupStatusesIndex < replicationGroupStatusesJsonList.GetLength(); ++replicationGroupStatusesIndex)
+    {
+      m_replicationGroupStatuses.push_back(replicationGroupStatusesJsonList[replicationGroupStatusesIndex].AsObject());
     }
   }
 

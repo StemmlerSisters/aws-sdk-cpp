@@ -33,63 +33,50 @@ namespace Model
     AWS_S3CONTROL_API GetMultiRegionAccessPointResult& operator=(const Aws::AmazonWebServiceResult<Aws::Utils::Xml::XmlDocument>& result);
 
 
+    ///@{
     /**
      * <p>A container element containing the details of the requested Multi-Region
      * Access Point.</p>
      */
     inline const MultiRegionAccessPointReport& GetAccessPoint() const{ return m_accessPoint; }
-
-    /**
-     * <p>A container element containing the details of the requested Multi-Region
-     * Access Point.</p>
-     */
     inline void SetAccessPoint(const MultiRegionAccessPointReport& value) { m_accessPoint = value; }
-
-    /**
-     * <p>A container element containing the details of the requested Multi-Region
-     * Access Point.</p>
-     */
     inline void SetAccessPoint(MultiRegionAccessPointReport&& value) { m_accessPoint = std::move(value); }
-
-    /**
-     * <p>A container element containing the details of the requested Multi-Region
-     * Access Point.</p>
-     */
     inline GetMultiRegionAccessPointResult& WithAccessPoint(const MultiRegionAccessPointReport& value) { SetAccessPoint(value); return *this;}
-
-    /**
-     * <p>A container element containing the details of the requested Multi-Region
-     * Access Point.</p>
-     */
     inline GetMultiRegionAccessPointResult& WithAccessPoint(MultiRegionAccessPointReport&& value) { SetAccessPoint(std::move(value)); return *this;}
+    ///@}
 
-
-    
+    ///@{
+    /**
+     * AWS Request Id value
+     */
     inline const Aws::String& GetRequestId() const{ return m_requestId; }
-
-    
     inline void SetRequestId(const Aws::String& value) { m_requestId = value; }
-
-    
     inline void SetRequestId(Aws::String&& value) { m_requestId = std::move(value); }
-
-    
     inline void SetRequestId(const char* value) { m_requestId.assign(value); }
-
-    
     inline GetMultiRegionAccessPointResult& WithRequestId(const Aws::String& value) { SetRequestId(value); return *this;}
-
-    
     inline GetMultiRegionAccessPointResult& WithRequestId(Aws::String&& value) { SetRequestId(std::move(value)); return *this;}
-
-    
     inline GetMultiRegionAccessPointResult& WithRequestId(const char* value) { SetRequestId(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * x-amz-id-2 header value, also known as Host Id
+     */
+    inline const Aws::String& GetHostId() const{ return m_hostId; }
+    inline void SetHostId(const Aws::String& value) { m_hostId = value; }
+    inline void SetHostId(Aws::String&& value) { m_hostId = std::move(value); }
+    inline void SetHostId(const char* value) { m_hostId.assign(value); }
+    inline GetMultiRegionAccessPointResult& WithHostId(const Aws::String& value) { SetHostId(value); return *this;}
+    inline GetMultiRegionAccessPointResult& WithHostId(Aws::String&& value) { SetHostId(std::move(value)); return *this;}
+    inline GetMultiRegionAccessPointResult& WithHostId(const char* value) { SetHostId(value); return *this;}
+    ///@}
   private:
 
     MultiRegionAccessPointReport m_accessPoint;
 
     Aws::String m_requestId;
+
+    Aws::String m_hostId;
   };
 
 } // namespace Model

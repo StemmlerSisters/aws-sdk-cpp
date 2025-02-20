@@ -20,7 +20,10 @@ namespace Model
 
 ApiResult::ApiResult() : 
     m_actionGroupHasBeenSet(false),
+    m_agentIdHasBeenSet(false),
     m_apiPathHasBeenSet(false),
+    m_confirmationState(ConfirmationState::NOT_SET),
+    m_confirmationStateHasBeenSet(false),
     m_httpMethodHasBeenSet(false),
     m_httpStatusCode(0),
     m_httpStatusCodeHasBeenSet(false),
@@ -30,15 +33,8 @@ ApiResult::ApiResult() :
 {
 }
 
-ApiResult::ApiResult(JsonView jsonValue) : 
-    m_actionGroupHasBeenSet(false),
-    m_apiPathHasBeenSet(false),
-    m_httpMethodHasBeenSet(false),
-    m_httpStatusCode(0),
-    m_httpStatusCodeHasBeenSet(false),
-    m_responseBodyHasBeenSet(false),
-    m_responseState(ResponseState::NOT_SET),
-    m_responseStateHasBeenSet(false)
+ApiResult::ApiResult(JsonView jsonValue)
+  : ApiResult()
 {
   *this = jsonValue;
 }
@@ -52,11 +48,25 @@ ApiResult& ApiResult::operator =(JsonView jsonValue)
     m_actionGroupHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("agentId"))
+  {
+    m_agentId = jsonValue.GetString("agentId");
+
+    m_agentIdHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("apiPath"))
   {
     m_apiPath = jsonValue.GetString("apiPath");
 
     m_apiPathHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("confirmationState"))
+  {
+    m_confirmationState = ConfirmationStateMapper::GetConfirmationStateForName(jsonValue.GetString("confirmationState"));
+
+    m_confirmationStateHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("httpMethod"))
@@ -103,10 +113,21 @@ JsonValue ApiResult::Jsonize() const
 
   }
 
+  if(m_agentIdHasBeenSet)
+  {
+   payload.WithString("agentId", m_agentId);
+
+  }
+
   if(m_apiPathHasBeenSet)
   {
    payload.WithString("apiPath", m_apiPath);
 
+  }
+
+  if(m_confirmationStateHasBeenSet)
+  {
+   payload.WithString("confirmationState", ConfirmationStateMapper::GetNameForConfirmationState(m_confirmationState));
   }
 
   if(m_httpMethodHasBeenSet)

@@ -30,13 +30,8 @@ NodeGroup::NodeGroup() :
 {
 }
 
-NodeGroup::NodeGroup(const XmlNode& xmlNode) : 
-    m_nodeGroupIdHasBeenSet(false),
-    m_statusHasBeenSet(false),
-    m_primaryEndpointHasBeenSet(false),
-    m_readerEndpointHasBeenSet(false),
-    m_slotsHasBeenSet(false),
-    m_nodeGroupMembersHasBeenSet(false)
+NodeGroup::NodeGroup(const XmlNode& xmlNode)
+  : NodeGroup()
 {
   *this = xmlNode;
 }
@@ -131,7 +126,7 @@ void NodeGroup::OutputToStream(Aws::OStream& oStream, const char* location, unsi
       for(auto& item : m_nodeGroupMembers)
       {
         Aws::StringStream nodeGroupMembersSs;
-        nodeGroupMembersSs << location << index << locationValue << ".NodeGroupMember." << nodeGroupMembersIdx++;
+        nodeGroupMembersSs << location << index << locationValue << ".NodeGroupMembers.NodeGroupMember." << nodeGroupMembersIdx++;
         item.OutputToStream(oStream, nodeGroupMembersSs.str().c_str());
       }
   }

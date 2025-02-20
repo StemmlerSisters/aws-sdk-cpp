@@ -8,6 +8,10 @@
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/sagemaker/model/ClusterInstanceType.h>
 #include <aws/sagemaker/model/ClusterLifeCycleConfig.h>
+#include <aws/core/utils/memory/stl/AWSVector.h>
+#include <aws/sagemaker/model/VpcConfig.h>
+#include <aws/sagemaker/model/ClusterInstanceStorageConfig.h>
+#include <aws/sagemaker/model/DeepHealthCheckType.h>
 #include <utility>
 
 namespace Aws
@@ -40,175 +44,70 @@ namespace Model
     AWS_SAGEMAKER_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>Specifies the number of instances to add to the instance group of a SageMaker
      * HyperPod cluster.</p>
      */
     inline int GetInstanceCount() const{ return m_instanceCount; }
-
-    /**
-     * <p>Specifies the number of instances to add to the instance group of a SageMaker
-     * HyperPod cluster.</p>
-     */
     inline bool InstanceCountHasBeenSet() const { return m_instanceCountHasBeenSet; }
-
-    /**
-     * <p>Specifies the number of instances to add to the instance group of a SageMaker
-     * HyperPod cluster.</p>
-     */
     inline void SetInstanceCount(int value) { m_instanceCountHasBeenSet = true; m_instanceCount = value; }
-
-    /**
-     * <p>Specifies the number of instances to add to the instance group of a SageMaker
-     * HyperPod cluster.</p>
-     */
     inline ClusterInstanceGroupSpecification& WithInstanceCount(int value) { SetInstanceCount(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Specifies the name of the instance group.</p>
      */
     inline const Aws::String& GetInstanceGroupName() const{ return m_instanceGroupName; }
-
-    /**
-     * <p>Specifies the name of the instance group.</p>
-     */
     inline bool InstanceGroupNameHasBeenSet() const { return m_instanceGroupNameHasBeenSet; }
-
-    /**
-     * <p>Specifies the name of the instance group.</p>
-     */
     inline void SetInstanceGroupName(const Aws::String& value) { m_instanceGroupNameHasBeenSet = true; m_instanceGroupName = value; }
-
-    /**
-     * <p>Specifies the name of the instance group.</p>
-     */
     inline void SetInstanceGroupName(Aws::String&& value) { m_instanceGroupNameHasBeenSet = true; m_instanceGroupName = std::move(value); }
-
-    /**
-     * <p>Specifies the name of the instance group.</p>
-     */
     inline void SetInstanceGroupName(const char* value) { m_instanceGroupNameHasBeenSet = true; m_instanceGroupName.assign(value); }
-
-    /**
-     * <p>Specifies the name of the instance group.</p>
-     */
     inline ClusterInstanceGroupSpecification& WithInstanceGroupName(const Aws::String& value) { SetInstanceGroupName(value); return *this;}
-
-    /**
-     * <p>Specifies the name of the instance group.</p>
-     */
     inline ClusterInstanceGroupSpecification& WithInstanceGroupName(Aws::String&& value) { SetInstanceGroupName(std::move(value)); return *this;}
-
-    /**
-     * <p>Specifies the name of the instance group.</p>
-     */
     inline ClusterInstanceGroupSpecification& WithInstanceGroupName(const char* value) { SetInstanceGroupName(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Specifies the instance type of the instance group.</p>
      */
     inline const ClusterInstanceType& GetInstanceType() const{ return m_instanceType; }
-
-    /**
-     * <p>Specifies the instance type of the instance group.</p>
-     */
     inline bool InstanceTypeHasBeenSet() const { return m_instanceTypeHasBeenSet; }
-
-    /**
-     * <p>Specifies the instance type of the instance group.</p>
-     */
     inline void SetInstanceType(const ClusterInstanceType& value) { m_instanceTypeHasBeenSet = true; m_instanceType = value; }
-
-    /**
-     * <p>Specifies the instance type of the instance group.</p>
-     */
     inline void SetInstanceType(ClusterInstanceType&& value) { m_instanceTypeHasBeenSet = true; m_instanceType = std::move(value); }
-
-    /**
-     * <p>Specifies the instance type of the instance group.</p>
-     */
     inline ClusterInstanceGroupSpecification& WithInstanceType(const ClusterInstanceType& value) { SetInstanceType(value); return *this;}
-
-    /**
-     * <p>Specifies the instance type of the instance group.</p>
-     */
     inline ClusterInstanceGroupSpecification& WithInstanceType(ClusterInstanceType&& value) { SetInstanceType(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Specifies the LifeCycle configuration for the instance group.</p>
      */
     inline const ClusterLifeCycleConfig& GetLifeCycleConfig() const{ return m_lifeCycleConfig; }
-
-    /**
-     * <p>Specifies the LifeCycle configuration for the instance group.</p>
-     */
     inline bool LifeCycleConfigHasBeenSet() const { return m_lifeCycleConfigHasBeenSet; }
-
-    /**
-     * <p>Specifies the LifeCycle configuration for the instance group.</p>
-     */
     inline void SetLifeCycleConfig(const ClusterLifeCycleConfig& value) { m_lifeCycleConfigHasBeenSet = true; m_lifeCycleConfig = value; }
-
-    /**
-     * <p>Specifies the LifeCycle configuration for the instance group.</p>
-     */
     inline void SetLifeCycleConfig(ClusterLifeCycleConfig&& value) { m_lifeCycleConfigHasBeenSet = true; m_lifeCycleConfig = std::move(value); }
-
-    /**
-     * <p>Specifies the LifeCycle configuration for the instance group.</p>
-     */
     inline ClusterInstanceGroupSpecification& WithLifeCycleConfig(const ClusterLifeCycleConfig& value) { SetLifeCycleConfig(value); return *this;}
-
-    /**
-     * <p>Specifies the LifeCycle configuration for the instance group.</p>
-     */
     inline ClusterInstanceGroupSpecification& WithLifeCycleConfig(ClusterLifeCycleConfig&& value) { SetLifeCycleConfig(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Specifies an IAM execution role to be assumed by the instance group.</p>
      */
     inline const Aws::String& GetExecutionRole() const{ return m_executionRole; }
-
-    /**
-     * <p>Specifies an IAM execution role to be assumed by the instance group.</p>
-     */
     inline bool ExecutionRoleHasBeenSet() const { return m_executionRoleHasBeenSet; }
-
-    /**
-     * <p>Specifies an IAM execution role to be assumed by the instance group.</p>
-     */
     inline void SetExecutionRole(const Aws::String& value) { m_executionRoleHasBeenSet = true; m_executionRole = value; }
-
-    /**
-     * <p>Specifies an IAM execution role to be assumed by the instance group.</p>
-     */
     inline void SetExecutionRole(Aws::String&& value) { m_executionRoleHasBeenSet = true; m_executionRole = std::move(value); }
-
-    /**
-     * <p>Specifies an IAM execution role to be assumed by the instance group.</p>
-     */
     inline void SetExecutionRole(const char* value) { m_executionRoleHasBeenSet = true; m_executionRole.assign(value); }
-
-    /**
-     * <p>Specifies an IAM execution role to be assumed by the instance group.</p>
-     */
     inline ClusterInstanceGroupSpecification& WithExecutionRole(const Aws::String& value) { SetExecutionRole(value); return *this;}
-
-    /**
-     * <p>Specifies an IAM execution role to be assumed by the instance group.</p>
-     */
     inline ClusterInstanceGroupSpecification& WithExecutionRole(Aws::String&& value) { SetExecutionRole(std::move(value)); return *this;}
-
-    /**
-     * <p>Specifies an IAM execution role to be assumed by the instance group.</p>
-     */
     inline ClusterInstanceGroupSpecification& WithExecutionRole(const char* value) { SetExecutionRole(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Specifies the value for <b>Threads per core</b>. For instance types that
      * support multithreading, you can specify <code>1</code> for disabling
@@ -220,43 +119,96 @@ namespace Model
      * Compute Cloud User Guide</i>.</p>
      */
     inline int GetThreadsPerCore() const{ return m_threadsPerCore; }
-
-    /**
-     * <p>Specifies the value for <b>Threads per core</b>. For instance types that
-     * support multithreading, you can specify <code>1</code> for disabling
-     * multithreading and <code>2</code> for enabling multithreading. For instance
-     * types that doesn't support multithreading, specify <code>1</code>. For more
-     * information, see the reference table of <a
-     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/cpu-options-supported-instances-values.html">CPU
-     * cores and threads per CPU core per instance type</a> in the <i>Amazon Elastic
-     * Compute Cloud User Guide</i>.</p>
-     */
     inline bool ThreadsPerCoreHasBeenSet() const { return m_threadsPerCoreHasBeenSet; }
-
-    /**
-     * <p>Specifies the value for <b>Threads per core</b>. For instance types that
-     * support multithreading, you can specify <code>1</code> for disabling
-     * multithreading and <code>2</code> for enabling multithreading. For instance
-     * types that doesn't support multithreading, specify <code>1</code>. For more
-     * information, see the reference table of <a
-     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/cpu-options-supported-instances-values.html">CPU
-     * cores and threads per CPU core per instance type</a> in the <i>Amazon Elastic
-     * Compute Cloud User Guide</i>.</p>
-     */
     inline void SetThreadsPerCore(int value) { m_threadsPerCoreHasBeenSet = true; m_threadsPerCore = value; }
-
-    /**
-     * <p>Specifies the value for <b>Threads per core</b>. For instance types that
-     * support multithreading, you can specify <code>1</code> for disabling
-     * multithreading and <code>2</code> for enabling multithreading. For instance
-     * types that doesn't support multithreading, specify <code>1</code>. For more
-     * information, see the reference table of <a
-     * href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/cpu-options-supported-instances-values.html">CPU
-     * cores and threads per CPU core per instance type</a> in the <i>Amazon Elastic
-     * Compute Cloud User Guide</i>.</p>
-     */
     inline ClusterInstanceGroupSpecification& WithThreadsPerCore(int value) { SetThreadsPerCore(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>Specifies the additional storage configurations for the instances in the
+     * SageMaker HyperPod cluster instance group.</p>
+     */
+    inline const Aws::Vector<ClusterInstanceStorageConfig>& GetInstanceStorageConfigs() const{ return m_instanceStorageConfigs; }
+    inline bool InstanceStorageConfigsHasBeenSet() const { return m_instanceStorageConfigsHasBeenSet; }
+    inline void SetInstanceStorageConfigs(const Aws::Vector<ClusterInstanceStorageConfig>& value) { m_instanceStorageConfigsHasBeenSet = true; m_instanceStorageConfigs = value; }
+    inline void SetInstanceStorageConfigs(Aws::Vector<ClusterInstanceStorageConfig>&& value) { m_instanceStorageConfigsHasBeenSet = true; m_instanceStorageConfigs = std::move(value); }
+    inline ClusterInstanceGroupSpecification& WithInstanceStorageConfigs(const Aws::Vector<ClusterInstanceStorageConfig>& value) { SetInstanceStorageConfigs(value); return *this;}
+    inline ClusterInstanceGroupSpecification& WithInstanceStorageConfigs(Aws::Vector<ClusterInstanceStorageConfig>&& value) { SetInstanceStorageConfigs(std::move(value)); return *this;}
+    inline ClusterInstanceGroupSpecification& AddInstanceStorageConfigs(const ClusterInstanceStorageConfig& value) { m_instanceStorageConfigsHasBeenSet = true; m_instanceStorageConfigs.push_back(value); return *this; }
+    inline ClusterInstanceGroupSpecification& AddInstanceStorageConfigs(ClusterInstanceStorageConfig&& value) { m_instanceStorageConfigsHasBeenSet = true; m_instanceStorageConfigs.push_back(std::move(value)); return *this; }
+    ///@}
+
+    ///@{
+    /**
+     * <p>A flag indicating whether deep health checks should be performed when the
+     * cluster instance group is created or updated.</p>
+     */
+    inline const Aws::Vector<DeepHealthCheckType>& GetOnStartDeepHealthChecks() const{ return m_onStartDeepHealthChecks; }
+    inline bool OnStartDeepHealthChecksHasBeenSet() const { return m_onStartDeepHealthChecksHasBeenSet; }
+    inline void SetOnStartDeepHealthChecks(const Aws::Vector<DeepHealthCheckType>& value) { m_onStartDeepHealthChecksHasBeenSet = true; m_onStartDeepHealthChecks = value; }
+    inline void SetOnStartDeepHealthChecks(Aws::Vector<DeepHealthCheckType>&& value) { m_onStartDeepHealthChecksHasBeenSet = true; m_onStartDeepHealthChecks = std::move(value); }
+    inline ClusterInstanceGroupSpecification& WithOnStartDeepHealthChecks(const Aws::Vector<DeepHealthCheckType>& value) { SetOnStartDeepHealthChecks(value); return *this;}
+    inline ClusterInstanceGroupSpecification& WithOnStartDeepHealthChecks(Aws::Vector<DeepHealthCheckType>&& value) { SetOnStartDeepHealthChecks(std::move(value)); return *this;}
+    inline ClusterInstanceGroupSpecification& AddOnStartDeepHealthChecks(const DeepHealthCheckType& value) { m_onStartDeepHealthChecksHasBeenSet = true; m_onStartDeepHealthChecks.push_back(value); return *this; }
+    inline ClusterInstanceGroupSpecification& AddOnStartDeepHealthChecks(DeepHealthCheckType&& value) { m_onStartDeepHealthChecksHasBeenSet = true; m_onStartDeepHealthChecks.push_back(std::move(value)); return *this; }
+    ///@}
+
+    ///@{
+    /**
+     * <p>The Amazon Resource Name (ARN); of the training plan to use for this cluster
+     * instance group.</p> <p>For more information about how to reserve GPU capacity
+     * for your SageMaker HyperPod clusters using Amazon SageMaker Training Plan, see
+     * <code> <a
+     * href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateTrainingPlan.html">CreateTrainingPlan</a>
+     * </code>.</p>
+     */
+    inline const Aws::String& GetTrainingPlanArn() const{ return m_trainingPlanArn; }
+    inline bool TrainingPlanArnHasBeenSet() const { return m_trainingPlanArnHasBeenSet; }
+    inline void SetTrainingPlanArn(const Aws::String& value) { m_trainingPlanArnHasBeenSet = true; m_trainingPlanArn = value; }
+    inline void SetTrainingPlanArn(Aws::String&& value) { m_trainingPlanArnHasBeenSet = true; m_trainingPlanArn = std::move(value); }
+    inline void SetTrainingPlanArn(const char* value) { m_trainingPlanArnHasBeenSet = true; m_trainingPlanArn.assign(value); }
+    inline ClusterInstanceGroupSpecification& WithTrainingPlanArn(const Aws::String& value) { SetTrainingPlanArn(value); return *this;}
+    inline ClusterInstanceGroupSpecification& WithTrainingPlanArn(Aws::String&& value) { SetTrainingPlanArn(std::move(value)); return *this;}
+    inline ClusterInstanceGroupSpecification& WithTrainingPlanArn(const char* value) { SetTrainingPlanArn(value); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>To configure multi-AZ deployments, customize the Amazon VPC configuration at
+     * the instance group level. You can specify different subnets and security groups
+     * across different AZs in the instance group specification to override a SageMaker
+     * HyperPod cluster's default Amazon VPC configuration. For more information about
+     * deploying a cluster in multiple AZs, see <a
+     * href="https://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-hyperpod-prerequisites.html#sagemaker-hyperpod-prerequisites-multiple-availability-zones">Setting
+     * up SageMaker HyperPod clusters across multiple AZs</a>.</p>  <p>When your
+     * Amazon VPC and subnets support IPv6, network communications differ based on the
+     * cluster orchestration platform:</p> <ul> <li> <p>Slurm-orchestrated clusters
+     * automatically configure nodes with dual IPv6 and IPv4 addresses, allowing
+     * immediate IPv6 network communications.</p> </li> <li> <p>In Amazon
+     * EKS-orchestrated clusters, nodes receive dual-stack addressing, but pods can
+     * only use IPv6 when the Amazon EKS cluster is explicitly IPv6-enabled. For
+     * information about deploying an IPv6 Amazon EKS cluster, see <a
+     * href="https://docs.aws.amazon.com/eks/latest/userguide/deploy-ipv6-cluster.html#_deploy_an_ipv6_cluster_with_eksctl">Amazon
+     * EKS IPv6 Cluster Deployment</a>.</p> </li> </ul> <p>Additional resources for
+     * IPv6 configuration:</p> <ul> <li> <p>For information about adding IPv6 support
+     * to your VPC, see to <a
+     * href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-migrate-ipv6.html">IPv6
+     * Support for VPC</a>.</p> </li> <li> <p>For information about creating a new
+     * IPv6-compatible VPC, see <a
+     * href="https://docs.aws.amazon.com/vpc/latest/userguide/create-vpc.html">Amazon
+     * VPC Creation Guide</a>.</p> </li> <li> <p>To configure SageMaker HyperPod with a
+     * custom Amazon VPC, see <a
+     * href="https://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-hyperpod-prerequisites.html#sagemaker-hyperpod-prerequisites-optional-vpc">Custom
+     * Amazon VPC Setup for SageMaker HyperPod</a>.</p> </li> </ul> 
+     */
+    inline const VpcConfig& GetOverrideVpcConfig() const{ return m_overrideVpcConfig; }
+    inline bool OverrideVpcConfigHasBeenSet() const { return m_overrideVpcConfigHasBeenSet; }
+    inline void SetOverrideVpcConfig(const VpcConfig& value) { m_overrideVpcConfigHasBeenSet = true; m_overrideVpcConfig = value; }
+    inline void SetOverrideVpcConfig(VpcConfig&& value) { m_overrideVpcConfigHasBeenSet = true; m_overrideVpcConfig = std::move(value); }
+    inline ClusterInstanceGroupSpecification& WithOverrideVpcConfig(const VpcConfig& value) { SetOverrideVpcConfig(value); return *this;}
+    inline ClusterInstanceGroupSpecification& WithOverrideVpcConfig(VpcConfig&& value) { SetOverrideVpcConfig(std::move(value)); return *this;}
+    ///@}
   private:
 
     int m_instanceCount;
@@ -276,6 +228,18 @@ namespace Model
 
     int m_threadsPerCore;
     bool m_threadsPerCoreHasBeenSet = false;
+
+    Aws::Vector<ClusterInstanceStorageConfig> m_instanceStorageConfigs;
+    bool m_instanceStorageConfigsHasBeenSet = false;
+
+    Aws::Vector<DeepHealthCheckType> m_onStartDeepHealthChecks;
+    bool m_onStartDeepHealthChecksHasBeenSet = false;
+
+    Aws::String m_trainingPlanArn;
+    bool m_trainingPlanArnHasBeenSet = false;
+
+    VpcConfig m_overrideVpcConfig;
+    bool m_overrideVpcConfigHasBeenSet = false;
   };
 
 } // namespace Model

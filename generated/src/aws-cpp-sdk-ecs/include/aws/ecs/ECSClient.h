@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/ecs/ECS_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/ecs/ECSServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/ecs/ECSErrorMarshaller.h>
 
 namespace Aws
 {
 namespace ECS
 {
+  AWS_ECS_API extern const char SERVICE_NAME[];
   /**
    * <fullname>Amazon Elastic Container Service</fullname> <p>Amazon Elastic
    * Container Service (Amazon ECS) is a highly scalable, fast, container management
@@ -32,12 +36,20 @@ namespace ECS
    * management systems. You also don't need to worry about scaling your management
    * infrastructure. </p>
    */
-  class AWS_ECS_API ECSClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<ECSClient>
+  class AWS_ECS_API ECSClient : smithy::client::AwsSmithyClientT<Aws::ECS::SERVICE_NAME,
+      Aws::ECS::ECSClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      ECSEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::ECSErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<ECSClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "ECS"; }
 
       typedef ECSClientConfiguration ClientConfigurationType;
       typedef ECSEndpointProvider EndpointProviderType;
@@ -124,26 +136,27 @@ namespace ECS
         /**
          * <p>Creates a new Amazon ECS cluster. By default, your account receives a
          * <code>default</code> cluster when you launch your first container instance.
-         * However, you can create your own cluster with a unique name with the
-         * <code>CreateCluster</code> action.</p>  <p>When you call the
-         * <a>CreateCluster</a> API operation, Amazon ECS attempts to create the Amazon ECS
-         * service-linked role for your account. This is so that it can manage required
-         * resources in other Amazon Web Services services on your behalf. However, if the
-         * user that makes the call doesn't have permissions to create the service-linked
-         * role, it isn't created. For more information, see <a
+         * However, you can create your own cluster with a unique name.</p>  <p>When
+         * you call the <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_CreateCluster.html">CreateCluster</a>
+         * API operation, Amazon ECS attempts to create the Amazon ECS service-linked role
+         * for your account. This is so that it can manage required resources in other
+         * Amazon Web Services services on your behalf. However, if the user that makes the
+         * call doesn't have permissions to create the service-linked role, it isn't
+         * created. For more information, see <a
          * href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using-service-linked-roles.html">Using
          * service-linked roles for Amazon ECS</a> in the <i>Amazon Elastic Container
          * Service Developer Guide</i>.</p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/CreateCluster">AWS
          * API Reference</a></p>
          */
-        virtual Model::CreateClusterOutcome CreateCluster(const Model::CreateClusterRequest& request) const;
+        virtual Model::CreateClusterOutcome CreateCluster(const Model::CreateClusterRequest& request = {}) const;
 
         /**
          * A Callable wrapper for CreateCluster that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename CreateClusterRequestT = Model::CreateClusterRequest>
-        Model::CreateClusterOutcomeCallable CreateClusterCallable(const CreateClusterRequestT& request) const
+        Model::CreateClusterOutcomeCallable CreateClusterCallable(const CreateClusterRequestT& request = {}) const
         {
             return SubmitCallable(&ECSClient::CreateCluster, request);
         }
@@ -152,7 +165,7 @@ namespace ECS
          * An Async wrapper for CreateCluster that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename CreateClusterRequestT = Model::CreateClusterRequest>
-        void CreateClusterAsync(const CreateClusterRequestT& request, const CreateClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void CreateClusterAsync(const CreateClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const CreateClusterRequestT& request = {}) const
         {
             return SubmitAsync(&ECSClient::CreateCluster, request, handler, context);
         }
@@ -161,11 +174,13 @@ namespace ECS
          * <p>Runs and maintains your desired number of tasks from a specified task
          * definition. If the number of tasks running in a service drops below the
          * <code>desiredCount</code>, Amazon ECS runs another copy of the task in the
-         * specified cluster. To update an existing service, see the <a>UpdateService</a>
-         * action.</p>  <p>On March 21, 2024, a change was made to resolve the task
-         * definition revision before authorization. When a task definition revision is not
-         * specified, authorization will occur using the latest revision of a task
-         * definition.</p>  <p>In addition to maintaining the desired count of tasks
+         * specified cluster. To update an existing service, use <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_UpdateService.html">UpdateService</a>.</p>
+         *  <p>On March 21, 2024, a change was made to resolve the task definition
+         * revision before authorization. When a task definition revision is not specified,
+         * authorization will occur using the latest revision of a task definition.</p>
+         *   <p>Amazon Elastic Inference (EI) is no longer available to
+         * customers.</p>  <p>In addition to maintaining the desired count of tasks
          * in your service, you can optionally run your service behind one or more load
          * balancers. The load balancers distribute traffic across the tasks that are
          * associated with the service. For more information, see <a
@@ -202,14 +217,15 @@ namespace ECS
          * Guide</i>.</p> </li> </ul> <p>You can optionally specify a deployment
          * configuration for your service. The deployment is initiated by changing
          * properties. For example, the deployment might be initiated by the task
-         * definition or by your desired count of a service. This is done with an
-         * <a>UpdateService</a> operation. The default value for a replica service for
-         * <code>minimumHealthyPercent</code> is 100%. The default value for a daemon
-         * service for <code>minimumHealthyPercent</code> is 0%.</p> <p>If a service uses
-         * the <code>ECS</code> deployment controller, the minimum healthy percent
-         * represents a lower limit on the number of tasks in a service that must remain in
-         * the <code>RUNNING</code> state during a deployment. Specifically, it represents
-         * it as a percentage of your desired number of tasks (rounded up to the nearest
+         * definition or by your desired count of a service. You can use <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_UpdateService.html">UpdateService</a>.
+         * The default value for a replica service for <code>minimumHealthyPercent</code>
+         * is 100%. The default value for a daemon service for
+         * <code>minimumHealthyPercent</code> is 0%.</p> <p>If a service uses the
+         * <code>ECS</code> deployment controller, the minimum healthy percent represents a
+         * lower limit on the number of tasks in a service that must remain in the
+         * <code>RUNNING</code> state during a deployment. Specifically, it represents it
+         * as a percentage of your desired number of tasks (rounded up to the nearest
          * integer). This happens when any of your container instances are in the
          * <code>DRAINING</code> state if the service contains tasks using the EC2 launch
          * type. Using this parameter, you can deploy without using additional cluster
@@ -243,8 +259,9 @@ namespace ECS
          * describing your service.</p> <p>When creating a service that uses the
          * <code>EXTERNAL</code> deployment controller, you can specify only parameters
          * that aren't controlled at the task set level. The only required parameter is the
-         * service name. You control your services using the <a>CreateTaskSet</a>
-         * operation. For more information, see <a
+         * service name. You control your services using the <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_CreateTaskSet.html">CreateTaskSet</a>.
+         * For more information, see <a
          * href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-types.html">Amazon
          * ECS deployment types</a> in the <i>Amazon Elastic Container Service Developer
          * Guide</i>.</p> <p>When the service scheduler launches new tasks, it determines
@@ -252,14 +269,7 @@ namespace ECS
          * strategies, see <a
          * href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-placement.html">Amazon
          * ECS task placement</a> in the <i>Amazon Elastic Container Service Developer
-         * Guide</i> </p> <p>Starting April 15, 2023, Amazon Web Services will not onboard
-         * new customers to Amazon Elastic Inference (EI), and will help current customers
-         * migrate their workloads to options that offer better price and performance.
-         * After April 15, 2023, new customers will not be able to launch instances with
-         * Amazon EI accelerators in Amazon SageMaker, Amazon ECS, or Amazon EC2. However,
-         * customers who have used Amazon EI at least once during the past 30-day period
-         * are considered current customers and will be able to continue using the service.
-         * </p><p><h3>See Also:</h3>   <a
+         * Guide</i> </p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/CreateService">AWS
          * API Reference</a></p>
          */
@@ -293,7 +303,7 @@ namespace ECS
          * task definition revision before authorization. When a task definition revision
          * is not specified, authorization will occur using the latest revision of a task
          * definition.</p>  <p>For information about the maximum number of task sets
-         * and otther quotas, see <a
+         * and other quotas, see <a
          * href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-quotas.html">Amazon
          * ECS service quotas</a> in the <i>Amazon Elastic Container Service Developer
          * Guide</i>.</p><p><h3>See Also:</h3>   <a
@@ -376,18 +386,21 @@ namespace ECS
          * <p>Deletes the specified capacity provider.</p>  <p>The
          * <code>FARGATE</code> and <code>FARGATE_SPOT</code> capacity providers are
          * reserved and can't be deleted. You can disassociate them from a cluster using
-         * either the <a>PutClusterCapacityProviders</a> API or by deleting the
-         * cluster.</p>  <p>Prior to a capacity provider being deleted, the capacity
-         * provider must be removed from the capacity provider strategy from all services.
-         * The <a>UpdateService</a> API can be used to remove a capacity provider from a
-         * service's capacity provider strategy. When updating a service, the
-         * <code>forceNewDeployment</code> option can be used to ensure that any tasks
-         * using the Amazon EC2 instance capacity provided by the capacity provider are
-         * transitioned to use the capacity from the remaining capacity providers. Only
-         * capacity providers that aren't associated with a cluster can be deleted. To
-         * remove a capacity provider from a cluster, you can either use
-         * <a>PutClusterCapacityProviders</a> or delete the cluster.</p><p><h3>See
-         * Also:</h3>   <a
+         * either <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_PutClusterCapacityProviders.html">PutClusterCapacityProviders</a>
+         * or by deleting the cluster.</p>  <p>Prior to a capacity provider being
+         * deleted, the capacity provider must be removed from the capacity provider
+         * strategy from all services. The <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_UpdateService.html">UpdateService</a>
+         * API can be used to remove a capacity provider from a service's capacity provider
+         * strategy. When updating a service, the <code>forceNewDeployment</code> option
+         * can be used to ensure that any tasks using the Amazon EC2 instance capacity
+         * provided by the capacity provider are transitioned to use the capacity from the
+         * remaining capacity providers. Only capacity providers that aren't associated
+         * with a cluster can be deleted. To remove a capacity provider from a cluster, you
+         * can either use <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_PutClusterCapacityProviders.html">PutClusterCapacityProviders</a>
+         * or delete the cluster.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/DeleteCapacityProvider">AWS
          * API Reference</a></p>
          */
@@ -418,8 +431,10 @@ namespace ECS
          * is subject to change in the future. We don't recommend that you rely on
          * <code>INACTIVE</code> clusters persisting.</p> <p>You must deregister all
          * container instances from this cluster before you may delete it. You can list the
-         * container instances in a cluster with <a>ListContainerInstances</a> and
-         * deregister them with <a>DeregisterContainerInstance</a>.</p><p><h3>See
+         * container instances in a cluster with <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ListContainerInstances.html">ListContainerInstances</a>
+         * and deregister them with <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_DeregisterContainerInstance.html">DeregisterContainerInstance</a>.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/DeleteCluster">AWS
          * API Reference</a></p>
@@ -448,22 +463,27 @@ namespace ECS
          * <p>Deletes a specified service within a cluster. You can delete a service if you
          * have no running tasks in it and the desired task count is zero. If the service
          * is actively maintaining tasks, you can't delete it, and you must update the
-         * service to a desired task count of zero. For more information, see
-         * <a>UpdateService</a>.</p>  <p>When you delete a service, if there are
-         * still running tasks that require cleanup, the service status moves from
-         * <code>ACTIVE</code> to <code>DRAINING</code>, and the service is no longer
-         * visible in the console or in the <a>ListServices</a> API operation. After all
-         * tasks have transitioned to either <code>STOPPING</code> or <code>STOPPED</code>
-         * status, the service status moves from <code>DRAINING</code> to
-         * <code>INACTIVE</code>. Services in the <code>DRAINING</code> or
-         * <code>INACTIVE</code> status can still be viewed with the
-         * <a>DescribeServices</a> API operation. However, in the future,
-         * <code>INACTIVE</code> services may be cleaned up and purged from Amazon ECS
-         * record keeping, and <a>DescribeServices</a> calls on those services return a
-         * <code>ServiceNotFoundException</code> error.</p>   <p>If you
-         * attempt to create a new service with the same name as an existing service in
-         * either <code>ACTIVE</code> or <code>DRAINING</code> status, you receive an
-         * error.</p> <p><h3>See Also:</h3>   <a
+         * service to a desired task count of zero. For more information, see <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_UpdateService.html">UpdateService</a>.</p>
+         *  <p>When you delete a service, if there are still running tasks that
+         * require cleanup, the service status moves from <code>ACTIVE</code> to
+         * <code>DRAINING</code>, and the service is no longer visible in the console or in
+         * the <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ListServices.html">ListServices</a>
+         * API operation. After all tasks have transitioned to either <code>STOPPING</code>
+         * or <code>STOPPED</code> status, the service status moves from
+         * <code>DRAINING</code> to <code>INACTIVE</code>. Services in the
+         * <code>DRAINING</code> or <code>INACTIVE</code> status can still be viewed with
+         * the <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_DescribeServices.html">DescribeServices</a>
+         * API operation. However, in the future, <code>INACTIVE</code> services may be
+         * cleaned up and purged from Amazon ECS record keeping, and <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_DescribeServices.html">DescribeServices</a>
+         * calls on those services return a <code>ServiceNotFoundException</code>
+         * error.</p>   <p>If you attempt to create a new service with
+         * the same name as an existing service in either <code>ACTIVE</code> or
+         * <code>DRAINING</code> status, you receive an error.</p> <p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/DeleteService">AWS
          * API Reference</a></p>
          */
@@ -647,13 +667,13 @@ namespace ECS
          * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/DescribeCapacityProviders">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeCapacityProvidersOutcome DescribeCapacityProviders(const Model::DescribeCapacityProvidersRequest& request) const;
+        virtual Model::DescribeCapacityProvidersOutcome DescribeCapacityProviders(const Model::DescribeCapacityProvidersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeCapacityProviders that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeCapacityProvidersRequestT = Model::DescribeCapacityProvidersRequest>
-        Model::DescribeCapacityProvidersOutcomeCallable DescribeCapacityProvidersCallable(const DescribeCapacityProvidersRequestT& request) const
+        Model::DescribeCapacityProvidersOutcomeCallable DescribeCapacityProvidersCallable(const DescribeCapacityProvidersRequestT& request = {}) const
         {
             return SubmitCallable(&ECSClient::DescribeCapacityProviders, request);
         }
@@ -662,23 +682,25 @@ namespace ECS
          * An Async wrapper for DescribeCapacityProviders that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeCapacityProvidersRequestT = Model::DescribeCapacityProvidersRequest>
-        void DescribeCapacityProvidersAsync(const DescribeCapacityProvidersRequestT& request, const DescribeCapacityProvidersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeCapacityProvidersAsync(const DescribeCapacityProvidersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeCapacityProvidersRequestT& request = {}) const
         {
             return SubmitAsync(&ECSClient::DescribeCapacityProviders, request, handler, context);
         }
 
         /**
-         * <p>Describes one or more of your clusters.</p><p><h3>See Also:</h3>   <a
+         * <p>Describes one or more of your clusters.</p> <p> For CLI examples, see <a
+         * href="https://github.com/aws/aws-cli/blob/develop/awscli/examples/ecs/describe-clusters.rst">describe-clusters.rst</a>
+         * on GitHub.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/DescribeClusters">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeClustersOutcome DescribeClusters(const Model::DescribeClustersRequest& request) const;
+        virtual Model::DescribeClustersOutcome DescribeClusters(const Model::DescribeClustersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeClusters that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeClustersRequestT = Model::DescribeClustersRequest>
-        Model::DescribeClustersOutcomeCallable DescribeClustersCallable(const DescribeClustersRequestT& request) const
+        Model::DescribeClustersOutcomeCallable DescribeClustersCallable(const DescribeClustersRequestT& request = {}) const
         {
             return SubmitCallable(&ECSClient::DescribeClusters, request);
         }
@@ -687,7 +709,7 @@ namespace ECS
          * An Async wrapper for DescribeClusters that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeClustersRequestT = Model::DescribeClustersRequest>
-        void DescribeClustersAsync(const DescribeClustersRequestT& request, const DescribeClustersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeClustersAsync(const DescribeClustersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeClustersRequestT& request = {}) const
         {
             return SubmitAsync(&ECSClient::DescribeClusters, request, handler, context);
         }
@@ -716,6 +738,66 @@ namespace ECS
         void DescribeContainerInstancesAsync(const DescribeContainerInstancesRequestT& request, const DescribeContainerInstancesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&ECSClient::DescribeContainerInstances, request, handler, context);
+        }
+
+        /**
+         * <p>Describes one or more of your service deployments.</p> <p>A service
+         * deployment happens when you release a software update for the service. For more
+         * information, see <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-deployments.html">Amazon
+         * ECS service deployments</a>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/DescribeServiceDeployments">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DescribeServiceDeploymentsOutcome DescribeServiceDeployments(const Model::DescribeServiceDeploymentsRequest& request) const;
+
+        /**
+         * A Callable wrapper for DescribeServiceDeployments that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DescribeServiceDeploymentsRequestT = Model::DescribeServiceDeploymentsRequest>
+        Model::DescribeServiceDeploymentsOutcomeCallable DescribeServiceDeploymentsCallable(const DescribeServiceDeploymentsRequestT& request) const
+        {
+            return SubmitCallable(&ECSClient::DescribeServiceDeployments, request);
+        }
+
+        /**
+         * An Async wrapper for DescribeServiceDeployments that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DescribeServiceDeploymentsRequestT = Model::DescribeServiceDeploymentsRequest>
+        void DescribeServiceDeploymentsAsync(const DescribeServiceDeploymentsRequestT& request, const DescribeServiceDeploymentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&ECSClient::DescribeServiceDeployments, request, handler, context);
+        }
+
+        /**
+         * <p>Describes one or more service revisions.</p> <p>A service revision is a
+         * version of the service that includes the values for the Amazon ECS resources
+         * (for example, task definition) and the environment resources (for example, load
+         * balancers, subnets, and security groups). For more information, see <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-revision.html">Amazon
+         * ECS service revisions</a>.</p> <p>You can't describe a service revision that was
+         * created before October 25, 2024.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/DescribeServiceRevisions">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DescribeServiceRevisionsOutcome DescribeServiceRevisions(const Model::DescribeServiceRevisionsRequest& request) const;
+
+        /**
+         * A Callable wrapper for DescribeServiceRevisions that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DescribeServiceRevisionsRequestT = Model::DescribeServiceRevisionsRequest>
+        Model::DescribeServiceRevisionsOutcomeCallable DescribeServiceRevisionsCallable(const DescribeServiceRevisionsRequestT& request) const
+        {
+            return SubmitCallable(&ECSClient::DescribeServiceRevisions, request);
+        }
+
+        /**
+         * An Async wrapper for DescribeServiceRevisions that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DescribeServiceRevisionsRequestT = Model::DescribeServiceRevisionsRequest>
+        void DescribeServiceRevisionsAsync(const DescribeServiceRevisionsRequestT& request, const DescribeServiceRevisionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&ECSClient::DescribeServiceRevisions, request, handler, context);
         }
 
         /**
@@ -840,13 +922,13 @@ namespace ECS
          * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/DiscoverPollEndpoint">AWS
          * API Reference</a></p>
          */
-        virtual Model::DiscoverPollEndpointOutcome DiscoverPollEndpoint(const Model::DiscoverPollEndpointRequest& request) const;
+        virtual Model::DiscoverPollEndpointOutcome DiscoverPollEndpoint(const Model::DiscoverPollEndpointRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DiscoverPollEndpoint that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DiscoverPollEndpointRequestT = Model::DiscoverPollEndpointRequest>
-        Model::DiscoverPollEndpointOutcomeCallable DiscoverPollEndpointCallable(const DiscoverPollEndpointRequestT& request) const
+        Model::DiscoverPollEndpointOutcomeCallable DiscoverPollEndpointCallable(const DiscoverPollEndpointRequestT& request = {}) const
         {
             return SubmitCallable(&ECSClient::DiscoverPollEndpoint, request);
         }
@@ -855,7 +937,7 @@ namespace ECS
          * An Async wrapper for DiscoverPollEndpoint that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DiscoverPollEndpointRequestT = Model::DiscoverPollEndpointRequest>
-        void DiscoverPollEndpointAsync(const DiscoverPollEndpointRequestT& request, const DiscoverPollEndpointResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DiscoverPollEndpointAsync(const DiscoverPollEndpointResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DiscoverPollEndpointRequestT& request = {}) const
         {
             return SubmitAsync(&ECSClient::DiscoverPollEndpoint, request, handler, context);
         }
@@ -925,13 +1007,13 @@ namespace ECS
          * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/ListAccountSettings">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAccountSettingsOutcome ListAccountSettings(const Model::ListAccountSettingsRequest& request) const;
+        virtual Model::ListAccountSettingsOutcome ListAccountSettings(const Model::ListAccountSettingsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAccountSettings that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAccountSettingsRequestT = Model::ListAccountSettingsRequest>
-        Model::ListAccountSettingsOutcomeCallable ListAccountSettingsCallable(const ListAccountSettingsRequestT& request) const
+        Model::ListAccountSettingsOutcomeCallable ListAccountSettingsCallable(const ListAccountSettingsRequestT& request = {}) const
         {
             return SubmitCallable(&ECSClient::ListAccountSettings, request);
         }
@@ -940,7 +1022,7 @@ namespace ECS
          * An Async wrapper for ListAccountSettings that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAccountSettingsRequestT = Model::ListAccountSettingsRequest>
-        void ListAccountSettingsAsync(const ListAccountSettingsRequestT& request, const ListAccountSettingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAccountSettingsAsync(const ListAccountSettingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAccountSettingsRequestT& request = {}) const
         {
             return SubmitAsync(&ECSClient::ListAccountSettings, request, handler, context);
         }
@@ -982,13 +1064,13 @@ namespace ECS
          * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/ListClusters">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListClustersOutcome ListClusters(const Model::ListClustersRequest& request) const;
+        virtual Model::ListClustersOutcome ListClusters(const Model::ListClustersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListClusters that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListClustersRequestT = Model::ListClustersRequest>
-        Model::ListClustersOutcomeCallable ListClustersCallable(const ListClustersRequestT& request) const
+        Model::ListClustersOutcomeCallable ListClustersCallable(const ListClustersRequestT& request = {}) const
         {
             return SubmitCallable(&ECSClient::ListClusters, request);
         }
@@ -997,7 +1079,7 @@ namespace ECS
          * An Async wrapper for ListClusters that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListClustersRequestT = Model::ListClustersRequest>
-        void ListClustersAsync(const ListClustersRequestT& request, const ListClustersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListClustersAsync(const ListClustersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListClustersRequestT& request = {}) const
         {
             return SubmitAsync(&ECSClient::ListClusters, request, handler, context);
         }
@@ -1013,13 +1095,13 @@ namespace ECS
          * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/ListContainerInstances">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListContainerInstancesOutcome ListContainerInstances(const Model::ListContainerInstancesRequest& request) const;
+        virtual Model::ListContainerInstancesOutcome ListContainerInstances(const Model::ListContainerInstancesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListContainerInstances that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListContainerInstancesRequestT = Model::ListContainerInstancesRequest>
-        Model::ListContainerInstancesOutcomeCallable ListContainerInstancesCallable(const ListContainerInstancesRequestT& request) const
+        Model::ListContainerInstancesOutcomeCallable ListContainerInstancesCallable(const ListContainerInstancesRequestT& request = {}) const
         {
             return SubmitCallable(&ECSClient::ListContainerInstances, request);
         }
@@ -1028,9 +1110,40 @@ namespace ECS
          * An Async wrapper for ListContainerInstances that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListContainerInstancesRequestT = Model::ListContainerInstancesRequest>
-        void ListContainerInstancesAsync(const ListContainerInstancesRequestT& request, const ListContainerInstancesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListContainerInstancesAsync(const ListContainerInstancesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListContainerInstancesRequestT& request = {}) const
         {
             return SubmitAsync(&ECSClient::ListContainerInstances, request, handler, context);
+        }
+
+        /**
+         * <p>This operation lists all the service deployments that meet the specified
+         * filter criteria.</p> <p>A service deployment happens when you release a software
+         * update for the service. You route traffic from the running service revisions to
+         * the new service revison and control the number of running tasks. </p> <p>This
+         * API returns the values that you use for the request parameters in <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_DescribeServiceRevisions.html">DescribeServiceRevisions</a>.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/ListServiceDeployments">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListServiceDeploymentsOutcome ListServiceDeployments(const Model::ListServiceDeploymentsRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListServiceDeployments that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListServiceDeploymentsRequestT = Model::ListServiceDeploymentsRequest>
+        Model::ListServiceDeploymentsOutcomeCallable ListServiceDeploymentsCallable(const ListServiceDeploymentsRequestT& request) const
+        {
+            return SubmitCallable(&ECSClient::ListServiceDeployments, request);
+        }
+
+        /**
+         * An Async wrapper for ListServiceDeployments that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListServiceDeploymentsRequestT = Model::ListServiceDeploymentsRequest>
+        void ListServiceDeploymentsAsync(const ListServiceDeploymentsRequestT& request, const ListServiceDeploymentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&ECSClient::ListServiceDeployments, request, handler, context);
         }
 
         /**
@@ -1039,13 +1152,13 @@ namespace ECS
          * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/ListServices">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListServicesOutcome ListServices(const Model::ListServicesRequest& request) const;
+        virtual Model::ListServicesOutcome ListServices(const Model::ListServicesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListServices that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListServicesRequestT = Model::ListServicesRequest>
-        Model::ListServicesOutcomeCallable ListServicesCallable(const ListServicesRequestT& request) const
+        Model::ListServicesOutcomeCallable ListServicesCallable(const ListServicesRequestT& request = {}) const
         {
             return SubmitCallable(&ECSClient::ListServices, request);
         }
@@ -1054,7 +1167,7 @@ namespace ECS
          * An Async wrapper for ListServices that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListServicesRequestT = Model::ListServicesRequest>
-        void ListServicesAsync(const ListServicesRequestT& request, const ListServicesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListServicesAsync(const ListServicesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListServicesRequestT& request = {}) const
         {
             return SubmitAsync(&ECSClient::ListServices, request, handler, context);
         }
@@ -1127,13 +1240,13 @@ namespace ECS
          * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/ListTaskDefinitionFamilies">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListTaskDefinitionFamiliesOutcome ListTaskDefinitionFamilies(const Model::ListTaskDefinitionFamiliesRequest& request) const;
+        virtual Model::ListTaskDefinitionFamiliesOutcome ListTaskDefinitionFamilies(const Model::ListTaskDefinitionFamiliesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListTaskDefinitionFamilies that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListTaskDefinitionFamiliesRequestT = Model::ListTaskDefinitionFamiliesRequest>
-        Model::ListTaskDefinitionFamiliesOutcomeCallable ListTaskDefinitionFamiliesCallable(const ListTaskDefinitionFamiliesRequestT& request) const
+        Model::ListTaskDefinitionFamiliesOutcomeCallable ListTaskDefinitionFamiliesCallable(const ListTaskDefinitionFamiliesRequestT& request = {}) const
         {
             return SubmitCallable(&ECSClient::ListTaskDefinitionFamilies, request);
         }
@@ -1142,7 +1255,7 @@ namespace ECS
          * An Async wrapper for ListTaskDefinitionFamilies that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListTaskDefinitionFamiliesRequestT = Model::ListTaskDefinitionFamiliesRequest>
-        void ListTaskDefinitionFamiliesAsync(const ListTaskDefinitionFamiliesRequestT& request, const ListTaskDefinitionFamiliesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListTaskDefinitionFamiliesAsync(const ListTaskDefinitionFamiliesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListTaskDefinitionFamiliesRequestT& request = {}) const
         {
             return SubmitAsync(&ECSClient::ListTaskDefinitionFamilies, request, handler, context);
         }
@@ -1155,13 +1268,13 @@ namespace ECS
          * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/ListTaskDefinitions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListTaskDefinitionsOutcome ListTaskDefinitions(const Model::ListTaskDefinitionsRequest& request) const;
+        virtual Model::ListTaskDefinitionsOutcome ListTaskDefinitions(const Model::ListTaskDefinitionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListTaskDefinitions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListTaskDefinitionsRequestT = Model::ListTaskDefinitionsRequest>
-        Model::ListTaskDefinitionsOutcomeCallable ListTaskDefinitionsCallable(const ListTaskDefinitionsRequestT& request) const
+        Model::ListTaskDefinitionsOutcomeCallable ListTaskDefinitionsCallable(const ListTaskDefinitionsRequestT& request = {}) const
         {
             return SubmitCallable(&ECSClient::ListTaskDefinitions, request);
         }
@@ -1170,7 +1283,7 @@ namespace ECS
          * An Async wrapper for ListTaskDefinitions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListTaskDefinitionsRequestT = Model::ListTaskDefinitionsRequest>
-        void ListTaskDefinitionsAsync(const ListTaskDefinitionsRequestT& request, const ListTaskDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListTaskDefinitionsAsync(const ListTaskDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListTaskDefinitionsRequestT& request = {}) const
         {
             return SubmitAsync(&ECSClient::ListTaskDefinitions, request, handler, context);
         }
@@ -1183,13 +1296,13 @@ namespace ECS
          * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/ListTasks">AWS API
          * Reference</a></p>
          */
-        virtual Model::ListTasksOutcome ListTasks(const Model::ListTasksRequest& request) const;
+        virtual Model::ListTasksOutcome ListTasks(const Model::ListTasksRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListTasks that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListTasksRequestT = Model::ListTasksRequest>
-        Model::ListTasksOutcomeCallable ListTasksCallable(const ListTasksRequestT& request) const
+        Model::ListTasksOutcomeCallable ListTasksCallable(const ListTasksRequestT& request = {}) const
         {
             return SubmitCallable(&ECSClient::ListTasks, request);
         }
@@ -1198,7 +1311,7 @@ namespace ECS
          * An Async wrapper for ListTasks that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListTasksRequestT = Model::ListTasksRequest>
-        void ListTasksAsync(const ListTasksRequestT& request, const ListTasksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListTasksAsync(const ListTasksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListTasksRequestT& request = {}) const
         {
             return SubmitAsync(&ECSClient::ListTasks, request, handler, context);
         }
@@ -1264,8 +1377,9 @@ namespace ECS
         /**
          * <p>Create or update an attribute on an Amazon ECS resource. If the attribute
          * doesn't exist, it's created. If the attribute exists, its value is replaced with
-         * the specified value. To delete an attribute, use <a>DeleteAttributes</a>. For
-         * more information, see <a
+         * the specified value. To delete an attribute, use <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_DeleteAttributes.html">DeleteAttributes</a>.
+         * For more information, see <a
          * href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-placement-constraints.html#attributes">Attributes</a>
          * in the <i>Amazon Elastic Container Service Developer Guide</i>.</p><p><h3>See
          * Also:</h3>   <a
@@ -1299,14 +1413,16 @@ namespace ECS
          * specified cluster has existing capacity providers associated with it, you must
          * specify all existing capacity providers in addition to any new ones you want to
          * add. Any existing capacity providers that are associated with a cluster that are
-         * omitted from a <a>PutClusterCapacityProviders</a> API call will be disassociated
-         * with the cluster. You can only disassociate an existing capacity provider from a
-         * cluster if it's not being used by any existing tasks.</p> <p>When creating a
-         * service or running a task on a cluster, if no capacity provider or launch type
-         * is specified, then the cluster's default capacity provider strategy is used. We
-         * recommend that you define a default capacity provider strategy for your cluster.
-         * However, you must specify an empty array (<code>[]</code>) to bypass defining a
-         * default strategy.</p><p><h3>See Also:</h3>   <a
+         * omitted from a <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_PutClusterCapacityProviders.html">PutClusterCapacityProviders</a>
+         * API call will be disassociated with the cluster. You can only disassociate an
+         * existing capacity provider from a cluster if it's not being used by any existing
+         * tasks.</p> <p>When creating a service or running a task on a cluster, if no
+         * capacity provider or launch type is specified, then the cluster's default
+         * capacity provider strategy is used. We recommend that you define a default
+         * capacity provider strategy for your cluster. However, you must specify an empty
+         * array (<code>[]</code>) to bypass defining a default strategy.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/PutClusterCapacityProviders">AWS
          * API Reference</a></p>
          */
@@ -1338,13 +1454,13 @@ namespace ECS
          * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/RegisterContainerInstance">AWS
          * API Reference</a></p>
          */
-        virtual Model::RegisterContainerInstanceOutcome RegisterContainerInstance(const Model::RegisterContainerInstanceRequest& request) const;
+        virtual Model::RegisterContainerInstanceOutcome RegisterContainerInstance(const Model::RegisterContainerInstanceRequest& request = {}) const;
 
         /**
          * A Callable wrapper for RegisterContainerInstance that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename RegisterContainerInstanceRequestT = Model::RegisterContainerInstanceRequest>
-        Model::RegisterContainerInstanceOutcomeCallable RegisterContainerInstanceCallable(const RegisterContainerInstanceRequestT& request) const
+        Model::RegisterContainerInstanceOutcomeCallable RegisterContainerInstanceCallable(const RegisterContainerInstanceRequestT& request = {}) const
         {
             return SubmitCallable(&ECSClient::RegisterContainerInstance, request);
         }
@@ -1353,7 +1469,7 @@ namespace ECS
          * An Async wrapper for RegisterContainerInstance that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename RegisterContainerInstanceRequestT = Model::RegisterContainerInstanceRequest>
-        void RegisterContainerInstanceAsync(const RegisterContainerInstanceRequestT& request, const RegisterContainerInstanceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void RegisterContainerInstanceAsync(const RegisterContainerInstanceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const RegisterContainerInstanceRequestT& request = {}) const
         {
             return SubmitAsync(&ECSClient::RegisterContainerInstance, request, handler, context);
         }
@@ -1373,13 +1489,12 @@ namespace ECS
          * href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html">IAM
          * Roles for Tasks</a> in the <i>Amazon Elastic Container Service Developer
          * Guide</i>.</p> <p>You can specify a Docker networking mode for the containers in
-         * your task definition with the <code>networkMode</code> parameter. The available
-         * network modes correspond to those described in <a
-         * href="https://docs.docker.com/engine/reference/run/#/network-settings">Network
-         * settings</a> in the Docker run reference. If you specify the <code>awsvpc</code>
-         * network mode, the task is allocated an elastic network interface, and you must
-         * specify a <a>NetworkConfiguration</a> when you create a service or run a task
-         * with the task definition. For more information, see <a
+         * your task definition with the <code>networkMode</code> parameter. If you specify
+         * the <code>awsvpc</code> network mode, the task is allocated an elastic network
+         * interface, and you must specify a <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_NetworkConfiguration.html">NetworkConfiguration</a>
+         * when you create a service or run a task with the task definition. For more
+         * information, see <a
          * href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-networking.html">Task
          * Networking</a> in the <i>Amazon Elastic Container Service Developer
          * Guide</i>.</p><p><h3>See Also:</h3>   <a
@@ -1410,21 +1525,15 @@ namespace ECS
          * <p>Starts a new task using the specified task definition.</p>  <p>On March
          * 21, 2024, a change was made to resolve the task definition revision before
          * authorization. When a task definition revision is not specified, authorization
-         * will occur using the latest revision of a task definition.</p>  <p>You
-         * can allow Amazon ECS to place tasks for you, or you can customize how Amazon ECS
-         * places tasks using placement constraints and placement strategies. For more
-         * information, see <a
+         * will occur using the latest revision of a task definition.</p>  
+         * <p>Amazon Elastic Inference (EI) is no longer available to customers.</p>
+         *  <p>You can allow Amazon ECS to place tasks for you, or you can customize
+         * how Amazon ECS places tasks using placement constraints and placement
+         * strategies. For more information, see <a
          * href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/scheduling_tasks.html">Scheduling
          * Tasks</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p>
-         * <p>Alternatively, you can use <a>StartTask</a> to use your own scheduler or
-         * place tasks manually on specific container instances.</p> <p>Starting April 15,
-         * 2023, Amazon Web Services will not onboard new customers to Amazon Elastic
-         * Inference (EI), and will help current customers migrate their workloads to
-         * options that offer better price and performance. After April 15, 2023, new
-         * customers will not be able to launch instances with Amazon EI accelerators in
-         * Amazon SageMaker, Amazon ECS, or Amazon EC2. However, customers who have used
-         * Amazon EI at least once during the past 30-day period are considered current
-         * customers and will be able to continue using the service. </p> <p>You can attach
+         * <p>Alternatively, you can use <code>StartTask</code> to use your own scheduler
+         * or place tasks manually on specific container instances.</p> <p>You can attach
          * Amazon EBS volumes to Amazon ECS tasks by configuring the volume when creating
          * or updating a service. For more infomation, see <a
          * href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ebs-volumes.html#ebs-volume-types">Amazon
@@ -1473,15 +1582,9 @@ namespace ECS
          * container instance or instances.</p>  <p>On March 21, 2024, a change was
          * made to resolve the task definition revision before authorization. When a task
          * definition revision is not specified, authorization will occur using the latest
-         * revision of a task definition.</p>  <p>Starting April 15, 2023, Amazon
-         * Web Services will not onboard new customers to Amazon Elastic Inference (EI),
-         * and will help current customers migrate their workloads to options that offer
-         * better price and performance. After April 15, 2023, new customers will not be
-         * able to launch instances with Amazon EI accelerators in Amazon SageMaker, Amazon
-         * ECS, or Amazon EC2. However, customers who have used Amazon EI at least once
-         * during the past 30-day period are considered current customers and will be able
-         * to continue using the service. </p> <p>Alternatively, you can use <a>RunTask</a>
-         * to place tasks for you. For more information, see <a
+         * revision of a task definition.</p>   <p>Amazon Elastic Inference
+         * (EI) is no longer available to customers.</p>  <p>Alternatively, you can
+         * use<code>RunTask</code> to place tasks for you. For more information, see <a
          * href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/scheduling_tasks.html">Scheduling
          * Tasks</a> in the <i>Amazon Elastic Container Service Developer Guide</i>.</p>
          * <p>You can attach Amazon EBS volumes to Amazon ECS tasks by configuring the
@@ -1514,15 +1617,18 @@ namespace ECS
 
         /**
          * <p>Stops a running task. Any tags associated with the task will be deleted.</p>
-         * <p>When <a>StopTask</a> is called on a task, the equivalent of <code>docker
+         * <p>When you call <code>StopTask</code> on a task, the equivalent of <code>docker
          * stop</code> is issued to the containers running in the task. This results in a
          * <code>SIGTERM</code> value and a default 30-second timeout, after which the
          * <code>SIGKILL</code> value is sent and the containers are forcibly stopped. If
          * the container handles the <code>SIGTERM</code> value gracefully and exits within
-         * 30 seconds from receiving it, no <code>SIGKILL</code> value is sent.</p> 
-         * <p>The default 30-second timeout can be configured on the Amazon ECS container
-         * agent with the <code>ECS_CONTAINER_STOP_TIMEOUT</code> variable. For more
-         * information, see <a
+         * 30 seconds from receiving it, no <code>SIGKILL</code> value is sent.</p> <p>For
+         * Windows containers, POSIX signals do not work and runtime stops the container by
+         * sending a <code>CTRL_SHUTDOWN_EVENT</code>. For more information, see <a
+         * href="https://github.com/moby/moby/issues/25982">Unable to react to graceful
+         * shutdown of (Windows) container #25982</a> on GitHub.</p>  <p>The default
+         * 30-second timeout can be configured on the Amazon ECS container agent with the
+         * <code>ECS_CONTAINER_STOP_TIMEOUT</code> variable. For more information, see <a
          * href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-agent-config.html">Amazon
          * ECS Container Agent Configuration</a> in the <i>Amazon Elastic Container Service
          * Developer Guide</i>.</p> <p><h3>See Also:</h3>   <a
@@ -1583,13 +1689,13 @@ namespace ECS
          * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/SubmitContainerStateChange">AWS
          * API Reference</a></p>
          */
-        virtual Model::SubmitContainerStateChangeOutcome SubmitContainerStateChange(const Model::SubmitContainerStateChangeRequest& request) const;
+        virtual Model::SubmitContainerStateChangeOutcome SubmitContainerStateChange(const Model::SubmitContainerStateChangeRequest& request = {}) const;
 
         /**
          * A Callable wrapper for SubmitContainerStateChange that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename SubmitContainerStateChangeRequestT = Model::SubmitContainerStateChangeRequest>
-        Model::SubmitContainerStateChangeOutcomeCallable SubmitContainerStateChangeCallable(const SubmitContainerStateChangeRequestT& request) const
+        Model::SubmitContainerStateChangeOutcomeCallable SubmitContainerStateChangeCallable(const SubmitContainerStateChangeRequestT& request = {}) const
         {
             return SubmitCallable(&ECSClient::SubmitContainerStateChange, request);
         }
@@ -1598,7 +1704,7 @@ namespace ECS
          * An Async wrapper for SubmitContainerStateChange that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename SubmitContainerStateChangeRequestT = Model::SubmitContainerStateChangeRequest>
-        void SubmitContainerStateChangeAsync(const SubmitContainerStateChangeRequestT& request, const SubmitContainerStateChangeResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void SubmitContainerStateChangeAsync(const SubmitContainerStateChangeResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const SubmitContainerStateChangeRequestT& request = {}) const
         {
             return SubmitAsync(&ECSClient::SubmitContainerStateChange, request, handler, context);
         }
@@ -1610,13 +1716,13 @@ namespace ECS
          * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/SubmitTaskStateChange">AWS
          * API Reference</a></p>
          */
-        virtual Model::SubmitTaskStateChangeOutcome SubmitTaskStateChange(const Model::SubmitTaskStateChangeRequest& request) const;
+        virtual Model::SubmitTaskStateChangeOutcome SubmitTaskStateChange(const Model::SubmitTaskStateChangeRequest& request = {}) const;
 
         /**
          * A Callable wrapper for SubmitTaskStateChange that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename SubmitTaskStateChangeRequestT = Model::SubmitTaskStateChangeRequest>
-        Model::SubmitTaskStateChangeOutcomeCallable SubmitTaskStateChangeCallable(const SubmitTaskStateChangeRequestT& request) const
+        Model::SubmitTaskStateChangeOutcomeCallable SubmitTaskStateChangeCallable(const SubmitTaskStateChangeRequestT& request = {}) const
         {
             return SubmitCallable(&ECSClient::SubmitTaskStateChange, request);
         }
@@ -1625,7 +1731,7 @@ namespace ECS
          * An Async wrapper for SubmitTaskStateChange that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename SubmitTaskStateChangeRequestT = Model::SubmitTaskStateChangeRequest>
-        void SubmitTaskStateChangeAsync(const SubmitTaskStateChangeRequestT& request, const SubmitTaskStateChangeResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void SubmitTaskStateChangeAsync(const SubmitTaskStateChangeResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const SubmitTaskStateChangeRequestT& request = {}) const
         {
             return SubmitAsync(&ECSClient::SubmitTaskStateChange, request, handler, context);
         }
@@ -1823,31 +1929,33 @@ namespace ECS
          * the <code>RUNNING</code> state are stopped and replaced according to the
          * service's deployment configuration parameters,
          * <code>minimumHealthyPercent</code> and <code>maximumPercent</code>. You can
-         * change the deployment configuration of your service using
-         * <a>UpdateService</a>.</p> <ul> <li> <p>If <code>minimumHealthyPercent</code> is
-         * below 100%, the scheduler can ignore <code>desiredCount</code> temporarily
-         * during task replacement. For example, <code>desiredCount</code> is four tasks, a
-         * minimum of 50% allows the scheduler to stop two existing tasks before starting
-         * two new tasks. If the minimum is 100%, the service scheduler can't remove
-         * existing tasks until the replacement tasks are considered healthy. Tasks for
-         * services that do not use a load balancer are considered healthy if they're in
-         * the <code>RUNNING</code> state. Tasks for services that use a load balancer are
-         * considered healthy if they're in the <code>RUNNING</code> state and are reported
-         * as healthy by the load balancer.</p> </li> <li> <p>The
-         * <code>maximumPercent</code> parameter represents an upper limit on the number of
-         * running tasks during task replacement. You can use this to define the
-         * replacement batch size. For example, if <code>desiredCount</code> is four tasks,
-         * a maximum of 200% starts four new tasks before stopping the four tasks to be
-         * drained, provided that the cluster resources required to do this are available.
-         * If the maximum is 100%, then replacement tasks can't start until the draining
-         * tasks have stopped.</p> </li> </ul> <p>Any <code>PENDING</code> or
-         * <code>RUNNING</code> tasks that do not belong to a service aren't affected. You
-         * must wait for them to finish or stop them manually.</p> <p>A container instance
-         * has completed draining when it has no more <code>RUNNING</code> tasks. You can
-         * verify this using <a>ListTasks</a>.</p> <p>When a container instance has been
-         * drained, you can set a container instance to <code>ACTIVE</code> status and once
-         * it has reached that status the Amazon ECS scheduler can begin scheduling tasks
-         * on the instance again.</p><p><h3>See Also:</h3>   <a
+         * change the deployment configuration of your service using <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_UpdateService.html">UpdateService</a>.</p>
+         * <ul> <li> <p>If <code>minimumHealthyPercent</code> is below 100%, the scheduler
+         * can ignore <code>desiredCount</code> temporarily during task replacement. For
+         * example, <code>desiredCount</code> is four tasks, a minimum of 50% allows the
+         * scheduler to stop two existing tasks before starting two new tasks. If the
+         * minimum is 100%, the service scheduler can't remove existing tasks until the
+         * replacement tasks are considered healthy. Tasks for services that do not use a
+         * load balancer are considered healthy if they're in the <code>RUNNING</code>
+         * state. Tasks for services that use a load balancer are considered healthy if
+         * they're in the <code>RUNNING</code> state and are reported as healthy by the
+         * load balancer.</p> </li> <li> <p>The <code>maximumPercent</code> parameter
+         * represents an upper limit on the number of running tasks during task
+         * replacement. You can use this to define the replacement batch size. For example,
+         * if <code>desiredCount</code> is four tasks, a maximum of 200% starts four new
+         * tasks before stopping the four tasks to be drained, provided that the cluster
+         * resources required to do this are available. If the maximum is 100%, then
+         * replacement tasks can't start until the draining tasks have stopped.</p> </li>
+         * </ul> <p>Any <code>PENDING</code> or <code>RUNNING</code> tasks that do not
+         * belong to a service aren't affected. You must wait for them to finish or stop
+         * them manually.</p> <p>A container instance has completed draining when it has no
+         * more <code>RUNNING</code> tasks. You can verify this using <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ListTasks.html">ListTasks</a>.</p>
+         * <p>When a container instance has been drained, you can set a container instance
+         * to <code>ACTIVE</code> status and once it has reached that status the Amazon ECS
+         * scheduler can begin scheduling tasks on the instance again.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/ecs-2014-11-13/UpdateContainerInstancesState">AWS
          * API Reference</a></p>
          */
@@ -1905,13 +2013,13 @@ namespace ECS
          * constraints and strategies, health check grace period, enable ECS managed tags
          * option, and propagate tags option, using this API. If the launch type, load
          * balancer, network configuration, platform version, or task definition need to be
-         * updated, create a new task set For more information, see
-         * <a>CreateTaskSet</a>.</p> <p>You can add to or subtract from the number of
-         * instantiations of a task definition in a service by specifying the cluster that
-         * the service is running in and a new <code>desiredCount</code> parameter.</p>
-         * <p>You can attach Amazon EBS volumes to Amazon ECS tasks by configuring the
-         * volume when starting or running a task, or when creating or updating a service.
-         * For more infomation, see <a
+         * updated, create a new task set For more information, see <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_CreateTaskSet.html">CreateTaskSet</a>.</p>
+         * <p>You can add to or subtract from the number of instantiations of a task
+         * definition in a service by specifying the cluster that the service is running in
+         * and a new <code>desiredCount</code> parameter.</p> <p>You can attach Amazon EBS
+         * volumes to Amazon ECS tasks by configuring the volume when starting or running a
+         * task, or when creating or updating a service. For more infomation, see <a
          * href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ebs-volumes.html#ebs-volume-types">Amazon
          * EBS volumes</a> in the <i>Amazon Elastic Container Service Developer
          * Guide</i>.</p> <p>If you have updated the container image of your application,
@@ -1941,13 +2049,14 @@ namespace ECS
          * define the deployment batch size. For example, if <code>desiredCount</code> is
          * four tasks, a maximum of 200% starts four new tasks before stopping the four
          * older tasks (provided that the cluster resources required to do this are
-         * available).</p> </li> </ul> <p>When <a>UpdateService</a> stops a task during a
-         * deployment, the equivalent of <code>docker stop</code> is issued to the
-         * containers running in the task. This results in a <code>SIGTERM</code> and a
-         * 30-second timeout. After this, <code>SIGKILL</code> is sent and the containers
-         * are forcibly stopped. If the container handles the <code>SIGTERM</code>
-         * gracefully and exits within 30 seconds from receiving it, no
-         * <code>SIGKILL</code> is sent.</p> <p>When the service scheduler launches new
+         * available).</p> </li> </ul> <p>When <a
+         * href="https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_UpdateService.html">UpdateService</a>
+         * stops a task during a deployment, the equivalent of <code>docker stop</code> is
+         * issued to the containers running in the task. This results in a
+         * <code>SIGTERM</code> and a 30-second timeout. After this, <code>SIGKILL</code>
+         * is sent and the containers are forcibly stopped. If the container handles the
+         * <code>SIGTERM</code> gracefully and exits within 30 seconds from receiving it,
+         * no <code>SIGKILL</code> is sent.</p> <p>When the service scheduler launches new
          * tasks, it determines task placement in your cluster with the following
          * logic.</p> <ul> <li> <p>Determine which of the container instances in your
          * cluster can support your service's task definition. For example, they have the
@@ -2116,11 +2225,7 @@ namespace ECS
       std::shared_ptr<ECSEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<ECSClient>;
-      void init(const ECSClientConfiguration& clientConfiguration);
 
-      ECSClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<ECSEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace ECS

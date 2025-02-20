@@ -19,31 +19,27 @@ namespace Model
 {
 
 BudgetActionToAdd::BudgetActionToAdd() : 
-    m_descriptionHasBeenSet(false),
+    m_type(BudgetActionType::NOT_SET),
+    m_typeHasBeenSet(false),
     m_thresholdPercentage(0.0),
     m_thresholdPercentageHasBeenSet(false),
-    m_type(BudgetActionType::NOT_SET),
-    m_typeHasBeenSet(false)
+    m_descriptionHasBeenSet(false)
 {
 }
 
-BudgetActionToAdd::BudgetActionToAdd(JsonView jsonValue) : 
-    m_descriptionHasBeenSet(false),
-    m_thresholdPercentage(0.0),
-    m_thresholdPercentageHasBeenSet(false),
-    m_type(BudgetActionType::NOT_SET),
-    m_typeHasBeenSet(false)
+BudgetActionToAdd::BudgetActionToAdd(JsonView jsonValue)
+  : BudgetActionToAdd()
 {
   *this = jsonValue;
 }
 
 BudgetActionToAdd& BudgetActionToAdd::operator =(JsonView jsonValue)
 {
-  if(jsonValue.ValueExists("description"))
+  if(jsonValue.ValueExists("type"))
   {
-    m_description = jsonValue.GetString("description");
+    m_type = BudgetActionTypeMapper::GetBudgetActionTypeForName(jsonValue.GetString("type"));
 
-    m_descriptionHasBeenSet = true;
+    m_typeHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("thresholdPercentage"))
@@ -53,11 +49,11 @@ BudgetActionToAdd& BudgetActionToAdd::operator =(JsonView jsonValue)
     m_thresholdPercentageHasBeenSet = true;
   }
 
-  if(jsonValue.ValueExists("type"))
+  if(jsonValue.ValueExists("description"))
   {
-    m_type = BudgetActionTypeMapper::GetBudgetActionTypeForName(jsonValue.GetString("type"));
+    m_description = jsonValue.GetString("description");
 
-    m_typeHasBeenSet = true;
+    m_descriptionHasBeenSet = true;
   }
 
   return *this;
@@ -67,10 +63,9 @@ JsonValue BudgetActionToAdd::Jsonize() const
 {
   JsonValue payload;
 
-  if(m_descriptionHasBeenSet)
+  if(m_typeHasBeenSet)
   {
-   payload.WithString("description", m_description);
-
+   payload.WithString("type", BudgetActionTypeMapper::GetNameForBudgetActionType(m_type));
   }
 
   if(m_thresholdPercentageHasBeenSet)
@@ -79,9 +74,10 @@ JsonValue BudgetActionToAdd::Jsonize() const
 
   }
 
-  if(m_typeHasBeenSet)
+  if(m_descriptionHasBeenSet)
   {
-   payload.WithString("type", BudgetActionTypeMapper::GetNameForBudgetActionType(m_type));
+   payload.WithString("description", m_description);
+
   }
 
   return payload;

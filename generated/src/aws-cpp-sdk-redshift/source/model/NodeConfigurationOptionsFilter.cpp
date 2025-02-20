@@ -29,12 +29,8 @@ NodeConfigurationOptionsFilter::NodeConfigurationOptionsFilter() :
 {
 }
 
-NodeConfigurationOptionsFilter::NodeConfigurationOptionsFilter(const XmlNode& xmlNode) : 
-    m_name(NodeConfigurationOptionsFilterName::NOT_SET),
-    m_nameHasBeenSet(false),
-    m_operator(OperatorType::NOT_SET),
-    m_operatorHasBeenSet(false),
-    m_valuesHasBeenSet(false)
+NodeConfigurationOptionsFilter::NodeConfigurationOptionsFilter(const XmlNode& xmlNode)
+  : NodeConfigurationOptionsFilter()
 {
   *this = xmlNode;
 }
@@ -91,7 +87,7 @@ void NodeConfigurationOptionsFilter::OutputToStream(Aws::OStream& oStream, const
       unsigned valuesIdx = 1;
       for(auto& item : m_values)
       {
-        oStream << location << index << locationValue << ".item." << valuesIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
+        oStream << location << index << locationValue << ".Values.item." << valuesIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
       }
   }
 

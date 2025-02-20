@@ -37,74 +37,36 @@ namespace Model
     AWS_DEADLINE_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
-    /**
-     * <p>When the budget ends.</p>
-     */
-    inline const Aws::Utils::DateTime& GetEndTime() const{ return m_endTime; }
-
-    /**
-     * <p>When the budget ends.</p>
-     */
-    inline bool EndTimeHasBeenSet() const { return m_endTimeHasBeenSet; }
-
-    /**
-     * <p>When the budget ends.</p>
-     */
-    inline void SetEndTime(const Aws::Utils::DateTime& value) { m_endTimeHasBeenSet = true; m_endTime = value; }
-
-    /**
-     * <p>When the budget ends.</p>
-     */
-    inline void SetEndTime(Aws::Utils::DateTime&& value) { m_endTimeHasBeenSet = true; m_endTime = std::move(value); }
-
-    /**
-     * <p>When the budget ends.</p>
-     */
-    inline FixedBudgetSchedule& WithEndTime(const Aws::Utils::DateTime& value) { SetEndTime(value); return *this;}
-
-    /**
-     * <p>When the budget ends.</p>
-     */
-    inline FixedBudgetSchedule& WithEndTime(Aws::Utils::DateTime&& value) { SetEndTime(std::move(value)); return *this;}
-
-
+    ///@{
     /**
      * <p>When the budget starts.</p>
      */
     inline const Aws::Utils::DateTime& GetStartTime() const{ return m_startTime; }
-
-    /**
-     * <p>When the budget starts.</p>
-     */
     inline bool StartTimeHasBeenSet() const { return m_startTimeHasBeenSet; }
-
-    /**
-     * <p>When the budget starts.</p>
-     */
     inline void SetStartTime(const Aws::Utils::DateTime& value) { m_startTimeHasBeenSet = true; m_startTime = value; }
-
-    /**
-     * <p>When the budget starts.</p>
-     */
     inline void SetStartTime(Aws::Utils::DateTime&& value) { m_startTimeHasBeenSet = true; m_startTime = std::move(value); }
-
-    /**
-     * <p>When the budget starts.</p>
-     */
     inline FixedBudgetSchedule& WithStartTime(const Aws::Utils::DateTime& value) { SetStartTime(value); return *this;}
-
-    /**
-     * <p>When the budget starts.</p>
-     */
     inline FixedBudgetSchedule& WithStartTime(Aws::Utils::DateTime&& value) { SetStartTime(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>When the budget ends.</p>
+     */
+    inline const Aws::Utils::DateTime& GetEndTime() const{ return m_endTime; }
+    inline bool EndTimeHasBeenSet() const { return m_endTimeHasBeenSet; }
+    inline void SetEndTime(const Aws::Utils::DateTime& value) { m_endTimeHasBeenSet = true; m_endTime = value; }
+    inline void SetEndTime(Aws::Utils::DateTime&& value) { m_endTimeHasBeenSet = true; m_endTime = std::move(value); }
+    inline FixedBudgetSchedule& WithEndTime(const Aws::Utils::DateTime& value) { SetEndTime(value); return *this;}
+    inline FixedBudgetSchedule& WithEndTime(Aws::Utils::DateTime&& value) { SetEndTime(std::move(value)); return *this;}
+    ///@}
   private:
-
-    Aws::Utils::DateTime m_endTime;
-    bool m_endTimeHasBeenSet = false;
 
     Aws::Utils::DateTime m_startTime;
     bool m_startTimeHasBeenSet = false;
+
+    Aws::Utils::DateTime m_endTime;
+    bool m_endTimeHasBeenSet = false;
   };
 
 } // namespace Model

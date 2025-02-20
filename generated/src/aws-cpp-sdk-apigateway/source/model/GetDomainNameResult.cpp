@@ -23,9 +23,8 @@ GetDomainNameResult::GetDomainNameResult() :
 {
 }
 
-GetDomainNameResult::GetDomainNameResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_domainNameStatus(DomainNameStatus::NOT_SET),
-    m_securityPolicy(SecurityPolicy::NOT_SET)
+GetDomainNameResult::GetDomainNameResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetDomainNameResult()
 {
   *this = result;
 }
@@ -36,6 +35,18 @@ GetDomainNameResult& GetDomainNameResult::operator =(const Aws::AmazonWebService
   if(jsonValue.ValueExists("domainName"))
   {
     m_domainName = jsonValue.GetString("domainName");
+
+  }
+
+  if(jsonValue.ValueExists("domainNameId"))
+  {
+    m_domainNameId = jsonValue.GetString("domainNameId");
+
+  }
+
+  if(jsonValue.ValueExists("domainNameArn"))
+  {
+    m_domainNameArn = jsonValue.GetString("domainNameArn");
 
   }
 
@@ -135,6 +146,18 @@ GetDomainNameResult& GetDomainNameResult::operator =(const Aws::AmazonWebService
   if(jsonValue.ValueExists("ownershipVerificationCertificateArn"))
   {
     m_ownershipVerificationCertificateArn = jsonValue.GetString("ownershipVerificationCertificateArn");
+
+  }
+
+  if(jsonValue.ValueExists("managementPolicy"))
+  {
+    m_managementPolicy = jsonValue.GetString("managementPolicy");
+
+  }
+
+  if(jsonValue.ValueExists("policy"))
+  {
+    m_policy = jsonValue.GetString("policy");
 
   }
 

@@ -24,19 +24,14 @@ ViewRepresentation::ViewRepresentation() :
     m_dialectVersionHasBeenSet(false),
     m_viewOriginalTextHasBeenSet(false),
     m_viewExpandedTextHasBeenSet(false),
+    m_validationConnectionHasBeenSet(false),
     m_isStale(false),
     m_isStaleHasBeenSet(false)
 {
 }
 
-ViewRepresentation::ViewRepresentation(JsonView jsonValue) : 
-    m_dialect(ViewDialect::NOT_SET),
-    m_dialectHasBeenSet(false),
-    m_dialectVersionHasBeenSet(false),
-    m_viewOriginalTextHasBeenSet(false),
-    m_viewExpandedTextHasBeenSet(false),
-    m_isStale(false),
-    m_isStaleHasBeenSet(false)
+ViewRepresentation::ViewRepresentation(JsonView jsonValue)
+  : ViewRepresentation()
 {
   *this = jsonValue;
 }
@@ -69,6 +64,13 @@ ViewRepresentation& ViewRepresentation::operator =(JsonView jsonValue)
     m_viewExpandedText = jsonValue.GetString("ViewExpandedText");
 
     m_viewExpandedTextHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("ValidationConnection"))
+  {
+    m_validationConnection = jsonValue.GetString("ValidationConnection");
+
+    m_validationConnectionHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("IsStale"))
@@ -105,6 +107,12 @@ JsonValue ViewRepresentation::Jsonize() const
   if(m_viewExpandedTextHasBeenSet)
   {
    payload.WithString("ViewExpandedText", m_viewExpandedText);
+
+  }
+
+  if(m_validationConnectionHasBeenSet)
+  {
+   payload.WithString("ValidationConnection", m_validationConnection);
 
   }
 

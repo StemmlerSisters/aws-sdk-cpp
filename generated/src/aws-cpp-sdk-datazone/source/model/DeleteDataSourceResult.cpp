@@ -21,15 +21,13 @@ DeleteDataSourceResult::DeleteDataSourceResult() :
     m_enableSetting(EnableSetting::NOT_SET),
     m_lastRunStatus(DataSourceRunStatus::NOT_SET),
     m_publishOnImport(false),
+    m_retainPermissionsOnRevokeFailure(false),
     m_status(DataSourceStatus::NOT_SET)
 {
 }
 
-DeleteDataSourceResult::DeleteDataSourceResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_enableSetting(EnableSetting::NOT_SET),
-    m_lastRunStatus(DataSourceRunStatus::NOT_SET),
-    m_publishOnImport(false),
-    m_status(DataSourceStatus::NOT_SET)
+DeleteDataSourceResult::DeleteDataSourceResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : DeleteDataSourceResult()
 {
   *this = result;
 }
@@ -49,6 +47,12 @@ DeleteDataSourceResult& DeleteDataSourceResult::operator =(const Aws::AmazonWebS
   if(jsonValue.ValueExists("configuration"))
   {
     m_configuration = jsonValue.GetObject("configuration");
+
+  }
+
+  if(jsonValue.ValueExists("connectionId"))
+  {
+    m_connectionId = jsonValue.GetString("connectionId");
 
   }
 
@@ -130,9 +134,21 @@ DeleteDataSourceResult& DeleteDataSourceResult::operator =(const Aws::AmazonWebS
 
   }
 
+  if(jsonValue.ValueExists("retainPermissionsOnRevokeFailure"))
+  {
+    m_retainPermissionsOnRevokeFailure = jsonValue.GetBool("retainPermissionsOnRevokeFailure");
+
+  }
+
   if(jsonValue.ValueExists("schedule"))
   {
     m_schedule = jsonValue.GetObject("schedule");
+
+  }
+
+  if(jsonValue.ValueExists("selfGrantStatus"))
+  {
+    m_selfGrantStatus = jsonValue.GetObject("selfGrantStatus");
 
   }
 

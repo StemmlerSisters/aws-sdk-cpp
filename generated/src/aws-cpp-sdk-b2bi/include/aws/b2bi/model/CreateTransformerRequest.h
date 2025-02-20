@@ -7,9 +7,11 @@
 #include <aws/b2bi/B2BI_EXPORTS.h>
 #include <aws/b2bi/B2BIRequest.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
-#include <aws/b2bi/model/FileFormat.h>
-#include <aws/b2bi/model/EdiType.h>
 #include <aws/core/utils/memory/stl/AWSVector.h>
+#include <aws/b2bi/model/InputConversion.h>
+#include <aws/b2bi/model/Mapping.h>
+#include <aws/b2bi/model/OutputConversion.h>
+#include <aws/b2bi/model/SampleDocuments.h>
 #include <aws/b2bi/model/Tag.h>
 #include <utility>
 #include <aws/core/utils/UUID.h>
@@ -39,344 +41,123 @@ namespace Model
     AWS_B2BI_API Aws::Http::HeaderValueCollection GetRequestSpecificHeaders() const override;
 
 
+    ///@{
     /**
      * <p>Specifies the name of the transformer, used to identify it.</p>
      */
     inline const Aws::String& GetName() const{ return m_name; }
-
-    /**
-     * <p>Specifies the name of the transformer, used to identify it.</p>
-     */
     inline bool NameHasBeenSet() const { return m_nameHasBeenSet; }
-
-    /**
-     * <p>Specifies the name of the transformer, used to identify it.</p>
-     */
     inline void SetName(const Aws::String& value) { m_nameHasBeenSet = true; m_name = value; }
-
-    /**
-     * <p>Specifies the name of the transformer, used to identify it.</p>
-     */
     inline void SetName(Aws::String&& value) { m_nameHasBeenSet = true; m_name = std::move(value); }
-
-    /**
-     * <p>Specifies the name of the transformer, used to identify it.</p>
-     */
     inline void SetName(const char* value) { m_nameHasBeenSet = true; m_name.assign(value); }
-
-    /**
-     * <p>Specifies the name of the transformer, used to identify it.</p>
-     */
     inline CreateTransformerRequest& WithName(const Aws::String& value) { SetName(value); return *this;}
-
-    /**
-     * <p>Specifies the name of the transformer, used to identify it.</p>
-     */
     inline CreateTransformerRequest& WithName(Aws::String&& value) { SetName(std::move(value)); return *this;}
-
-    /**
-     * <p>Specifies the name of the transformer, used to identify it.</p>
-     */
     inline CreateTransformerRequest& WithName(const char* value) { SetName(value); return *this;}
+    ///@}
 
-
-    /**
-     * <p>Specifies that the currently supported file formats for EDI transformations
-     * are <code>JSON</code> and <code>XML</code>.</p>
-     */
-    inline const FileFormat& GetFileFormat() const{ return m_fileFormat; }
-
-    /**
-     * <p>Specifies that the currently supported file formats for EDI transformations
-     * are <code>JSON</code> and <code>XML</code>.</p>
-     */
-    inline bool FileFormatHasBeenSet() const { return m_fileFormatHasBeenSet; }
-
-    /**
-     * <p>Specifies that the currently supported file formats for EDI transformations
-     * are <code>JSON</code> and <code>XML</code>.</p>
-     */
-    inline void SetFileFormat(const FileFormat& value) { m_fileFormatHasBeenSet = true; m_fileFormat = value; }
-
-    /**
-     * <p>Specifies that the currently supported file formats for EDI transformations
-     * are <code>JSON</code> and <code>XML</code>.</p>
-     */
-    inline void SetFileFormat(FileFormat&& value) { m_fileFormatHasBeenSet = true; m_fileFormat = std::move(value); }
-
-    /**
-     * <p>Specifies that the currently supported file formats for EDI transformations
-     * are <code>JSON</code> and <code>XML</code>.</p>
-     */
-    inline CreateTransformerRequest& WithFileFormat(const FileFormat& value) { SetFileFormat(value); return *this;}
-
-    /**
-     * <p>Specifies that the currently supported file formats for EDI transformations
-     * are <code>JSON</code> and <code>XML</code>.</p>
-     */
-    inline CreateTransformerRequest& WithFileFormat(FileFormat&& value) { SetFileFormat(std::move(value)); return *this;}
-
-
-    /**
-     * <p>Specifies the mapping template for the transformer. This template is used to
-     * map the parsed EDI file using JSONata or XSLT.</p>
-     */
-    inline const Aws::String& GetMappingTemplate() const{ return m_mappingTemplate; }
-
-    /**
-     * <p>Specifies the mapping template for the transformer. This template is used to
-     * map the parsed EDI file using JSONata or XSLT.</p>
-     */
-    inline bool MappingTemplateHasBeenSet() const { return m_mappingTemplateHasBeenSet; }
-
-    /**
-     * <p>Specifies the mapping template for the transformer. This template is used to
-     * map the parsed EDI file using JSONata or XSLT.</p>
-     */
-    inline void SetMappingTemplate(const Aws::String& value) { m_mappingTemplateHasBeenSet = true; m_mappingTemplate = value; }
-
-    /**
-     * <p>Specifies the mapping template for the transformer. This template is used to
-     * map the parsed EDI file using JSONata or XSLT.</p>
-     */
-    inline void SetMappingTemplate(Aws::String&& value) { m_mappingTemplateHasBeenSet = true; m_mappingTemplate = std::move(value); }
-
-    /**
-     * <p>Specifies the mapping template for the transformer. This template is used to
-     * map the parsed EDI file using JSONata or XSLT.</p>
-     */
-    inline void SetMappingTemplate(const char* value) { m_mappingTemplateHasBeenSet = true; m_mappingTemplate.assign(value); }
-
-    /**
-     * <p>Specifies the mapping template for the transformer. This template is used to
-     * map the parsed EDI file using JSONata or XSLT.</p>
-     */
-    inline CreateTransformerRequest& WithMappingTemplate(const Aws::String& value) { SetMappingTemplate(value); return *this;}
-
-    /**
-     * <p>Specifies the mapping template for the transformer. This template is used to
-     * map the parsed EDI file using JSONata or XSLT.</p>
-     */
-    inline CreateTransformerRequest& WithMappingTemplate(Aws::String&& value) { SetMappingTemplate(std::move(value)); return *this;}
-
-    /**
-     * <p>Specifies the mapping template for the transformer. This template is used to
-     * map the parsed EDI file using JSONata or XSLT.</p>
-     */
-    inline CreateTransformerRequest& WithMappingTemplate(const char* value) { SetMappingTemplate(value); return *this;}
-
-
-    /**
-     * <p>Specifies the details for the EDI standard that is being used for the
-     * transformer. Currently, only X12 is supported. X12 is a set of standards and
-     * corresponding messages that define specific business documents.</p>
-     */
-    inline const EdiType& GetEdiType() const{ return m_ediType; }
-
-    /**
-     * <p>Specifies the details for the EDI standard that is being used for the
-     * transformer. Currently, only X12 is supported. X12 is a set of standards and
-     * corresponding messages that define specific business documents.</p>
-     */
-    inline bool EdiTypeHasBeenSet() const { return m_ediTypeHasBeenSet; }
-
-    /**
-     * <p>Specifies the details for the EDI standard that is being used for the
-     * transformer. Currently, only X12 is supported. X12 is a set of standards and
-     * corresponding messages that define specific business documents.</p>
-     */
-    inline void SetEdiType(const EdiType& value) { m_ediTypeHasBeenSet = true; m_ediType = value; }
-
-    /**
-     * <p>Specifies the details for the EDI standard that is being used for the
-     * transformer. Currently, only X12 is supported. X12 is a set of standards and
-     * corresponding messages that define specific business documents.</p>
-     */
-    inline void SetEdiType(EdiType&& value) { m_ediTypeHasBeenSet = true; m_ediType = std::move(value); }
-
-    /**
-     * <p>Specifies the details for the EDI standard that is being used for the
-     * transformer. Currently, only X12 is supported. X12 is a set of standards and
-     * corresponding messages that define specific business documents.</p>
-     */
-    inline CreateTransformerRequest& WithEdiType(const EdiType& value) { SetEdiType(value); return *this;}
-
-    /**
-     * <p>Specifies the details for the EDI standard that is being used for the
-     * transformer. Currently, only X12 is supported. X12 is a set of standards and
-     * corresponding messages that define specific business documents.</p>
-     */
-    inline CreateTransformerRequest& WithEdiType(EdiType&& value) { SetEdiType(std::move(value)); return *this;}
-
-
-    /**
-     * <p>Specifies a sample EDI document that is used by a transformer as a guide for
-     * processing the EDI data.</p>
-     */
-    inline const Aws::String& GetSampleDocument() const{ return m_sampleDocument; }
-
-    /**
-     * <p>Specifies a sample EDI document that is used by a transformer as a guide for
-     * processing the EDI data.</p>
-     */
-    inline bool SampleDocumentHasBeenSet() const { return m_sampleDocumentHasBeenSet; }
-
-    /**
-     * <p>Specifies a sample EDI document that is used by a transformer as a guide for
-     * processing the EDI data.</p>
-     */
-    inline void SetSampleDocument(const Aws::String& value) { m_sampleDocumentHasBeenSet = true; m_sampleDocument = value; }
-
-    /**
-     * <p>Specifies a sample EDI document that is used by a transformer as a guide for
-     * processing the EDI data.</p>
-     */
-    inline void SetSampleDocument(Aws::String&& value) { m_sampleDocumentHasBeenSet = true; m_sampleDocument = std::move(value); }
-
-    /**
-     * <p>Specifies a sample EDI document that is used by a transformer as a guide for
-     * processing the EDI data.</p>
-     */
-    inline void SetSampleDocument(const char* value) { m_sampleDocumentHasBeenSet = true; m_sampleDocument.assign(value); }
-
-    /**
-     * <p>Specifies a sample EDI document that is used by a transformer as a guide for
-     * processing the EDI data.</p>
-     */
-    inline CreateTransformerRequest& WithSampleDocument(const Aws::String& value) { SetSampleDocument(value); return *this;}
-
-    /**
-     * <p>Specifies a sample EDI document that is used by a transformer as a guide for
-     * processing the EDI data.</p>
-     */
-    inline CreateTransformerRequest& WithSampleDocument(Aws::String&& value) { SetSampleDocument(std::move(value)); return *this;}
-
-    /**
-     * <p>Specifies a sample EDI document that is used by a transformer as a guide for
-     * processing the EDI data.</p>
-     */
-    inline CreateTransformerRequest& WithSampleDocument(const char* value) { SetSampleDocument(value); return *this;}
-
-
+    ///@{
     /**
      * <p>Reserved for future use.</p>
      */
     inline const Aws::String& GetClientToken() const{ return m_clientToken; }
-
-    /**
-     * <p>Reserved for future use.</p>
-     */
     inline bool ClientTokenHasBeenSet() const { return m_clientTokenHasBeenSet; }
-
-    /**
-     * <p>Reserved for future use.</p>
-     */
     inline void SetClientToken(const Aws::String& value) { m_clientTokenHasBeenSet = true; m_clientToken = value; }
-
-    /**
-     * <p>Reserved for future use.</p>
-     */
     inline void SetClientToken(Aws::String&& value) { m_clientTokenHasBeenSet = true; m_clientToken = std::move(value); }
-
-    /**
-     * <p>Reserved for future use.</p>
-     */
     inline void SetClientToken(const char* value) { m_clientTokenHasBeenSet = true; m_clientToken.assign(value); }
-
-    /**
-     * <p>Reserved for future use.</p>
-     */
     inline CreateTransformerRequest& WithClientToken(const Aws::String& value) { SetClientToken(value); return *this;}
-
-    /**
-     * <p>Reserved for future use.</p>
-     */
     inline CreateTransformerRequest& WithClientToken(Aws::String&& value) { SetClientToken(std::move(value)); return *this;}
-
-    /**
-     * <p>Reserved for future use.</p>
-     */
     inline CreateTransformerRequest& WithClientToken(const char* value) { SetClientToken(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Specifies the key-value pairs assigned to ARNs that you can use to group and
      * search for resources by type. You can attach this metadata to resources
      * (capabilities, partnerships, and so on) for any purpose.</p>
      */
     inline const Aws::Vector<Tag>& GetTags() const{ return m_tags; }
-
-    /**
-     * <p>Specifies the key-value pairs assigned to ARNs that you can use to group and
-     * search for resources by type. You can attach this metadata to resources
-     * (capabilities, partnerships, and so on) for any purpose.</p>
-     */
     inline bool TagsHasBeenSet() const { return m_tagsHasBeenSet; }
-
-    /**
-     * <p>Specifies the key-value pairs assigned to ARNs that you can use to group and
-     * search for resources by type. You can attach this metadata to resources
-     * (capabilities, partnerships, and so on) for any purpose.</p>
-     */
     inline void SetTags(const Aws::Vector<Tag>& value) { m_tagsHasBeenSet = true; m_tags = value; }
-
-    /**
-     * <p>Specifies the key-value pairs assigned to ARNs that you can use to group and
-     * search for resources by type. You can attach this metadata to resources
-     * (capabilities, partnerships, and so on) for any purpose.</p>
-     */
     inline void SetTags(Aws::Vector<Tag>&& value) { m_tagsHasBeenSet = true; m_tags = std::move(value); }
-
-    /**
-     * <p>Specifies the key-value pairs assigned to ARNs that you can use to group and
-     * search for resources by type. You can attach this metadata to resources
-     * (capabilities, partnerships, and so on) for any purpose.</p>
-     */
     inline CreateTransformerRequest& WithTags(const Aws::Vector<Tag>& value) { SetTags(value); return *this;}
-
-    /**
-     * <p>Specifies the key-value pairs assigned to ARNs that you can use to group and
-     * search for resources by type. You can attach this metadata to resources
-     * (capabilities, partnerships, and so on) for any purpose.</p>
-     */
     inline CreateTransformerRequest& WithTags(Aws::Vector<Tag>&& value) { SetTags(std::move(value)); return *this;}
-
-    /**
-     * <p>Specifies the key-value pairs assigned to ARNs that you can use to group and
-     * search for resources by type. You can attach this metadata to resources
-     * (capabilities, partnerships, and so on) for any purpose.</p>
-     */
     inline CreateTransformerRequest& AddTags(const Tag& value) { m_tagsHasBeenSet = true; m_tags.push_back(value); return *this; }
-
-    /**
-     * <p>Specifies the key-value pairs assigned to ARNs that you can use to group and
-     * search for resources by type. You can attach this metadata to resources
-     * (capabilities, partnerships, and so on) for any purpose.</p>
-     */
     inline CreateTransformerRequest& AddTags(Tag&& value) { m_tagsHasBeenSet = true; m_tags.push_back(std::move(value)); return *this; }
+    ///@}
 
+    ///@{
+    /**
+     * <p>Specify the <code>InputConversion</code> object, which contains the format
+     * options for the inbound transformation.</p>
+     */
+    inline const InputConversion& GetInputConversion() const{ return m_inputConversion; }
+    inline bool InputConversionHasBeenSet() const { return m_inputConversionHasBeenSet; }
+    inline void SetInputConversion(const InputConversion& value) { m_inputConversionHasBeenSet = true; m_inputConversion = value; }
+    inline void SetInputConversion(InputConversion&& value) { m_inputConversionHasBeenSet = true; m_inputConversion = std::move(value); }
+    inline CreateTransformerRequest& WithInputConversion(const InputConversion& value) { SetInputConversion(value); return *this;}
+    inline CreateTransformerRequest& WithInputConversion(InputConversion&& value) { SetInputConversion(std::move(value)); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>Specify the structure that contains the mapping template and its language
+     * (either XSLT or JSONATA).</p>
+     */
+    inline const Mapping& GetMapping() const{ return m_mapping; }
+    inline bool MappingHasBeenSet() const { return m_mappingHasBeenSet; }
+    inline void SetMapping(const Mapping& value) { m_mappingHasBeenSet = true; m_mapping = value; }
+    inline void SetMapping(Mapping&& value) { m_mappingHasBeenSet = true; m_mapping = std::move(value); }
+    inline CreateTransformerRequest& WithMapping(const Mapping& value) { SetMapping(value); return *this;}
+    inline CreateTransformerRequest& WithMapping(Mapping&& value) { SetMapping(std::move(value)); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>A structure that contains the <code>OutputConversion</code> object, which
+     * contains the format options for the outbound transformation.</p>
+     */
+    inline const OutputConversion& GetOutputConversion() const{ return m_outputConversion; }
+    inline bool OutputConversionHasBeenSet() const { return m_outputConversionHasBeenSet; }
+    inline void SetOutputConversion(const OutputConversion& value) { m_outputConversionHasBeenSet = true; m_outputConversion = value; }
+    inline void SetOutputConversion(OutputConversion&& value) { m_outputConversionHasBeenSet = true; m_outputConversion = std::move(value); }
+    inline CreateTransformerRequest& WithOutputConversion(const OutputConversion& value) { SetOutputConversion(value); return *this;}
+    inline CreateTransformerRequest& WithOutputConversion(OutputConversion&& value) { SetOutputConversion(std::move(value)); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>Specify a structure that contains the Amazon S3 bucket and an array of the
+     * corresponding keys used to identify the location for your sample documents.</p>
+     */
+    inline const SampleDocuments& GetSampleDocuments() const{ return m_sampleDocuments; }
+    inline bool SampleDocumentsHasBeenSet() const { return m_sampleDocumentsHasBeenSet; }
+    inline void SetSampleDocuments(const SampleDocuments& value) { m_sampleDocumentsHasBeenSet = true; m_sampleDocuments = value; }
+    inline void SetSampleDocuments(SampleDocuments&& value) { m_sampleDocumentsHasBeenSet = true; m_sampleDocuments = std::move(value); }
+    inline CreateTransformerRequest& WithSampleDocuments(const SampleDocuments& value) { SetSampleDocuments(value); return *this;}
+    inline CreateTransformerRequest& WithSampleDocuments(SampleDocuments&& value) { SetSampleDocuments(std::move(value)); return *this;}
+    ///@}
   private:
 
     Aws::String m_name;
     bool m_nameHasBeenSet = false;
-
-    FileFormat m_fileFormat;
-    bool m_fileFormatHasBeenSet = false;
-
-    Aws::String m_mappingTemplate;
-    bool m_mappingTemplateHasBeenSet = false;
-
-    EdiType m_ediType;
-    bool m_ediTypeHasBeenSet = false;
-
-    Aws::String m_sampleDocument;
-    bool m_sampleDocumentHasBeenSet = false;
 
     Aws::String m_clientToken;
     bool m_clientTokenHasBeenSet = false;
 
     Aws::Vector<Tag> m_tags;
     bool m_tagsHasBeenSet = false;
+
+    InputConversion m_inputConversion;
+    bool m_inputConversionHasBeenSet = false;
+
+    Mapping m_mapping;
+    bool m_mappingHasBeenSet = false;
+
+    OutputConversion m_outputConversion;
+    bool m_outputConversionHasBeenSet = false;
+
+    SampleDocuments m_sampleDocuments;
+    bool m_sampleDocumentsHasBeenSet = false;
   };
 
 } // namespace Model

@@ -39,252 +39,107 @@ namespace Model
     AWS_DEADLINE_API void AddQueryStringParameters(Aws::Http::URI& uri) const override;
 
 
-    /**
-     * <p>The display names of a list of fleets.</p>
-     */
-    inline const Aws::String& GetDisplayName() const{ return m_displayName; }
-
-    /**
-     * <p>The display names of a list of fleets.</p>
-     */
-    inline bool DisplayNameHasBeenSet() const { return m_displayNameHasBeenSet; }
-
-    /**
-     * <p>The display names of a list of fleets.</p>
-     */
-    inline void SetDisplayName(const Aws::String& value) { m_displayNameHasBeenSet = true; m_displayName = value; }
-
-    /**
-     * <p>The display names of a list of fleets.</p>
-     */
-    inline void SetDisplayName(Aws::String&& value) { m_displayNameHasBeenSet = true; m_displayName = std::move(value); }
-
-    /**
-     * <p>The display names of a list of fleets.</p>
-     */
-    inline void SetDisplayName(const char* value) { m_displayNameHasBeenSet = true; m_displayName.assign(value); }
-
-    /**
-     * <p>The display names of a list of fleets.</p>
-     */
-    inline ListFleetsRequest& WithDisplayName(const Aws::String& value) { SetDisplayName(value); return *this;}
-
-    /**
-     * <p>The display names of a list of fleets.</p>
-     */
-    inline ListFleetsRequest& WithDisplayName(Aws::String&& value) { SetDisplayName(std::move(value)); return *this;}
-
-    /**
-     * <p>The display names of a list of fleets.</p>
-     */
-    inline ListFleetsRequest& WithDisplayName(const char* value) { SetDisplayName(value); return *this;}
-
-
+    ///@{
     /**
      * <p>The farm ID of the fleets.</p>
      */
     inline const Aws::String& GetFarmId() const{ return m_farmId; }
-
-    /**
-     * <p>The farm ID of the fleets.</p>
-     */
     inline bool FarmIdHasBeenSet() const { return m_farmIdHasBeenSet; }
-
-    /**
-     * <p>The farm ID of the fleets.</p>
-     */
     inline void SetFarmId(const Aws::String& value) { m_farmIdHasBeenSet = true; m_farmId = value; }
-
-    /**
-     * <p>The farm ID of the fleets.</p>
-     */
     inline void SetFarmId(Aws::String&& value) { m_farmIdHasBeenSet = true; m_farmId = std::move(value); }
-
-    /**
-     * <p>The farm ID of the fleets.</p>
-     */
     inline void SetFarmId(const char* value) { m_farmIdHasBeenSet = true; m_farmId.assign(value); }
-
-    /**
-     * <p>The farm ID of the fleets.</p>
-     */
     inline ListFleetsRequest& WithFarmId(const Aws::String& value) { SetFarmId(value); return *this;}
-
-    /**
-     * <p>The farm ID of the fleets.</p>
-     */
     inline ListFleetsRequest& WithFarmId(Aws::String&& value) { SetFarmId(std::move(value)); return *this;}
-
-    /**
-     * <p>The farm ID of the fleets.</p>
-     */
     inline ListFleetsRequest& WithFarmId(const char* value) { SetFarmId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p>The maximum number of results to return. Use this parameter with
-     * <code>NextToken</code> to get results as a set of sequential pages.</p>
+     * <p>The principal ID of the members to include in the fleet.</p>
      */
-    inline int GetMaxResults() const{ return m_maxResults; }
+    inline const Aws::String& GetPrincipalId() const{ return m_principalId; }
+    inline bool PrincipalIdHasBeenSet() const { return m_principalIdHasBeenSet; }
+    inline void SetPrincipalId(const Aws::String& value) { m_principalIdHasBeenSet = true; m_principalId = value; }
+    inline void SetPrincipalId(Aws::String&& value) { m_principalIdHasBeenSet = true; m_principalId = std::move(value); }
+    inline void SetPrincipalId(const char* value) { m_principalIdHasBeenSet = true; m_principalId.assign(value); }
+    inline ListFleetsRequest& WithPrincipalId(const Aws::String& value) { SetPrincipalId(value); return *this;}
+    inline ListFleetsRequest& WithPrincipalId(Aws::String&& value) { SetPrincipalId(std::move(value)); return *this;}
+    inline ListFleetsRequest& WithPrincipalId(const char* value) { SetPrincipalId(value); return *this;}
+    ///@}
 
+    ///@{
     /**
-     * <p>The maximum number of results to return. Use this parameter with
-     * <code>NextToken</code> to get results as a set of sequential pages.</p>
+     * <p>The display names of a list of fleets.</p>  <p>This field can
+     * store any content. Escape or encode this content before displaying it on a
+     * webpage or any other system that might interpret the content of this field.</p>
+     * 
      */
-    inline bool MaxResultsHasBeenSet() const { return m_maxResultsHasBeenSet; }
+    inline const Aws::String& GetDisplayName() const{ return m_displayName; }
+    inline bool DisplayNameHasBeenSet() const { return m_displayNameHasBeenSet; }
+    inline void SetDisplayName(const Aws::String& value) { m_displayNameHasBeenSet = true; m_displayName = value; }
+    inline void SetDisplayName(Aws::String&& value) { m_displayNameHasBeenSet = true; m_displayName = std::move(value); }
+    inline void SetDisplayName(const char* value) { m_displayNameHasBeenSet = true; m_displayName.assign(value); }
+    inline ListFleetsRequest& WithDisplayName(const Aws::String& value) { SetDisplayName(value); return *this;}
+    inline ListFleetsRequest& WithDisplayName(Aws::String&& value) { SetDisplayName(std::move(value)); return *this;}
+    inline ListFleetsRequest& WithDisplayName(const char* value) { SetDisplayName(value); return *this;}
+    ///@}
 
+    ///@{
     /**
-     * <p>The maximum number of results to return. Use this parameter with
-     * <code>NextToken</code> to get results as a set of sequential pages.</p>
+     * <p>The status of the fleet.</p>
      */
-    inline void SetMaxResults(int value) { m_maxResultsHasBeenSet = true; m_maxResults = value; }
+    inline const FleetStatus& GetStatus() const{ return m_status; }
+    inline bool StatusHasBeenSet() const { return m_statusHasBeenSet; }
+    inline void SetStatus(const FleetStatus& value) { m_statusHasBeenSet = true; m_status = value; }
+    inline void SetStatus(FleetStatus&& value) { m_statusHasBeenSet = true; m_status = std::move(value); }
+    inline ListFleetsRequest& WithStatus(const FleetStatus& value) { SetStatus(value); return *this;}
+    inline ListFleetsRequest& WithStatus(FleetStatus&& value) { SetStatus(std::move(value)); return *this;}
+    ///@}
 
-    /**
-     * <p>The maximum number of results to return. Use this parameter with
-     * <code>NextToken</code> to get results as a set of sequential pages.</p>
-     */
-    inline ListFleetsRequest& WithMaxResults(int value) { SetMaxResults(value); return *this;}
-
-
+    ///@{
     /**
      * <p>The token for the next set of results, or <code>null</code> to start from the
      * beginning.</p>
      */
     inline const Aws::String& GetNextToken() const{ return m_nextToken; }
-
-    /**
-     * <p>The token for the next set of results, or <code>null</code> to start from the
-     * beginning.</p>
-     */
     inline bool NextTokenHasBeenSet() const { return m_nextTokenHasBeenSet; }
-
-    /**
-     * <p>The token for the next set of results, or <code>null</code> to start from the
-     * beginning.</p>
-     */
     inline void SetNextToken(const Aws::String& value) { m_nextTokenHasBeenSet = true; m_nextToken = value; }
-
-    /**
-     * <p>The token for the next set of results, or <code>null</code> to start from the
-     * beginning.</p>
-     */
     inline void SetNextToken(Aws::String&& value) { m_nextTokenHasBeenSet = true; m_nextToken = std::move(value); }
-
-    /**
-     * <p>The token for the next set of results, or <code>null</code> to start from the
-     * beginning.</p>
-     */
     inline void SetNextToken(const char* value) { m_nextTokenHasBeenSet = true; m_nextToken.assign(value); }
-
-    /**
-     * <p>The token for the next set of results, or <code>null</code> to start from the
-     * beginning.</p>
-     */
     inline ListFleetsRequest& WithNextToken(const Aws::String& value) { SetNextToken(value); return *this;}
-
-    /**
-     * <p>The token for the next set of results, or <code>null</code> to start from the
-     * beginning.</p>
-     */
     inline ListFleetsRequest& WithNextToken(Aws::String&& value) { SetNextToken(std::move(value)); return *this;}
-
-    /**
-     * <p>The token for the next set of results, or <code>null</code> to start from the
-     * beginning.</p>
-     */
     inline ListFleetsRequest& WithNextToken(const char* value) { SetNextToken(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p>The principal ID of the members to include in the fleet.</p>
+     * <p>The maximum number of results to return. Use this parameter with
+     * <code>NextToken</code> to get results as a set of sequential pages.</p>
      */
-    inline const Aws::String& GetPrincipalId() const{ return m_principalId; }
-
-    /**
-     * <p>The principal ID of the members to include in the fleet.</p>
-     */
-    inline bool PrincipalIdHasBeenSet() const { return m_principalIdHasBeenSet; }
-
-    /**
-     * <p>The principal ID of the members to include in the fleet.</p>
-     */
-    inline void SetPrincipalId(const Aws::String& value) { m_principalIdHasBeenSet = true; m_principalId = value; }
-
-    /**
-     * <p>The principal ID of the members to include in the fleet.</p>
-     */
-    inline void SetPrincipalId(Aws::String&& value) { m_principalIdHasBeenSet = true; m_principalId = std::move(value); }
-
-    /**
-     * <p>The principal ID of the members to include in the fleet.</p>
-     */
-    inline void SetPrincipalId(const char* value) { m_principalIdHasBeenSet = true; m_principalId.assign(value); }
-
-    /**
-     * <p>The principal ID of the members to include in the fleet.</p>
-     */
-    inline ListFleetsRequest& WithPrincipalId(const Aws::String& value) { SetPrincipalId(value); return *this;}
-
-    /**
-     * <p>The principal ID of the members to include in the fleet.</p>
-     */
-    inline ListFleetsRequest& WithPrincipalId(Aws::String&& value) { SetPrincipalId(std::move(value)); return *this;}
-
-    /**
-     * <p>The principal ID of the members to include in the fleet.</p>
-     */
-    inline ListFleetsRequest& WithPrincipalId(const char* value) { SetPrincipalId(value); return *this;}
-
-
-    /**
-     * <p>The status of the fleet.</p>
-     */
-    inline const FleetStatus& GetStatus() const{ return m_status; }
-
-    /**
-     * <p>The status of the fleet.</p>
-     */
-    inline bool StatusHasBeenSet() const { return m_statusHasBeenSet; }
-
-    /**
-     * <p>The status of the fleet.</p>
-     */
-    inline void SetStatus(const FleetStatus& value) { m_statusHasBeenSet = true; m_status = value; }
-
-    /**
-     * <p>The status of the fleet.</p>
-     */
-    inline void SetStatus(FleetStatus&& value) { m_statusHasBeenSet = true; m_status = std::move(value); }
-
-    /**
-     * <p>The status of the fleet.</p>
-     */
-    inline ListFleetsRequest& WithStatus(const FleetStatus& value) { SetStatus(value); return *this;}
-
-    /**
-     * <p>The status of the fleet.</p>
-     */
-    inline ListFleetsRequest& WithStatus(FleetStatus&& value) { SetStatus(std::move(value)); return *this;}
-
+    inline int GetMaxResults() const{ return m_maxResults; }
+    inline bool MaxResultsHasBeenSet() const { return m_maxResultsHasBeenSet; }
+    inline void SetMaxResults(int value) { m_maxResultsHasBeenSet = true; m_maxResults = value; }
+    inline ListFleetsRequest& WithMaxResults(int value) { SetMaxResults(value); return *this;}
+    ///@}
   private:
-
-    Aws::String m_displayName;
-    bool m_displayNameHasBeenSet = false;
 
     Aws::String m_farmId;
     bool m_farmIdHasBeenSet = false;
 
-    int m_maxResults;
-    bool m_maxResultsHasBeenSet = false;
+    Aws::String m_principalId;
+    bool m_principalIdHasBeenSet = false;
+
+    Aws::String m_displayName;
+    bool m_displayNameHasBeenSet = false;
+
+    FleetStatus m_status;
+    bool m_statusHasBeenSet = false;
 
     Aws::String m_nextToken;
     bool m_nextTokenHasBeenSet = false;
 
-    Aws::String m_principalId;
-    bool m_principalIdHasBeenSet = false;
-
-    FleetStatus m_status;
-    bool m_statusHasBeenSet = false;
+    int m_maxResults;
+    bool m_maxResultsHasBeenSet = false;
   };
 
 } // namespace Model

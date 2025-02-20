@@ -22,6 +22,7 @@ RuleAction::RuleAction() :
     m_addHeaderHasBeenSet(false),
     m_archiveHasBeenSet(false),
     m_deliverToMailboxHasBeenSet(false),
+    m_deliverToQBusinessHasBeenSet(false),
     m_dropHasBeenSet(false),
     m_relayHasBeenSet(false),
     m_replaceRecipientHasBeenSet(false),
@@ -30,15 +31,8 @@ RuleAction::RuleAction() :
 {
 }
 
-RuleAction::RuleAction(JsonView jsonValue) : 
-    m_addHeaderHasBeenSet(false),
-    m_archiveHasBeenSet(false),
-    m_deliverToMailboxHasBeenSet(false),
-    m_dropHasBeenSet(false),
-    m_relayHasBeenSet(false),
-    m_replaceRecipientHasBeenSet(false),
-    m_sendHasBeenSet(false),
-    m_writeToS3HasBeenSet(false)
+RuleAction::RuleAction(JsonView jsonValue)
+  : RuleAction()
 {
   *this = jsonValue;
 }
@@ -64,6 +58,13 @@ RuleAction& RuleAction::operator =(JsonView jsonValue)
     m_deliverToMailbox = jsonValue.GetObject("DeliverToMailbox");
 
     m_deliverToMailboxHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("DeliverToQBusiness"))
+  {
+    m_deliverToQBusiness = jsonValue.GetObject("DeliverToQBusiness");
+
+    m_deliverToQBusinessHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("Drop"))
@@ -123,6 +124,12 @@ JsonValue RuleAction::Jsonize() const
   if(m_deliverToMailboxHasBeenSet)
   {
    payload.WithObject("DeliverToMailbox", m_deliverToMailbox.Jsonize());
+
+  }
+
+  if(m_deliverToQBusinessHasBeenSet)
+  {
+   payload.WithObject("DeliverToQBusiness", m_deliverToQBusiness.Jsonize());
 
   }
 

@@ -23,6 +23,7 @@ DataSourceRunSummary::DataSourceRunSummary() :
     m_dataSourceIdHasBeenSet(false),
     m_errorMessageHasBeenSet(false),
     m_idHasBeenSet(false),
+    m_lineageSummaryHasBeenSet(false),
     m_projectIdHasBeenSet(false),
     m_runStatisticsForAssetsHasBeenSet(false),
     m_startedAtHasBeenSet(false),
@@ -35,20 +36,8 @@ DataSourceRunSummary::DataSourceRunSummary() :
 {
 }
 
-DataSourceRunSummary::DataSourceRunSummary(JsonView jsonValue) : 
-    m_createdAtHasBeenSet(false),
-    m_dataSourceIdHasBeenSet(false),
-    m_errorMessageHasBeenSet(false),
-    m_idHasBeenSet(false),
-    m_projectIdHasBeenSet(false),
-    m_runStatisticsForAssetsHasBeenSet(false),
-    m_startedAtHasBeenSet(false),
-    m_status(DataSourceRunStatus::NOT_SET),
-    m_statusHasBeenSet(false),
-    m_stoppedAtHasBeenSet(false),
-    m_type(DataSourceRunType::NOT_SET),
-    m_typeHasBeenSet(false),
-    m_updatedAtHasBeenSet(false)
+DataSourceRunSummary::DataSourceRunSummary(JsonView jsonValue)
+  : DataSourceRunSummary()
 {
   *this = jsonValue;
 }
@@ -81,6 +70,13 @@ DataSourceRunSummary& DataSourceRunSummary::operator =(JsonView jsonValue)
     m_id = jsonValue.GetString("id");
 
     m_idHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("lineageSummary"))
+  {
+    m_lineageSummary = jsonValue.GetObject("lineageSummary");
+
+    m_lineageSummaryHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("projectId"))
@@ -159,6 +155,12 @@ JsonValue DataSourceRunSummary::Jsonize() const
   if(m_idHasBeenSet)
   {
    payload.WithString("id", m_id);
+
+  }
+
+  if(m_lineageSummaryHasBeenSet)
+  {
+   payload.WithObject("lineageSummary", m_lineageSummary.Jsonize());
 
   }
 

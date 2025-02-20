@@ -6,27 +6,39 @@
 #pragma once
 #include <aws/panorama/Panorama_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/panorama/PanoramaServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/panorama/PanoramaErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Panorama
 {
+  AWS_PANORAMA_API extern const char SERVICE_NAME[];
   /**
    * <p><fullname>AWS Panorama</fullname> <p> <b>Overview</b> </p> <p>This is the
    * <i>AWS Panorama API Reference</i>. For an introduction to the service, see <a
    * href="https://docs.aws.amazon.com/panorama/latest/dev/panorama-welcome.html">What
    * is AWS Panorama?</a> in the <i>AWS Panorama Developer Guide</i>.</p></p>
    */
-  class AWS_PANORAMA_API PanoramaClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<PanoramaClient>
+  class AWS_PANORAMA_API PanoramaClient : smithy::client::AwsSmithyClientT<Aws::Panorama::SERVICE_NAME,
+      Aws::Panorama::PanoramaClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      PanoramaEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::PanoramaErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<PanoramaClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Panorama"; }
 
       typedef PanoramaClientConfiguration ClientConfigurationType;
       typedef PanoramaEndpointProvider EndpointProviderType;
@@ -568,13 +580,13 @@ namespace Panorama
          * href="http://docs.aws.amazon.com/goto/WebAPI/panorama-2019-07-24/ListApplicationInstances">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListApplicationInstancesOutcome ListApplicationInstances(const Model::ListApplicationInstancesRequest& request) const;
+        virtual Model::ListApplicationInstancesOutcome ListApplicationInstances(const Model::ListApplicationInstancesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListApplicationInstances that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListApplicationInstancesRequestT = Model::ListApplicationInstancesRequest>
-        Model::ListApplicationInstancesOutcomeCallable ListApplicationInstancesCallable(const ListApplicationInstancesRequestT& request) const
+        Model::ListApplicationInstancesOutcomeCallable ListApplicationInstancesCallable(const ListApplicationInstancesRequestT& request = {}) const
         {
             return SubmitCallable(&PanoramaClient::ListApplicationInstances, request);
         }
@@ -583,7 +595,7 @@ namespace Panorama
          * An Async wrapper for ListApplicationInstances that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListApplicationInstancesRequestT = Model::ListApplicationInstancesRequest>
-        void ListApplicationInstancesAsync(const ListApplicationInstancesRequestT& request, const ListApplicationInstancesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListApplicationInstancesAsync(const ListApplicationInstancesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListApplicationInstancesRequestT& request = {}) const
         {
             return SubmitAsync(&PanoramaClient::ListApplicationInstances, request, handler, context);
         }
@@ -593,13 +605,13 @@ namespace Panorama
          * href="http://docs.aws.amazon.com/goto/WebAPI/panorama-2019-07-24/ListDevices">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDevicesOutcome ListDevices(const Model::ListDevicesRequest& request) const;
+        virtual Model::ListDevicesOutcome ListDevices(const Model::ListDevicesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDevices that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDevicesRequestT = Model::ListDevicesRequest>
-        Model::ListDevicesOutcomeCallable ListDevicesCallable(const ListDevicesRequestT& request) const
+        Model::ListDevicesOutcomeCallable ListDevicesCallable(const ListDevicesRequestT& request = {}) const
         {
             return SubmitCallable(&PanoramaClient::ListDevices, request);
         }
@@ -608,7 +620,7 @@ namespace Panorama
          * An Async wrapper for ListDevices that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDevicesRequestT = Model::ListDevicesRequest>
-        void ListDevicesAsync(const ListDevicesRequestT& request, const ListDevicesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDevicesAsync(const ListDevicesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDevicesRequestT& request = {}) const
         {
             return SubmitAsync(&PanoramaClient::ListDevices, request, handler, context);
         }
@@ -618,13 +630,13 @@ namespace Panorama
          * href="http://docs.aws.amazon.com/goto/WebAPI/panorama-2019-07-24/ListDevicesJobs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDevicesJobsOutcome ListDevicesJobs(const Model::ListDevicesJobsRequest& request) const;
+        virtual Model::ListDevicesJobsOutcome ListDevicesJobs(const Model::ListDevicesJobsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDevicesJobs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDevicesJobsRequestT = Model::ListDevicesJobsRequest>
-        Model::ListDevicesJobsOutcomeCallable ListDevicesJobsCallable(const ListDevicesJobsRequestT& request) const
+        Model::ListDevicesJobsOutcomeCallable ListDevicesJobsCallable(const ListDevicesJobsRequestT& request = {}) const
         {
             return SubmitCallable(&PanoramaClient::ListDevicesJobs, request);
         }
@@ -633,7 +645,7 @@ namespace Panorama
          * An Async wrapper for ListDevicesJobs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDevicesJobsRequestT = Model::ListDevicesJobsRequest>
-        void ListDevicesJobsAsync(const ListDevicesJobsRequestT& request, const ListDevicesJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDevicesJobsAsync(const ListDevicesJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDevicesJobsRequestT& request = {}) const
         {
             return SubmitAsync(&PanoramaClient::ListDevicesJobs, request, handler, context);
         }
@@ -643,13 +655,13 @@ namespace Panorama
          * href="http://docs.aws.amazon.com/goto/WebAPI/panorama-2019-07-24/ListNodeFromTemplateJobs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListNodeFromTemplateJobsOutcome ListNodeFromTemplateJobs(const Model::ListNodeFromTemplateJobsRequest& request) const;
+        virtual Model::ListNodeFromTemplateJobsOutcome ListNodeFromTemplateJobs(const Model::ListNodeFromTemplateJobsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListNodeFromTemplateJobs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListNodeFromTemplateJobsRequestT = Model::ListNodeFromTemplateJobsRequest>
-        Model::ListNodeFromTemplateJobsOutcomeCallable ListNodeFromTemplateJobsCallable(const ListNodeFromTemplateJobsRequestT& request) const
+        Model::ListNodeFromTemplateJobsOutcomeCallable ListNodeFromTemplateJobsCallable(const ListNodeFromTemplateJobsRequestT& request = {}) const
         {
             return SubmitCallable(&PanoramaClient::ListNodeFromTemplateJobs, request);
         }
@@ -658,7 +670,7 @@ namespace Panorama
          * An Async wrapper for ListNodeFromTemplateJobs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListNodeFromTemplateJobsRequestT = Model::ListNodeFromTemplateJobsRequest>
-        void ListNodeFromTemplateJobsAsync(const ListNodeFromTemplateJobsRequestT& request, const ListNodeFromTemplateJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListNodeFromTemplateJobsAsync(const ListNodeFromTemplateJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListNodeFromTemplateJobsRequestT& request = {}) const
         {
             return SubmitAsync(&PanoramaClient::ListNodeFromTemplateJobs, request, handler, context);
         }
@@ -668,13 +680,13 @@ namespace Panorama
          * href="http://docs.aws.amazon.com/goto/WebAPI/panorama-2019-07-24/ListNodes">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListNodesOutcome ListNodes(const Model::ListNodesRequest& request) const;
+        virtual Model::ListNodesOutcome ListNodes(const Model::ListNodesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListNodes that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListNodesRequestT = Model::ListNodesRequest>
-        Model::ListNodesOutcomeCallable ListNodesCallable(const ListNodesRequestT& request) const
+        Model::ListNodesOutcomeCallable ListNodesCallable(const ListNodesRequestT& request = {}) const
         {
             return SubmitCallable(&PanoramaClient::ListNodes, request);
         }
@@ -683,7 +695,7 @@ namespace Panorama
          * An Async wrapper for ListNodes that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListNodesRequestT = Model::ListNodesRequest>
-        void ListNodesAsync(const ListNodesRequestT& request, const ListNodesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListNodesAsync(const ListNodesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListNodesRequestT& request = {}) const
         {
             return SubmitAsync(&PanoramaClient::ListNodes, request, handler, context);
         }
@@ -693,13 +705,13 @@ namespace Panorama
          * href="http://docs.aws.amazon.com/goto/WebAPI/panorama-2019-07-24/ListPackageImportJobs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListPackageImportJobsOutcome ListPackageImportJobs(const Model::ListPackageImportJobsRequest& request) const;
+        virtual Model::ListPackageImportJobsOutcome ListPackageImportJobs(const Model::ListPackageImportJobsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListPackageImportJobs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListPackageImportJobsRequestT = Model::ListPackageImportJobsRequest>
-        Model::ListPackageImportJobsOutcomeCallable ListPackageImportJobsCallable(const ListPackageImportJobsRequestT& request) const
+        Model::ListPackageImportJobsOutcomeCallable ListPackageImportJobsCallable(const ListPackageImportJobsRequestT& request = {}) const
         {
             return SubmitCallable(&PanoramaClient::ListPackageImportJobs, request);
         }
@@ -708,7 +720,7 @@ namespace Panorama
          * An Async wrapper for ListPackageImportJobs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListPackageImportJobsRequestT = Model::ListPackageImportJobsRequest>
-        void ListPackageImportJobsAsync(const ListPackageImportJobsRequestT& request, const ListPackageImportJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListPackageImportJobsAsync(const ListPackageImportJobsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListPackageImportJobsRequestT& request = {}) const
         {
             return SubmitAsync(&PanoramaClient::ListPackageImportJobs, request, handler, context);
         }
@@ -718,13 +730,13 @@ namespace Panorama
          * href="http://docs.aws.amazon.com/goto/WebAPI/panorama-2019-07-24/ListPackages">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListPackagesOutcome ListPackages(const Model::ListPackagesRequest& request) const;
+        virtual Model::ListPackagesOutcome ListPackages(const Model::ListPackagesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListPackages that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListPackagesRequestT = Model::ListPackagesRequest>
-        Model::ListPackagesOutcomeCallable ListPackagesCallable(const ListPackagesRequestT& request) const
+        Model::ListPackagesOutcomeCallable ListPackagesCallable(const ListPackagesRequestT& request = {}) const
         {
             return SubmitCallable(&PanoramaClient::ListPackages, request);
         }
@@ -733,7 +745,7 @@ namespace Panorama
          * An Async wrapper for ListPackages that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListPackagesRequestT = Model::ListPackagesRequest>
-        void ListPackagesAsync(const ListPackagesRequestT& request, const ListPackagesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListPackagesAsync(const ListPackagesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListPackagesRequestT& request = {}) const
         {
             return SubmitAsync(&PanoramaClient::ListPackages, request, handler, context);
         }
@@ -948,11 +960,7 @@ namespace Panorama
       std::shared_ptr<PanoramaEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<PanoramaClient>;
-      void init(const PanoramaClientConfiguration& clientConfiguration);
 
-      PanoramaClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<PanoramaEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Panorama

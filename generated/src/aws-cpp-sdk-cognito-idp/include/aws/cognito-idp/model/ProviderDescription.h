@@ -26,7 +26,10 @@ namespace Model
 {
 
   /**
-   * <p>A container for IdP details.</p><p><h3>See Also:</h3>   <a
+   * <p>The details of a user pool identity provider (IdP), including name and
+   * type.</p> <p>This data type is a response parameter of <a
+   * href="https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_ListIdentityProviders.html">ListIdentityProviders</a>.</p><p><h3>See
+   * Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/cognito-idp-2016-04-18/ProviderDescription">AWS
    * API Reference</a></p>
    */
@@ -39,151 +42,62 @@ namespace Model
     AWS_COGNITOIDENTITYPROVIDER_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
-     * <p>The IdP name.</p>
+     * <p>The name of the IdP, for example <code>MySAMLProvider</code>.</p>
      */
     inline const Aws::String& GetProviderName() const{ return m_providerName; }
-
-    /**
-     * <p>The IdP name.</p>
-     */
     inline bool ProviderNameHasBeenSet() const { return m_providerNameHasBeenSet; }
-
-    /**
-     * <p>The IdP name.</p>
-     */
     inline void SetProviderName(const Aws::String& value) { m_providerNameHasBeenSet = true; m_providerName = value; }
-
-    /**
-     * <p>The IdP name.</p>
-     */
     inline void SetProviderName(Aws::String&& value) { m_providerNameHasBeenSet = true; m_providerName = std::move(value); }
-
-    /**
-     * <p>The IdP name.</p>
-     */
     inline void SetProviderName(const char* value) { m_providerNameHasBeenSet = true; m_providerName.assign(value); }
-
-    /**
-     * <p>The IdP name.</p>
-     */
     inline ProviderDescription& WithProviderName(const Aws::String& value) { SetProviderName(value); return *this;}
-
-    /**
-     * <p>The IdP name.</p>
-     */
     inline ProviderDescription& WithProviderName(Aws::String&& value) { SetProviderName(std::move(value)); return *this;}
-
-    /**
-     * <p>The IdP name.</p>
-     */
     inline ProviderDescription& WithProviderName(const char* value) { SetProviderName(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p>The IdP type.</p>
+     * <p>The type of the provider, for example <code>SAML</code>. Amazon Cognito
+     * supports SAML 2.0, OIDC, and social IdPs. User pools list supported social IdPs
+     * by name in this response parameter: Facebook, Google, Login with Amazon, and
+     * Sign in with Apple.</p>
      */
     inline const IdentityProviderTypeType& GetProviderType() const{ return m_providerType; }
-
-    /**
-     * <p>The IdP type.</p>
-     */
     inline bool ProviderTypeHasBeenSet() const { return m_providerTypeHasBeenSet; }
-
-    /**
-     * <p>The IdP type.</p>
-     */
     inline void SetProviderType(const IdentityProviderTypeType& value) { m_providerTypeHasBeenSet = true; m_providerType = value; }
-
-    /**
-     * <p>The IdP type.</p>
-     */
     inline void SetProviderType(IdentityProviderTypeType&& value) { m_providerTypeHasBeenSet = true; m_providerType = std::move(value); }
-
-    /**
-     * <p>The IdP type.</p>
-     */
     inline ProviderDescription& WithProviderType(const IdentityProviderTypeType& value) { SetProviderType(value); return *this;}
-
-    /**
-     * <p>The IdP type.</p>
-     */
     inline ProviderDescription& WithProviderType(IdentityProviderTypeType&& value) { SetProviderType(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p>The date the provider was last modified.</p>
+     * <p>The date and time when the item was modified. Amazon Cognito returns this
+     * timestamp in UNIX epoch time format. Your SDK might render the output in a
+     * human-readable format like ISO 8601 or a Java <code>Date</code> object.</p>
      */
     inline const Aws::Utils::DateTime& GetLastModifiedDate() const{ return m_lastModifiedDate; }
-
-    /**
-     * <p>The date the provider was last modified.</p>
-     */
     inline bool LastModifiedDateHasBeenSet() const { return m_lastModifiedDateHasBeenSet; }
-
-    /**
-     * <p>The date the provider was last modified.</p>
-     */
     inline void SetLastModifiedDate(const Aws::Utils::DateTime& value) { m_lastModifiedDateHasBeenSet = true; m_lastModifiedDate = value; }
-
-    /**
-     * <p>The date the provider was last modified.</p>
-     */
     inline void SetLastModifiedDate(Aws::Utils::DateTime&& value) { m_lastModifiedDateHasBeenSet = true; m_lastModifiedDate = std::move(value); }
-
-    /**
-     * <p>The date the provider was last modified.</p>
-     */
     inline ProviderDescription& WithLastModifiedDate(const Aws::Utils::DateTime& value) { SetLastModifiedDate(value); return *this;}
-
-    /**
-     * <p>The date the provider was last modified.</p>
-     */
     inline ProviderDescription& WithLastModifiedDate(Aws::Utils::DateTime&& value) { SetLastModifiedDate(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The date and time when the item was created. Amazon Cognito returns this
      * timestamp in UNIX epoch time format. Your SDK might render the output in a
      * human-readable format like ISO 8601 or a Java <code>Date</code> object.</p>
      */
     inline const Aws::Utils::DateTime& GetCreationDate() const{ return m_creationDate; }
-
-    /**
-     * <p>The date and time when the item was created. Amazon Cognito returns this
-     * timestamp in UNIX epoch time format. Your SDK might render the output in a
-     * human-readable format like ISO 8601 or a Java <code>Date</code> object.</p>
-     */
     inline bool CreationDateHasBeenSet() const { return m_creationDateHasBeenSet; }
-
-    /**
-     * <p>The date and time when the item was created. Amazon Cognito returns this
-     * timestamp in UNIX epoch time format. Your SDK might render the output in a
-     * human-readable format like ISO 8601 or a Java <code>Date</code> object.</p>
-     */
     inline void SetCreationDate(const Aws::Utils::DateTime& value) { m_creationDateHasBeenSet = true; m_creationDate = value; }
-
-    /**
-     * <p>The date and time when the item was created. Amazon Cognito returns this
-     * timestamp in UNIX epoch time format. Your SDK might render the output in a
-     * human-readable format like ISO 8601 or a Java <code>Date</code> object.</p>
-     */
     inline void SetCreationDate(Aws::Utils::DateTime&& value) { m_creationDateHasBeenSet = true; m_creationDate = std::move(value); }
-
-    /**
-     * <p>The date and time when the item was created. Amazon Cognito returns this
-     * timestamp in UNIX epoch time format. Your SDK might render the output in a
-     * human-readable format like ISO 8601 or a Java <code>Date</code> object.</p>
-     */
     inline ProviderDescription& WithCreationDate(const Aws::Utils::DateTime& value) { SetCreationDate(value); return *this;}
-
-    /**
-     * <p>The date and time when the item was created. Amazon Cognito returns this
-     * timestamp in UNIX epoch time format. Your SDK might render the output in a
-     * human-readable format like ISO 8601 or a Java <code>Date</code> object.</p>
-     */
     inline ProviderDescription& WithCreationDate(Aws::Utils::DateTime&& value) { SetCreationDate(std::move(value)); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_providerName;

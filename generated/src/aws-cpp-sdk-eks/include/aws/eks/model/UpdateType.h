@@ -25,7 +25,10 @@ namespace Model
     AssociateEncryptionConfig,
     AddonUpdate,
     VpcConfigUpdate,
-    AccessConfigUpdate
+    AccessConfigUpdate,
+    UpgradePolicyUpdate,
+    ZonalShiftConfigUpdate,
+    AutoModeUpdate
   };
 
 namespace UpdateTypeMapper

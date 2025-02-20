@@ -19,12 +19,13 @@ namespace Model
 {
 
 OutputArtifact::OutputArtifact() : 
-    m_nameHasBeenSet(false)
+    m_nameHasBeenSet(false),
+    m_filesHasBeenSet(false)
 {
 }
 
-OutputArtifact::OutputArtifact(JsonView jsonValue) : 
-    m_nameHasBeenSet(false)
+OutputArtifact::OutputArtifact(JsonView jsonValue)
+  : OutputArtifact()
 {
   *this = jsonValue;
 }
@@ -38,6 +39,16 @@ OutputArtifact& OutputArtifact::operator =(JsonView jsonValue)
     m_nameHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("files"))
+  {
+    Aws::Utils::Array<JsonView> filesJsonList = jsonValue.GetArray("files");
+    for(unsigned filesIndex = 0; filesIndex < filesJsonList.GetLength(); ++filesIndex)
+    {
+      m_files.push_back(filesJsonList[filesIndex].AsString());
+    }
+    m_filesHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -48,6 +59,17 @@ JsonValue OutputArtifact::Jsonize() const
   if(m_nameHasBeenSet)
   {
    payload.WithString("name", m_name);
+
+  }
+
+  if(m_filesHasBeenSet)
+  {
+   Aws::Utils::Array<JsonValue> filesJsonList(m_files.size());
+   for(unsigned filesIndex = 0; filesIndex < filesJsonList.GetLength(); ++filesIndex)
+   {
+     filesJsonList[filesIndex].AsString(m_files[filesIndex]);
+   }
+   payload.WithArray("files", std::move(filesJsonList));
 
   }
 

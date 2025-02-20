@@ -27,10 +27,8 @@ RegionalConfiguration::RegionalConfiguration() :
 {
 }
 
-RegionalConfiguration::RegionalConfiguration(const XmlNode& xmlNode) : 
-    m_replicationGroupIdHasBeenSet(false),
-    m_replicationGroupRegionHasBeenSet(false),
-    m_reshardingConfigurationHasBeenSet(false)
+RegionalConfiguration::RegionalConfiguration(const XmlNode& xmlNode)
+  : RegionalConfiguration()
 {
   *this = xmlNode;
 }
@@ -88,7 +86,7 @@ void RegionalConfiguration::OutputToStream(Aws::OStream& oStream, const char* lo
       for(auto& item : m_reshardingConfiguration)
       {
         Aws::StringStream reshardingConfigurationSs;
-        reshardingConfigurationSs << location << index << locationValue << ".ReshardingConfiguration." << reshardingConfigurationIdx++;
+        reshardingConfigurationSs << location << index << locationValue << ".ReshardingConfiguration.ReshardingConfiguration." << reshardingConfigurationIdx++;
         item.OutputToStream(oStream, reshardingConfigurationSs.str().c_str());
       }
   }

@@ -22,15 +22,13 @@ NodePropertyOverride::NodePropertyOverride() :
     m_targetNodesHasBeenSet(false),
     m_containerOverridesHasBeenSet(false),
     m_ecsPropertiesOverrideHasBeenSet(false),
-    m_instanceTypesHasBeenSet(false)
+    m_instanceTypesHasBeenSet(false),
+    m_eksPropertiesOverrideHasBeenSet(false)
 {
 }
 
-NodePropertyOverride::NodePropertyOverride(JsonView jsonValue) : 
-    m_targetNodesHasBeenSet(false),
-    m_containerOverridesHasBeenSet(false),
-    m_ecsPropertiesOverrideHasBeenSet(false),
-    m_instanceTypesHasBeenSet(false)
+NodePropertyOverride::NodePropertyOverride(JsonView jsonValue)
+  : NodePropertyOverride()
 {
   *this = jsonValue;
 }
@@ -68,6 +66,13 @@ NodePropertyOverride& NodePropertyOverride::operator =(JsonView jsonValue)
     m_instanceTypesHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("eksPropertiesOverride"))
+  {
+    m_eksPropertiesOverride = jsonValue.GetObject("eksPropertiesOverride");
+
+    m_eksPropertiesOverrideHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -101,6 +106,12 @@ JsonValue NodePropertyOverride::Jsonize() const
      instanceTypesJsonList[instanceTypesIndex].AsString(m_instanceTypes[instanceTypesIndex]);
    }
    payload.WithArray("instanceTypes", std::move(instanceTypesJsonList));
+
+  }
+
+  if(m_eksPropertiesOverrideHasBeenSet)
+  {
+   payload.WithObject("eksPropertiesOverride", m_eksPropertiesOverride.Jsonize());
 
   }
 

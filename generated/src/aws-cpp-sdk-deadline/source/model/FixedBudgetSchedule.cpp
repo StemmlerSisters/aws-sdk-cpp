@@ -19,32 +19,31 @@ namespace Model
 {
 
 FixedBudgetSchedule::FixedBudgetSchedule() : 
-    m_endTimeHasBeenSet(false),
-    m_startTimeHasBeenSet(false)
+    m_startTimeHasBeenSet(false),
+    m_endTimeHasBeenSet(false)
 {
 }
 
-FixedBudgetSchedule::FixedBudgetSchedule(JsonView jsonValue) : 
-    m_endTimeHasBeenSet(false),
-    m_startTimeHasBeenSet(false)
+FixedBudgetSchedule::FixedBudgetSchedule(JsonView jsonValue)
+  : FixedBudgetSchedule()
 {
   *this = jsonValue;
 }
 
 FixedBudgetSchedule& FixedBudgetSchedule::operator =(JsonView jsonValue)
 {
-  if(jsonValue.ValueExists("endTime"))
-  {
-    m_endTime = jsonValue.GetString("endTime");
-
-    m_endTimeHasBeenSet = true;
-  }
-
   if(jsonValue.ValueExists("startTime"))
   {
     m_startTime = jsonValue.GetString("startTime");
 
     m_startTimeHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("endTime"))
+  {
+    m_endTime = jsonValue.GetString("endTime");
+
+    m_endTimeHasBeenSet = true;
   }
 
   return *this;
@@ -54,14 +53,14 @@ JsonValue FixedBudgetSchedule::Jsonize() const
 {
   JsonValue payload;
 
-  if(m_endTimeHasBeenSet)
-  {
-   payload.WithString("endTime", m_endTime.ToGmtString(Aws::Utils::DateFormat::ISO_8601));
-  }
-
   if(m_startTimeHasBeenSet)
   {
    payload.WithString("startTime", m_startTime.ToGmtString(Aws::Utils::DateFormat::ISO_8601));
+  }
+
+  if(m_endTimeHasBeenSet)
+  {
+   payload.WithString("endTime", m_endTime.ToGmtString(Aws::Utils::DateFormat::ISO_8601));
   }
 
   return payload;

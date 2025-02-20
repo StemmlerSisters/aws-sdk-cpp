@@ -6,6 +6,7 @@
 #include <aws/s3-crt/model/CreateMultipartUploadRequest.h>
 #include <aws/core/utils/xml/XmlSerializer.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
+#include <aws/core/utils/UnreferencedParam.h>
 #include <aws/core/http/URI.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 
@@ -55,8 +56,29 @@ CreateMultipartUploadRequest::CreateMultipartUploadRequest() :
     m_expectedBucketOwnerHasBeenSet(false),
     m_checksumAlgorithm(ChecksumAlgorithm::NOT_SET),
     m_checksumAlgorithmHasBeenSet(false),
+    m_checksumType(ChecksumType::NOT_SET),
+    m_checksumTypeHasBeenSet(false),
     m_customizedAccessLogTagHasBeenSet(false)
 {
+}
+
+bool CreateMultipartUploadRequest::HasEmbeddedError(Aws::IOStream &body,
+  const Aws::Http::HeaderValueCollection &header) const
+{
+  // Header is unused
+  AWS_UNREFERENCED_PARAM(header);
+
+  auto readPointer = body.tellg();
+  Utils::Xml::XmlDocument doc = XmlDocument::CreateFromXmlStream(body);
+  body.seekg(readPointer);
+  if (!doc.WasParseSuccessful()) {
+    return false;
+  }
+
+  if (!doc.GetRootElement().IsNull() && doc.GetRootElement().GetName() == Aws::String("Error")) {
+    return true;
+  }
+  return false;
 }
 
 Aws::String CreateMultipartUploadRequest::SerializePayload() const
@@ -269,6 +291,11 @@ Aws::Http::HeaderValueCollection CreateMultipartUploadRequest::GetRequestSpecifi
   if(m_checksumAlgorithmHasBeenSet && m_checksumAlgorithm != ChecksumAlgorithm::NOT_SET)
   {
     headers.emplace("x-amz-checksum-algorithm", ChecksumAlgorithmMapper::GetNameForChecksumAlgorithm(m_checksumAlgorithm));
+  }
+
+  if(m_checksumTypeHasBeenSet && m_checksumType != ChecksumType::NOT_SET)
+  {
+    headers.emplace("x-amz-checksum-type", ChecksumTypeMapper::GetNameForChecksumType(m_checksumType));
   }
 
   return headers;

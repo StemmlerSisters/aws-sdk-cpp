@@ -17,6 +17,7 @@ namespace Model
   {
     NOT_SET,
     F4V,
+    GIF,
     ISMV,
     M2TS,
     M3U8,
@@ -25,6 +26,7 @@ namespace Model
     MP4,
     MPD,
     MXF,
+    OGG,
     WEBM,
     RAW,
     Y4M

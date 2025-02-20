@@ -30,21 +30,13 @@ LaunchTemplateVersion::LaunchTemplateVersion() :
     m_createdByHasBeenSet(false),
     m_defaultVersion(false),
     m_defaultVersionHasBeenSet(false),
-    m_launchTemplateDataHasBeenSet(false)
+    m_launchTemplateDataHasBeenSet(false),
+    m_operatorHasBeenSet(false)
 {
 }
 
-LaunchTemplateVersion::LaunchTemplateVersion(const XmlNode& xmlNode) : 
-    m_launchTemplateIdHasBeenSet(false),
-    m_launchTemplateNameHasBeenSet(false),
-    m_versionNumber(0),
-    m_versionNumberHasBeenSet(false),
-    m_versionDescriptionHasBeenSet(false),
-    m_createTimeHasBeenSet(false),
-    m_createdByHasBeenSet(false),
-    m_defaultVersion(false),
-    m_defaultVersionHasBeenSet(false),
-    m_launchTemplateDataHasBeenSet(false)
+LaunchTemplateVersion::LaunchTemplateVersion(const XmlNode& xmlNode)
+  : LaunchTemplateVersion()
 {
   *this = xmlNode;
 }
@@ -103,6 +95,12 @@ LaunchTemplateVersion& LaunchTemplateVersion::operator =(const XmlNode& xmlNode)
       m_launchTemplateData = launchTemplateDataNode;
       m_launchTemplateDataHasBeenSet = true;
     }
+    XmlNode operatorNode = resultNode.FirstChild("operator");
+    if(!operatorNode.IsNull())
+    {
+      m_operator = operatorNode;
+      m_operatorHasBeenSet = true;
+    }
   }
 
   return *this;
@@ -152,6 +150,13 @@ void LaunchTemplateVersion::OutputToStream(Aws::OStream& oStream, const char* lo
       m_launchTemplateData.OutputToStream(oStream, launchTemplateDataLocationAndMemberSs.str().c_str());
   }
 
+  if(m_operatorHasBeenSet)
+  {
+      Aws::StringStream operatorLocationAndMemberSs;
+      operatorLocationAndMemberSs << location << index << locationValue << ".Operator";
+      m_operator.OutputToStream(oStream, operatorLocationAndMemberSs.str().c_str());
+  }
+
 }
 
 void LaunchTemplateVersion::OutputToStream(Aws::OStream& oStream, const char* location) const
@@ -189,6 +194,12 @@ void LaunchTemplateVersion::OutputToStream(Aws::OStream& oStream, const char* lo
       Aws::String launchTemplateDataLocationAndMember(location);
       launchTemplateDataLocationAndMember += ".LaunchTemplateData";
       m_launchTemplateData.OutputToStream(oStream, launchTemplateDataLocationAndMember.c_str());
+  }
+  if(m_operatorHasBeenSet)
+  {
+      Aws::String operatorLocationAndMember(location);
+      operatorLocationAndMember += ".Operator";
+      m_operator.OutputToStream(oStream, operatorLocationAndMember.c_str());
   }
 }
 

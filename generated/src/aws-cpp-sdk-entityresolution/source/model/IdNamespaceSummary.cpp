@@ -21,6 +21,7 @@ namespace Model
 IdNamespaceSummary::IdNamespaceSummary() : 
     m_createdAtHasBeenSet(false),
     m_descriptionHasBeenSet(false),
+    m_idMappingWorkflowPropertiesHasBeenSet(false),
     m_idNamespaceArnHasBeenSet(false),
     m_idNamespaceNameHasBeenSet(false),
     m_type(IdNamespaceType::NOT_SET),
@@ -29,14 +30,8 @@ IdNamespaceSummary::IdNamespaceSummary() :
 {
 }
 
-IdNamespaceSummary::IdNamespaceSummary(JsonView jsonValue) : 
-    m_createdAtHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_idNamespaceArnHasBeenSet(false),
-    m_idNamespaceNameHasBeenSet(false),
-    m_type(IdNamespaceType::NOT_SET),
-    m_typeHasBeenSet(false),
-    m_updatedAtHasBeenSet(false)
+IdNamespaceSummary::IdNamespaceSummary(JsonView jsonValue)
+  : IdNamespaceSummary()
 {
   *this = jsonValue;
 }
@@ -55,6 +50,16 @@ IdNamespaceSummary& IdNamespaceSummary::operator =(JsonView jsonValue)
     m_description = jsonValue.GetString("description");
 
     m_descriptionHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("idMappingWorkflowProperties"))
+  {
+    Aws::Utils::Array<JsonView> idMappingWorkflowPropertiesJsonList = jsonValue.GetArray("idMappingWorkflowProperties");
+    for(unsigned idMappingWorkflowPropertiesIndex = 0; idMappingWorkflowPropertiesIndex < idMappingWorkflowPropertiesJsonList.GetLength(); ++idMappingWorkflowPropertiesIndex)
+    {
+      m_idMappingWorkflowProperties.push_back(idMappingWorkflowPropertiesJsonList[idMappingWorkflowPropertiesIndex].AsObject());
+    }
+    m_idMappingWorkflowPropertiesHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("idNamespaceArn"))
@@ -100,6 +105,17 @@ JsonValue IdNamespaceSummary::Jsonize() const
   if(m_descriptionHasBeenSet)
   {
    payload.WithString("description", m_description);
+
+  }
+
+  if(m_idMappingWorkflowPropertiesHasBeenSet)
+  {
+   Aws::Utils::Array<JsonValue> idMappingWorkflowPropertiesJsonList(m_idMappingWorkflowProperties.size());
+   for(unsigned idMappingWorkflowPropertiesIndex = 0; idMappingWorkflowPropertiesIndex < idMappingWorkflowPropertiesJsonList.GetLength(); ++idMappingWorkflowPropertiesIndex)
+   {
+     idMappingWorkflowPropertiesJsonList[idMappingWorkflowPropertiesIndex].AsObject(m_idMappingWorkflowProperties[idMappingWorkflowPropertiesIndex].Jsonize());
+   }
+   payload.WithArray("idMappingWorkflowProperties", std::move(idMappingWorkflowPropertiesJsonList));
 
   }
 

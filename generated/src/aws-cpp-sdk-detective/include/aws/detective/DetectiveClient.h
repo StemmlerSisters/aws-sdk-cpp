@@ -6,16 +6,19 @@
 #pragma once
 #include <aws/detective/Detective_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/detective/DetectiveServiceClientModel.h>
-#include <aws/detective/model/DisableOrganizationAdminAccountRequest.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/detective/DetectiveErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Detective
 {
+  AWS_DETECTIVE_API extern const char SERVICE_NAME[];
   /**
    * <p>Detective uses machine learning and purpose-built visualizations to help you
    * to analyze and investigate security issues across your Amazon Web Services
@@ -57,18 +60,26 @@ namespace Detective
    * graph.</p> </li> <li> <p>Decline an invitation to contribute to a behavior
    * graph.</p> </li> <li> <p>Remove their account from a behavior graph.</p> </li>
    * </ul> <p>All API actions are logged as CloudTrail events. See <a
-   * href="https://docs.aws.amazon.com/detective/latest/adminguide/logging-using-cloudtrail.html">Logging
+   * href="https://docs.aws.amazon.com/detective/latest/userguide/logging-using-cloudtrail.html">Logging
    * Detective API Calls with CloudTrail</a>.</p>  <p>We replaced the term
    * "master account" with the term "administrator account". An administrator account
    * is used to centrally manage multiple accounts. In the case of Detective, the
    * administrator account manages the accounts in their behavior graph.</p> 
    */
-  class AWS_DETECTIVE_API DetectiveClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<DetectiveClient>
+  class AWS_DETECTIVE_API DetectiveClient : smithy::client::AwsSmithyClientT<Aws::Detective::SERVICE_NAME,
+      Aws::Detective::DetectiveClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      DetectiveEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::DetectiveErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<DetectiveClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Detective"; }
 
       typedef DetectiveClientConfiguration ClientConfigurationType;
       typedef DetectiveEndpointProvider EndpointProviderType;
@@ -215,13 +226,13 @@ namespace Detective
          * href="http://docs.aws.amazon.com/goto/WebAPI/detective-2018-10-26/CreateGraph">AWS
          * API Reference</a></p>
          */
-        virtual Model::CreateGraphOutcome CreateGraph(const Model::CreateGraphRequest& request) const;
+        virtual Model::CreateGraphOutcome CreateGraph(const Model::CreateGraphRequest& request = {}) const;
 
         /**
          * A Callable wrapper for CreateGraph that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename CreateGraphRequestT = Model::CreateGraphRequest>
-        Model::CreateGraphOutcomeCallable CreateGraphCallable(const CreateGraphRequestT& request) const
+        Model::CreateGraphOutcomeCallable CreateGraphCallable(const CreateGraphRequestT& request = {}) const
         {
             return SubmitCallable(&DetectiveClient::CreateGraph, request);
         }
@@ -230,7 +241,7 @@ namespace Detective
          * An Async wrapper for CreateGraph that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename CreateGraphRequestT = Model::CreateGraphRequest>
-        void CreateGraphAsync(const CreateGraphRequestT& request, const CreateGraphResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void CreateGraphAsync(const CreateGraphResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const CreateGraphRequestT& request = {}) const
         {
             return SubmitAsync(&DetectiveClient::CreateGraph, request, handler, context);
         }
@@ -567,13 +578,13 @@ namespace Detective
          * href="http://docs.aws.amazon.com/goto/WebAPI/detective-2018-10-26/ListGraphs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListGraphsOutcome ListGraphs(const Model::ListGraphsRequest& request) const;
+        virtual Model::ListGraphsOutcome ListGraphs(const Model::ListGraphsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListGraphs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListGraphsRequestT = Model::ListGraphsRequest>
-        Model::ListGraphsOutcomeCallable ListGraphsCallable(const ListGraphsRequestT& request) const
+        Model::ListGraphsOutcomeCallable ListGraphsCallable(const ListGraphsRequestT& request = {}) const
         {
             return SubmitCallable(&DetectiveClient::ListGraphs, request);
         }
@@ -582,7 +593,7 @@ namespace Detective
          * An Async wrapper for ListGraphs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListGraphsRequestT = Model::ListGraphsRequest>
-        void ListGraphsAsync(const ListGraphsRequestT& request, const ListGraphsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListGraphsAsync(const ListGraphsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListGraphsRequestT& request = {}) const
         {
             return SubmitAsync(&DetectiveClient::ListGraphs, request, handler, context);
         }
@@ -656,13 +667,13 @@ namespace Detective
          * href="http://docs.aws.amazon.com/goto/WebAPI/detective-2018-10-26/ListInvitations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListInvitationsOutcome ListInvitations(const Model::ListInvitationsRequest& request) const;
+        virtual Model::ListInvitationsOutcome ListInvitations(const Model::ListInvitationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListInvitations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListInvitationsRequestT = Model::ListInvitationsRequest>
-        Model::ListInvitationsOutcomeCallable ListInvitationsCallable(const ListInvitationsRequestT& request) const
+        Model::ListInvitationsOutcomeCallable ListInvitationsCallable(const ListInvitationsRequestT& request = {}) const
         {
             return SubmitCallable(&DetectiveClient::ListInvitations, request);
         }
@@ -671,7 +682,7 @@ namespace Detective
          * An Async wrapper for ListInvitations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListInvitationsRequestT = Model::ListInvitationsRequest>
-        void ListInvitationsAsync(const ListInvitationsRequestT& request, const ListInvitationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListInvitationsAsync(const ListInvitationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListInvitationsRequestT& request = {}) const
         {
             return SubmitAsync(&DetectiveClient::ListInvitations, request, handler, context);
         }
@@ -712,13 +723,13 @@ namespace Detective
          * href="http://docs.aws.amazon.com/goto/WebAPI/detective-2018-10-26/ListOrganizationAdminAccounts">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListOrganizationAdminAccountsOutcome ListOrganizationAdminAccounts(const Model::ListOrganizationAdminAccountsRequest& request) const;
+        virtual Model::ListOrganizationAdminAccountsOutcome ListOrganizationAdminAccounts(const Model::ListOrganizationAdminAccountsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListOrganizationAdminAccounts that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListOrganizationAdminAccountsRequestT = Model::ListOrganizationAdminAccountsRequest>
-        Model::ListOrganizationAdminAccountsOutcomeCallable ListOrganizationAdminAccountsCallable(const ListOrganizationAdminAccountsRequestT& request) const
+        Model::ListOrganizationAdminAccountsOutcomeCallable ListOrganizationAdminAccountsCallable(const ListOrganizationAdminAccountsRequestT& request = {}) const
         {
             return SubmitCallable(&DetectiveClient::ListOrganizationAdminAccounts, request);
         }
@@ -727,7 +738,7 @@ namespace Detective
          * An Async wrapper for ListOrganizationAdminAccounts that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListOrganizationAdminAccountsRequestT = Model::ListOrganizationAdminAccountsRequest>
-        void ListOrganizationAdminAccountsAsync(const ListOrganizationAdminAccountsRequestT& request, const ListOrganizationAdminAccountsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListOrganizationAdminAccountsAsync(const ListOrganizationAdminAccountsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListOrganizationAdminAccountsRequestT& request = {}) const
         {
             return SubmitAsync(&DetectiveClient::ListOrganizationAdminAccounts, request, handler, context);
         }
@@ -899,7 +910,7 @@ namespace Detective
         }
 
         /**
-         * <p>Starts a data source packages for the behavior graph.</p><p><h3>See
+         * <p>Starts a data source package for the Detective behavior graph.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/detective-2018-10-26/UpdateDatasourcePackages">AWS
          * API Reference</a></p>
@@ -981,11 +992,7 @@ namespace Detective
       std::shared_ptr<DetectiveEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<DetectiveClient>;
-      void init(const DetectiveClientConfiguration& clientConfiguration);
 
-      DetectiveClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<DetectiveEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Detective

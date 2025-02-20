@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/cur/CostandUsageReportService_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/cur/CostandUsageReportServiceServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/cur/CostandUsageReportServiceErrorMarshaller.h>
 
 namespace Aws
 {
 namespace CostandUsageReportService
 {
+  AWS_COSTANDUSAGEREPORTSERVICE_API extern const char SERVICE_NAME[];
   /**
    * <p>You can use the Amazon Web Services Cost and Usage Report API to
    * programmatically create, query, and delete Amazon Web Services Cost and Usage
@@ -28,12 +32,20 @@ namespace CostandUsageReportService
    * Cost and Usage Report API provides the following endpoint:</p> <ul> <li>
    * <p>cur.us-east-1.amazonaws.com</p> </li> </ul>
    */
-  class AWS_COSTANDUSAGEREPORTSERVICE_API CostandUsageReportServiceClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<CostandUsageReportServiceClient>
+  class AWS_COSTANDUSAGEREPORTSERVICE_API CostandUsageReportServiceClient : smithy::client::AwsSmithyClientT<Aws::CostandUsageReportService::SERVICE_NAME,
+      Aws::CostandUsageReportService::CostandUsageReportServiceClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      CostandUsageReportServiceEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::CostandUsageReportServiceErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<CostandUsageReportServiceClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Cost and Usage Report Service"; }
 
       typedef CostandUsageReportServiceClientConfiguration ClientConfigurationType;
       typedef CostandUsageReportServiceEndpointProvider EndpointProviderType;
@@ -118,13 +130,13 @@ namespace CostandUsageReportService
          * href="http://docs.aws.amazon.com/goto/WebAPI/cur-2017-01-06/DescribeReportDefinitions">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeReportDefinitionsOutcome DescribeReportDefinitions(const Model::DescribeReportDefinitionsRequest& request) const;
+        virtual Model::DescribeReportDefinitionsOutcome DescribeReportDefinitions(const Model::DescribeReportDefinitionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeReportDefinitions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeReportDefinitionsRequestT = Model::DescribeReportDefinitionsRequest>
-        Model::DescribeReportDefinitionsOutcomeCallable DescribeReportDefinitionsCallable(const DescribeReportDefinitionsRequestT& request) const
+        Model::DescribeReportDefinitionsOutcomeCallable DescribeReportDefinitionsCallable(const DescribeReportDefinitionsRequestT& request = {}) const
         {
             return SubmitCallable(&CostandUsageReportServiceClient::DescribeReportDefinitions, request);
         }
@@ -133,7 +145,7 @@ namespace CostandUsageReportService
          * An Async wrapper for DescribeReportDefinitions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeReportDefinitionsRequestT = Model::DescribeReportDefinitionsRequest>
-        void DescribeReportDefinitionsAsync(const DescribeReportDefinitionsRequestT& request, const DescribeReportDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeReportDefinitionsAsync(const DescribeReportDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeReportDefinitionsRequestT& request = {}) const
         {
             return SubmitAsync(&CostandUsageReportServiceClient::DescribeReportDefinitions, request, handler, context);
         }
@@ -272,11 +284,7 @@ namespace CostandUsageReportService
       std::shared_ptr<CostandUsageReportServiceEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<CostandUsageReportServiceClient>;
-      void init(const CostandUsageReportServiceClientConfiguration& clientConfiguration);
 
-      CostandUsageReportServiceClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<CostandUsageReportServiceEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace CostandUsageReportService

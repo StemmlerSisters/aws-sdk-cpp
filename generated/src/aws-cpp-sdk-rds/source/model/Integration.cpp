@@ -37,20 +37,8 @@ Integration::Integration() :
 {
 }
 
-Integration::Integration(const XmlNode& xmlNode) : 
-    m_sourceArnHasBeenSet(false),
-    m_targetArnHasBeenSet(false),
-    m_integrationNameHasBeenSet(false),
-    m_integrationArnHasBeenSet(false),
-    m_kMSKeyIdHasBeenSet(false),
-    m_additionalEncryptionContextHasBeenSet(false),
-    m_status(IntegrationStatus::NOT_SET),
-    m_statusHasBeenSet(false),
-    m_tagsHasBeenSet(false),
-    m_createTimeHasBeenSet(false),
-    m_errorsHasBeenSet(false),
-    m_dataFilterHasBeenSet(false),
-    m_descriptionHasBeenSet(false)
+Integration::Integration(const XmlNode& xmlNode)
+  : Integration()
 {
   *this = xmlNode;
 }
@@ -211,7 +199,7 @@ void Integration::OutputToStream(Aws::OStream& oStream, const char* location, un
       for(auto& item : m_tags)
       {
         Aws::StringStream tagsSs;
-        tagsSs << location << index << locationValue << ".Tag." << tagsIdx++;
+        tagsSs << location << index << locationValue << ".Tags.Tag." << tagsIdx++;
         item.OutputToStream(oStream, tagsSs.str().c_str());
       }
   }
@@ -227,7 +215,7 @@ void Integration::OutputToStream(Aws::OStream& oStream, const char* location, un
       for(auto& item : m_errors)
       {
         Aws::StringStream errorsSs;
-        errorsSs << location << index << locationValue << ".IntegrationError." << errorsIdx++;
+        errorsSs << location << index << locationValue << ".Errors.IntegrationError." << errorsIdx++;
         item.OutputToStream(oStream, errorsSs.str().c_str());
       }
   }

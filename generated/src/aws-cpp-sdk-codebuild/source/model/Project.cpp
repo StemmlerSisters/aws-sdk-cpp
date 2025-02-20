@@ -50,43 +50,14 @@ Project::Project() :
     m_projectVisibility(ProjectVisibilityType::NOT_SET),
     m_projectVisibilityHasBeenSet(false),
     m_publicProjectAliasHasBeenSet(false),
-    m_resourceAccessRoleHasBeenSet(false)
+    m_resourceAccessRoleHasBeenSet(false),
+    m_autoRetryLimit(0),
+    m_autoRetryLimitHasBeenSet(false)
 {
 }
 
-Project::Project(JsonView jsonValue) : 
-    m_nameHasBeenSet(false),
-    m_arnHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_sourceHasBeenSet(false),
-    m_secondarySourcesHasBeenSet(false),
-    m_sourceVersionHasBeenSet(false),
-    m_secondarySourceVersionsHasBeenSet(false),
-    m_artifactsHasBeenSet(false),
-    m_secondaryArtifactsHasBeenSet(false),
-    m_cacheHasBeenSet(false),
-    m_environmentHasBeenSet(false),
-    m_serviceRoleHasBeenSet(false),
-    m_timeoutInMinutes(0),
-    m_timeoutInMinutesHasBeenSet(false),
-    m_queuedTimeoutInMinutes(0),
-    m_queuedTimeoutInMinutesHasBeenSet(false),
-    m_encryptionKeyHasBeenSet(false),
-    m_tagsHasBeenSet(false),
-    m_createdHasBeenSet(false),
-    m_lastModifiedHasBeenSet(false),
-    m_webhookHasBeenSet(false),
-    m_vpcConfigHasBeenSet(false),
-    m_badgeHasBeenSet(false),
-    m_logsConfigHasBeenSet(false),
-    m_fileSystemLocationsHasBeenSet(false),
-    m_buildBatchConfigHasBeenSet(false),
-    m_concurrentBuildLimit(0),
-    m_concurrentBuildLimitHasBeenSet(false),
-    m_projectVisibility(ProjectVisibilityType::NOT_SET),
-    m_projectVisibilityHasBeenSet(false),
-    m_publicProjectAliasHasBeenSet(false),
-    m_resourceAccessRoleHasBeenSet(false)
+Project::Project(JsonView jsonValue)
+  : Project()
 {
   *this = jsonValue;
 }
@@ -304,6 +275,13 @@ Project& Project::operator =(JsonView jsonValue)
     m_resourceAccessRoleHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("autoRetryLimit"))
+  {
+    m_autoRetryLimit = jsonValue.GetInteger("autoRetryLimit");
+
+    m_autoRetryLimitHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -498,6 +476,12 @@ JsonValue Project::Jsonize() const
   if(m_resourceAccessRoleHasBeenSet)
   {
    payload.WithString("resourceAccessRole", m_resourceAccessRole);
+
+  }
+
+  if(m_autoRetryLimitHasBeenSet)
+  {
+   payload.WithInteger("autoRetryLimit", m_autoRetryLimit);
 
   }
 

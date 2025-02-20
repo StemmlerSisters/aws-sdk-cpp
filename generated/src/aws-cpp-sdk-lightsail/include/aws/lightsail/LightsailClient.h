@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/lightsail/Lightsail_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/lightsail/LightsailServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/lightsail/LightsailErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Lightsail
 {
+  AWS_LIGHTSAIL_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon Lightsail is the easiest way to get started with Amazon Web Services
    * (Amazon Web Services) for developers who need to build websites or web
@@ -26,7 +30,7 @@ namespace Lightsail
    * price.</p> <p>You can manage your Lightsail resources using the Lightsail
    * console, Lightsail API, Command Line Interface (CLI), or SDKs. For more
    * information about Lightsail concepts and tasks, see the <a
-   * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/lightsail-how-to-set-up-access-keys-to-use-sdk-api-cli">Amazon
+   * href="https://docs.aws.amazon.com/lightsail/latest/userguide/lightsail-how-to-set-up-access-keys-to-use-sdk-api-cli">Amazon
    * Lightsail Developer Guide</a>.</p> <p>This API Reference provides detailed
    * information about the actions, data types, parameters, and errors of the
    * Lightsail service. For more information about the supported Amazon Web Services
@@ -35,12 +39,20 @@ namespace Lightsail
    * Lightsail Endpoints and Quotas</a> in the <i>Amazon Web Services General
    * Reference</i>.</p>
    */
-  class AWS_LIGHTSAIL_API LightsailClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<LightsailClient>
+  class AWS_LIGHTSAIL_API LightsailClient : smithy::client::AwsSmithyClientT<Aws::Lightsail::SERVICE_NAME,
+      Aws::Lightsail::LightsailClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      LightsailEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::LightsailErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<LightsailClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Lightsail"; }
 
       typedef LightsailClientConfiguration ClientConfigurationType;
       typedef LightsailEndpointProvider EndpointProviderType;
@@ -158,7 +170,7 @@ namespace Lightsail
          * disk</code> operation supports tag-based access control via resource tags
          * applied to the resource identified by <code>disk name</code>. For more
          * information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/AttachDisk">AWS
          * API Reference</a></p>
@@ -190,7 +202,7 @@ namespace Lightsail
          * operation supports tag-based access control via resource tags applied to the
          * resource identified by <code>load balancer name</code>. For more information,
          * see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Lightsail
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Lightsail
          * Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/AttachInstancesToLoadBalancer">AWS
          * API Reference</a></p>
@@ -226,7 +238,7 @@ namespace Lightsail
          * operation supports tag-based access control via resource tags applied to the
          * resource identified by <code>load balancer name</code>. For more information,
          * see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/AttachLoadBalancerTlsCertificate">AWS
          * API Reference</a></p>
@@ -282,7 +294,7 @@ namespace Lightsail
          * <code>CloseInstancePublicPorts</code> action supports tag-based access control
          * via resource tags applied to the resource identified by
          * <code>instanceName</code>. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CloseInstancePublicPorts">AWS
          * API Reference</a></p>
@@ -347,7 +359,7 @@ namespace Lightsail
          * resource available in the Lightsail object storage service. Use buckets to store
          * objects such as data and its descriptive metadata. For more information about
          * buckets, see <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/buckets-in-amazon-lightsail">Buckets
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/buckets-in-amazon-lightsail">Buckets
          * in Amazon Lightsail</a> in the <i>Amazon Lightsail Developer
          * Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateBucket">AWS
@@ -381,7 +393,7 @@ namespace Lightsail
          * href="https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_GetBucketAccessKeys.html">GetBucketAccessKeys</a>
          * action to get a list of current access keys for a specific bucket. For more
          * information about access keys, see <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-creating-bucket-access-keys">Creating
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-creating-bucket-access-keys">Creating
          * access keys for a bucket in Amazon Lightsail</a> in the <i>Amazon Lightsail
          * Developer Guide</i>.</p>  <p>The <code>secretAccessKey</code> value
          * is returned only in response to the <code>CreateBucketAccessKey</code> action.
@@ -485,7 +497,7 @@ namespace Lightsail
          * Web Services Region. However, SMS text messaging is not supported in some Amazon
          * Web Services Regions, and SMS text messages cannot be sent to some
          * countries/regions. For more information, see <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-notifications">Notifications
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-notifications">Notifications
          * in Amazon Lightsail</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateContactMethod">AWS
          * API Reference</a></p>
@@ -514,7 +526,7 @@ namespace Lightsail
          * <p>Creates an Amazon Lightsail container service.</p> <p>A Lightsail container
          * service is a compute resource to which you can deploy containers. For more
          * information, see <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-container-services">Container
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-container-services">Container
          * services in Amazon Lightsail</a> in the <i>Lightsail Dev
          * Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateContainerService">AWS
@@ -550,7 +562,7 @@ namespace Lightsail
          * can deploy containers to your container service using container images from a
          * public registry such as Amazon ECR Public, or from your local machine. For more
          * information, see <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-creating-container-images">Creating
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-creating-container-images">Creating
          * container images for your Amazon Lightsail container services</a> in the
          * <i>Amazon Lightsail Developer Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateContainerServiceDeployment">AWS
@@ -593,20 +605,20 @@ namespace Lightsail
          * if you install and use the Lightsail Control (lightsailctl) plugin to push
          * container images to your Lightsail container service. For more information, see
          * <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-pushing-container-images">Pushing
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-pushing-container-images">Pushing
          * and managing container images on your Amazon Lightsail container services</a> in
          * the <i>Amazon Lightsail Developer Guide</i>.</p> <p><h3>See Also:</h3>  
          * <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateContainerServiceRegistryLogin">AWS
          * API Reference</a></p>
          */
-        virtual Model::CreateContainerServiceRegistryLoginOutcome CreateContainerServiceRegistryLogin(const Model::CreateContainerServiceRegistryLoginRequest& request) const;
+        virtual Model::CreateContainerServiceRegistryLoginOutcome CreateContainerServiceRegistryLogin(const Model::CreateContainerServiceRegistryLoginRequest& request = {}) const;
 
         /**
          * A Callable wrapper for CreateContainerServiceRegistryLogin that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename CreateContainerServiceRegistryLoginRequestT = Model::CreateContainerServiceRegistryLoginRequest>
-        Model::CreateContainerServiceRegistryLoginOutcomeCallable CreateContainerServiceRegistryLoginCallable(const CreateContainerServiceRegistryLoginRequestT& request) const
+        Model::CreateContainerServiceRegistryLoginOutcomeCallable CreateContainerServiceRegistryLoginCallable(const CreateContainerServiceRegistryLoginRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::CreateContainerServiceRegistryLogin, request);
         }
@@ -615,7 +627,7 @@ namespace Lightsail
          * An Async wrapper for CreateContainerServiceRegistryLogin that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename CreateContainerServiceRegistryLoginRequestT = Model::CreateContainerServiceRegistryLoginRequest>
-        void CreateContainerServiceRegistryLoginAsync(const CreateContainerServiceRegistryLoginRequestT& request, const CreateContainerServiceRegistryLoginResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void CreateContainerServiceRegistryLoginAsync(const CreateContainerServiceRegistryLoginResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const CreateContainerServiceRegistryLoginRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::CreateContainerServiceRegistryLogin, request, handler, context);
         }
@@ -625,7 +637,7 @@ namespace Lightsail
          * instance in the same Availability Zone (<code>us-east-2a</code>).</p> <p>The
          * <code>create disk</code> operation supports tag-based access control via request
          * tags. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateDisk">AWS
          * API Reference</a></p>
@@ -657,7 +669,7 @@ namespace Lightsail
          * snapshot</code> operation supports tag-based access control via request tags and
          * resource tags applied to the resource identified by <code>disk snapshot
          * name</code>. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateDiskFromSnapshot">AWS
          * API Reference</a></p>
@@ -704,7 +716,7 @@ namespace Lightsail
          * disk from the snapshot and attach it to a running instance to access the data on
          * the disk.</p> <p>The <code>create disk snapshot</code> operation supports
          * tag-based access control via request tags. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateDiskSnapshot">AWS
          * API Reference</a></p>
@@ -734,7 +746,7 @@ namespace Lightsail
          * <p>A distribution is a globally distributed network of caching servers that
          * improve the performance of your website or web application hosted on a Lightsail
          * instance. For more information, see <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-content-delivery-network-distributions">Content
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-content-delivery-network-distributions">Content
          * delivery networks in Amazon Lightsail</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateDistribution">AWS
          * API Reference</a></p>
@@ -763,7 +775,7 @@ namespace Lightsail
          * <p>Creates a domain resource for the specified domain (example.com).</p> <p>The
          * <code>create domain</code> operation supports tag-based access control via
          * request tags. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateDomain">AWS
          * API Reference</a></p>
@@ -795,7 +807,7 @@ namespace Lightsail
          * <code>create domain entry</code> operation supports tag-based access control via
          * resource tags applied to the resource identified by <code>domain name</code>.
          * For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateDomainEntry">AWS
          * API Reference</a></p>
@@ -822,10 +834,11 @@ namespace Lightsail
 
         /**
          * <p>Creates two URLs that are used to access a virtual computer’s graphical user
-         * interface (GUI) session. The primary URL initiates a web-based NICE DCV session
-         * to the virtual computer's application. The secondary URL initiates a web-based
-         * NICE DCV session to the virtual computer's operating session. </p> <p>Use
-         * <code>StartGUISession</code> to open the session.</p><p><h3>See Also:</h3>   <a
+         * interface (GUI) session. The primary URL initiates a web-based Amazon DCV
+         * session to the virtual computer's application. The secondary URL initiates a
+         * web-based Amazon DCV session to the virtual computer's operating session. </p>
+         * <p>Use <code>StartGUISession</code> to open the session.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateGUISessionAccessDetails">AWS
          * API Reference</a></p>
          */
@@ -854,7 +867,7 @@ namespace Lightsail
          * You can use a snapshot to create a new instance that is based on that
          * snapshot.</p> <p>The <code>create instance snapshot</code> operation supports
          * tag-based access control via request tags. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateInstanceSnapshot">AWS
          * API Reference</a></p>
@@ -883,7 +896,7 @@ namespace Lightsail
          * <p>Creates one or more Amazon Lightsail instances.</p> <p>The <code>create
          * instances</code> operation supports tag-based access control via request tags.
          * For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Lightsail
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Lightsail
          * Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateInstances">AWS
          * API Reference</a></p>
@@ -914,7 +927,7 @@ namespace Lightsail
          * supports tag-based access control via request tags and resource tags applied to
          * the resource identified by <code>instance snapshot name</code>. For more
          * information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateInstancesFromSnapshot">AWS
          * API Reference</a></p>
@@ -947,7 +960,7 @@ namespace Lightsail
          * where a default key pair does not currently exist.</p>  <p>The
          * <code>create key pair</code> operation supports tag-based access control via
          * request tags. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateKeyPair">AWS
          * API Reference</a></p>
@@ -975,14 +988,14 @@ namespace Lightsail
         /**
          * <p>Creates a Lightsail load balancer. To learn more about deciding whether to
          * load balance your application, see <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/configure-lightsail-instances-for-load-balancing">Configure
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/configure-lightsail-instances-for-load-balancing">Configure
          * your Lightsail instances for load balancing</a>. You can create up to 5 load
          * balancers per AWS Region in your account.</p> <p>When you create a load
          * balancer, you can specify a unique name and port settings. To change additional
          * load balancer settings, use the <code>UpdateLoadBalancerAttribute</code>
          * operation.</p> <p>The <code>create load balancer</code> operation supports
          * tag-based access control via request tags. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateLoadBalancer">AWS
          * API Reference</a></p>
@@ -1013,7 +1026,7 @@ namespace Lightsail
          * <p>The <code>CreateLoadBalancerTlsCertificate</code> operation supports
          * tag-based access control via resource tags applied to the resource identified by
          * <code>load balancer name</code>. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateLoadBalancerTlsCertificate">AWS
          * API Reference</a></p>
@@ -1042,7 +1055,7 @@ namespace Lightsail
          * <p>Creates a new database in Amazon Lightsail.</p> <p>The <code>create
          * relational database</code> operation supports tag-based access control via
          * request tags. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateRelationalDatabase">AWS
          * API Reference</a></p>
@@ -1075,7 +1088,7 @@ namespace Lightsail
          * database from snapshot</code> operation supports tag-based access control via
          * request tags and resource tags applied to the resource identified by
          * relationalDatabaseSnapshotName. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateRelationalDatabaseFromSnapshot">AWS
          * API Reference</a></p>
@@ -1106,7 +1119,7 @@ namespace Lightsail
          * deleting a database.</p> <p>The <code>create relational database snapshot</code>
          * operation supports tag-based access control via request tags. For more
          * information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/CreateRelationalDatabaseSnapshot">AWS
          * API Reference</a></p>
@@ -1136,7 +1149,7 @@ namespace Lightsail
          * of your resources. When a metric condition is met, the alarm can notify you by
          * email, SMS text message, and a banner displayed on the Amazon Lightsail console.
          * For more information, see <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-alarms">Alarms
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-alarms">Alarms
          * in Amazon Lightsail</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DeleteAlarm">AWS
          * API Reference</a></p>
@@ -1164,7 +1177,7 @@ namespace Lightsail
         /**
          * <p>Deletes an automatic snapshot of an instance or disk. For more information,
          * see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configuring-automatic-snapshots">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-configuring-automatic-snapshots">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DeleteAutoSnapshot">AWS
          * API Reference</a></p>
@@ -1220,7 +1233,7 @@ namespace Lightsail
          * <p>Deletes an access key for the specified Amazon Lightsail bucket.</p> <p>We
          * recommend that you delete an access key if the secret access key is
          * compromised.</p> <p>For more information about access keys, see <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-creating-bucket-access-keys">Creating
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-creating-bucket-access-keys">Creating
          * access keys for a bucket in Amazon Lightsail</a> in the <i>Amazon Lightsail
          * Developer Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DeleteBucketAccessKey">AWS
@@ -1282,7 +1295,7 @@ namespace Lightsail
          * Region. However, SMS text messaging is not supported in some Amazon Web Services
          * Regions, and SMS text messages cannot be sent to some countries/regions. For
          * more information, see <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-notifications">Notifications
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-notifications">Notifications
          * in Amazon Lightsail</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DeleteContactMethod">AWS
          * API Reference</a></p>
@@ -1366,7 +1379,7 @@ namespace Lightsail
          * minutes.</p>  <p>The <code>delete disk</code> operation supports
          * tag-based access control via resource tags applied to the resource identified by
          * <code>disk name</code>. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DeleteDisk">AWS
          * API Reference</a></p>
@@ -1401,7 +1414,7 @@ namespace Lightsail
          * <code>delete disk snapshot</code> operation supports tag-based access control
          * via resource tags applied to the resource identified by <code>disk snapshot
          * name</code>. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DeleteDiskSnapshot">AWS
          * API Reference</a></p>
@@ -1432,13 +1445,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DeleteDistribution">AWS
          * API Reference</a></p>
          */
-        virtual Model::DeleteDistributionOutcome DeleteDistribution(const Model::DeleteDistributionRequest& request) const;
+        virtual Model::DeleteDistributionOutcome DeleteDistribution(const Model::DeleteDistributionRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DeleteDistribution that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DeleteDistributionRequestT = Model::DeleteDistributionRequest>
-        Model::DeleteDistributionOutcomeCallable DeleteDistributionCallable(const DeleteDistributionRequestT& request) const
+        Model::DeleteDistributionOutcomeCallable DeleteDistributionCallable(const DeleteDistributionRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::DeleteDistribution, request);
         }
@@ -1447,7 +1460,7 @@ namespace Lightsail
          * An Async wrapper for DeleteDistribution that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DeleteDistributionRequestT = Model::DeleteDistributionRequest>
-        void DeleteDistributionAsync(const DeleteDistributionRequestT& request, const DeleteDistributionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DeleteDistributionAsync(const DeleteDistributionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DeleteDistributionRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::DeleteDistribution, request, handler, context);
         }
@@ -1457,7 +1470,7 @@ namespace Lightsail
          * <p>The <code>delete domain</code> operation supports tag-based access control
          * via resource tags applied to the resource identified by <code>domain
          * name</code>. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DeleteDomain">AWS
          * API Reference</a></p>
@@ -1487,7 +1500,7 @@ namespace Lightsail
          * operation supports tag-based access control via resource tags applied to the
          * resource identified by <code>domain name</code>. For more information, see the
          * <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DeleteDomainEntry">AWS
          * API Reference</a></p>
@@ -1517,7 +1530,7 @@ namespace Lightsail
          * operation supports tag-based access control via resource tags applied to the
          * resource identified by <code>instance name</code>. For more information, see the
          * <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DeleteInstance">AWS
          * API Reference</a></p>
@@ -1548,7 +1561,7 @@ namespace Lightsail
          * supports tag-based access control via resource tags applied to the resource
          * identified by <code>instance snapshot name</code>. For more information, see the
          * <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DeleteInstanceSnapshot">AWS
          * API Reference</a></p>
@@ -1586,7 +1599,7 @@ namespace Lightsail
          * API. </p> <p>The <code>delete key pair</code> operation supports tag-based
          * access control via resource tags applied to the resource identified by <code>key
          * pair name</code>. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DeleteKeyPair">AWS
          * API Reference</a></p>
@@ -1619,7 +1632,7 @@ namespace Lightsail
          * only if you were expecting the host key or certificate mismatch or if you are
          * familiar with the new host key or certificate on the instance. For more
          * information, see <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-troubleshooting-browser-based-ssh-rdp-client-connection">Troubleshooting
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-troubleshooting-browser-based-ssh-rdp-client-connection">Troubleshooting
          * connection issues when using the Amazon Lightsail browser-based SSH or RDP
          * client</a>.</p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DeleteKnownHostKeys">AWS
@@ -1652,7 +1665,7 @@ namespace Lightsail
          * <p>The <code>delete load balancer</code> operation supports tag-based access
          * control via resource tags applied to the resource identified by <code>load
          * balancer name</code>. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DeleteLoadBalancer">AWS
          * API Reference</a></p>
@@ -1682,7 +1695,7 @@ namespace Lightsail
          * <p>The <code>DeleteLoadBalancerTlsCertificate</code> operation supports
          * tag-based access control via resource tags applied to the resource identified by
          * <code>load balancer name</code>. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DeleteLoadBalancerTlsCertificate">AWS
          * API Reference</a></p>
@@ -1712,7 +1725,7 @@ namespace Lightsail
          * database</code> operation supports tag-based access control via resource tags
          * applied to the resource identified by relationalDatabaseName. For more
          * information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DeleteRelationalDatabase">AWS
          * API Reference</a></p>
@@ -1742,7 +1755,7 @@ namespace Lightsail
          * relational database snapshot</code> operation supports tag-based access control
          * via resource tags applied to the resource identified by relationalDatabaseName.
          * For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DeleteRelationalDatabaseSnapshot">AWS
          * API Reference</a></p>
@@ -1802,7 +1815,7 @@ namespace Lightsail
          * disk</code> operation supports tag-based access control via resource tags
          * applied to the resource identified by <code>disk name</code>. For more
          * information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DetachDisk">AWS
          * API Reference</a></p>
@@ -1834,7 +1847,7 @@ namespace Lightsail
          * balancer</code> operation supports tag-based access control via resource tags
          * applied to the resource identified by <code>load balancer name</code>. For more
          * information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DetachInstancesFromLoadBalancer">AWS
          * API Reference</a></p>
@@ -1888,7 +1901,7 @@ namespace Lightsail
         /**
          * <p>Disables an add-on for an Amazon Lightsail resource. For more information,
          * see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configuring-automatic-snapshots">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-configuring-automatic-snapshots">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DisableAddOn">AWS
          * API Reference</a></p>
@@ -1920,13 +1933,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/DownloadDefaultKeyPair">AWS
          * API Reference</a></p>
          */
-        virtual Model::DownloadDefaultKeyPairOutcome DownloadDefaultKeyPair(const Model::DownloadDefaultKeyPairRequest& request) const;
+        virtual Model::DownloadDefaultKeyPairOutcome DownloadDefaultKeyPair(const Model::DownloadDefaultKeyPairRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DownloadDefaultKeyPair that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DownloadDefaultKeyPairRequestT = Model::DownloadDefaultKeyPairRequest>
-        Model::DownloadDefaultKeyPairOutcomeCallable DownloadDefaultKeyPairCallable(const DownloadDefaultKeyPairRequestT& request) const
+        Model::DownloadDefaultKeyPairOutcomeCallable DownloadDefaultKeyPairCallable(const DownloadDefaultKeyPairRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::DownloadDefaultKeyPair, request);
         }
@@ -1935,7 +1948,7 @@ namespace Lightsail
          * An Async wrapper for DownloadDefaultKeyPair that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DownloadDefaultKeyPairRequestT = Model::DownloadDefaultKeyPairRequest>
-        void DownloadDefaultKeyPairAsync(const DownloadDefaultKeyPairRequestT& request, const DownloadDefaultKeyPairResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DownloadDefaultKeyPairAsync(const DownloadDefaultKeyPairResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DownloadDefaultKeyPairRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::DownloadDefaultKeyPair, request, handler, context);
         }
@@ -1943,7 +1956,7 @@ namespace Lightsail
         /**
          * <p>Enables or modifies an add-on for an Amazon Lightsail resource. For more
          * information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configuring-automatic-snapshots">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-configuring-automatic-snapshots">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/EnableAddOn">AWS
          * API Reference</a></p>
@@ -1980,7 +1993,7 @@ namespace Lightsail
          * snapshot.</p> <p/> <p>The <code>export snapshot</code> operation supports
          * tag-based access control via resource tags applied to the resource identified by
          * <code>source snapshot name</code>. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p>  <p>Use the <code>get instance
          * snapshots</code> or <code>get disk snapshots</code> operations to get a list of
          * snapshots that you can export to Amazon EC2.</p> <p><h3>See Also:</h3>  
@@ -2014,13 +2027,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetActiveNames">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetActiveNamesOutcome GetActiveNames(const Model::GetActiveNamesRequest& request) const;
+        virtual Model::GetActiveNamesOutcome GetActiveNames(const Model::GetActiveNamesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetActiveNames that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetActiveNamesRequestT = Model::GetActiveNamesRequest>
-        Model::GetActiveNamesOutcomeCallable GetActiveNamesCallable(const GetActiveNamesRequestT& request) const
+        Model::GetActiveNamesOutcomeCallable GetActiveNamesCallable(const GetActiveNamesRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetActiveNames, request);
         }
@@ -2029,7 +2042,7 @@ namespace Lightsail
          * An Async wrapper for GetActiveNames that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetActiveNamesRequestT = Model::GetActiveNamesRequest>
-        void GetActiveNamesAsync(const GetActiveNamesRequestT& request, const GetActiveNamesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetActiveNamesAsync(const GetActiveNamesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetActiveNamesRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetActiveNames, request, handler, context);
         }
@@ -2042,18 +2055,18 @@ namespace Lightsail
          * resources. When a metric condition is met, the alarm can notify you by email,
          * SMS text message, and a banner displayed on the Amazon Lightsail console. For
          * more information, see <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-alarms">Alarms
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-alarms">Alarms
          * in Amazon Lightsail</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetAlarms">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetAlarmsOutcome GetAlarms(const Model::GetAlarmsRequest& request) const;
+        virtual Model::GetAlarmsOutcome GetAlarms(const Model::GetAlarmsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetAlarms that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetAlarmsRequestT = Model::GetAlarmsRequest>
-        Model::GetAlarmsOutcomeCallable GetAlarmsCallable(const GetAlarmsRequestT& request) const
+        Model::GetAlarmsOutcomeCallable GetAlarmsCallable(const GetAlarmsRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetAlarms, request);
         }
@@ -2062,7 +2075,7 @@ namespace Lightsail
          * An Async wrapper for GetAlarms that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetAlarmsRequestT = Model::GetAlarmsRequest>
-        void GetAlarmsAsync(const GetAlarmsRequestT& request, const GetAlarmsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetAlarmsAsync(const GetAlarmsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetAlarmsRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetAlarms, request, handler, context);
         }
@@ -2070,7 +2083,7 @@ namespace Lightsail
         /**
          * <p>Returns the available automatic snapshots for an instance or disk. For more
          * information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configuring-automatic-snapshots">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-configuring-automatic-snapshots">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetAutoSnapshots">AWS
          * API Reference</a></p>
@@ -2108,13 +2121,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetBlueprints">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetBlueprintsOutcome GetBlueprints(const Model::GetBlueprintsRequest& request) const;
+        virtual Model::GetBlueprintsOutcome GetBlueprints(const Model::GetBlueprintsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetBlueprints that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetBlueprintsRequestT = Model::GetBlueprintsRequest>
-        Model::GetBlueprintsOutcomeCallable GetBlueprintsCallable(const GetBlueprintsRequestT& request) const
+        Model::GetBlueprintsOutcomeCallable GetBlueprintsCallable(const GetBlueprintsRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetBlueprints, request);
         }
@@ -2123,7 +2136,7 @@ namespace Lightsail
          * An Async wrapper for GetBlueprints that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetBlueprintsRequestT = Model::GetBlueprintsRequest>
-        void GetBlueprintsAsync(const GetBlueprintsRequestT& request, const GetBlueprintsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetBlueprintsAsync(const GetBlueprintsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetBlueprintsRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetBlueprints, request, handler, context);
         }
@@ -2168,13 +2181,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetBucketBundles">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetBucketBundlesOutcome GetBucketBundles(const Model::GetBucketBundlesRequest& request) const;
+        virtual Model::GetBucketBundlesOutcome GetBucketBundles(const Model::GetBucketBundlesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetBucketBundles that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetBucketBundlesRequestT = Model::GetBucketBundlesRequest>
-        Model::GetBucketBundlesOutcomeCallable GetBucketBundlesCallable(const GetBucketBundlesRequestT& request) const
+        Model::GetBucketBundlesOutcomeCallable GetBucketBundlesCallable(const GetBucketBundlesRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetBucketBundles, request);
         }
@@ -2183,7 +2196,7 @@ namespace Lightsail
          * An Async wrapper for GetBucketBundles that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetBucketBundlesRequestT = Model::GetBucketBundlesRequest>
-        void GetBucketBundlesAsync(const GetBucketBundlesRequestT& request, const GetBucketBundlesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetBucketBundlesAsync(const GetBucketBundlesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetBucketBundlesRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetBucketBundles, request, handler, context);
         }
@@ -2222,19 +2235,19 @@ namespace Lightsail
          * information returned includes the synchronization status of the Amazon Simple
          * Storage Service (Amazon S3) account-level block public access feature for your
          * Lightsail buckets.</p> <p>For more information about buckets, see <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/buckets-in-amazon-lightsail">Buckets
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/buckets-in-amazon-lightsail">Buckets
          * in Amazon Lightsail</a> in the <i>Amazon Lightsail Developer
          * Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetBuckets">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetBucketsOutcome GetBuckets(const Model::GetBucketsRequest& request) const;
+        virtual Model::GetBucketsOutcome GetBuckets(const Model::GetBucketsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetBuckets that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetBucketsRequestT = Model::GetBucketsRequest>
-        Model::GetBucketsOutcomeCallable GetBucketsCallable(const GetBucketsRequestT& request) const
+        Model::GetBucketsOutcomeCallable GetBucketsCallable(const GetBucketsRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetBuckets, request);
         }
@@ -2243,7 +2256,7 @@ namespace Lightsail
          * An Async wrapper for GetBuckets that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetBucketsRequestT = Model::GetBucketsRequest>
-        void GetBucketsAsync(const GetBucketsRequestT& request, const GetBucketsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetBucketsAsync(const GetBucketsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetBucketsRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetBuckets, request, handler, context);
         }
@@ -2258,13 +2271,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetBundles">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetBundlesOutcome GetBundles(const Model::GetBundlesRequest& request) const;
+        virtual Model::GetBundlesOutcome GetBundles(const Model::GetBundlesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetBundles that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetBundlesRequestT = Model::GetBundlesRequest>
-        Model::GetBundlesOutcomeCallable GetBundlesCallable(const GetBundlesRequestT& request) const
+        Model::GetBundlesOutcomeCallable GetBundlesCallable(const GetBundlesRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetBundles, request);
         }
@@ -2273,7 +2286,7 @@ namespace Lightsail
          * An Async wrapper for GetBundles that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetBundlesRequestT = Model::GetBundlesRequest>
-        void GetBundlesAsync(const GetBundlesRequestT& request, const GetBundlesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetBundlesAsync(const GetBundlesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetBundlesRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetBundles, request, handler, context);
         }
@@ -2287,13 +2300,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetCertificates">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetCertificatesOutcome GetCertificates(const Model::GetCertificatesRequest& request) const;
+        virtual Model::GetCertificatesOutcome GetCertificates(const Model::GetCertificatesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetCertificates that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetCertificatesRequestT = Model::GetCertificatesRequest>
-        Model::GetCertificatesOutcomeCallable GetCertificatesCallable(const GetCertificatesRequestT& request) const
+        Model::GetCertificatesOutcomeCallable GetCertificatesCallable(const GetCertificatesRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetCertificates, request);
         }
@@ -2302,7 +2315,7 @@ namespace Lightsail
          * An Async wrapper for GetCertificates that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetCertificatesRequestT = Model::GetCertificatesRequest>
-        void GetCertificatesAsync(const GetCertificatesRequestT& request, const GetCertificatesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetCertificatesAsync(const GetCertificatesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetCertificatesRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetCertificates, request, handler, context);
         }
@@ -2315,13 +2328,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetCloudFormationStackRecords">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetCloudFormationStackRecordsOutcome GetCloudFormationStackRecords(const Model::GetCloudFormationStackRecordsRequest& request) const;
+        virtual Model::GetCloudFormationStackRecordsOutcome GetCloudFormationStackRecords(const Model::GetCloudFormationStackRecordsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetCloudFormationStackRecords that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetCloudFormationStackRecordsRequestT = Model::GetCloudFormationStackRecordsRequest>
-        Model::GetCloudFormationStackRecordsOutcomeCallable GetCloudFormationStackRecordsCallable(const GetCloudFormationStackRecordsRequestT& request) const
+        Model::GetCloudFormationStackRecordsOutcomeCallable GetCloudFormationStackRecordsCallable(const GetCloudFormationStackRecordsRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetCloudFormationStackRecords, request);
         }
@@ -2330,7 +2343,7 @@ namespace Lightsail
          * An Async wrapper for GetCloudFormationStackRecords that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetCloudFormationStackRecordsRequestT = Model::GetCloudFormationStackRecordsRequest>
-        void GetCloudFormationStackRecordsAsync(const GetCloudFormationStackRecordsRequestT& request, const GetCloudFormationStackRecordsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetCloudFormationStackRecordsAsync(const GetCloudFormationStackRecordsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetCloudFormationStackRecordsRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetCloudFormationStackRecords, request, handler, context);
         }
@@ -2343,18 +2356,18 @@ namespace Lightsail
          * method in each Amazon Web Services Region. However, SMS text messaging is not
          * supported in some Amazon Web Services Regions, and SMS text messages cannot be
          * sent to some countries/regions. For more information, see <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-notifications">Notifications
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-notifications">Notifications
          * in Amazon Lightsail</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetContactMethods">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetContactMethodsOutcome GetContactMethods(const Model::GetContactMethodsRequest& request) const;
+        virtual Model::GetContactMethodsOutcome GetContactMethods(const Model::GetContactMethodsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetContactMethods that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetContactMethodsRequestT = Model::GetContactMethodsRequest>
-        Model::GetContactMethodsOutcomeCallable GetContactMethodsCallable(const GetContactMethodsRequestT& request) const
+        Model::GetContactMethodsOutcomeCallable GetContactMethodsCallable(const GetContactMethodsRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetContactMethods, request);
         }
@@ -2363,7 +2376,7 @@ namespace Lightsail
          * An Async wrapper for GetContactMethods that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetContactMethodsRequestT = Model::GetContactMethodsRequest>
-        void GetContactMethodsAsync(const GetContactMethodsRequestT& request, const GetContactMethodsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetContactMethodsAsync(const GetContactMethodsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetContactMethodsRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetContactMethods, request, handler, context);
         }
@@ -2375,13 +2388,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetContainerAPIMetadata">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetContainerAPIMetadataOutcome GetContainerAPIMetadata(const Model::GetContainerAPIMetadataRequest& request) const;
+        virtual Model::GetContainerAPIMetadataOutcome GetContainerAPIMetadata(const Model::GetContainerAPIMetadataRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetContainerAPIMetadata that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetContainerAPIMetadataRequestT = Model::GetContainerAPIMetadataRequest>
-        Model::GetContainerAPIMetadataOutcomeCallable GetContainerAPIMetadataCallable(const GetContainerAPIMetadataRequestT& request) const
+        Model::GetContainerAPIMetadataOutcomeCallable GetContainerAPIMetadataCallable(const GetContainerAPIMetadataRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetContainerAPIMetadata, request);
         }
@@ -2390,7 +2403,7 @@ namespace Lightsail
          * An Async wrapper for GetContainerAPIMetadata that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetContainerAPIMetadataRequestT = Model::GetContainerAPIMetadataRequest>
-        void GetContainerAPIMetadataAsync(const GetContainerAPIMetadataRequestT& request, const GetContainerAPIMetadataResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetContainerAPIMetadataAsync(const GetContainerAPIMetadataResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetContainerAPIMetadataRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetContainerAPIMetadata, request, handler, context);
         }
@@ -2527,13 +2540,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetContainerServicePowers">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetContainerServicePowersOutcome GetContainerServicePowers(const Model::GetContainerServicePowersRequest& request) const;
+        virtual Model::GetContainerServicePowersOutcome GetContainerServicePowers(const Model::GetContainerServicePowersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetContainerServicePowers that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetContainerServicePowersRequestT = Model::GetContainerServicePowersRequest>
-        Model::GetContainerServicePowersOutcomeCallable GetContainerServicePowersCallable(const GetContainerServicePowersRequestT& request) const
+        Model::GetContainerServicePowersOutcomeCallable GetContainerServicePowersCallable(const GetContainerServicePowersRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetContainerServicePowers, request);
         }
@@ -2542,7 +2555,7 @@ namespace Lightsail
          * An Async wrapper for GetContainerServicePowers that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetContainerServicePowersRequestT = Model::GetContainerServicePowersRequest>
-        void GetContainerServicePowersAsync(const GetContainerServicePowersRequestT& request, const GetContainerServicePowersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetContainerServicePowersAsync(const GetContainerServicePowersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetContainerServicePowersRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetContainerServicePowers, request, handler, context);
         }
@@ -2553,13 +2566,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetContainerServices">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetContainerServicesOutcome GetContainerServices(const Model::GetContainerServicesRequest& request) const;
+        virtual Model::GetContainerServicesOutcome GetContainerServices(const Model::GetContainerServicesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetContainerServices that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetContainerServicesRequestT = Model::GetContainerServicesRequest>
-        Model::GetContainerServicesOutcomeCallable GetContainerServicesCallable(const GetContainerServicesRequestT& request) const
+        Model::GetContainerServicesOutcomeCallable GetContainerServicesCallable(const GetContainerServicesRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetContainerServices, request);
         }
@@ -2568,7 +2581,7 @@ namespace Lightsail
          * An Async wrapper for GetContainerServices that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetContainerServicesRequestT = Model::GetContainerServicesRequest>
-        void GetContainerServicesAsync(const GetContainerServicesRequestT& request, const GetContainerServicesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetContainerServicesAsync(const GetContainerServicesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetContainerServicesRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetContainerServices, request, handler, context);
         }
@@ -2658,13 +2671,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetDiskSnapshots">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetDiskSnapshotsOutcome GetDiskSnapshots(const Model::GetDiskSnapshotsRequest& request) const;
+        virtual Model::GetDiskSnapshotsOutcome GetDiskSnapshots(const Model::GetDiskSnapshotsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetDiskSnapshots that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetDiskSnapshotsRequestT = Model::GetDiskSnapshotsRequest>
-        Model::GetDiskSnapshotsOutcomeCallable GetDiskSnapshotsCallable(const GetDiskSnapshotsRequestT& request) const
+        Model::GetDiskSnapshotsOutcomeCallable GetDiskSnapshotsCallable(const GetDiskSnapshotsRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetDiskSnapshots, request);
         }
@@ -2673,7 +2686,7 @@ namespace Lightsail
          * An Async wrapper for GetDiskSnapshots that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetDiskSnapshotsRequestT = Model::GetDiskSnapshotsRequest>
-        void GetDiskSnapshotsAsync(const GetDiskSnapshotsRequestT& request, const GetDiskSnapshotsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetDiskSnapshotsAsync(const GetDiskSnapshotsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetDiskSnapshotsRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetDiskSnapshots, request, handler, context);
         }
@@ -2684,13 +2697,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetDisks">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetDisksOutcome GetDisks(const Model::GetDisksRequest& request) const;
+        virtual Model::GetDisksOutcome GetDisks(const Model::GetDisksRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetDisks that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetDisksRequestT = Model::GetDisksRequest>
-        Model::GetDisksOutcomeCallable GetDisksCallable(const GetDisksRequestT& request) const
+        Model::GetDisksOutcomeCallable GetDisksCallable(const GetDisksRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetDisks, request);
         }
@@ -2699,7 +2712,7 @@ namespace Lightsail
          * An Async wrapper for GetDisks that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetDisksRequestT = Model::GetDisksRequest>
-        void GetDisksAsync(const GetDisksRequestT& request, const GetDisksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetDisksAsync(const GetDisksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetDisksRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetDisks, request, handler, context);
         }
@@ -2712,13 +2725,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetDistributionBundles">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetDistributionBundlesOutcome GetDistributionBundles(const Model::GetDistributionBundlesRequest& request) const;
+        virtual Model::GetDistributionBundlesOutcome GetDistributionBundles(const Model::GetDistributionBundlesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetDistributionBundles that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetDistributionBundlesRequestT = Model::GetDistributionBundlesRequest>
-        Model::GetDistributionBundlesOutcomeCallable GetDistributionBundlesCallable(const GetDistributionBundlesRequestT& request) const
+        Model::GetDistributionBundlesOutcomeCallable GetDistributionBundlesCallable(const GetDistributionBundlesRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetDistributionBundles, request);
         }
@@ -2727,7 +2740,7 @@ namespace Lightsail
          * An Async wrapper for GetDistributionBundles that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetDistributionBundlesRequestT = Model::GetDistributionBundlesRequest>
-        void GetDistributionBundlesAsync(const GetDistributionBundlesRequestT& request, const GetDistributionBundlesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetDistributionBundlesAsync(const GetDistributionBundlesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetDistributionBundlesRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetDistributionBundles, request, handler, context);
         }
@@ -2739,13 +2752,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetDistributionLatestCacheReset">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetDistributionLatestCacheResetOutcome GetDistributionLatestCacheReset(const Model::GetDistributionLatestCacheResetRequest& request) const;
+        virtual Model::GetDistributionLatestCacheResetOutcome GetDistributionLatestCacheReset(const Model::GetDistributionLatestCacheResetRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetDistributionLatestCacheReset that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetDistributionLatestCacheResetRequestT = Model::GetDistributionLatestCacheResetRequest>
-        Model::GetDistributionLatestCacheResetOutcomeCallable GetDistributionLatestCacheResetCallable(const GetDistributionLatestCacheResetRequestT& request) const
+        Model::GetDistributionLatestCacheResetOutcomeCallable GetDistributionLatestCacheResetCallable(const GetDistributionLatestCacheResetRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetDistributionLatestCacheReset, request);
         }
@@ -2754,7 +2767,7 @@ namespace Lightsail
          * An Async wrapper for GetDistributionLatestCacheReset that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetDistributionLatestCacheResetRequestT = Model::GetDistributionLatestCacheResetRequest>
-        void GetDistributionLatestCacheResetAsync(const GetDistributionLatestCacheResetRequestT& request, const GetDistributionLatestCacheResetResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetDistributionLatestCacheResetAsync(const GetDistributionLatestCacheResetResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetDistributionLatestCacheResetRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetDistributionLatestCacheReset, request, handler, context);
         }
@@ -2794,13 +2807,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetDistributions">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetDistributionsOutcome GetDistributions(const Model::GetDistributionsRequest& request) const;
+        virtual Model::GetDistributionsOutcome GetDistributions(const Model::GetDistributionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetDistributions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetDistributionsRequestT = Model::GetDistributionsRequest>
-        Model::GetDistributionsOutcomeCallable GetDistributionsCallable(const GetDistributionsRequestT& request) const
+        Model::GetDistributionsOutcomeCallable GetDistributionsCallable(const GetDistributionsRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetDistributions, request);
         }
@@ -2809,7 +2822,7 @@ namespace Lightsail
          * An Async wrapper for GetDistributions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetDistributionsRequestT = Model::GetDistributionsRequest>
-        void GetDistributionsAsync(const GetDistributionsRequestT& request, const GetDistributionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetDistributionsAsync(const GetDistributionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetDistributionsRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetDistributions, request, handler, context);
         }
@@ -2846,13 +2859,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetDomains">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetDomainsOutcome GetDomains(const Model::GetDomainsRequest& request) const;
+        virtual Model::GetDomainsOutcome GetDomains(const Model::GetDomainsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetDomains that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetDomainsRequestT = Model::GetDomainsRequest>
-        Model::GetDomainsOutcomeCallable GetDomainsCallable(const GetDomainsRequestT& request) const
+        Model::GetDomainsOutcomeCallable GetDomainsCallable(const GetDomainsRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetDomains, request);
         }
@@ -2861,7 +2874,7 @@ namespace Lightsail
          * An Async wrapper for GetDomains that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetDomainsRequestT = Model::GetDomainsRequest>
-        void GetDomainsAsync(const GetDomainsRequestT& request, const GetDomainsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetDomainsAsync(const GetDomainsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetDomainsRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetDomains, request, handler, context);
         }
@@ -2875,13 +2888,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetExportSnapshotRecords">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetExportSnapshotRecordsOutcome GetExportSnapshotRecords(const Model::GetExportSnapshotRecordsRequest& request) const;
+        virtual Model::GetExportSnapshotRecordsOutcome GetExportSnapshotRecords(const Model::GetExportSnapshotRecordsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetExportSnapshotRecords that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetExportSnapshotRecordsRequestT = Model::GetExportSnapshotRecordsRequest>
-        Model::GetExportSnapshotRecordsOutcomeCallable GetExportSnapshotRecordsCallable(const GetExportSnapshotRecordsRequestT& request) const
+        Model::GetExportSnapshotRecordsOutcomeCallable GetExportSnapshotRecordsCallable(const GetExportSnapshotRecordsRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetExportSnapshotRecords, request);
         }
@@ -2890,7 +2903,7 @@ namespace Lightsail
          * An Async wrapper for GetExportSnapshotRecords that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetExportSnapshotRecordsRequestT = Model::GetExportSnapshotRecordsRequest>
-        void GetExportSnapshotRecordsAsync(const GetExportSnapshotRecordsRequestT& request, const GetExportSnapshotRecordsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetExportSnapshotRecordsAsync(const GetExportSnapshotRecordsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetExportSnapshotRecordsRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetExportSnapshotRecords, request, handler, context);
         }
@@ -2927,7 +2940,7 @@ namespace Lightsail
          * details</code> operation supports tag-based access control via resource tags
          * applied to the resource identified by <code>instance name</code>. For more
          * information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetInstanceAccessDetails">AWS
          * API Reference</a></p>
@@ -3040,13 +3053,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetInstanceSnapshots">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetInstanceSnapshotsOutcome GetInstanceSnapshots(const Model::GetInstanceSnapshotsRequest& request) const;
+        virtual Model::GetInstanceSnapshotsOutcome GetInstanceSnapshots(const Model::GetInstanceSnapshotsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetInstanceSnapshots that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetInstanceSnapshotsRequestT = Model::GetInstanceSnapshotsRequest>
-        Model::GetInstanceSnapshotsOutcomeCallable GetInstanceSnapshotsCallable(const GetInstanceSnapshotsRequestT& request) const
+        Model::GetInstanceSnapshotsOutcomeCallable GetInstanceSnapshotsCallable(const GetInstanceSnapshotsRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetInstanceSnapshots, request);
         }
@@ -3055,7 +3068,7 @@ namespace Lightsail
          * An Async wrapper for GetInstanceSnapshots that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetInstanceSnapshotsRequestT = Model::GetInstanceSnapshotsRequest>
-        void GetInstanceSnapshotsAsync(const GetInstanceSnapshotsRequestT& request, const GetInstanceSnapshotsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetInstanceSnapshotsAsync(const GetInstanceSnapshotsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetInstanceSnapshotsRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetInstanceSnapshots, request, handler, context);
         }
@@ -3092,13 +3105,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetInstances">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetInstancesOutcome GetInstances(const Model::GetInstancesRequest& request) const;
+        virtual Model::GetInstancesOutcome GetInstances(const Model::GetInstancesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetInstances that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetInstancesRequestT = Model::GetInstancesRequest>
-        Model::GetInstancesOutcomeCallable GetInstancesCallable(const GetInstancesRequestT& request) const
+        Model::GetInstancesOutcomeCallable GetInstancesCallable(const GetInstancesRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetInstances, request);
         }
@@ -3107,7 +3120,7 @@ namespace Lightsail
          * An Async wrapper for GetInstances that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetInstancesRequestT = Model::GetInstancesRequest>
-        void GetInstancesAsync(const GetInstancesRequestT& request, const GetInstancesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetInstancesAsync(const GetInstancesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetInstancesRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetInstances, request, handler, context);
         }
@@ -3143,13 +3156,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetKeyPairs">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetKeyPairsOutcome GetKeyPairs(const Model::GetKeyPairsRequest& request) const;
+        virtual Model::GetKeyPairsOutcome GetKeyPairs(const Model::GetKeyPairsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetKeyPairs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetKeyPairsRequestT = Model::GetKeyPairsRequest>
-        Model::GetKeyPairsOutcomeCallable GetKeyPairsCallable(const GetKeyPairsRequestT& request) const
+        Model::GetKeyPairsOutcomeCallable GetKeyPairsCallable(const GetKeyPairsRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetKeyPairs, request);
         }
@@ -3158,7 +3171,7 @@ namespace Lightsail
          * An Async wrapper for GetKeyPairs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetKeyPairsRequestT = Model::GetKeyPairsRequest>
-        void GetKeyPairsAsync(const GetKeyPairsRequestT& request, const GetKeyPairsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetKeyPairsAsync(const GetKeyPairsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetKeyPairsRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetKeyPairs, request, handler, context);
         }
@@ -3251,19 +3264,19 @@ namespace Lightsail
          * <p>Returns a list of TLS security policies that you can apply to Lightsail load
          * balancers.</p> <p>For more information about load balancer TLS security
          * policies, see <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configure-load-balancer-tls-security-policy">Configuring
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-configure-load-balancer-tls-security-policy">Configuring
          * TLS security policies on your Amazon Lightsail load balancers</a> in the
          * <i>Amazon Lightsail Developer Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetLoadBalancerTlsPolicies">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetLoadBalancerTlsPoliciesOutcome GetLoadBalancerTlsPolicies(const Model::GetLoadBalancerTlsPoliciesRequest& request) const;
+        virtual Model::GetLoadBalancerTlsPoliciesOutcome GetLoadBalancerTlsPolicies(const Model::GetLoadBalancerTlsPoliciesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetLoadBalancerTlsPolicies that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetLoadBalancerTlsPoliciesRequestT = Model::GetLoadBalancerTlsPoliciesRequest>
-        Model::GetLoadBalancerTlsPoliciesOutcomeCallable GetLoadBalancerTlsPoliciesCallable(const GetLoadBalancerTlsPoliciesRequestT& request) const
+        Model::GetLoadBalancerTlsPoliciesOutcomeCallable GetLoadBalancerTlsPoliciesCallable(const GetLoadBalancerTlsPoliciesRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetLoadBalancerTlsPolicies, request);
         }
@@ -3272,7 +3285,7 @@ namespace Lightsail
          * An Async wrapper for GetLoadBalancerTlsPolicies that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetLoadBalancerTlsPoliciesRequestT = Model::GetLoadBalancerTlsPoliciesRequest>
-        void GetLoadBalancerTlsPoliciesAsync(const GetLoadBalancerTlsPoliciesRequestT& request, const GetLoadBalancerTlsPoliciesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetLoadBalancerTlsPoliciesAsync(const GetLoadBalancerTlsPoliciesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetLoadBalancerTlsPoliciesRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetLoadBalancerTlsPolicies, request, handler, context);
         }
@@ -3283,13 +3296,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetLoadBalancers">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetLoadBalancersOutcome GetLoadBalancers(const Model::GetLoadBalancersRequest& request) const;
+        virtual Model::GetLoadBalancersOutcome GetLoadBalancers(const Model::GetLoadBalancersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetLoadBalancers that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetLoadBalancersRequestT = Model::GetLoadBalancersRequest>
-        Model::GetLoadBalancersOutcomeCallable GetLoadBalancersCallable(const GetLoadBalancersRequestT& request) const
+        Model::GetLoadBalancersOutcomeCallable GetLoadBalancersCallable(const GetLoadBalancersRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetLoadBalancers, request);
         }
@@ -3298,7 +3311,7 @@ namespace Lightsail
          * An Async wrapper for GetLoadBalancers that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetLoadBalancersRequestT = Model::GetLoadBalancersRequest>
-        void GetLoadBalancersAsync(const GetLoadBalancersRequestT& request, const GetLoadBalancersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetLoadBalancersAsync(const GetLoadBalancersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetLoadBalancersRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetLoadBalancers, request, handler, context);
         }
@@ -3339,13 +3352,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetOperations">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetOperationsOutcome GetOperations(const Model::GetOperationsRequest& request) const;
+        virtual Model::GetOperationsOutcome GetOperations(const Model::GetOperationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetOperations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetOperationsRequestT = Model::GetOperationsRequest>
-        Model::GetOperationsOutcomeCallable GetOperationsCallable(const GetOperationsRequestT& request) const
+        Model::GetOperationsOutcomeCallable GetOperationsCallable(const GetOperationsRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetOperations, request);
         }
@@ -3354,7 +3367,7 @@ namespace Lightsail
          * An Async wrapper for GetOperations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetOperationsRequestT = Model::GetOperationsRequest>
-        void GetOperationsAsync(const GetOperationsRequestT& request, const GetOperationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetOperationsAsync(const GetOperationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetOperationsRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetOperations, request, handler, context);
         }
@@ -3392,13 +3405,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetRegions">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetRegionsOutcome GetRegions(const Model::GetRegionsRequest& request) const;
+        virtual Model::GetRegionsOutcome GetRegions(const Model::GetRegionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetRegions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetRegionsRequestT = Model::GetRegionsRequest>
-        Model::GetRegionsOutcomeCallable GetRegionsCallable(const GetRegionsRequestT& request) const
+        Model::GetRegionsOutcomeCallable GetRegionsCallable(const GetRegionsRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetRegions, request);
         }
@@ -3407,7 +3420,7 @@ namespace Lightsail
          * An Async wrapper for GetRegions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetRegionsRequestT = Model::GetRegionsRequest>
-        void GetRegionsAsync(const GetRegionsRequestT& request, const GetRegionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetRegionsAsync(const GetRegionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetRegionsRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetRegions, request, handler, context);
         }
@@ -3446,13 +3459,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetRelationalDatabaseBlueprints">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetRelationalDatabaseBlueprintsOutcome GetRelationalDatabaseBlueprints(const Model::GetRelationalDatabaseBlueprintsRequest& request) const;
+        virtual Model::GetRelationalDatabaseBlueprintsOutcome GetRelationalDatabaseBlueprints(const Model::GetRelationalDatabaseBlueprintsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetRelationalDatabaseBlueprints that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetRelationalDatabaseBlueprintsRequestT = Model::GetRelationalDatabaseBlueprintsRequest>
-        Model::GetRelationalDatabaseBlueprintsOutcomeCallable GetRelationalDatabaseBlueprintsCallable(const GetRelationalDatabaseBlueprintsRequestT& request) const
+        Model::GetRelationalDatabaseBlueprintsOutcomeCallable GetRelationalDatabaseBlueprintsCallable(const GetRelationalDatabaseBlueprintsRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetRelationalDatabaseBlueprints, request);
         }
@@ -3461,7 +3474,7 @@ namespace Lightsail
          * An Async wrapper for GetRelationalDatabaseBlueprints that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetRelationalDatabaseBlueprintsRequestT = Model::GetRelationalDatabaseBlueprintsRequest>
-        void GetRelationalDatabaseBlueprintsAsync(const GetRelationalDatabaseBlueprintsRequestT& request, const GetRelationalDatabaseBlueprintsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetRelationalDatabaseBlueprintsAsync(const GetRelationalDatabaseBlueprintsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetRelationalDatabaseBlueprintsRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetRelationalDatabaseBlueprints, request, handler, context);
         }
@@ -3474,13 +3487,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetRelationalDatabaseBundles">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetRelationalDatabaseBundlesOutcome GetRelationalDatabaseBundles(const Model::GetRelationalDatabaseBundlesRequest& request) const;
+        virtual Model::GetRelationalDatabaseBundlesOutcome GetRelationalDatabaseBundles(const Model::GetRelationalDatabaseBundlesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetRelationalDatabaseBundles that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetRelationalDatabaseBundlesRequestT = Model::GetRelationalDatabaseBundlesRequest>
-        Model::GetRelationalDatabaseBundlesOutcomeCallable GetRelationalDatabaseBundlesCallable(const GetRelationalDatabaseBundlesRequestT& request) const
+        Model::GetRelationalDatabaseBundlesOutcomeCallable GetRelationalDatabaseBundlesCallable(const GetRelationalDatabaseBundlesRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetRelationalDatabaseBundles, request);
         }
@@ -3489,7 +3502,7 @@ namespace Lightsail
          * An Async wrapper for GetRelationalDatabaseBundles that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetRelationalDatabaseBundlesRequestT = Model::GetRelationalDatabaseBundlesRequest>
-        void GetRelationalDatabaseBundlesAsync(const GetRelationalDatabaseBundlesRequestT& request, const GetRelationalDatabaseBundlesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetRelationalDatabaseBundlesAsync(const GetRelationalDatabaseBundlesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetRelationalDatabaseBundlesRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetRelationalDatabaseBundles, request, handler, context);
         }
@@ -3692,13 +3705,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetRelationalDatabaseSnapshots">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetRelationalDatabaseSnapshotsOutcome GetRelationalDatabaseSnapshots(const Model::GetRelationalDatabaseSnapshotsRequest& request) const;
+        virtual Model::GetRelationalDatabaseSnapshotsOutcome GetRelationalDatabaseSnapshots(const Model::GetRelationalDatabaseSnapshotsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetRelationalDatabaseSnapshots that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetRelationalDatabaseSnapshotsRequestT = Model::GetRelationalDatabaseSnapshotsRequest>
-        Model::GetRelationalDatabaseSnapshotsOutcomeCallable GetRelationalDatabaseSnapshotsCallable(const GetRelationalDatabaseSnapshotsRequestT& request) const
+        Model::GetRelationalDatabaseSnapshotsOutcomeCallable GetRelationalDatabaseSnapshotsCallable(const GetRelationalDatabaseSnapshotsRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetRelationalDatabaseSnapshots, request);
         }
@@ -3707,7 +3720,7 @@ namespace Lightsail
          * An Async wrapper for GetRelationalDatabaseSnapshots that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetRelationalDatabaseSnapshotsRequestT = Model::GetRelationalDatabaseSnapshotsRequest>
-        void GetRelationalDatabaseSnapshotsAsync(const GetRelationalDatabaseSnapshotsRequestT& request, const GetRelationalDatabaseSnapshotsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetRelationalDatabaseSnapshotsAsync(const GetRelationalDatabaseSnapshotsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetRelationalDatabaseSnapshotsRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetRelationalDatabaseSnapshots, request, handler, context);
         }
@@ -3718,13 +3731,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetRelationalDatabases">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetRelationalDatabasesOutcome GetRelationalDatabases(const Model::GetRelationalDatabasesRequest& request) const;
+        virtual Model::GetRelationalDatabasesOutcome GetRelationalDatabases(const Model::GetRelationalDatabasesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetRelationalDatabases that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetRelationalDatabasesRequestT = Model::GetRelationalDatabasesRequest>
-        Model::GetRelationalDatabasesOutcomeCallable GetRelationalDatabasesCallable(const GetRelationalDatabasesRequestT& request) const
+        Model::GetRelationalDatabasesOutcomeCallable GetRelationalDatabasesCallable(const GetRelationalDatabasesRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetRelationalDatabases, request);
         }
@@ -3733,7 +3746,7 @@ namespace Lightsail
          * An Async wrapper for GetRelationalDatabases that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetRelationalDatabasesRequestT = Model::GetRelationalDatabasesRequest>
-        void GetRelationalDatabasesAsync(const GetRelationalDatabasesRequestT& request, const GetRelationalDatabasesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetRelationalDatabasesAsync(const GetRelationalDatabasesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetRelationalDatabasesRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetRelationalDatabases, request, handler, context);
         }
@@ -3797,13 +3810,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/GetStaticIps">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetStaticIpsOutcome GetStaticIps(const Model::GetStaticIpsRequest& request) const;
+        virtual Model::GetStaticIpsOutcome GetStaticIps(const Model::GetStaticIpsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetStaticIps that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetStaticIpsRequestT = Model::GetStaticIpsRequest>
-        Model::GetStaticIpsOutcomeCallable GetStaticIpsCallable(const GetStaticIpsRequestT& request) const
+        Model::GetStaticIpsOutcomeCallable GetStaticIpsCallable(const GetStaticIpsRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::GetStaticIps, request);
         }
@@ -3812,7 +3825,7 @@ namespace Lightsail
          * An Async wrapper for GetStaticIps that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetStaticIpsRequestT = Model::GetStaticIpsRequest>
-        void GetStaticIpsAsync(const GetStaticIpsRequestT& request, const GetStaticIpsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetStaticIpsAsync(const GetStaticIpsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetStaticIpsRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::GetStaticIps, request, handler, context);
         }
@@ -3849,13 +3862,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/IsVpcPeered">AWS
          * API Reference</a></p>
          */
-        virtual Model::IsVpcPeeredOutcome IsVpcPeered(const Model::IsVpcPeeredRequest& request) const;
+        virtual Model::IsVpcPeeredOutcome IsVpcPeered(const Model::IsVpcPeeredRequest& request = {}) const;
 
         /**
          * A Callable wrapper for IsVpcPeered that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename IsVpcPeeredRequestT = Model::IsVpcPeeredRequest>
-        Model::IsVpcPeeredOutcomeCallable IsVpcPeeredCallable(const IsVpcPeeredRequestT& request) const
+        Model::IsVpcPeeredOutcomeCallable IsVpcPeeredCallable(const IsVpcPeeredRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::IsVpcPeered, request);
         }
@@ -3864,7 +3877,7 @@ namespace Lightsail
          * An Async wrapper for IsVpcPeered that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename IsVpcPeeredRequestT = Model::IsVpcPeeredRequest>
-        void IsVpcPeeredAsync(const IsVpcPeeredRequestT& request, const IsVpcPeeredResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void IsVpcPeeredAsync(const IsVpcPeeredResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const IsVpcPeeredRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::IsVpcPeered, request, handler, context);
         }
@@ -3875,7 +3888,7 @@ namespace Lightsail
          * protocol.</p> <p>The <code>OpenInstancePublicPorts</code> action supports
          * tag-based access control via resource tags applied to the resource identified by
          * <code>instanceName</code>. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/OpenInstancePublicPorts">AWS
          * API Reference</a></p>
@@ -3906,13 +3919,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/PeerVpc">AWS
          * API Reference</a></p>
          */
-        virtual Model::PeerVpcOutcome PeerVpc(const Model::PeerVpcRequest& request) const;
+        virtual Model::PeerVpcOutcome PeerVpc(const Model::PeerVpcRequest& request = {}) const;
 
         /**
          * A Callable wrapper for PeerVpc that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename PeerVpcRequestT = Model::PeerVpcRequest>
-        Model::PeerVpcOutcomeCallable PeerVpcCallable(const PeerVpcRequestT& request) const
+        Model::PeerVpcOutcomeCallable PeerVpcCallable(const PeerVpcRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::PeerVpc, request);
         }
@@ -3921,7 +3934,7 @@ namespace Lightsail
          * An Async wrapper for PeerVpc that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename PeerVpcRequestT = Model::PeerVpcRequest>
-        void PeerVpcAsync(const PeerVpcRequestT& request, const PeerVpcResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void PeerVpcAsync(const PeerVpcResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const PeerVpcRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::PeerVpc, request, handler, context);
         }
@@ -3932,7 +3945,7 @@ namespace Lightsail
          * metric condition is met, the alarm can notify you by email, SMS text message,
          * and a banner displayed on the Amazon Lightsail console. For more information,
          * see <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-alarms">Alarms
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-alarms">Alarms
          * in Amazon Lightsail</a>.</p> <p>When this action creates an alarm, the alarm
          * state is immediately set to <code>INSUFFICIENT_DATA</code>. The alarm is then
          * evaluated and its state is set appropriately. Any actions associated with the
@@ -3973,7 +3986,7 @@ namespace Lightsail
          * currently open ports.</p> <p>The <code>PutInstancePublicPorts</code> action
          * supports tag-based access control via resource tags applied to the resource
          * identified by <code>instanceName</code>. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/PutInstancePublicPorts">AWS
          * API Reference</a></p>
@@ -4003,7 +4016,7 @@ namespace Lightsail
          * operation supports tag-based access control via resource tags applied to the
          * resource identified by <code>instance name</code>. For more information, see the
          * <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/RebootInstance">AWS
          * API Reference</a></p>
@@ -4033,7 +4046,7 @@ namespace Lightsail
          * relational database</code> operation supports tag-based access control via
          * resource tags applied to the resource identified by relationalDatabaseName. For
          * more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/RebootRelationalDatabase">AWS
          * API Reference</a></p>
@@ -4063,7 +4076,7 @@ namespace Lightsail
          *  <p>This action is not required if you install and use the Lightsail
          * Control (lightsailctl) plugin to push container images to your Lightsail
          * container service. For more information, see <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-pushing-container-images">Pushing
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-pushing-container-images">Pushing
          * and managing container images on your Amazon Lightsail container services</a> in
          * the <i>Amazon Lightsail Developer Guide</i>.</p> <p><h3>See Also:</h3>  
          * <a
@@ -4123,13 +4136,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/ResetDistributionCache">AWS
          * API Reference</a></p>
          */
-        virtual Model::ResetDistributionCacheOutcome ResetDistributionCache(const Model::ResetDistributionCacheRequest& request) const;
+        virtual Model::ResetDistributionCacheOutcome ResetDistributionCache(const Model::ResetDistributionCacheRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ResetDistributionCache that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ResetDistributionCacheRequestT = Model::ResetDistributionCacheRequest>
-        Model::ResetDistributionCacheOutcomeCallable ResetDistributionCacheCallable(const ResetDistributionCacheRequestT& request) const
+        Model::ResetDistributionCacheOutcomeCallable ResetDistributionCacheCallable(const ResetDistributionCacheRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::ResetDistributionCache, request);
         }
@@ -4138,7 +4151,7 @@ namespace Lightsail
          * An Async wrapper for ResetDistributionCache that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ResetDistributionCacheRequestT = Model::ResetDistributionCacheRequest>
-        void ResetDistributionCacheAsync(const ResetDistributionCacheRequestT& request, const ResetDistributionCacheResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ResetDistributionCacheAsync(const ResetDistributionCacheResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ResetDistributionCacheRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::ResetDistributionCache, request, handler, context);
         }
@@ -4151,7 +4164,7 @@ namespace Lightsail
          * method in each Amazon Web Services Region. However, SMS text messaging is not
          * supported in some Amazon Web Services Regions, and SMS text messages cannot be
          * sent to some countries/regions. For more information, see <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-notifications">Notifications
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-notifications">Notifications
          * in Amazon Lightsail</a>.</p> <p>A verification request is sent to the contact
          * method when you initially create it. Use this action to send another
          * verification request if a previous verification request was deleted, or has
@@ -4300,12 +4313,12 @@ namespace Lightsail
          * instance. To use the same IP address after stopping and starting an instance,
          * create a static IP address and attach it to the instance. For more information,
          * see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/lightsail-create-static-ip">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/lightsail-create-static-ip">Amazon
          * Lightsail Developer Guide</a>.</p>  <p>The <code>start instance</code>
          * operation supports tag-based access control via resource tags applied to the
          * resource identified by <code>instance name</code>. For more information, see the
          * <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/StartInstance">AWS
          * API Reference</a></p>
@@ -4336,7 +4349,7 @@ namespace Lightsail
          * operation.</p> <p>The <code>start relational database</code> operation supports
          * tag-based access control via resource tags applied to the resource identified by
          * relationalDatabaseName. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/StartRelationalDatabase">AWS
          * API Reference</a></p>
@@ -4362,7 +4375,7 @@ namespace Lightsail
         }
 
         /**
-         * <p>Terminates a web-based NICE DCV session that’s used to access a virtual
+         * <p>Terminates a web-based Amazon DCV session that’s used to access a virtual
          * computer’s operating system or application. The session will close and any
          * unsaved data will be lost.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/StopGUISession">AWS
@@ -4394,12 +4407,12 @@ namespace Lightsail
          * address to the instance. To use the same IP address after stopping and starting
          * an instance, create a static IP address and attach it to the instance. For more
          * information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/lightsail-create-static-ip">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/lightsail-create-static-ip">Amazon
          * Lightsail Developer Guide</a>.</p>  <p>The <code>stop instance</code>
          * operation supports tag-based access control via resource tags applied to the
          * resource identified by <code>instance name</code>. For more information, see the
          * <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/StopInstance">AWS
          * API Reference</a></p>
@@ -4426,10 +4439,14 @@ namespace Lightsail
 
         /**
          * <p>Stops a specific database that is currently running in Amazon Lightsail.</p>
-         * <p>The <code>stop relational database</code> operation supports tag-based access
-         * control via resource tags applied to the resource identified by
-         * relationalDatabaseName. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         *  <p>If you don't manually start your database instance after it has been
+         * stopped for seven consecutive days, Amazon Lightsail automatically starts it for
+         * you. This action helps ensure that your database instance doesn't fall behind on
+         * any required maintenance updates.</p>  <p>The <code>stop relational
+         * database</code> operation supports tag-based access control via resource tags
+         * applied to the resource identified by relationalDatabaseName. For more
+         * information, see the <a
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/StopRelationalDatabase">AWS
          * API Reference</a></p>
@@ -4459,12 +4476,12 @@ namespace Lightsail
          * resource can have a maximum of 50 tags. Each tag consists of a key and an
          * optional value. Tag keys must be unique per resource. For more information about
          * tags, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-tags">Amazon
          * Lightsail Developer Guide</a>.</p> <p>The <code>tag resource</code> operation
          * supports tag-based access control via request tags and resource tags applied to
          * the resource identified by <code>resource name</code>. For more information, see
          * the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/TagResource">AWS
          * API Reference</a></p>
@@ -4497,7 +4514,7 @@ namespace Lightsail
          * single metric for one of your resources. When a metric condition is met, the
          * alarm can notify you by email, SMS text message, and a banner displayed on the
          * Amazon Lightsail console. For more information, see <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-alarms">Alarms
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-alarms">Alarms
          * in Amazon Lightsail</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/TestAlarm">AWS
          * API Reference</a></p>
@@ -4528,13 +4545,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/UnpeerVpc">AWS
          * API Reference</a></p>
          */
-        virtual Model::UnpeerVpcOutcome UnpeerVpc(const Model::UnpeerVpcRequest& request) const;
+        virtual Model::UnpeerVpcOutcome UnpeerVpc(const Model::UnpeerVpcRequest& request = {}) const;
 
         /**
          * A Callable wrapper for UnpeerVpc that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename UnpeerVpcRequestT = Model::UnpeerVpcRequest>
-        Model::UnpeerVpcOutcomeCallable UnpeerVpcCallable(const UnpeerVpcRequestT& request) const
+        Model::UnpeerVpcOutcomeCallable UnpeerVpcCallable(const UnpeerVpcRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::UnpeerVpc, request);
         }
@@ -4543,7 +4560,7 @@ namespace Lightsail
          * An Async wrapper for UnpeerVpc that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename UnpeerVpcRequestT = Model::UnpeerVpcRequest>
-        void UnpeerVpcAsync(const UnpeerVpcRequestT& request, const UnpeerVpcResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void UnpeerVpcAsync(const UnpeerVpcResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const UnpeerVpcRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::UnpeerVpc, request, handler, context);
         }
@@ -4554,7 +4571,7 @@ namespace Lightsail
          * supports tag-based access control via request tags and resource tags applied to
          * the resource identified by <code>resource name</code>. For more information, see
          * the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/UntagResource">AWS
          * API Reference</a></p>
@@ -4714,13 +4731,13 @@ namespace Lightsail
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/UpdateDistributionBundle">AWS
          * API Reference</a></p>
          */
-        virtual Model::UpdateDistributionBundleOutcome UpdateDistributionBundle(const Model::UpdateDistributionBundleRequest& request) const;
+        virtual Model::UpdateDistributionBundleOutcome UpdateDistributionBundle(const Model::UpdateDistributionBundleRequest& request = {}) const;
 
         /**
          * A Callable wrapper for UpdateDistributionBundle that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename UpdateDistributionBundleRequestT = Model::UpdateDistributionBundleRequest>
-        Model::UpdateDistributionBundleOutcomeCallable UpdateDistributionBundleCallable(const UpdateDistributionBundleRequestT& request) const
+        Model::UpdateDistributionBundleOutcomeCallable UpdateDistributionBundleCallable(const UpdateDistributionBundleRequestT& request = {}) const
         {
             return SubmitCallable(&LightsailClient::UpdateDistributionBundle, request);
         }
@@ -4729,7 +4746,7 @@ namespace Lightsail
          * An Async wrapper for UpdateDistributionBundle that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename UpdateDistributionBundleRequestT = Model::UpdateDistributionBundleRequest>
-        void UpdateDistributionBundleAsync(const UpdateDistributionBundleRequestT& request, const UpdateDistributionBundleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void UpdateDistributionBundleAsync(const UpdateDistributionBundleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const UpdateDistributionBundleRequestT& request = {}) const
         {
             return SubmitAsync(&LightsailClient::UpdateDistributionBundle, request, handler, context);
         }
@@ -4739,7 +4756,7 @@ namespace Lightsail
          * domain entry</code> operation supports tag-based access control via resource
          * tags applied to the resource identified by <code>domain name</code>. For more
          * information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/UpdateDomainEntry">AWS
          * API Reference</a></p>
@@ -4772,7 +4789,7 @@ namespace Lightsail
          * are successfully applied, the state changes to <code>applied</code> in
          * subsequent <code>GetInstance</code> or <code>GetInstances</code> API calls. For
          * more information, see <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configuring-instance-metadata-service">Use
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-configuring-instance-metadata-service">Use
          * IMDSv2 with an Amazon Lightsail instance</a> in the <i>Amazon Lightsail
          * Developer Guide</i>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/UpdateInstanceMetadataOptions">AWS
@@ -4804,7 +4821,7 @@ namespace Lightsail
          * operation supports tag-based access control via resource tags applied to the
          * resource identified by <code>load balancer name</code>. For more information,
          * see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/UpdateLoadBalancerAttribute">AWS
          * API Reference</a></p>
@@ -4836,7 +4853,7 @@ namespace Lightsail
          * maintenance window.</p> <p>The <code>update relational database</code> operation
          * supports tag-based access control via resource tags applied to the resource
          * identified by relationalDatabaseName. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/UpdateRelationalDatabase">AWS
          * API Reference</a></p>
@@ -4873,7 +4890,7 @@ namespace Lightsail
          * <code>update relational database parameters</code> operation supports tag-based
          * access control via resource tags applied to the resource identified by
          * relationalDatabaseName. For more information, see the <a
-         * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-controlling-access-using-tags">Amazon
+         * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-controlling-access-using-tags">Amazon
          * Lightsail Developer Guide</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/lightsail-2016-11-28/UpdateRelationalDatabaseParameters">AWS
          * API Reference</a></p>
@@ -4903,11 +4920,7 @@ namespace Lightsail
       std::shared_ptr<LightsailEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<LightsailClient>;
-      void init(const LightsailClientConfiguration& clientConfiguration);
 
-      LightsailClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<LightsailEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Lightsail

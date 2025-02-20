@@ -20,15 +20,13 @@ CreateMultipartUploadResult::CreateMultipartUploadResult() :
     m_serverSideEncryption(ServerSideEncryption::NOT_SET),
     m_bucketKeyEnabled(false),
     m_requestCharged(RequestCharged::NOT_SET),
-    m_checksumAlgorithm(ChecksumAlgorithm::NOT_SET)
+    m_checksumAlgorithm(ChecksumAlgorithm::NOT_SET),
+    m_checksumType(ChecksumType::NOT_SET)
 {
 }
 
-CreateMultipartUploadResult::CreateMultipartUploadResult(const Aws::AmazonWebServiceResult<XmlDocument>& result) : 
-    m_serverSideEncryption(ServerSideEncryption::NOT_SET),
-    m_bucketKeyEnabled(false),
-    m_requestCharged(RequestCharged::NOT_SET),
-    m_checksumAlgorithm(ChecksumAlgorithm::NOT_SET)
+CreateMultipartUploadResult::CreateMultipartUploadResult(const Aws::AmazonWebServiceResult<XmlDocument>& result)
+  : CreateMultipartUploadResult()
 {
   *this = result;
 }
@@ -61,7 +59,11 @@ CreateMultipartUploadResult& CreateMultipartUploadResult::operator =(const Aws::
   const auto& abortDateIter = headers.find("x-amz-abort-date");
   if(abortDateIter != headers.end())
   {
-    m_abortDate = DateTime(abortDateIter->second, Aws::Utils::DateFormat::RFC822);
+    m_abortDate = DateTime(abortDateIter->second.c_str(), Aws::Utils::DateFormat::RFC822);
+    if(!m_abortDate.WasParseSuccessful())
+    {
+      AWS_LOGSTREAM_WARN("S3Crt::CreateMultipartUploadResult", "Failed to parse abortDate header as an RFC822 timestamp: " << abortDateIter->second.c_str());
+    }
   }
 
   const auto& abortRuleIdIter = headers.find("x-amz-abort-rule-id");
@@ -116,6 +118,12 @@ CreateMultipartUploadResult& CreateMultipartUploadResult::operator =(const Aws::
   if(checksumAlgorithmIter != headers.end())
   {
     m_checksumAlgorithm = ChecksumAlgorithmMapper::GetChecksumAlgorithmForName(checksumAlgorithmIter->second);
+  }
+
+  const auto& checksumTypeIter = headers.find("x-amz-checksum-type");
+  if(checksumTypeIter != headers.end())
+  {
+    m_checksumType = ChecksumTypeMapper::GetChecksumTypeForName(checksumTypeIter->second);
   }
 
   const auto& requestIdIter = headers.find("x-amz-request-id");

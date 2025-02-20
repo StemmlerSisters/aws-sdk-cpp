@@ -21,14 +21,13 @@ namespace Model
 {
 
 GroupIdentifier::GroupIdentifier() : 
-    m_groupNameHasBeenSet(false),
-    m_groupIdHasBeenSet(false)
+    m_groupIdHasBeenSet(false),
+    m_groupNameHasBeenSet(false)
 {
 }
 
-GroupIdentifier::GroupIdentifier(const XmlNode& xmlNode) : 
-    m_groupNameHasBeenSet(false),
-    m_groupIdHasBeenSet(false)
+GroupIdentifier::GroupIdentifier(const XmlNode& xmlNode)
+  : GroupIdentifier()
 {
   *this = xmlNode;
 }
@@ -39,17 +38,17 @@ GroupIdentifier& GroupIdentifier::operator =(const XmlNode& xmlNode)
 
   if(!resultNode.IsNull())
   {
-    XmlNode groupNameNode = resultNode.FirstChild("groupName");
-    if(!groupNameNode.IsNull())
-    {
-      m_groupName = Aws::Utils::Xml::DecodeEscapedXmlText(groupNameNode.GetText());
-      m_groupNameHasBeenSet = true;
-    }
     XmlNode groupIdNode = resultNode.FirstChild("groupId");
     if(!groupIdNode.IsNull())
     {
       m_groupId = Aws::Utils::Xml::DecodeEscapedXmlText(groupIdNode.GetText());
       m_groupIdHasBeenSet = true;
+    }
+    XmlNode groupNameNode = resultNode.FirstChild("groupName");
+    if(!groupNameNode.IsNull())
+    {
+      m_groupName = Aws::Utils::Xml::DecodeEscapedXmlText(groupNameNode.GetText());
+      m_groupNameHasBeenSet = true;
     }
   }
 
@@ -58,27 +57,27 @@ GroupIdentifier& GroupIdentifier::operator =(const XmlNode& xmlNode)
 
 void GroupIdentifier::OutputToStream(Aws::OStream& oStream, const char* location, unsigned index, const char* locationValue) const
 {
-  if(m_groupNameHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".GroupName=" << StringUtils::URLEncode(m_groupName.c_str()) << "&";
-  }
-
   if(m_groupIdHasBeenSet)
   {
       oStream << location << index << locationValue << ".GroupId=" << StringUtils::URLEncode(m_groupId.c_str()) << "&";
+  }
+
+  if(m_groupNameHasBeenSet)
+  {
+      oStream << location << index << locationValue << ".GroupName=" << StringUtils::URLEncode(m_groupName.c_str()) << "&";
   }
 
 }
 
 void GroupIdentifier::OutputToStream(Aws::OStream& oStream, const char* location) const
 {
-  if(m_groupNameHasBeenSet)
-  {
-      oStream << location << ".GroupName=" << StringUtils::URLEncode(m_groupName.c_str()) << "&";
-  }
   if(m_groupIdHasBeenSet)
   {
       oStream << location << ".GroupId=" << StringUtils::URLEncode(m_groupId.c_str()) << "&";
+  }
+  if(m_groupNameHasBeenSet)
+  {
+      oStream << location << ".GroupName=" << StringUtils::URLEncode(m_groupName.c_str()) << "&";
   }
 }
 

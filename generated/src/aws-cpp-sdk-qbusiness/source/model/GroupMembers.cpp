@@ -20,13 +20,13 @@ namespace Model
 
 GroupMembers::GroupMembers() : 
     m_memberGroupsHasBeenSet(false),
-    m_memberUsersHasBeenSet(false)
+    m_memberUsersHasBeenSet(false),
+    m_s3PathForGroupMembersHasBeenSet(false)
 {
 }
 
-GroupMembers::GroupMembers(JsonView jsonValue) : 
-    m_memberGroupsHasBeenSet(false),
-    m_memberUsersHasBeenSet(false)
+GroupMembers::GroupMembers(JsonView jsonValue)
+  : GroupMembers()
 {
   *this = jsonValue;
 }
@@ -51,6 +51,13 @@ GroupMembers& GroupMembers::operator =(JsonView jsonValue)
       m_memberUsers.push_back(memberUsersJsonList[memberUsersIndex].AsObject());
     }
     m_memberUsersHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("s3PathForGroupMembers"))
+  {
+    m_s3PathForGroupMembers = jsonValue.GetObject("s3PathForGroupMembers");
+
+    m_s3PathForGroupMembersHasBeenSet = true;
   }
 
   return *this;
@@ -79,6 +86,12 @@ JsonValue GroupMembers::Jsonize() const
      memberUsersJsonList[memberUsersIndex].AsObject(m_memberUsers[memberUsersIndex].Jsonize());
    }
    payload.WithArray("memberUsers", std::move(memberUsersJsonList));
+
+  }
+
+  if(m_s3PathForGroupMembersHasBeenSet)
+  {
+   payload.WithObject("s3PathForGroupMembers", m_s3PathForGroupMembers.Jsonize());
 
   }
 

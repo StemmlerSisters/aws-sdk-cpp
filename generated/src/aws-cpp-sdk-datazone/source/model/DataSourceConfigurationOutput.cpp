@@ -20,13 +20,13 @@ namespace Model
 
 DataSourceConfigurationOutput::DataSourceConfigurationOutput() : 
     m_glueRunConfigurationHasBeenSet(false),
-    m_redshiftRunConfigurationHasBeenSet(false)
+    m_redshiftRunConfigurationHasBeenSet(false),
+    m_sageMakerRunConfigurationHasBeenSet(false)
 {
 }
 
-DataSourceConfigurationOutput::DataSourceConfigurationOutput(JsonView jsonValue) : 
-    m_glueRunConfigurationHasBeenSet(false),
-    m_redshiftRunConfigurationHasBeenSet(false)
+DataSourceConfigurationOutput::DataSourceConfigurationOutput(JsonView jsonValue)
+  : DataSourceConfigurationOutput()
 {
   *this = jsonValue;
 }
@@ -47,6 +47,13 @@ DataSourceConfigurationOutput& DataSourceConfigurationOutput::operator =(JsonVie
     m_redshiftRunConfigurationHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("sageMakerRunConfiguration"))
+  {
+    m_sageMakerRunConfiguration = jsonValue.GetObject("sageMakerRunConfiguration");
+
+    m_sageMakerRunConfigurationHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -63,6 +70,12 @@ JsonValue DataSourceConfigurationOutput::Jsonize() const
   if(m_redshiftRunConfigurationHasBeenSet)
   {
    payload.WithObject("redshiftRunConfiguration", m_redshiftRunConfiguration.Jsonize());
+
+  }
+
+  if(m_sageMakerRunConfigurationHasBeenSet)
+  {
+   payload.WithObject("sageMakerRunConfiguration", m_sageMakerRunConfiguration.Jsonize());
 
   }
 

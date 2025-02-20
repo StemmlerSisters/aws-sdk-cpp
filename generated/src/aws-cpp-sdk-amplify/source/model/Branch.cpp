@@ -52,45 +52,13 @@ Branch::Branch() :
     m_destinationBranchHasBeenSet(false),
     m_sourceBranchHasBeenSet(false),
     m_backendEnvironmentArnHasBeenSet(false),
-    m_backendHasBeenSet(false)
+    m_backendHasBeenSet(false),
+    m_computeRoleArnHasBeenSet(false)
 {
 }
 
-Branch::Branch(JsonView jsonValue) : 
-    m_branchArnHasBeenSet(false),
-    m_branchNameHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_tagsHasBeenSet(false),
-    m_stage(Stage::NOT_SET),
-    m_stageHasBeenSet(false),
-    m_displayNameHasBeenSet(false),
-    m_enableNotification(false),
-    m_enableNotificationHasBeenSet(false),
-    m_createTimeHasBeenSet(false),
-    m_updateTimeHasBeenSet(false),
-    m_environmentVariablesHasBeenSet(false),
-    m_enableAutoBuild(false),
-    m_enableAutoBuildHasBeenSet(false),
-    m_customDomainsHasBeenSet(false),
-    m_frameworkHasBeenSet(false),
-    m_activeJobIdHasBeenSet(false),
-    m_totalNumberOfJobsHasBeenSet(false),
-    m_enableBasicAuth(false),
-    m_enableBasicAuthHasBeenSet(false),
-    m_enablePerformanceMode(false),
-    m_enablePerformanceModeHasBeenSet(false),
-    m_thumbnailUrlHasBeenSet(false),
-    m_basicAuthCredentialsHasBeenSet(false),
-    m_buildSpecHasBeenSet(false),
-    m_ttlHasBeenSet(false),
-    m_associatedResourcesHasBeenSet(false),
-    m_enablePullRequestPreview(false),
-    m_enablePullRequestPreviewHasBeenSet(false),
-    m_pullRequestEnvironmentNameHasBeenSet(false),
-    m_destinationBranchHasBeenSet(false),
-    m_sourceBranchHasBeenSet(false),
-    m_backendEnvironmentArnHasBeenSet(false),
-    m_backendHasBeenSet(false)
+Branch::Branch(JsonView jsonValue)
+  : Branch()
 {
   *this = jsonValue;
 }
@@ -305,6 +273,13 @@ Branch& Branch::operator =(JsonView jsonValue)
     m_backendHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("computeRoleArn"))
+  {
+    m_computeRoleArn = jsonValue.GetString("computeRoleArn");
+
+    m_computeRoleArnHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -494,6 +469,12 @@ JsonValue Branch::Jsonize() const
   if(m_backendHasBeenSet)
   {
    payload.WithObject("backend", m_backend.Jsonize());
+
+  }
+
+  if(m_computeRoleArnHasBeenSet)
+  {
+   payload.WithString("computeRoleArn", m_computeRoleArn);
 
   }
 

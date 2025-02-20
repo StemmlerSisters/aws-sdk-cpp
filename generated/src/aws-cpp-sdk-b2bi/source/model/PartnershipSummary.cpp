@@ -23,20 +23,15 @@ PartnershipSummary::PartnershipSummary() :
     m_partnershipIdHasBeenSet(false),
     m_nameHasBeenSet(false),
     m_capabilitiesHasBeenSet(false),
+    m_capabilityOptionsHasBeenSet(false),
     m_tradingPartnerIdHasBeenSet(false),
     m_createdAtHasBeenSet(false),
     m_modifiedAtHasBeenSet(false)
 {
 }
 
-PartnershipSummary::PartnershipSummary(JsonView jsonValue) : 
-    m_profileIdHasBeenSet(false),
-    m_partnershipIdHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_capabilitiesHasBeenSet(false),
-    m_tradingPartnerIdHasBeenSet(false),
-    m_createdAtHasBeenSet(false),
-    m_modifiedAtHasBeenSet(false)
+PartnershipSummary::PartnershipSummary(JsonView jsonValue)
+  : PartnershipSummary()
 {
   *this = jsonValue;
 }
@@ -72,6 +67,13 @@ PartnershipSummary& PartnershipSummary::operator =(JsonView jsonValue)
       m_capabilities.push_back(capabilitiesJsonList[capabilitiesIndex].AsString());
     }
     m_capabilitiesHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("capabilityOptions"))
+  {
+    m_capabilityOptions = jsonValue.GetObject("capabilityOptions");
+
+    m_capabilityOptionsHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("tradingPartnerId"))
@@ -128,6 +130,12 @@ JsonValue PartnershipSummary::Jsonize() const
      capabilitiesJsonList[capabilitiesIndex].AsString(m_capabilities[capabilitiesIndex]);
    }
    payload.WithArray("capabilities", std::move(capabilitiesJsonList));
+
+  }
+
+  if(m_capabilityOptionsHasBeenSet)
+  {
+   payload.WithObject("capabilityOptions", m_capabilityOptions.Jsonize());
 
   }
 

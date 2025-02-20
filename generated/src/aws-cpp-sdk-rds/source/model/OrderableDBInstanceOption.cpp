@@ -85,68 +85,8 @@ OrderableDBInstanceOption::OrderableDBInstanceOption() :
 {
 }
 
-OrderableDBInstanceOption::OrderableDBInstanceOption(const XmlNode& xmlNode) : 
-    m_engineHasBeenSet(false),
-    m_engineVersionHasBeenSet(false),
-    m_dBInstanceClassHasBeenSet(false),
-    m_licenseModelHasBeenSet(false),
-    m_availabilityZoneGroupHasBeenSet(false),
-    m_availabilityZonesHasBeenSet(false),
-    m_multiAZCapable(false),
-    m_multiAZCapableHasBeenSet(false),
-    m_readReplicaCapable(false),
-    m_readReplicaCapableHasBeenSet(false),
-    m_vpc(false),
-    m_vpcHasBeenSet(false),
-    m_supportsStorageEncryption(false),
-    m_supportsStorageEncryptionHasBeenSet(false),
-    m_storageTypeHasBeenSet(false),
-    m_supportsIops(false),
-    m_supportsIopsHasBeenSet(false),
-    m_supportsEnhancedMonitoring(false),
-    m_supportsEnhancedMonitoringHasBeenSet(false),
-    m_supportsIAMDatabaseAuthentication(false),
-    m_supportsIAMDatabaseAuthenticationHasBeenSet(false),
-    m_supportsPerformanceInsights(false),
-    m_supportsPerformanceInsightsHasBeenSet(false),
-    m_minStorageSize(0),
-    m_minStorageSizeHasBeenSet(false),
-    m_maxStorageSize(0),
-    m_maxStorageSizeHasBeenSet(false),
-    m_minIopsPerDbInstance(0),
-    m_minIopsPerDbInstanceHasBeenSet(false),
-    m_maxIopsPerDbInstance(0),
-    m_maxIopsPerDbInstanceHasBeenSet(false),
-    m_minIopsPerGib(0.0),
-    m_minIopsPerGibHasBeenSet(false),
-    m_maxIopsPerGib(0.0),
-    m_maxIopsPerGibHasBeenSet(false),
-    m_availableProcessorFeaturesHasBeenSet(false),
-    m_supportedEngineModesHasBeenSet(false),
-    m_supportsStorageAutoscaling(false),
-    m_supportsStorageAutoscalingHasBeenSet(false),
-    m_supportsKerberosAuthentication(false),
-    m_supportsKerberosAuthenticationHasBeenSet(false),
-    m_outpostCapable(false),
-    m_outpostCapableHasBeenSet(false),
-    m_supportedActivityStreamModesHasBeenSet(false),
-    m_supportsGlobalDatabases(false),
-    m_supportsGlobalDatabasesHasBeenSet(false),
-    m_supportsClusters(false),
-    m_supportsClustersHasBeenSet(false),
-    m_supportedNetworkTypesHasBeenSet(false),
-    m_supportsStorageThroughput(false),
-    m_supportsStorageThroughputHasBeenSet(false),
-    m_minStorageThroughputPerDbInstance(0),
-    m_minStorageThroughputPerDbInstanceHasBeenSet(false),
-    m_maxStorageThroughputPerDbInstance(0),
-    m_maxStorageThroughputPerDbInstanceHasBeenSet(false),
-    m_minStorageThroughputPerIops(0.0),
-    m_minStorageThroughputPerIopsHasBeenSet(false),
-    m_maxStorageThroughputPerIops(0.0),
-    m_maxStorageThroughputPerIopsHasBeenSet(false),
-    m_supportsDedicatedLogVolume(false),
-    m_supportsDedicatedLogVolumeHasBeenSet(false)
+OrderableDBInstanceOption::OrderableDBInstanceOption(const XmlNode& xmlNode)
+  : OrderableDBInstanceOption()
 {
   *this = xmlNode;
 }
@@ -441,7 +381,7 @@ void OrderableDBInstanceOption::OutputToStream(Aws::OStream& oStream, const char
       for(auto& item : m_availabilityZones)
       {
         Aws::StringStream availabilityZonesSs;
-        availabilityZonesSs << location << index << locationValue << ".AvailabilityZone." << availabilityZonesIdx++;
+        availabilityZonesSs << location << index << locationValue << ".AvailabilityZones.AvailabilityZone." << availabilityZonesIdx++;
         item.OutputToStream(oStream, availabilityZonesSs.str().c_str());
       }
   }
@@ -527,7 +467,7 @@ void OrderableDBInstanceOption::OutputToStream(Aws::OStream& oStream, const char
       for(auto& item : m_availableProcessorFeatures)
       {
         Aws::StringStream availableProcessorFeaturesSs;
-        availableProcessorFeaturesSs << location << index << locationValue << ".AvailableProcessorFeature." << availableProcessorFeaturesIdx++;
+        availableProcessorFeaturesSs << location << index << locationValue << ".AvailableProcessorFeatures.AvailableProcessorFeature." << availableProcessorFeaturesIdx++;
         item.OutputToStream(oStream, availableProcessorFeaturesSs.str().c_str());
       }
   }

@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/repostspace/Repostspace_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/repostspace/RepostspaceServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/repostspace/RepostspaceErrorMarshaller.h>
 
 namespace Aws
 {
 namespace repostspace
 {
+  AWS_REPOSTSPACE_API extern const char SERVICE_NAME[];
   /**
    * <p>AWS re:Post Private is a private version of AWS re:Post for enterprises with
    * Enterprise Support or Enterprise On-Ramp Support plans. It provides access to
@@ -27,12 +31,20 @@ namespace repostspace
    * technical obstacles, accelerate innovation, and scale more efficiently in the
    * cloud.</p>
    */
-  class AWS_REPOSTSPACE_API RepostspaceClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<RepostspaceClient>
+  class AWS_REPOSTSPACE_API RepostspaceClient : smithy::client::AwsSmithyClientT<Aws::repostspace::SERVICE_NAME,
+      Aws::repostspace::RepostspaceClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      RepostspaceEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::RepostspaceErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<RepostspaceClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "repostspace"; }
 
       typedef RepostspaceClientConfiguration ClientConfigurationType;
       typedef RepostspaceEndpointProvider EndpointProviderType;
@@ -84,6 +96,58 @@ namespace repostspace
 
         /* End of legacy constructors due deprecation */
         virtual ~RepostspaceClient();
+
+        /**
+         * <p>Add role to multiple users or groups in a private re:Post.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/repostspace-2022-05-13/BatchAddRole">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::BatchAddRoleOutcome BatchAddRole(const Model::BatchAddRoleRequest& request) const;
+
+        /**
+         * A Callable wrapper for BatchAddRole that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename BatchAddRoleRequestT = Model::BatchAddRoleRequest>
+        Model::BatchAddRoleOutcomeCallable BatchAddRoleCallable(const BatchAddRoleRequestT& request) const
+        {
+            return SubmitCallable(&RepostspaceClient::BatchAddRole, request);
+        }
+
+        /**
+         * An Async wrapper for BatchAddRole that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename BatchAddRoleRequestT = Model::BatchAddRoleRequest>
+        void BatchAddRoleAsync(const BatchAddRoleRequestT& request, const BatchAddRoleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&RepostspaceClient::BatchAddRole, request, handler, context);
+        }
+
+        /**
+         * <p>Remove role from multiple users or groups in a private re:Post.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/repostspace-2022-05-13/BatchRemoveRole">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::BatchRemoveRoleOutcome BatchRemoveRole(const Model::BatchRemoveRoleRequest& request) const;
+
+        /**
+         * A Callable wrapper for BatchRemoveRole that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename BatchRemoveRoleRequestT = Model::BatchRemoveRoleRequest>
+        Model::BatchRemoveRoleOutcomeCallable BatchRemoveRoleCallable(const BatchRemoveRoleRequestT& request) const
+        {
+            return SubmitCallable(&RepostspaceClient::BatchRemoveRole, request);
+        }
+
+        /**
+         * An Async wrapper for BatchRemoveRole that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename BatchRemoveRoleRequestT = Model::BatchRemoveRoleRequest>
+        void BatchRemoveRoleAsync(const BatchRemoveRoleRequestT& request, const BatchRemoveRoleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&RepostspaceClient::BatchRemoveRole, request, handler, context);
+        }
 
         /**
          * <p>Creates an AWS re:Post Private private re:Post.</p><p><h3>See Also:</h3>   <a
@@ -193,13 +257,13 @@ namespace repostspace
          * href="http://docs.aws.amazon.com/goto/WebAPI/repostspace-2022-05-13/ListSpaces">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListSpacesOutcome ListSpaces(const Model::ListSpacesRequest& request) const;
+        virtual Model::ListSpacesOutcome ListSpaces(const Model::ListSpacesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListSpaces that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListSpacesRequestT = Model::ListSpacesRequest>
-        Model::ListSpacesOutcomeCallable ListSpacesCallable(const ListSpacesRequestT& request) const
+        Model::ListSpacesOutcomeCallable ListSpacesCallable(const ListSpacesRequestT& request = {}) const
         {
             return SubmitCallable(&RepostspaceClient::ListSpaces, request);
         }
@@ -208,7 +272,7 @@ namespace repostspace
          * An Async wrapper for ListSpaces that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListSpacesRequestT = Model::ListSpacesRequest>
-        void ListSpacesAsync(const ListSpacesRequestT& request, const ListSpacesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListSpacesAsync(const ListSpacesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListSpacesRequestT& request = {}) const
         {
             return SubmitAsync(&RepostspaceClient::ListSpaces, request, handler, context);
         }
@@ -379,11 +443,7 @@ namespace repostspace
       std::shared_ptr<RepostspaceEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<RepostspaceClient>;
-      void init(const RepostspaceClientConfiguration& clientConfiguration);
 
-      RepostspaceClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<RepostspaceEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace repostspace

@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/datazone/DataZone_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/datazone/DataZoneServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/datazone/DataZoneErrorMarshaller.h>
 
 namespace Aws
 {
 namespace DataZone
 {
+  AWS_DATAZONE_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon DataZone is a data management service that enables you to catalog,
    * discover, govern, share, and analyze your data. With Amazon DataZone, you can
@@ -23,12 +27,20 @@ namespace DataZone
    * including, but not limited to, Amazon Redshift, Amazon Athena, Amazon Web
    * Services Glue, and Amazon Web Services Lake Formation.</p>
    */
-  class AWS_DATAZONE_API DataZoneClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<DataZoneClient>
+  class AWS_DATAZONE_API DataZoneClient : smithy::client::AwsSmithyClientT<Aws::DataZone::SERVICE_NAME,
+      Aws::DataZone::DataZoneClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      DataZoneEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::DataZoneErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<DataZoneClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "DataZone"; }
 
       typedef DataZoneClientConfiguration ClientConfigurationType;
       typedef DataZoneEndpointProvider EndpointProviderType;
@@ -134,6 +146,84 @@ namespace DataZone
         }
 
         /**
+         * <p>Adds the owner of an entity (a domain unit).</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/AddEntityOwner">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::AddEntityOwnerOutcome AddEntityOwner(const Model::AddEntityOwnerRequest& request) const;
+
+        /**
+         * A Callable wrapper for AddEntityOwner that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename AddEntityOwnerRequestT = Model::AddEntityOwnerRequest>
+        Model::AddEntityOwnerOutcomeCallable AddEntityOwnerCallable(const AddEntityOwnerRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::AddEntityOwner, request);
+        }
+
+        /**
+         * An Async wrapper for AddEntityOwner that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename AddEntityOwnerRequestT = Model::AddEntityOwnerRequest>
+        void AddEntityOwnerAsync(const AddEntityOwnerRequestT& request, const AddEntityOwnerResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::AddEntityOwner, request, handler, context);
+        }
+
+        /**
+         * <p>Adds a policy grant (an authorization policy) to a specified entity,
+         * including domain units, environment blueprint configurations, or environment
+         * profiles.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/AddPolicyGrant">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::AddPolicyGrantOutcome AddPolicyGrant(const Model::AddPolicyGrantRequest& request) const;
+
+        /**
+         * A Callable wrapper for AddPolicyGrant that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename AddPolicyGrantRequestT = Model::AddPolicyGrantRequest>
+        Model::AddPolicyGrantOutcomeCallable AddPolicyGrantCallable(const AddPolicyGrantRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::AddPolicyGrant, request);
+        }
+
+        /**
+         * An Async wrapper for AddPolicyGrant that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename AddPolicyGrantRequestT = Model::AddPolicyGrantRequest>
+        void AddPolicyGrantAsync(const AddPolicyGrantRequestT& request, const AddPolicyGrantResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::AddPolicyGrant, request, handler, context);
+        }
+
+        /**
+         * <p>Associates the environment role in Amazon DataZone.</p><p><h3>See Also:</h3> 
+         * <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/AssociateEnvironmentRole">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::AssociateEnvironmentRoleOutcome AssociateEnvironmentRole(const Model::AssociateEnvironmentRoleRequest& request) const;
+
+        /**
+         * A Callable wrapper for AssociateEnvironmentRole that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename AssociateEnvironmentRoleRequestT = Model::AssociateEnvironmentRoleRequest>
+        Model::AssociateEnvironmentRoleOutcomeCallable AssociateEnvironmentRoleCallable(const AssociateEnvironmentRoleRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::AssociateEnvironmentRole, request);
+        }
+
+        /**
+         * An Async wrapper for AssociateEnvironmentRole that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename AssociateEnvironmentRoleRequestT = Model::AssociateEnvironmentRoleRequest>
+        void AssociateEnvironmentRoleAsync(const AssociateEnvironmentRoleRequestT& request, const AssociateEnvironmentRoleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::AssociateEnvironmentRole, request, handler, context);
+        }
+
+        /**
          * <p>Cancels the metadata generation run.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/CancelMetadataGenerationRun">AWS
          * API Reference</a></p>
@@ -210,6 +300,31 @@ namespace DataZone
         }
 
         /**
+         * <p>Creates a data asset filter.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/CreateAssetFilter">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateAssetFilterOutcome CreateAssetFilter(const Model::CreateAssetFilterRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateAssetFilter that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateAssetFilterRequestT = Model::CreateAssetFilterRequest>
+        Model::CreateAssetFilterOutcomeCallable CreateAssetFilterCallable(const CreateAssetFilterRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::CreateAssetFilter, request);
+        }
+
+        /**
+         * An Async wrapper for CreateAssetFilter that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateAssetFilterRequestT = Model::CreateAssetFilterRequest>
+        void CreateAssetFilterAsync(const CreateAssetFilterRequestT& request, const CreateAssetFilterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::CreateAssetFilter, request, handler, context);
+        }
+
+        /**
          * <p>Creates a revision of the asset.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/CreateAssetRevision">AWS
          * API Reference</a></p>
@@ -257,6 +372,83 @@ namespace DataZone
         void CreateAssetTypeAsync(const CreateAssetTypeRequestT& request, const CreateAssetTypeResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&DataZoneClient::CreateAssetType, request, handler, context);
+        }
+
+        /**
+         * <p>Creates a new connection. In Amazon DataZone, a connection enables you to
+         * connect your resources (domains, projects, and environments) to external
+         * resources and services.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/CreateConnection">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateConnectionOutcome CreateConnection(const Model::CreateConnectionRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateConnection that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateConnectionRequestT = Model::CreateConnectionRequest>
+        Model::CreateConnectionOutcomeCallable CreateConnectionCallable(const CreateConnectionRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::CreateConnection, request);
+        }
+
+        /**
+         * An Async wrapper for CreateConnection that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateConnectionRequestT = Model::CreateConnectionRequest>
+        void CreateConnectionAsync(const CreateConnectionRequestT& request, const CreateConnectionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::CreateConnection, request, handler, context);
+        }
+
+        /**
+         * <p>Creates a data product.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/CreateDataProduct">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateDataProductOutcome CreateDataProduct(const Model::CreateDataProductRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateDataProduct that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateDataProductRequestT = Model::CreateDataProductRequest>
+        Model::CreateDataProductOutcomeCallable CreateDataProductCallable(const CreateDataProductRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::CreateDataProduct, request);
+        }
+
+        /**
+         * An Async wrapper for CreateDataProduct that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateDataProductRequestT = Model::CreateDataProductRequest>
+        void CreateDataProductAsync(const CreateDataProductRequestT& request, const CreateDataProductResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::CreateDataProduct, request, handler, context);
+        }
+
+        /**
+         * <p>Creates a data product revision.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/CreateDataProductRevision">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateDataProductRevisionOutcome CreateDataProductRevision(const Model::CreateDataProductRevisionRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateDataProductRevision that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateDataProductRevisionRequestT = Model::CreateDataProductRevisionRequest>
+        Model::CreateDataProductRevisionOutcomeCallable CreateDataProductRevisionCallable(const CreateDataProductRevisionRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::CreateDataProductRevision, request);
+        }
+
+        /**
+         * An Async wrapper for CreateDataProductRevision that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateDataProductRevisionRequestT = Model::CreateDataProductRevisionRequest>
+        void CreateDataProductRevisionAsync(const CreateDataProductRevisionRequestT& request, const CreateDataProductRevisionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::CreateDataProductRevision, request, handler, context);
         }
 
         /**
@@ -310,6 +502,31 @@ namespace DataZone
         }
 
         /**
+         * <p>Creates a domain unit in Amazon DataZone.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/CreateDomainUnit">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateDomainUnitOutcome CreateDomainUnit(const Model::CreateDomainUnitRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateDomainUnit that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateDomainUnitRequestT = Model::CreateDomainUnitRequest>
+        Model::CreateDomainUnitOutcomeCallable CreateDomainUnitCallable(const CreateDomainUnitRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::CreateDomainUnit, request);
+        }
+
+        /**
+         * An Async wrapper for CreateDomainUnit that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateDomainUnitRequestT = Model::CreateDomainUnitRequest>
+        void CreateDomainUnitAsync(const CreateDomainUnitRequestT& request, const CreateDomainUnitResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::CreateDomainUnit, request, handler, context);
+        }
+
+        /**
          * <p>Create an Amazon DataZone environment.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/CreateEnvironment">AWS
          * API Reference</a></p>
@@ -332,6 +549,33 @@ namespace DataZone
         void CreateEnvironmentAsync(const CreateEnvironmentRequestT& request, const CreateEnvironmentResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&DataZoneClient::CreateEnvironment, request, handler, context);
+        }
+
+        /**
+         * <p>Creates an action for the environment, for example, creates a console link
+         * for an analytics tool that is available in this environment.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/CreateEnvironmentAction">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateEnvironmentActionOutcome CreateEnvironmentAction(const Model::CreateEnvironmentActionRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateEnvironmentAction that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateEnvironmentActionRequestT = Model::CreateEnvironmentActionRequest>
+        Model::CreateEnvironmentActionOutcomeCallable CreateEnvironmentActionCallable(const CreateEnvironmentActionRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::CreateEnvironmentAction, request);
+        }
+
+        /**
+         * An Async wrapper for CreateEnvironmentAction that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateEnvironmentActionRequestT = Model::CreateEnvironmentActionRequest>
+        void CreateEnvironmentActionAsync(const CreateEnvironmentActionRequestT& request, const CreateEnvironmentActionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::CreateEnvironmentAction, request, handler, context);
         }
 
         /**
@@ -537,6 +781,63 @@ namespace DataZone
         }
 
         /**
+         * <p>Creates a project profile.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/CreateProjectProfile">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateProjectProfileOutcome CreateProjectProfile(const Model::CreateProjectProfileRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateProjectProfile that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateProjectProfileRequestT = Model::CreateProjectProfileRequest>
+        Model::CreateProjectProfileOutcomeCallable CreateProjectProfileCallable(const CreateProjectProfileRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::CreateProjectProfile, request);
+        }
+
+        /**
+         * An Async wrapper for CreateProjectProfile that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateProjectProfileRequestT = Model::CreateProjectProfileRequest>
+        void CreateProjectProfileAsync(const CreateProjectProfileRequestT& request, const CreateProjectProfileResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::CreateProjectProfile, request, handler, context);
+        }
+
+        /**
+         * <p>Creates a rule in Amazon DataZone. A rule is a formal agreement that enforces
+         * specific requirements across user workflows (e.g., publishing assets to the
+         * catalog, requesting subscriptions, creating projects) within the Amazon DataZone
+         * data portal. These rules help maintain consistency, ensure compliance, and
+         * uphold governance standards in data management processes. For instance, a
+         * metadata enforcement rule can specify the required information for creating a
+         * subscription request or publishing a data asset to the catalog, ensuring
+         * alignment with organizational standards.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/CreateRule">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateRuleOutcome CreateRule(const Model::CreateRuleRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateRule that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateRuleRequestT = Model::CreateRuleRequest>
+        Model::CreateRuleOutcomeCallable CreateRuleCallable(const CreateRuleRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::CreateRule, request);
+        }
+
+        /**
+         * An Async wrapper for CreateRule that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateRuleRequestT = Model::CreateRuleRequest>
+        void CreateRuleAsync(const CreateRuleRequestT& request, const CreateRuleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::CreateRule, request, handler, context);
+        }
+
+        /**
          * <p>Creates a subsscription grant in Amazon DataZone.</p><p><h3>See Also:</h3>  
          * <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/CreateSubscriptionGrant">AWS
@@ -640,7 +941,7 @@ namespace DataZone
         }
 
         /**
-         * <p>Delets an asset in Amazon DataZone.</p><p><h3>See Also:</h3>   <a
+         * <p>Deletes an asset in Amazon DataZone.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/DeleteAsset">AWS
          * API Reference</a></p>
          */
@@ -662,6 +963,31 @@ namespace DataZone
         void DeleteAssetAsync(const DeleteAssetRequestT& request, const DeleteAssetResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&DataZoneClient::DeleteAsset, request, handler, context);
+        }
+
+        /**
+         * <p>Deletes an asset filter.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/DeleteAssetFilter">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteAssetFilterOutcome DeleteAssetFilter(const Model::DeleteAssetFilterRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteAssetFilter that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteAssetFilterRequestT = Model::DeleteAssetFilterRequest>
+        Model::DeleteAssetFilterOutcomeCallable DeleteAssetFilterCallable(const DeleteAssetFilterRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::DeleteAssetFilter, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteAssetFilter that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteAssetFilterRequestT = Model::DeleteAssetFilterRequest>
+        void DeleteAssetFilterAsync(const DeleteAssetFilterRequestT& request, const DeleteAssetFilterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::DeleteAssetFilter, request, handler, context);
         }
 
         /**
@@ -687,6 +1013,58 @@ namespace DataZone
         void DeleteAssetTypeAsync(const DeleteAssetTypeRequestT& request, const DeleteAssetTypeResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&DataZoneClient::DeleteAssetType, request, handler, context);
+        }
+
+        /**
+         * <p>Deletes and connection. In Amazon DataZone, a connection enables you to
+         * connect your resources (domains, projects, and environments) to external
+         * resources and services.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/DeleteConnection">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteConnectionOutcome DeleteConnection(const Model::DeleteConnectionRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteConnection that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteConnectionRequestT = Model::DeleteConnectionRequest>
+        Model::DeleteConnectionOutcomeCallable DeleteConnectionCallable(const DeleteConnectionRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::DeleteConnection, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteConnection that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteConnectionRequestT = Model::DeleteConnectionRequest>
+        void DeleteConnectionAsync(const DeleteConnectionRequestT& request, const DeleteConnectionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::DeleteConnection, request, handler, context);
+        }
+
+        /**
+         * <p>Deletes a data product in Amazon DataZone.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/DeleteDataProduct">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteDataProductOutcome DeleteDataProduct(const Model::DeleteDataProductRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteDataProduct that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteDataProductRequestT = Model::DeleteDataProductRequest>
+        Model::DeleteDataProductOutcomeCallable DeleteDataProductCallable(const DeleteDataProductRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::DeleteDataProduct, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteDataProduct that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteDataProductRequestT = Model::DeleteDataProductRequest>
+        void DeleteDataProductAsync(const DeleteDataProductRequestT& request, const DeleteDataProductResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::DeleteDataProduct, request, handler, context);
         }
 
         /**
@@ -740,6 +1118,31 @@ namespace DataZone
         }
 
         /**
+         * <p>Deletes a domain unit.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/DeleteDomainUnit">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteDomainUnitOutcome DeleteDomainUnit(const Model::DeleteDomainUnitRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteDomainUnit that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteDomainUnitRequestT = Model::DeleteDomainUnitRequest>
+        Model::DeleteDomainUnitOutcomeCallable DeleteDomainUnitCallable(const DeleteDomainUnitRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::DeleteDomainUnit, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteDomainUnit that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteDomainUnitRequestT = Model::DeleteDomainUnitRequest>
+        void DeleteDomainUnitAsync(const DeleteDomainUnitRequestT& request, const DeleteDomainUnitResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::DeleteDomainUnit, request, handler, context);
+        }
+
+        /**
          * <p>Deletes an environment in Amazon DataZone.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/DeleteEnvironment">AWS
          * API Reference</a></p>
@@ -762,6 +1165,33 @@ namespace DataZone
         void DeleteEnvironmentAsync(const DeleteEnvironmentRequestT& request, const DeleteEnvironmentResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&DataZoneClient::DeleteEnvironment, request, handler, context);
+        }
+
+        /**
+         * <p>Deletes an action for the environment, for example, deletes a console link
+         * for an analytics tool that is available in this environment.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/DeleteEnvironmentAction">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteEnvironmentActionOutcome DeleteEnvironmentAction(const Model::DeleteEnvironmentActionRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteEnvironmentAction that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteEnvironmentActionRequestT = Model::DeleteEnvironmentActionRequest>
+        Model::DeleteEnvironmentActionOutcomeCallable DeleteEnvironmentActionCallable(const DeleteEnvironmentActionRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::DeleteEnvironmentAction, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteEnvironmentAction that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteEnvironmentActionRequestT = Model::DeleteEnvironmentActionRequest>
+        void DeleteEnvironmentActionAsync(const DeleteEnvironmentActionRequestT& request, const DeleteEnvironmentActionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::DeleteEnvironmentAction, request, handler, context);
         }
 
         /**
@@ -970,6 +1400,63 @@ namespace DataZone
         }
 
         /**
+         * <p>Deletes a project profile.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/DeleteProjectProfile">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteProjectProfileOutcome DeleteProjectProfile(const Model::DeleteProjectProfileRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteProjectProfile that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteProjectProfileRequestT = Model::DeleteProjectProfileRequest>
+        Model::DeleteProjectProfileOutcomeCallable DeleteProjectProfileCallable(const DeleteProjectProfileRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::DeleteProjectProfile, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteProjectProfile that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteProjectProfileRequestT = Model::DeleteProjectProfileRequest>
+        void DeleteProjectProfileAsync(const DeleteProjectProfileRequestT& request, const DeleteProjectProfileResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::DeleteProjectProfile, request, handler, context);
+        }
+
+        /**
+         * <p>Deletes a rule in Amazon DataZone. A rule is a formal agreement that enforces
+         * specific requirements across user workflows (e.g., publishing assets to the
+         * catalog, requesting subscriptions, creating projects) within the Amazon DataZone
+         * data portal. These rules help maintain consistency, ensure compliance, and
+         * uphold governance standards in data management processes. For instance, a
+         * metadata enforcement rule can specify the required information for creating a
+         * subscription request or publishing a data asset to the catalog, ensuring
+         * alignment with organizational standards.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/DeleteRule">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteRuleOutcome DeleteRule(const Model::DeleteRuleRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteRule that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteRuleRequestT = Model::DeleteRuleRequest>
+        Model::DeleteRuleOutcomeCallable DeleteRuleCallable(const DeleteRuleRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::DeleteRule, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteRule that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteRuleRequestT = Model::DeleteRuleRequest>
+        void DeleteRuleAsync(const DeleteRuleRequestT& request, const DeleteRuleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::DeleteRule, request, handler, context);
+        }
+
+        /**
          * <p>Deletes and subscription grant in Amazon DataZone.</p><p><h3>See Also:</h3>  
          * <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/DeleteSubscriptionGrant">AWS
@@ -1074,6 +1561,32 @@ namespace DataZone
         }
 
         /**
+         * <p>Disassociates the environment role in Amazon DataZone.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/DisassociateEnvironmentRole">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DisassociateEnvironmentRoleOutcome DisassociateEnvironmentRole(const Model::DisassociateEnvironmentRoleRequest& request) const;
+
+        /**
+         * A Callable wrapper for DisassociateEnvironmentRole that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DisassociateEnvironmentRoleRequestT = Model::DisassociateEnvironmentRoleRequest>
+        Model::DisassociateEnvironmentRoleOutcomeCallable DisassociateEnvironmentRoleCallable(const DisassociateEnvironmentRoleRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::DisassociateEnvironmentRole, request);
+        }
+
+        /**
+         * An Async wrapper for DisassociateEnvironmentRole that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DisassociateEnvironmentRoleRequestT = Model::DisassociateEnvironmentRoleRequest>
+        void DisassociateEnvironmentRoleAsync(const DisassociateEnvironmentRoleRequestT& request, const DisassociateEnvironmentRoleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::DisassociateEnvironmentRole, request, handler, context);
+        }
+
+        /**
          * <p>Gets an Amazon DataZone asset.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/GetAsset">AWS
          * API Reference</a></p>
@@ -1099,6 +1612,31 @@ namespace DataZone
         }
 
         /**
+         * <p>Gets an asset filter.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/GetAssetFilter">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetAssetFilterOutcome GetAssetFilter(const Model::GetAssetFilterRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetAssetFilter that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetAssetFilterRequestT = Model::GetAssetFilterRequest>
+        Model::GetAssetFilterOutcomeCallable GetAssetFilterCallable(const GetAssetFilterRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::GetAssetFilter, request);
+        }
+
+        /**
+         * An Async wrapper for GetAssetFilter that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetAssetFilterRequestT = Model::GetAssetFilterRequest>
+        void GetAssetFilterAsync(const GetAssetFilterRequestT& request, const GetAssetFilterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::GetAssetFilter, request, handler, context);
+        }
+
+        /**
          * <p>Gets an Amazon DataZone asset type.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/GetAssetType">AWS
          * API Reference</a></p>
@@ -1121,6 +1659,58 @@ namespace DataZone
         void GetAssetTypeAsync(const GetAssetTypeRequestT& request, const GetAssetTypeResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&DataZoneClient::GetAssetType, request, handler, context);
+        }
+
+        /**
+         * <p>Gets a connection. In Amazon DataZone, a connection enables you to connect
+         * your resources (domains, projects, and environments) to external resources and
+         * services.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/GetConnection">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetConnectionOutcome GetConnection(const Model::GetConnectionRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetConnection that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetConnectionRequestT = Model::GetConnectionRequest>
+        Model::GetConnectionOutcomeCallable GetConnectionCallable(const GetConnectionRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::GetConnection, request);
+        }
+
+        /**
+         * An Async wrapper for GetConnection that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetConnectionRequestT = Model::GetConnectionRequest>
+        void GetConnectionAsync(const GetConnectionRequestT& request, const GetConnectionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::GetConnection, request, handler, context);
+        }
+
+        /**
+         * <p>Gets the data product.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/GetDataProduct">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetDataProductOutcome GetDataProduct(const Model::GetDataProductRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetDataProduct that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetDataProductRequestT = Model::GetDataProductRequest>
+        Model::GetDataProductOutcomeCallable GetDataProductCallable(const GetDataProductRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::GetDataProduct, request);
+        }
+
+        /**
+         * An Async wrapper for GetDataProduct that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetDataProductRequestT = Model::GetDataProductRequest>
+        void GetDataProductAsync(const GetDataProductRequestT& request, const GetDataProductResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::GetDataProduct, request, handler, context);
         }
 
         /**
@@ -1199,6 +1789,31 @@ namespace DataZone
         }
 
         /**
+         * <p>Gets the details of the specified domain unit.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/GetDomainUnit">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetDomainUnitOutcome GetDomainUnit(const Model::GetDomainUnitRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetDomainUnit that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetDomainUnitRequestT = Model::GetDomainUnitRequest>
+        Model::GetDomainUnitOutcomeCallable GetDomainUnitCallable(const GetDomainUnitRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::GetDomainUnit, request);
+        }
+
+        /**
+         * An Async wrapper for GetDomainUnit that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetDomainUnitRequestT = Model::GetDomainUnitRequest>
+        void GetDomainUnitAsync(const GetDomainUnitRequestT& request, const GetDomainUnitResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::GetDomainUnit, request, handler, context);
+        }
+
+        /**
          * <p>Gets an Amazon DataZone environment.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/GetEnvironment">AWS
          * API Reference</a></p>
@@ -1221,6 +1836,31 @@ namespace DataZone
         void GetEnvironmentAsync(const GetEnvironmentRequestT& request, const GetEnvironmentResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&DataZoneClient::GetEnvironment, request, handler, context);
+        }
+
+        /**
+         * <p>Gets the specified environment action.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/GetEnvironmentAction">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetEnvironmentActionOutcome GetEnvironmentAction(const Model::GetEnvironmentActionRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetEnvironmentAction that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetEnvironmentActionRequestT = Model::GetEnvironmentActionRequest>
+        Model::GetEnvironmentActionOutcomeCallable GetEnvironmentActionCallable(const GetEnvironmentActionRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::GetEnvironmentAction, request);
+        }
+
+        /**
+         * An Async wrapper for GetEnvironmentAction that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetEnvironmentActionRequestT = Model::GetEnvironmentActionRequest>
+        void GetEnvironmentActionAsync(const GetEnvironmentActionRequestT& request, const GetEnvironmentActionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::GetEnvironmentAction, request, handler, context);
         }
 
         /**
@@ -1272,6 +1912,32 @@ namespace DataZone
         void GetEnvironmentBlueprintConfigurationAsync(const GetEnvironmentBlueprintConfigurationRequestT& request, const GetEnvironmentBlueprintConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&DataZoneClient::GetEnvironmentBlueprintConfiguration, request, handler, context);
+        }
+
+        /**
+         * <p>Gets the credentials of an environment in Amazon DataZone.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/GetEnvironmentCredentials">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetEnvironmentCredentialsOutcome GetEnvironmentCredentials(const Model::GetEnvironmentCredentialsRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetEnvironmentCredentials that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetEnvironmentCredentialsRequestT = Model::GetEnvironmentCredentialsRequest>
+        Model::GetEnvironmentCredentialsOutcomeCallable GetEnvironmentCredentialsCallable(const GetEnvironmentCredentialsRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::GetEnvironmentCredentials, request);
+        }
+
+        /**
+         * An Async wrapper for GetEnvironmentCredentials that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetEnvironmentCredentialsRequestT = Model::GetEnvironmentCredentialsRequest>
+        void GetEnvironmentCredentialsAsync(const GetEnvironmentCredentialsRequestT& request, const GetEnvironmentCredentialsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::GetEnvironmentCredentials, request, handler, context);
         }
 
         /**
@@ -1427,8 +2093,84 @@ namespace DataZone
         }
 
         /**
-         * <p>Gets a listing (a record of an asset at a given time).</p><p><h3>See
-         * Also:</h3>   <a
+         * <p>The details of the job run.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/GetJobRun">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetJobRunOutcome GetJobRun(const Model::GetJobRunRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetJobRun that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetJobRunRequestT = Model::GetJobRunRequest>
+        Model::GetJobRunOutcomeCallable GetJobRunCallable(const GetJobRunRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::GetJobRun, request);
+        }
+
+        /**
+         * An Async wrapper for GetJobRun that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetJobRunRequestT = Model::GetJobRunRequest>
+        void GetJobRunAsync(const GetJobRunRequestT& request, const GetJobRunResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::GetJobRun, request, handler, context);
+        }
+
+        /**
+         * <p>Describes the lineage event.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/GetLineageEvent">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetLineageEventOutcome GetLineageEvent(const Model::GetLineageEventRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetLineageEvent that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetLineageEventRequestT = Model::GetLineageEventRequest>
+        Model::GetLineageEventOutcomeCallable GetLineageEventCallable(const GetLineageEventRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::GetLineageEvent, request);
+        }
+
+        /**
+         * An Async wrapper for GetLineageEvent that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetLineageEventRequestT = Model::GetLineageEventRequest>
+        void GetLineageEventAsync(const GetLineageEventRequestT& request, const GetLineageEventResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::GetLineageEvent, request, handler, context);
+        }
+
+        /**
+         * <p>Gets the data lineage node.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/GetLineageNode">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetLineageNodeOutcome GetLineageNode(const Model::GetLineageNodeRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetLineageNode that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetLineageNodeRequestT = Model::GetLineageNodeRequest>
+        Model::GetLineageNodeOutcomeCallable GetLineageNodeCallable(const GetLineageNodeRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::GetLineageNode, request);
+        }
+
+        /**
+         * An Async wrapper for GetLineageNode that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetLineageNodeRequestT = Model::GetLineageNodeRequest>
+        void GetLineageNodeAsync(const GetLineageNodeRequestT& request, const GetLineageNodeResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::GetLineageNode, request, handler, context);
+        }
+
+        /**
+         * <p>Gets a listing (a record of an asset at a given time). If you specify a
+         * listing version, only details that are specific to that version are
+         * returned.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/GetListing">AWS
          * API Reference</a></p>
          */
@@ -1501,6 +2243,63 @@ namespace DataZone
         void GetProjectAsync(const GetProjectRequestT& request, const GetProjectResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&DataZoneClient::GetProject, request, handler, context);
+        }
+
+        /**
+         * <p>The details of the project profile.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/GetProjectProfile">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetProjectProfileOutcome GetProjectProfile(const Model::GetProjectProfileRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetProjectProfile that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetProjectProfileRequestT = Model::GetProjectProfileRequest>
+        Model::GetProjectProfileOutcomeCallable GetProjectProfileCallable(const GetProjectProfileRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::GetProjectProfile, request);
+        }
+
+        /**
+         * An Async wrapper for GetProjectProfile that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetProjectProfileRequestT = Model::GetProjectProfileRequest>
+        void GetProjectProfileAsync(const GetProjectProfileRequestT& request, const GetProjectProfileResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::GetProjectProfile, request, handler, context);
+        }
+
+        /**
+         * <p>Gets the details of a rule in Amazon DataZone. A rule is a formal agreement
+         * that enforces specific requirements across user workflows (e.g., publishing
+         * assets to the catalog, requesting subscriptions, creating projects) within the
+         * Amazon DataZone data portal. These rules help maintain consistency, ensure
+         * compliance, and uphold governance standards in data management processes. For
+         * instance, a metadata enforcement rule can specify the required information for
+         * creating a subscription request or publishing a data asset to the catalog,
+         * ensuring alignment with organizational standards.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/GetRule">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetRuleOutcome GetRule(const Model::GetRuleRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetRule that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetRuleRequestT = Model::GetRuleRequest>
+        Model::GetRuleOutcomeCallable GetRuleCallable(const GetRuleRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::GetRule, request);
+        }
+
+        /**
+         * An Async wrapper for GetRule that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetRuleRequestT = Model::GetRuleRequest>
+        void GetRuleAsync(const GetRuleRequestT& request, const GetRuleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::GetRule, request, handler, context);
         }
 
         /**
@@ -1656,6 +2455,31 @@ namespace DataZone
         }
 
         /**
+         * <p>Lists asset filters.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/ListAssetFilters">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListAssetFiltersOutcome ListAssetFilters(const Model::ListAssetFiltersRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListAssetFilters that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListAssetFiltersRequestT = Model::ListAssetFiltersRequest>
+        Model::ListAssetFiltersOutcomeCallable ListAssetFiltersCallable(const ListAssetFiltersRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::ListAssetFilters, request);
+        }
+
+        /**
+         * An Async wrapper for ListAssetFilters that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListAssetFiltersRequestT = Model::ListAssetFiltersRequest>
+        void ListAssetFiltersAsync(const ListAssetFiltersRequestT& request, const ListAssetFiltersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::ListAssetFilters, request, handler, context);
+        }
+
+        /**
          * <p>Lists the revisions for the asset.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/ListAssetRevisions">AWS
          * API Reference</a></p>
@@ -1678,6 +2502,58 @@ namespace DataZone
         void ListAssetRevisionsAsync(const ListAssetRevisionsRequestT& request, const ListAssetRevisionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&DataZoneClient::ListAssetRevisions, request, handler, context);
+        }
+
+        /**
+         * <p>Lists connections. In Amazon DataZone, a connection enables you to connect
+         * your resources (domains, projects, and environments) to external resources and
+         * services.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/ListConnections">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListConnectionsOutcome ListConnections(const Model::ListConnectionsRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListConnections that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListConnectionsRequestT = Model::ListConnectionsRequest>
+        Model::ListConnectionsOutcomeCallable ListConnectionsCallable(const ListConnectionsRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::ListConnections, request);
+        }
+
+        /**
+         * An Async wrapper for ListConnections that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListConnectionsRequestT = Model::ListConnectionsRequest>
+        void ListConnectionsAsync(const ListConnectionsRequestT& request, const ListConnectionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::ListConnections, request, handler, context);
+        }
+
+        /**
+         * <p>Lists data product revisions.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/ListDataProductRevisions">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListDataProductRevisionsOutcome ListDataProductRevisions(const Model::ListDataProductRevisionsRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListDataProductRevisions that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListDataProductRevisionsRequestT = Model::ListDataProductRevisionsRequest>
+        Model::ListDataProductRevisionsOutcomeCallable ListDataProductRevisionsCallable(const ListDataProductRevisionsRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::ListDataProductRevisions, request);
+        }
+
+        /**
+         * An Async wrapper for ListDataProductRevisions that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListDataProductRevisionsRequestT = Model::ListDataProductRevisionsRequest>
+        void ListDataProductRevisionsAsync(const ListDataProductRevisionsRequestT& request, const ListDataProductRevisionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::ListDataProductRevisions, request, handler, context);
         }
 
         /**
@@ -1756,17 +2632,43 @@ namespace DataZone
         }
 
         /**
+         * <p>Lists child domain units for the specified parent domain unit.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/ListDomainUnitsForParent">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListDomainUnitsForParentOutcome ListDomainUnitsForParent(const Model::ListDomainUnitsForParentRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListDomainUnitsForParent that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListDomainUnitsForParentRequestT = Model::ListDomainUnitsForParentRequest>
+        Model::ListDomainUnitsForParentOutcomeCallable ListDomainUnitsForParentCallable(const ListDomainUnitsForParentRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::ListDomainUnitsForParent, request);
+        }
+
+        /**
+         * An Async wrapper for ListDomainUnitsForParent that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListDomainUnitsForParentRequestT = Model::ListDomainUnitsForParentRequest>
+        void ListDomainUnitsForParentAsync(const ListDomainUnitsForParentRequestT& request, const ListDomainUnitsForParentResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::ListDomainUnitsForParent, request, handler, context);
+        }
+
+        /**
          * <p>Lists Amazon DataZone domains.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/ListDomains">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDomainsOutcome ListDomains(const Model::ListDomainsRequest& request) const;
+        virtual Model::ListDomainsOutcome ListDomains(const Model::ListDomainsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDomains that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDomainsRequestT = Model::ListDomainsRequest>
-        Model::ListDomainsOutcomeCallable ListDomainsCallable(const ListDomainsRequestT& request) const
+        Model::ListDomainsOutcomeCallable ListDomainsCallable(const ListDomainsRequestT& request = {}) const
         {
             return SubmitCallable(&DataZoneClient::ListDomains, request);
         }
@@ -1775,9 +2677,59 @@ namespace DataZone
          * An Async wrapper for ListDomains that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDomainsRequestT = Model::ListDomainsRequest>
-        void ListDomainsAsync(const ListDomainsRequestT& request, const ListDomainsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDomainsAsync(const ListDomainsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDomainsRequestT& request = {}) const
         {
             return SubmitAsync(&DataZoneClient::ListDomains, request, handler, context);
+        }
+
+        /**
+         * <p>Lists the entity (domain units) owners.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/ListEntityOwners">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListEntityOwnersOutcome ListEntityOwners(const Model::ListEntityOwnersRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListEntityOwners that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListEntityOwnersRequestT = Model::ListEntityOwnersRequest>
+        Model::ListEntityOwnersOutcomeCallable ListEntityOwnersCallable(const ListEntityOwnersRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::ListEntityOwners, request);
+        }
+
+        /**
+         * An Async wrapper for ListEntityOwners that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListEntityOwnersRequestT = Model::ListEntityOwnersRequest>
+        void ListEntityOwnersAsync(const ListEntityOwnersRequestT& request, const ListEntityOwnersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::ListEntityOwners, request, handler, context);
+        }
+
+        /**
+         * <p>Lists existing environment actions.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/ListEnvironmentActions">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListEnvironmentActionsOutcome ListEnvironmentActions(const Model::ListEnvironmentActionsRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListEnvironmentActions that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListEnvironmentActionsRequestT = Model::ListEnvironmentActionsRequest>
+        Model::ListEnvironmentActionsOutcomeCallable ListEnvironmentActionsCallable(const ListEnvironmentActionsRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::ListEnvironmentActions, request);
+        }
+
+        /**
+         * An Async wrapper for ListEnvironmentActions that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListEnvironmentActionsRequestT = Model::ListEnvironmentActionsRequest>
+        void ListEnvironmentActionsAsync(const ListEnvironmentActionsRequestT& request, const ListEnvironmentActionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::ListEnvironmentActions, request, handler, context);
         }
 
         /**
@@ -1883,6 +2835,82 @@ namespace DataZone
         }
 
         /**
+         * <p>Lists job runs.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/ListJobRuns">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListJobRunsOutcome ListJobRuns(const Model::ListJobRunsRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListJobRuns that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListJobRunsRequestT = Model::ListJobRunsRequest>
+        Model::ListJobRunsOutcomeCallable ListJobRunsCallable(const ListJobRunsRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::ListJobRuns, request);
+        }
+
+        /**
+         * An Async wrapper for ListJobRuns that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListJobRunsRequestT = Model::ListJobRunsRequest>
+        void ListJobRunsAsync(const ListJobRunsRequestT& request, const ListJobRunsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::ListJobRuns, request, handler, context);
+        }
+
+        /**
+         * <p>Lists lineage events.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/ListLineageEvents">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListLineageEventsOutcome ListLineageEvents(const Model::ListLineageEventsRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListLineageEvents that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListLineageEventsRequestT = Model::ListLineageEventsRequest>
+        Model::ListLineageEventsOutcomeCallable ListLineageEventsCallable(const ListLineageEventsRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::ListLineageEvents, request);
+        }
+
+        /**
+         * An Async wrapper for ListLineageEvents that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListLineageEventsRequestT = Model::ListLineageEventsRequest>
+        void ListLineageEventsAsync(const ListLineageEventsRequestT& request, const ListLineageEventsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::ListLineageEvents, request, handler, context);
+        }
+
+        /**
+         * <p>Lists the history of the specified data lineage node.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/ListLineageNodeHistory">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListLineageNodeHistoryOutcome ListLineageNodeHistory(const Model::ListLineageNodeHistoryRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListLineageNodeHistory that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListLineageNodeHistoryRequestT = Model::ListLineageNodeHistoryRequest>
+        Model::ListLineageNodeHistoryOutcomeCallable ListLineageNodeHistoryCallable(const ListLineageNodeHistoryRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::ListLineageNodeHistory, request);
+        }
+
+        /**
+         * An Async wrapper for ListLineageNodeHistory that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListLineageNodeHistoryRequestT = Model::ListLineageNodeHistoryRequest>
+        void ListLineageNodeHistoryAsync(const ListLineageNodeHistoryRequestT& request, const ListLineageNodeHistoryResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::ListLineageNodeHistory, request, handler, context);
+        }
+
+        /**
          * <p>Lists all metadata generation runs.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/ListMetadataGenerationRuns">AWS
          * API Reference</a></p>
@@ -1933,6 +2961,31 @@ namespace DataZone
         }
 
         /**
+         * <p>Lists policy grants.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/ListPolicyGrants">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListPolicyGrantsOutcome ListPolicyGrants(const Model::ListPolicyGrantsRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListPolicyGrants that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListPolicyGrantsRequestT = Model::ListPolicyGrantsRequest>
+        Model::ListPolicyGrantsOutcomeCallable ListPolicyGrantsCallable(const ListPolicyGrantsRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::ListPolicyGrants, request);
+        }
+
+        /**
+         * An Async wrapper for ListPolicyGrants that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListPolicyGrantsRequestT = Model::ListPolicyGrantsRequest>
+        void ListPolicyGrantsAsync(const ListPolicyGrantsRequestT& request, const ListPolicyGrantsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::ListPolicyGrants, request, handler, context);
+        }
+
+        /**
          * <p>Lists all members of the specified project.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/ListProjectMemberships">AWS
          * API Reference</a></p>
@@ -1958,6 +3011,31 @@ namespace DataZone
         }
 
         /**
+         * <p>Lists project profiles.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/ListProjectProfiles">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListProjectProfilesOutcome ListProjectProfiles(const Model::ListProjectProfilesRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListProjectProfiles that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListProjectProfilesRequestT = Model::ListProjectProfilesRequest>
+        Model::ListProjectProfilesOutcomeCallable ListProjectProfilesCallable(const ListProjectProfilesRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::ListProjectProfiles, request);
+        }
+
+        /**
+         * An Async wrapper for ListProjectProfiles that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListProjectProfilesRequestT = Model::ListProjectProfilesRequest>
+        void ListProjectProfilesAsync(const ListProjectProfilesRequestT& request, const ListProjectProfilesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::ListProjectProfiles, request, handler, context);
+        }
+
+        /**
          * <p>Lists Amazon DataZone projects.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/ListProjects">AWS
          * API Reference</a></p>
@@ -1980,6 +3058,38 @@ namespace DataZone
         void ListProjectsAsync(const ListProjectsRequestT& request, const ListProjectsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&DataZoneClient::ListProjects, request, handler, context);
+        }
+
+        /**
+         * <p>Lists existing rules. In Amazon DataZone, a rule is a formal agreement that
+         * enforces specific requirements across user workflows (e.g., publishing assets to
+         * the catalog, requesting subscriptions, creating projects) within the Amazon
+         * DataZone data portal. These rules help maintain consistency, ensure compliance,
+         * and uphold governance standards in data management processes. For instance, a
+         * metadata enforcement rule can specify the required information for creating a
+         * subscription request or publishing a data asset to the catalog, ensuring
+         * alignment with organizational standards.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/ListRules">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListRulesOutcome ListRules(const Model::ListRulesRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListRules that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListRulesRequestT = Model::ListRulesRequest>
+        Model::ListRulesOutcomeCallable ListRulesCallable(const ListRulesRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::ListRules, request);
+        }
+
+        /**
+         * An Async wrapper for ListRules that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListRulesRequestT = Model::ListRulesRequest>
+        void ListRulesAsync(const ListRulesRequestT& request, const ListRulesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::ListRules, request, handler, context);
         }
 
         /**
@@ -2134,6 +3244,31 @@ namespace DataZone
         }
 
         /**
+         * <p>Posts a data lineage event.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/PostLineageEvent">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::PostLineageEventOutcome PostLineageEvent(const Model::PostLineageEventRequest& request) const;
+
+        /**
+         * A Callable wrapper for PostLineageEvent that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename PostLineageEventRequestT = Model::PostLineageEventRequest>
+        Model::PostLineageEventOutcomeCallable PostLineageEventCallable(const PostLineageEventRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::PostLineageEvent, request);
+        }
+
+        /**
+         * An Async wrapper for PostLineageEvent that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename PostLineageEventRequestT = Model::PostLineageEventRequest>
+        void PostLineageEventAsync(const PostLineageEventRequestT& request, const PostLineageEventResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::PostLineageEvent, request, handler, context);
+        }
+
+        /**
          * <p>Posts time series data points to Amazon DataZone for the specified
          * asset.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/PostTimeSeriesDataPoints">AWS
@@ -2234,6 +3369,56 @@ namespace DataZone
         void RejectSubscriptionRequestAsync(const RejectSubscriptionRequestRequestT& request, const RejectSubscriptionRequestResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&DataZoneClient::RejectSubscriptionRequest, request, handler, context);
+        }
+
+        /**
+         * <p>Removes an owner from an entity.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/RemoveEntityOwner">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::RemoveEntityOwnerOutcome RemoveEntityOwner(const Model::RemoveEntityOwnerRequest& request) const;
+
+        /**
+         * A Callable wrapper for RemoveEntityOwner that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename RemoveEntityOwnerRequestT = Model::RemoveEntityOwnerRequest>
+        Model::RemoveEntityOwnerOutcomeCallable RemoveEntityOwnerCallable(const RemoveEntityOwnerRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::RemoveEntityOwner, request);
+        }
+
+        /**
+         * An Async wrapper for RemoveEntityOwner that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename RemoveEntityOwnerRequestT = Model::RemoveEntityOwnerRequest>
+        void RemoveEntityOwnerAsync(const RemoveEntityOwnerRequestT& request, const RemoveEntityOwnerResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::RemoveEntityOwner, request, handler, context);
+        }
+
+        /**
+         * <p>Removes a policy grant.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/RemovePolicyGrant">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::RemovePolicyGrantOutcome RemovePolicyGrant(const Model::RemovePolicyGrantRequest& request) const;
+
+        /**
+         * A Callable wrapper for RemovePolicyGrant that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename RemovePolicyGrantRequestT = Model::RemovePolicyGrantRequest>
+        Model::RemovePolicyGrantOutcomeCallable RemovePolicyGrantCallable(const RemovePolicyGrantRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::RemovePolicyGrant, request);
+        }
+
+        /**
+         * An Async wrapper for RemovePolicyGrant that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename RemovePolicyGrantRequestT = Model::RemovePolicyGrantRequest>
+        void RemovePolicyGrantAsync(const RemovePolicyGrantRequestT& request, const RemovePolicyGrantResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::RemovePolicyGrant, request, handler, context);
         }
 
         /**
@@ -2490,6 +3675,58 @@ namespace DataZone
         }
 
         /**
+         * <p>Updates an asset filter.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/UpdateAssetFilter">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateAssetFilterOutcome UpdateAssetFilter(const Model::UpdateAssetFilterRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateAssetFilter that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateAssetFilterRequestT = Model::UpdateAssetFilterRequest>
+        Model::UpdateAssetFilterOutcomeCallable UpdateAssetFilterCallable(const UpdateAssetFilterRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::UpdateAssetFilter, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateAssetFilter that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateAssetFilterRequestT = Model::UpdateAssetFilterRequest>
+        void UpdateAssetFilterAsync(const UpdateAssetFilterRequestT& request, const UpdateAssetFilterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::UpdateAssetFilter, request, handler, context);
+        }
+
+        /**
+         * <p>Updates a connection. In Amazon DataZone, a connection enables you to connect
+         * your resources (domains, projects, and environments) to external resources and
+         * services.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/UpdateConnection">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateConnectionOutcome UpdateConnection(const Model::UpdateConnectionRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateConnection that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateConnectionRequestT = Model::UpdateConnectionRequest>
+        Model::UpdateConnectionOutcomeCallable UpdateConnectionCallable(const UpdateConnectionRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::UpdateConnection, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateConnection that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateConnectionRequestT = Model::UpdateConnectionRequest>
+        void UpdateConnectionAsync(const UpdateConnectionRequestT& request, const UpdateConnectionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::UpdateConnection, request, handler, context);
+        }
+
+        /**
          * <p>Updates the specified data source in Amazon DataZone.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/UpdateDataSource">AWS
@@ -2541,6 +3778,31 @@ namespace DataZone
         }
 
         /**
+         * <p>Updates the domain unit.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/UpdateDomainUnit">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateDomainUnitOutcome UpdateDomainUnit(const Model::UpdateDomainUnitRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateDomainUnit that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateDomainUnitRequestT = Model::UpdateDomainUnitRequest>
+        Model::UpdateDomainUnitOutcomeCallable UpdateDomainUnitCallable(const UpdateDomainUnitRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::UpdateDomainUnit, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateDomainUnit that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateDomainUnitRequestT = Model::UpdateDomainUnitRequest>
+        void UpdateDomainUnitAsync(const UpdateDomainUnitRequestT& request, const UpdateDomainUnitResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::UpdateDomainUnit, request, handler, context);
+        }
+
+        /**
          * <p>Updates the specified environment in Amazon DataZone.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/UpdateEnvironment">AWS
@@ -2564,6 +3826,31 @@ namespace DataZone
         void UpdateEnvironmentAsync(const UpdateEnvironmentRequestT& request, const UpdateEnvironmentResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&DataZoneClient::UpdateEnvironment, request, handler, context);
+        }
+
+        /**
+         * <p>Updates an environment action.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/UpdateEnvironmentAction">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateEnvironmentActionOutcome UpdateEnvironmentAction(const Model::UpdateEnvironmentActionRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateEnvironmentAction that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateEnvironmentActionRequestT = Model::UpdateEnvironmentActionRequest>
+        Model::UpdateEnvironmentActionOutcomeCallable UpdateEnvironmentActionCallable(const UpdateEnvironmentActionRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::UpdateEnvironmentAction, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateEnvironmentAction that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateEnvironmentActionRequestT = Model::UpdateEnvironmentActionRequest>
+        void UpdateEnvironmentActionAsync(const UpdateEnvironmentActionRequestT& request, const UpdateEnvironmentActionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::UpdateEnvironmentAction, request, handler, context);
         }
 
         /**
@@ -2697,6 +3984,63 @@ namespace DataZone
         }
 
         /**
+         * <p>Updates a project profile.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/UpdateProjectProfile">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateProjectProfileOutcome UpdateProjectProfile(const Model::UpdateProjectProfileRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateProjectProfile that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateProjectProfileRequestT = Model::UpdateProjectProfileRequest>
+        Model::UpdateProjectProfileOutcomeCallable UpdateProjectProfileCallable(const UpdateProjectProfileRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::UpdateProjectProfile, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateProjectProfile that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateProjectProfileRequestT = Model::UpdateProjectProfileRequest>
+        void UpdateProjectProfileAsync(const UpdateProjectProfileRequestT& request, const UpdateProjectProfileResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::UpdateProjectProfile, request, handler, context);
+        }
+
+        /**
+         * <p>Updates a rule. In Amazon DataZone, a rule is a formal agreement that
+         * enforces specific requirements across user workflows (e.g., publishing assets to
+         * the catalog, requesting subscriptions, creating projects) within the Amazon
+         * DataZone data portal. These rules help maintain consistency, ensure compliance,
+         * and uphold governance standards in data management processes. For instance, a
+         * metadata enforcement rule can specify the required information for creating a
+         * subscription request or publishing a data asset to the catalog, ensuring
+         * alignment with organizational standards.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/UpdateRule">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateRuleOutcome UpdateRule(const Model::UpdateRuleRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateRule that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateRuleRequestT = Model::UpdateRuleRequest>
+        Model::UpdateRuleOutcomeCallable UpdateRuleCallable(const UpdateRuleRequestT& request) const
+        {
+            return SubmitCallable(&DataZoneClient::UpdateRule, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateRule that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateRuleRequestT = Model::UpdateRuleRequest>
+        void UpdateRuleAsync(const UpdateRuleRequestT& request, const UpdateRuleResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&DataZoneClient::UpdateRule, request, handler, context);
+        }
+
+        /**
          * <p>Updates the status of the specified subscription grant status in Amazon
          * DataZone.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/datazone-2018-05-10/UpdateSubscriptionGrantStatus">AWS
@@ -2805,11 +4149,7 @@ namespace DataZone
       std::shared_ptr<DataZoneEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<DataZoneClient>;
-      void init(const DataZoneClientConfiguration& clientConfiguration);
 
-      DataZoneClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<DataZoneEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace DataZone

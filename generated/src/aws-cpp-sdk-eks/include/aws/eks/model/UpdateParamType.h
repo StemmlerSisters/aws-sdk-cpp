@@ -39,10 +39,18 @@ namespace Model
     ResolveConflicts,
     MaxUnavailable,
     MaxUnavailablePercentage,
+    NodeRepairEnabled,
+    UpdateStrategy,
     ConfigurationValues,
     SecurityGroups,
     Subnets,
-    AuthenticationMode
+    AuthenticationMode,
+    PodIdentityAssociations,
+    UpgradePolicy,
+    ZonalShiftConfig,
+    ComputeConfig,
+    StorageConfig,
+    KubernetesNetworkConfig
   };
 
 namespace UpdateParamTypeMapper

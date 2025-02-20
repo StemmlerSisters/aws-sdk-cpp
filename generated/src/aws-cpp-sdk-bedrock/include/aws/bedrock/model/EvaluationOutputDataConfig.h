@@ -24,7 +24,7 @@ namespace Model
 {
 
   /**
-   * <p>The Amazon S3 location where the results of your model evaluation job are
+   * <p>The Amazon S3 location where the results of your evaluation job are
    * saved.</p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/EvaluationOutputDataConfig">AWS
    * API Reference</a></p>
@@ -38,46 +38,19 @@ namespace Model
     AWS_BEDROCK_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
-     * <p>The Amazon S3 URI where the results of model evaluation job are saved.</p>
+     * <p>The Amazon S3 URI where the results of the evaluation job are saved.</p>
      */
     inline const Aws::String& GetS3Uri() const{ return m_s3Uri; }
-
-    /**
-     * <p>The Amazon S3 URI where the results of model evaluation job are saved.</p>
-     */
     inline bool S3UriHasBeenSet() const { return m_s3UriHasBeenSet; }
-
-    /**
-     * <p>The Amazon S3 URI where the results of model evaluation job are saved.</p>
-     */
     inline void SetS3Uri(const Aws::String& value) { m_s3UriHasBeenSet = true; m_s3Uri = value; }
-
-    /**
-     * <p>The Amazon S3 URI where the results of model evaluation job are saved.</p>
-     */
     inline void SetS3Uri(Aws::String&& value) { m_s3UriHasBeenSet = true; m_s3Uri = std::move(value); }
-
-    /**
-     * <p>The Amazon S3 URI where the results of model evaluation job are saved.</p>
-     */
     inline void SetS3Uri(const char* value) { m_s3UriHasBeenSet = true; m_s3Uri.assign(value); }
-
-    /**
-     * <p>The Amazon S3 URI where the results of model evaluation job are saved.</p>
-     */
     inline EvaluationOutputDataConfig& WithS3Uri(const Aws::String& value) { SetS3Uri(value); return *this;}
-
-    /**
-     * <p>The Amazon S3 URI where the results of model evaluation job are saved.</p>
-     */
     inline EvaluationOutputDataConfig& WithS3Uri(Aws::String&& value) { SetS3Uri(std::move(value)); return *this;}
-
-    /**
-     * <p>The Amazon S3 URI where the results of model evaluation job are saved.</p>
-     */
     inline EvaluationOutputDataConfig& WithS3Uri(const char* value) { SetS3Uri(value); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_s3Uri;

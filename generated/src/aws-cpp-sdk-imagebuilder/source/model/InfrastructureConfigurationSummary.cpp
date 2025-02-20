@@ -27,20 +27,13 @@ InfrastructureConfigurationSummary::InfrastructureConfigurationSummary() :
     m_resourceTagsHasBeenSet(false),
     m_tagsHasBeenSet(false),
     m_instanceTypesHasBeenSet(false),
-    m_instanceProfileNameHasBeenSet(false)
+    m_instanceProfileNameHasBeenSet(false),
+    m_placementHasBeenSet(false)
 {
 }
 
-InfrastructureConfigurationSummary::InfrastructureConfigurationSummary(JsonView jsonValue) : 
-    m_arnHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_dateCreatedHasBeenSet(false),
-    m_dateUpdatedHasBeenSet(false),
-    m_resourceTagsHasBeenSet(false),
-    m_tagsHasBeenSet(false),
-    m_instanceTypesHasBeenSet(false),
-    m_instanceProfileNameHasBeenSet(false)
+InfrastructureConfigurationSummary::InfrastructureConfigurationSummary(JsonView jsonValue)
+  : InfrastructureConfigurationSummary()
 {
   *this = jsonValue;
 }
@@ -119,6 +112,13 @@ InfrastructureConfigurationSummary& InfrastructureConfigurationSummary::operator
     m_instanceProfileNameHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("placement"))
+  {
+    m_placement = jsonValue.GetObject("placement");
+
+    m_placementHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -192,6 +192,12 @@ JsonValue InfrastructureConfigurationSummary::Jsonize() const
   if(m_instanceProfileNameHasBeenSet)
   {
    payload.WithString("instanceProfileName", m_instanceProfileName);
+
+  }
+
+  if(m_placementHasBeenSet)
+  {
+   payload.WithObject("placement", m_placement.Jsonize());
 
   }
 

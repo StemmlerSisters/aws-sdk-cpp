@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/mediatailor/MediaTailor_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/mediatailor/MediaTailorServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/mediatailor/MediaTailorErrorMarshaller.h>
 
 namespace Aws
 {
 namespace MediaTailor
 {
+  AWS_MEDIATAILOR_API extern const char SERVICE_NAME[];
   /**
    * <p>Use the AWS Elemental MediaTailor SDKs and CLI to configure scalable ad
    * insertion and linear channels. With MediaTailor, you can assemble existing
@@ -28,12 +32,20 @@ namespace MediaTailor
    * console. For example, you specify ad insertion behavior and mapping information
    * for the origin server and the ad decision server (ADS).</p>
    */
-  class AWS_MEDIATAILOR_API MediaTailorClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<MediaTailorClient>
+  class AWS_MEDIATAILOR_API MediaTailorClient : smithy::client::AwsSmithyClientT<Aws::MediaTailor::SERVICE_NAME,
+      Aws::MediaTailor::MediaTailorClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      MediaTailorEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::MediaTailorErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<MediaTailorClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "MediaTailor"; }
 
       typedef MediaTailorClientConfiguration ClientConfigurationType;
       typedef MediaTailorEndpointProvider EndpointProviderType;
@@ -113,8 +125,8 @@ namespace MediaTailor
         }
 
         /**
-         * <p>Amazon CloudWatch log settings for a playback configuration.</p><p><h3>See
-         * Also:</h3>   <a
+         * <p>Defines where AWS Elemental MediaTailor sends logs for the playback
+         * configuration.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/mediatailor-2018-04-23/ConfigureLogsForPlaybackConfiguration">AWS
          * API Reference</a></p>
          */
@@ -802,13 +814,13 @@ namespace MediaTailor
          * href="http://docs.aws.amazon.com/goto/WebAPI/mediatailor-2018-04-23/ListChannels">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListChannelsOutcome ListChannels(const Model::ListChannelsRequest& request) const;
+        virtual Model::ListChannelsOutcome ListChannels(const Model::ListChannelsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListChannels that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListChannelsRequestT = Model::ListChannelsRequest>
-        Model::ListChannelsOutcomeCallable ListChannelsCallable(const ListChannelsRequestT& request) const
+        Model::ListChannelsOutcomeCallable ListChannelsCallable(const ListChannelsRequestT& request = {}) const
         {
             return SubmitCallable(&MediaTailorClient::ListChannels, request);
         }
@@ -817,7 +829,7 @@ namespace MediaTailor
          * An Async wrapper for ListChannels that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListChannelsRequestT = Model::ListChannelsRequest>
-        void ListChannelsAsync(const ListChannelsRequestT& request, const ListChannelsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListChannelsAsync(const ListChannelsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListChannelsRequestT& request = {}) const
         {
             return SubmitAsync(&MediaTailorClient::ListChannels, request, handler, context);
         }
@@ -857,13 +869,13 @@ namespace MediaTailor
          * href="http://docs.aws.amazon.com/goto/WebAPI/mediatailor-2018-04-23/ListPlaybackConfigurations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListPlaybackConfigurationsOutcome ListPlaybackConfigurations(const Model::ListPlaybackConfigurationsRequest& request) const;
+        virtual Model::ListPlaybackConfigurationsOutcome ListPlaybackConfigurations(const Model::ListPlaybackConfigurationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListPlaybackConfigurations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListPlaybackConfigurationsRequestT = Model::ListPlaybackConfigurationsRequest>
-        Model::ListPlaybackConfigurationsOutcomeCallable ListPlaybackConfigurationsCallable(const ListPlaybackConfigurationsRequestT& request) const
+        Model::ListPlaybackConfigurationsOutcomeCallable ListPlaybackConfigurationsCallable(const ListPlaybackConfigurationsRequestT& request = {}) const
         {
             return SubmitCallable(&MediaTailorClient::ListPlaybackConfigurations, request);
         }
@@ -872,7 +884,7 @@ namespace MediaTailor
          * An Async wrapper for ListPlaybackConfigurations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListPlaybackConfigurationsRequestT = Model::ListPlaybackConfigurationsRequest>
-        void ListPlaybackConfigurationsAsync(const ListPlaybackConfigurationsRequestT& request, const ListPlaybackConfigurationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListPlaybackConfigurationsAsync(const ListPlaybackConfigurationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListPlaybackConfigurationsRequestT& request = {}) const
         {
             return SubmitAsync(&MediaTailorClient::ListPlaybackConfigurations, request, handler, context);
         }
@@ -909,13 +921,13 @@ namespace MediaTailor
          * href="http://docs.aws.amazon.com/goto/WebAPI/mediatailor-2018-04-23/ListSourceLocations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListSourceLocationsOutcome ListSourceLocations(const Model::ListSourceLocationsRequest& request) const;
+        virtual Model::ListSourceLocationsOutcome ListSourceLocations(const Model::ListSourceLocationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListSourceLocations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListSourceLocationsRequestT = Model::ListSourceLocationsRequest>
-        Model::ListSourceLocationsOutcomeCallable ListSourceLocationsCallable(const ListSourceLocationsRequestT& request) const
+        Model::ListSourceLocationsOutcomeCallable ListSourceLocationsCallable(const ListSourceLocationsRequestT& request = {}) const
         {
             return SubmitCallable(&MediaTailorClient::ListSourceLocations, request);
         }
@@ -924,7 +936,7 @@ namespace MediaTailor
          * An Async wrapper for ListSourceLocations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListSourceLocationsRequestT = Model::ListSourceLocationsRequest>
-        void ListSourceLocationsAsync(const ListSourceLocationsRequestT& request, const ListSourceLocationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListSourceLocationsAsync(const ListSourceLocationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListSourceLocationsRequestT& request = {}) const
         {
             return SubmitAsync(&MediaTailorClient::ListSourceLocations, request, handler, context);
         }
@@ -1286,11 +1298,7 @@ namespace MediaTailor
       std::shared_ptr<MediaTailorEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<MediaTailorClient>;
-      void init(const MediaTailorClientConfiguration& clientConfiguration);
 
-      MediaTailorClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<MediaTailorEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace MediaTailor

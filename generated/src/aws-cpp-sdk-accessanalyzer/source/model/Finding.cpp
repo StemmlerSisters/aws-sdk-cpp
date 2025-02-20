@@ -35,28 +35,14 @@ Finding::Finding() :
     m_statusHasBeenSet(false),
     m_resourceOwnerAccountHasBeenSet(false),
     m_errorHasBeenSet(false),
-    m_sourcesHasBeenSet(false)
+    m_sourcesHasBeenSet(false),
+    m_resourceControlPolicyRestriction(ResourceControlPolicyRestriction::NOT_SET),
+    m_resourceControlPolicyRestrictionHasBeenSet(false)
 {
 }
 
-Finding::Finding(JsonView jsonValue) : 
-    m_idHasBeenSet(false),
-    m_principalHasBeenSet(false),
-    m_actionHasBeenSet(false),
-    m_resourceHasBeenSet(false),
-    m_isPublic(false),
-    m_isPublicHasBeenSet(false),
-    m_resourceType(ResourceType::NOT_SET),
-    m_resourceTypeHasBeenSet(false),
-    m_conditionHasBeenSet(false),
-    m_createdAtHasBeenSet(false),
-    m_analyzedAtHasBeenSet(false),
-    m_updatedAtHasBeenSet(false),
-    m_status(FindingStatus::NOT_SET),
-    m_statusHasBeenSet(false),
-    m_resourceOwnerAccountHasBeenSet(false),
-    m_errorHasBeenSet(false),
-    m_sourcesHasBeenSet(false)
+Finding::Finding(JsonView jsonValue)
+  : Finding()
 {
   *this = jsonValue;
 }
@@ -173,6 +159,13 @@ Finding& Finding::operator =(JsonView jsonValue)
     m_sourcesHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("resourceControlPolicyRestriction"))
+  {
+    m_resourceControlPolicyRestriction = ResourceControlPolicyRestrictionMapper::GetResourceControlPolicyRestrictionForName(jsonValue.GetString("resourceControlPolicyRestriction"));
+
+    m_resourceControlPolicyRestrictionHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -277,6 +270,11 @@ JsonValue Finding::Jsonize() const
    }
    payload.WithArray("sources", std::move(sourcesJsonList));
 
+  }
+
+  if(m_resourceControlPolicyRestrictionHasBeenSet)
+  {
+   payload.WithString("resourceControlPolicyRestriction", ResourceControlPolicyRestrictionMapper::GetNameForResourceControlPolicyRestriction(m_resourceControlPolicyRestriction));
   }
 
   return payload;

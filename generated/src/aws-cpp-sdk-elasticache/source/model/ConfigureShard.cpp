@@ -29,12 +29,8 @@ ConfigureShard::ConfigureShard() :
 {
 }
 
-ConfigureShard::ConfigureShard(const XmlNode& xmlNode) : 
-    m_nodeGroupIdHasBeenSet(false),
-    m_newReplicaCount(0),
-    m_newReplicaCountHasBeenSet(false),
-    m_preferredAvailabilityZonesHasBeenSet(false),
-    m_preferredOutpostArnsHasBeenSet(false)
+ConfigureShard::ConfigureShard(const XmlNode& xmlNode)
+  : ConfigureShard()
 {
   *this = xmlNode;
 }
@@ -103,7 +99,7 @@ void ConfigureShard::OutputToStream(Aws::OStream& oStream, const char* location,
       unsigned preferredAvailabilityZonesIdx = 1;
       for(auto& item : m_preferredAvailabilityZones)
       {
-        oStream << location << index << locationValue << ".PreferredAvailabilityZone." << preferredAvailabilityZonesIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
+        oStream << location << index << locationValue << ".PreferredAvailabilityZones.PreferredAvailabilityZone." << preferredAvailabilityZonesIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
       }
   }
 
@@ -112,7 +108,7 @@ void ConfigureShard::OutputToStream(Aws::OStream& oStream, const char* location,
       unsigned preferredOutpostArnsIdx = 1;
       for(auto& item : m_preferredOutpostArns)
       {
-        oStream << location << index << locationValue << ".PreferredOutpostArn." << preferredOutpostArnsIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
+        oStream << location << index << locationValue << ".PreferredOutpostArns.PreferredOutpostArn." << preferredOutpostArnsIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
       }
   }
 

@@ -27,10 +27,8 @@ IPRange::IPRange() :
 {
 }
 
-IPRange::IPRange(const XmlNode& xmlNode) : 
-    m_statusHasBeenSet(false),
-    m_cIDRIPHasBeenSet(false),
-    m_tagsHasBeenSet(false)
+IPRange::IPRange(const XmlNode& xmlNode)
+  : IPRange()
 {
   *this = xmlNode;
 }
@@ -88,7 +86,7 @@ void IPRange::OutputToStream(Aws::OStream& oStream, const char* location, unsign
       for(auto& item : m_tags)
       {
         Aws::StringStream tagsSs;
-        tagsSs << location << index << locationValue << ".Tag." << tagsIdx++;
+        tagsSs << location << index << locationValue << ".Tags.Tag." << tagsIdx++;
         item.OutputToStream(oStream, tagsSs.str().c_str());
       }
   }

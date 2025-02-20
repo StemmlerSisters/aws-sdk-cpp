@@ -23,26 +23,17 @@ NumberFilter::NumberFilter() :
     m_gteHasBeenSet(false),
     m_lte(0.0),
     m_lteHasBeenSet(false),
+    m_eq(0.0),
+    m_eqHasBeenSet(false),
     m_gt(0.0),
     m_gtHasBeenSet(false),
     m_lt(0.0),
-    m_ltHasBeenSet(false),
-    m_eq(0.0),
-    m_eqHasBeenSet(false)
+    m_ltHasBeenSet(false)
 {
 }
 
-NumberFilter::NumberFilter(JsonView jsonValue) : 
-    m_gte(0.0),
-    m_gteHasBeenSet(false),
-    m_lte(0.0),
-    m_lteHasBeenSet(false),
-    m_gt(0.0),
-    m_gtHasBeenSet(false),
-    m_lt(0.0),
-    m_ltHasBeenSet(false),
-    m_eq(0.0),
-    m_eqHasBeenSet(false)
+NumberFilter::NumberFilter(JsonView jsonValue)
+  : NumberFilter()
 {
   *this = jsonValue;
 }
@@ -63,6 +54,13 @@ NumberFilter& NumberFilter::operator =(JsonView jsonValue)
     m_lteHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("Eq"))
+  {
+    m_eq = jsonValue.GetDouble("Eq");
+
+    m_eqHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("Gt"))
   {
     m_gt = jsonValue.GetDouble("Gt");
@@ -75,13 +73,6 @@ NumberFilter& NumberFilter::operator =(JsonView jsonValue)
     m_lt = jsonValue.GetDouble("Lt");
 
     m_ltHasBeenSet = true;
-  }
-
-  if(jsonValue.ValueExists("Eq"))
-  {
-    m_eq = jsonValue.GetDouble("Eq");
-
-    m_eqHasBeenSet = true;
   }
 
   return *this;
@@ -103,6 +94,12 @@ JsonValue NumberFilter::Jsonize() const
 
   }
 
+  if(m_eqHasBeenSet)
+  {
+   payload.WithDouble("Eq", m_eq);
+
+  }
+
   if(m_gtHasBeenSet)
   {
    payload.WithDouble("Gt", m_gt);
@@ -112,12 +109,6 @@ JsonValue NumberFilter::Jsonize() const
   if(m_ltHasBeenSet)
   {
    payload.WithDouble("Lt", m_lt);
-
-  }
-
-  if(m_eqHasBeenSet)
-  {
-   payload.WithDouble("Eq", m_eq);
 
   }
 

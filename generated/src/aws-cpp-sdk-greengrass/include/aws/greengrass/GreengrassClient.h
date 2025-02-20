@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/greengrass/Greengrass_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/greengrass/GreengrassServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/greengrass/GreengrassErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Greengrass
 {
+  AWS_GREENGRASS_API extern const char SERVICE_NAME[];
   /**
    * AWS IoT Greengrass seamlessly extends AWS onto physical devices so they can act
    * locally on the data they generate, while still using the cloud for management,
@@ -23,12 +27,20 @@ namespace Greengrass
    * IoT Greengrass minimizes the cost of transmitting data to the cloud by allowing
    * you to author AWS Lambda functions that execute locally.
    */
-  class AWS_GREENGRASS_API GreengrassClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<GreengrassClient>
+  class AWS_GREENGRASS_API GreengrassClient : smithy::client::AwsSmithyClientT<Aws::Greengrass::SERVICE_NAME,
+      Aws::Greengrass::GreengrassClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      GreengrassEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::GreengrassErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<GreengrassClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Greengrass"; }
 
       typedef GreengrassClientConfiguration ClientConfigurationType;
       typedef GreengrassEndpointProvider EndpointProviderType;
@@ -143,13 +155,13 @@ namespace Greengrass
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrass-2017-06-07/CreateConnectorDefinition">AWS
          * API Reference</a></p>
          */
-        virtual Model::CreateConnectorDefinitionOutcome CreateConnectorDefinition(const Model::CreateConnectorDefinitionRequest& request) const;
+        virtual Model::CreateConnectorDefinitionOutcome CreateConnectorDefinition(const Model::CreateConnectorDefinitionRequest& request = {}) const;
 
         /**
          * A Callable wrapper for CreateConnectorDefinition that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename CreateConnectorDefinitionRequestT = Model::CreateConnectorDefinitionRequest>
-        Model::CreateConnectorDefinitionOutcomeCallable CreateConnectorDefinitionCallable(const CreateConnectorDefinitionRequestT& request) const
+        Model::CreateConnectorDefinitionOutcomeCallable CreateConnectorDefinitionCallable(const CreateConnectorDefinitionRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassClient::CreateConnectorDefinition, request);
         }
@@ -158,7 +170,7 @@ namespace Greengrass
          * An Async wrapper for CreateConnectorDefinition that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename CreateConnectorDefinitionRequestT = Model::CreateConnectorDefinitionRequest>
-        void CreateConnectorDefinitionAsync(const CreateConnectorDefinitionRequestT& request, const CreateConnectorDefinitionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void CreateConnectorDefinitionAsync(const CreateConnectorDefinitionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const CreateConnectorDefinitionRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassClient::CreateConnectorDefinition, request, handler, context);
         }
@@ -197,13 +209,13 @@ namespace Greengrass
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrass-2017-06-07/CreateCoreDefinition">AWS
          * API Reference</a></p>
          */
-        virtual Model::CreateCoreDefinitionOutcome CreateCoreDefinition(const Model::CreateCoreDefinitionRequest& request) const;
+        virtual Model::CreateCoreDefinitionOutcome CreateCoreDefinition(const Model::CreateCoreDefinitionRequest& request = {}) const;
 
         /**
          * A Callable wrapper for CreateCoreDefinition that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename CreateCoreDefinitionRequestT = Model::CreateCoreDefinitionRequest>
-        Model::CreateCoreDefinitionOutcomeCallable CreateCoreDefinitionCallable(const CreateCoreDefinitionRequestT& request) const
+        Model::CreateCoreDefinitionOutcomeCallable CreateCoreDefinitionCallable(const CreateCoreDefinitionRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassClient::CreateCoreDefinition, request);
         }
@@ -212,7 +224,7 @@ namespace Greengrass
          * An Async wrapper for CreateCoreDefinition that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename CreateCoreDefinitionRequestT = Model::CreateCoreDefinitionRequest>
-        void CreateCoreDefinitionAsync(const CreateCoreDefinitionRequestT& request, const CreateCoreDefinitionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void CreateCoreDefinitionAsync(const CreateCoreDefinitionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const CreateCoreDefinitionRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassClient::CreateCoreDefinition, request, handler, context);
         }
@@ -277,13 +289,13 @@ namespace Greengrass
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrass-2017-06-07/CreateDeviceDefinition">AWS
          * API Reference</a></p>
          */
-        virtual Model::CreateDeviceDefinitionOutcome CreateDeviceDefinition(const Model::CreateDeviceDefinitionRequest& request) const;
+        virtual Model::CreateDeviceDefinitionOutcome CreateDeviceDefinition(const Model::CreateDeviceDefinitionRequest& request = {}) const;
 
         /**
          * A Callable wrapper for CreateDeviceDefinition that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename CreateDeviceDefinitionRequestT = Model::CreateDeviceDefinitionRequest>
-        Model::CreateDeviceDefinitionOutcomeCallable CreateDeviceDefinitionCallable(const CreateDeviceDefinitionRequestT& request) const
+        Model::CreateDeviceDefinitionOutcomeCallable CreateDeviceDefinitionCallable(const CreateDeviceDefinitionRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassClient::CreateDeviceDefinition, request);
         }
@@ -292,7 +304,7 @@ namespace Greengrass
          * An Async wrapper for CreateDeviceDefinition that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename CreateDeviceDefinitionRequestT = Model::CreateDeviceDefinitionRequest>
-        void CreateDeviceDefinitionAsync(const CreateDeviceDefinitionRequestT& request, const CreateDeviceDefinitionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void CreateDeviceDefinitionAsync(const CreateDeviceDefinitionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const CreateDeviceDefinitionRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassClient::CreateDeviceDefinition, request, handler, context);
         }
@@ -332,13 +344,13 @@ namespace Greengrass
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrass-2017-06-07/CreateFunctionDefinition">AWS
          * API Reference</a></p>
          */
-        virtual Model::CreateFunctionDefinitionOutcome CreateFunctionDefinition(const Model::CreateFunctionDefinitionRequest& request) const;
+        virtual Model::CreateFunctionDefinitionOutcome CreateFunctionDefinition(const Model::CreateFunctionDefinitionRequest& request = {}) const;
 
         /**
          * A Callable wrapper for CreateFunctionDefinition that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename CreateFunctionDefinitionRequestT = Model::CreateFunctionDefinitionRequest>
-        Model::CreateFunctionDefinitionOutcomeCallable CreateFunctionDefinitionCallable(const CreateFunctionDefinitionRequestT& request) const
+        Model::CreateFunctionDefinitionOutcomeCallable CreateFunctionDefinitionCallable(const CreateFunctionDefinitionRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassClient::CreateFunctionDefinition, request);
         }
@@ -347,7 +359,7 @@ namespace Greengrass
          * An Async wrapper for CreateFunctionDefinition that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename CreateFunctionDefinitionRequestT = Model::CreateFunctionDefinitionRequest>
-        void CreateFunctionDefinitionAsync(const CreateFunctionDefinitionRequestT& request, const CreateFunctionDefinitionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void CreateFunctionDefinitionAsync(const CreateFunctionDefinitionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const CreateFunctionDefinitionRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassClient::CreateFunctionDefinition, request, handler, context);
         }
@@ -466,13 +478,13 @@ namespace Greengrass
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrass-2017-06-07/CreateLoggerDefinition">AWS
          * API Reference</a></p>
          */
-        virtual Model::CreateLoggerDefinitionOutcome CreateLoggerDefinition(const Model::CreateLoggerDefinitionRequest& request) const;
+        virtual Model::CreateLoggerDefinitionOutcome CreateLoggerDefinition(const Model::CreateLoggerDefinitionRequest& request = {}) const;
 
         /**
          * A Callable wrapper for CreateLoggerDefinition that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename CreateLoggerDefinitionRequestT = Model::CreateLoggerDefinitionRequest>
-        Model::CreateLoggerDefinitionOutcomeCallable CreateLoggerDefinitionCallable(const CreateLoggerDefinitionRequestT& request) const
+        Model::CreateLoggerDefinitionOutcomeCallable CreateLoggerDefinitionCallable(const CreateLoggerDefinitionRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassClient::CreateLoggerDefinition, request);
         }
@@ -481,7 +493,7 @@ namespace Greengrass
          * An Async wrapper for CreateLoggerDefinition that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename CreateLoggerDefinitionRequestT = Model::CreateLoggerDefinitionRequest>
-        void CreateLoggerDefinitionAsync(const CreateLoggerDefinitionRequestT& request, const CreateLoggerDefinitionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void CreateLoggerDefinitionAsync(const CreateLoggerDefinitionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const CreateLoggerDefinitionRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassClient::CreateLoggerDefinition, request, handler, context);
         }
@@ -520,13 +532,13 @@ namespace Greengrass
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrass-2017-06-07/CreateResourceDefinition">AWS
          * API Reference</a></p>
          */
-        virtual Model::CreateResourceDefinitionOutcome CreateResourceDefinition(const Model::CreateResourceDefinitionRequest& request) const;
+        virtual Model::CreateResourceDefinitionOutcome CreateResourceDefinition(const Model::CreateResourceDefinitionRequest& request = {}) const;
 
         /**
          * A Callable wrapper for CreateResourceDefinition that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename CreateResourceDefinitionRequestT = Model::CreateResourceDefinitionRequest>
-        Model::CreateResourceDefinitionOutcomeCallable CreateResourceDefinitionCallable(const CreateResourceDefinitionRequestT& request) const
+        Model::CreateResourceDefinitionOutcomeCallable CreateResourceDefinitionCallable(const CreateResourceDefinitionRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassClient::CreateResourceDefinition, request);
         }
@@ -535,7 +547,7 @@ namespace Greengrass
          * An Async wrapper for CreateResourceDefinition that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename CreateResourceDefinitionRequestT = Model::CreateResourceDefinitionRequest>
-        void CreateResourceDefinitionAsync(const CreateResourceDefinitionRequestT& request, const CreateResourceDefinitionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void CreateResourceDefinitionAsync(const CreateResourceDefinitionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const CreateResourceDefinitionRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassClient::CreateResourceDefinition, request, handler, context);
         }
@@ -602,13 +614,13 @@ namespace Greengrass
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrass-2017-06-07/CreateSubscriptionDefinition">AWS
          * API Reference</a></p>
          */
-        virtual Model::CreateSubscriptionDefinitionOutcome CreateSubscriptionDefinition(const Model::CreateSubscriptionDefinitionRequest& request) const;
+        virtual Model::CreateSubscriptionDefinitionOutcome CreateSubscriptionDefinition(const Model::CreateSubscriptionDefinitionRequest& request = {}) const;
 
         /**
          * A Callable wrapper for CreateSubscriptionDefinition that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename CreateSubscriptionDefinitionRequestT = Model::CreateSubscriptionDefinitionRequest>
-        Model::CreateSubscriptionDefinitionOutcomeCallable CreateSubscriptionDefinitionCallable(const CreateSubscriptionDefinitionRequestT& request) const
+        Model::CreateSubscriptionDefinitionOutcomeCallable CreateSubscriptionDefinitionCallable(const CreateSubscriptionDefinitionRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassClient::CreateSubscriptionDefinition, request);
         }
@@ -617,7 +629,7 @@ namespace Greengrass
          * An Async wrapper for CreateSubscriptionDefinition that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename CreateSubscriptionDefinitionRequestT = Model::CreateSubscriptionDefinitionRequest>
-        void CreateSubscriptionDefinitionAsync(const CreateSubscriptionDefinitionRequestT& request, const CreateSubscriptionDefinitionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void CreateSubscriptionDefinitionAsync(const CreateSubscriptionDefinitionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const CreateSubscriptionDefinitionRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassClient::CreateSubscriptionDefinition, request, handler, context);
         }
@@ -879,13 +891,13 @@ namespace Greengrass
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrass-2017-06-07/DisassociateServiceRoleFromAccount">AWS
          * API Reference</a></p>
          */
-        virtual Model::DisassociateServiceRoleFromAccountOutcome DisassociateServiceRoleFromAccount(const Model::DisassociateServiceRoleFromAccountRequest& request) const;
+        virtual Model::DisassociateServiceRoleFromAccountOutcome DisassociateServiceRoleFromAccount(const Model::DisassociateServiceRoleFromAccountRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DisassociateServiceRoleFromAccount that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DisassociateServiceRoleFromAccountRequestT = Model::DisassociateServiceRoleFromAccountRequest>
-        Model::DisassociateServiceRoleFromAccountOutcomeCallable DisassociateServiceRoleFromAccountCallable(const DisassociateServiceRoleFromAccountRequestT& request) const
+        Model::DisassociateServiceRoleFromAccountOutcomeCallable DisassociateServiceRoleFromAccountCallable(const DisassociateServiceRoleFromAccountRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassClient::DisassociateServiceRoleFromAccount, request);
         }
@@ -894,7 +906,7 @@ namespace Greengrass
          * An Async wrapper for DisassociateServiceRoleFromAccount that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DisassociateServiceRoleFromAccountRequestT = Model::DisassociateServiceRoleFromAccountRequest>
-        void DisassociateServiceRoleFromAccountAsync(const DisassociateServiceRoleFromAccountRequestT& request, const DisassociateServiceRoleFromAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DisassociateServiceRoleFromAccountAsync(const DisassociateServiceRoleFromAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DisassociateServiceRoleFromAccountRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassClient::DisassociateServiceRoleFromAccount, request, handler, context);
         }
@@ -1417,13 +1429,13 @@ namespace Greengrass
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrass-2017-06-07/GetServiceRoleForAccount">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetServiceRoleForAccountOutcome GetServiceRoleForAccount(const Model::GetServiceRoleForAccountRequest& request) const;
+        virtual Model::GetServiceRoleForAccountOutcome GetServiceRoleForAccount(const Model::GetServiceRoleForAccountRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetServiceRoleForAccount that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetServiceRoleForAccountRequestT = Model::GetServiceRoleForAccountRequest>
-        Model::GetServiceRoleForAccountOutcomeCallable GetServiceRoleForAccountCallable(const GetServiceRoleForAccountRequestT& request) const
+        Model::GetServiceRoleForAccountOutcomeCallable GetServiceRoleForAccountCallable(const GetServiceRoleForAccountRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassClient::GetServiceRoleForAccount, request);
         }
@@ -1432,7 +1444,7 @@ namespace Greengrass
          * An Async wrapper for GetServiceRoleForAccount that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetServiceRoleForAccountRequestT = Model::GetServiceRoleForAccountRequest>
-        void GetServiceRoleForAccountAsync(const GetServiceRoleForAccountRequestT& request, const GetServiceRoleForAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetServiceRoleForAccountAsync(const GetServiceRoleForAccountResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetServiceRoleForAccountRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassClient::GetServiceRoleForAccount, request, handler, context);
         }
@@ -1545,13 +1557,13 @@ namespace Greengrass
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrass-2017-06-07/ListBulkDeployments">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListBulkDeploymentsOutcome ListBulkDeployments(const Model::ListBulkDeploymentsRequest& request) const;
+        virtual Model::ListBulkDeploymentsOutcome ListBulkDeployments(const Model::ListBulkDeploymentsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListBulkDeployments that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListBulkDeploymentsRequestT = Model::ListBulkDeploymentsRequest>
-        Model::ListBulkDeploymentsOutcomeCallable ListBulkDeploymentsCallable(const ListBulkDeploymentsRequestT& request) const
+        Model::ListBulkDeploymentsOutcomeCallable ListBulkDeploymentsCallable(const ListBulkDeploymentsRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassClient::ListBulkDeployments, request);
         }
@@ -1560,7 +1572,7 @@ namespace Greengrass
          * An Async wrapper for ListBulkDeployments that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListBulkDeploymentsRequestT = Model::ListBulkDeploymentsRequest>
-        void ListBulkDeploymentsAsync(const ListBulkDeploymentsRequestT& request, const ListBulkDeploymentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListBulkDeploymentsAsync(const ListBulkDeploymentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListBulkDeploymentsRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassClient::ListBulkDeployments, request, handler, context);
         }
@@ -1598,13 +1610,13 @@ namespace Greengrass
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrass-2017-06-07/ListConnectorDefinitions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListConnectorDefinitionsOutcome ListConnectorDefinitions(const Model::ListConnectorDefinitionsRequest& request) const;
+        virtual Model::ListConnectorDefinitionsOutcome ListConnectorDefinitions(const Model::ListConnectorDefinitionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListConnectorDefinitions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListConnectorDefinitionsRequestT = Model::ListConnectorDefinitionsRequest>
-        Model::ListConnectorDefinitionsOutcomeCallable ListConnectorDefinitionsCallable(const ListConnectorDefinitionsRequestT& request) const
+        Model::ListConnectorDefinitionsOutcomeCallable ListConnectorDefinitionsCallable(const ListConnectorDefinitionsRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassClient::ListConnectorDefinitions, request);
         }
@@ -1613,7 +1625,7 @@ namespace Greengrass
          * An Async wrapper for ListConnectorDefinitions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListConnectorDefinitionsRequestT = Model::ListConnectorDefinitionsRequest>
-        void ListConnectorDefinitionsAsync(const ListConnectorDefinitionsRequestT& request, const ListConnectorDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListConnectorDefinitionsAsync(const ListConnectorDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListConnectorDefinitionsRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassClient::ListConnectorDefinitions, request, handler, context);
         }
@@ -1648,13 +1660,13 @@ namespace Greengrass
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrass-2017-06-07/ListCoreDefinitions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListCoreDefinitionsOutcome ListCoreDefinitions(const Model::ListCoreDefinitionsRequest& request) const;
+        virtual Model::ListCoreDefinitionsOutcome ListCoreDefinitions(const Model::ListCoreDefinitionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListCoreDefinitions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListCoreDefinitionsRequestT = Model::ListCoreDefinitionsRequest>
-        Model::ListCoreDefinitionsOutcomeCallable ListCoreDefinitionsCallable(const ListCoreDefinitionsRequestT& request) const
+        Model::ListCoreDefinitionsOutcomeCallable ListCoreDefinitionsCallable(const ListCoreDefinitionsRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassClient::ListCoreDefinitions, request);
         }
@@ -1663,7 +1675,7 @@ namespace Greengrass
          * An Async wrapper for ListCoreDefinitions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListCoreDefinitionsRequestT = Model::ListCoreDefinitionsRequest>
-        void ListCoreDefinitionsAsync(const ListCoreDefinitionsRequestT& request, const ListCoreDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListCoreDefinitionsAsync(const ListCoreDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListCoreDefinitionsRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassClient::ListCoreDefinitions, request, handler, context);
         }
@@ -1723,13 +1735,13 @@ namespace Greengrass
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrass-2017-06-07/ListDeviceDefinitions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDeviceDefinitionsOutcome ListDeviceDefinitions(const Model::ListDeviceDefinitionsRequest& request) const;
+        virtual Model::ListDeviceDefinitionsOutcome ListDeviceDefinitions(const Model::ListDeviceDefinitionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDeviceDefinitions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDeviceDefinitionsRequestT = Model::ListDeviceDefinitionsRequest>
-        Model::ListDeviceDefinitionsOutcomeCallable ListDeviceDefinitionsCallable(const ListDeviceDefinitionsRequestT& request) const
+        Model::ListDeviceDefinitionsOutcomeCallable ListDeviceDefinitionsCallable(const ListDeviceDefinitionsRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassClient::ListDeviceDefinitions, request);
         }
@@ -1738,7 +1750,7 @@ namespace Greengrass
          * An Async wrapper for ListDeviceDefinitions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDeviceDefinitionsRequestT = Model::ListDeviceDefinitionsRequest>
-        void ListDeviceDefinitionsAsync(const ListDeviceDefinitionsRequestT& request, const ListDeviceDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDeviceDefinitionsAsync(const ListDeviceDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDeviceDefinitionsRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassClient::ListDeviceDefinitions, request, handler, context);
         }
@@ -1773,13 +1785,13 @@ namespace Greengrass
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrass-2017-06-07/ListFunctionDefinitions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListFunctionDefinitionsOutcome ListFunctionDefinitions(const Model::ListFunctionDefinitionsRequest& request) const;
+        virtual Model::ListFunctionDefinitionsOutcome ListFunctionDefinitions(const Model::ListFunctionDefinitionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListFunctionDefinitions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListFunctionDefinitionsRequestT = Model::ListFunctionDefinitionsRequest>
-        Model::ListFunctionDefinitionsOutcomeCallable ListFunctionDefinitionsCallable(const ListFunctionDefinitionsRequestT& request) const
+        Model::ListFunctionDefinitionsOutcomeCallable ListFunctionDefinitionsCallable(const ListFunctionDefinitionsRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassClient::ListFunctionDefinitions, request);
         }
@@ -1788,7 +1800,7 @@ namespace Greengrass
          * An Async wrapper for ListFunctionDefinitions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListFunctionDefinitionsRequestT = Model::ListFunctionDefinitionsRequest>
-        void ListFunctionDefinitionsAsync(const ListFunctionDefinitionsRequestT& request, const ListFunctionDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListFunctionDefinitionsAsync(const ListFunctionDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListFunctionDefinitionsRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassClient::ListFunctionDefinitions, request, handler, context);
         }
@@ -1848,13 +1860,13 @@ namespace Greengrass
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrass-2017-06-07/ListGroups">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListGroupsOutcome ListGroups(const Model::ListGroupsRequest& request) const;
+        virtual Model::ListGroupsOutcome ListGroups(const Model::ListGroupsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListGroups that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListGroupsRequestT = Model::ListGroupsRequest>
-        Model::ListGroupsOutcomeCallable ListGroupsCallable(const ListGroupsRequestT& request) const
+        Model::ListGroupsOutcomeCallable ListGroupsCallable(const ListGroupsRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassClient::ListGroups, request);
         }
@@ -1863,7 +1875,7 @@ namespace Greengrass
          * An Async wrapper for ListGroups that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListGroupsRequestT = Model::ListGroupsRequest>
-        void ListGroupsAsync(const ListGroupsRequestT& request, const ListGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListGroupsAsync(const ListGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListGroupsRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassClient::ListGroups, request, handler, context);
         }
@@ -1898,13 +1910,13 @@ namespace Greengrass
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrass-2017-06-07/ListLoggerDefinitions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListLoggerDefinitionsOutcome ListLoggerDefinitions(const Model::ListLoggerDefinitionsRequest& request) const;
+        virtual Model::ListLoggerDefinitionsOutcome ListLoggerDefinitions(const Model::ListLoggerDefinitionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListLoggerDefinitions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListLoggerDefinitionsRequestT = Model::ListLoggerDefinitionsRequest>
-        Model::ListLoggerDefinitionsOutcomeCallable ListLoggerDefinitionsCallable(const ListLoggerDefinitionsRequestT& request) const
+        Model::ListLoggerDefinitionsOutcomeCallable ListLoggerDefinitionsCallable(const ListLoggerDefinitionsRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassClient::ListLoggerDefinitions, request);
         }
@@ -1913,7 +1925,7 @@ namespace Greengrass
          * An Async wrapper for ListLoggerDefinitions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListLoggerDefinitionsRequestT = Model::ListLoggerDefinitionsRequest>
-        void ListLoggerDefinitionsAsync(const ListLoggerDefinitionsRequestT& request, const ListLoggerDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListLoggerDefinitionsAsync(const ListLoggerDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListLoggerDefinitionsRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassClient::ListLoggerDefinitions, request, handler, context);
         }
@@ -1948,13 +1960,13 @@ namespace Greengrass
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrass-2017-06-07/ListResourceDefinitions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListResourceDefinitionsOutcome ListResourceDefinitions(const Model::ListResourceDefinitionsRequest& request) const;
+        virtual Model::ListResourceDefinitionsOutcome ListResourceDefinitions(const Model::ListResourceDefinitionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListResourceDefinitions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListResourceDefinitionsRequestT = Model::ListResourceDefinitionsRequest>
-        Model::ListResourceDefinitionsOutcomeCallable ListResourceDefinitionsCallable(const ListResourceDefinitionsRequestT& request) const
+        Model::ListResourceDefinitionsOutcomeCallable ListResourceDefinitionsCallable(const ListResourceDefinitionsRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassClient::ListResourceDefinitions, request);
         }
@@ -1963,7 +1975,7 @@ namespace Greengrass
          * An Async wrapper for ListResourceDefinitions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListResourceDefinitionsRequestT = Model::ListResourceDefinitionsRequest>
-        void ListResourceDefinitionsAsync(const ListResourceDefinitionsRequestT& request, const ListResourceDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListResourceDefinitionsAsync(const ListResourceDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListResourceDefinitionsRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassClient::ListResourceDefinitions, request, handler, context);
         }
@@ -1998,13 +2010,13 @@ namespace Greengrass
          * href="http://docs.aws.amazon.com/goto/WebAPI/greengrass-2017-06-07/ListSubscriptionDefinitions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListSubscriptionDefinitionsOutcome ListSubscriptionDefinitions(const Model::ListSubscriptionDefinitionsRequest& request) const;
+        virtual Model::ListSubscriptionDefinitionsOutcome ListSubscriptionDefinitions(const Model::ListSubscriptionDefinitionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListSubscriptionDefinitions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListSubscriptionDefinitionsRequestT = Model::ListSubscriptionDefinitionsRequest>
-        Model::ListSubscriptionDefinitionsOutcomeCallable ListSubscriptionDefinitionsCallable(const ListSubscriptionDefinitionsRequestT& request) const
+        Model::ListSubscriptionDefinitionsOutcomeCallable ListSubscriptionDefinitionsCallable(const ListSubscriptionDefinitionsRequestT& request = {}) const
         {
             return SubmitCallable(&GreengrassClient::ListSubscriptionDefinitions, request);
         }
@@ -2013,7 +2025,7 @@ namespace Greengrass
          * An Async wrapper for ListSubscriptionDefinitions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListSubscriptionDefinitionsRequestT = Model::ListSubscriptionDefinitionsRequest>
-        void ListSubscriptionDefinitionsAsync(const ListSubscriptionDefinitionsRequestT& request, const ListSubscriptionDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListSubscriptionDefinitionsAsync(const ListSubscriptionDefinitionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListSubscriptionDefinitionsRequestT& request = {}) const
         {
             return SubmitAsync(&GreengrassClient::ListSubscriptionDefinitions, request, handler, context);
         }
@@ -2462,11 +2474,7 @@ namespace Greengrass
       std::shared_ptr<GreengrassEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<GreengrassClient>;
-      void init(const GreengrassClientConfiguration& clientConfiguration);
 
-      GreengrassClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<GreengrassEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Greengrass

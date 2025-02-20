@@ -22,8 +22,8 @@ ConfigureLogsForPlaybackConfigurationResult::ConfigureLogsForPlaybackConfigurati
 {
 }
 
-ConfigureLogsForPlaybackConfigurationResult::ConfigureLogsForPlaybackConfigurationResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_percentEnabled(0)
+ConfigureLogsForPlaybackConfigurationResult::ConfigureLogsForPlaybackConfigurationResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : ConfigureLogsForPlaybackConfigurationResult()
 {
   *this = result;
 }
@@ -41,6 +41,15 @@ ConfigureLogsForPlaybackConfigurationResult& ConfigureLogsForPlaybackConfigurati
   {
     m_playbackConfigurationName = jsonValue.GetString("PlaybackConfigurationName");
 
+  }
+
+  if(jsonValue.ValueExists("EnabledLoggingStrategies"))
+  {
+    Aws::Utils::Array<JsonView> enabledLoggingStrategiesJsonList = jsonValue.GetArray("EnabledLoggingStrategies");
+    for(unsigned enabledLoggingStrategiesIndex = 0; enabledLoggingStrategiesIndex < enabledLoggingStrategiesJsonList.GetLength(); ++enabledLoggingStrategiesIndex)
+    {
+      m_enabledLoggingStrategies.push_back(LoggingStrategyMapper::GetLoggingStrategyForName(enabledLoggingStrategiesJsonList[enabledLoggingStrategiesIndex].AsString()));
+    }
   }
 
 

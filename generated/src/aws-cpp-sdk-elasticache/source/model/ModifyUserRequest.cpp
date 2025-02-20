@@ -17,7 +17,8 @@ ModifyUserRequest::ModifyUserRequest() :
     m_passwordsHasBeenSet(false),
     m_noPasswordRequired(false),
     m_noPasswordRequiredHasBeenSet(false),
-    m_authenticationModeHasBeenSet(false)
+    m_authenticationModeHasBeenSet(false),
+    m_engineHasBeenSet(false)
 {
 }
 
@@ -42,12 +43,19 @@ Aws::String ModifyUserRequest::SerializePayload() const
 
   if(m_passwordsHasBeenSet)
   {
-    unsigned passwordsCount = 1;
-    for(auto& item : m_passwords)
+    if (m_passwords.empty())
     {
-      ss << "Passwords.member." << passwordsCount << "="
-          << StringUtils::URLEncode(item.c_str()) << "&";
-      passwordsCount++;
+      ss << "Passwords=&";
+    }
+    else
+    {
+      unsigned passwordsCount = 1;
+      for(auto& item : m_passwords)
+      {
+        ss << "Passwords.member." << passwordsCount << "="
+            << StringUtils::URLEncode(item.c_str()) << "&";
+        passwordsCount++;
+      }
     }
   }
 
@@ -59,6 +67,11 @@ Aws::String ModifyUserRequest::SerializePayload() const
   if(m_authenticationModeHasBeenSet)
   {
     m_authenticationMode.OutputToStream(ss, "AuthenticationMode");
+  }
+
+  if(m_engineHasBeenSet)
+  {
+    ss << "Engine=" << StringUtils::URLEncode(m_engine.c_str()) << "&";
   }
 
   ss << "Version=2015-02-02";

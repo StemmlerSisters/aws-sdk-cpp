@@ -39,122 +39,67 @@ namespace Model
     AWS_KENDRA_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The identifier of the document that couldn't be removed from the index.</p>
      */
     inline const Aws::String& GetId() const{ return m_id; }
-
-    /**
-     * <p>The identifier of the document that couldn't be removed from the index.</p>
-     */
     inline bool IdHasBeenSet() const { return m_idHasBeenSet; }
-
-    /**
-     * <p>The identifier of the document that couldn't be removed from the index.</p>
-     */
     inline void SetId(const Aws::String& value) { m_idHasBeenSet = true; m_id = value; }
-
-    /**
-     * <p>The identifier of the document that couldn't be removed from the index.</p>
-     */
     inline void SetId(Aws::String&& value) { m_idHasBeenSet = true; m_id = std::move(value); }
-
-    /**
-     * <p>The identifier of the document that couldn't be removed from the index.</p>
-     */
     inline void SetId(const char* value) { m_idHasBeenSet = true; m_id.assign(value); }
-
-    /**
-     * <p>The identifier of the document that couldn't be removed from the index.</p>
-     */
     inline BatchDeleteDocumentResponseFailedDocument& WithId(const Aws::String& value) { SetId(value); return *this;}
-
-    /**
-     * <p>The identifier of the document that couldn't be removed from the index.</p>
-     */
     inline BatchDeleteDocumentResponseFailedDocument& WithId(Aws::String&& value) { SetId(std::move(value)); return *this;}
-
-    /**
-     * <p>The identifier of the document that couldn't be removed from the index.</p>
-     */
     inline BatchDeleteDocumentResponseFailedDocument& WithId(const char* value) { SetId(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p> The identifier of the data source connector that the document belongs to.
+     * </p>
+     */
+    inline const Aws::String& GetDataSourceId() const{ return m_dataSourceId; }
+    inline bool DataSourceIdHasBeenSet() const { return m_dataSourceIdHasBeenSet; }
+    inline void SetDataSourceId(const Aws::String& value) { m_dataSourceIdHasBeenSet = true; m_dataSourceId = value; }
+    inline void SetDataSourceId(Aws::String&& value) { m_dataSourceIdHasBeenSet = true; m_dataSourceId = std::move(value); }
+    inline void SetDataSourceId(const char* value) { m_dataSourceIdHasBeenSet = true; m_dataSourceId.assign(value); }
+    inline BatchDeleteDocumentResponseFailedDocument& WithDataSourceId(const Aws::String& value) { SetDataSourceId(value); return *this;}
+    inline BatchDeleteDocumentResponseFailedDocument& WithDataSourceId(Aws::String&& value) { SetDataSourceId(std::move(value)); return *this;}
+    inline BatchDeleteDocumentResponseFailedDocument& WithDataSourceId(const char* value) { SetDataSourceId(value); return *this;}
+    ///@}
 
+    ///@{
     /**
      * <p>The error code for why the document couldn't be removed from the index.</p>
      */
     inline const ErrorCode& GetErrorCode() const{ return m_errorCode; }
-
-    /**
-     * <p>The error code for why the document couldn't be removed from the index.</p>
-     */
     inline bool ErrorCodeHasBeenSet() const { return m_errorCodeHasBeenSet; }
-
-    /**
-     * <p>The error code for why the document couldn't be removed from the index.</p>
-     */
     inline void SetErrorCode(const ErrorCode& value) { m_errorCodeHasBeenSet = true; m_errorCode = value; }
-
-    /**
-     * <p>The error code for why the document couldn't be removed from the index.</p>
-     */
     inline void SetErrorCode(ErrorCode&& value) { m_errorCodeHasBeenSet = true; m_errorCode = std::move(value); }
-
-    /**
-     * <p>The error code for why the document couldn't be removed from the index.</p>
-     */
     inline BatchDeleteDocumentResponseFailedDocument& WithErrorCode(const ErrorCode& value) { SetErrorCode(value); return *this;}
-
-    /**
-     * <p>The error code for why the document couldn't be removed from the index.</p>
-     */
     inline BatchDeleteDocumentResponseFailedDocument& WithErrorCode(ErrorCode&& value) { SetErrorCode(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>An explanation for why the document couldn't be removed from the index.</p>
      */
     inline const Aws::String& GetErrorMessage() const{ return m_errorMessage; }
-
-    /**
-     * <p>An explanation for why the document couldn't be removed from the index.</p>
-     */
     inline bool ErrorMessageHasBeenSet() const { return m_errorMessageHasBeenSet; }
-
-    /**
-     * <p>An explanation for why the document couldn't be removed from the index.</p>
-     */
     inline void SetErrorMessage(const Aws::String& value) { m_errorMessageHasBeenSet = true; m_errorMessage = value; }
-
-    /**
-     * <p>An explanation for why the document couldn't be removed from the index.</p>
-     */
     inline void SetErrorMessage(Aws::String&& value) { m_errorMessageHasBeenSet = true; m_errorMessage = std::move(value); }
-
-    /**
-     * <p>An explanation for why the document couldn't be removed from the index.</p>
-     */
     inline void SetErrorMessage(const char* value) { m_errorMessageHasBeenSet = true; m_errorMessage.assign(value); }
-
-    /**
-     * <p>An explanation for why the document couldn't be removed from the index.</p>
-     */
     inline BatchDeleteDocumentResponseFailedDocument& WithErrorMessage(const Aws::String& value) { SetErrorMessage(value); return *this;}
-
-    /**
-     * <p>An explanation for why the document couldn't be removed from the index.</p>
-     */
     inline BatchDeleteDocumentResponseFailedDocument& WithErrorMessage(Aws::String&& value) { SetErrorMessage(std::move(value)); return *this;}
-
-    /**
-     * <p>An explanation for why the document couldn't be removed from the index.</p>
-     */
     inline BatchDeleteDocumentResponseFailedDocument& WithErrorMessage(const char* value) { SetErrorMessage(value); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_id;
     bool m_idHasBeenSet = false;
+
+    Aws::String m_dataSourceId;
+    bool m_dataSourceIdHasBeenSet = false;
 
     ErrorCode m_errorCode;
     bool m_errorCodeHasBeenSet = false;

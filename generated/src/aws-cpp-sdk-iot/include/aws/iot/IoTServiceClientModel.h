@@ -20,6 +20,7 @@
 /* Service model headers required in IoTClient header */
 #include <aws/iot/model/AddThingToBillingGroupResult.h>
 #include <aws/iot/model/AddThingToThingGroupResult.h>
+#include <aws/iot/model/AssociateSbomWithPackageVersionResult.h>
 #include <aws/iot/model/AssociateTargetsWithJobResult.h>
 #include <aws/iot/model/AttachSecurityProfileResult.h>
 #include <aws/iot/model/AttachThingPrincipalResult.h>
@@ -34,6 +35,7 @@
 #include <aws/iot/model/CreateBillingGroupResult.h>
 #include <aws/iot/model/CreateCertificateFromCsrResult.h>
 #include <aws/iot/model/CreateCertificateProviderResult.h>
+#include <aws/iot/model/CreateCommandResult.h>
 #include <aws/iot/model/CreateCustomMetricResult.h>
 #include <aws/iot/model/CreateDimensionResult.h>
 #include <aws/iot/model/CreateDomainConfigurationResult.h>
@@ -65,6 +67,8 @@
 #include <aws/iot/model/DeleteBillingGroupResult.h>
 #include <aws/iot/model/DeleteCACertificateResult.h>
 #include <aws/iot/model/DeleteCertificateProviderResult.h>
+#include <aws/iot/model/DeleteCommandResult.h>
+#include <aws/iot/model/DeleteCommandExecutionResult.h>
 #include <aws/iot/model/DeleteCustomMetricResult.h>
 #include <aws/iot/model/DeleteDimensionResult.h>
 #include <aws/iot/model/DeleteDomainConfigurationResult.h>
@@ -121,9 +125,12 @@
 #include <aws/iot/model/DescribeThingTypeResult.h>
 #include <aws/iot/model/DetachSecurityProfileResult.h>
 #include <aws/iot/model/DetachThingPrincipalResult.h>
+#include <aws/iot/model/DisassociateSbomFromPackageVersionResult.h>
 #include <aws/iot/model/GetBehaviorModelTrainingSummariesResult.h>
 #include <aws/iot/model/GetBucketsAggregationResult.h>
 #include <aws/iot/model/GetCardinalityResult.h>
+#include <aws/iot/model/GetCommandResult.h>
+#include <aws/iot/model/GetCommandExecutionResult.h>
 #include <aws/iot/model/GetEffectivePoliciesResult.h>
 #include <aws/iot/model/GetIndexingConfigurationResult.h>
 #include <aws/iot/model/GetJobDocumentResult.h>
@@ -137,6 +144,7 @@
 #include <aws/iot/model/GetPolicyVersionResult.h>
 #include <aws/iot/model/GetRegistrationCodeResult.h>
 #include <aws/iot/model/GetStatisticsResult.h>
+#include <aws/iot/model/GetThingConnectivityDataResult.h>
 #include <aws/iot/model/GetTopicRuleResult.h>
 #include <aws/iot/model/GetTopicRuleDestinationResult.h>
 #include <aws/iot/model/GetV2LoggingOptionsResult.h>
@@ -153,6 +161,8 @@
 #include <aws/iot/model/ListCertificateProvidersResult.h>
 #include <aws/iot/model/ListCertificatesResult.h>
 #include <aws/iot/model/ListCertificatesByCAResult.h>
+#include <aws/iot/model/ListCommandExecutionsResult.h>
+#include <aws/iot/model/ListCommandsResult.h>
 #include <aws/iot/model/ListCustomMetricsResult.h>
 #include <aws/iot/model/ListDetectMitigationActionsExecutionsResult.h>
 #include <aws/iot/model/ListDetectMitigationActionsTasksResult.h>
@@ -174,10 +184,12 @@
 #include <aws/iot/model/ListPoliciesResult.h>
 #include <aws/iot/model/ListPolicyVersionsResult.h>
 #include <aws/iot/model/ListPrincipalThingsResult.h>
+#include <aws/iot/model/ListPrincipalThingsV2Result.h>
 #include <aws/iot/model/ListProvisioningTemplateVersionsResult.h>
 #include <aws/iot/model/ListProvisioningTemplatesResult.h>
 #include <aws/iot/model/ListRelatedResourcesForAuditFindingResult.h>
 #include <aws/iot/model/ListRoleAliasesResult.h>
+#include <aws/iot/model/ListSbomValidationResultsResult.h>
 #include <aws/iot/model/ListScheduledAuditsResult.h>
 #include <aws/iot/model/ListSecurityProfilesResult.h>
 #include <aws/iot/model/ListSecurityProfilesForTargetResult.h>
@@ -188,6 +200,7 @@
 #include <aws/iot/model/ListThingGroupsResult.h>
 #include <aws/iot/model/ListThingGroupsForThingResult.h>
 #include <aws/iot/model/ListThingPrincipalsResult.h>
+#include <aws/iot/model/ListThingPrincipalsV2Result.h>
 #include <aws/iot/model/ListThingRegistrationTaskReportsResult.h>
 #include <aws/iot/model/ListThingRegistrationTasksResult.h>
 #include <aws/iot/model/ListThingTypesResult.h>
@@ -222,6 +235,7 @@
 #include <aws/iot/model/UpdateAuthorizerResult.h>
 #include <aws/iot/model/UpdateBillingGroupResult.h>
 #include <aws/iot/model/UpdateCertificateProviderResult.h>
+#include <aws/iot/model/UpdateCommandResult.h>
 #include <aws/iot/model/UpdateCustomMetricResult.h>
 #include <aws/iot/model/UpdateDimensionResult.h>
 #include <aws/iot/model/UpdateDomainConfigurationResult.h>
@@ -240,8 +254,70 @@
 #include <aws/iot/model/UpdateThingResult.h>
 #include <aws/iot/model/UpdateThingGroupResult.h>
 #include <aws/iot/model/UpdateThingGroupsForThingResult.h>
+#include <aws/iot/model/UpdateThingTypeResult.h>
 #include <aws/iot/model/UpdateTopicRuleDestinationResult.h>
 #include <aws/iot/model/ValidateSecurityProfileBehaviorsResult.h>
+#include <aws/iot/model/ListStreamsRequest.h>
+#include <aws/iot/model/ListTopicRulesRequest.h>
+#include <aws/iot/model/RemoveThingFromThingGroupRequest.h>
+#include <aws/iot/model/GetLoggingOptionsRequest.h>
+#include <aws/iot/model/ListProvisioningTemplatesRequest.h>
+#include <aws/iot/model/ListManagedJobTemplatesRequest.h>
+#include <aws/iot/model/ListBillingGroupsRequest.h>
+#include <aws/iot/model/GetV2LoggingOptionsRequest.h>
+#include <aws/iot/model/GetPackageConfigurationRequest.h>
+#include <aws/iot/model/SetV2LoggingOptionsRequest.h>
+#include <aws/iot/model/DeleteAccountAuditConfigurationRequest.h>
+#include <aws/iot/model/ListCommandsRequest.h>
+#include <aws/iot/model/ListCommandExecutionsRequest.h>
+#include <aws/iot/model/UpdateAccountAuditConfigurationRequest.h>
+#include <aws/iot/model/UpdateIndexingConfigurationRequest.h>
+#include <aws/iot/model/ListJobTemplatesRequest.h>
+#include <aws/iot/model/ListAuditSuppressionsRequest.h>
+#include <aws/iot/model/ListThingGroupsRequest.h>
+#include <aws/iot/model/ListTopicRuleDestinationsRequest.h>
+#include <aws/iot/model/ListDimensionsRequest.h>
+#include <aws/iot/model/ListOutgoingCertificatesRequest.h>
+#include <aws/iot/model/DescribeDefaultAuthorizerRequest.h>
+#include <aws/iot/model/ListActiveViolationsRequest.h>
+#include <aws/iot/model/ListV2LoggingLevelsRequest.h>
+#include <aws/iot/model/GetRegistrationCodeRequest.h>
+#include <aws/iot/model/ListThingsRequest.h>
+#include <aws/iot/model/DescribeEventConfigurationsRequest.h>
+#include <aws/iot/model/ListCertificatesRequest.h>
+#include <aws/iot/model/ListAuthorizersRequest.h>
+#include <aws/iot/model/AddThingToThingGroupRequest.h>
+#include <aws/iot/model/ListJobsRequest.h>
+#include <aws/iot/model/UpdateThingGroupsForThingRequest.h>
+#include <aws/iot/model/ListDetectMitigationActionsExecutionsRequest.h>
+#include <aws/iot/model/ListSecurityProfilesRequest.h>
+#include <aws/iot/model/AddThingToBillingGroupRequest.h>
+#include <aws/iot/model/ListAuditFindingsRequest.h>
+#include <aws/iot/model/CreateKeysAndCertificateRequest.h>
+#include <aws/iot/model/ClearDefaultAuthorizerRequest.h>
+#include <aws/iot/model/ListScheduledAuditsRequest.h>
+#include <aws/iot/model/ListThingTypesRequest.h>
+#include <aws/iot/model/ListMitigationActionsRequest.h>
+#include <aws/iot/model/RemoveThingFromBillingGroupRequest.h>
+#include <aws/iot/model/GetEffectivePoliciesRequest.h>
+#include <aws/iot/model/ListIndicesRequest.h>
+#include <aws/iot/model/DescribeAccountAuditConfigurationRequest.h>
+#include <aws/iot/model/ListPoliciesRequest.h>
+#include <aws/iot/model/GetIndexingConfigurationRequest.h>
+#include <aws/iot/model/UpdatePackageConfigurationRequest.h>
+#include <aws/iot/model/ListDomainConfigurationsRequest.h>
+#include <aws/iot/model/ListThingRegistrationTasksRequest.h>
+#include <aws/iot/model/ListOTAUpdatesRequest.h>
+#include <aws/iot/model/DescribeEndpointRequest.h>
+#include <aws/iot/model/ListCertificateProvidersRequest.h>
+#include <aws/iot/model/GetBehaviorModelTrainingSummariesRequest.h>
+#include <aws/iot/model/ListCACertificatesRequest.h>
+#include <aws/iot/model/ListPackagesRequest.h>
+#include <aws/iot/model/DeleteRegistrationCodeRequest.h>
+#include <aws/iot/model/ListRoleAliasesRequest.h>
+#include <aws/iot/model/UpdateEventConfigurationsRequest.h>
+#include <aws/iot/model/ListCustomMetricsRequest.h>
+#include <aws/iot/model/ListFleetMetricsRequest.h>
 #include <aws/core/NoResult.h>
 /* End of service model headers required in IoTClient header */
 
@@ -276,7 +352,7 @@ namespace Aws
 
   namespace IoT
   {
-    using IoTClientConfiguration = Aws::Client::GenericClientConfiguration<false>;
+    using IoTClientConfiguration = Aws::Client::GenericClientConfiguration;
     using IoTEndpointProviderBase = Aws::IoT::Endpoint::IoTEndpointProviderBase;
     using IoTEndpointProvider = Aws::IoT::Endpoint::IoTEndpointProvider;
 
@@ -286,6 +362,7 @@ namespace Aws
       class AcceptCertificateTransferRequest;
       class AddThingToBillingGroupRequest;
       class AddThingToThingGroupRequest;
+      class AssociateSbomWithPackageVersionRequest;
       class AssociateTargetsWithJobRequest;
       class AttachPolicyRequest;
       class AttachSecurityProfileRequest;
@@ -303,6 +380,7 @@ namespace Aws
       class CreateBillingGroupRequest;
       class CreateCertificateFromCsrRequest;
       class CreateCertificateProviderRequest;
+      class CreateCommandRequest;
       class CreateCustomMetricRequest;
       class CreateDimensionRequest;
       class CreateDomainConfigurationRequest;
@@ -336,6 +414,8 @@ namespace Aws
       class DeleteCACertificateRequest;
       class DeleteCertificateRequest;
       class DeleteCertificateProviderRequest;
+      class DeleteCommandRequest;
+      class DeleteCommandExecutionRequest;
       class DeleteCustomMetricRequest;
       class DeleteDimensionRequest;
       class DeleteDomainConfigurationRequest;
@@ -402,10 +482,13 @@ namespace Aws
       class DetachSecurityProfileRequest;
       class DetachThingPrincipalRequest;
       class DisableTopicRuleRequest;
+      class DisassociateSbomFromPackageVersionRequest;
       class EnableTopicRuleRequest;
       class GetBehaviorModelTrainingSummariesRequest;
       class GetBucketsAggregationRequest;
       class GetCardinalityRequest;
+      class GetCommandRequest;
+      class GetCommandExecutionRequest;
       class GetEffectivePoliciesRequest;
       class GetIndexingConfigurationRequest;
       class GetJobDocumentRequest;
@@ -419,6 +502,7 @@ namespace Aws
       class GetPolicyVersionRequest;
       class GetRegistrationCodeRequest;
       class GetStatisticsRequest;
+      class GetThingConnectivityDataRequest;
       class GetTopicRuleRequest;
       class GetTopicRuleDestinationRequest;
       class GetV2LoggingOptionsRequest;
@@ -435,6 +519,8 @@ namespace Aws
       class ListCertificateProvidersRequest;
       class ListCertificatesRequest;
       class ListCertificatesByCARequest;
+      class ListCommandExecutionsRequest;
+      class ListCommandsRequest;
       class ListCustomMetricsRequest;
       class ListDetectMitigationActionsExecutionsRequest;
       class ListDetectMitigationActionsTasksRequest;
@@ -456,10 +542,12 @@ namespace Aws
       class ListPoliciesRequest;
       class ListPolicyVersionsRequest;
       class ListPrincipalThingsRequest;
+      class ListPrincipalThingsV2Request;
       class ListProvisioningTemplateVersionsRequest;
       class ListProvisioningTemplatesRequest;
       class ListRelatedResourcesForAuditFindingRequest;
       class ListRoleAliasesRequest;
+      class ListSbomValidationResultsRequest;
       class ListScheduledAuditsRequest;
       class ListSecurityProfilesRequest;
       class ListSecurityProfilesForTargetRequest;
@@ -470,6 +558,7 @@ namespace Aws
       class ListThingGroupsRequest;
       class ListThingGroupsForThingRequest;
       class ListThingPrincipalsRequest;
+      class ListThingPrincipalsV2Request;
       class ListThingRegistrationTaskReportsRequest;
       class ListThingRegistrationTasksRequest;
       class ListThingTypesRequest;
@@ -512,6 +601,7 @@ namespace Aws
       class UpdateCACertificateRequest;
       class UpdateCertificateRequest;
       class UpdateCertificateProviderRequest;
+      class UpdateCommandRequest;
       class UpdateCustomMetricRequest;
       class UpdateDimensionRequest;
       class UpdateDomainConfigurationRequest;
@@ -532,6 +622,7 @@ namespace Aws
       class UpdateThingRequest;
       class UpdateThingGroupRequest;
       class UpdateThingGroupsForThingRequest;
+      class UpdateThingTypeRequest;
       class UpdateTopicRuleDestinationRequest;
       class ValidateSecurityProfileBehaviorsRequest;
       /* End of service model forward declarations required in IoTClient header */
@@ -540,6 +631,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<Aws::NoResult, IoTError> AcceptCertificateTransferOutcome;
       typedef Aws::Utils::Outcome<AddThingToBillingGroupResult, IoTError> AddThingToBillingGroupOutcome;
       typedef Aws::Utils::Outcome<AddThingToThingGroupResult, IoTError> AddThingToThingGroupOutcome;
+      typedef Aws::Utils::Outcome<AssociateSbomWithPackageVersionResult, IoTError> AssociateSbomWithPackageVersionOutcome;
       typedef Aws::Utils::Outcome<AssociateTargetsWithJobResult, IoTError> AssociateTargetsWithJobOutcome;
       typedef Aws::Utils::Outcome<Aws::NoResult, IoTError> AttachPolicyOutcome;
       typedef Aws::Utils::Outcome<AttachSecurityProfileResult, IoTError> AttachSecurityProfileOutcome;
@@ -557,6 +649,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<CreateBillingGroupResult, IoTError> CreateBillingGroupOutcome;
       typedef Aws::Utils::Outcome<CreateCertificateFromCsrResult, IoTError> CreateCertificateFromCsrOutcome;
       typedef Aws::Utils::Outcome<CreateCertificateProviderResult, IoTError> CreateCertificateProviderOutcome;
+      typedef Aws::Utils::Outcome<CreateCommandResult, IoTError> CreateCommandOutcome;
       typedef Aws::Utils::Outcome<CreateCustomMetricResult, IoTError> CreateCustomMetricOutcome;
       typedef Aws::Utils::Outcome<CreateDimensionResult, IoTError> CreateDimensionOutcome;
       typedef Aws::Utils::Outcome<CreateDomainConfigurationResult, IoTError> CreateDomainConfigurationOutcome;
@@ -590,6 +683,8 @@ namespace Aws
       typedef Aws::Utils::Outcome<DeleteCACertificateResult, IoTError> DeleteCACertificateOutcome;
       typedef Aws::Utils::Outcome<Aws::NoResult, IoTError> DeleteCertificateOutcome;
       typedef Aws::Utils::Outcome<DeleteCertificateProviderResult, IoTError> DeleteCertificateProviderOutcome;
+      typedef Aws::Utils::Outcome<DeleteCommandResult, IoTError> DeleteCommandOutcome;
+      typedef Aws::Utils::Outcome<DeleteCommandExecutionResult, IoTError> DeleteCommandExecutionOutcome;
       typedef Aws::Utils::Outcome<DeleteCustomMetricResult, IoTError> DeleteCustomMetricOutcome;
       typedef Aws::Utils::Outcome<DeleteDimensionResult, IoTError> DeleteDimensionOutcome;
       typedef Aws::Utils::Outcome<DeleteDomainConfigurationResult, IoTError> DeleteDomainConfigurationOutcome;
@@ -656,10 +751,13 @@ namespace Aws
       typedef Aws::Utils::Outcome<DetachSecurityProfileResult, IoTError> DetachSecurityProfileOutcome;
       typedef Aws::Utils::Outcome<DetachThingPrincipalResult, IoTError> DetachThingPrincipalOutcome;
       typedef Aws::Utils::Outcome<Aws::NoResult, IoTError> DisableTopicRuleOutcome;
+      typedef Aws::Utils::Outcome<DisassociateSbomFromPackageVersionResult, IoTError> DisassociateSbomFromPackageVersionOutcome;
       typedef Aws::Utils::Outcome<Aws::NoResult, IoTError> EnableTopicRuleOutcome;
       typedef Aws::Utils::Outcome<GetBehaviorModelTrainingSummariesResult, IoTError> GetBehaviorModelTrainingSummariesOutcome;
       typedef Aws::Utils::Outcome<GetBucketsAggregationResult, IoTError> GetBucketsAggregationOutcome;
       typedef Aws::Utils::Outcome<GetCardinalityResult, IoTError> GetCardinalityOutcome;
+      typedef Aws::Utils::Outcome<GetCommandResult, IoTError> GetCommandOutcome;
+      typedef Aws::Utils::Outcome<GetCommandExecutionResult, IoTError> GetCommandExecutionOutcome;
       typedef Aws::Utils::Outcome<GetEffectivePoliciesResult, IoTError> GetEffectivePoliciesOutcome;
       typedef Aws::Utils::Outcome<GetIndexingConfigurationResult, IoTError> GetIndexingConfigurationOutcome;
       typedef Aws::Utils::Outcome<GetJobDocumentResult, IoTError> GetJobDocumentOutcome;
@@ -673,6 +771,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<GetPolicyVersionResult, IoTError> GetPolicyVersionOutcome;
       typedef Aws::Utils::Outcome<GetRegistrationCodeResult, IoTError> GetRegistrationCodeOutcome;
       typedef Aws::Utils::Outcome<GetStatisticsResult, IoTError> GetStatisticsOutcome;
+      typedef Aws::Utils::Outcome<GetThingConnectivityDataResult, IoTError> GetThingConnectivityDataOutcome;
       typedef Aws::Utils::Outcome<GetTopicRuleResult, IoTError> GetTopicRuleOutcome;
       typedef Aws::Utils::Outcome<GetTopicRuleDestinationResult, IoTError> GetTopicRuleDestinationOutcome;
       typedef Aws::Utils::Outcome<GetV2LoggingOptionsResult, IoTError> GetV2LoggingOptionsOutcome;
@@ -689,6 +788,8 @@ namespace Aws
       typedef Aws::Utils::Outcome<ListCertificateProvidersResult, IoTError> ListCertificateProvidersOutcome;
       typedef Aws::Utils::Outcome<ListCertificatesResult, IoTError> ListCertificatesOutcome;
       typedef Aws::Utils::Outcome<ListCertificatesByCAResult, IoTError> ListCertificatesByCAOutcome;
+      typedef Aws::Utils::Outcome<ListCommandExecutionsResult, IoTError> ListCommandExecutionsOutcome;
+      typedef Aws::Utils::Outcome<ListCommandsResult, IoTError> ListCommandsOutcome;
       typedef Aws::Utils::Outcome<ListCustomMetricsResult, IoTError> ListCustomMetricsOutcome;
       typedef Aws::Utils::Outcome<ListDetectMitigationActionsExecutionsResult, IoTError> ListDetectMitigationActionsExecutionsOutcome;
       typedef Aws::Utils::Outcome<ListDetectMitigationActionsTasksResult, IoTError> ListDetectMitigationActionsTasksOutcome;
@@ -710,10 +811,12 @@ namespace Aws
       typedef Aws::Utils::Outcome<ListPoliciesResult, IoTError> ListPoliciesOutcome;
       typedef Aws::Utils::Outcome<ListPolicyVersionsResult, IoTError> ListPolicyVersionsOutcome;
       typedef Aws::Utils::Outcome<ListPrincipalThingsResult, IoTError> ListPrincipalThingsOutcome;
+      typedef Aws::Utils::Outcome<ListPrincipalThingsV2Result, IoTError> ListPrincipalThingsV2Outcome;
       typedef Aws::Utils::Outcome<ListProvisioningTemplateVersionsResult, IoTError> ListProvisioningTemplateVersionsOutcome;
       typedef Aws::Utils::Outcome<ListProvisioningTemplatesResult, IoTError> ListProvisioningTemplatesOutcome;
       typedef Aws::Utils::Outcome<ListRelatedResourcesForAuditFindingResult, IoTError> ListRelatedResourcesForAuditFindingOutcome;
       typedef Aws::Utils::Outcome<ListRoleAliasesResult, IoTError> ListRoleAliasesOutcome;
+      typedef Aws::Utils::Outcome<ListSbomValidationResultsResult, IoTError> ListSbomValidationResultsOutcome;
       typedef Aws::Utils::Outcome<ListScheduledAuditsResult, IoTError> ListScheduledAuditsOutcome;
       typedef Aws::Utils::Outcome<ListSecurityProfilesResult, IoTError> ListSecurityProfilesOutcome;
       typedef Aws::Utils::Outcome<ListSecurityProfilesForTargetResult, IoTError> ListSecurityProfilesForTargetOutcome;
@@ -724,6 +827,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<ListThingGroupsResult, IoTError> ListThingGroupsOutcome;
       typedef Aws::Utils::Outcome<ListThingGroupsForThingResult, IoTError> ListThingGroupsForThingOutcome;
       typedef Aws::Utils::Outcome<ListThingPrincipalsResult, IoTError> ListThingPrincipalsOutcome;
+      typedef Aws::Utils::Outcome<ListThingPrincipalsV2Result, IoTError> ListThingPrincipalsV2Outcome;
       typedef Aws::Utils::Outcome<ListThingRegistrationTaskReportsResult, IoTError> ListThingRegistrationTaskReportsOutcome;
       typedef Aws::Utils::Outcome<ListThingRegistrationTasksResult, IoTError> ListThingRegistrationTasksOutcome;
       typedef Aws::Utils::Outcome<ListThingTypesResult, IoTError> ListThingTypesOutcome;
@@ -766,6 +870,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<Aws::NoResult, IoTError> UpdateCACertificateOutcome;
       typedef Aws::Utils::Outcome<Aws::NoResult, IoTError> UpdateCertificateOutcome;
       typedef Aws::Utils::Outcome<UpdateCertificateProviderResult, IoTError> UpdateCertificateProviderOutcome;
+      typedef Aws::Utils::Outcome<UpdateCommandResult, IoTError> UpdateCommandOutcome;
       typedef Aws::Utils::Outcome<UpdateCustomMetricResult, IoTError> UpdateCustomMetricOutcome;
       typedef Aws::Utils::Outcome<UpdateDimensionResult, IoTError> UpdateDimensionOutcome;
       typedef Aws::Utils::Outcome<UpdateDomainConfigurationResult, IoTError> UpdateDomainConfigurationOutcome;
@@ -786,6 +891,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<UpdateThingResult, IoTError> UpdateThingOutcome;
       typedef Aws::Utils::Outcome<UpdateThingGroupResult, IoTError> UpdateThingGroupOutcome;
       typedef Aws::Utils::Outcome<UpdateThingGroupsForThingResult, IoTError> UpdateThingGroupsForThingOutcome;
+      typedef Aws::Utils::Outcome<UpdateThingTypeResult, IoTError> UpdateThingTypeOutcome;
       typedef Aws::Utils::Outcome<UpdateTopicRuleDestinationResult, IoTError> UpdateTopicRuleDestinationOutcome;
       typedef Aws::Utils::Outcome<ValidateSecurityProfileBehaviorsResult, IoTError> ValidateSecurityProfileBehaviorsOutcome;
       /* End of service model Outcome class definitions */
@@ -794,6 +900,7 @@ namespace Aws
       typedef std::future<AcceptCertificateTransferOutcome> AcceptCertificateTransferOutcomeCallable;
       typedef std::future<AddThingToBillingGroupOutcome> AddThingToBillingGroupOutcomeCallable;
       typedef std::future<AddThingToThingGroupOutcome> AddThingToThingGroupOutcomeCallable;
+      typedef std::future<AssociateSbomWithPackageVersionOutcome> AssociateSbomWithPackageVersionOutcomeCallable;
       typedef std::future<AssociateTargetsWithJobOutcome> AssociateTargetsWithJobOutcomeCallable;
       typedef std::future<AttachPolicyOutcome> AttachPolicyOutcomeCallable;
       typedef std::future<AttachSecurityProfileOutcome> AttachSecurityProfileOutcomeCallable;
@@ -811,6 +918,7 @@ namespace Aws
       typedef std::future<CreateBillingGroupOutcome> CreateBillingGroupOutcomeCallable;
       typedef std::future<CreateCertificateFromCsrOutcome> CreateCertificateFromCsrOutcomeCallable;
       typedef std::future<CreateCertificateProviderOutcome> CreateCertificateProviderOutcomeCallable;
+      typedef std::future<CreateCommandOutcome> CreateCommandOutcomeCallable;
       typedef std::future<CreateCustomMetricOutcome> CreateCustomMetricOutcomeCallable;
       typedef std::future<CreateDimensionOutcome> CreateDimensionOutcomeCallable;
       typedef std::future<CreateDomainConfigurationOutcome> CreateDomainConfigurationOutcomeCallable;
@@ -844,6 +952,8 @@ namespace Aws
       typedef std::future<DeleteCACertificateOutcome> DeleteCACertificateOutcomeCallable;
       typedef std::future<DeleteCertificateOutcome> DeleteCertificateOutcomeCallable;
       typedef std::future<DeleteCertificateProviderOutcome> DeleteCertificateProviderOutcomeCallable;
+      typedef std::future<DeleteCommandOutcome> DeleteCommandOutcomeCallable;
+      typedef std::future<DeleteCommandExecutionOutcome> DeleteCommandExecutionOutcomeCallable;
       typedef std::future<DeleteCustomMetricOutcome> DeleteCustomMetricOutcomeCallable;
       typedef std::future<DeleteDimensionOutcome> DeleteDimensionOutcomeCallable;
       typedef std::future<DeleteDomainConfigurationOutcome> DeleteDomainConfigurationOutcomeCallable;
@@ -910,10 +1020,13 @@ namespace Aws
       typedef std::future<DetachSecurityProfileOutcome> DetachSecurityProfileOutcomeCallable;
       typedef std::future<DetachThingPrincipalOutcome> DetachThingPrincipalOutcomeCallable;
       typedef std::future<DisableTopicRuleOutcome> DisableTopicRuleOutcomeCallable;
+      typedef std::future<DisassociateSbomFromPackageVersionOutcome> DisassociateSbomFromPackageVersionOutcomeCallable;
       typedef std::future<EnableTopicRuleOutcome> EnableTopicRuleOutcomeCallable;
       typedef std::future<GetBehaviorModelTrainingSummariesOutcome> GetBehaviorModelTrainingSummariesOutcomeCallable;
       typedef std::future<GetBucketsAggregationOutcome> GetBucketsAggregationOutcomeCallable;
       typedef std::future<GetCardinalityOutcome> GetCardinalityOutcomeCallable;
+      typedef std::future<GetCommandOutcome> GetCommandOutcomeCallable;
+      typedef std::future<GetCommandExecutionOutcome> GetCommandExecutionOutcomeCallable;
       typedef std::future<GetEffectivePoliciesOutcome> GetEffectivePoliciesOutcomeCallable;
       typedef std::future<GetIndexingConfigurationOutcome> GetIndexingConfigurationOutcomeCallable;
       typedef std::future<GetJobDocumentOutcome> GetJobDocumentOutcomeCallable;
@@ -927,6 +1040,7 @@ namespace Aws
       typedef std::future<GetPolicyVersionOutcome> GetPolicyVersionOutcomeCallable;
       typedef std::future<GetRegistrationCodeOutcome> GetRegistrationCodeOutcomeCallable;
       typedef std::future<GetStatisticsOutcome> GetStatisticsOutcomeCallable;
+      typedef std::future<GetThingConnectivityDataOutcome> GetThingConnectivityDataOutcomeCallable;
       typedef std::future<GetTopicRuleOutcome> GetTopicRuleOutcomeCallable;
       typedef std::future<GetTopicRuleDestinationOutcome> GetTopicRuleDestinationOutcomeCallable;
       typedef std::future<GetV2LoggingOptionsOutcome> GetV2LoggingOptionsOutcomeCallable;
@@ -943,6 +1057,8 @@ namespace Aws
       typedef std::future<ListCertificateProvidersOutcome> ListCertificateProvidersOutcomeCallable;
       typedef std::future<ListCertificatesOutcome> ListCertificatesOutcomeCallable;
       typedef std::future<ListCertificatesByCAOutcome> ListCertificatesByCAOutcomeCallable;
+      typedef std::future<ListCommandExecutionsOutcome> ListCommandExecutionsOutcomeCallable;
+      typedef std::future<ListCommandsOutcome> ListCommandsOutcomeCallable;
       typedef std::future<ListCustomMetricsOutcome> ListCustomMetricsOutcomeCallable;
       typedef std::future<ListDetectMitigationActionsExecutionsOutcome> ListDetectMitigationActionsExecutionsOutcomeCallable;
       typedef std::future<ListDetectMitigationActionsTasksOutcome> ListDetectMitigationActionsTasksOutcomeCallable;
@@ -964,10 +1080,12 @@ namespace Aws
       typedef std::future<ListPoliciesOutcome> ListPoliciesOutcomeCallable;
       typedef std::future<ListPolicyVersionsOutcome> ListPolicyVersionsOutcomeCallable;
       typedef std::future<ListPrincipalThingsOutcome> ListPrincipalThingsOutcomeCallable;
+      typedef std::future<ListPrincipalThingsV2Outcome> ListPrincipalThingsV2OutcomeCallable;
       typedef std::future<ListProvisioningTemplateVersionsOutcome> ListProvisioningTemplateVersionsOutcomeCallable;
       typedef std::future<ListProvisioningTemplatesOutcome> ListProvisioningTemplatesOutcomeCallable;
       typedef std::future<ListRelatedResourcesForAuditFindingOutcome> ListRelatedResourcesForAuditFindingOutcomeCallable;
       typedef std::future<ListRoleAliasesOutcome> ListRoleAliasesOutcomeCallable;
+      typedef std::future<ListSbomValidationResultsOutcome> ListSbomValidationResultsOutcomeCallable;
       typedef std::future<ListScheduledAuditsOutcome> ListScheduledAuditsOutcomeCallable;
       typedef std::future<ListSecurityProfilesOutcome> ListSecurityProfilesOutcomeCallable;
       typedef std::future<ListSecurityProfilesForTargetOutcome> ListSecurityProfilesForTargetOutcomeCallable;
@@ -978,6 +1096,7 @@ namespace Aws
       typedef std::future<ListThingGroupsOutcome> ListThingGroupsOutcomeCallable;
       typedef std::future<ListThingGroupsForThingOutcome> ListThingGroupsForThingOutcomeCallable;
       typedef std::future<ListThingPrincipalsOutcome> ListThingPrincipalsOutcomeCallable;
+      typedef std::future<ListThingPrincipalsV2Outcome> ListThingPrincipalsV2OutcomeCallable;
       typedef std::future<ListThingRegistrationTaskReportsOutcome> ListThingRegistrationTaskReportsOutcomeCallable;
       typedef std::future<ListThingRegistrationTasksOutcome> ListThingRegistrationTasksOutcomeCallable;
       typedef std::future<ListThingTypesOutcome> ListThingTypesOutcomeCallable;
@@ -1020,6 +1139,7 @@ namespace Aws
       typedef std::future<UpdateCACertificateOutcome> UpdateCACertificateOutcomeCallable;
       typedef std::future<UpdateCertificateOutcome> UpdateCertificateOutcomeCallable;
       typedef std::future<UpdateCertificateProviderOutcome> UpdateCertificateProviderOutcomeCallable;
+      typedef std::future<UpdateCommandOutcome> UpdateCommandOutcomeCallable;
       typedef std::future<UpdateCustomMetricOutcome> UpdateCustomMetricOutcomeCallable;
       typedef std::future<UpdateDimensionOutcome> UpdateDimensionOutcomeCallable;
       typedef std::future<UpdateDomainConfigurationOutcome> UpdateDomainConfigurationOutcomeCallable;
@@ -1040,6 +1160,7 @@ namespace Aws
       typedef std::future<UpdateThingOutcome> UpdateThingOutcomeCallable;
       typedef std::future<UpdateThingGroupOutcome> UpdateThingGroupOutcomeCallable;
       typedef std::future<UpdateThingGroupsForThingOutcome> UpdateThingGroupsForThingOutcomeCallable;
+      typedef std::future<UpdateThingTypeOutcome> UpdateThingTypeOutcomeCallable;
       typedef std::future<UpdateTopicRuleDestinationOutcome> UpdateTopicRuleDestinationOutcomeCallable;
       typedef std::future<ValidateSecurityProfileBehaviorsOutcome> ValidateSecurityProfileBehaviorsOutcomeCallable;
       /* End of service model Outcome callable definitions */
@@ -1051,6 +1172,7 @@ namespace Aws
     typedef std::function<void(const IoTClient*, const Model::AcceptCertificateTransferRequest&, const Model::AcceptCertificateTransferOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > AcceptCertificateTransferResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::AddThingToBillingGroupRequest&, const Model::AddThingToBillingGroupOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > AddThingToBillingGroupResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::AddThingToThingGroupRequest&, const Model::AddThingToThingGroupOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > AddThingToThingGroupResponseReceivedHandler;
+    typedef std::function<void(const IoTClient*, const Model::AssociateSbomWithPackageVersionRequest&, const Model::AssociateSbomWithPackageVersionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > AssociateSbomWithPackageVersionResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::AssociateTargetsWithJobRequest&, const Model::AssociateTargetsWithJobOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > AssociateTargetsWithJobResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::AttachPolicyRequest&, const Model::AttachPolicyOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > AttachPolicyResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::AttachSecurityProfileRequest&, const Model::AttachSecurityProfileOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > AttachSecurityProfileResponseReceivedHandler;
@@ -1068,6 +1190,7 @@ namespace Aws
     typedef std::function<void(const IoTClient*, const Model::CreateBillingGroupRequest&, const Model::CreateBillingGroupOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateBillingGroupResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::CreateCertificateFromCsrRequest&, const Model::CreateCertificateFromCsrOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateCertificateFromCsrResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::CreateCertificateProviderRequest&, const Model::CreateCertificateProviderOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateCertificateProviderResponseReceivedHandler;
+    typedef std::function<void(const IoTClient*, const Model::CreateCommandRequest&, const Model::CreateCommandOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateCommandResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::CreateCustomMetricRequest&, const Model::CreateCustomMetricOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateCustomMetricResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::CreateDimensionRequest&, const Model::CreateDimensionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateDimensionResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::CreateDomainConfigurationRequest&, const Model::CreateDomainConfigurationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateDomainConfigurationResponseReceivedHandler;
@@ -1101,6 +1224,8 @@ namespace Aws
     typedef std::function<void(const IoTClient*, const Model::DeleteCACertificateRequest&, const Model::DeleteCACertificateOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteCACertificateResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::DeleteCertificateRequest&, const Model::DeleteCertificateOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteCertificateResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::DeleteCertificateProviderRequest&, const Model::DeleteCertificateProviderOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteCertificateProviderResponseReceivedHandler;
+    typedef std::function<void(const IoTClient*, const Model::DeleteCommandRequest&, const Model::DeleteCommandOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteCommandResponseReceivedHandler;
+    typedef std::function<void(const IoTClient*, const Model::DeleteCommandExecutionRequest&, const Model::DeleteCommandExecutionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteCommandExecutionResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::DeleteCustomMetricRequest&, const Model::DeleteCustomMetricOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteCustomMetricResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::DeleteDimensionRequest&, const Model::DeleteDimensionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteDimensionResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::DeleteDomainConfigurationRequest&, const Model::DeleteDomainConfigurationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteDomainConfigurationResponseReceivedHandler;
@@ -1167,10 +1292,13 @@ namespace Aws
     typedef std::function<void(const IoTClient*, const Model::DetachSecurityProfileRequest&, const Model::DetachSecurityProfileOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DetachSecurityProfileResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::DetachThingPrincipalRequest&, const Model::DetachThingPrincipalOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DetachThingPrincipalResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::DisableTopicRuleRequest&, const Model::DisableTopicRuleOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DisableTopicRuleResponseReceivedHandler;
+    typedef std::function<void(const IoTClient*, const Model::DisassociateSbomFromPackageVersionRequest&, const Model::DisassociateSbomFromPackageVersionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DisassociateSbomFromPackageVersionResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::EnableTopicRuleRequest&, const Model::EnableTopicRuleOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > EnableTopicRuleResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::GetBehaviorModelTrainingSummariesRequest&, const Model::GetBehaviorModelTrainingSummariesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetBehaviorModelTrainingSummariesResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::GetBucketsAggregationRequest&, const Model::GetBucketsAggregationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetBucketsAggregationResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::GetCardinalityRequest&, const Model::GetCardinalityOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetCardinalityResponseReceivedHandler;
+    typedef std::function<void(const IoTClient*, const Model::GetCommandRequest&, const Model::GetCommandOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetCommandResponseReceivedHandler;
+    typedef std::function<void(const IoTClient*, const Model::GetCommandExecutionRequest&, const Model::GetCommandExecutionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetCommandExecutionResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::GetEffectivePoliciesRequest&, const Model::GetEffectivePoliciesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetEffectivePoliciesResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::GetIndexingConfigurationRequest&, const Model::GetIndexingConfigurationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetIndexingConfigurationResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::GetJobDocumentRequest&, const Model::GetJobDocumentOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetJobDocumentResponseReceivedHandler;
@@ -1184,6 +1312,7 @@ namespace Aws
     typedef std::function<void(const IoTClient*, const Model::GetPolicyVersionRequest&, const Model::GetPolicyVersionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetPolicyVersionResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::GetRegistrationCodeRequest&, const Model::GetRegistrationCodeOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetRegistrationCodeResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::GetStatisticsRequest&, const Model::GetStatisticsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetStatisticsResponseReceivedHandler;
+    typedef std::function<void(const IoTClient*, const Model::GetThingConnectivityDataRequest&, const Model::GetThingConnectivityDataOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetThingConnectivityDataResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::GetTopicRuleRequest&, const Model::GetTopicRuleOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetTopicRuleResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::GetTopicRuleDestinationRequest&, const Model::GetTopicRuleDestinationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetTopicRuleDestinationResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::GetV2LoggingOptionsRequest&, const Model::GetV2LoggingOptionsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetV2LoggingOptionsResponseReceivedHandler;
@@ -1200,6 +1329,8 @@ namespace Aws
     typedef std::function<void(const IoTClient*, const Model::ListCertificateProvidersRequest&, const Model::ListCertificateProvidersOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListCertificateProvidersResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::ListCertificatesRequest&, const Model::ListCertificatesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListCertificatesResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::ListCertificatesByCARequest&, const Model::ListCertificatesByCAOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListCertificatesByCAResponseReceivedHandler;
+    typedef std::function<void(const IoTClient*, const Model::ListCommandExecutionsRequest&, const Model::ListCommandExecutionsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListCommandExecutionsResponseReceivedHandler;
+    typedef std::function<void(const IoTClient*, const Model::ListCommandsRequest&, const Model::ListCommandsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListCommandsResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::ListCustomMetricsRequest&, const Model::ListCustomMetricsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListCustomMetricsResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::ListDetectMitigationActionsExecutionsRequest&, const Model::ListDetectMitigationActionsExecutionsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListDetectMitigationActionsExecutionsResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::ListDetectMitigationActionsTasksRequest&, const Model::ListDetectMitigationActionsTasksOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListDetectMitigationActionsTasksResponseReceivedHandler;
@@ -1221,10 +1352,12 @@ namespace Aws
     typedef std::function<void(const IoTClient*, const Model::ListPoliciesRequest&, const Model::ListPoliciesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListPoliciesResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::ListPolicyVersionsRequest&, const Model::ListPolicyVersionsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListPolicyVersionsResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::ListPrincipalThingsRequest&, const Model::ListPrincipalThingsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListPrincipalThingsResponseReceivedHandler;
+    typedef std::function<void(const IoTClient*, const Model::ListPrincipalThingsV2Request&, const Model::ListPrincipalThingsV2Outcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListPrincipalThingsV2ResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::ListProvisioningTemplateVersionsRequest&, const Model::ListProvisioningTemplateVersionsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListProvisioningTemplateVersionsResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::ListProvisioningTemplatesRequest&, const Model::ListProvisioningTemplatesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListProvisioningTemplatesResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::ListRelatedResourcesForAuditFindingRequest&, const Model::ListRelatedResourcesForAuditFindingOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListRelatedResourcesForAuditFindingResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::ListRoleAliasesRequest&, const Model::ListRoleAliasesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListRoleAliasesResponseReceivedHandler;
+    typedef std::function<void(const IoTClient*, const Model::ListSbomValidationResultsRequest&, const Model::ListSbomValidationResultsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListSbomValidationResultsResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::ListScheduledAuditsRequest&, const Model::ListScheduledAuditsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListScheduledAuditsResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::ListSecurityProfilesRequest&, const Model::ListSecurityProfilesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListSecurityProfilesResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::ListSecurityProfilesForTargetRequest&, const Model::ListSecurityProfilesForTargetOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListSecurityProfilesForTargetResponseReceivedHandler;
@@ -1235,6 +1368,7 @@ namespace Aws
     typedef std::function<void(const IoTClient*, const Model::ListThingGroupsRequest&, const Model::ListThingGroupsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListThingGroupsResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::ListThingGroupsForThingRequest&, const Model::ListThingGroupsForThingOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListThingGroupsForThingResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::ListThingPrincipalsRequest&, const Model::ListThingPrincipalsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListThingPrincipalsResponseReceivedHandler;
+    typedef std::function<void(const IoTClient*, const Model::ListThingPrincipalsV2Request&, const Model::ListThingPrincipalsV2Outcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListThingPrincipalsV2ResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::ListThingRegistrationTaskReportsRequest&, const Model::ListThingRegistrationTaskReportsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListThingRegistrationTaskReportsResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::ListThingRegistrationTasksRequest&, const Model::ListThingRegistrationTasksOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListThingRegistrationTasksResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::ListThingTypesRequest&, const Model::ListThingTypesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListThingTypesResponseReceivedHandler;
@@ -1277,6 +1411,7 @@ namespace Aws
     typedef std::function<void(const IoTClient*, const Model::UpdateCACertificateRequest&, const Model::UpdateCACertificateOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > UpdateCACertificateResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::UpdateCertificateRequest&, const Model::UpdateCertificateOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > UpdateCertificateResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::UpdateCertificateProviderRequest&, const Model::UpdateCertificateProviderOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > UpdateCertificateProviderResponseReceivedHandler;
+    typedef std::function<void(const IoTClient*, const Model::UpdateCommandRequest&, const Model::UpdateCommandOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > UpdateCommandResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::UpdateCustomMetricRequest&, const Model::UpdateCustomMetricOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > UpdateCustomMetricResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::UpdateDimensionRequest&, const Model::UpdateDimensionOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > UpdateDimensionResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::UpdateDomainConfigurationRequest&, const Model::UpdateDomainConfigurationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > UpdateDomainConfigurationResponseReceivedHandler;
@@ -1297,6 +1432,7 @@ namespace Aws
     typedef std::function<void(const IoTClient*, const Model::UpdateThingRequest&, const Model::UpdateThingOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > UpdateThingResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::UpdateThingGroupRequest&, const Model::UpdateThingGroupOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > UpdateThingGroupResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::UpdateThingGroupsForThingRequest&, const Model::UpdateThingGroupsForThingOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > UpdateThingGroupsForThingResponseReceivedHandler;
+    typedef std::function<void(const IoTClient*, const Model::UpdateThingTypeRequest&, const Model::UpdateThingTypeOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > UpdateThingTypeResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::UpdateTopicRuleDestinationRequest&, const Model::UpdateTopicRuleDestinationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > UpdateTopicRuleDestinationResponseReceivedHandler;
     typedef std::function<void(const IoTClient*, const Model::ValidateSecurityProfileBehaviorsRequest&, const Model::ValidateSecurityProfileBehaviorsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ValidateSecurityProfileBehaviorsResponseReceivedHandler;
     /* End of service model async handlers definitions */

@@ -20,6 +20,8 @@ namespace Model
 
 InvocationInput::InvocationInput() : 
     m_actionGroupInvocationInputHasBeenSet(false),
+    m_agentCollaboratorInvocationInputHasBeenSet(false),
+    m_codeInterpreterInvocationInputHasBeenSet(false),
     m_invocationType(InvocationType::NOT_SET),
     m_invocationTypeHasBeenSet(false),
     m_knowledgeBaseLookupInputHasBeenSet(false),
@@ -27,12 +29,8 @@ InvocationInput::InvocationInput() :
 {
 }
 
-InvocationInput::InvocationInput(JsonView jsonValue) : 
-    m_actionGroupInvocationInputHasBeenSet(false),
-    m_invocationType(InvocationType::NOT_SET),
-    m_invocationTypeHasBeenSet(false),
-    m_knowledgeBaseLookupInputHasBeenSet(false),
-    m_traceIdHasBeenSet(false)
+InvocationInput::InvocationInput(JsonView jsonValue)
+  : InvocationInput()
 {
   *this = jsonValue;
 }
@@ -44,6 +42,20 @@ InvocationInput& InvocationInput::operator =(JsonView jsonValue)
     m_actionGroupInvocationInput = jsonValue.GetObject("actionGroupInvocationInput");
 
     m_actionGroupInvocationInputHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("agentCollaboratorInvocationInput"))
+  {
+    m_agentCollaboratorInvocationInput = jsonValue.GetObject("agentCollaboratorInvocationInput");
+
+    m_agentCollaboratorInvocationInputHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("codeInterpreterInvocationInput"))
+  {
+    m_codeInterpreterInvocationInput = jsonValue.GetObject("codeInterpreterInvocationInput");
+
+    m_codeInterpreterInvocationInputHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("invocationType"))
@@ -77,6 +89,18 @@ JsonValue InvocationInput::Jsonize() const
   if(m_actionGroupInvocationInputHasBeenSet)
   {
    payload.WithObject("actionGroupInvocationInput", m_actionGroupInvocationInput.Jsonize());
+
+  }
+
+  if(m_agentCollaboratorInvocationInputHasBeenSet)
+  {
+   payload.WithObject("agentCollaboratorInvocationInput", m_agentCollaboratorInvocationInput.Jsonize());
+
+  }
+
+  if(m_codeInterpreterInvocationInputHasBeenSet)
+  {
+   payload.WithObject("codeInterpreterInvocationInput", m_codeInterpreterInvocationInput.Jsonize());
 
   }
 

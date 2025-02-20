@@ -38,31 +38,14 @@ Backup::Backup() :
     m_sourceBackupRegionHasBeenSet(false),
     m_resourceType(ResourceType::NOT_SET),
     m_resourceTypeHasBeenSet(false),
-    m_volumeHasBeenSet(false)
+    m_volumeHasBeenSet(false),
+    m_sizeInBytes(0),
+    m_sizeInBytesHasBeenSet(false)
 {
 }
 
-Backup::Backup(JsonView jsonValue) : 
-    m_backupIdHasBeenSet(false),
-    m_lifecycle(BackupLifecycle::NOT_SET),
-    m_lifecycleHasBeenSet(false),
-    m_failureDetailsHasBeenSet(false),
-    m_type(BackupType::NOT_SET),
-    m_typeHasBeenSet(false),
-    m_progressPercent(0),
-    m_progressPercentHasBeenSet(false),
-    m_creationTimeHasBeenSet(false),
-    m_kmsKeyIdHasBeenSet(false),
-    m_resourceARNHasBeenSet(false),
-    m_tagsHasBeenSet(false),
-    m_fileSystemHasBeenSet(false),
-    m_directoryInformationHasBeenSet(false),
-    m_ownerIdHasBeenSet(false),
-    m_sourceBackupIdHasBeenSet(false),
-    m_sourceBackupRegionHasBeenSet(false),
-    m_resourceType(ResourceType::NOT_SET),
-    m_resourceTypeHasBeenSet(false),
-    m_volumeHasBeenSet(false)
+Backup::Backup(JsonView jsonValue)
+  : Backup()
 {
   *this = jsonValue;
 }
@@ -184,6 +167,13 @@ Backup& Backup::operator =(JsonView jsonValue)
     m_volumeHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("SizeInBytes"))
+  {
+    m_sizeInBytes = jsonValue.GetInt64("SizeInBytes");
+
+    m_sizeInBytesHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -285,6 +275,12 @@ JsonValue Backup::Jsonize() const
   if(m_volumeHasBeenSet)
   {
    payload.WithObject("Volume", m_volume.Jsonize());
+
+  }
+
+  if(m_sizeInBytesHasBeenSet)
+  {
+   payload.WithInt64("SizeInBytes", m_sizeInBytes);
 
   }
 

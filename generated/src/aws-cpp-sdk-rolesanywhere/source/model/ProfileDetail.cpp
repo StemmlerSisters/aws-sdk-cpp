@@ -19,6 +19,8 @@ namespace Model
 {
 
 ProfileDetail::ProfileDetail() : 
+    m_acceptRoleSessionName(false),
+    m_acceptRoleSessionNameHasBeenSet(false),
     m_attributeMappingsHasBeenSet(false),
     m_createdAtHasBeenSet(false),
     m_createdByHasBeenSet(false),
@@ -38,29 +40,21 @@ ProfileDetail::ProfileDetail() :
 {
 }
 
-ProfileDetail::ProfileDetail(JsonView jsonValue) : 
-    m_attributeMappingsHasBeenSet(false),
-    m_createdAtHasBeenSet(false),
-    m_createdByHasBeenSet(false),
-    m_durationSeconds(0),
-    m_durationSecondsHasBeenSet(false),
-    m_enabled(false),
-    m_enabledHasBeenSet(false),
-    m_managedPolicyArnsHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_profileArnHasBeenSet(false),
-    m_profileIdHasBeenSet(false),
-    m_requireInstanceProperties(false),
-    m_requireInstancePropertiesHasBeenSet(false),
-    m_roleArnsHasBeenSet(false),
-    m_sessionPolicyHasBeenSet(false),
-    m_updatedAtHasBeenSet(false)
+ProfileDetail::ProfileDetail(JsonView jsonValue)
+  : ProfileDetail()
 {
   *this = jsonValue;
 }
 
 ProfileDetail& ProfileDetail::operator =(JsonView jsonValue)
 {
+  if(jsonValue.ValueExists("acceptRoleSessionName"))
+  {
+    m_acceptRoleSessionName = jsonValue.GetBool("acceptRoleSessionName");
+
+    m_acceptRoleSessionNameHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("attributeMappings"))
   {
     Aws::Utils::Array<JsonView> attributeMappingsJsonList = jsonValue.GetArray("attributeMappings");
@@ -167,6 +161,12 @@ ProfileDetail& ProfileDetail::operator =(JsonView jsonValue)
 JsonValue ProfileDetail::Jsonize() const
 {
   JsonValue payload;
+
+  if(m_acceptRoleSessionNameHasBeenSet)
+  {
+   payload.WithBool("acceptRoleSessionName", m_acceptRoleSessionName);
+
+  }
 
   if(m_attributeMappingsHasBeenSet)
   {

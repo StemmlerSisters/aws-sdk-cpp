@@ -6,24 +6,36 @@
 #pragma once
 #include <aws/timestream-query/TimestreamQuery_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/timestream-query/TimestreamQueryServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/timestream-query/TimestreamQueryErrorMarshaller.h>
 
 namespace Aws
 {
 namespace TimestreamQuery
 {
+  AWS_TIMESTREAMQUERY_API extern const char SERVICE_NAME[];
   /**
    * <fullname>Amazon Timestream Query </fullname> <p/>
    */
-  class AWS_TIMESTREAMQUERY_API TimestreamQueryClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<TimestreamQueryClient>
+  class AWS_TIMESTREAMQUERY_API TimestreamQueryClient : smithy::client::AwsSmithyClientT<Aws::TimestreamQuery::SERVICE_NAME,
+      Aws::TimestreamQuery::TimestreamQueryClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      TimestreamQueryEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::TimestreamQueryErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<TimestreamQueryClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Timestream Query"; }
 
       typedef TimestreamQueryClientConfiguration ClientConfigurationType;
       typedef TimestreamQueryEndpointProvider EndpointProviderType;
@@ -170,13 +182,13 @@ namespace TimestreamQuery
          * href="http://docs.aws.amazon.com/goto/WebAPI/timestream-query-2018-11-01/DescribeAccountSettings">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeAccountSettingsOutcome DescribeAccountSettings(const Model::DescribeAccountSettingsRequest& request) const;
+        virtual Model::DescribeAccountSettingsOutcome DescribeAccountSettings(const Model::DescribeAccountSettingsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeAccountSettings that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeAccountSettingsRequestT = Model::DescribeAccountSettingsRequest>
-        Model::DescribeAccountSettingsOutcomeCallable DescribeAccountSettingsCallable(const DescribeAccountSettingsRequestT& request) const
+        Model::DescribeAccountSettingsOutcomeCallable DescribeAccountSettingsCallable(const DescribeAccountSettingsRequestT& request = {}) const
         {
             return SubmitCallable(&TimestreamQueryClient::DescribeAccountSettings, request);
         }
@@ -185,7 +197,7 @@ namespace TimestreamQuery
          * An Async wrapper for DescribeAccountSettings that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeAccountSettingsRequestT = Model::DescribeAccountSettingsRequest>
-        void DescribeAccountSettingsAsync(const DescribeAccountSettingsRequestT& request, const DescribeAccountSettingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeAccountSettingsAsync(const DescribeAccountSettingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeAccountSettingsRequestT& request = {}) const
         {
             return SubmitAsync(&TimestreamQueryClient::DescribeAccountSettings, request, handler, context);
         }
@@ -208,13 +220,13 @@ namespace TimestreamQuery
          * href="http://docs.aws.amazon.com/goto/WebAPI/timestream-query-2018-11-01/DescribeEndpoints">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeEndpointsOutcome DescribeEndpoints(const Model::DescribeEndpointsRequest& request) const;
+        virtual Model::DescribeEndpointsOutcome DescribeEndpoints(const Model::DescribeEndpointsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeEndpoints that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeEndpointsRequestT = Model::DescribeEndpointsRequest>
-        Model::DescribeEndpointsOutcomeCallable DescribeEndpointsCallable(const DescribeEndpointsRequestT& request) const
+        Model::DescribeEndpointsOutcomeCallable DescribeEndpointsCallable(const DescribeEndpointsRequestT& request = {}) const
         {
             return SubmitCallable(&TimestreamQueryClient::DescribeEndpoints, request);
         }
@@ -223,7 +235,7 @@ namespace TimestreamQuery
          * An Async wrapper for DescribeEndpoints that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeEndpointsRequestT = Model::DescribeEndpointsRequest>
-        void DescribeEndpointsAsync(const DescribeEndpointsRequestT& request, const DescribeEndpointsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeEndpointsAsync(const DescribeEndpointsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeEndpointsRequestT& request = {}) const
         {
             return SubmitAsync(&TimestreamQueryClient::DescribeEndpoints, request, handler, context);
         }
@@ -255,7 +267,13 @@ namespace TimestreamQuery
         }
 
         /**
-         * <p> You can use this API to run a scheduled query manually. </p><p><h3>See
+         * <p> You can use this API to run a scheduled query manually. </p> <p>If you
+         * enabled <code>QueryInsights</code>, this API also returns insights and metrics
+         * related to the query that you executed as part of an Amazon SNS notification.
+         * <code>QueryInsights</code> helps with performance tuning of your query. For more
+         * information about <code>QueryInsights</code>, see <a
+         * href="https://docs.aws.amazon.com/timestream/latest/developerguide/using-query-insights.html">Using
+         * query insights to optimize queries in Amazon Timestream</a>.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/timestream-query-2018-11-01/ExecuteScheduledQuery">AWS
          * API Reference</a></p>
@@ -287,13 +305,13 @@ namespace TimestreamQuery
          * href="http://docs.aws.amazon.com/goto/WebAPI/timestream-query-2018-11-01/ListScheduledQueries">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListScheduledQueriesOutcome ListScheduledQueries(const Model::ListScheduledQueriesRequest& request) const;
+        virtual Model::ListScheduledQueriesOutcome ListScheduledQueries(const Model::ListScheduledQueriesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListScheduledQueries that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListScheduledQueriesRequestT = Model::ListScheduledQueriesRequest>
-        Model::ListScheduledQueriesOutcomeCallable ListScheduledQueriesCallable(const ListScheduledQueriesRequestT& request) const
+        Model::ListScheduledQueriesOutcomeCallable ListScheduledQueriesCallable(const ListScheduledQueriesRequestT& request = {}) const
         {
             return SubmitCallable(&TimestreamQueryClient::ListScheduledQueries, request);
         }
@@ -302,7 +320,7 @@ namespace TimestreamQuery
          * An Async wrapper for ListScheduledQueries that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListScheduledQueriesRequestT = Model::ListScheduledQueriesRequest>
-        void ListScheduledQueriesAsync(const ListScheduledQueriesRequestT& request, const ListScheduledQueriesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListScheduledQueriesAsync(const ListScheduledQueriesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListScheduledQueriesRequestT& request = {}) const
         {
             return SubmitAsync(&TimestreamQueryClient::ListScheduledQueries, request, handler, context);
         }
@@ -362,9 +380,18 @@ namespace TimestreamQuery
 
         /**
          * <p> <code>Query</code> is a synchronous operation that enables you to run a
-         * query against your Amazon Timestream data. <code>Query</code> will time out
-         * after 60 seconds. You must update the default timeout in the SDK to support a
-         * timeout of 60 seconds. See the <a
+         * query against your Amazon Timestream data.</p> <p>If you enabled
+         * <code>QueryInsights</code>, this API also returns insights and metrics related
+         * to the query that you executed. <code>QueryInsights</code> helps with
+         * performance tuning of your query. For more information about
+         * <code>QueryInsights</code>, see <a
+         * href="https://docs.aws.amazon.com/timestream/latest/developerguide/using-query-insights.html">Using
+         * query insights to optimize queries in Amazon Timestream</a>.</p>  <p>The
+         * maximum number of <code>Query</code> API requests you're allowed to make with
+         * <code>QueryInsights</code> enabled is 1 query per second (QPS). If you exceed
+         * this query rate, it might result in throttling.</p>  <p>
+         * <code>Query</code> will time out after 60 seconds. You must update the default
+         * timeout in the SDK to support a timeout of 60 seconds. See the <a
          * href="https://docs.aws.amazon.com/timestream/latest/developerguide/code-samples.run-query.html">code
          * sample</a> for details. </p> <p>Your query request will fail in the following
          * cases:</p> <ul> <li> <p> If you submit a <code>Query</code> request with the
@@ -465,13 +492,13 @@ namespace TimestreamQuery
          * href="http://docs.aws.amazon.com/goto/WebAPI/timestream-query-2018-11-01/UpdateAccountSettings">AWS
          * API Reference</a></p>
          */
-        virtual Model::UpdateAccountSettingsOutcome UpdateAccountSettings(const Model::UpdateAccountSettingsRequest& request) const;
+        virtual Model::UpdateAccountSettingsOutcome UpdateAccountSettings(const Model::UpdateAccountSettingsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for UpdateAccountSettings that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename UpdateAccountSettingsRequestT = Model::UpdateAccountSettingsRequest>
-        Model::UpdateAccountSettingsOutcomeCallable UpdateAccountSettingsCallable(const UpdateAccountSettingsRequestT& request) const
+        Model::UpdateAccountSettingsOutcomeCallable UpdateAccountSettingsCallable(const UpdateAccountSettingsRequestT& request = {}) const
         {
             return SubmitCallable(&TimestreamQueryClient::UpdateAccountSettings, request);
         }
@@ -480,7 +507,7 @@ namespace TimestreamQuery
          * An Async wrapper for UpdateAccountSettings that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename UpdateAccountSettingsRequestT = Model::UpdateAccountSettingsRequest>
-        void UpdateAccountSettingsAsync(const UpdateAccountSettingsRequestT& request, const UpdateAccountSettingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void UpdateAccountSettingsAsync(const UpdateAccountSettingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const UpdateAccountSettingsRequestT& request = {}) const
         {
             return SubmitAsync(&TimestreamQueryClient::UpdateAccountSettings, request, handler, context);
         }
@@ -515,12 +542,13 @@ namespace TimestreamQuery
       std::shared_ptr<TimestreamQueryEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<TimestreamQueryClient>;
-      void init(const TimestreamQueryClientConfiguration& clientConfiguration);
 
+      void OptionallyUpdateDescribeEndpointsCache(Aws::Endpoint::AWSEndpoint& resolvedEndpoint,
+        const Aws::String& operationName,
+        const Aws::String& endpointKey,
+        const Aws::TimestreamQuery::Model::DescribeEndpointsRequest& endpointRequest,
+        bool enforceDiscovery) const;
       mutable Aws::Utils::ConcurrentCache<Aws::String, Aws::String> m_endpointsCache;
-      TimestreamQueryClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<TimestreamQueryEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace TimestreamQuery

@@ -35,18 +35,8 @@ ReservedCacheNodesOffering::ReservedCacheNodesOffering() :
 {
 }
 
-ReservedCacheNodesOffering::ReservedCacheNodesOffering(const XmlNode& xmlNode) : 
-    m_reservedCacheNodesOfferingIdHasBeenSet(false),
-    m_cacheNodeTypeHasBeenSet(false),
-    m_duration(0),
-    m_durationHasBeenSet(false),
-    m_fixedPrice(0.0),
-    m_fixedPriceHasBeenSet(false),
-    m_usagePrice(0.0),
-    m_usagePriceHasBeenSet(false),
-    m_productDescriptionHasBeenSet(false),
-    m_offeringTypeHasBeenSet(false),
-    m_recurringChargesHasBeenSet(false)
+ReservedCacheNodesOffering::ReservedCacheNodesOffering(const XmlNode& xmlNode)
+  : ReservedCacheNodesOffering()
 {
   *this = xmlNode;
 }
@@ -159,7 +149,7 @@ void ReservedCacheNodesOffering::OutputToStream(Aws::OStream& oStream, const cha
       for(auto& item : m_recurringCharges)
       {
         Aws::StringStream recurringChargesSs;
-        recurringChargesSs << location << index << locationValue << ".RecurringCharge." << recurringChargesIdx++;
+        recurringChargesSs << location << index << locationValue << ".RecurringCharges.RecurringCharge." << recurringChargesIdx++;
         item.OutputToStream(oStream, recurringChargesSs.str().c_str());
       }
   }

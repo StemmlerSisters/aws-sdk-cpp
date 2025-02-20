@@ -38,21 +38,8 @@ TenantDatabase::TenantDatabase() :
 {
 }
 
-TenantDatabase::TenantDatabase(const XmlNode& xmlNode) : 
-    m_tenantDatabaseCreateTimeHasBeenSet(false),
-    m_dBInstanceIdentifierHasBeenSet(false),
-    m_tenantDBNameHasBeenSet(false),
-    m_statusHasBeenSet(false),
-    m_masterUsernameHasBeenSet(false),
-    m_dbiResourceIdHasBeenSet(false),
-    m_tenantDatabaseResourceIdHasBeenSet(false),
-    m_tenantDatabaseARNHasBeenSet(false),
-    m_characterSetNameHasBeenSet(false),
-    m_ncharCharacterSetNameHasBeenSet(false),
-    m_deletionProtection(false),
-    m_deletionProtectionHasBeenSet(false),
-    m_pendingModifiedValuesHasBeenSet(false),
-    m_tagListHasBeenSet(false)
+TenantDatabase::TenantDatabase(const XmlNode& xmlNode)
+  : TenantDatabase()
 {
   *this = xmlNode;
 }
@@ -222,7 +209,7 @@ void TenantDatabase::OutputToStream(Aws::OStream& oStream, const char* location,
       for(auto& item : m_tagList)
       {
         Aws::StringStream tagListSs;
-        tagListSs << location << index << locationValue << ".Tag." << tagListIdx++;
+        tagListSs << location << index << locationValue << ".TagList.Tag." << tagListIdx++;
         item.OutputToStream(oStream, tagListSs.str().c_str());
       }
   }

@@ -6,16 +6,19 @@
 #pragma once
 #include <aws/inspector/Inspector_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/inspector/InspectorServiceClientModel.h>
-#include <aws/inspector/model/DescribeCrossAccountAccessRoleRequest.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/inspector/InspectorErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Inspector
 {
+  AWS_INSPECTOR_API extern const char SERVICE_NAME[];
   /**
    * <fullname>Amazon Inspector</fullname> <p>Amazon Inspector enables you to analyze
    * the behavior of your AWS resources and to identify potential security issues.
@@ -23,12 +26,20 @@ namespace Inspector
    * href="https://docs.aws.amazon.com/inspector/latest/userguide/inspector_introduction.html">
    * Amazon Inspector User Guide</a>.</p>
    */
-  class AWS_INSPECTOR_API InspectorClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<InspectorClient>
+  class AWS_INSPECTOR_API InspectorClient : smithy::client::AwsSmithyClientT<Aws::Inspector::SERVICE_NAME,
+      Aws::Inspector::InspectorClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      InspectorEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::InspectorErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<InspectorClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Inspector"; }
 
       typedef InspectorClientConfiguration ClientConfigurationType;
       typedef InspectorEndpointProvider EndpointProviderType;
@@ -628,13 +639,13 @@ namespace Inspector
          * href="http://docs.aws.amazon.com/goto/WebAPI/inspector-2016-02-16/ListAssessmentRuns">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAssessmentRunsOutcome ListAssessmentRuns(const Model::ListAssessmentRunsRequest& request) const;
+        virtual Model::ListAssessmentRunsOutcome ListAssessmentRuns(const Model::ListAssessmentRunsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAssessmentRuns that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAssessmentRunsRequestT = Model::ListAssessmentRunsRequest>
-        Model::ListAssessmentRunsOutcomeCallable ListAssessmentRunsCallable(const ListAssessmentRunsRequestT& request) const
+        Model::ListAssessmentRunsOutcomeCallable ListAssessmentRunsCallable(const ListAssessmentRunsRequestT& request = {}) const
         {
             return SubmitCallable(&InspectorClient::ListAssessmentRuns, request);
         }
@@ -643,7 +654,7 @@ namespace Inspector
          * An Async wrapper for ListAssessmentRuns that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAssessmentRunsRequestT = Model::ListAssessmentRunsRequest>
-        void ListAssessmentRunsAsync(const ListAssessmentRunsRequestT& request, const ListAssessmentRunsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAssessmentRunsAsync(const ListAssessmentRunsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAssessmentRunsRequestT& request = {}) const
         {
             return SubmitAsync(&InspectorClient::ListAssessmentRuns, request, handler, context);
         }
@@ -656,13 +667,13 @@ namespace Inspector
          * href="http://docs.aws.amazon.com/goto/WebAPI/inspector-2016-02-16/ListAssessmentTargets">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAssessmentTargetsOutcome ListAssessmentTargets(const Model::ListAssessmentTargetsRequest& request) const;
+        virtual Model::ListAssessmentTargetsOutcome ListAssessmentTargets(const Model::ListAssessmentTargetsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAssessmentTargets that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAssessmentTargetsRequestT = Model::ListAssessmentTargetsRequest>
-        Model::ListAssessmentTargetsOutcomeCallable ListAssessmentTargetsCallable(const ListAssessmentTargetsRequestT& request) const
+        Model::ListAssessmentTargetsOutcomeCallable ListAssessmentTargetsCallable(const ListAssessmentTargetsRequestT& request = {}) const
         {
             return SubmitCallable(&InspectorClient::ListAssessmentTargets, request);
         }
@@ -671,7 +682,7 @@ namespace Inspector
          * An Async wrapper for ListAssessmentTargets that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAssessmentTargetsRequestT = Model::ListAssessmentTargetsRequest>
-        void ListAssessmentTargetsAsync(const ListAssessmentTargetsRequestT& request, const ListAssessmentTargetsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAssessmentTargetsAsync(const ListAssessmentTargetsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAssessmentTargetsRequestT& request = {}) const
         {
             return SubmitAsync(&InspectorClient::ListAssessmentTargets, request, handler, context);
         }
@@ -683,13 +694,13 @@ namespace Inspector
          * href="http://docs.aws.amazon.com/goto/WebAPI/inspector-2016-02-16/ListAssessmentTemplates">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAssessmentTemplatesOutcome ListAssessmentTemplates(const Model::ListAssessmentTemplatesRequest& request) const;
+        virtual Model::ListAssessmentTemplatesOutcome ListAssessmentTemplates(const Model::ListAssessmentTemplatesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAssessmentTemplates that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAssessmentTemplatesRequestT = Model::ListAssessmentTemplatesRequest>
-        Model::ListAssessmentTemplatesOutcomeCallable ListAssessmentTemplatesCallable(const ListAssessmentTemplatesRequestT& request) const
+        Model::ListAssessmentTemplatesOutcomeCallable ListAssessmentTemplatesCallable(const ListAssessmentTemplatesRequestT& request = {}) const
         {
             return SubmitCallable(&InspectorClient::ListAssessmentTemplates, request);
         }
@@ -698,7 +709,7 @@ namespace Inspector
          * An Async wrapper for ListAssessmentTemplates that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAssessmentTemplatesRequestT = Model::ListAssessmentTemplatesRequest>
-        void ListAssessmentTemplatesAsync(const ListAssessmentTemplatesRequestT& request, const ListAssessmentTemplatesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAssessmentTemplatesAsync(const ListAssessmentTemplatesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAssessmentTemplatesRequestT& request = {}) const
         {
             return SubmitAsync(&InspectorClient::ListAssessmentTemplates, request, handler, context);
         }
@@ -711,13 +722,13 @@ namespace Inspector
          * href="http://docs.aws.amazon.com/goto/WebAPI/inspector-2016-02-16/ListEventSubscriptions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListEventSubscriptionsOutcome ListEventSubscriptions(const Model::ListEventSubscriptionsRequest& request) const;
+        virtual Model::ListEventSubscriptionsOutcome ListEventSubscriptions(const Model::ListEventSubscriptionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListEventSubscriptions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListEventSubscriptionsRequestT = Model::ListEventSubscriptionsRequest>
-        Model::ListEventSubscriptionsOutcomeCallable ListEventSubscriptionsCallable(const ListEventSubscriptionsRequestT& request) const
+        Model::ListEventSubscriptionsOutcomeCallable ListEventSubscriptionsCallable(const ListEventSubscriptionsRequestT& request = {}) const
         {
             return SubmitCallable(&InspectorClient::ListEventSubscriptions, request);
         }
@@ -726,7 +737,7 @@ namespace Inspector
          * An Async wrapper for ListEventSubscriptions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListEventSubscriptionsRequestT = Model::ListEventSubscriptionsRequest>
-        void ListEventSubscriptionsAsync(const ListEventSubscriptionsRequestT& request, const ListEventSubscriptionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListEventSubscriptionsAsync(const ListEventSubscriptionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListEventSubscriptionsRequestT& request = {}) const
         {
             return SubmitAsync(&InspectorClient::ListEventSubscriptions, request, handler, context);
         }
@@ -763,13 +774,13 @@ namespace Inspector
          * href="http://docs.aws.amazon.com/goto/WebAPI/inspector-2016-02-16/ListFindings">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListFindingsOutcome ListFindings(const Model::ListFindingsRequest& request) const;
+        virtual Model::ListFindingsOutcome ListFindings(const Model::ListFindingsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListFindings that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListFindingsRequestT = Model::ListFindingsRequest>
-        Model::ListFindingsOutcomeCallable ListFindingsCallable(const ListFindingsRequestT& request) const
+        Model::ListFindingsOutcomeCallable ListFindingsCallable(const ListFindingsRequestT& request = {}) const
         {
             return SubmitCallable(&InspectorClient::ListFindings, request);
         }
@@ -778,7 +789,7 @@ namespace Inspector
          * An Async wrapper for ListFindings that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListFindingsRequestT = Model::ListFindingsRequest>
-        void ListFindingsAsync(const ListFindingsRequestT& request, const ListFindingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListFindingsAsync(const ListFindingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListFindingsRequestT& request = {}) const
         {
             return SubmitAsync(&InspectorClient::ListFindings, request, handler, context);
         }
@@ -789,13 +800,13 @@ namespace Inspector
          * href="http://docs.aws.amazon.com/goto/WebAPI/inspector-2016-02-16/ListRulesPackages">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListRulesPackagesOutcome ListRulesPackages(const Model::ListRulesPackagesRequest& request) const;
+        virtual Model::ListRulesPackagesOutcome ListRulesPackages(const Model::ListRulesPackagesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListRulesPackages that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListRulesPackagesRequestT = Model::ListRulesPackagesRequest>
-        Model::ListRulesPackagesOutcomeCallable ListRulesPackagesCallable(const ListRulesPackagesRequestT& request) const
+        Model::ListRulesPackagesOutcomeCallable ListRulesPackagesCallable(const ListRulesPackagesRequestT& request = {}) const
         {
             return SubmitCallable(&InspectorClient::ListRulesPackages, request);
         }
@@ -804,7 +815,7 @@ namespace Inspector
          * An Async wrapper for ListRulesPackages that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListRulesPackagesRequestT = Model::ListRulesPackagesRequest>
-        void ListRulesPackagesAsync(const ListRulesPackagesRequestT& request, const ListRulesPackagesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListRulesPackagesAsync(const ListRulesPackagesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListRulesPackagesRequestT& request = {}) const
         {
             return SubmitAsync(&InspectorClient::ListRulesPackages, request, handler, context);
         }
@@ -1080,11 +1091,7 @@ namespace Inspector
       std::shared_ptr<InspectorEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<InspectorClient>;
-      void init(const InspectorClientConfiguration& clientConfiguration);
 
-      InspectorClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<InspectorEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Inspector

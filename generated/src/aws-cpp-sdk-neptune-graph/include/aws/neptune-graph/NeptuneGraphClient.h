@@ -6,27 +6,39 @@
 #pragma once
 #include <aws/neptune-graph/NeptuneGraph_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/neptune-graph/NeptuneGraphServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/neptune-graph/NeptuneGraphErrorMarshaller.h>
 
 namespace Aws
 {
 namespace NeptuneGraph
 {
+  AWS_NEPTUNEGRAPH_API extern const char SERVICE_NAME[];
   /**
    * <p>Neptune Analytics is a new analytics database engine for Amazon Neptune that
    * helps customers get to insights faster by quickly processing large amounts of
    * graph data, invoking popular graph analytic algorithms in low-latency queries,
    * and getting analytics results in seconds.</p>
    */
-  class AWS_NEPTUNEGRAPH_API NeptuneGraphClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<NeptuneGraphClient>
+  class AWS_NEPTUNEGRAPH_API NeptuneGraphClient : smithy::client::AwsSmithyClientT<Aws::NeptuneGraph::SERVICE_NAME,
+      Aws::NeptuneGraph::NeptuneGraphClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      NeptuneGraphEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::NeptuneGraphErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<NeptuneGraphClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Neptune Graph"; }
 
       typedef NeptuneGraphClientConfiguration ClientConfigurationType;
       typedef NeptuneGraphEndpointProvider EndpointProviderType;
@@ -78,6 +90,31 @@ namespace NeptuneGraph
 
         /* End of legacy constructors due deprecation */
         virtual ~NeptuneGraphClient();
+
+        /**
+         * <p>Cancel the specified export task.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/neptune-graph-2023-11-29/CancelExportTask">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CancelExportTaskOutcome CancelExportTask(const Model::CancelExportTaskRequest& request) const;
+
+        /**
+         * A Callable wrapper for CancelExportTask that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CancelExportTaskRequestT = Model::CancelExportTaskRequest>
+        Model::CancelExportTaskOutcomeCallable CancelExportTaskCallable(const CancelExportTaskRequestT& request) const
+        {
+            return SubmitCallable(&NeptuneGraphClient::CancelExportTask, request);
+        }
+
+        /**
+         * An Async wrapper for CancelExportTask that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CancelExportTaskRequestT = Model::CancelExportTaskRequest>
+        void CancelExportTaskAsync(const CancelExportTaskRequestT& request, const CancelExportTaskResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&NeptuneGraphClient::CancelExportTask, request, handler, context);
+        }
 
         /**
          * <p>Deletes the specified import task.</p><p><h3>See Also:</h3>   <a
@@ -346,6 +383,31 @@ namespace NeptuneGraph
         }
 
         /**
+         * <p>Retrieves a specified export task.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/neptune-graph-2023-11-29/GetExportTask">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetExportTaskOutcome GetExportTask(const Model::GetExportTaskRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetExportTask that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetExportTaskRequestT = Model::GetExportTaskRequest>
+        Model::GetExportTaskOutcomeCallable GetExportTaskCallable(const GetExportTaskRequestT& request) const
+        {
+            return SubmitCallable(&NeptuneGraphClient::GetExportTask, request);
+        }
+
+        /**
+         * An Async wrapper for GetExportTask that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetExportTaskRequestT = Model::GetExportTaskRequest>
+        void GetExportTaskAsync(const GetExportTaskRequestT& request, const GetExportTaskResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&NeptuneGraphClient::GetExportTask, request, handler, context);
+        }
+
+        /**
          * <p>Gets information about a specified graph.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/neptune-graph-2023-11-29/GetGraph">AWS
          * API Reference</a></p>
@@ -500,18 +562,43 @@ namespace NeptuneGraph
         }
 
         /**
+         * <p>Retrieves a list of export tasks.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/neptune-graph-2023-11-29/ListExportTasks">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListExportTasksOutcome ListExportTasks(const Model::ListExportTasksRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for ListExportTasks that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListExportTasksRequestT = Model::ListExportTasksRequest>
+        Model::ListExportTasksOutcomeCallable ListExportTasksCallable(const ListExportTasksRequestT& request = {}) const
+        {
+            return SubmitCallable(&NeptuneGraphClient::ListExportTasks, request);
+        }
+
+        /**
+         * An Async wrapper for ListExportTasks that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListExportTasksRequestT = Model::ListExportTasksRequest>
+        void ListExportTasksAsync(const ListExportTasksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListExportTasksRequestT& request = {}) const
+        {
+            return SubmitAsync(&NeptuneGraphClient::ListExportTasks, request, handler, context);
+        }
+
+        /**
          * <p>Lists available snapshots of a specified Neptune Analytics
          * graph.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/neptune-graph-2023-11-29/ListGraphSnapshots">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListGraphSnapshotsOutcome ListGraphSnapshots(const Model::ListGraphSnapshotsRequest& request) const;
+        virtual Model::ListGraphSnapshotsOutcome ListGraphSnapshots(const Model::ListGraphSnapshotsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListGraphSnapshots that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListGraphSnapshotsRequestT = Model::ListGraphSnapshotsRequest>
-        Model::ListGraphSnapshotsOutcomeCallable ListGraphSnapshotsCallable(const ListGraphSnapshotsRequestT& request) const
+        Model::ListGraphSnapshotsOutcomeCallable ListGraphSnapshotsCallable(const ListGraphSnapshotsRequestT& request = {}) const
         {
             return SubmitCallable(&NeptuneGraphClient::ListGraphSnapshots, request);
         }
@@ -520,7 +607,7 @@ namespace NeptuneGraph
          * An Async wrapper for ListGraphSnapshots that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListGraphSnapshotsRequestT = Model::ListGraphSnapshotsRequest>
-        void ListGraphSnapshotsAsync(const ListGraphSnapshotsRequestT& request, const ListGraphSnapshotsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListGraphSnapshotsAsync(const ListGraphSnapshotsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListGraphSnapshotsRequestT& request = {}) const
         {
             return SubmitAsync(&NeptuneGraphClient::ListGraphSnapshots, request, handler, context);
         }
@@ -530,13 +617,13 @@ namespace NeptuneGraph
          * href="http://docs.aws.amazon.com/goto/WebAPI/neptune-graph-2023-11-29/ListGraphs">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListGraphsOutcome ListGraphs(const Model::ListGraphsRequest& request) const;
+        virtual Model::ListGraphsOutcome ListGraphs(const Model::ListGraphsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListGraphs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListGraphsRequestT = Model::ListGraphsRequest>
-        Model::ListGraphsOutcomeCallable ListGraphsCallable(const ListGraphsRequestT& request) const
+        Model::ListGraphsOutcomeCallable ListGraphsCallable(const ListGraphsRequestT& request = {}) const
         {
             return SubmitCallable(&NeptuneGraphClient::ListGraphs, request);
         }
@@ -545,7 +632,7 @@ namespace NeptuneGraph
          * An Async wrapper for ListGraphs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListGraphsRequestT = Model::ListGraphsRequest>
-        void ListGraphsAsync(const ListGraphsRequestT& request, const ListGraphsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListGraphsAsync(const ListGraphsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListGraphsRequestT& request = {}) const
         {
             return SubmitAsync(&NeptuneGraphClient::ListGraphs, request, handler, context);
         }
@@ -555,13 +642,13 @@ namespace NeptuneGraph
          * href="http://docs.aws.amazon.com/goto/WebAPI/neptune-graph-2023-11-29/ListImportTasks">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListImportTasksOutcome ListImportTasks(const Model::ListImportTasksRequest& request) const;
+        virtual Model::ListImportTasksOutcome ListImportTasks(const Model::ListImportTasksRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListImportTasks that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListImportTasksRequestT = Model::ListImportTasksRequest>
-        Model::ListImportTasksOutcomeCallable ListImportTasksCallable(const ListImportTasksRequestT& request) const
+        Model::ListImportTasksOutcomeCallable ListImportTasksCallable(const ListImportTasksRequestT& request = {}) const
         {
             return SubmitCallable(&NeptuneGraphClient::ListImportTasks, request);
         }
@@ -570,7 +657,7 @@ namespace NeptuneGraph
          * An Async wrapper for ListImportTasks that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListImportTasksRequestT = Model::ListImportTasksRequest>
-        void ListImportTasksAsync(const ListImportTasksRequestT& request, const ListImportTasksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListImportTasksAsync(const ListImportTasksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListImportTasksRequestT& request = {}) const
         {
             return SubmitAsync(&NeptuneGraphClient::ListImportTasks, request, handler, context);
         }
@@ -704,6 +791,32 @@ namespace NeptuneGraph
         }
 
         /**
+         * <p>Export data from an existing Neptune Analytics graph to Amazon S3. The graph
+         * state should be <code>AVAILABLE</code>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/neptune-graph-2023-11-29/StartExportTask">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::StartExportTaskOutcome StartExportTask(const Model::StartExportTaskRequest& request) const;
+
+        /**
+         * A Callable wrapper for StartExportTask that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename StartExportTaskRequestT = Model::StartExportTaskRequest>
+        Model::StartExportTaskOutcomeCallable StartExportTaskCallable(const StartExportTaskRequestT& request) const
+        {
+            return SubmitCallable(&NeptuneGraphClient::StartExportTask, request);
+        }
+
+        /**
+         * An Async wrapper for StartExportTask that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename StartExportTaskRequestT = Model::StartExportTaskRequest>
+        void StartExportTaskAsync(const StartExportTaskRequestT& request, const StartExportTaskResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&NeptuneGraphClient::StartExportTask, request, handler, context);
+        }
+
+        /**
          * <p>Import data into existing Neptune Analytics graph from Amazon Simple Storage
          * Service (S3). The graph needs to be empty and in the AVAILABLE
          * state.</p><p><h3>See Also:</h3>   <a
@@ -812,11 +925,7 @@ namespace NeptuneGraph
       std::shared_ptr<NeptuneGraphEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<NeptuneGraphClient>;
-      void init(const NeptuneGraphClientConfiguration& clientConfiguration);
 
-      NeptuneGraphClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<NeptuneGraphEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace NeptuneGraph

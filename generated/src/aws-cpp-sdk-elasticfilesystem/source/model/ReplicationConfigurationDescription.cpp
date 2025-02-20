@@ -26,18 +26,13 @@ ReplicationConfigurationDescription::ReplicationConfigurationDescription() :
     m_originalSourceFileSystemArnHasBeenSet(false),
     m_creationTimeHasBeenSet(false),
     m_destinationsHasBeenSet(false),
+    m_sourceFileSystemOwnerIdHasBeenSet(false),
     m_requestIdHasBeenSet(false)
 {
 }
 
-ReplicationConfigurationDescription::ReplicationConfigurationDescription(JsonView jsonValue) : 
-    m_sourceFileSystemIdHasBeenSet(false),
-    m_sourceFileSystemRegionHasBeenSet(false),
-    m_sourceFileSystemArnHasBeenSet(false),
-    m_originalSourceFileSystemArnHasBeenSet(false),
-    m_creationTimeHasBeenSet(false),
-    m_destinationsHasBeenSet(false),
-    m_requestIdHasBeenSet(false)
+ReplicationConfigurationDescription::ReplicationConfigurationDescription(JsonView jsonValue)
+  : ReplicationConfigurationDescription()
 {
   *this = jsonValue;
 }
@@ -89,6 +84,13 @@ ReplicationConfigurationDescription& ReplicationConfigurationDescription::operat
     m_destinationsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("SourceFileSystemOwnerId"))
+  {
+    m_sourceFileSystemOwnerId = jsonValue.GetString("SourceFileSystemOwnerId");
+
+    m_sourceFileSystemOwnerIdHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -133,6 +135,12 @@ JsonValue ReplicationConfigurationDescription::Jsonize() const
      destinationsJsonList[destinationsIndex].AsObject(m_destinations[destinationsIndex].Jsonize());
    }
    payload.WithArray("Destinations", std::move(destinationsJsonList));
+
+  }
+
+  if(m_sourceFileSystemOwnerIdHasBeenSet)
+  {
+   payload.WithString("SourceFileSystemOwnerId", m_sourceFileSystemOwnerId);
 
   }
 

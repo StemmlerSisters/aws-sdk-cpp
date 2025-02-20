@@ -36,29 +36,13 @@ OpenZFSFileSystemConfiguration::OpenZFSFileSystemConfiguration() :
     m_preferredSubnetIdHasBeenSet(false),
     m_endpointIpAddressRangeHasBeenSet(false),
     m_routeTableIdsHasBeenSet(false),
-    m_endpointIpAddressHasBeenSet(false)
+    m_endpointIpAddressHasBeenSet(false),
+    m_readCacheConfigurationHasBeenSet(false)
 {
 }
 
-OpenZFSFileSystemConfiguration::OpenZFSFileSystemConfiguration(JsonView jsonValue) : 
-    m_automaticBackupRetentionDays(0),
-    m_automaticBackupRetentionDaysHasBeenSet(false),
-    m_copyTagsToBackups(false),
-    m_copyTagsToBackupsHasBeenSet(false),
-    m_copyTagsToVolumes(false),
-    m_copyTagsToVolumesHasBeenSet(false),
-    m_dailyAutomaticBackupStartTimeHasBeenSet(false),
-    m_deploymentType(OpenZFSDeploymentType::NOT_SET),
-    m_deploymentTypeHasBeenSet(false),
-    m_throughputCapacity(0),
-    m_throughputCapacityHasBeenSet(false),
-    m_weeklyMaintenanceStartTimeHasBeenSet(false),
-    m_diskIopsConfigurationHasBeenSet(false),
-    m_rootVolumeIdHasBeenSet(false),
-    m_preferredSubnetIdHasBeenSet(false),
-    m_endpointIpAddressRangeHasBeenSet(false),
-    m_routeTableIdsHasBeenSet(false),
-    m_endpointIpAddressHasBeenSet(false)
+OpenZFSFileSystemConfiguration::OpenZFSFileSystemConfiguration(JsonView jsonValue)
+  : OpenZFSFileSystemConfiguration()
 {
   *this = jsonValue;
 }
@@ -159,6 +143,13 @@ OpenZFSFileSystemConfiguration& OpenZFSFileSystemConfiguration::operator =(JsonV
     m_endpointIpAddressHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("ReadCacheConfiguration"))
+  {
+    m_readCacheConfiguration = jsonValue.GetObject("ReadCacheConfiguration");
+
+    m_readCacheConfigurationHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -245,6 +236,12 @@ JsonValue OpenZFSFileSystemConfiguration::Jsonize() const
   if(m_endpointIpAddressHasBeenSet)
   {
    payload.WithString("EndpointIpAddress", m_endpointIpAddress);
+
+  }
+
+  if(m_readCacheConfigurationHasBeenSet)
+  {
+   payload.WithObject("ReadCacheConfiguration", m_readCacheConfiguration.Jsonize());
 
   }
 

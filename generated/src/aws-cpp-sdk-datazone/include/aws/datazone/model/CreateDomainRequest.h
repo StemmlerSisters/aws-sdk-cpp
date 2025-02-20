@@ -7,6 +7,7 @@
 #include <aws/datazone/DataZone_EXPORTS.h>
 #include <aws/datazone/DataZoneRequest.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
+#include <aws/datazone/model/DomainVersion.h>
 #include <aws/datazone/model/SingleSignOn.h>
 #include <aws/core/utils/memory/stl/AWSMap.h>
 #include <utility>
@@ -35,347 +36,137 @@ namespace Model
     AWS_DATAZONE_API Aws::String SerializePayload() const override;
 
 
+    ///@{
     /**
      * <p>A unique, case-sensitive identifier that is provided to ensure the
      * idempotency of the request.</p>
      */
     inline const Aws::String& GetClientToken() const{ return m_clientToken; }
-
-    /**
-     * <p>A unique, case-sensitive identifier that is provided to ensure the
-     * idempotency of the request.</p>
-     */
     inline bool ClientTokenHasBeenSet() const { return m_clientTokenHasBeenSet; }
-
-    /**
-     * <p>A unique, case-sensitive identifier that is provided to ensure the
-     * idempotency of the request.</p>
-     */
     inline void SetClientToken(const Aws::String& value) { m_clientTokenHasBeenSet = true; m_clientToken = value; }
-
-    /**
-     * <p>A unique, case-sensitive identifier that is provided to ensure the
-     * idempotency of the request.</p>
-     */
     inline void SetClientToken(Aws::String&& value) { m_clientTokenHasBeenSet = true; m_clientToken = std::move(value); }
-
-    /**
-     * <p>A unique, case-sensitive identifier that is provided to ensure the
-     * idempotency of the request.</p>
-     */
     inline void SetClientToken(const char* value) { m_clientTokenHasBeenSet = true; m_clientToken.assign(value); }
-
-    /**
-     * <p>A unique, case-sensitive identifier that is provided to ensure the
-     * idempotency of the request.</p>
-     */
     inline CreateDomainRequest& WithClientToken(const Aws::String& value) { SetClientToken(value); return *this;}
-
-    /**
-     * <p>A unique, case-sensitive identifier that is provided to ensure the
-     * idempotency of the request.</p>
-     */
     inline CreateDomainRequest& WithClientToken(Aws::String&& value) { SetClientToken(std::move(value)); return *this;}
-
-    /**
-     * <p>A unique, case-sensitive identifier that is provided to ensure the
-     * idempotency of the request.</p>
-     */
     inline CreateDomainRequest& WithClientToken(const char* value) { SetClientToken(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The description of the Amazon DataZone domain.</p>
      */
     inline const Aws::String& GetDescription() const{ return m_description; }
-
-    /**
-     * <p>The description of the Amazon DataZone domain.</p>
-     */
     inline bool DescriptionHasBeenSet() const { return m_descriptionHasBeenSet; }
-
-    /**
-     * <p>The description of the Amazon DataZone domain.</p>
-     */
     inline void SetDescription(const Aws::String& value) { m_descriptionHasBeenSet = true; m_description = value; }
-
-    /**
-     * <p>The description of the Amazon DataZone domain.</p>
-     */
     inline void SetDescription(Aws::String&& value) { m_descriptionHasBeenSet = true; m_description = std::move(value); }
-
-    /**
-     * <p>The description of the Amazon DataZone domain.</p>
-     */
     inline void SetDescription(const char* value) { m_descriptionHasBeenSet = true; m_description.assign(value); }
-
-    /**
-     * <p>The description of the Amazon DataZone domain.</p>
-     */
     inline CreateDomainRequest& WithDescription(const Aws::String& value) { SetDescription(value); return *this;}
-
-    /**
-     * <p>The description of the Amazon DataZone domain.</p>
-     */
     inline CreateDomainRequest& WithDescription(Aws::String&& value) { SetDescription(std::move(value)); return *this;}
-
-    /**
-     * <p>The description of the Amazon DataZone domain.</p>
-     */
     inline CreateDomainRequest& WithDescription(const char* value) { SetDescription(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The domain execution role that is created when an Amazon DataZone domain is
      * created. The domain execution role is created in the Amazon Web Services account
      * that houses the Amazon DataZone domain.</p>
      */
     inline const Aws::String& GetDomainExecutionRole() const{ return m_domainExecutionRole; }
-
-    /**
-     * <p>The domain execution role that is created when an Amazon DataZone domain is
-     * created. The domain execution role is created in the Amazon Web Services account
-     * that houses the Amazon DataZone domain.</p>
-     */
     inline bool DomainExecutionRoleHasBeenSet() const { return m_domainExecutionRoleHasBeenSet; }
-
-    /**
-     * <p>The domain execution role that is created when an Amazon DataZone domain is
-     * created. The domain execution role is created in the Amazon Web Services account
-     * that houses the Amazon DataZone domain.</p>
-     */
     inline void SetDomainExecutionRole(const Aws::String& value) { m_domainExecutionRoleHasBeenSet = true; m_domainExecutionRole = value; }
-
-    /**
-     * <p>The domain execution role that is created when an Amazon DataZone domain is
-     * created. The domain execution role is created in the Amazon Web Services account
-     * that houses the Amazon DataZone domain.</p>
-     */
     inline void SetDomainExecutionRole(Aws::String&& value) { m_domainExecutionRoleHasBeenSet = true; m_domainExecutionRole = std::move(value); }
-
-    /**
-     * <p>The domain execution role that is created when an Amazon DataZone domain is
-     * created. The domain execution role is created in the Amazon Web Services account
-     * that houses the Amazon DataZone domain.</p>
-     */
     inline void SetDomainExecutionRole(const char* value) { m_domainExecutionRoleHasBeenSet = true; m_domainExecutionRole.assign(value); }
-
-    /**
-     * <p>The domain execution role that is created when an Amazon DataZone domain is
-     * created. The domain execution role is created in the Amazon Web Services account
-     * that houses the Amazon DataZone domain.</p>
-     */
     inline CreateDomainRequest& WithDomainExecutionRole(const Aws::String& value) { SetDomainExecutionRole(value); return *this;}
-
-    /**
-     * <p>The domain execution role that is created when an Amazon DataZone domain is
-     * created. The domain execution role is created in the Amazon Web Services account
-     * that houses the Amazon DataZone domain.</p>
-     */
     inline CreateDomainRequest& WithDomainExecutionRole(Aws::String&& value) { SetDomainExecutionRole(std::move(value)); return *this;}
-
-    /**
-     * <p>The domain execution role that is created when an Amazon DataZone domain is
-     * created. The domain execution role is created in the Amazon Web Services account
-     * that houses the Amazon DataZone domain.</p>
-     */
     inline CreateDomainRequest& WithDomainExecutionRole(const char* value) { SetDomainExecutionRole(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The version of the domain that is created.</p>
+     */
+    inline const DomainVersion& GetDomainVersion() const{ return m_domainVersion; }
+    inline bool DomainVersionHasBeenSet() const { return m_domainVersionHasBeenSet; }
+    inline void SetDomainVersion(const DomainVersion& value) { m_domainVersionHasBeenSet = true; m_domainVersion = value; }
+    inline void SetDomainVersion(DomainVersion&& value) { m_domainVersionHasBeenSet = true; m_domainVersion = std::move(value); }
+    inline CreateDomainRequest& WithDomainVersion(const DomainVersion& value) { SetDomainVersion(value); return *this;}
+    inline CreateDomainRequest& WithDomainVersion(DomainVersion&& value) { SetDomainVersion(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
     /**
      * <p>The identifier of the Amazon Web Services Key Management Service (KMS) key
      * that is used to encrypt the Amazon DataZone domain, metadata, and reporting
      * data. </p>
      */
     inline const Aws::String& GetKmsKeyIdentifier() const{ return m_kmsKeyIdentifier; }
-
-    /**
-     * <p>The identifier of the Amazon Web Services Key Management Service (KMS) key
-     * that is used to encrypt the Amazon DataZone domain, metadata, and reporting
-     * data. </p>
-     */
     inline bool KmsKeyIdentifierHasBeenSet() const { return m_kmsKeyIdentifierHasBeenSet; }
-
-    /**
-     * <p>The identifier of the Amazon Web Services Key Management Service (KMS) key
-     * that is used to encrypt the Amazon DataZone domain, metadata, and reporting
-     * data. </p>
-     */
     inline void SetKmsKeyIdentifier(const Aws::String& value) { m_kmsKeyIdentifierHasBeenSet = true; m_kmsKeyIdentifier = value; }
-
-    /**
-     * <p>The identifier of the Amazon Web Services Key Management Service (KMS) key
-     * that is used to encrypt the Amazon DataZone domain, metadata, and reporting
-     * data. </p>
-     */
     inline void SetKmsKeyIdentifier(Aws::String&& value) { m_kmsKeyIdentifierHasBeenSet = true; m_kmsKeyIdentifier = std::move(value); }
-
-    /**
-     * <p>The identifier of the Amazon Web Services Key Management Service (KMS) key
-     * that is used to encrypt the Amazon DataZone domain, metadata, and reporting
-     * data. </p>
-     */
     inline void SetKmsKeyIdentifier(const char* value) { m_kmsKeyIdentifierHasBeenSet = true; m_kmsKeyIdentifier.assign(value); }
-
-    /**
-     * <p>The identifier of the Amazon Web Services Key Management Service (KMS) key
-     * that is used to encrypt the Amazon DataZone domain, metadata, and reporting
-     * data. </p>
-     */
     inline CreateDomainRequest& WithKmsKeyIdentifier(const Aws::String& value) { SetKmsKeyIdentifier(value); return *this;}
-
-    /**
-     * <p>The identifier of the Amazon Web Services Key Management Service (KMS) key
-     * that is used to encrypt the Amazon DataZone domain, metadata, and reporting
-     * data. </p>
-     */
     inline CreateDomainRequest& WithKmsKeyIdentifier(Aws::String&& value) { SetKmsKeyIdentifier(std::move(value)); return *this;}
-
-    /**
-     * <p>The identifier of the Amazon Web Services Key Management Service (KMS) key
-     * that is used to encrypt the Amazon DataZone domain, metadata, and reporting
-     * data. </p>
-     */
     inline CreateDomainRequest& WithKmsKeyIdentifier(const char* value) { SetKmsKeyIdentifier(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The name of the Amazon DataZone domain.</p>
      */
     inline const Aws::String& GetName() const{ return m_name; }
-
-    /**
-     * <p>The name of the Amazon DataZone domain.</p>
-     */
     inline bool NameHasBeenSet() const { return m_nameHasBeenSet; }
-
-    /**
-     * <p>The name of the Amazon DataZone domain.</p>
-     */
     inline void SetName(const Aws::String& value) { m_nameHasBeenSet = true; m_name = value; }
-
-    /**
-     * <p>The name of the Amazon DataZone domain.</p>
-     */
     inline void SetName(Aws::String&& value) { m_nameHasBeenSet = true; m_name = std::move(value); }
-
-    /**
-     * <p>The name of the Amazon DataZone domain.</p>
-     */
     inline void SetName(const char* value) { m_nameHasBeenSet = true; m_name.assign(value); }
-
-    /**
-     * <p>The name of the Amazon DataZone domain.</p>
-     */
     inline CreateDomainRequest& WithName(const Aws::String& value) { SetName(value); return *this;}
-
-    /**
-     * <p>The name of the Amazon DataZone domain.</p>
-     */
     inline CreateDomainRequest& WithName(Aws::String&& value) { SetName(std::move(value)); return *this;}
-
-    /**
-     * <p>The name of the Amazon DataZone domain.</p>
-     */
     inline CreateDomainRequest& WithName(const char* value) { SetName(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The service role of the domain that is created.</p>
+     */
+    inline const Aws::String& GetServiceRole() const{ return m_serviceRole; }
+    inline bool ServiceRoleHasBeenSet() const { return m_serviceRoleHasBeenSet; }
+    inline void SetServiceRole(const Aws::String& value) { m_serviceRoleHasBeenSet = true; m_serviceRole = value; }
+    inline void SetServiceRole(Aws::String&& value) { m_serviceRoleHasBeenSet = true; m_serviceRole = std::move(value); }
+    inline void SetServiceRole(const char* value) { m_serviceRoleHasBeenSet = true; m_serviceRole.assign(value); }
+    inline CreateDomainRequest& WithServiceRole(const Aws::String& value) { SetServiceRole(value); return *this;}
+    inline CreateDomainRequest& WithServiceRole(Aws::String&& value) { SetServiceRole(std::move(value)); return *this;}
+    inline CreateDomainRequest& WithServiceRole(const char* value) { SetServiceRole(value); return *this;}
+    ///@}
 
+    ///@{
     /**
      * <p>The single-sign on configuration of the Amazon DataZone domain.</p>
      */
     inline const SingleSignOn& GetSingleSignOn() const{ return m_singleSignOn; }
-
-    /**
-     * <p>The single-sign on configuration of the Amazon DataZone domain.</p>
-     */
     inline bool SingleSignOnHasBeenSet() const { return m_singleSignOnHasBeenSet; }
-
-    /**
-     * <p>The single-sign on configuration of the Amazon DataZone domain.</p>
-     */
     inline void SetSingleSignOn(const SingleSignOn& value) { m_singleSignOnHasBeenSet = true; m_singleSignOn = value; }
-
-    /**
-     * <p>The single-sign on configuration of the Amazon DataZone domain.</p>
-     */
     inline void SetSingleSignOn(SingleSignOn&& value) { m_singleSignOnHasBeenSet = true; m_singleSignOn = std::move(value); }
-
-    /**
-     * <p>The single-sign on configuration of the Amazon DataZone domain.</p>
-     */
     inline CreateDomainRequest& WithSingleSignOn(const SingleSignOn& value) { SetSingleSignOn(value); return *this;}
-
-    /**
-     * <p>The single-sign on configuration of the Amazon DataZone domain.</p>
-     */
     inline CreateDomainRequest& WithSingleSignOn(SingleSignOn&& value) { SetSingleSignOn(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The tags specified for the Amazon DataZone domain.</p>
      */
     inline const Aws::Map<Aws::String, Aws::String>& GetTags() const{ return m_tags; }
-
-    /**
-     * <p>The tags specified for the Amazon DataZone domain.</p>
-     */
     inline bool TagsHasBeenSet() const { return m_tagsHasBeenSet; }
-
-    /**
-     * <p>The tags specified for the Amazon DataZone domain.</p>
-     */
     inline void SetTags(const Aws::Map<Aws::String, Aws::String>& value) { m_tagsHasBeenSet = true; m_tags = value; }
-
-    /**
-     * <p>The tags specified for the Amazon DataZone domain.</p>
-     */
     inline void SetTags(Aws::Map<Aws::String, Aws::String>&& value) { m_tagsHasBeenSet = true; m_tags = std::move(value); }
-
-    /**
-     * <p>The tags specified for the Amazon DataZone domain.</p>
-     */
     inline CreateDomainRequest& WithTags(const Aws::Map<Aws::String, Aws::String>& value) { SetTags(value); return *this;}
-
-    /**
-     * <p>The tags specified for the Amazon DataZone domain.</p>
-     */
     inline CreateDomainRequest& WithTags(Aws::Map<Aws::String, Aws::String>&& value) { SetTags(std::move(value)); return *this;}
-
-    /**
-     * <p>The tags specified for the Amazon DataZone domain.</p>
-     */
     inline CreateDomainRequest& AddTags(const Aws::String& key, const Aws::String& value) { m_tagsHasBeenSet = true; m_tags.emplace(key, value); return *this; }
-
-    /**
-     * <p>The tags specified for the Amazon DataZone domain.</p>
-     */
     inline CreateDomainRequest& AddTags(Aws::String&& key, const Aws::String& value) { m_tagsHasBeenSet = true; m_tags.emplace(std::move(key), value); return *this; }
-
-    /**
-     * <p>The tags specified for the Amazon DataZone domain.</p>
-     */
     inline CreateDomainRequest& AddTags(const Aws::String& key, Aws::String&& value) { m_tagsHasBeenSet = true; m_tags.emplace(key, std::move(value)); return *this; }
-
-    /**
-     * <p>The tags specified for the Amazon DataZone domain.</p>
-     */
     inline CreateDomainRequest& AddTags(Aws::String&& key, Aws::String&& value) { m_tagsHasBeenSet = true; m_tags.emplace(std::move(key), std::move(value)); return *this; }
-
-    /**
-     * <p>The tags specified for the Amazon DataZone domain.</p>
-     */
     inline CreateDomainRequest& AddTags(const char* key, Aws::String&& value) { m_tagsHasBeenSet = true; m_tags.emplace(key, std::move(value)); return *this; }
-
-    /**
-     * <p>The tags specified for the Amazon DataZone domain.</p>
-     */
     inline CreateDomainRequest& AddTags(Aws::String&& key, const char* value) { m_tagsHasBeenSet = true; m_tags.emplace(std::move(key), value); return *this; }
-
-    /**
-     * <p>The tags specified for the Amazon DataZone domain.</p>
-     */
     inline CreateDomainRequest& AddTags(const char* key, const char* value) { m_tagsHasBeenSet = true; m_tags.emplace(key, value); return *this; }
-
+    ///@}
   private:
 
     Aws::String m_clientToken;
@@ -387,11 +178,17 @@ namespace Model
     Aws::String m_domainExecutionRole;
     bool m_domainExecutionRoleHasBeenSet = false;
 
+    DomainVersion m_domainVersion;
+    bool m_domainVersionHasBeenSet = false;
+
     Aws::String m_kmsKeyIdentifier;
     bool m_kmsKeyIdentifierHasBeenSet = false;
 
     Aws::String m_name;
     bool m_nameHasBeenSet = false;
+
+    Aws::String m_serviceRole;
+    bool m_serviceRoleHasBeenSet = false;
 
     SingleSignOn m_singleSignOn;
     bool m_singleSignOnHasBeenSet = false;

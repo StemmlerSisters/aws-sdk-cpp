@@ -7,6 +7,8 @@
 #include <aws/bedrock/Bedrock_EXPORTS.h>
 #include <aws/bedrock/model/GuardrailContentFilterType.h>
 #include <aws/bedrock/model/GuardrailFilterStrength.h>
+#include <aws/core/utils/memory/stl/AWSVector.h>
+#include <aws/bedrock/model/GuardrailModality.h>
 #include <utility>
 
 namespace Aws
@@ -50,12 +52,7 @@ namespace Model
    * confidence, and <i>Violence</i> with MEDIUM confidence.</p> <p>For more
    * information, see <a
    * href="https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-filters.html">Guardrails
-   * content filters</a>.</p> <p>This data type is used in the following API
-   * operations:</p> <ul> <li> <p> <a
-   * href="https://docs.aws.amazon.com/bedrock/latest/APIReference/API_CreateGuardrail.html#API_CreateGuardrail_RequestSyntax">CreateGuardrail
-   * request body</a> </p> </li> <li> <p> <a
-   * href="https://docs.aws.amazon.com/bedrock/latest/APIReference/API_UpdateGuardrail.html#API_UpdateGuardrail_RequestSyntax">UpdateGuardrail
-   * request body</a> </p> </li> </ul><p><h3>See Also:</h3>   <a
+   * content filters</a>.</p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/bedrock-2023-04-20/GuardrailContentFilterConfig">AWS
    * API Reference</a></p>
    */
@@ -68,80 +65,33 @@ namespace Model
     AWS_BEDROCK_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The harmful category that the content filter is applied to.</p>
      */
     inline const GuardrailContentFilterType& GetType() const{ return m_type; }
-
-    /**
-     * <p>The harmful category that the content filter is applied to.</p>
-     */
     inline bool TypeHasBeenSet() const { return m_typeHasBeenSet; }
-
-    /**
-     * <p>The harmful category that the content filter is applied to.</p>
-     */
     inline void SetType(const GuardrailContentFilterType& value) { m_typeHasBeenSet = true; m_type = value; }
-
-    /**
-     * <p>The harmful category that the content filter is applied to.</p>
-     */
     inline void SetType(GuardrailContentFilterType&& value) { m_typeHasBeenSet = true; m_type = std::move(value); }
-
-    /**
-     * <p>The harmful category that the content filter is applied to.</p>
-     */
     inline GuardrailContentFilterConfig& WithType(const GuardrailContentFilterType& value) { SetType(value); return *this;}
-
-    /**
-     * <p>The harmful category that the content filter is applied to.</p>
-     */
     inline GuardrailContentFilterConfig& WithType(GuardrailContentFilterType&& value) { SetType(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The strength of the content filter to apply to prompts. As you increase the
      * filter strength, the likelihood of filtering harmful content increases and the
      * probability of seeing harmful content in your application reduces.</p>
      */
     inline const GuardrailFilterStrength& GetInputStrength() const{ return m_inputStrength; }
-
-    /**
-     * <p>The strength of the content filter to apply to prompts. As you increase the
-     * filter strength, the likelihood of filtering harmful content increases and the
-     * probability of seeing harmful content in your application reduces.</p>
-     */
     inline bool InputStrengthHasBeenSet() const { return m_inputStrengthHasBeenSet; }
-
-    /**
-     * <p>The strength of the content filter to apply to prompts. As you increase the
-     * filter strength, the likelihood of filtering harmful content increases and the
-     * probability of seeing harmful content in your application reduces.</p>
-     */
     inline void SetInputStrength(const GuardrailFilterStrength& value) { m_inputStrengthHasBeenSet = true; m_inputStrength = value; }
-
-    /**
-     * <p>The strength of the content filter to apply to prompts. As you increase the
-     * filter strength, the likelihood of filtering harmful content increases and the
-     * probability of seeing harmful content in your application reduces.</p>
-     */
     inline void SetInputStrength(GuardrailFilterStrength&& value) { m_inputStrengthHasBeenSet = true; m_inputStrength = std::move(value); }
-
-    /**
-     * <p>The strength of the content filter to apply to prompts. As you increase the
-     * filter strength, the likelihood of filtering harmful content increases and the
-     * probability of seeing harmful content in your application reduces.</p>
-     */
     inline GuardrailContentFilterConfig& WithInputStrength(const GuardrailFilterStrength& value) { SetInputStrength(value); return *this;}
-
-    /**
-     * <p>The strength of the content filter to apply to prompts. As you increase the
-     * filter strength, the likelihood of filtering harmful content increases and the
-     * probability of seeing harmful content in your application reduces.</p>
-     */
     inline GuardrailContentFilterConfig& WithInputStrength(GuardrailFilterStrength&& value) { SetInputStrength(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The strength of the content filter to apply to model responses. As you
      * increase the filter strength, the likelihood of filtering harmful content
@@ -149,47 +99,42 @@ namespace Model
      * reduces.</p>
      */
     inline const GuardrailFilterStrength& GetOutputStrength() const{ return m_outputStrength; }
-
-    /**
-     * <p>The strength of the content filter to apply to model responses. As you
-     * increase the filter strength, the likelihood of filtering harmful content
-     * increases and the probability of seeing harmful content in your application
-     * reduces.</p>
-     */
     inline bool OutputStrengthHasBeenSet() const { return m_outputStrengthHasBeenSet; }
-
-    /**
-     * <p>The strength of the content filter to apply to model responses. As you
-     * increase the filter strength, the likelihood of filtering harmful content
-     * increases and the probability of seeing harmful content in your application
-     * reduces.</p>
-     */
     inline void SetOutputStrength(const GuardrailFilterStrength& value) { m_outputStrengthHasBeenSet = true; m_outputStrength = value; }
-
-    /**
-     * <p>The strength of the content filter to apply to model responses. As you
-     * increase the filter strength, the likelihood of filtering harmful content
-     * increases and the probability of seeing harmful content in your application
-     * reduces.</p>
-     */
     inline void SetOutputStrength(GuardrailFilterStrength&& value) { m_outputStrengthHasBeenSet = true; m_outputStrength = std::move(value); }
-
-    /**
-     * <p>The strength of the content filter to apply to model responses. As you
-     * increase the filter strength, the likelihood of filtering harmful content
-     * increases and the probability of seeing harmful content in your application
-     * reduces.</p>
-     */
     inline GuardrailContentFilterConfig& WithOutputStrength(const GuardrailFilterStrength& value) { SetOutputStrength(value); return *this;}
-
-    /**
-     * <p>The strength of the content filter to apply to model responses. As you
-     * increase the filter strength, the likelihood of filtering harmful content
-     * increases and the probability of seeing harmful content in your application
-     * reduces.</p>
-     */
     inline GuardrailContentFilterConfig& WithOutputStrength(GuardrailFilterStrength&& value) { SetOutputStrength(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The input modalities selected for the guardrail content filter
+     * configuration.</p>
+     */
+    inline const Aws::Vector<GuardrailModality>& GetInputModalities() const{ return m_inputModalities; }
+    inline bool InputModalitiesHasBeenSet() const { return m_inputModalitiesHasBeenSet; }
+    inline void SetInputModalities(const Aws::Vector<GuardrailModality>& value) { m_inputModalitiesHasBeenSet = true; m_inputModalities = value; }
+    inline void SetInputModalities(Aws::Vector<GuardrailModality>&& value) { m_inputModalitiesHasBeenSet = true; m_inputModalities = std::move(value); }
+    inline GuardrailContentFilterConfig& WithInputModalities(const Aws::Vector<GuardrailModality>& value) { SetInputModalities(value); return *this;}
+    inline GuardrailContentFilterConfig& WithInputModalities(Aws::Vector<GuardrailModality>&& value) { SetInputModalities(std::move(value)); return *this;}
+    inline GuardrailContentFilterConfig& AddInputModalities(const GuardrailModality& value) { m_inputModalitiesHasBeenSet = true; m_inputModalities.push_back(value); return *this; }
+    inline GuardrailContentFilterConfig& AddInputModalities(GuardrailModality&& value) { m_inputModalitiesHasBeenSet = true; m_inputModalities.push_back(std::move(value)); return *this; }
+    ///@}
+
+    ///@{
+    /**
+     * <p>The output modalities selected for the guardrail content filter
+     * configuration.</p>
+     */
+    inline const Aws::Vector<GuardrailModality>& GetOutputModalities() const{ return m_outputModalities; }
+    inline bool OutputModalitiesHasBeenSet() const { return m_outputModalitiesHasBeenSet; }
+    inline void SetOutputModalities(const Aws::Vector<GuardrailModality>& value) { m_outputModalitiesHasBeenSet = true; m_outputModalities = value; }
+    inline void SetOutputModalities(Aws::Vector<GuardrailModality>&& value) { m_outputModalitiesHasBeenSet = true; m_outputModalities = std::move(value); }
+    inline GuardrailContentFilterConfig& WithOutputModalities(const Aws::Vector<GuardrailModality>& value) { SetOutputModalities(value); return *this;}
+    inline GuardrailContentFilterConfig& WithOutputModalities(Aws::Vector<GuardrailModality>&& value) { SetOutputModalities(std::move(value)); return *this;}
+    inline GuardrailContentFilterConfig& AddOutputModalities(const GuardrailModality& value) { m_outputModalitiesHasBeenSet = true; m_outputModalities.push_back(value); return *this; }
+    inline GuardrailContentFilterConfig& AddOutputModalities(GuardrailModality&& value) { m_outputModalitiesHasBeenSet = true; m_outputModalities.push_back(std::move(value)); return *this; }
+    ///@}
   private:
 
     GuardrailContentFilterType m_type;
@@ -200,6 +145,12 @@ namespace Model
 
     GuardrailFilterStrength m_outputStrength;
     bool m_outputStrengthHasBeenSet = false;
+
+    Aws::Vector<GuardrailModality> m_inputModalities;
+    bool m_inputModalitiesHasBeenSet = false;
+
+    Aws::Vector<GuardrailModality> m_outputModalities;
+    bool m_outputModalitiesHasBeenSet = false;
   };
 
 } // namespace Model

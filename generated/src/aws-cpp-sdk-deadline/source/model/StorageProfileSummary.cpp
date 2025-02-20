@@ -19,24 +19,28 @@ namespace Model
 {
 
 StorageProfileSummary::StorageProfileSummary() : 
+    m_storageProfileIdHasBeenSet(false),
     m_displayNameHasBeenSet(false),
     m_osFamily(StorageProfileOperatingSystemFamily::NOT_SET),
-    m_osFamilyHasBeenSet(false),
-    m_storageProfileIdHasBeenSet(false)
+    m_osFamilyHasBeenSet(false)
 {
 }
 
-StorageProfileSummary::StorageProfileSummary(JsonView jsonValue) : 
-    m_displayNameHasBeenSet(false),
-    m_osFamily(StorageProfileOperatingSystemFamily::NOT_SET),
-    m_osFamilyHasBeenSet(false),
-    m_storageProfileIdHasBeenSet(false)
+StorageProfileSummary::StorageProfileSummary(JsonView jsonValue)
+  : StorageProfileSummary()
 {
   *this = jsonValue;
 }
 
 StorageProfileSummary& StorageProfileSummary::operator =(JsonView jsonValue)
 {
+  if(jsonValue.ValueExists("storageProfileId"))
+  {
+    m_storageProfileId = jsonValue.GetString("storageProfileId");
+
+    m_storageProfileIdHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("displayName"))
   {
     m_displayName = jsonValue.GetString("displayName");
@@ -51,19 +55,18 @@ StorageProfileSummary& StorageProfileSummary::operator =(JsonView jsonValue)
     m_osFamilyHasBeenSet = true;
   }
 
-  if(jsonValue.ValueExists("storageProfileId"))
-  {
-    m_storageProfileId = jsonValue.GetString("storageProfileId");
-
-    m_storageProfileIdHasBeenSet = true;
-  }
-
   return *this;
 }
 
 JsonValue StorageProfileSummary::Jsonize() const
 {
   JsonValue payload;
+
+  if(m_storageProfileIdHasBeenSet)
+  {
+   payload.WithString("storageProfileId", m_storageProfileId);
+
+  }
 
   if(m_displayNameHasBeenSet)
   {
@@ -74,12 +77,6 @@ JsonValue StorageProfileSummary::Jsonize() const
   if(m_osFamilyHasBeenSet)
   {
    payload.WithString("osFamily", StorageProfileOperatingSystemFamilyMapper::GetNameForStorageProfileOperatingSystemFamily(m_osFamily));
-  }
-
-  if(m_storageProfileIdHasBeenSet)
-  {
-   payload.WithString("storageProfileId", m_storageProfileId);
-
   }
 
   return payload;

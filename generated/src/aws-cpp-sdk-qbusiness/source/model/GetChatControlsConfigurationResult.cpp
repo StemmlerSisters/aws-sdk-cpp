@@ -22,8 +22,8 @@ GetChatControlsConfigurationResult::GetChatControlsConfigurationResult() :
 {
 }
 
-GetChatControlsConfigurationResult::GetChatControlsConfigurationResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_responseScope(ResponseScope::NOT_SET)
+GetChatControlsConfigurationResult::GetChatControlsConfigurationResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetChatControlsConfigurationResult()
 {
   *this = result;
 }
@@ -34,6 +34,12 @@ GetChatControlsConfigurationResult& GetChatControlsConfigurationResult::operator
   if(jsonValue.ValueExists("responseScope"))
   {
     m_responseScope = ResponseScopeMapper::GetResponseScopeForName(jsonValue.GetString("responseScope"));
+
+  }
+
+  if(jsonValue.ValueExists("orchestrationConfiguration"))
+  {
+    m_orchestrationConfiguration = jsonValue.GetObject("orchestrationConfiguration");
 
   }
 

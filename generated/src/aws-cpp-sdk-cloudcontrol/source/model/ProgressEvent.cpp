@@ -22,6 +22,7 @@ ProgressEvent::ProgressEvent() :
     m_typeNameHasBeenSet(false),
     m_identifierHasBeenSet(false),
     m_requestTokenHasBeenSet(false),
+    m_hooksRequestTokenHasBeenSet(false),
     m_operation(Operation::NOT_SET),
     m_operationHasBeenSet(false),
     m_operationStatus(OperationStatus::NOT_SET),
@@ -35,20 +36,8 @@ ProgressEvent::ProgressEvent() :
 {
 }
 
-ProgressEvent::ProgressEvent(JsonView jsonValue) : 
-    m_typeNameHasBeenSet(false),
-    m_identifierHasBeenSet(false),
-    m_requestTokenHasBeenSet(false),
-    m_operation(Operation::NOT_SET),
-    m_operationHasBeenSet(false),
-    m_operationStatus(OperationStatus::NOT_SET),
-    m_operationStatusHasBeenSet(false),
-    m_eventTimeHasBeenSet(false),
-    m_resourceModelHasBeenSet(false),
-    m_statusMessageHasBeenSet(false),
-    m_errorCode(HandlerErrorCode::NOT_SET),
-    m_errorCodeHasBeenSet(false),
-    m_retryAfterHasBeenSet(false)
+ProgressEvent::ProgressEvent(JsonView jsonValue)
+  : ProgressEvent()
 {
   *this = jsonValue;
 }
@@ -74,6 +63,13 @@ ProgressEvent& ProgressEvent::operator =(JsonView jsonValue)
     m_requestToken = jsonValue.GetString("RequestToken");
 
     m_requestTokenHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("HooksRequestToken"))
+  {
+    m_hooksRequestToken = jsonValue.GetString("HooksRequestToken");
+
+    m_hooksRequestTokenHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("Operation"))
@@ -147,6 +143,12 @@ JsonValue ProgressEvent::Jsonize() const
   if(m_requestTokenHasBeenSet)
   {
    payload.WithString("RequestToken", m_requestToken);
+
+  }
+
+  if(m_hooksRequestTokenHasBeenSet)
+  {
+   payload.WithString("HooksRequestToken", m_hooksRequestToken);
 
   }
 

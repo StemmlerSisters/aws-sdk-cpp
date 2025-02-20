@@ -7,8 +7,9 @@
 #include <aws/sagemaker/SageMaker_EXPORTS.h>
 #include <aws/sagemaker/model/ResourceSpec.h>
 #include <aws/core/utils/memory/stl/AWSVector.h>
-#include <aws/sagemaker/model/CustomImage.h>
+#include <aws/sagemaker/model/AppLifecycleManagement.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
+#include <aws/sagemaker/model/CustomImage.h>
 #include <utility>
 
 namespace Aws
@@ -43,128 +44,75 @@ namespace Model
     AWS_SAGEMAKER_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     
     inline const ResourceSpec& GetDefaultResourceSpec() const{ return m_defaultResourceSpec; }
-
-    
     inline bool DefaultResourceSpecHasBeenSet() const { return m_defaultResourceSpecHasBeenSet; }
-
-    
     inline void SetDefaultResourceSpec(const ResourceSpec& value) { m_defaultResourceSpecHasBeenSet = true; m_defaultResourceSpec = value; }
-
-    
     inline void SetDefaultResourceSpec(ResourceSpec&& value) { m_defaultResourceSpecHasBeenSet = true; m_defaultResourceSpec = std::move(value); }
-
-    
     inline CodeEditorAppSettings& WithDefaultResourceSpec(const ResourceSpec& value) { SetDefaultResourceSpec(value); return *this;}
-
-    
     inline CodeEditorAppSettings& WithDefaultResourceSpec(ResourceSpec&& value) { SetDefaultResourceSpec(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>A list of custom SageMaker images that are configured to run as a Code Editor
      * app.</p>
      */
     inline const Aws::Vector<CustomImage>& GetCustomImages() const{ return m_customImages; }
-
-    /**
-     * <p>A list of custom SageMaker images that are configured to run as a Code Editor
-     * app.</p>
-     */
     inline bool CustomImagesHasBeenSet() const { return m_customImagesHasBeenSet; }
-
-    /**
-     * <p>A list of custom SageMaker images that are configured to run as a Code Editor
-     * app.</p>
-     */
     inline void SetCustomImages(const Aws::Vector<CustomImage>& value) { m_customImagesHasBeenSet = true; m_customImages = value; }
-
-    /**
-     * <p>A list of custom SageMaker images that are configured to run as a Code Editor
-     * app.</p>
-     */
     inline void SetCustomImages(Aws::Vector<CustomImage>&& value) { m_customImagesHasBeenSet = true; m_customImages = std::move(value); }
-
-    /**
-     * <p>A list of custom SageMaker images that are configured to run as a Code Editor
-     * app.</p>
-     */
     inline CodeEditorAppSettings& WithCustomImages(const Aws::Vector<CustomImage>& value) { SetCustomImages(value); return *this;}
-
-    /**
-     * <p>A list of custom SageMaker images that are configured to run as a Code Editor
-     * app.</p>
-     */
     inline CodeEditorAppSettings& WithCustomImages(Aws::Vector<CustomImage>&& value) { SetCustomImages(std::move(value)); return *this;}
-
-    /**
-     * <p>A list of custom SageMaker images that are configured to run as a Code Editor
-     * app.</p>
-     */
     inline CodeEditorAppSettings& AddCustomImages(const CustomImage& value) { m_customImagesHasBeenSet = true; m_customImages.push_back(value); return *this; }
-
-    /**
-     * <p>A list of custom SageMaker images that are configured to run as a Code Editor
-     * app.</p>
-     */
     inline CodeEditorAppSettings& AddCustomImages(CustomImage&& value) { m_customImagesHasBeenSet = true; m_customImages.push_back(std::move(value)); return *this; }
+    ///@}
 
-
+    ///@{
     /**
      * <p>The Amazon Resource Name (ARN) of the Code Editor application lifecycle
      * configuration.</p>
      */
     inline const Aws::Vector<Aws::String>& GetLifecycleConfigArns() const{ return m_lifecycleConfigArns; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the Code Editor application lifecycle
-     * configuration.</p>
-     */
     inline bool LifecycleConfigArnsHasBeenSet() const { return m_lifecycleConfigArnsHasBeenSet; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the Code Editor application lifecycle
-     * configuration.</p>
-     */
     inline void SetLifecycleConfigArns(const Aws::Vector<Aws::String>& value) { m_lifecycleConfigArnsHasBeenSet = true; m_lifecycleConfigArns = value; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the Code Editor application lifecycle
-     * configuration.</p>
-     */
     inline void SetLifecycleConfigArns(Aws::Vector<Aws::String>&& value) { m_lifecycleConfigArnsHasBeenSet = true; m_lifecycleConfigArns = std::move(value); }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the Code Editor application lifecycle
-     * configuration.</p>
-     */
     inline CodeEditorAppSettings& WithLifecycleConfigArns(const Aws::Vector<Aws::String>& value) { SetLifecycleConfigArns(value); return *this;}
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the Code Editor application lifecycle
-     * configuration.</p>
-     */
     inline CodeEditorAppSettings& WithLifecycleConfigArns(Aws::Vector<Aws::String>&& value) { SetLifecycleConfigArns(std::move(value)); return *this;}
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the Code Editor application lifecycle
-     * configuration.</p>
-     */
     inline CodeEditorAppSettings& AddLifecycleConfigArns(const Aws::String& value) { m_lifecycleConfigArnsHasBeenSet = true; m_lifecycleConfigArns.push_back(value); return *this; }
-
-    /**
-     * <p>The Amazon Resource Name (ARN) of the Code Editor application lifecycle
-     * configuration.</p>
-     */
     inline CodeEditorAppSettings& AddLifecycleConfigArns(Aws::String&& value) { m_lifecycleConfigArnsHasBeenSet = true; m_lifecycleConfigArns.push_back(std::move(value)); return *this; }
+    inline CodeEditorAppSettings& AddLifecycleConfigArns(const char* value) { m_lifecycleConfigArnsHasBeenSet = true; m_lifecycleConfigArns.push_back(value); return *this; }
+    ///@}
 
+    ///@{
     /**
-     * <p>The Amazon Resource Name (ARN) of the Code Editor application lifecycle
+     * <p>Settings that are used to configure and manage the lifecycle of CodeEditor
+     * applications.</p>
+     */
+    inline const AppLifecycleManagement& GetAppLifecycleManagement() const{ return m_appLifecycleManagement; }
+    inline bool AppLifecycleManagementHasBeenSet() const { return m_appLifecycleManagementHasBeenSet; }
+    inline void SetAppLifecycleManagement(const AppLifecycleManagement& value) { m_appLifecycleManagementHasBeenSet = true; m_appLifecycleManagement = value; }
+    inline void SetAppLifecycleManagement(AppLifecycleManagement&& value) { m_appLifecycleManagementHasBeenSet = true; m_appLifecycleManagement = std::move(value); }
+    inline CodeEditorAppSettings& WithAppLifecycleManagement(const AppLifecycleManagement& value) { SetAppLifecycleManagement(value); return *this;}
+    inline CodeEditorAppSettings& WithAppLifecycleManagement(AppLifecycleManagement&& value) { SetAppLifecycleManagement(std::move(value)); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>The lifecycle configuration that runs before the default lifecycle
+     * configuration. It can override changes made in the default lifecycle
      * configuration.</p>
      */
-    inline CodeEditorAppSettings& AddLifecycleConfigArns(const char* value) { m_lifecycleConfigArnsHasBeenSet = true; m_lifecycleConfigArns.push_back(value); return *this; }
-
+    inline const Aws::String& GetBuiltInLifecycleConfigArn() const{ return m_builtInLifecycleConfigArn; }
+    inline bool BuiltInLifecycleConfigArnHasBeenSet() const { return m_builtInLifecycleConfigArnHasBeenSet; }
+    inline void SetBuiltInLifecycleConfigArn(const Aws::String& value) { m_builtInLifecycleConfigArnHasBeenSet = true; m_builtInLifecycleConfigArn = value; }
+    inline void SetBuiltInLifecycleConfigArn(Aws::String&& value) { m_builtInLifecycleConfigArnHasBeenSet = true; m_builtInLifecycleConfigArn = std::move(value); }
+    inline void SetBuiltInLifecycleConfigArn(const char* value) { m_builtInLifecycleConfigArnHasBeenSet = true; m_builtInLifecycleConfigArn.assign(value); }
+    inline CodeEditorAppSettings& WithBuiltInLifecycleConfigArn(const Aws::String& value) { SetBuiltInLifecycleConfigArn(value); return *this;}
+    inline CodeEditorAppSettings& WithBuiltInLifecycleConfigArn(Aws::String&& value) { SetBuiltInLifecycleConfigArn(std::move(value)); return *this;}
+    inline CodeEditorAppSettings& WithBuiltInLifecycleConfigArn(const char* value) { SetBuiltInLifecycleConfigArn(value); return *this;}
+    ///@}
   private:
 
     ResourceSpec m_defaultResourceSpec;
@@ -175,6 +123,12 @@ namespace Model
 
     Aws::Vector<Aws::String> m_lifecycleConfigArns;
     bool m_lifecycleConfigArnsHasBeenSet = false;
+
+    AppLifecycleManagement m_appLifecycleManagement;
+    bool m_appLifecycleManagementHasBeenSet = false;
+
+    Aws::String m_builtInLifecycleConfigArn;
+    bool m_builtInLifecycleConfigArnHasBeenSet = false;
   };
 
 } // namespace Model

@@ -5,7 +5,9 @@
 
 #pragma once
 #include <aws/bedrock-agent-runtime/BedrockAgentRuntime_EXPORTS.h>
+#include <aws/bedrock-agent-runtime/model/Metadata.h>
 #include <aws/bedrock-agent-runtime/model/PreProcessingParsedResponse.h>
+#include <aws/bedrock-agent-runtime/model/RawResponse.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <utility>
 
@@ -39,87 +41,67 @@ namespace Model
     AWS_BEDROCKAGENTRUNTIME_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
+    /**
+     * <p> Contains information about the foundation model output from the
+     * pre-processing step. </p>
+     */
+    inline const Metadata& GetMetadata() const{ return m_metadata; }
+    inline bool MetadataHasBeenSet() const { return m_metadataHasBeenSet; }
+    inline void SetMetadata(const Metadata& value) { m_metadataHasBeenSet = true; m_metadata = value; }
+    inline void SetMetadata(Metadata&& value) { m_metadataHasBeenSet = true; m_metadata = std::move(value); }
+    inline PreProcessingModelInvocationOutput& WithMetadata(const Metadata& value) { SetMetadata(value); return *this;}
+    inline PreProcessingModelInvocationOutput& WithMetadata(Metadata&& value) { SetMetadata(std::move(value)); return *this;}
+    ///@}
+
+    ///@{
     /**
      * <p>Details about the response from the Lambda parsing of the output of the
      * pre-processing step.</p>
      */
     inline const PreProcessingParsedResponse& GetParsedResponse() const{ return m_parsedResponse; }
-
-    /**
-     * <p>Details about the response from the Lambda parsing of the output of the
-     * pre-processing step.</p>
-     */
     inline bool ParsedResponseHasBeenSet() const { return m_parsedResponseHasBeenSet; }
-
-    /**
-     * <p>Details about the response from the Lambda parsing of the output of the
-     * pre-processing step.</p>
-     */
     inline void SetParsedResponse(const PreProcessingParsedResponse& value) { m_parsedResponseHasBeenSet = true; m_parsedResponse = value; }
-
-    /**
-     * <p>Details about the response from the Lambda parsing of the output of the
-     * pre-processing step.</p>
-     */
     inline void SetParsedResponse(PreProcessingParsedResponse&& value) { m_parsedResponseHasBeenSet = true; m_parsedResponse = std::move(value); }
-
-    /**
-     * <p>Details about the response from the Lambda parsing of the output of the
-     * pre-processing step.</p>
-     */
     inline PreProcessingModelInvocationOutput& WithParsedResponse(const PreProcessingParsedResponse& value) { SetParsedResponse(value); return *this;}
-
-    /**
-     * <p>Details about the response from the Lambda parsing of the output of the
-     * pre-processing step.</p>
-     */
     inline PreProcessingModelInvocationOutput& WithParsedResponse(PreProcessingParsedResponse&& value) { SetParsedResponse(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p> Details of the raw response from the foundation model output. </p>
+     */
+    inline const RawResponse& GetRawResponse() const{ return m_rawResponse; }
+    inline bool RawResponseHasBeenSet() const { return m_rawResponseHasBeenSet; }
+    inline void SetRawResponse(const RawResponse& value) { m_rawResponseHasBeenSet = true; m_rawResponse = value; }
+    inline void SetRawResponse(RawResponse&& value) { m_rawResponseHasBeenSet = true; m_rawResponse = std::move(value); }
+    inline PreProcessingModelInvocationOutput& WithRawResponse(const RawResponse& value) { SetRawResponse(value); return *this;}
+    inline PreProcessingModelInvocationOutput& WithRawResponse(RawResponse&& value) { SetRawResponse(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
     /**
      * <p>The unique identifier of the trace.</p>
      */
     inline const Aws::String& GetTraceId() const{ return m_traceId; }
-
-    /**
-     * <p>The unique identifier of the trace.</p>
-     */
     inline bool TraceIdHasBeenSet() const { return m_traceIdHasBeenSet; }
-
-    /**
-     * <p>The unique identifier of the trace.</p>
-     */
     inline void SetTraceId(const Aws::String& value) { m_traceIdHasBeenSet = true; m_traceId = value; }
-
-    /**
-     * <p>The unique identifier of the trace.</p>
-     */
     inline void SetTraceId(Aws::String&& value) { m_traceIdHasBeenSet = true; m_traceId = std::move(value); }
-
-    /**
-     * <p>The unique identifier of the trace.</p>
-     */
     inline void SetTraceId(const char* value) { m_traceIdHasBeenSet = true; m_traceId.assign(value); }
-
-    /**
-     * <p>The unique identifier of the trace.</p>
-     */
     inline PreProcessingModelInvocationOutput& WithTraceId(const Aws::String& value) { SetTraceId(value); return *this;}
-
-    /**
-     * <p>The unique identifier of the trace.</p>
-     */
     inline PreProcessingModelInvocationOutput& WithTraceId(Aws::String&& value) { SetTraceId(std::move(value)); return *this;}
-
-    /**
-     * <p>The unique identifier of the trace.</p>
-     */
     inline PreProcessingModelInvocationOutput& WithTraceId(const char* value) { SetTraceId(value); return *this;}
-
+    ///@}
   private:
+
+    Metadata m_metadata;
+    bool m_metadataHasBeenSet = false;
 
     PreProcessingParsedResponse m_parsedResponse;
     bool m_parsedResponseHasBeenSet = false;
+
+    RawResponse m_rawResponse;
+    bool m_rawResponseHasBeenSet = false;
 
     Aws::String m_traceId;
     bool m_traceIdHasBeenSet = false;

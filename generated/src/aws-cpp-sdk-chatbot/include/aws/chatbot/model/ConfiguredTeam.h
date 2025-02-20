@@ -24,7 +24,7 @@ namespace Model
 {
 
   /**
-   * A Microsoft Teams team that has been authorized with AWS Chatbot.<p><h3>See
+   * <p>A Microsoft Teams team that is authorized with AWS Chatbot.</p><p><h3>See
    * Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/chatbot-2017-10-11/ConfiguredTeam">AWS
    * API Reference</a></p>
@@ -38,160 +38,84 @@ namespace Model
     AWS_CHATBOT_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
-     * The ID of the Microsoft Teams tenant.
+     * <p>The ID of the Microsoft Teams tenant.</p>
      */
     inline const Aws::String& GetTenantId() const{ return m_tenantId; }
-
-    /**
-     * The ID of the Microsoft Teams tenant.
-     */
     inline bool TenantIdHasBeenSet() const { return m_tenantIdHasBeenSet; }
-
-    /**
-     * The ID of the Microsoft Teams tenant.
-     */
     inline void SetTenantId(const Aws::String& value) { m_tenantIdHasBeenSet = true; m_tenantId = value; }
-
-    /**
-     * The ID of the Microsoft Teams tenant.
-     */
     inline void SetTenantId(Aws::String&& value) { m_tenantIdHasBeenSet = true; m_tenantId = std::move(value); }
-
-    /**
-     * The ID of the Microsoft Teams tenant.
-     */
     inline void SetTenantId(const char* value) { m_tenantIdHasBeenSet = true; m_tenantId.assign(value); }
-
-    /**
-     * The ID of the Microsoft Teams tenant.
-     */
     inline ConfiguredTeam& WithTenantId(const Aws::String& value) { SetTenantId(value); return *this;}
-
-    /**
-     * The ID of the Microsoft Teams tenant.
-     */
     inline ConfiguredTeam& WithTenantId(Aws::String&& value) { SetTenantId(std::move(value)); return *this;}
-
-    /**
-     * The ID of the Microsoft Teams tenant.
-     */
     inline ConfiguredTeam& WithTenantId(const char* value) { SetTenantId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * The ID of the Microsoft Team authorized with AWS Chatbot. To get the team ID,
-     * you must perform the initial authorization flow with Microsoft Teams in the AWS
-     * Chatbot console. Then you can copy and paste the team ID from the console. For
-     * more details, see steps 1-4 in Get started with Microsoft Teams in the AWS
-     * Chatbot Administrator Guide.
+     * <p> The ID of the Microsoft Teams authorized with AWS Chatbot.</p> <p>To get the
+     * team ID, you must perform the initial authorization flow with Microsoft Teams in
+     * the AWS Chatbot console. Then you can copy and paste the team ID from the
+     * console. For more information, see <a
+     * href="https://docs.aws.amazon.com/chatbot/latest/adminguide/teams-setup.html#teams-client-setup">Step
+     * 1: Configure a Microsoft Teams client</a> in the <i> AWS Chatbot Administrator
+     * Guide</i>. </p>
      */
     inline const Aws::String& GetTeamId() const{ return m_teamId; }
-
-    /**
-     * The ID of the Microsoft Team authorized with AWS Chatbot. To get the team ID,
-     * you must perform the initial authorization flow with Microsoft Teams in the AWS
-     * Chatbot console. Then you can copy and paste the team ID from the console. For
-     * more details, see steps 1-4 in Get started with Microsoft Teams in the AWS
-     * Chatbot Administrator Guide.
-     */
     inline bool TeamIdHasBeenSet() const { return m_teamIdHasBeenSet; }
-
-    /**
-     * The ID of the Microsoft Team authorized with AWS Chatbot. To get the team ID,
-     * you must perform the initial authorization flow with Microsoft Teams in the AWS
-     * Chatbot console. Then you can copy and paste the team ID from the console. For
-     * more details, see steps 1-4 in Get started with Microsoft Teams in the AWS
-     * Chatbot Administrator Guide.
-     */
     inline void SetTeamId(const Aws::String& value) { m_teamIdHasBeenSet = true; m_teamId = value; }
-
-    /**
-     * The ID of the Microsoft Team authorized with AWS Chatbot. To get the team ID,
-     * you must perform the initial authorization flow with Microsoft Teams in the AWS
-     * Chatbot console. Then you can copy and paste the team ID from the console. For
-     * more details, see steps 1-4 in Get started with Microsoft Teams in the AWS
-     * Chatbot Administrator Guide.
-     */
     inline void SetTeamId(Aws::String&& value) { m_teamIdHasBeenSet = true; m_teamId = std::move(value); }
-
-    /**
-     * The ID of the Microsoft Team authorized with AWS Chatbot. To get the team ID,
-     * you must perform the initial authorization flow with Microsoft Teams in the AWS
-     * Chatbot console. Then you can copy and paste the team ID from the console. For
-     * more details, see steps 1-4 in Get started with Microsoft Teams in the AWS
-     * Chatbot Administrator Guide.
-     */
     inline void SetTeamId(const char* value) { m_teamIdHasBeenSet = true; m_teamId.assign(value); }
-
-    /**
-     * The ID of the Microsoft Team authorized with AWS Chatbot. To get the team ID,
-     * you must perform the initial authorization flow with Microsoft Teams in the AWS
-     * Chatbot console. Then you can copy and paste the team ID from the console. For
-     * more details, see steps 1-4 in Get started with Microsoft Teams in the AWS
-     * Chatbot Administrator Guide.
-     */
     inline ConfiguredTeam& WithTeamId(const Aws::String& value) { SetTeamId(value); return *this;}
-
-    /**
-     * The ID of the Microsoft Team authorized with AWS Chatbot. To get the team ID,
-     * you must perform the initial authorization flow with Microsoft Teams in the AWS
-     * Chatbot console. Then you can copy and paste the team ID from the console. For
-     * more details, see steps 1-4 in Get started with Microsoft Teams in the AWS
-     * Chatbot Administrator Guide.
-     */
     inline ConfiguredTeam& WithTeamId(Aws::String&& value) { SetTeamId(std::move(value)); return *this;}
-
-    /**
-     * The ID of the Microsoft Team authorized with AWS Chatbot. To get the team ID,
-     * you must perform the initial authorization flow with Microsoft Teams in the AWS
-     * Chatbot console. Then you can copy and paste the team ID from the console. For
-     * more details, see steps 1-4 in Get started with Microsoft Teams in the AWS
-     * Chatbot Administrator Guide.
-     */
     inline ConfiguredTeam& WithTeamId(const char* value) { SetTeamId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * The name of the Microsoft Teams Team.
+     * <p>The name of the Microsoft Teams Team.</p>
      */
     inline const Aws::String& GetTeamName() const{ return m_teamName; }
-
-    /**
-     * The name of the Microsoft Teams Team.
-     */
     inline bool TeamNameHasBeenSet() const { return m_teamNameHasBeenSet; }
-
-    /**
-     * The name of the Microsoft Teams Team.
-     */
     inline void SetTeamName(const Aws::String& value) { m_teamNameHasBeenSet = true; m_teamName = value; }
-
-    /**
-     * The name of the Microsoft Teams Team.
-     */
     inline void SetTeamName(Aws::String&& value) { m_teamNameHasBeenSet = true; m_teamName = std::move(value); }
-
-    /**
-     * The name of the Microsoft Teams Team.
-     */
     inline void SetTeamName(const char* value) { m_teamNameHasBeenSet = true; m_teamName.assign(value); }
-
-    /**
-     * The name of the Microsoft Teams Team.
-     */
     inline ConfiguredTeam& WithTeamName(const Aws::String& value) { SetTeamName(value); return *this;}
-
-    /**
-     * The name of the Microsoft Teams Team.
-     */
     inline ConfiguredTeam& WithTeamName(Aws::String&& value) { SetTeamName(std::move(value)); return *this;}
-
-    /**
-     * The name of the Microsoft Teams Team.
-     */
     inline ConfiguredTeam& WithTeamName(const char* value) { SetTeamName(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>Either <code>ENABLED</code> or <code>DISABLED</code>. The resource returns
+     * <code>DISABLED</code> if the organization's AWS Chatbot policy has explicitly
+     * denied that configuration. For example, if Amazon Chime is disabled.</p>
+     */
+    inline const Aws::String& GetState() const{ return m_state; }
+    inline bool StateHasBeenSet() const { return m_stateHasBeenSet; }
+    inline void SetState(const Aws::String& value) { m_stateHasBeenSet = true; m_state = value; }
+    inline void SetState(Aws::String&& value) { m_stateHasBeenSet = true; m_state = std::move(value); }
+    inline void SetState(const char* value) { m_stateHasBeenSet = true; m_state.assign(value); }
+    inline ConfiguredTeam& WithState(const Aws::String& value) { SetState(value); return *this;}
+    inline ConfiguredTeam& WithState(Aws::String&& value) { SetState(std::move(value)); return *this;}
+    inline ConfiguredTeam& WithState(const char* value) { SetState(value); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>Provided if State is <code>DISABLED</code>. Provides context as to why the
+     * resource is disabled.</p>
+     */
+    inline const Aws::String& GetStateReason() const{ return m_stateReason; }
+    inline bool StateReasonHasBeenSet() const { return m_stateReasonHasBeenSet; }
+    inline void SetStateReason(const Aws::String& value) { m_stateReasonHasBeenSet = true; m_stateReason = value; }
+    inline void SetStateReason(Aws::String&& value) { m_stateReasonHasBeenSet = true; m_stateReason = std::move(value); }
+    inline void SetStateReason(const char* value) { m_stateReasonHasBeenSet = true; m_stateReason.assign(value); }
+    inline ConfiguredTeam& WithStateReason(const Aws::String& value) { SetStateReason(value); return *this;}
+    inline ConfiguredTeam& WithStateReason(Aws::String&& value) { SetStateReason(std::move(value)); return *this;}
+    inline ConfiguredTeam& WithStateReason(const char* value) { SetStateReason(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_tenantId;
@@ -202,6 +126,12 @@ namespace Model
 
     Aws::String m_teamName;
     bool m_teamNameHasBeenSet = false;
+
+    Aws::String m_state;
+    bool m_stateHasBeenSet = false;
+
+    Aws::String m_stateReason;
+    bool m_stateReasonHasBeenSet = false;
   };
 
 } // namespace Model

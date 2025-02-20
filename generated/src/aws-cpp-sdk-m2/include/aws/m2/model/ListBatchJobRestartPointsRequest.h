@@ -11,6 +11,10 @@
 
 namespace Aws
 {
+namespace Http
+{
+    class URI;
+} //namespace Http
 namespace MainframeModernization
 {
 namespace Model
@@ -31,92 +35,59 @@ namespace Model
 
     AWS_MAINFRAMEMODERNIZATION_API Aws::String SerializePayload() const override;
 
+    AWS_MAINFRAMEMODERNIZATION_API void AddQueryStringParameters(Aws::Http::URI& uri) const override;
 
+
+    ///@{
     /**
      * <p>The unique identifier of the application.</p>
      */
     inline const Aws::String& GetApplicationId() const{ return m_applicationId; }
-
-    /**
-     * <p>The unique identifier of the application.</p>
-     */
     inline bool ApplicationIdHasBeenSet() const { return m_applicationIdHasBeenSet; }
-
-    /**
-     * <p>The unique identifier of the application.</p>
-     */
     inline void SetApplicationId(const Aws::String& value) { m_applicationIdHasBeenSet = true; m_applicationId = value; }
-
-    /**
-     * <p>The unique identifier of the application.</p>
-     */
     inline void SetApplicationId(Aws::String&& value) { m_applicationIdHasBeenSet = true; m_applicationId = std::move(value); }
-
-    /**
-     * <p>The unique identifier of the application.</p>
-     */
     inline void SetApplicationId(const char* value) { m_applicationIdHasBeenSet = true; m_applicationId.assign(value); }
-
-    /**
-     * <p>The unique identifier of the application.</p>
-     */
     inline ListBatchJobRestartPointsRequest& WithApplicationId(const Aws::String& value) { SetApplicationId(value); return *this;}
-
-    /**
-     * <p>The unique identifier of the application.</p>
-     */
     inline ListBatchJobRestartPointsRequest& WithApplicationId(Aws::String&& value) { SetApplicationId(std::move(value)); return *this;}
-
-    /**
-     * <p>The unique identifier of the application.</p>
-     */
     inline ListBatchJobRestartPointsRequest& WithApplicationId(const char* value) { SetApplicationId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p>The unique identifier of each batch job execution.</p>
+     * <p>The Amazon Web Services Secrets Manager containing user's credentials for
+     * authentication and authorization for List Batch Job Restart Points
+     * operation.</p>
+     */
+    inline const Aws::String& GetAuthSecretsManagerArn() const{ return m_authSecretsManagerArn; }
+    inline bool AuthSecretsManagerArnHasBeenSet() const { return m_authSecretsManagerArnHasBeenSet; }
+    inline void SetAuthSecretsManagerArn(const Aws::String& value) { m_authSecretsManagerArnHasBeenSet = true; m_authSecretsManagerArn = value; }
+    inline void SetAuthSecretsManagerArn(Aws::String&& value) { m_authSecretsManagerArnHasBeenSet = true; m_authSecretsManagerArn = std::move(value); }
+    inline void SetAuthSecretsManagerArn(const char* value) { m_authSecretsManagerArnHasBeenSet = true; m_authSecretsManagerArn.assign(value); }
+    inline ListBatchJobRestartPointsRequest& WithAuthSecretsManagerArn(const Aws::String& value) { SetAuthSecretsManagerArn(value); return *this;}
+    inline ListBatchJobRestartPointsRequest& WithAuthSecretsManagerArn(Aws::String&& value) { SetAuthSecretsManagerArn(std::move(value)); return *this;}
+    inline ListBatchJobRestartPointsRequest& WithAuthSecretsManagerArn(const char* value) { SetAuthSecretsManagerArn(value); return *this;}
+    ///@}
+
+    ///@{
+    /**
+     * <p>The unique identifier of the batch job execution.</p>
      */
     inline const Aws::String& GetExecutionId() const{ return m_executionId; }
-
-    /**
-     * <p>The unique identifier of each batch job execution.</p>
-     */
     inline bool ExecutionIdHasBeenSet() const { return m_executionIdHasBeenSet; }
-
-    /**
-     * <p>The unique identifier of each batch job execution.</p>
-     */
     inline void SetExecutionId(const Aws::String& value) { m_executionIdHasBeenSet = true; m_executionId = value; }
-
-    /**
-     * <p>The unique identifier of each batch job execution.</p>
-     */
     inline void SetExecutionId(Aws::String&& value) { m_executionIdHasBeenSet = true; m_executionId = std::move(value); }
-
-    /**
-     * <p>The unique identifier of each batch job execution.</p>
-     */
     inline void SetExecutionId(const char* value) { m_executionIdHasBeenSet = true; m_executionId.assign(value); }
-
-    /**
-     * <p>The unique identifier of each batch job execution.</p>
-     */
     inline ListBatchJobRestartPointsRequest& WithExecutionId(const Aws::String& value) { SetExecutionId(value); return *this;}
-
-    /**
-     * <p>The unique identifier of each batch job execution.</p>
-     */
     inline ListBatchJobRestartPointsRequest& WithExecutionId(Aws::String&& value) { SetExecutionId(std::move(value)); return *this;}
-
-    /**
-     * <p>The unique identifier of each batch job execution.</p>
-     */
     inline ListBatchJobRestartPointsRequest& WithExecutionId(const char* value) { SetExecutionId(value); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_applicationId;
     bool m_applicationIdHasBeenSet = false;
+
+    Aws::String m_authSecretsManagerArn;
+    bool m_authSecretsManagerArnHasBeenSet = false;
 
     Aws::String m_executionId;
     bool m_executionIdHasBeenSet = false;

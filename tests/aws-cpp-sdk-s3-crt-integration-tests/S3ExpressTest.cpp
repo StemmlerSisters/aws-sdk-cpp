@@ -199,10 +199,11 @@ namespace {
         .WithChecksumCRC32(uploadPart.GetResult().GetChecksumCRC32()));
 
       return client->CompleteMultipartUpload(CompleteMultipartUploadRequest()
-        .WithBucket(bucketName)
-        .WithKey(keyName)
-        .WithUploadId(createOutcome.GetResult().GetUploadId())
-        .WithMultipartUpload(completedUpload));
+                                                 .WithBucket(bucketName)
+                                                 .WithKey(keyName)
+                                                 .WithUploadId(createOutcome.GetResult().GetUploadId())
+                                                 .WithMultipartUpload(completedUpload)
+                                                 .WithChecksumType(ChecksumType::COMPOSITE));
     }
 
     UploadPartCopyOutcome UploadPartCopy(const Aws::String &bucketName, const Aws::String &keyName) {
@@ -477,6 +478,25 @@ namespace {
         EXPECT_TRUE(response.IsSuccess());
       }
     }
+  }
+
+  TEST_F(S3ExpressTest, PutObjectChecksumWithoutAlgorithmValue) {
+    const auto bucketName = Testing::GetAwsResourcePrefix() + randomString() + S3_EXPRESS_SUFFIX;
+    const auto createOutcome = CreateBucket(bucketName);
+    AWS_EXPECT_SUCCESS(createOutcome);
+
+    auto request = PutObjectRequest()
+        .WithBucket(bucketName)
+        .WithKey("swingingparty")
+        .WithChecksumAlgorithm(ChecksumAlgorithm::CRC32);
+
+    std::shared_ptr<IOStream> body = Aws::MakeShared<StringStream>(ALLOCATION_TAG,
+      "Bring your own lampshade, somewhere there's a party.",
+      std::ios_base::in | std::ios_base::binary);
+    request.SetBody(body);
+
+    const auto response = client->PutObject(request);
+    AWS_EXPECT_SUCCESS(response);
   }
 
   TEST_F(S3ExpressTest, PutObjectChecksumWithoutAlgorithm) {

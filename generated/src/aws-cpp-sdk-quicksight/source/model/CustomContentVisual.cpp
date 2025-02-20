@@ -24,17 +24,13 @@ CustomContentVisual::CustomContentVisual() :
     m_subtitleHasBeenSet(false),
     m_chartConfigurationHasBeenSet(false),
     m_actionsHasBeenSet(false),
-    m_dataSetIdentifierHasBeenSet(false)
+    m_dataSetIdentifierHasBeenSet(false),
+    m_visualContentAltTextHasBeenSet(false)
 {
 }
 
-CustomContentVisual::CustomContentVisual(JsonView jsonValue) : 
-    m_visualIdHasBeenSet(false),
-    m_titleHasBeenSet(false),
-    m_subtitleHasBeenSet(false),
-    m_chartConfigurationHasBeenSet(false),
-    m_actionsHasBeenSet(false),
-    m_dataSetIdentifierHasBeenSet(false)
+CustomContentVisual::CustomContentVisual(JsonView jsonValue)
+  : CustomContentVisual()
 {
   *this = jsonValue;
 }
@@ -86,6 +82,13 @@ CustomContentVisual& CustomContentVisual::operator =(JsonView jsonValue)
     m_dataSetIdentifierHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("VisualContentAltText"))
+  {
+    m_visualContentAltText = jsonValue.GetString("VisualContentAltText");
+
+    m_visualContentAltTextHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -131,6 +134,12 @@ JsonValue CustomContentVisual::Jsonize() const
   if(m_dataSetIdentifierHasBeenSet)
   {
    payload.WithString("DataSetIdentifier", m_dataSetIdentifier);
+
+  }
+
+  if(m_visualContentAltTextHasBeenSet)
+  {
+   payload.WithString("VisualContentAltText", m_visualContentAltText);
 
   }
 

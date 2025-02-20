@@ -32,14 +32,19 @@ PutObjectRequest::PutObjectRequest() :
     m_checksumAlgorithmHasBeenSet(false),
     m_checksumCRC32HasBeenSet(false),
     m_checksumCRC32CHasBeenSet(false),
+    m_checksumCRC64NVMEHasBeenSet(false),
     m_checksumSHA1HasBeenSet(false),
     m_checksumSHA256HasBeenSet(false),
     m_expiresHasBeenSet(false),
+    m_ifMatchHasBeenSet(false),
+    m_ifNoneMatchHasBeenSet(false),
     m_grantFullControlHasBeenSet(false),
     m_grantReadHasBeenSet(false),
     m_grantReadACPHasBeenSet(false),
     m_grantWriteACPHasBeenSet(false),
     m_keyHasBeenSet(false),
+    m_writeOffsetBytes(0),
+    m_writeOffsetBytesHasBeenSet(false),
     m_metadataHasBeenSet(false),
     m_serverSideEncryption(ServerSideEncryption::NOT_SET),
     m_serverSideEncryptionHasBeenSet(false),
@@ -159,6 +164,13 @@ Aws::Http::HeaderValueCollection PutObjectRequest::GetRequestSpecificHeaders() c
     ss.str("");
   }
 
+  if(m_checksumCRC64NVMEHasBeenSet)
+  {
+    ss << m_checksumCRC64NVME;
+    headers.emplace("x-amz-checksum-crc64nvme",  ss.str());
+    ss.str("");
+  }
+
   if(m_checksumSHA1HasBeenSet)
   {
     ss << m_checksumSHA1;
@@ -176,6 +188,20 @@ Aws::Http::HeaderValueCollection PutObjectRequest::GetRequestSpecificHeaders() c
   if(m_expiresHasBeenSet)
   {
     headers.emplace("expires", m_expires.ToGmtString(Aws::Utils::DateFormat::RFC822));
+  }
+
+  if(m_ifMatchHasBeenSet)
+  {
+    ss << m_ifMatch;
+    headers.emplace("if-match",  ss.str());
+    ss.str("");
+  }
+
+  if(m_ifNoneMatchHasBeenSet)
+  {
+    ss << m_ifNoneMatch;
+    headers.emplace("if-none-match",  ss.str());
+    ss.str("");
   }
 
   if(m_grantFullControlHasBeenSet)
@@ -203,6 +229,13 @@ Aws::Http::HeaderValueCollection PutObjectRequest::GetRequestSpecificHeaders() c
   {
     ss << m_grantWriteACP;
     headers.emplace("x-amz-grant-write-acp",  ss.str());
+    ss.str("");
+  }
+
+  if(m_writeOffsetBytesHasBeenSet)
+  {
+    ss << m_writeOffsetBytes;
+    headers.emplace("x-amz-write-offset-bytes",  ss.str());
     ss.str("");
   }
 
@@ -313,6 +346,27 @@ Aws::Http::HeaderValueCollection PutObjectRequest::GetRequestSpecificHeaders() c
 
 }
 
+bool PutObjectRequest::HasEmbeddedError(Aws::IOStream &body,
+  const Aws::Http::HeaderValueCollection &header) const
+{
+  // Header is unused
+  AWS_UNREFERENCED_PARAM(header);
+
+  auto readPointer = body.tellg();
+  Utils::Xml::XmlDocument doc = Utils::Xml::XmlDocument::CreateFromXmlStream(body);
+  body.seekg(readPointer);
+
+  if (!doc.WasParseSuccessful()) {
+    return false;
+  }
+
+  if (!doc.GetRootElement().IsNull() && doc.GetRootElement().GetName() == Aws::String("Error")) {
+    return true;
+  }
+
+  return false;
+}
+
 PutObjectRequest::EndpointParameters PutObjectRequest::GetEndpointContextParams() const
 {
     EndpointParameters parameters;
@@ -330,7 +384,7 @@ Aws::String PutObjectRequest::GetChecksumAlgorithmName() const
 {
   if (m_checksumAlgorithm == ChecksumAlgorithm::NOT_SET)
   {
-    return "md5";
+    return "crc64nvme";
   }
   else
   {

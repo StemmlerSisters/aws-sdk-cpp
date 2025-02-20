@@ -26,6 +26,7 @@ UploadPartRequest::UploadPartRequest() :
     m_checksumAlgorithmHasBeenSet(false),
     m_checksumCRC32HasBeenSet(false),
     m_checksumCRC32CHasBeenSet(false),
+    m_checksumCRC64NVMEHasBeenSet(false),
     m_checksumSHA1HasBeenSet(false),
     m_checksumSHA256HasBeenSet(false),
     m_keyHasBeenSet(false),
@@ -116,6 +117,13 @@ Aws::Http::HeaderValueCollection UploadPartRequest::GetRequestSpecificHeaders() 
     ss.str("");
   }
 
+  if(m_checksumCRC64NVMEHasBeenSet)
+  {
+    ss << m_checksumCRC64NVME;
+    headers.emplace("x-amz-checksum-crc64nvme",  ss.str());
+    ss.str("");
+  }
+
   if(m_checksumSHA1HasBeenSet)
   {
     ss << m_checksumSHA1;
@@ -167,6 +175,27 @@ Aws::Http::HeaderValueCollection UploadPartRequest::GetRequestSpecificHeaders() 
 
 }
 
+bool UploadPartRequest::HasEmbeddedError(Aws::IOStream &body,
+  const Aws::Http::HeaderValueCollection &header) const
+{
+  // Header is unused
+  AWS_UNREFERENCED_PARAM(header);
+
+  auto readPointer = body.tellg();
+  Utils::Xml::XmlDocument doc = Utils::Xml::XmlDocument::CreateFromXmlStream(body);
+  body.seekg(readPointer);
+
+  if (!doc.WasParseSuccessful()) {
+    return false;
+  }
+
+  if (!doc.GetRootElement().IsNull() && doc.GetRootElement().GetName() == Aws::String("Error")) {
+    return true;
+  }
+
+  return false;
+}
+
 UploadPartRequest::EndpointParameters UploadPartRequest::GetEndpointContextParams() const
 {
     EndpointParameters parameters;
@@ -184,7 +213,7 @@ Aws::String UploadPartRequest::GetChecksumAlgorithmName() const
 {
   if (m_checksumAlgorithm == ChecksumAlgorithm::NOT_SET)
   {
-    return "md5";
+    return "crc64nvme";
   }
   else
   {

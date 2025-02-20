@@ -32,19 +32,8 @@ namespace QBusiness
    * access control permissions you need to use this API, see <a
    * href="https://docs.aws.amazon.com/amazonq/latest/business-use-dg/iam-roles.html">IAM
    * roles for Amazon Q Business</a> in the <i>Amazon Q Business User Guide</i>.</p>
-   * <p>You can use the following AWS SDKs to access Amazon Q Business APIs:</p> <ul>
-   * <li> <p> <a href="https://docs.aws.amazon.com/sdk-for-cpp">AWS SDK for C++</a>
-   * </p> </li> <li> <p> <a href="https://docs.aws.amazon.com/sdk-for-go">AWS SDK for
-   * Go</a> </p> </li> <li> <p> <a
-   * href="https://docs.aws.amazon.com/sdk-for-java">AWS SDK for Java</a> </p> </li>
-   * <li> <p> <a href="https://docs.aws.amazon.com/sdk-for-javascript">AWS SDK for
-   * JavaScript</a> </p> </li> <li> <p> <a
-   * href="https://docs.aws.amazon.com/sdk-for-net">AWS SDK for .NET</a> </p> </li>
-   * <li> <p> <a href="https://docs.aws.amazon.com/pythonsdk">AWS SDK for Python
-   * (Boto3)</a> </p> </li> <li> <p> <a
-   * href="https://docs.aws.amazon.com/sdk-for-ruby">AWS SDK for Ruby</a> </p> </li>
-   * </ul> <p>The following resources provide additional information about using the
-   * Amazon Q Business API:</p> <ul> <li> <p> <i> <a
+   * <p>The following resources provide additional information about using the Amazon
+   * Q Business API:</p> <ul> <li> <p> <i> <a
    * href="https://docs.aws.amazon.com/amazonq/latest/business-use-dg/setting-up.html">Setting
    * up for Amazon Q Business</a> </i> </p> </li> <li> <p> <i> <a
    * href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/qbusiness/index.html">Amazon
@@ -111,6 +100,35 @@ namespace QBusiness
         virtual ~QBusinessClient();
 
         /**
+         * <p>Adds or updates a permission policy for a Amazon Q Business application,
+         * allowing cross-account access for an ISV. This operation creates a new policy
+         * statement for the specified Amazon Q Business application. The policy statement
+         * defines the IAM actions that the ISV is allowed to perform on the Amazon Q
+         * Business application's resources.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/AssociatePermission">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::AssociatePermissionOutcome AssociatePermission(const Model::AssociatePermissionRequest& request) const;
+
+        /**
+         * A Callable wrapper for AssociatePermission that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename AssociatePermissionRequestT = Model::AssociatePermissionRequest>
+        Model::AssociatePermissionOutcomeCallable AssociatePermissionCallable(const AssociatePermissionRequestT& request) const
+        {
+            return SubmitCallable(&QBusinessClient::AssociatePermission, request);
+        }
+
+        /**
+         * An Async wrapper for AssociatePermission that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename AssociatePermissionRequestT = Model::AssociatePermissionRequest>
+        void AssociatePermissionAsync(const AssociatePermissionRequestT& request, const AssociatePermissionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&QBusinessClient::AssociatePermission, request, handler, context);
+        }
+
+        /**
          * <p>Asynchronously deletes one or more documents added using the
          * <code>BatchPutDocument</code> API from an Amazon Q Business index.</p> <p>You
          * can see the progress of the deletion, and any error messages related to the
@@ -171,6 +189,33 @@ namespace QBusiness
         }
 
         /**
+         * <p>Unsubscribes a user or a group from their pricing tier in an Amazon Q
+         * Business application. An unsubscribed user or group loses all Amazon Q Business
+         * feature access at the start of next month. </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/CancelSubscription">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CancelSubscriptionOutcome CancelSubscription(const Model::CancelSubscriptionRequest& request) const;
+
+        /**
+         * A Callable wrapper for CancelSubscription that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CancelSubscriptionRequestT = Model::CancelSubscriptionRequest>
+        Model::CancelSubscriptionOutcomeCallable CancelSubscriptionCallable(const CancelSubscriptionRequestT& request) const
+        {
+            return SubmitCallable(&QBusinessClient::CancelSubscription, request);
+        }
+
+        /**
+         * An Async wrapper for CancelSubscription that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CancelSubscriptionRequestT = Model::CancelSubscriptionRequest>
+        void CancelSubscriptionAsync(const CancelSubscriptionRequestT& request, const CancelSubscriptionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&QBusinessClient::CancelSubscription, request, handler, context);
+        }
+
+        /**
          * <p>Starts or continues a streaming Amazon Q Business conversation.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/Chat">AWS API
@@ -216,9 +261,19 @@ namespace QBusiness
          * for Amazon Q Business. Not all features in Amazon Q Business Pro are also
          * available in Amazon Q Business Lite. For information on what's included in
          * Amazon Q Business Lite and what's included in Amazon Q Business Pro, see <a
-         * href="https://docs.aws.amazon.com/amazonq/latest/qbusiness-ug/what-is.html#tiers">Amazon
+         * href="https://docs.aws.amazon.com/amazonq/latest/qbusiness-ug/tiers.html#user-sub-tiers">Amazon
          * Q Business tiers</a>. You must use the Amazon Q Business console to assign
-         * subscription tiers to users.</p> <p><h3>See Also:</h3>   <a
+         * subscription tiers to users. </p> <p>An Amazon Q Apps service linked role will
+         * be created if it's absent in the Amazon Web Services account when
+         * <code>QAppsConfiguration</code> is enabled in the request. For more information,
+         * see <a
+         * href="https://docs.aws.amazon.com/amazonq/latest/qbusiness-ug/using-service-linked-roles-qapps.html">
+         * Using service-linked roles for Q Apps</a>.</p> <p>When you create an
+         * application, Amazon Q Business may securely transmit data for processing from
+         * your selected Amazon Web Services region, but within your geography. For more
+         * information, see <a
+         * href="https://docs.aws.amazon.com/amazonq/latest/qbusiness-ug/cross-region-inference.html">Cross
+         * region inference in Amazon Q Business</a>.</p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/CreateApplication">AWS
          * API Reference</a></p>
          */
@@ -240,6 +295,38 @@ namespace QBusiness
         void CreateApplicationAsync(const CreateApplicationRequestT& request, const CreateApplicationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&QBusinessClient::CreateApplication, request, handler, context);
+        }
+
+        /**
+         * <p>Creates a new data accessor for an ISV to access data from a Amazon Q
+         * Business application. The data accessor is an entity that represents the ISV's
+         * access to the Amazon Q Business application's data. It includes the IAM role ARN
+         * for the ISV, a friendly name, and a set of action configurations that define the
+         * specific actions the ISV is allowed to perform and any associated data filters.
+         * When the data accessor is created, an IAM Identity Center application is also
+         * created to manage the ISV's identity and authentication for accessing the Amazon
+         * Q Business application.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/CreateDataAccessor">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateDataAccessorOutcome CreateDataAccessor(const Model::CreateDataAccessorRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateDataAccessor that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateDataAccessorRequestT = Model::CreateDataAccessorRequest>
+        Model::CreateDataAccessorOutcomeCallable CreateDataAccessorCallable(const CreateDataAccessorRequestT& request) const
+        {
+            return SubmitCallable(&QBusinessClient::CreateDataAccessor, request);
+        }
+
+        /**
+         * An Async wrapper for CreateDataAccessor that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateDataAccessorRequestT = Model::CreateDataAccessorRequest>
+        void CreateDataAccessorAsync(const CreateDataAccessorRequestT& request, const CreateDataAccessorResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&QBusinessClient::CreateDataAccessor, request, handler, context);
         }
 
         /**
@@ -352,6 +439,37 @@ namespace QBusiness
         void CreateRetrieverAsync(const CreateRetrieverRequestT& request, const CreateRetrieverResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&QBusinessClient::CreateRetriever, request, handler, context);
+        }
+
+        /**
+         * <p>Subscribes an IAM Identity Center user or a group to a pricing tier for an
+         * Amazon Q Business application.</p> <p>Amazon Q Business offers two subscription
+         * tiers: <code>Q_LITE</code> and <code>Q_BUSINESS</code>. Subscription tier
+         * determines feature access for the user. For more information on subscriptions
+         * and pricing tiers, see <a
+         * href="https://aws.amazon.com/q/business/pricing/">Amazon Q Business
+         * pricing</a>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/CreateSubscription">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateSubscriptionOutcome CreateSubscription(const Model::CreateSubscriptionRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateSubscription that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateSubscriptionRequestT = Model::CreateSubscriptionRequest>
+        Model::CreateSubscriptionOutcomeCallable CreateSubscriptionCallable(const CreateSubscriptionRequestT& request) const
+        {
+            return SubmitCallable(&QBusinessClient::CreateSubscription, request);
+        }
+
+        /**
+         * An Async wrapper for CreateSubscription that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateSubscriptionRequestT = Model::CreateSubscriptionRequest>
+        void CreateSubscriptionAsync(const CreateSubscriptionRequestT& request, const CreateSubscriptionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&QBusinessClient::CreateSubscription, request, handler, context);
         }
 
         /**
@@ -480,6 +598,34 @@ namespace QBusiness
         void DeleteConversationAsync(const DeleteConversationRequestT& request, const DeleteConversationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&QBusinessClient::DeleteConversation, request, handler, context);
+        }
+
+        /**
+         * <p>Deletes a specified data accessor. This operation permanently removes the
+         * data accessor and its associated IAM Identity Center application. Any access
+         * granted to the ISV through this data accessor will be revoked.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/DeleteDataAccessor">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteDataAccessorOutcome DeleteDataAccessor(const Model::DeleteDataAccessorRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteDataAccessor that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteDataAccessorRequestT = Model::DeleteDataAccessorRequest>
+        Model::DeleteDataAccessorOutcomeCallable DeleteDataAccessorCallable(const DeleteDataAccessorRequestT& request) const
+        {
+            return SubmitCallable(&QBusinessClient::DeleteDataAccessor, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteDataAccessor that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteDataAccessorRequestT = Model::DeleteDataAccessorRequest>
+        void DeleteDataAccessorAsync(const DeleteDataAccessorRequestT& request, const DeleteDataAccessorResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&QBusinessClient::DeleteDataAccessor, request, handler, context);
         }
 
         /**
@@ -671,6 +817,34 @@ namespace QBusiness
         }
 
         /**
+         * <p>Removes a permission policy from a Amazon Q Business application, revoking
+         * the cross-account access that was previously granted to an ISV. This operation
+         * deletes the specified policy statement from the application's permission
+         * policy.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/DisassociatePermission">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DisassociatePermissionOutcome DisassociatePermission(const Model::DisassociatePermissionRequest& request) const;
+
+        /**
+         * A Callable wrapper for DisassociatePermission that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DisassociatePermissionRequestT = Model::DisassociatePermissionRequest>
+        Model::DisassociatePermissionOutcomeCallable DisassociatePermissionCallable(const DisassociatePermissionRequestT& request) const
+        {
+            return SubmitCallable(&QBusinessClient::DisassociatePermission, request);
+        }
+
+        /**
+         * An Async wrapper for DisassociatePermission that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DisassociatePermissionRequestT = Model::DisassociatePermissionRequest>
+        void DisassociatePermissionAsync(const DisassociatePermissionRequestT& request, const DisassociatePermissionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&QBusinessClient::DisassociatePermission, request, handler, context);
+        }
+
+        /**
          * <p>Gets information about an existing Amazon Q Business
          * application.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/GetApplication">AWS
@@ -697,7 +871,7 @@ namespace QBusiness
         }
 
         /**
-         * <p>Gets information about an chat controls configured for an existing Amazon Q
+         * <p>Gets information about chat controls configured for an existing Amazon Q
          * Business application.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/GetChatControlsConfiguration">AWS
          * API Reference</a></p>
@@ -720,6 +894,36 @@ namespace QBusiness
         void GetChatControlsConfigurationAsync(const GetChatControlsConfigurationRequestT& request, const GetChatControlsConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&QBusinessClient::GetChatControlsConfiguration, request, handler, context);
+        }
+
+        /**
+         * <p>Retrieves information about a specified data accessor. This operation returns
+         * details about the data accessor, including its display name, unique identifier,
+         * Amazon Resource Name (ARN), the associated Amazon Q Business application and IAM
+         * Identity Center application, the IAM role for the ISV, the action
+         * configurations, and the timestamps for when the data accessor was created and
+         * last updated.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/GetDataAccessor">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetDataAccessorOutcome GetDataAccessor(const Model::GetDataAccessorRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetDataAccessor that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetDataAccessorRequestT = Model::GetDataAccessorRequest>
+        Model::GetDataAccessorOutcomeCallable GetDataAccessorCallable(const GetDataAccessorRequestT& request) const
+        {
+            return SubmitCallable(&QBusinessClient::GetDataAccessor, request);
+        }
+
+        /**
+         * An Async wrapper for GetDataAccessor that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetDataAccessorRequestT = Model::GetDataAccessorRequest>
+        void GetDataAccessorAsync(const GetDataAccessorRequestT& request, const GetDataAccessorResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&QBusinessClient::GetDataAccessor, request, handler, context);
         }
 
         /**
@@ -800,6 +1004,37 @@ namespace QBusiness
         }
 
         /**
+         * <p>Returns the image bytes corresponding to a media object. If you have
+         * implemented your own application with the Chat and ChatSync APIs, and have
+         * enabled content extraction from visual data in Amazon Q Business, you use the
+         * GetMedia API operation to download the images so you can show them in your UI
+         * with responses.</p> <p>For more information, see <a
+         * href="https://docs.aws.amazon.com/amazonq/latest/qbusiness-ug/extracting-meaning-from-images.html">Extracting
+         * semantic meaning from images and visuals</a>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/GetMedia">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetMediaOutcome GetMedia(const Model::GetMediaRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetMedia that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetMediaRequestT = Model::GetMediaRequest>
+        Model::GetMediaOutcomeCallable GetMediaCallable(const GetMediaRequestT& request) const
+        {
+            return SubmitCallable(&QBusinessClient::GetMedia, request);
+        }
+
+        /**
+         * An Async wrapper for GetMedia that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetMediaRequestT = Model::GetMediaRequest>
+        void GetMediaAsync(const GetMediaRequestT& request, const GetMediaResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&QBusinessClient::GetMedia, request, handler, context);
+        }
+
+        /**
          * <p>Gets information about an existing Amazon Q Business plugin.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/GetPlugin">AWS
@@ -823,6 +1058,34 @@ namespace QBusiness
         void GetPluginAsync(const GetPluginRequestT& request, const GetPluginResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&QBusinessClient::GetPlugin, request, handler, context);
+        }
+
+        /**
+         * <p>Retrieves the current permission policy for a Amazon Q Business application.
+         * The policy is returned as a JSON-formatted string and defines the IAM actions
+         * that are allowed or denied for the application's resources.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/GetPolicy">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetPolicyOutcome GetPolicy(const Model::GetPolicyRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetPolicy that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetPolicyRequestT = Model::GetPolicyRequest>
+        Model::GetPolicyOutcomeCallable GetPolicyCallable(const GetPolicyRequestT& request) const
+        {
+            return SubmitCallable(&QBusinessClient::GetPolicy, request);
+        }
+
+        /**
+         * An Async wrapper for GetPolicy that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetPolicyRequestT = Model::GetPolicyRequest>
+        void GetPolicyAsync(const GetPolicyRequestT& request, const GetPolicyResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&QBusinessClient::GetPolicy, request, handler, context);
         }
 
         /**
@@ -904,17 +1167,21 @@ namespace QBusiness
         }
 
         /**
-         * <p>Lists Amazon Q Business applications.</p><p><h3>See Also:</h3>   <a
+         * <p>Lists Amazon Q Business applications.</p>  <p>Amazon Q Business
+         * applications may securely transmit data for processing across Amazon Web
+         * Services Regions within your geography. For more information, see <a
+         * href="https://docs.aws.amazon.com/amazonq/latest/qbusiness-ug/cross-region-inference.html">Cross
+         * region inference in Amazon Q Business</a>.</p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/ListApplications">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListApplicationsOutcome ListApplications(const Model::ListApplicationsRequest& request) const;
+        virtual Model::ListApplicationsOutcome ListApplications(const Model::ListApplicationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListApplications that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListApplicationsRequestT = Model::ListApplicationsRequest>
-        Model::ListApplicationsOutcomeCallable ListApplicationsCallable(const ListApplicationsRequestT& request) const
+        Model::ListApplicationsOutcomeCallable ListApplicationsCallable(const ListApplicationsRequestT& request = {}) const
         {
             return SubmitCallable(&QBusinessClient::ListApplications, request);
         }
@@ -923,9 +1190,36 @@ namespace QBusiness
          * An Async wrapper for ListApplications that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListApplicationsRequestT = Model::ListApplicationsRequest>
-        void ListApplicationsAsync(const ListApplicationsRequestT& request, const ListApplicationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListApplicationsAsync(const ListApplicationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListApplicationsRequestT& request = {}) const
         {
             return SubmitAsync(&QBusinessClient::ListApplications, request, handler, context);
+        }
+
+        /**
+         * <p>Gets a list of attachments associated with an Amazon Q Business web
+         * experience or a list of attachements associated with a specific Amazon Q
+         * Business conversation.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/ListAttachments">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListAttachmentsOutcome ListAttachments(const Model::ListAttachmentsRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListAttachments that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListAttachmentsRequestT = Model::ListAttachmentsRequest>
+        Model::ListAttachmentsOutcomeCallable ListAttachmentsCallable(const ListAttachmentsRequestT& request) const
+        {
+            return SubmitCallable(&QBusinessClient::ListAttachments, request);
+        }
+
+        /**
+         * An Async wrapper for ListAttachments that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListAttachmentsRequestT = Model::ListAttachmentsRequest>
+        void ListAttachmentsAsync(const ListAttachmentsRequestT& request, const ListAttachmentsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&QBusinessClient::ListAttachments, request, handler, context);
         }
 
         /**
@@ -952,6 +1246,34 @@ namespace QBusiness
         void ListConversationsAsync(const ListConversationsRequestT& request, const ListConversationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&QBusinessClient::ListConversations, request, handler, context);
+        }
+
+        /**
+         * <p>Lists the data accessors for a Amazon Q Business application. This operation
+         * returns a paginated list of data accessor summaries, including the friendly
+         * name, unique identifier, ARN, associated IAM role, and creation/update
+         * timestamps for each data accessor.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/ListDataAccessors">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListDataAccessorsOutcome ListDataAccessors(const Model::ListDataAccessorsRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListDataAccessors that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListDataAccessorsRequestT = Model::ListDataAccessorsRequest>
+        Model::ListDataAccessorsOutcomeCallable ListDataAccessorsCallable(const ListDataAccessorsRequestT& request) const
+        {
+            return SubmitCallable(&QBusinessClient::ListDataAccessors, request);
+        }
+
+        /**
+         * An Async wrapper for ListDataAccessors that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListDataAccessorsRequestT = Model::ListDataAccessorsRequest>
+        void ListDataAccessorsAsync(const ListDataAccessorsRequestT& request, const ListDataAccessorsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&QBusinessClient::ListDataAccessors, request, handler, context);
         }
 
         /**
@@ -1110,6 +1432,84 @@ namespace QBusiness
         }
 
         /**
+         * <p>Lists configured Amazon Q Business actions for a specific plugin in an Amazon
+         * Q Business application.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/ListPluginActions">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListPluginActionsOutcome ListPluginActions(const Model::ListPluginActionsRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListPluginActions that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListPluginActionsRequestT = Model::ListPluginActionsRequest>
+        Model::ListPluginActionsOutcomeCallable ListPluginActionsCallable(const ListPluginActionsRequestT& request) const
+        {
+            return SubmitCallable(&QBusinessClient::ListPluginActions, request);
+        }
+
+        /**
+         * An Async wrapper for ListPluginActions that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListPluginActionsRequestT = Model::ListPluginActionsRequest>
+        void ListPluginActionsAsync(const ListPluginActionsRequestT& request, const ListPluginActionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&QBusinessClient::ListPluginActions, request, handler, context);
+        }
+
+        /**
+         * <p>Lists configured Amazon Q Business actions for any plugin type—both built-in
+         * and custom.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/ListPluginTypeActions">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListPluginTypeActionsOutcome ListPluginTypeActions(const Model::ListPluginTypeActionsRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListPluginTypeActions that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListPluginTypeActionsRequestT = Model::ListPluginTypeActionsRequest>
+        Model::ListPluginTypeActionsOutcomeCallable ListPluginTypeActionsCallable(const ListPluginTypeActionsRequestT& request) const
+        {
+            return SubmitCallable(&QBusinessClient::ListPluginTypeActions, request);
+        }
+
+        /**
+         * An Async wrapper for ListPluginTypeActions that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListPluginTypeActionsRequestT = Model::ListPluginTypeActionsRequest>
+        void ListPluginTypeActionsAsync(const ListPluginTypeActionsRequestT& request, const ListPluginTypeActionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&QBusinessClient::ListPluginTypeActions, request, handler, context);
+        }
+
+        /**
+         * <p>Lists metadata for all Amazon Q Business plugin types.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/ListPluginTypeMetadata">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListPluginTypeMetadataOutcome ListPluginTypeMetadata(const Model::ListPluginTypeMetadataRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for ListPluginTypeMetadata that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListPluginTypeMetadataRequestT = Model::ListPluginTypeMetadataRequest>
+        Model::ListPluginTypeMetadataOutcomeCallable ListPluginTypeMetadataCallable(const ListPluginTypeMetadataRequestT& request = {}) const
+        {
+            return SubmitCallable(&QBusinessClient::ListPluginTypeMetadata, request);
+        }
+
+        /**
+         * An Async wrapper for ListPluginTypeMetadata that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListPluginTypeMetadataRequestT = Model::ListPluginTypeMetadataRequest>
+        void ListPluginTypeMetadataAsync(const ListPluginTypeMetadataResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListPluginTypeMetadataRequestT& request = {}) const
+        {
+            return SubmitAsync(&QBusinessClient::ListPluginTypeMetadata, request, handler, context);
+        }
+
+        /**
          * <p>Lists configured Amazon Q Business plugins.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/ListPlugins">AWS
          * API Reference</a></p>
@@ -1158,6 +1558,32 @@ namespace QBusiness
         void ListRetrieversAsync(const ListRetrieversRequestT& request, const ListRetrieversResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&QBusinessClient::ListRetrievers, request, handler, context);
+        }
+
+        /**
+         * <p> Lists all subscriptions created in an Amazon Q Business application.
+         * </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/ListSubscriptions">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListSubscriptionsOutcome ListSubscriptions(const Model::ListSubscriptionsRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListSubscriptions that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListSubscriptionsRequestT = Model::ListSubscriptionsRequest>
+        Model::ListSubscriptionsOutcomeCallable ListSubscriptionsCallable(const ListSubscriptionsRequestT& request) const
+        {
+            return SubmitCallable(&QBusinessClient::ListSubscriptions, request);
+        }
+
+        /**
+         * An Async wrapper for ListSubscriptions that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListSubscriptionsRequestT = Model::ListSubscriptionsRequest>
+        void ListSubscriptionsAsync(const ListSubscriptionsRequestT& request, const ListSubscriptionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&QBusinessClient::ListSubscriptions, request, handler, context);
         }
 
         /**
@@ -1246,7 +1672,13 @@ namespace QBusiness
          * "Engineering". These sub groups include their own list of users or people who
          * work in these teams. Only users who work in research and engineering, and
          * therefore belong in the intellectual property group, can see top-secret company
-         * documents in their Amazon Q Business chat results.</p><p><h3>See Also:</h3>   <a
+         * documents in their Amazon Q Business chat results.</p> <p>There are two options
+         * for creating groups, either passing group members inline or using an S3 file via
+         * the S3PathForGroupMembers field. For inline groups, there is a limit of 1000
+         * members per group and for provided S3 files there is a limit of 100 thousand
+         * members. When creating a group using an S3 file, you provide both an S3 file and
+         * a <code>RoleArn</code> for Amazon Q Buisness to access the file.</p><p><h3>See
+         * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/PutGroup">AWS
          * API Reference</a></p>
          */
@@ -1268,6 +1700,37 @@ namespace QBusiness
         void PutGroupAsync(const PutGroupRequestT& request, const PutGroupResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&QBusinessClient::PutGroup, request, handler, context);
+        }
+
+        /**
+         * <p>Searches for relevant content in a Amazon Q Business application based on a
+         * query. This operation takes a search query text, the Amazon Q Business
+         * application identifier, and optional filters (such as content source and maximum
+         * results) as input. It returns a list of relevant content items, where each item
+         * includes the content text, the unique document identifier, the document title,
+         * the document URI, any relevant document attributes, and score attributes
+         * indicating the confidence level of the relevance.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/SearchRelevantContent">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::SearchRelevantContentOutcome SearchRelevantContent(const Model::SearchRelevantContentRequest& request) const;
+
+        /**
+         * A Callable wrapper for SearchRelevantContent that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename SearchRelevantContentRequestT = Model::SearchRelevantContentRequest>
+        Model::SearchRelevantContentOutcomeCallable SearchRelevantContentCallable(const SearchRelevantContentRequestT& request) const
+        {
+            return SubmitCallable(&QBusinessClient::SearchRelevantContent, request);
+        }
+
+        /**
+         * An Async wrapper for SearchRelevantContent that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename SearchRelevantContentRequestT = Model::SearchRelevantContentRequest>
+        void SearchRelevantContentAsync(const SearchRelevantContentRequestT& request, const SearchRelevantContentResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&QBusinessClient::SearchRelevantContent, request, handler, context);
         }
 
         /**
@@ -1377,8 +1840,16 @@ namespace QBusiness
         }
 
         /**
-         * <p>Updates an existing Amazon Q Business application.</p><p><h3>See Also:</h3>  
-         * <a
+         * <p>Updates an existing Amazon Q Business application.</p>  <p>Amazon Q
+         * Business applications may securely transmit data for processing across Amazon
+         * Web Services Regions within your geography. For more information, see <a
+         * href="https://docs.aws.amazon.com/amazonq/latest/qbusiness-ug/cross-region-inference.html">Cross
+         * region inference in Amazon Q Business</a>.</p>   <p>An Amazon Q
+         * Apps service-linked role will be created if it's absent in the Amazon Web
+         * Services account when <code>QAppsConfiguration</code> is enabled in the request.
+         * For more information, see <a
+         * href="https://docs.aws.amazon.com/amazonq/latest/qbusiness-ug/using-service-linked-roles-qapps.html">Using
+         * service-linked roles for Q Apps</a>. </p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/UpdateApplication">AWS
          * API Reference</a></p>
          */
@@ -1403,7 +1874,7 @@ namespace QBusiness
         }
 
         /**
-         * <p>Updates an set of chat controls configured for an existing Amazon Q Business
+         * <p>Updates a set of chat controls configured for an existing Amazon Q Business
          * application.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/UpdateChatControlsConfiguration">AWS
          * API Reference</a></p>
@@ -1426,6 +1897,35 @@ namespace QBusiness
         void UpdateChatControlsConfigurationAsync(const UpdateChatControlsConfigurationRequestT& request, const UpdateChatControlsConfigurationResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&QBusinessClient::UpdateChatControlsConfiguration, request, handler, context);
+        }
+
+        /**
+         * <p>Updates an existing data accessor. This operation allows modifying the action
+         * configurations (the allowed actions and associated filters) and the display name
+         * of the data accessor. It does not allow changing the IAM role associated with
+         * the data accessor or other core properties of the data accessor.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/UpdateDataAccessor">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateDataAccessorOutcome UpdateDataAccessor(const Model::UpdateDataAccessorRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateDataAccessor that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateDataAccessorRequestT = Model::UpdateDataAccessorRequest>
+        Model::UpdateDataAccessorOutcomeCallable UpdateDataAccessorCallable(const UpdateDataAccessorRequestT& request) const
+        {
+            return SubmitCallable(&QBusinessClient::UpdateDataAccessor, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateDataAccessor that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateDataAccessorRequestT = Model::UpdateDataAccessorRequest>
+        void UpdateDataAccessorAsync(const UpdateDataAccessorRequestT& request, const UpdateDataAccessorResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&QBusinessClient::UpdateDataAccessor, request, handler, context);
         }
 
         /**
@@ -1531,6 +2031,36 @@ namespace QBusiness
         }
 
         /**
+         * <p>Updates the pricing tier for an Amazon Q Business subscription. Upgrades are
+         * instant. Downgrades apply at the start of the next month. Subscription tier
+         * determines feature access for the user. For more information on subscriptions
+         * and pricing tiers, see <a
+         * href="https://aws.amazon.com/q/business/pricing/">Amazon Q Business
+         * pricing</a>.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/UpdateSubscription">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateSubscriptionOutcome UpdateSubscription(const Model::UpdateSubscriptionRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateSubscription that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateSubscriptionRequestT = Model::UpdateSubscriptionRequest>
+        Model::UpdateSubscriptionOutcomeCallable UpdateSubscriptionCallable(const UpdateSubscriptionRequestT& request) const
+        {
+            return SubmitCallable(&QBusinessClient::UpdateSubscription, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateSubscription that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateSubscriptionRequestT = Model::UpdateSubscriptionRequest>
+        void UpdateSubscriptionAsync(const UpdateSubscriptionRequestT& request, const UpdateSubscriptionResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&QBusinessClient::UpdateSubscription, request, handler, context);
+        }
+
+        /**
          * <p>Updates a information associated with a user id.</p><p><h3>See Also:</h3>  
          * <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/qbusiness-2023-11-27/UpdateUser">AWS
@@ -1589,7 +2119,6 @@ namespace QBusiness
       void init(const QBusinessClientConfiguration& clientConfiguration);
 
       QBusinessClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
       std::shared_ptr<QBusinessEndpointProviderBase> m_endpointProvider;
   };
 

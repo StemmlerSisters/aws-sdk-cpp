@@ -33,125 +33,68 @@ namespace Model
     AWS_S3CONTROL_API UpdateJobStatusResult& operator=(const Aws::AmazonWebServiceResult<Aws::Utils::Xml::XmlDocument>& result);
 
 
+    ///@{
     /**
      * <p>The ID for the job whose status was updated.</p>
      */
     inline const Aws::String& GetJobId() const{ return m_jobId; }
-
-    /**
-     * <p>The ID for the job whose status was updated.</p>
-     */
     inline void SetJobId(const Aws::String& value) { m_jobId = value; }
-
-    /**
-     * <p>The ID for the job whose status was updated.</p>
-     */
     inline void SetJobId(Aws::String&& value) { m_jobId = std::move(value); }
-
-    /**
-     * <p>The ID for the job whose status was updated.</p>
-     */
     inline void SetJobId(const char* value) { m_jobId.assign(value); }
-
-    /**
-     * <p>The ID for the job whose status was updated.</p>
-     */
     inline UpdateJobStatusResult& WithJobId(const Aws::String& value) { SetJobId(value); return *this;}
-
-    /**
-     * <p>The ID for the job whose status was updated.</p>
-     */
     inline UpdateJobStatusResult& WithJobId(Aws::String&& value) { SetJobId(std::move(value)); return *this;}
-
-    /**
-     * <p>The ID for the job whose status was updated.</p>
-     */
     inline UpdateJobStatusResult& WithJobId(const char* value) { SetJobId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The current status for the specified job.</p>
      */
     inline const JobStatus& GetStatus() const{ return m_status; }
-
-    /**
-     * <p>The current status for the specified job.</p>
-     */
     inline void SetStatus(const JobStatus& value) { m_status = value; }
-
-    /**
-     * <p>The current status for the specified job.</p>
-     */
     inline void SetStatus(JobStatus&& value) { m_status = std::move(value); }
-
-    /**
-     * <p>The current status for the specified job.</p>
-     */
     inline UpdateJobStatusResult& WithStatus(const JobStatus& value) { SetStatus(value); return *this;}
-
-    /**
-     * <p>The current status for the specified job.</p>
-     */
     inline UpdateJobStatusResult& WithStatus(JobStatus&& value) { SetStatus(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The reason that the specified job's status was updated.</p>
      */
     inline const Aws::String& GetStatusUpdateReason() const{ return m_statusUpdateReason; }
-
-    /**
-     * <p>The reason that the specified job's status was updated.</p>
-     */
     inline void SetStatusUpdateReason(const Aws::String& value) { m_statusUpdateReason = value; }
-
-    /**
-     * <p>The reason that the specified job's status was updated.</p>
-     */
     inline void SetStatusUpdateReason(Aws::String&& value) { m_statusUpdateReason = std::move(value); }
-
-    /**
-     * <p>The reason that the specified job's status was updated.</p>
-     */
     inline void SetStatusUpdateReason(const char* value) { m_statusUpdateReason.assign(value); }
-
-    /**
-     * <p>The reason that the specified job's status was updated.</p>
-     */
     inline UpdateJobStatusResult& WithStatusUpdateReason(const Aws::String& value) { SetStatusUpdateReason(value); return *this;}
-
-    /**
-     * <p>The reason that the specified job's status was updated.</p>
-     */
     inline UpdateJobStatusResult& WithStatusUpdateReason(Aws::String&& value) { SetStatusUpdateReason(std::move(value)); return *this;}
-
-    /**
-     * <p>The reason that the specified job's status was updated.</p>
-     */
     inline UpdateJobStatusResult& WithStatusUpdateReason(const char* value) { SetStatusUpdateReason(value); return *this;}
+    ///@}
 
-
-    
+    ///@{
+    /**
+     * AWS Request Id value
+     */
     inline const Aws::String& GetRequestId() const{ return m_requestId; }
-
-    
     inline void SetRequestId(const Aws::String& value) { m_requestId = value; }
-
-    
     inline void SetRequestId(Aws::String&& value) { m_requestId = std::move(value); }
-
-    
     inline void SetRequestId(const char* value) { m_requestId.assign(value); }
-
-    
     inline UpdateJobStatusResult& WithRequestId(const Aws::String& value) { SetRequestId(value); return *this;}
-
-    
     inline UpdateJobStatusResult& WithRequestId(Aws::String&& value) { SetRequestId(std::move(value)); return *this;}
-
-    
     inline UpdateJobStatusResult& WithRequestId(const char* value) { SetRequestId(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * x-amz-id-2 header value, also known as Host Id
+     */
+    inline const Aws::String& GetHostId() const{ return m_hostId; }
+    inline void SetHostId(const Aws::String& value) { m_hostId = value; }
+    inline void SetHostId(Aws::String&& value) { m_hostId = std::move(value); }
+    inline void SetHostId(const char* value) { m_hostId.assign(value); }
+    inline UpdateJobStatusResult& WithHostId(const Aws::String& value) { SetHostId(value); return *this;}
+    inline UpdateJobStatusResult& WithHostId(Aws::String&& value) { SetHostId(std::move(value)); return *this;}
+    inline UpdateJobStatusResult& WithHostId(const char* value) { SetHostId(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_jobId;
@@ -161,6 +104,8 @@ namespace Model
     Aws::String m_statusUpdateReason;
 
     Aws::String m_requestId;
+
+    Aws::String m_hostId;
   };
 
 } // namespace Model

@@ -54,12 +54,28 @@ namespace Aws
             {
             }
 
+            /**
+             * Initializes object with accessKeyId, secretKey, sessionToken, expiration date and account Id.
+             */
+            AWSCredentials(const Aws::String& accessKeyId,
+                           const Aws::String& secretKey,
+                           const Aws::String& sessionToken,
+                           Aws::Utils::DateTime expiration,
+                           const Aws::String& accountId)
+                : m_accessKeyId(accessKeyId),
+                  m_secretKey(secretKey),
+                  m_sessionToken(sessionToken),
+                  m_expiration(expiration),
+                  m_accountId(accountId) {}
+
             bool operator == (const AWSCredentials& other) const
             {
                 return m_accessKeyId  == other.m_accessKeyId
                     && m_secretKey    == other.m_secretKey
                     && m_sessionToken == other.m_sessionToken
-                    && m_expiration   == other.m_expiration;
+                    && m_expiration   == other.m_expiration
+                    && m_accountId    == other.m_accountId;
+
             }
 
             bool operator != (const AWSCredentials& other) const
@@ -74,6 +90,14 @@ namespace Aws
             inline bool IsEmpty() const { return m_accessKeyId.empty() && m_secretKey.empty(); }
 
             inline bool IsExpired() const { return m_expiration <= Aws::Utils::DateTime::Now(); }
+
+            /**
+             * Checks to see if the credentials will expire in a threshold of time
+             *
+             * @param millisecondThreshold the milliseconds of threshold we will check for expiry.
+             * @return true if the credentials will expire before the threshold
+             */
+            inline bool ExpiresSoon(int64_t millisecondThreshold = 5000) const { return (m_expiration - Aws::Utils::DateTime::Now()).count() < millisecondThreshold; }
 
             inline bool IsExpiredOrEmpty() const { return IsEmpty() || IsExpired(); }
 
@@ -110,6 +134,14 @@ namespace Aws
             }
 
             /**
+             * Gets the underlying account id
+             */
+            inline const Aws::String& GetAccountId() const
+            {
+              return m_accountId;
+            }
+
+            /**
              * Sets the underlying access key credential. Copies from parameter accessKeyId.
              */
             inline void SetAWSAccessKeyId(const Aws::String& accessKeyId)
@@ -131,6 +163,14 @@ namespace Aws
             inline void SetSessionToken(const Aws::String& sessionToken)
             {
                 m_sessionToken = sessionToken;
+            }
+
+            /**
+             * Sets the underlying account id. Copies from parameter accountId
+             */
+            inline void SetAccountId(const Aws::String& accountId)
+            {
+                m_accountId = accountId;
             }
 
 
@@ -159,6 +199,14 @@ namespace Aws
             }
 
             /**
+             * Sets the underlying account id. Copies from parameter accountId
+             */
+            inline void SetAccountId(const char* accountId)
+            {
+                m_accountId = accountId;
+            }
+
+            /**
              * Sets the expiration date of the credential
              */
             inline void SetExpiration(Aws::Utils::DateTime expiration)
@@ -171,6 +219,7 @@ namespace Aws
             Aws::String m_secretKey;
             Aws::String m_sessionToken;
             Aws::Utils::DateTime m_expiration;
+            Aws::String m_accountId;
         };
     }
 }

@@ -17,16 +17,16 @@ using namespace Aws::Utils;
 using namespace Aws;
 
 PutObjectResult::PutObjectResult() : 
+    m_checksumType(ChecksumType::NOT_SET),
     m_serverSideEncryption(ServerSideEncryption::NOT_SET),
     m_bucketKeyEnabled(false),
+    m_size(0),
     m_requestCharged(RequestCharged::NOT_SET)
 {
 }
 
-PutObjectResult::PutObjectResult(const Aws::AmazonWebServiceResult<XmlDocument>& result) : 
-    m_serverSideEncryption(ServerSideEncryption::NOT_SET),
-    m_bucketKeyEnabled(false),
-    m_requestCharged(RequestCharged::NOT_SET)
+PutObjectResult::PutObjectResult(const Aws::AmazonWebServiceResult<XmlDocument>& result)
+  : PutObjectResult()
 {
   *this = result;
 }
@@ -65,6 +65,12 @@ PutObjectResult& PutObjectResult::operator =(const Aws::AmazonWebServiceResult<X
     m_checksumCRC32C = checksumCRC32CIter->second;
   }
 
+  const auto& checksumCRC64NVMEIter = headers.find("x-amz-checksum-crc64nvme");
+  if(checksumCRC64NVMEIter != headers.end())
+  {
+    m_checksumCRC64NVME = checksumCRC64NVMEIter->second;
+  }
+
   const auto& checksumSHA1Iter = headers.find("x-amz-checksum-sha1");
   if(checksumSHA1Iter != headers.end())
   {
@@ -75,6 +81,12 @@ PutObjectResult& PutObjectResult::operator =(const Aws::AmazonWebServiceResult<X
   if(checksumSHA256Iter != headers.end())
   {
     m_checksumSHA256 = checksumSHA256Iter->second;
+  }
+
+  const auto& checksumTypeIter = headers.find("x-amz-checksum-type");
+  if(checksumTypeIter != headers.end())
+  {
+    m_checksumType = ChecksumTypeMapper::GetChecksumTypeForName(checksumTypeIter->second);
   }
 
   const auto& serverSideEncryptionIter = headers.find("x-amz-server-side-encryption");
@@ -117,6 +129,12 @@ PutObjectResult& PutObjectResult::operator =(const Aws::AmazonWebServiceResult<X
   if(bucketKeyEnabledIter != headers.end())
   {
      m_bucketKeyEnabled = StringUtils::ConvertToBool(bucketKeyEnabledIter->second.c_str());
+  }
+
+  const auto& sizeIter = headers.find("x-amz-object-size");
+  if(sizeIter != headers.end())
+  {
+     m_size = StringUtils::ConvertToInt64(sizeIter->second.c_str());
   }
 
   const auto& requestChargedIter = headers.find("x-amz-request-charged");

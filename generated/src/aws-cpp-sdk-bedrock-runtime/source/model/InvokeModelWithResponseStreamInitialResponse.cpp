@@ -5,6 +5,8 @@
 
 #include <aws/bedrock-runtime/model/InvokeModelWithResponseStreamInitialResponse.h>
 #include <aws/core/utils/json/JsonSerializer.h>
+#include <aws/core/utils/StringUtils.h>
+#include <aws/core/utils/UnreferencedParam.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 
 #include <utility>
@@ -20,12 +22,14 @@ namespace Model
 {
 
 InvokeModelWithResponseStreamInitialResponse::InvokeModelWithResponseStreamInitialResponse() : 
-    m_contentTypeHasBeenSet(false)
+    m_contentTypeHasBeenSet(false),
+    m_performanceConfigLatency(PerformanceConfigLatency::NOT_SET),
+    m_performanceConfigLatencyHasBeenSet(false)
 {
 }
 
-InvokeModelWithResponseStreamInitialResponse::InvokeModelWithResponseStreamInitialResponse(JsonView jsonValue) : 
-    m_contentTypeHasBeenSet(false)
+InvokeModelWithResponseStreamInitialResponse::InvokeModelWithResponseStreamInitialResponse(JsonView jsonValue)
+  : InvokeModelWithResponseStreamInitialResponse()
 {
   *this = jsonValue;
 }
@@ -34,6 +38,22 @@ InvokeModelWithResponseStreamInitialResponse& InvokeModelWithResponseStreamIniti
 {
   AWS_UNREFERENCED_PARAM(jsonValue);
   return *this;
+}
+
+InvokeModelWithResponseStreamInitialResponse::InvokeModelWithResponseStreamInitialResponse(const Http::HeaderValueCollection& headers) : InvokeModelWithResponseStreamInitialResponse()
+{
+  const auto& contentTypeIter = headers.find("x-amzn-bedrock-content-type");
+  if(contentTypeIter != headers.end())
+  {
+    m_contentType = contentTypeIter->second;
+  }
+
+  const auto& performanceConfigLatencyIter = headers.find("x-amzn-bedrock-performanceconfig-latency");
+  if(performanceConfigLatencyIter != headers.end())
+  {
+    m_performanceConfigLatency = PerformanceConfigLatencyMapper::GetPerformanceConfigLatencyForName(performanceConfigLatencyIter->second);
+  }
+
 }
 
 JsonValue InvokeModelWithResponseStreamInitialResponse::Jsonize() const

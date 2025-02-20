@@ -31,109 +31,58 @@ namespace Model
 
     AWS_APPCONFIG_API Aws::String SerializePayload() const override;
 
+    AWS_APPCONFIG_API Aws::Http::HeaderValueCollection GetRequestSpecificHeaders() const override;
 
+
+    ///@{
     /**
      * <p>The application ID.</p>
      */
     inline const Aws::String& GetApplicationId() const{ return m_applicationId; }
-
-    /**
-     * <p>The application ID.</p>
-     */
     inline bool ApplicationIdHasBeenSet() const { return m_applicationIdHasBeenSet; }
-
-    /**
-     * <p>The application ID.</p>
-     */
     inline void SetApplicationId(const Aws::String& value) { m_applicationIdHasBeenSet = true; m_applicationId = value; }
-
-    /**
-     * <p>The application ID.</p>
-     */
     inline void SetApplicationId(Aws::String&& value) { m_applicationIdHasBeenSet = true; m_applicationId = std::move(value); }
-
-    /**
-     * <p>The application ID.</p>
-     */
     inline void SetApplicationId(const char* value) { m_applicationIdHasBeenSet = true; m_applicationId.assign(value); }
-
-    /**
-     * <p>The application ID.</p>
-     */
     inline StopDeploymentRequest& WithApplicationId(const Aws::String& value) { SetApplicationId(value); return *this;}
-
-    /**
-     * <p>The application ID.</p>
-     */
     inline StopDeploymentRequest& WithApplicationId(Aws::String&& value) { SetApplicationId(std::move(value)); return *this;}
-
-    /**
-     * <p>The application ID.</p>
-     */
     inline StopDeploymentRequest& WithApplicationId(const char* value) { SetApplicationId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The environment ID.</p>
      */
     inline const Aws::String& GetEnvironmentId() const{ return m_environmentId; }
-
-    /**
-     * <p>The environment ID.</p>
-     */
     inline bool EnvironmentIdHasBeenSet() const { return m_environmentIdHasBeenSet; }
-
-    /**
-     * <p>The environment ID.</p>
-     */
     inline void SetEnvironmentId(const Aws::String& value) { m_environmentIdHasBeenSet = true; m_environmentId = value; }
-
-    /**
-     * <p>The environment ID.</p>
-     */
     inline void SetEnvironmentId(Aws::String&& value) { m_environmentIdHasBeenSet = true; m_environmentId = std::move(value); }
-
-    /**
-     * <p>The environment ID.</p>
-     */
     inline void SetEnvironmentId(const char* value) { m_environmentIdHasBeenSet = true; m_environmentId.assign(value); }
-
-    /**
-     * <p>The environment ID.</p>
-     */
     inline StopDeploymentRequest& WithEnvironmentId(const Aws::String& value) { SetEnvironmentId(value); return *this;}
-
-    /**
-     * <p>The environment ID.</p>
-     */
     inline StopDeploymentRequest& WithEnvironmentId(Aws::String&& value) { SetEnvironmentId(std::move(value)); return *this;}
-
-    /**
-     * <p>The environment ID.</p>
-     */
     inline StopDeploymentRequest& WithEnvironmentId(const char* value) { SetEnvironmentId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The sequence number of the deployment.</p>
      */
     inline int GetDeploymentNumber() const{ return m_deploymentNumber; }
-
-    /**
-     * <p>The sequence number of the deployment.</p>
-     */
     inline bool DeploymentNumberHasBeenSet() const { return m_deploymentNumberHasBeenSet; }
-
-    /**
-     * <p>The sequence number of the deployment.</p>
-     */
     inline void SetDeploymentNumber(int value) { m_deploymentNumberHasBeenSet = true; m_deploymentNumber = value; }
-
-    /**
-     * <p>The sequence number of the deployment.</p>
-     */
     inline StopDeploymentRequest& WithDeploymentNumber(int value) { SetDeploymentNumber(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>A Boolean that enables AppConfig to rollback a <code>COMPLETED</code>
+     * deployment to the previous configuration version. This action moves the
+     * deployment to a status of <code>REVERTED</code>.</p>
+     */
+    inline bool GetAllowRevert() const{ return m_allowRevert; }
+    inline bool AllowRevertHasBeenSet() const { return m_allowRevertHasBeenSet; }
+    inline void SetAllowRevert(bool value) { m_allowRevertHasBeenSet = true; m_allowRevert = value; }
+    inline StopDeploymentRequest& WithAllowRevert(bool value) { SetAllowRevert(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_applicationId;
@@ -144,6 +93,9 @@ namespace Model
 
     int m_deploymentNumber;
     bool m_deploymentNumberHasBeenSet = false;
+
+    bool m_allowRevert;
+    bool m_allowRevertHasBeenSet = false;
   };
 
 } // namespace Model

@@ -18,12 +18,13 @@ using namespace Aws::Utils;
 using namespace Aws;
 
 DescribeTaskResult::DescribeTaskResult() : 
-    m_status(TaskStatus::NOT_SET)
+    m_status(TaskStatus::NOT_SET),
+    m_taskMode(TaskMode::NOT_SET)
 {
 }
 
-DescribeTaskResult::DescribeTaskResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_status(TaskStatus::NOT_SET)
+DescribeTaskResult::DescribeTaskResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : DescribeTaskResult()
 {
   *this = result;
 }
@@ -154,6 +155,12 @@ DescribeTaskResult& DescribeTaskResult::operator =(const Aws::AmazonWebServiceRe
   if(jsonValue.ValueExists("ScheduleDetails"))
   {
     m_scheduleDetails = jsonValue.GetObject("ScheduleDetails");
+
+  }
+
+  if(jsonValue.ValueExists("TaskMode"))
+  {
+    m_taskMode = TaskModeMapper::GetTaskModeForName(jsonValue.GetString("TaskMode"));
 
   }
 

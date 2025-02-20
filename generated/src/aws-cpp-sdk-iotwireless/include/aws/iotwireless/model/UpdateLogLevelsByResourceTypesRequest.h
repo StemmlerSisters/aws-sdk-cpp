@@ -8,6 +8,7 @@
 #include <aws/iotwireless/IoTWirelessRequest.h>
 #include <aws/iotwireless/model/LogLevel.h>
 #include <aws/core/utils/memory/stl/AWSVector.h>
+#include <aws/iotwireless/model/FuotaTaskLogOption.h>
 #include <aws/iotwireless/model/WirelessDeviceLogOption.h>
 #include <aws/iotwireless/model/WirelessGatewayLogOption.h>
 #include <utility>
@@ -35,78 +36,58 @@ namespace Model
     AWS_IOTWIRELESS_API Aws::String SerializePayload() const override;
 
 
+    ///@{
     
     inline const LogLevel& GetDefaultLogLevel() const{ return m_defaultLogLevel; }
-
-    
     inline bool DefaultLogLevelHasBeenSet() const { return m_defaultLogLevelHasBeenSet; }
-
-    
     inline void SetDefaultLogLevel(const LogLevel& value) { m_defaultLogLevelHasBeenSet = true; m_defaultLogLevel = value; }
-
-    
     inline void SetDefaultLogLevel(LogLevel&& value) { m_defaultLogLevelHasBeenSet = true; m_defaultLogLevel = std::move(value); }
-
-    
     inline UpdateLogLevelsByResourceTypesRequest& WithDefaultLogLevel(const LogLevel& value) { SetDefaultLogLevel(value); return *this;}
-
-    
     inline UpdateLogLevelsByResourceTypesRequest& WithDefaultLogLevel(LogLevel&& value) { SetDefaultLogLevel(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    
+    inline const Aws::Vector<FuotaTaskLogOption>& GetFuotaTaskLogOptions() const{ return m_fuotaTaskLogOptions; }
+    inline bool FuotaTaskLogOptionsHasBeenSet() const { return m_fuotaTaskLogOptionsHasBeenSet; }
+    inline void SetFuotaTaskLogOptions(const Aws::Vector<FuotaTaskLogOption>& value) { m_fuotaTaskLogOptionsHasBeenSet = true; m_fuotaTaskLogOptions = value; }
+    inline void SetFuotaTaskLogOptions(Aws::Vector<FuotaTaskLogOption>&& value) { m_fuotaTaskLogOptionsHasBeenSet = true; m_fuotaTaskLogOptions = std::move(value); }
+    inline UpdateLogLevelsByResourceTypesRequest& WithFuotaTaskLogOptions(const Aws::Vector<FuotaTaskLogOption>& value) { SetFuotaTaskLogOptions(value); return *this;}
+    inline UpdateLogLevelsByResourceTypesRequest& WithFuotaTaskLogOptions(Aws::Vector<FuotaTaskLogOption>&& value) { SetFuotaTaskLogOptions(std::move(value)); return *this;}
+    inline UpdateLogLevelsByResourceTypesRequest& AddFuotaTaskLogOptions(const FuotaTaskLogOption& value) { m_fuotaTaskLogOptionsHasBeenSet = true; m_fuotaTaskLogOptions.push_back(value); return *this; }
+    inline UpdateLogLevelsByResourceTypesRequest& AddFuotaTaskLogOptions(FuotaTaskLogOption&& value) { m_fuotaTaskLogOptionsHasBeenSet = true; m_fuotaTaskLogOptions.push_back(std::move(value)); return *this; }
+    ///@}
 
+    ///@{
     
     inline const Aws::Vector<WirelessDeviceLogOption>& GetWirelessDeviceLogOptions() const{ return m_wirelessDeviceLogOptions; }
-
-    
     inline bool WirelessDeviceLogOptionsHasBeenSet() const { return m_wirelessDeviceLogOptionsHasBeenSet; }
-
-    
     inline void SetWirelessDeviceLogOptions(const Aws::Vector<WirelessDeviceLogOption>& value) { m_wirelessDeviceLogOptionsHasBeenSet = true; m_wirelessDeviceLogOptions = value; }
-
-    
     inline void SetWirelessDeviceLogOptions(Aws::Vector<WirelessDeviceLogOption>&& value) { m_wirelessDeviceLogOptionsHasBeenSet = true; m_wirelessDeviceLogOptions = std::move(value); }
-
-    
     inline UpdateLogLevelsByResourceTypesRequest& WithWirelessDeviceLogOptions(const Aws::Vector<WirelessDeviceLogOption>& value) { SetWirelessDeviceLogOptions(value); return *this;}
-
-    
     inline UpdateLogLevelsByResourceTypesRequest& WithWirelessDeviceLogOptions(Aws::Vector<WirelessDeviceLogOption>&& value) { SetWirelessDeviceLogOptions(std::move(value)); return *this;}
-
-    
     inline UpdateLogLevelsByResourceTypesRequest& AddWirelessDeviceLogOptions(const WirelessDeviceLogOption& value) { m_wirelessDeviceLogOptionsHasBeenSet = true; m_wirelessDeviceLogOptions.push_back(value); return *this; }
-
-    
     inline UpdateLogLevelsByResourceTypesRequest& AddWirelessDeviceLogOptions(WirelessDeviceLogOption&& value) { m_wirelessDeviceLogOptionsHasBeenSet = true; m_wirelessDeviceLogOptions.push_back(std::move(value)); return *this; }
+    ///@}
 
-
+    ///@{
     
     inline const Aws::Vector<WirelessGatewayLogOption>& GetWirelessGatewayLogOptions() const{ return m_wirelessGatewayLogOptions; }
-
-    
     inline bool WirelessGatewayLogOptionsHasBeenSet() const { return m_wirelessGatewayLogOptionsHasBeenSet; }
-
-    
     inline void SetWirelessGatewayLogOptions(const Aws::Vector<WirelessGatewayLogOption>& value) { m_wirelessGatewayLogOptionsHasBeenSet = true; m_wirelessGatewayLogOptions = value; }
-
-    
     inline void SetWirelessGatewayLogOptions(Aws::Vector<WirelessGatewayLogOption>&& value) { m_wirelessGatewayLogOptionsHasBeenSet = true; m_wirelessGatewayLogOptions = std::move(value); }
-
-    
     inline UpdateLogLevelsByResourceTypesRequest& WithWirelessGatewayLogOptions(const Aws::Vector<WirelessGatewayLogOption>& value) { SetWirelessGatewayLogOptions(value); return *this;}
-
-    
     inline UpdateLogLevelsByResourceTypesRequest& WithWirelessGatewayLogOptions(Aws::Vector<WirelessGatewayLogOption>&& value) { SetWirelessGatewayLogOptions(std::move(value)); return *this;}
-
-    
     inline UpdateLogLevelsByResourceTypesRequest& AddWirelessGatewayLogOptions(const WirelessGatewayLogOption& value) { m_wirelessGatewayLogOptionsHasBeenSet = true; m_wirelessGatewayLogOptions.push_back(value); return *this; }
-
-    
     inline UpdateLogLevelsByResourceTypesRequest& AddWirelessGatewayLogOptions(WirelessGatewayLogOption&& value) { m_wirelessGatewayLogOptionsHasBeenSet = true; m_wirelessGatewayLogOptions.push_back(std::move(value)); return *this; }
-
+    ///@}
   private:
 
     LogLevel m_defaultLogLevel;
     bool m_defaultLogLevelHasBeenSet = false;
+
+    Aws::Vector<FuotaTaskLogOption> m_fuotaTaskLogOptions;
+    bool m_fuotaTaskLogOptionsHasBeenSet = false;
 
     Aws::Vector<WirelessDeviceLogOption> m_wirelessDeviceLogOptions;
     bool m_wirelessDeviceLogOptionsHasBeenSet = false;

@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/supplychain/SupplyChain_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/supplychain/SupplyChainServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/supplychain/SupplyChainErrorMarshaller.h>
 
 namespace Aws
 {
 namespace SupplyChain
 {
+  AWS_SUPPLYCHAIN_API extern const char SERVICE_NAME[];
   /**
    * <p> AWS Supply Chain is a cloud-based application that works with your
    * enterprise resource planning (ERP) and supply chain management systems. Using
@@ -26,12 +30,20 @@ namespace SupplyChain
    * allow for the exclusive use of AWS Identity and Access Management users and
    * roles to help facilitate access, trust, and permission policies. </p>
    */
-  class AWS_SUPPLYCHAIN_API SupplyChainClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<SupplyChainClient>
+  class AWS_SUPPLYCHAIN_API SupplyChainClient : smithy::client::AwsSmithyClientT<Aws::SupplyChain::SERVICE_NAME,
+      Aws::SupplyChain::SupplyChainClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      SupplyChainEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::SupplyChainErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<SupplyChainClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "SupplyChain"; }
 
       typedef SupplyChainClientConfiguration ClientConfigurationType;
       typedef SupplyChainEndpointProvider EndpointProviderType;
@@ -115,6 +127,184 @@ namespace SupplyChain
         }
 
         /**
+         * <p>Enables you to programmatically create a data pipeline to ingest data from
+         * source systems such as Amazon S3 buckets, to a predefined Amazon Web Services
+         * Supply Chain dataset (product, inbound_order) or a temporary dataset along with
+         * the data transformation query provided with the API.</p><p><h3>See Also:</h3>  
+         * <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/supplychain-2024-01-01/CreateDataIntegrationFlow">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateDataIntegrationFlowOutcome CreateDataIntegrationFlow(const Model::CreateDataIntegrationFlowRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateDataIntegrationFlow that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateDataIntegrationFlowRequestT = Model::CreateDataIntegrationFlowRequest>
+        Model::CreateDataIntegrationFlowOutcomeCallable CreateDataIntegrationFlowCallable(const CreateDataIntegrationFlowRequestT& request) const
+        {
+            return SubmitCallable(&SupplyChainClient::CreateDataIntegrationFlow, request);
+        }
+
+        /**
+         * An Async wrapper for CreateDataIntegrationFlow that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateDataIntegrationFlowRequestT = Model::CreateDataIntegrationFlowRequest>
+        void CreateDataIntegrationFlowAsync(const CreateDataIntegrationFlowRequestT& request, const CreateDataIntegrationFlowResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SupplyChainClient::CreateDataIntegrationFlow, request, handler, context);
+        }
+
+        /**
+         * <p>Enables you to programmatically create an Amazon Web Services Supply Chain
+         * data lake dataset. Developers can create the datasets using their pre-defined or
+         * custom schema for a given instance ID, namespace, and dataset
+         * name.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/supplychain-2024-01-01/CreateDataLakeDataset">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateDataLakeDatasetOutcome CreateDataLakeDataset(const Model::CreateDataLakeDatasetRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateDataLakeDataset that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateDataLakeDatasetRequestT = Model::CreateDataLakeDatasetRequest>
+        Model::CreateDataLakeDatasetOutcomeCallable CreateDataLakeDatasetCallable(const CreateDataLakeDatasetRequestT& request) const
+        {
+            return SubmitCallable(&SupplyChainClient::CreateDataLakeDataset, request);
+        }
+
+        /**
+         * An Async wrapper for CreateDataLakeDataset that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateDataLakeDatasetRequestT = Model::CreateDataLakeDatasetRequest>
+        void CreateDataLakeDatasetAsync(const CreateDataLakeDatasetRequestT& request, const CreateDataLakeDatasetResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SupplyChainClient::CreateDataLakeDataset, request, handler, context);
+        }
+
+        /**
+         * <p>Enables you to programmatically create an Amazon Web Services Supply Chain
+         * instance by applying KMS keys and relevant information associated with the API
+         * without using the Amazon Web Services console.</p> <p>This is an asynchronous
+         * operation. Upon receiving a CreateInstance request, Amazon Web Services Supply
+         * Chain immediately returns the instance resource, instance ID, and the
+         * initializing state while simultaneously creating all required Amazon Web
+         * Services resources for an instance creation. You can use GetInstance to check
+         * the status of the instance. If the instance results in an unhealthy state, you
+         * need to check the error message, delete the current instance, and recreate a new
+         * one based on the mitigation from the error message.</p><p><h3>See Also:</h3>  
+         * <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/supplychain-2024-01-01/CreateInstance">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateInstanceOutcome CreateInstance(const Model::CreateInstanceRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for CreateInstance that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateInstanceRequestT = Model::CreateInstanceRequest>
+        Model::CreateInstanceOutcomeCallable CreateInstanceCallable(const CreateInstanceRequestT& request = {}) const
+        {
+            return SubmitCallable(&SupplyChainClient::CreateInstance, request);
+        }
+
+        /**
+         * An Async wrapper for CreateInstance that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateInstanceRequestT = Model::CreateInstanceRequest>
+        void CreateInstanceAsync(const CreateInstanceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const CreateInstanceRequestT& request = {}) const
+        {
+            return SubmitAsync(&SupplyChainClient::CreateInstance, request, handler, context);
+        }
+
+        /**
+         * <p>Enable you to programmatically delete an existing data pipeline for the
+         * provided Amazon Web Services Supply Chain instance and DataIntegrationFlow
+         * name.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/supplychain-2024-01-01/DeleteDataIntegrationFlow">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteDataIntegrationFlowOutcome DeleteDataIntegrationFlow(const Model::DeleteDataIntegrationFlowRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteDataIntegrationFlow that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteDataIntegrationFlowRequestT = Model::DeleteDataIntegrationFlowRequest>
+        Model::DeleteDataIntegrationFlowOutcomeCallable DeleteDataIntegrationFlowCallable(const DeleteDataIntegrationFlowRequestT& request) const
+        {
+            return SubmitCallable(&SupplyChainClient::DeleteDataIntegrationFlow, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteDataIntegrationFlow that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteDataIntegrationFlowRequestT = Model::DeleteDataIntegrationFlowRequest>
+        void DeleteDataIntegrationFlowAsync(const DeleteDataIntegrationFlowRequestT& request, const DeleteDataIntegrationFlowResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SupplyChainClient::DeleteDataIntegrationFlow, request, handler, context);
+        }
+
+        /**
+         * <p>Enables you to programmatically delete an Amazon Web Services Supply Chain
+         * data lake dataset. Developers can delete the existing datasets for a given
+         * instance ID, namespace, and instance name.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/supplychain-2024-01-01/DeleteDataLakeDataset">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteDataLakeDatasetOutcome DeleteDataLakeDataset(const Model::DeleteDataLakeDatasetRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteDataLakeDataset that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteDataLakeDatasetRequestT = Model::DeleteDataLakeDatasetRequest>
+        Model::DeleteDataLakeDatasetOutcomeCallable DeleteDataLakeDatasetCallable(const DeleteDataLakeDatasetRequestT& request) const
+        {
+            return SubmitCallable(&SupplyChainClient::DeleteDataLakeDataset, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteDataLakeDataset that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteDataLakeDatasetRequestT = Model::DeleteDataLakeDatasetRequest>
+        void DeleteDataLakeDatasetAsync(const DeleteDataLakeDatasetRequestT& request, const DeleteDataLakeDatasetResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SupplyChainClient::DeleteDataLakeDataset, request, handler, context);
+        }
+
+        /**
+         * <p>Enables you to programmatically delete an Amazon Web Services Supply Chain
+         * instance by deleting the KMS keys and relevant information associated with the
+         * API without using the Amazon Web Services console.</p> <p>This is an
+         * asynchronous operation. Upon receiving a DeleteInstance request, Amazon Web
+         * Services Supply Chain immediately returns a response with the instance resource,
+         * delete state while cleaning up all Amazon Web Services resources created during
+         * the instance creation process. You can use the GetInstance action to check the
+         * instance status.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/supplychain-2024-01-01/DeleteInstance">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteInstanceOutcome DeleteInstance(const Model::DeleteInstanceRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteInstance that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteInstanceRequestT = Model::DeleteInstanceRequest>
+        Model::DeleteInstanceOutcomeCallable DeleteInstanceCallable(const DeleteInstanceRequestT& request) const
+        {
+            return SubmitCallable(&SupplyChainClient::DeleteInstance, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteInstance that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteInstanceRequestT = Model::DeleteInstanceRequest>
+        void DeleteInstanceAsync(const DeleteInstanceRequestT& request, const DeleteInstanceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SupplyChainClient::DeleteInstance, request, handler, context);
+        }
+
+        /**
          * <p>Get status and details of a BillOfMaterialsImportJob.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/supplychain-2024-01-01/GetBillOfMaterialsImportJob">AWS
@@ -141,8 +331,202 @@ namespace SupplyChain
         }
 
         /**
-         * <p>Send transactional data events with real-time data for analysis or
-         * monitoring.</p><p><h3>See Also:</h3>   <a
+         * <p>Enables you to programmatically view a specific data pipeline for the
+         * provided Amazon Web Services Supply Chain instance and DataIntegrationFlow
+         * name.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/supplychain-2024-01-01/GetDataIntegrationFlow">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetDataIntegrationFlowOutcome GetDataIntegrationFlow(const Model::GetDataIntegrationFlowRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetDataIntegrationFlow that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetDataIntegrationFlowRequestT = Model::GetDataIntegrationFlowRequest>
+        Model::GetDataIntegrationFlowOutcomeCallable GetDataIntegrationFlowCallable(const GetDataIntegrationFlowRequestT& request) const
+        {
+            return SubmitCallable(&SupplyChainClient::GetDataIntegrationFlow, request);
+        }
+
+        /**
+         * An Async wrapper for GetDataIntegrationFlow that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetDataIntegrationFlowRequestT = Model::GetDataIntegrationFlowRequest>
+        void GetDataIntegrationFlowAsync(const GetDataIntegrationFlowRequestT& request, const GetDataIntegrationFlowResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SupplyChainClient::GetDataIntegrationFlow, request, handler, context);
+        }
+
+        /**
+         * <p>Enables you to programmatically view an Amazon Web Services Supply Chain data
+         * lake dataset. Developers can view the data lake dataset information such as
+         * namespace, schema, and so on for a given instance ID, namespace, and dataset
+         * name.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/supplychain-2024-01-01/GetDataLakeDataset">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetDataLakeDatasetOutcome GetDataLakeDataset(const Model::GetDataLakeDatasetRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetDataLakeDataset that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetDataLakeDatasetRequestT = Model::GetDataLakeDatasetRequest>
+        Model::GetDataLakeDatasetOutcomeCallable GetDataLakeDatasetCallable(const GetDataLakeDatasetRequestT& request) const
+        {
+            return SubmitCallable(&SupplyChainClient::GetDataLakeDataset, request);
+        }
+
+        /**
+         * An Async wrapper for GetDataLakeDataset that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetDataLakeDatasetRequestT = Model::GetDataLakeDatasetRequest>
+        void GetDataLakeDatasetAsync(const GetDataLakeDatasetRequestT& request, const GetDataLakeDatasetResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SupplyChainClient::GetDataLakeDataset, request, handler, context);
+        }
+
+        /**
+         * <p>Enables you to programmatically retrieve the information related to an Amazon
+         * Web Services Supply Chain instance ID.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/supplychain-2024-01-01/GetInstance">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::GetInstanceOutcome GetInstance(const Model::GetInstanceRequest& request) const;
+
+        /**
+         * A Callable wrapper for GetInstance that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename GetInstanceRequestT = Model::GetInstanceRequest>
+        Model::GetInstanceOutcomeCallable GetInstanceCallable(const GetInstanceRequestT& request) const
+        {
+            return SubmitCallable(&SupplyChainClient::GetInstance, request);
+        }
+
+        /**
+         * An Async wrapper for GetInstance that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename GetInstanceRequestT = Model::GetInstanceRequest>
+        void GetInstanceAsync(const GetInstanceRequestT& request, const GetInstanceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SupplyChainClient::GetInstance, request, handler, context);
+        }
+
+        /**
+         * <p>Enables you to programmatically list all data pipelines for the provided
+         * Amazon Web Services Supply Chain instance.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/supplychain-2024-01-01/ListDataIntegrationFlows">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListDataIntegrationFlowsOutcome ListDataIntegrationFlows(const Model::ListDataIntegrationFlowsRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListDataIntegrationFlows that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListDataIntegrationFlowsRequestT = Model::ListDataIntegrationFlowsRequest>
+        Model::ListDataIntegrationFlowsOutcomeCallable ListDataIntegrationFlowsCallable(const ListDataIntegrationFlowsRequestT& request) const
+        {
+            return SubmitCallable(&SupplyChainClient::ListDataIntegrationFlows, request);
+        }
+
+        /**
+         * An Async wrapper for ListDataIntegrationFlows that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListDataIntegrationFlowsRequestT = Model::ListDataIntegrationFlowsRequest>
+        void ListDataIntegrationFlowsAsync(const ListDataIntegrationFlowsRequestT& request, const ListDataIntegrationFlowsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SupplyChainClient::ListDataIntegrationFlows, request, handler, context);
+        }
+
+        /**
+         * <p>Enables you to programmatically view the list of Amazon Web Services Supply
+         * Chain data lake datasets. Developers can view the datasets and the corresponding
+         * information such as namespace, schema, and so on for a given instance ID and
+         * namespace.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/supplychain-2024-01-01/ListDataLakeDatasets">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListDataLakeDatasetsOutcome ListDataLakeDatasets(const Model::ListDataLakeDatasetsRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListDataLakeDatasets that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListDataLakeDatasetsRequestT = Model::ListDataLakeDatasetsRequest>
+        Model::ListDataLakeDatasetsOutcomeCallable ListDataLakeDatasetsCallable(const ListDataLakeDatasetsRequestT& request) const
+        {
+            return SubmitCallable(&SupplyChainClient::ListDataLakeDatasets, request);
+        }
+
+        /**
+         * An Async wrapper for ListDataLakeDatasets that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListDataLakeDatasetsRequestT = Model::ListDataLakeDatasetsRequest>
+        void ListDataLakeDatasetsAsync(const ListDataLakeDatasetsRequestT& request, const ListDataLakeDatasetsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SupplyChainClient::ListDataLakeDatasets, request, handler, context);
+        }
+
+        /**
+         * <p>List all Amazon Web Services Supply Chain instances for a specific account.
+         * Enables you to programmatically list all Amazon Web Services Supply Chain
+         * instances based on their account ID, instance name, and state of the instance
+         * (active or delete).</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/supplychain-2024-01-01/ListInstances">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListInstancesOutcome ListInstances(const Model::ListInstancesRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for ListInstances that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListInstancesRequestT = Model::ListInstancesRequest>
+        Model::ListInstancesOutcomeCallable ListInstancesCallable(const ListInstancesRequestT& request = {}) const
+        {
+            return SubmitCallable(&SupplyChainClient::ListInstances, request);
+        }
+
+        /**
+         * An Async wrapper for ListInstances that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListInstancesRequestT = Model::ListInstancesRequest>
+        void ListInstancesAsync(const ListInstancesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListInstancesRequestT& request = {}) const
+        {
+            return SubmitAsync(&SupplyChainClient::ListInstances, request, handler, context);
+        }
+
+        /**
+         * <p>List all the tags for an Amazon Web ServicesSupply Chain resource. You can
+         * list all the tags added to a resource. By listing the tags, developers can view
+         * the tag level information on a resource and perform actions such as, deleting a
+         * resource associated with a particular tag.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/supplychain-2024-01-01/ListTagsForResource">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListTagsForResourceOutcome ListTagsForResource(const Model::ListTagsForResourceRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListTagsForResource that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListTagsForResourceRequestT = Model::ListTagsForResourceRequest>
+        Model::ListTagsForResourceOutcomeCallable ListTagsForResourceCallable(const ListTagsForResourceRequestT& request) const
+        {
+            return SubmitCallable(&SupplyChainClient::ListTagsForResource, request);
+        }
+
+        /**
+         * An Async wrapper for ListTagsForResource that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListTagsForResourceRequestT = Model::ListTagsForResourceRequest>
+        void ListTagsForResourceAsync(const ListTagsForResourceRequestT& request, const ListTagsForResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SupplyChainClient::ListTagsForResource, request, handler, context);
+        }
+
+        /**
+         * <p>Send the transactional data payload for the event with real-time data for
+         * analysis or monitoring. The real-time data events are stored in an Amazon Web
+         * Services service before being processed and stored in data lake. New data events
+         * are synced with data lake at 5 PM GMT everyday. The updated transactional data
+         * is available in data lake after ingestion.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/supplychain-2024-01-01/SendDataIntegrationEvent">AWS
          * API Reference</a></p>
          */
@@ -166,16 +550,156 @@ namespace SupplyChain
             return SubmitAsync(&SupplyChainClient::SendDataIntegrationEvent, request, handler, context);
         }
 
+        /**
+         * <p>You can create tags during or after creating a resource such as instance,
+         * data flow, or dataset in AWS Supply chain. During the data ingestion process,
+         * you can add tags such as dev, test, or prod to data flows created during the
+         * data ingestion process in the AWS Supply Chain datasets. You can use these tags
+         * to identify a group of resources or a single resource used by the
+         * developer.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/supplychain-2024-01-01/TagResource">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::TagResourceOutcome TagResource(const Model::TagResourceRequest& request) const;
+
+        /**
+         * A Callable wrapper for TagResource that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename TagResourceRequestT = Model::TagResourceRequest>
+        Model::TagResourceOutcomeCallable TagResourceCallable(const TagResourceRequestT& request) const
+        {
+            return SubmitCallable(&SupplyChainClient::TagResource, request);
+        }
+
+        /**
+         * An Async wrapper for TagResource that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename TagResourceRequestT = Model::TagResourceRequest>
+        void TagResourceAsync(const TagResourceRequestT& request, const TagResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SupplyChainClient::TagResource, request, handler, context);
+        }
+
+        /**
+         * <p>You can delete tags for an Amazon Web Services Supply chain resource such as
+         * instance, data flow, or dataset in AWS Supply Chain. During the data ingestion
+         * process, you can delete tags such as dev, test, or prod to data flows created
+         * during the data ingestion process in the AWS Supply Chain datasets.
+         * </p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/supplychain-2024-01-01/UntagResource">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UntagResourceOutcome UntagResource(const Model::UntagResourceRequest& request) const;
+
+        /**
+         * A Callable wrapper for UntagResource that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UntagResourceRequestT = Model::UntagResourceRequest>
+        Model::UntagResourceOutcomeCallable UntagResourceCallable(const UntagResourceRequestT& request) const
+        {
+            return SubmitCallable(&SupplyChainClient::UntagResource, request);
+        }
+
+        /**
+         * An Async wrapper for UntagResource that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UntagResourceRequestT = Model::UntagResourceRequest>
+        void UntagResourceAsync(const UntagResourceRequestT& request, const UntagResourceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SupplyChainClient::UntagResource, request, handler, context);
+        }
+
+        /**
+         * <p>Enables you to programmatically update an existing data pipeline to ingest
+         * data from the source systems such as, Amazon S3 buckets, to a predefined Amazon
+         * Web Services Supply Chain dataset (product, inbound_order) or a temporary
+         * dataset along with the data transformation query provided with the
+         * API.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/supplychain-2024-01-01/UpdateDataIntegrationFlow">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateDataIntegrationFlowOutcome UpdateDataIntegrationFlow(const Model::UpdateDataIntegrationFlowRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateDataIntegrationFlow that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateDataIntegrationFlowRequestT = Model::UpdateDataIntegrationFlowRequest>
+        Model::UpdateDataIntegrationFlowOutcomeCallable UpdateDataIntegrationFlowCallable(const UpdateDataIntegrationFlowRequestT& request) const
+        {
+            return SubmitCallable(&SupplyChainClient::UpdateDataIntegrationFlow, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateDataIntegrationFlow that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateDataIntegrationFlowRequestT = Model::UpdateDataIntegrationFlowRequest>
+        void UpdateDataIntegrationFlowAsync(const UpdateDataIntegrationFlowRequestT& request, const UpdateDataIntegrationFlowResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SupplyChainClient::UpdateDataIntegrationFlow, request, handler, context);
+        }
+
+        /**
+         * <p>Enables you to programmatically update an Amazon Web Services Supply Chain
+         * data lake dataset. Developers can update the description of a data lake dataset
+         * for a given instance ID, namespace, and dataset name.</p><p><h3>See Also:</h3>  
+         * <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/supplychain-2024-01-01/UpdateDataLakeDataset">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateDataLakeDatasetOutcome UpdateDataLakeDataset(const Model::UpdateDataLakeDatasetRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateDataLakeDataset that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateDataLakeDatasetRequestT = Model::UpdateDataLakeDatasetRequest>
+        Model::UpdateDataLakeDatasetOutcomeCallable UpdateDataLakeDatasetCallable(const UpdateDataLakeDatasetRequestT& request) const
+        {
+            return SubmitCallable(&SupplyChainClient::UpdateDataLakeDataset, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateDataLakeDataset that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateDataLakeDatasetRequestT = Model::UpdateDataLakeDatasetRequest>
+        void UpdateDataLakeDatasetAsync(const UpdateDataLakeDatasetRequestT& request, const UpdateDataLakeDatasetResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SupplyChainClient::UpdateDataLakeDataset, request, handler, context);
+        }
+
+        /**
+         * <p>Enables you to programmatically update an Amazon Web Services Supply Chain
+         * instance description by providing all the relevant information such as account
+         * ID, instance ID and so on without using the AWS console.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/supplychain-2024-01-01/UpdateInstance">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateInstanceOutcome UpdateInstance(const Model::UpdateInstanceRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateInstance that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateInstanceRequestT = Model::UpdateInstanceRequest>
+        Model::UpdateInstanceOutcomeCallable UpdateInstanceCallable(const UpdateInstanceRequestT& request) const
+        {
+            return SubmitCallable(&SupplyChainClient::UpdateInstance, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateInstance that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateInstanceRequestT = Model::UpdateInstanceRequest>
+        void UpdateInstanceAsync(const UpdateInstanceRequestT& request, const UpdateInstanceResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&SupplyChainClient::UpdateInstance, request, handler, context);
+        }
+
 
       void OverrideEndpoint(const Aws::String& endpoint);
       std::shared_ptr<SupplyChainEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<SupplyChainClient>;
-      void init(const SupplyChainClientConfiguration& clientConfiguration);
 
-      SupplyChainClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<SupplyChainEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace SupplyChain

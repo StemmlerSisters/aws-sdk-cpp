@@ -40,123 +40,63 @@ namespace Model
     AWS_APPSTREAM_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The type of storage connector.</p>
      */
     inline const StorageConnectorType& GetConnectorType() const{ return m_connectorType; }
-
-    /**
-     * <p>The type of storage connector.</p>
-     */
     inline bool ConnectorTypeHasBeenSet() const { return m_connectorTypeHasBeenSet; }
-
-    /**
-     * <p>The type of storage connector.</p>
-     */
     inline void SetConnectorType(const StorageConnectorType& value) { m_connectorTypeHasBeenSet = true; m_connectorType = value; }
-
-    /**
-     * <p>The type of storage connector.</p>
-     */
     inline void SetConnectorType(StorageConnectorType&& value) { m_connectorTypeHasBeenSet = true; m_connectorType = std::move(value); }
-
-    /**
-     * <p>The type of storage connector.</p>
-     */
     inline StorageConnector& WithConnectorType(const StorageConnectorType& value) { SetConnectorType(value); return *this;}
-
-    /**
-     * <p>The type of storage connector.</p>
-     */
     inline StorageConnector& WithConnectorType(StorageConnectorType&& value) { SetConnectorType(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The ARN of the storage connector.</p>
      */
     inline const Aws::String& GetResourceIdentifier() const{ return m_resourceIdentifier; }
-
-    /**
-     * <p>The ARN of the storage connector.</p>
-     */
     inline bool ResourceIdentifierHasBeenSet() const { return m_resourceIdentifierHasBeenSet; }
-
-    /**
-     * <p>The ARN of the storage connector.</p>
-     */
     inline void SetResourceIdentifier(const Aws::String& value) { m_resourceIdentifierHasBeenSet = true; m_resourceIdentifier = value; }
-
-    /**
-     * <p>The ARN of the storage connector.</p>
-     */
     inline void SetResourceIdentifier(Aws::String&& value) { m_resourceIdentifierHasBeenSet = true; m_resourceIdentifier = std::move(value); }
-
-    /**
-     * <p>The ARN of the storage connector.</p>
-     */
     inline void SetResourceIdentifier(const char* value) { m_resourceIdentifierHasBeenSet = true; m_resourceIdentifier.assign(value); }
-
-    /**
-     * <p>The ARN of the storage connector.</p>
-     */
     inline StorageConnector& WithResourceIdentifier(const Aws::String& value) { SetResourceIdentifier(value); return *this;}
-
-    /**
-     * <p>The ARN of the storage connector.</p>
-     */
     inline StorageConnector& WithResourceIdentifier(Aws::String&& value) { SetResourceIdentifier(std::move(value)); return *this;}
-
-    /**
-     * <p>The ARN of the storage connector.</p>
-     */
     inline StorageConnector& WithResourceIdentifier(const char* value) { SetResourceIdentifier(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The names of the domains for the account.</p>
      */
     inline const Aws::Vector<Aws::String>& GetDomains() const{ return m_domains; }
-
-    /**
-     * <p>The names of the domains for the account.</p>
-     */
     inline bool DomainsHasBeenSet() const { return m_domainsHasBeenSet; }
-
-    /**
-     * <p>The names of the domains for the account.</p>
-     */
     inline void SetDomains(const Aws::Vector<Aws::String>& value) { m_domainsHasBeenSet = true; m_domains = value; }
-
-    /**
-     * <p>The names of the domains for the account.</p>
-     */
     inline void SetDomains(Aws::Vector<Aws::String>&& value) { m_domainsHasBeenSet = true; m_domains = std::move(value); }
-
-    /**
-     * <p>The names of the domains for the account.</p>
-     */
     inline StorageConnector& WithDomains(const Aws::Vector<Aws::String>& value) { SetDomains(value); return *this;}
-
-    /**
-     * <p>The names of the domains for the account.</p>
-     */
     inline StorageConnector& WithDomains(Aws::Vector<Aws::String>&& value) { SetDomains(std::move(value)); return *this;}
-
-    /**
-     * <p>The names of the domains for the account.</p>
-     */
     inline StorageConnector& AddDomains(const Aws::String& value) { m_domainsHasBeenSet = true; m_domains.push_back(value); return *this; }
-
-    /**
-     * <p>The names of the domains for the account.</p>
-     */
     inline StorageConnector& AddDomains(Aws::String&& value) { m_domainsHasBeenSet = true; m_domains.push_back(std::move(value)); return *this; }
-
-    /**
-     * <p>The names of the domains for the account.</p>
-     */
     inline StorageConnector& AddDomains(const char* value) { m_domainsHasBeenSet = true; m_domains.push_back(value); return *this; }
+    ///@}
 
+    ///@{
+    /**
+     * <p>The OneDrive for Business domains where you require admin consent when users
+     * try to link their OneDrive account to AppStream 2.0. The attribute can only be
+     * specified when ConnectorType=ONE_DRIVE.</p>
+     */
+    inline const Aws::Vector<Aws::String>& GetDomainsRequireAdminConsent() const{ return m_domainsRequireAdminConsent; }
+    inline bool DomainsRequireAdminConsentHasBeenSet() const { return m_domainsRequireAdminConsentHasBeenSet; }
+    inline void SetDomainsRequireAdminConsent(const Aws::Vector<Aws::String>& value) { m_domainsRequireAdminConsentHasBeenSet = true; m_domainsRequireAdminConsent = value; }
+    inline void SetDomainsRequireAdminConsent(Aws::Vector<Aws::String>&& value) { m_domainsRequireAdminConsentHasBeenSet = true; m_domainsRequireAdminConsent = std::move(value); }
+    inline StorageConnector& WithDomainsRequireAdminConsent(const Aws::Vector<Aws::String>& value) { SetDomainsRequireAdminConsent(value); return *this;}
+    inline StorageConnector& WithDomainsRequireAdminConsent(Aws::Vector<Aws::String>&& value) { SetDomainsRequireAdminConsent(std::move(value)); return *this;}
+    inline StorageConnector& AddDomainsRequireAdminConsent(const Aws::String& value) { m_domainsRequireAdminConsentHasBeenSet = true; m_domainsRequireAdminConsent.push_back(value); return *this; }
+    inline StorageConnector& AddDomainsRequireAdminConsent(Aws::String&& value) { m_domainsRequireAdminConsentHasBeenSet = true; m_domainsRequireAdminConsent.push_back(std::move(value)); return *this; }
+    inline StorageConnector& AddDomainsRequireAdminConsent(const char* value) { m_domainsRequireAdminConsentHasBeenSet = true; m_domainsRequireAdminConsent.push_back(value); return *this; }
+    ///@}
   private:
 
     StorageConnectorType m_connectorType;
@@ -167,6 +107,9 @@ namespace Model
 
     Aws::Vector<Aws::String> m_domains;
     bool m_domainsHasBeenSet = false;
+
+    Aws::Vector<Aws::String> m_domainsRequireAdminConsent;
+    bool m_domainsRequireAdminConsentHasBeenSet = false;
   };
 
 } // namespace Model

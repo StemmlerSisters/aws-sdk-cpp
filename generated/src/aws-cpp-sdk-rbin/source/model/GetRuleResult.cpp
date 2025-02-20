@@ -24,10 +24,8 @@ GetRuleResult::GetRuleResult() :
 {
 }
 
-GetRuleResult::GetRuleResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_resourceType(ResourceType::NOT_SET),
-    m_status(RuleStatus::NOT_SET),
-    m_lockState(LockState::NOT_SET)
+GetRuleResult::GetRuleResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetRuleResult()
 {
   *this = result;
 }
@@ -96,6 +94,15 @@ GetRuleResult& GetRuleResult::operator =(const Aws::AmazonWebServiceResult<JsonV
   {
     m_ruleArn = jsonValue.GetString("RuleArn");
 
+  }
+
+  if(jsonValue.ValueExists("ExcludeResourceTags"))
+  {
+    Aws::Utils::Array<JsonView> excludeResourceTagsJsonList = jsonValue.GetArray("ExcludeResourceTags");
+    for(unsigned excludeResourceTagsIndex = 0; excludeResourceTagsIndex < excludeResourceTagsJsonList.GetLength(); ++excludeResourceTagsIndex)
+    {
+      m_excludeResourceTags.push_back(excludeResourceTagsJsonList[excludeResourceTagsIndex].AsObject());
+    }
   }
 
 

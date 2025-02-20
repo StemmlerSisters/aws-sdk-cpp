@@ -38,21 +38,8 @@ S3ObjectMetadata::S3ObjectMetadata() :
 {
 }
 
-S3ObjectMetadata::S3ObjectMetadata(const XmlNode& xmlNode) : 
-    m_cacheControlHasBeenSet(false),
-    m_contentDispositionHasBeenSet(false),
-    m_contentEncodingHasBeenSet(false),
-    m_contentLanguageHasBeenSet(false),
-    m_userMetadataHasBeenSet(false),
-    m_contentLength(0),
-    m_contentLengthHasBeenSet(false),
-    m_contentMD5HasBeenSet(false),
-    m_contentTypeHasBeenSet(false),
-    m_httpExpiresDateHasBeenSet(false),
-    m_requesterCharged(false),
-    m_requesterChargedHasBeenSet(false),
-    m_sSEAlgorithm(S3SSEAlgorithm::NOT_SET),
-    m_sSEAlgorithmHasBeenSet(false)
+S3ObjectMetadata::S3ObjectMetadata(const XmlNode& xmlNode)
+  : S3ObjectMetadata()
 {
   *this = xmlNode;
 }
@@ -173,6 +160,15 @@ void S3ObjectMetadata::AddToNode(XmlNode& parentNode) const
 
   if(m_userMetadataHasBeenSet)
   {
+   XmlNode userMetadataParentNode = parentNode.CreateChildElement("UserMetadata");
+   for(const auto& mapItem : m_userMetadata)
+   {
+     XmlNode userMetadataMapEntryNode = userMetadataParentNode.CreateChildElement("entry");
+     XmlNode userMetadataKeyNode = userMetadataMapEntryNode.CreateChildElement("key");
+     userMetadataKeyNode.SetText(mapItem.first);
+     XmlNode userMetadataValueNode = userMetadataMapEntryNode.CreateChildElement("value");
+     userMetadataValueNode.SetText(mapItem.second);
+   }
   }
 
   if(m_contentLengthHasBeenSet)

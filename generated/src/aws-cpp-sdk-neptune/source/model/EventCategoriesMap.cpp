@@ -26,9 +26,8 @@ EventCategoriesMap::EventCategoriesMap() :
 {
 }
 
-EventCategoriesMap::EventCategoriesMap(const XmlNode& xmlNode) : 
-    m_sourceTypeHasBeenSet(false),
-    m_eventCategoriesHasBeenSet(false)
+EventCategoriesMap::EventCategoriesMap(const XmlNode& xmlNode)
+  : EventCategoriesMap()
 {
   *this = xmlNode;
 }
@@ -74,7 +73,7 @@ void EventCategoriesMap::OutputToStream(Aws::OStream& oStream, const char* locat
       unsigned eventCategoriesIdx = 1;
       for(auto& item : m_eventCategories)
       {
-        oStream << location << index << locationValue << ".EventCategory." << eventCategoriesIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
+        oStream << location << index << locationValue << ".EventCategories.EventCategory." << eventCategoriesIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
       }
   }
 

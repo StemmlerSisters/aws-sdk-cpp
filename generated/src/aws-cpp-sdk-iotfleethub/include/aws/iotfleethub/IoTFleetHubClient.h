@@ -6,25 +6,37 @@
 #pragma once
 #include <aws/iotfleethub/IoTFleetHub_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/iotfleethub/IoTFleetHubServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/iotfleethub/IoTFleetHubErrorMarshaller.h>
 
 namespace Aws
 {
 namespace IoTFleetHub
 {
+  AWS_IOTFLEETHUB_API extern const char SERVICE_NAME[];
   /**
    * <p>With Fleet Hub for IoT Device Management you can build stand-alone web
    * applications for monitoring the health of your device fleets.</p>
    */
-  class AWS_IOTFLEETHUB_API IoTFleetHubClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<IoTFleetHubClient>
+  class AWS_IOTFLEETHUB_API IoTFleetHubClient : smithy::client::AwsSmithyClientT<Aws::IoTFleetHub::SERVICE_NAME,
+      Aws::IoTFleetHub::IoTFleetHubClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      IoTFleetHubEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::IoTFleetHubErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<IoTFleetHubClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "IoTFleetHub"; }
 
       typedef IoTFleetHubClientConfiguration ClientConfigurationType;
       typedef IoTFleetHubEndpointProvider EndpointProviderType;
@@ -168,13 +180,13 @@ namespace IoTFleetHub
          * href="http://docs.aws.amazon.com/goto/WebAPI/iotfleethub-2020-11-03/ListApplications">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListApplicationsOutcome ListApplications(const Model::ListApplicationsRequest& request) const;
+        virtual Model::ListApplicationsOutcome ListApplications(const Model::ListApplicationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListApplications that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListApplicationsRequestT = Model::ListApplicationsRequest>
-        Model::ListApplicationsOutcomeCallable ListApplicationsCallable(const ListApplicationsRequestT& request) const
+        Model::ListApplicationsOutcomeCallable ListApplicationsCallable(const ListApplicationsRequestT& request = {}) const
         {
             return SubmitCallable(&IoTFleetHubClient::ListApplications, request);
         }
@@ -183,7 +195,7 @@ namespace IoTFleetHub
          * An Async wrapper for ListApplications that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListApplicationsRequestT = Model::ListApplicationsRequest>
-        void ListApplicationsAsync(const ListApplicationsRequestT& request, const ListApplicationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListApplicationsAsync(const ListApplicationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListApplicationsRequestT& request = {}) const
         {
             return SubmitAsync(&IoTFleetHubClient::ListApplications, request, handler, context);
         }
@@ -296,11 +308,7 @@ namespace IoTFleetHub
       std::shared_ptr<IoTFleetHubEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<IoTFleetHubClient>;
-      void init(const IoTFleetHubClientConfiguration& clientConfiguration);
 
-      IoTFleetHubClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<IoTFleetHubEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace IoTFleetHub

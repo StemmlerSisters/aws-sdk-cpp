@@ -28,7 +28,9 @@ namespace Model
     registration,
     registration_attachment,
     verified_destination_number,
-    protect_configuration
+    protect_configuration,
+    policy,
+    message
   };
 
 namespace ResourceTypeMapper

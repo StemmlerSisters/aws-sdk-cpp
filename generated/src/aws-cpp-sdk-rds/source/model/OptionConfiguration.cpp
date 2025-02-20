@@ -31,14 +31,8 @@ OptionConfiguration::OptionConfiguration() :
 {
 }
 
-OptionConfiguration::OptionConfiguration(const XmlNode& xmlNode) : 
-    m_optionNameHasBeenSet(false),
-    m_port(0),
-    m_portHasBeenSet(false),
-    m_optionVersionHasBeenSet(false),
-    m_dBSecurityGroupMembershipsHasBeenSet(false),
-    m_vpcSecurityGroupMembershipsHasBeenSet(false),
-    m_optionSettingsHasBeenSet(false)
+OptionConfiguration::OptionConfiguration(const XmlNode& xmlNode)
+  : OptionConfiguration()
 {
   *this = xmlNode;
 }
@@ -130,7 +124,7 @@ void OptionConfiguration::OutputToStream(Aws::OStream& oStream, const char* loca
       unsigned dBSecurityGroupMembershipsIdx = 1;
       for(auto& item : m_dBSecurityGroupMemberships)
       {
-        oStream << location << index << locationValue << ".DBSecurityGroupName." << dBSecurityGroupMembershipsIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
+        oStream << location << index << locationValue << ".DBSecurityGroupMemberships.DBSecurityGroupName." << dBSecurityGroupMembershipsIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
       }
   }
 
@@ -139,7 +133,7 @@ void OptionConfiguration::OutputToStream(Aws::OStream& oStream, const char* loca
       unsigned vpcSecurityGroupMembershipsIdx = 1;
       for(auto& item : m_vpcSecurityGroupMemberships)
       {
-        oStream << location << index << locationValue << ".VpcSecurityGroupId." << vpcSecurityGroupMembershipsIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
+        oStream << location << index << locationValue << ".VpcSecurityGroupMemberships.VpcSecurityGroupId." << vpcSecurityGroupMembershipsIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
       }
   }
 
@@ -149,7 +143,7 @@ void OptionConfiguration::OutputToStream(Aws::OStream& oStream, const char* loca
       for(auto& item : m_optionSettings)
       {
         Aws::StringStream optionSettingsSs;
-        optionSettingsSs << location << index << locationValue << ".OptionSetting." << optionSettingsIdx++;
+        optionSettingsSs << location << index << locationValue << ".OptionSettings.OptionSetting." << optionSettingsIdx++;
         item.OutputToStream(oStream, optionSettingsSs.str().c_str());
       }
   }

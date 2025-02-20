@@ -23,18 +23,13 @@ ListPartsResult::ListPartsResult() :
     m_isTruncated(false),
     m_storageClass(StorageClass::NOT_SET),
     m_requestCharged(RequestCharged::NOT_SET),
-    m_checksumAlgorithm(ChecksumAlgorithm::NOT_SET)
+    m_checksumAlgorithm(ChecksumAlgorithm::NOT_SET),
+    m_checksumType(ChecksumType::NOT_SET)
 {
 }
 
-ListPartsResult::ListPartsResult(const Aws::AmazonWebServiceResult<XmlDocument>& result) : 
-    m_partNumberMarker(0),
-    m_nextPartNumberMarker(0),
-    m_maxParts(0),
-    m_isTruncated(false),
-    m_storageClass(StorageClass::NOT_SET),
-    m_requestCharged(RequestCharged::NOT_SET),
-    m_checksumAlgorithm(ChecksumAlgorithm::NOT_SET)
+ListPartsResult::ListPartsResult(const Aws::AmazonWebServiceResult<XmlDocument>& result)
+  : ListPartsResult()
 {
   *this = result;
 }
@@ -112,13 +107,22 @@ ListPartsResult& ListPartsResult::operator =(const Aws::AmazonWebServiceResult<X
     {
       m_checksumAlgorithm = ChecksumAlgorithmMapper::GetChecksumAlgorithmForName(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(checksumAlgorithmNode.GetText()).c_str()).c_str());
     }
+    XmlNode checksumTypeNode = resultNode.FirstChild("ChecksumType");
+    if(!checksumTypeNode.IsNull())
+    {
+      m_checksumType = ChecksumTypeMapper::GetChecksumTypeForName(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(checksumTypeNode.GetText()).c_str()).c_str());
+    }
   }
 
   const auto& headers = result.GetHeaderValueCollection();
   const auto& abortDateIter = headers.find("x-amz-abort-date");
   if(abortDateIter != headers.end())
   {
-    m_abortDate = DateTime(abortDateIter->second, Aws::Utils::DateFormat::RFC822);
+    m_abortDate = DateTime(abortDateIter->second.c_str(), Aws::Utils::DateFormat::RFC822);
+    if(!m_abortDate.WasParseSuccessful())
+    {
+      AWS_LOGSTREAM_WARN("S3::ListPartsResult", "Failed to parse abortDate header as an RFC822 timestamp: " << abortDateIter->second.c_str());
+    }
   }
 
   const auto& abortRuleIdIter = headers.find("x-amz-abort-rule-id");

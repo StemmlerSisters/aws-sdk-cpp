@@ -20,13 +20,14 @@ namespace Model
 
 OAuth2ClientCredentialConfiguration::OAuth2ClientCredentialConfiguration() : 
     m_secretArnHasBeenSet(false),
-    m_roleArnHasBeenSet(false)
+    m_roleArnHasBeenSet(false),
+    m_authorizationUrlHasBeenSet(false),
+    m_tokenUrlHasBeenSet(false)
 {
 }
 
-OAuth2ClientCredentialConfiguration::OAuth2ClientCredentialConfiguration(JsonView jsonValue) : 
-    m_secretArnHasBeenSet(false),
-    m_roleArnHasBeenSet(false)
+OAuth2ClientCredentialConfiguration::OAuth2ClientCredentialConfiguration(JsonView jsonValue)
+  : OAuth2ClientCredentialConfiguration()
 {
   *this = jsonValue;
 }
@@ -47,6 +48,20 @@ OAuth2ClientCredentialConfiguration& OAuth2ClientCredentialConfiguration::operat
     m_roleArnHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("authorizationUrl"))
+  {
+    m_authorizationUrl = jsonValue.GetString("authorizationUrl");
+
+    m_authorizationUrlHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("tokenUrl"))
+  {
+    m_tokenUrl = jsonValue.GetString("tokenUrl");
+
+    m_tokenUrlHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -63,6 +78,18 @@ JsonValue OAuth2ClientCredentialConfiguration::Jsonize() const
   if(m_roleArnHasBeenSet)
   {
    payload.WithString("roleArn", m_roleArn);
+
+  }
+
+  if(m_authorizationUrlHasBeenSet)
+  {
+   payload.WithString("authorizationUrl", m_authorizationUrl);
+
+  }
+
+  if(m_tokenUrlHasBeenSet)
+  {
+   payload.WithString("tokenUrl", m_tokenUrl);
 
   }
 

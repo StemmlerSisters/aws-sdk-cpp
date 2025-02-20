@@ -19,22 +19,27 @@ namespace Model
 {
 
 HlsPlaylistSettings::HlsPlaylistSettings() : 
-    m_adMarkupTypeHasBeenSet(false),
     m_manifestWindowSeconds(0),
-    m_manifestWindowSecondsHasBeenSet(false)
+    m_manifestWindowSecondsHasBeenSet(false),
+    m_adMarkupTypeHasBeenSet(false)
 {
 }
 
-HlsPlaylistSettings::HlsPlaylistSettings(JsonView jsonValue) : 
-    m_adMarkupTypeHasBeenSet(false),
-    m_manifestWindowSeconds(0),
-    m_manifestWindowSecondsHasBeenSet(false)
+HlsPlaylistSettings::HlsPlaylistSettings(JsonView jsonValue)
+  : HlsPlaylistSettings()
 {
   *this = jsonValue;
 }
 
 HlsPlaylistSettings& HlsPlaylistSettings::operator =(JsonView jsonValue)
 {
+  if(jsonValue.ValueExists("ManifestWindowSeconds"))
+  {
+    m_manifestWindowSeconds = jsonValue.GetInteger("ManifestWindowSeconds");
+
+    m_manifestWindowSecondsHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("AdMarkupType"))
   {
     Aws::Utils::Array<JsonView> adMarkupTypeJsonList = jsonValue.GetArray("AdMarkupType");
@@ -45,19 +50,18 @@ HlsPlaylistSettings& HlsPlaylistSettings::operator =(JsonView jsonValue)
     m_adMarkupTypeHasBeenSet = true;
   }
 
-  if(jsonValue.ValueExists("ManifestWindowSeconds"))
-  {
-    m_manifestWindowSeconds = jsonValue.GetInteger("ManifestWindowSeconds");
-
-    m_manifestWindowSecondsHasBeenSet = true;
-  }
-
   return *this;
 }
 
 JsonValue HlsPlaylistSettings::Jsonize() const
 {
   JsonValue payload;
+
+  if(m_manifestWindowSecondsHasBeenSet)
+  {
+   payload.WithInteger("ManifestWindowSeconds", m_manifestWindowSeconds);
+
+  }
 
   if(m_adMarkupTypeHasBeenSet)
   {
@@ -67,12 +71,6 @@ JsonValue HlsPlaylistSettings::Jsonize() const
      adMarkupTypeJsonList[adMarkupTypeIndex].AsString(AdMarkupTypeMapper::GetNameForAdMarkupType(m_adMarkupType[adMarkupTypeIndex]));
    }
    payload.WithArray("AdMarkupType", std::move(adMarkupTypeJsonList));
-
-  }
-
-  if(m_manifestWindowSecondsHasBeenSet)
-  {
-   payload.WithInteger("ManifestWindowSeconds", m_manifestWindowSeconds);
 
   }
 

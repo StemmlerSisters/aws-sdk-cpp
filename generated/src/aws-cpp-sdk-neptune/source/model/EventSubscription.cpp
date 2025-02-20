@@ -35,18 +35,8 @@ EventSubscription::EventSubscription() :
 {
 }
 
-EventSubscription::EventSubscription(const XmlNode& xmlNode) : 
-    m_customerAwsIdHasBeenSet(false),
-    m_custSubscriptionIdHasBeenSet(false),
-    m_snsTopicArnHasBeenSet(false),
-    m_statusHasBeenSet(false),
-    m_subscriptionCreationTimeHasBeenSet(false),
-    m_sourceTypeHasBeenSet(false),
-    m_sourceIdsListHasBeenSet(false),
-    m_eventCategoriesListHasBeenSet(false),
-    m_enabled(false),
-    m_enabledHasBeenSet(false),
-    m_eventSubscriptionArnHasBeenSet(false)
+EventSubscription::EventSubscription(const XmlNode& xmlNode)
+  : EventSubscription()
 {
   *this = xmlNode;
 }
@@ -171,7 +161,7 @@ void EventSubscription::OutputToStream(Aws::OStream& oStream, const char* locati
       unsigned sourceIdsListIdx = 1;
       for(auto& item : m_sourceIdsList)
       {
-        oStream << location << index << locationValue << ".SourceId." << sourceIdsListIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
+        oStream << location << index << locationValue << ".SourceIdsList.SourceId." << sourceIdsListIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
       }
   }
 
@@ -180,7 +170,7 @@ void EventSubscription::OutputToStream(Aws::OStream& oStream, const char* locati
       unsigned eventCategoriesListIdx = 1;
       for(auto& item : m_eventCategoriesList)
       {
-        oStream << location << index << locationValue << ".EventCategory." << eventCategoriesListIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
+        oStream << location << index << locationValue << ".EventCategoriesList.EventCategory." << eventCategoriesListIdx++ << "=" << StringUtils::URLEncode(item.c_str()) << "&";
       }
   }
 

@@ -37,20 +37,8 @@ DBSnapshotTenantDatabase::DBSnapshotTenantDatabase() :
 {
 }
 
-DBSnapshotTenantDatabase::DBSnapshotTenantDatabase(const XmlNode& xmlNode) : 
-    m_dBSnapshotIdentifierHasBeenSet(false),
-    m_dBInstanceIdentifierHasBeenSet(false),
-    m_dbiResourceIdHasBeenSet(false),
-    m_engineNameHasBeenSet(false),
-    m_snapshotTypeHasBeenSet(false),
-    m_tenantDatabaseCreateTimeHasBeenSet(false),
-    m_tenantDBNameHasBeenSet(false),
-    m_masterUsernameHasBeenSet(false),
-    m_tenantDatabaseResourceIdHasBeenSet(false),
-    m_characterSetNameHasBeenSet(false),
-    m_dBSnapshotTenantDatabaseARNHasBeenSet(false),
-    m_ncharCharacterSetNameHasBeenSet(false),
-    m_tagListHasBeenSet(false)
+DBSnapshotTenantDatabase::DBSnapshotTenantDatabase(const XmlNode& xmlNode)
+  : DBSnapshotTenantDatabase()
 {
   *this = xmlNode;
 }
@@ -218,7 +206,7 @@ void DBSnapshotTenantDatabase::OutputToStream(Aws::OStream& oStream, const char*
       for(auto& item : m_tagList)
       {
         Aws::StringStream tagListSs;
-        tagListSs << location << index << locationValue << ".Tag." << tagListIdx++;
+        tagListSs << location << index << locationValue << ".TagList.Tag." << tagListIdx++;
         item.OutputToStream(oStream, tagListSs.str().c_str());
       }
   }

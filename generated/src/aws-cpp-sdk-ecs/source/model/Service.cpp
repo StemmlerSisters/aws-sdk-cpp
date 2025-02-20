@@ -58,51 +58,14 @@ Service::Service() :
     m_propagateTags(PropagateTags::NOT_SET),
     m_propagateTagsHasBeenSet(false),
     m_enableExecuteCommand(false),
-    m_enableExecuteCommandHasBeenSet(false)
+    m_enableExecuteCommandHasBeenSet(false),
+    m_availabilityZoneRebalancing(AvailabilityZoneRebalancing::NOT_SET),
+    m_availabilityZoneRebalancingHasBeenSet(false)
 {
 }
 
-Service::Service(JsonView jsonValue) : 
-    m_serviceArnHasBeenSet(false),
-    m_serviceNameHasBeenSet(false),
-    m_clusterArnHasBeenSet(false),
-    m_loadBalancersHasBeenSet(false),
-    m_serviceRegistriesHasBeenSet(false),
-    m_statusHasBeenSet(false),
-    m_desiredCount(0),
-    m_desiredCountHasBeenSet(false),
-    m_runningCount(0),
-    m_runningCountHasBeenSet(false),
-    m_pendingCount(0),
-    m_pendingCountHasBeenSet(false),
-    m_launchType(LaunchType::NOT_SET),
-    m_launchTypeHasBeenSet(false),
-    m_capacityProviderStrategyHasBeenSet(false),
-    m_platformVersionHasBeenSet(false),
-    m_platformFamilyHasBeenSet(false),
-    m_taskDefinitionHasBeenSet(false),
-    m_deploymentConfigurationHasBeenSet(false),
-    m_taskSetsHasBeenSet(false),
-    m_deploymentsHasBeenSet(false),
-    m_roleArnHasBeenSet(false),
-    m_eventsHasBeenSet(false),
-    m_createdAtHasBeenSet(false),
-    m_placementConstraintsHasBeenSet(false),
-    m_placementStrategyHasBeenSet(false),
-    m_networkConfigurationHasBeenSet(false),
-    m_healthCheckGracePeriodSeconds(0),
-    m_healthCheckGracePeriodSecondsHasBeenSet(false),
-    m_schedulingStrategy(SchedulingStrategy::NOT_SET),
-    m_schedulingStrategyHasBeenSet(false),
-    m_deploymentControllerHasBeenSet(false),
-    m_tagsHasBeenSet(false),
-    m_createdByHasBeenSet(false),
-    m_enableECSManagedTags(false),
-    m_enableECSManagedTagsHasBeenSet(false),
-    m_propagateTags(PropagateTags::NOT_SET),
-    m_propagateTagsHasBeenSet(false),
-    m_enableExecuteCommand(false),
-    m_enableExecuteCommandHasBeenSet(false)
+Service::Service(JsonView jsonValue)
+  : Service()
 {
   *this = jsonValue;
 }
@@ -353,6 +316,13 @@ Service& Service::operator =(JsonView jsonValue)
     m_enableExecuteCommandHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("availabilityZoneRebalancing"))
+  {
+    m_availabilityZoneRebalancing = AvailabilityZoneRebalancingMapper::GetAvailabilityZoneRebalancingForName(jsonValue.GetString("availabilityZoneRebalancing"));
+
+    m_availabilityZoneRebalancingHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -585,6 +555,11 @@ JsonValue Service::Jsonize() const
   {
    payload.WithBool("enableExecuteCommand", m_enableExecuteCommand);
 
+  }
+
+  if(m_availabilityZoneRebalancingHasBeenSet)
+  {
+   payload.WithString("availabilityZoneRebalancing", AvailabilityZoneRebalancingMapper::GetNameForAvailabilityZoneRebalancing(m_availabilityZoneRebalancing));
   }
 
   return payload;

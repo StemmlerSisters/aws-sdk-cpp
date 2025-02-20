@@ -23,9 +23,8 @@ GetDataSourceRunResult::GetDataSourceRunResult() :
 {
 }
 
-GetDataSourceRunResult::GetDataSourceRunResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_status(DataSourceRunStatus::NOT_SET),
-    m_type(DataSourceRunType::NOT_SET)
+GetDataSourceRunResult::GetDataSourceRunResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : GetDataSourceRunResult()
 {
   *this = result;
 }
@@ -66,6 +65,12 @@ GetDataSourceRunResult& GetDataSourceRunResult::operator =(const Aws::AmazonWebS
   if(jsonValue.ValueExists("id"))
   {
     m_id = jsonValue.GetString("id");
+
+  }
+
+  if(jsonValue.ValueExists("lineageSummary"))
+  {
+    m_lineageSummary = jsonValue.GetObject("lineageSummary");
 
   }
 

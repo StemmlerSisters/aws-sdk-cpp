@@ -29,22 +29,15 @@ ComponentVersion::ComponentVersion() :
     m_type(ComponentType::NOT_SET),
     m_typeHasBeenSet(false),
     m_ownerHasBeenSet(false),
-    m_dateCreatedHasBeenSet(false)
+    m_dateCreatedHasBeenSet(false),
+    m_status(ComponentStatus::NOT_SET),
+    m_statusHasBeenSet(false),
+    m_productCodesHasBeenSet(false)
 {
 }
 
-ComponentVersion::ComponentVersion(JsonView jsonValue) : 
-    m_arnHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_versionHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_platform(Platform::NOT_SET),
-    m_platformHasBeenSet(false),
-    m_supportedOsVersionsHasBeenSet(false),
-    m_type(ComponentType::NOT_SET),
-    m_typeHasBeenSet(false),
-    m_ownerHasBeenSet(false),
-    m_dateCreatedHasBeenSet(false)
+ComponentVersion::ComponentVersion(JsonView jsonValue)
+  : ComponentVersion()
 {
   *this = jsonValue;
 }
@@ -117,6 +110,23 @@ ComponentVersion& ComponentVersion::operator =(JsonView jsonValue)
     m_dateCreatedHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("status"))
+  {
+    m_status = ComponentStatusMapper::GetComponentStatusForName(jsonValue.GetString("status"));
+
+    m_statusHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("productCodes"))
+  {
+    Aws::Utils::Array<JsonView> productCodesJsonList = jsonValue.GetArray("productCodes");
+    for(unsigned productCodesIndex = 0; productCodesIndex < productCodesJsonList.GetLength(); ++productCodesIndex)
+    {
+      m_productCodes.push_back(productCodesJsonList[productCodesIndex].AsObject());
+    }
+    m_productCodesHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -178,6 +188,22 @@ JsonValue ComponentVersion::Jsonize() const
   if(m_dateCreatedHasBeenSet)
   {
    payload.WithString("dateCreated", m_dateCreated);
+
+  }
+
+  if(m_statusHasBeenSet)
+  {
+   payload.WithString("status", ComponentStatusMapper::GetNameForComponentStatus(m_status));
+  }
+
+  if(m_productCodesHasBeenSet)
+  {
+   Aws::Utils::Array<JsonValue> productCodesJsonList(m_productCodes.size());
+   for(unsigned productCodesIndex = 0; productCodesIndex < productCodesJsonList.GetLength(); ++productCodesIndex)
+   {
+     productCodesJsonList[productCodesIndex].AsObject(m_productCodes[productCodesIndex].Jsonize());
+   }
+   payload.WithArray("productCodes", std::move(productCodesJsonList));
 
   }
 

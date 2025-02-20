@@ -39,32 +39,13 @@ CallAnalyticsJob::CallAnalyticsJob() :
     m_identifiedLanguageScore(0.0),
     m_identifiedLanguageScoreHasBeenSet(false),
     m_settingsHasBeenSet(false),
-    m_channelDefinitionsHasBeenSet(false)
+    m_channelDefinitionsHasBeenSet(false),
+    m_tagsHasBeenSet(false)
 {
 }
 
-CallAnalyticsJob::CallAnalyticsJob(JsonView jsonValue) : 
-    m_callAnalyticsJobNameHasBeenSet(false),
-    m_callAnalyticsJobStatus(CallAnalyticsJobStatus::NOT_SET),
-    m_callAnalyticsJobStatusHasBeenSet(false),
-    m_callAnalyticsJobDetailsHasBeenSet(false),
-    m_languageCode(LanguageCode::NOT_SET),
-    m_languageCodeHasBeenSet(false),
-    m_mediaSampleRateHertz(0),
-    m_mediaSampleRateHertzHasBeenSet(false),
-    m_mediaFormat(MediaFormat::NOT_SET),
-    m_mediaFormatHasBeenSet(false),
-    m_mediaHasBeenSet(false),
-    m_transcriptHasBeenSet(false),
-    m_startTimeHasBeenSet(false),
-    m_creationTimeHasBeenSet(false),
-    m_completionTimeHasBeenSet(false),
-    m_failureReasonHasBeenSet(false),
-    m_dataAccessRoleArnHasBeenSet(false),
-    m_identifiedLanguageScore(0.0),
-    m_identifiedLanguageScoreHasBeenSet(false),
-    m_settingsHasBeenSet(false),
-    m_channelDefinitionsHasBeenSet(false)
+CallAnalyticsJob::CallAnalyticsJob(JsonView jsonValue)
+  : CallAnalyticsJob()
 {
   *this = jsonValue;
 }
@@ -186,6 +167,16 @@ CallAnalyticsJob& CallAnalyticsJob::operator =(JsonView jsonValue)
     m_channelDefinitionsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("Tags"))
+  {
+    Aws::Utils::Array<JsonView> tagsJsonList = jsonValue.GetArray("Tags");
+    for(unsigned tagsIndex = 0; tagsIndex < tagsJsonList.GetLength(); ++tagsIndex)
+    {
+      m_tags.push_back(tagsJsonList[tagsIndex].AsObject());
+    }
+    m_tagsHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -285,6 +276,17 @@ JsonValue CallAnalyticsJob::Jsonize() const
      channelDefinitionsJsonList[channelDefinitionsIndex].AsObject(m_channelDefinitions[channelDefinitionsIndex].Jsonize());
    }
    payload.WithArray("ChannelDefinitions", std::move(channelDefinitionsJsonList));
+
+  }
+
+  if(m_tagsHasBeenSet)
+  {
+   Aws::Utils::Array<JsonValue> tagsJsonList(m_tags.size());
+   for(unsigned tagsIndex = 0; tagsIndex < tagsJsonList.GetLength(); ++tagsIndex)
+   {
+     tagsJsonList[tagsIndex].AsObject(m_tags[tagsIndex].Jsonize());
+   }
+   payload.WithArray("Tags", std::move(tagsJsonList));
 
   }
 

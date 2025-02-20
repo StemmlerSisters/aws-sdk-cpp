@@ -12,7 +12,9 @@
 #include <aws/core/utils/memory/stl/AWSVector.h>
 #include <aws/cloudhsmv2/model/ClusterState.h>
 #include <aws/core/utils/memory/stl/AWSMap.h>
+#include <aws/cloudhsmv2/model/NetworkType.h>
 #include <aws/cloudhsmv2/model/Certificates.h>
+#include <aws/cloudhsmv2/model/ClusterMode.h>
 #include <aws/cloudhsmv2/model/Hsm.h>
 #include <aws/cloudhsmv2/model/Tag.h>
 #include <utility>
@@ -33,8 +35,7 @@ namespace Model
 {
 
   /**
-   * <p>Contains information about an AWS CloudHSM cluster.</p><p><h3>See Also:</h3> 
-   * <a
+   * <p>Contains information about an CloudHSM cluster.</p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/cloudhsmv2-2017-04-28/Cluster">AWS
    * API Reference</a></p>
    */
@@ -47,624 +48,258 @@ namespace Model
     AWS_CLOUDHSMV2_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>The cluster's backup policy.</p>
      */
     inline const BackupPolicy& GetBackupPolicy() const{ return m_backupPolicy; }
-
-    /**
-     * <p>The cluster's backup policy.</p>
-     */
     inline bool BackupPolicyHasBeenSet() const { return m_backupPolicyHasBeenSet; }
-
-    /**
-     * <p>The cluster's backup policy.</p>
-     */
     inline void SetBackupPolicy(const BackupPolicy& value) { m_backupPolicyHasBeenSet = true; m_backupPolicy = value; }
-
-    /**
-     * <p>The cluster's backup policy.</p>
-     */
     inline void SetBackupPolicy(BackupPolicy&& value) { m_backupPolicyHasBeenSet = true; m_backupPolicy = std::move(value); }
-
-    /**
-     * <p>The cluster's backup policy.</p>
-     */
     inline Cluster& WithBackupPolicy(const BackupPolicy& value) { SetBackupPolicy(value); return *this;}
-
-    /**
-     * <p>The cluster's backup policy.</p>
-     */
     inline Cluster& WithBackupPolicy(BackupPolicy&& value) { SetBackupPolicy(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>A policy that defines how the service retains backups.</p>
      */
     inline const BackupRetentionPolicy& GetBackupRetentionPolicy() const{ return m_backupRetentionPolicy; }
-
-    /**
-     * <p>A policy that defines how the service retains backups.</p>
-     */
     inline bool BackupRetentionPolicyHasBeenSet() const { return m_backupRetentionPolicyHasBeenSet; }
-
-    /**
-     * <p>A policy that defines how the service retains backups.</p>
-     */
     inline void SetBackupRetentionPolicy(const BackupRetentionPolicy& value) { m_backupRetentionPolicyHasBeenSet = true; m_backupRetentionPolicy = value; }
-
-    /**
-     * <p>A policy that defines how the service retains backups.</p>
-     */
     inline void SetBackupRetentionPolicy(BackupRetentionPolicy&& value) { m_backupRetentionPolicyHasBeenSet = true; m_backupRetentionPolicy = std::move(value); }
-
-    /**
-     * <p>A policy that defines how the service retains backups.</p>
-     */
     inline Cluster& WithBackupRetentionPolicy(const BackupRetentionPolicy& value) { SetBackupRetentionPolicy(value); return *this;}
-
-    /**
-     * <p>A policy that defines how the service retains backups.</p>
-     */
     inline Cluster& WithBackupRetentionPolicy(BackupRetentionPolicy&& value) { SetBackupRetentionPolicy(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The cluster's identifier (ID).</p>
      */
     inline const Aws::String& GetClusterId() const{ return m_clusterId; }
-
-    /**
-     * <p>The cluster's identifier (ID).</p>
-     */
     inline bool ClusterIdHasBeenSet() const { return m_clusterIdHasBeenSet; }
-
-    /**
-     * <p>The cluster's identifier (ID).</p>
-     */
     inline void SetClusterId(const Aws::String& value) { m_clusterIdHasBeenSet = true; m_clusterId = value; }
-
-    /**
-     * <p>The cluster's identifier (ID).</p>
-     */
     inline void SetClusterId(Aws::String&& value) { m_clusterIdHasBeenSet = true; m_clusterId = std::move(value); }
-
-    /**
-     * <p>The cluster's identifier (ID).</p>
-     */
     inline void SetClusterId(const char* value) { m_clusterIdHasBeenSet = true; m_clusterId.assign(value); }
-
-    /**
-     * <p>The cluster's identifier (ID).</p>
-     */
     inline Cluster& WithClusterId(const Aws::String& value) { SetClusterId(value); return *this;}
-
-    /**
-     * <p>The cluster's identifier (ID).</p>
-     */
     inline Cluster& WithClusterId(Aws::String&& value) { SetClusterId(std::move(value)); return *this;}
-
-    /**
-     * <p>The cluster's identifier (ID).</p>
-     */
     inline Cluster& WithClusterId(const char* value) { SetClusterId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The date and time when the cluster was created.</p>
      */
     inline const Aws::Utils::DateTime& GetCreateTimestamp() const{ return m_createTimestamp; }
-
-    /**
-     * <p>The date and time when the cluster was created.</p>
-     */
     inline bool CreateTimestampHasBeenSet() const { return m_createTimestampHasBeenSet; }
-
-    /**
-     * <p>The date and time when the cluster was created.</p>
-     */
     inline void SetCreateTimestamp(const Aws::Utils::DateTime& value) { m_createTimestampHasBeenSet = true; m_createTimestamp = value; }
-
-    /**
-     * <p>The date and time when the cluster was created.</p>
-     */
     inline void SetCreateTimestamp(Aws::Utils::DateTime&& value) { m_createTimestampHasBeenSet = true; m_createTimestamp = std::move(value); }
-
-    /**
-     * <p>The date and time when the cluster was created.</p>
-     */
     inline Cluster& WithCreateTimestamp(const Aws::Utils::DateTime& value) { SetCreateTimestamp(value); return *this;}
-
-    /**
-     * <p>The date and time when the cluster was created.</p>
-     */
     inline Cluster& WithCreateTimestamp(Aws::Utils::DateTime&& value) { SetCreateTimestamp(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Contains information about the HSMs in the cluster.</p>
      */
     inline const Aws::Vector<Hsm>& GetHsms() const{ return m_hsms; }
-
-    /**
-     * <p>Contains information about the HSMs in the cluster.</p>
-     */
     inline bool HsmsHasBeenSet() const { return m_hsmsHasBeenSet; }
-
-    /**
-     * <p>Contains information about the HSMs in the cluster.</p>
-     */
     inline void SetHsms(const Aws::Vector<Hsm>& value) { m_hsmsHasBeenSet = true; m_hsms = value; }
-
-    /**
-     * <p>Contains information about the HSMs in the cluster.</p>
-     */
     inline void SetHsms(Aws::Vector<Hsm>&& value) { m_hsmsHasBeenSet = true; m_hsms = std::move(value); }
-
-    /**
-     * <p>Contains information about the HSMs in the cluster.</p>
-     */
     inline Cluster& WithHsms(const Aws::Vector<Hsm>& value) { SetHsms(value); return *this;}
-
-    /**
-     * <p>Contains information about the HSMs in the cluster.</p>
-     */
     inline Cluster& WithHsms(Aws::Vector<Hsm>&& value) { SetHsms(std::move(value)); return *this;}
-
-    /**
-     * <p>Contains information about the HSMs in the cluster.</p>
-     */
     inline Cluster& AddHsms(const Hsm& value) { m_hsmsHasBeenSet = true; m_hsms.push_back(value); return *this; }
-
-    /**
-     * <p>Contains information about the HSMs in the cluster.</p>
-     */
     inline Cluster& AddHsms(Hsm&& value) { m_hsmsHasBeenSet = true; m_hsms.push_back(std::move(value)); return *this; }
+    ///@}
 
-
+    ///@{
     /**
      * <p>The type of HSM that the cluster contains.</p>
      */
     inline const Aws::String& GetHsmType() const{ return m_hsmType; }
-
-    /**
-     * <p>The type of HSM that the cluster contains.</p>
-     */
     inline bool HsmTypeHasBeenSet() const { return m_hsmTypeHasBeenSet; }
-
-    /**
-     * <p>The type of HSM that the cluster contains.</p>
-     */
     inline void SetHsmType(const Aws::String& value) { m_hsmTypeHasBeenSet = true; m_hsmType = value; }
-
-    /**
-     * <p>The type of HSM that the cluster contains.</p>
-     */
     inline void SetHsmType(Aws::String&& value) { m_hsmTypeHasBeenSet = true; m_hsmType = std::move(value); }
-
-    /**
-     * <p>The type of HSM that the cluster contains.</p>
-     */
     inline void SetHsmType(const char* value) { m_hsmTypeHasBeenSet = true; m_hsmType.assign(value); }
-
-    /**
-     * <p>The type of HSM that the cluster contains.</p>
-     */
     inline Cluster& WithHsmType(const Aws::String& value) { SetHsmType(value); return *this;}
-
-    /**
-     * <p>The type of HSM that the cluster contains.</p>
-     */
     inline Cluster& WithHsmType(Aws::String&& value) { SetHsmType(std::move(value)); return *this;}
-
-    /**
-     * <p>The type of HSM that the cluster contains.</p>
-     */
     inline Cluster& WithHsmType(const char* value) { SetHsmType(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The timestamp until when the cluster can be rolled back to its original HSM
+     * type.</p>
+     */
+    inline const Aws::Utils::DateTime& GetHsmTypeRollbackExpiration() const{ return m_hsmTypeRollbackExpiration; }
+    inline bool HsmTypeRollbackExpirationHasBeenSet() const { return m_hsmTypeRollbackExpirationHasBeenSet; }
+    inline void SetHsmTypeRollbackExpiration(const Aws::Utils::DateTime& value) { m_hsmTypeRollbackExpirationHasBeenSet = true; m_hsmTypeRollbackExpiration = value; }
+    inline void SetHsmTypeRollbackExpiration(Aws::Utils::DateTime&& value) { m_hsmTypeRollbackExpirationHasBeenSet = true; m_hsmTypeRollbackExpiration = std::move(value); }
+    inline Cluster& WithHsmTypeRollbackExpiration(const Aws::Utils::DateTime& value) { SetHsmTypeRollbackExpiration(value); return *this;}
+    inline Cluster& WithHsmTypeRollbackExpiration(Aws::Utils::DateTime&& value) { SetHsmTypeRollbackExpiration(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
     /**
      * <p>The default password for the cluster's Pre-Crypto Officer (PRECO) user.</p>
      */
     inline const Aws::String& GetPreCoPassword() const{ return m_preCoPassword; }
-
-    /**
-     * <p>The default password for the cluster's Pre-Crypto Officer (PRECO) user.</p>
-     */
     inline bool PreCoPasswordHasBeenSet() const { return m_preCoPasswordHasBeenSet; }
-
-    /**
-     * <p>The default password for the cluster's Pre-Crypto Officer (PRECO) user.</p>
-     */
     inline void SetPreCoPassword(const Aws::String& value) { m_preCoPasswordHasBeenSet = true; m_preCoPassword = value; }
-
-    /**
-     * <p>The default password for the cluster's Pre-Crypto Officer (PRECO) user.</p>
-     */
     inline void SetPreCoPassword(Aws::String&& value) { m_preCoPasswordHasBeenSet = true; m_preCoPassword = std::move(value); }
-
-    /**
-     * <p>The default password for the cluster's Pre-Crypto Officer (PRECO) user.</p>
-     */
     inline void SetPreCoPassword(const char* value) { m_preCoPasswordHasBeenSet = true; m_preCoPassword.assign(value); }
-
-    /**
-     * <p>The default password for the cluster's Pre-Crypto Officer (PRECO) user.</p>
-     */
     inline Cluster& WithPreCoPassword(const Aws::String& value) { SetPreCoPassword(value); return *this;}
-
-    /**
-     * <p>The default password for the cluster's Pre-Crypto Officer (PRECO) user.</p>
-     */
     inline Cluster& WithPreCoPassword(Aws::String&& value) { SetPreCoPassword(std::move(value)); return *this;}
-
-    /**
-     * <p>The default password for the cluster's Pre-Crypto Officer (PRECO) user.</p>
-     */
     inline Cluster& WithPreCoPassword(const char* value) { SetPreCoPassword(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The identifier (ID) of the cluster's security group.</p>
      */
     inline const Aws::String& GetSecurityGroup() const{ return m_securityGroup; }
-
-    /**
-     * <p>The identifier (ID) of the cluster's security group.</p>
-     */
     inline bool SecurityGroupHasBeenSet() const { return m_securityGroupHasBeenSet; }
-
-    /**
-     * <p>The identifier (ID) of the cluster's security group.</p>
-     */
     inline void SetSecurityGroup(const Aws::String& value) { m_securityGroupHasBeenSet = true; m_securityGroup = value; }
-
-    /**
-     * <p>The identifier (ID) of the cluster's security group.</p>
-     */
     inline void SetSecurityGroup(Aws::String&& value) { m_securityGroupHasBeenSet = true; m_securityGroup = std::move(value); }
-
-    /**
-     * <p>The identifier (ID) of the cluster's security group.</p>
-     */
     inline void SetSecurityGroup(const char* value) { m_securityGroupHasBeenSet = true; m_securityGroup.assign(value); }
-
-    /**
-     * <p>The identifier (ID) of the cluster's security group.</p>
-     */
     inline Cluster& WithSecurityGroup(const Aws::String& value) { SetSecurityGroup(value); return *this;}
-
-    /**
-     * <p>The identifier (ID) of the cluster's security group.</p>
-     */
     inline Cluster& WithSecurityGroup(Aws::String&& value) { SetSecurityGroup(std::move(value)); return *this;}
-
-    /**
-     * <p>The identifier (ID) of the cluster's security group.</p>
-     */
     inline Cluster& WithSecurityGroup(const char* value) { SetSecurityGroup(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The identifier (ID) of the backup used to create the cluster. This value
      * exists only when the cluster was created from a backup.</p>
      */
     inline const Aws::String& GetSourceBackupId() const{ return m_sourceBackupId; }
-
-    /**
-     * <p>The identifier (ID) of the backup used to create the cluster. This value
-     * exists only when the cluster was created from a backup.</p>
-     */
     inline bool SourceBackupIdHasBeenSet() const { return m_sourceBackupIdHasBeenSet; }
-
-    /**
-     * <p>The identifier (ID) of the backup used to create the cluster. This value
-     * exists only when the cluster was created from a backup.</p>
-     */
     inline void SetSourceBackupId(const Aws::String& value) { m_sourceBackupIdHasBeenSet = true; m_sourceBackupId = value; }
-
-    /**
-     * <p>The identifier (ID) of the backup used to create the cluster. This value
-     * exists only when the cluster was created from a backup.</p>
-     */
     inline void SetSourceBackupId(Aws::String&& value) { m_sourceBackupIdHasBeenSet = true; m_sourceBackupId = std::move(value); }
-
-    /**
-     * <p>The identifier (ID) of the backup used to create the cluster. This value
-     * exists only when the cluster was created from a backup.</p>
-     */
     inline void SetSourceBackupId(const char* value) { m_sourceBackupIdHasBeenSet = true; m_sourceBackupId.assign(value); }
-
-    /**
-     * <p>The identifier (ID) of the backup used to create the cluster. This value
-     * exists only when the cluster was created from a backup.</p>
-     */
     inline Cluster& WithSourceBackupId(const Aws::String& value) { SetSourceBackupId(value); return *this;}
-
-    /**
-     * <p>The identifier (ID) of the backup used to create the cluster. This value
-     * exists only when the cluster was created from a backup.</p>
-     */
     inline Cluster& WithSourceBackupId(Aws::String&& value) { SetSourceBackupId(std::move(value)); return *this;}
-
-    /**
-     * <p>The identifier (ID) of the backup used to create the cluster. This value
-     * exists only when the cluster was created from a backup.</p>
-     */
     inline Cluster& WithSourceBackupId(const char* value) { SetSourceBackupId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The cluster's state.</p>
      */
     inline const ClusterState& GetState() const{ return m_state; }
-
-    /**
-     * <p>The cluster's state.</p>
-     */
     inline bool StateHasBeenSet() const { return m_stateHasBeenSet; }
-
-    /**
-     * <p>The cluster's state.</p>
-     */
     inline void SetState(const ClusterState& value) { m_stateHasBeenSet = true; m_state = value; }
-
-    /**
-     * <p>The cluster's state.</p>
-     */
     inline void SetState(ClusterState&& value) { m_stateHasBeenSet = true; m_state = std::move(value); }
-
-    /**
-     * <p>The cluster's state.</p>
-     */
     inline Cluster& WithState(const ClusterState& value) { SetState(value); return *this;}
-
-    /**
-     * <p>The cluster's state.</p>
-     */
     inline Cluster& WithState(ClusterState&& value) { SetState(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>A description of the cluster's state.</p>
      */
     inline const Aws::String& GetStateMessage() const{ return m_stateMessage; }
-
-    /**
-     * <p>A description of the cluster's state.</p>
-     */
     inline bool StateMessageHasBeenSet() const { return m_stateMessageHasBeenSet; }
-
-    /**
-     * <p>A description of the cluster's state.</p>
-     */
     inline void SetStateMessage(const Aws::String& value) { m_stateMessageHasBeenSet = true; m_stateMessage = value; }
-
-    /**
-     * <p>A description of the cluster's state.</p>
-     */
     inline void SetStateMessage(Aws::String&& value) { m_stateMessageHasBeenSet = true; m_stateMessage = std::move(value); }
-
-    /**
-     * <p>A description of the cluster's state.</p>
-     */
     inline void SetStateMessage(const char* value) { m_stateMessageHasBeenSet = true; m_stateMessage.assign(value); }
-
-    /**
-     * <p>A description of the cluster's state.</p>
-     */
     inline Cluster& WithStateMessage(const Aws::String& value) { SetStateMessage(value); return *this;}
-
-    /**
-     * <p>A description of the cluster's state.</p>
-     */
     inline Cluster& WithStateMessage(Aws::String&& value) { SetStateMessage(std::move(value)); return *this;}
-
-    /**
-     * <p>A description of the cluster's state.</p>
-     */
     inline Cluster& WithStateMessage(const char* value) { SetStateMessage(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>A map from availability zone to the cluster’s subnet in that availability
      * zone.</p>
      */
     inline const Aws::Map<Aws::String, Aws::String>& GetSubnetMapping() const{ return m_subnetMapping; }
-
-    /**
-     * <p>A map from availability zone to the cluster’s subnet in that availability
-     * zone.</p>
-     */
     inline bool SubnetMappingHasBeenSet() const { return m_subnetMappingHasBeenSet; }
-
-    /**
-     * <p>A map from availability zone to the cluster’s subnet in that availability
-     * zone.</p>
-     */
     inline void SetSubnetMapping(const Aws::Map<Aws::String, Aws::String>& value) { m_subnetMappingHasBeenSet = true; m_subnetMapping = value; }
-
-    /**
-     * <p>A map from availability zone to the cluster’s subnet in that availability
-     * zone.</p>
-     */
     inline void SetSubnetMapping(Aws::Map<Aws::String, Aws::String>&& value) { m_subnetMappingHasBeenSet = true; m_subnetMapping = std::move(value); }
-
-    /**
-     * <p>A map from availability zone to the cluster’s subnet in that availability
-     * zone.</p>
-     */
     inline Cluster& WithSubnetMapping(const Aws::Map<Aws::String, Aws::String>& value) { SetSubnetMapping(value); return *this;}
-
-    /**
-     * <p>A map from availability zone to the cluster’s subnet in that availability
-     * zone.</p>
-     */
     inline Cluster& WithSubnetMapping(Aws::Map<Aws::String, Aws::String>&& value) { SetSubnetMapping(std::move(value)); return *this;}
-
-    /**
-     * <p>A map from availability zone to the cluster’s subnet in that availability
-     * zone.</p>
-     */
     inline Cluster& AddSubnetMapping(const Aws::String& key, const Aws::String& value) { m_subnetMappingHasBeenSet = true; m_subnetMapping.emplace(key, value); return *this; }
-
-    /**
-     * <p>A map from availability zone to the cluster’s subnet in that availability
-     * zone.</p>
-     */
     inline Cluster& AddSubnetMapping(Aws::String&& key, const Aws::String& value) { m_subnetMappingHasBeenSet = true; m_subnetMapping.emplace(std::move(key), value); return *this; }
-
-    /**
-     * <p>A map from availability zone to the cluster’s subnet in that availability
-     * zone.</p>
-     */
     inline Cluster& AddSubnetMapping(const Aws::String& key, Aws::String&& value) { m_subnetMappingHasBeenSet = true; m_subnetMapping.emplace(key, std::move(value)); return *this; }
-
-    /**
-     * <p>A map from availability zone to the cluster’s subnet in that availability
-     * zone.</p>
-     */
     inline Cluster& AddSubnetMapping(Aws::String&& key, Aws::String&& value) { m_subnetMappingHasBeenSet = true; m_subnetMapping.emplace(std::move(key), std::move(value)); return *this; }
-
-    /**
-     * <p>A map from availability zone to the cluster’s subnet in that availability
-     * zone.</p>
-     */
     inline Cluster& AddSubnetMapping(const char* key, Aws::String&& value) { m_subnetMappingHasBeenSet = true; m_subnetMapping.emplace(key, std::move(value)); return *this; }
-
-    /**
-     * <p>A map from availability zone to the cluster’s subnet in that availability
-     * zone.</p>
-     */
     inline Cluster& AddSubnetMapping(Aws::String&& key, const char* value) { m_subnetMappingHasBeenSet = true; m_subnetMapping.emplace(std::move(key), value); return *this; }
-
-    /**
-     * <p>A map from availability zone to the cluster’s subnet in that availability
-     * zone.</p>
-     */
     inline Cluster& AddSubnetMapping(const char* key, const char* value) { m_subnetMappingHasBeenSet = true; m_subnetMapping.emplace(key, value); return *this; }
+    ///@}
 
-
+    ///@{
     /**
      * <p>The identifier (ID) of the virtual private cloud (VPC) that contains the
      * cluster.</p>
      */
     inline const Aws::String& GetVpcId() const{ return m_vpcId; }
-
-    /**
-     * <p>The identifier (ID) of the virtual private cloud (VPC) that contains the
-     * cluster.</p>
-     */
     inline bool VpcIdHasBeenSet() const { return m_vpcIdHasBeenSet; }
-
-    /**
-     * <p>The identifier (ID) of the virtual private cloud (VPC) that contains the
-     * cluster.</p>
-     */
     inline void SetVpcId(const Aws::String& value) { m_vpcIdHasBeenSet = true; m_vpcId = value; }
-
-    /**
-     * <p>The identifier (ID) of the virtual private cloud (VPC) that contains the
-     * cluster.</p>
-     */
     inline void SetVpcId(Aws::String&& value) { m_vpcIdHasBeenSet = true; m_vpcId = std::move(value); }
-
-    /**
-     * <p>The identifier (ID) of the virtual private cloud (VPC) that contains the
-     * cluster.</p>
-     */
     inline void SetVpcId(const char* value) { m_vpcIdHasBeenSet = true; m_vpcId.assign(value); }
-
-    /**
-     * <p>The identifier (ID) of the virtual private cloud (VPC) that contains the
-     * cluster.</p>
-     */
     inline Cluster& WithVpcId(const Aws::String& value) { SetVpcId(value); return *this;}
-
-    /**
-     * <p>The identifier (ID) of the virtual private cloud (VPC) that contains the
-     * cluster.</p>
-     */
     inline Cluster& WithVpcId(Aws::String&& value) { SetVpcId(std::move(value)); return *this;}
-
-    /**
-     * <p>The identifier (ID) of the virtual private cloud (VPC) that contains the
-     * cluster.</p>
-     */
     inline Cluster& WithVpcId(const char* value) { SetVpcId(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The cluster's NetworkType can be IPv4 (the default) or DUALSTACK. The IPv4
+     * NetworkType restricts communication between your application and the hardware
+     * security modules (HSMs) to the IPv4 protocol only. The DUALSTACK NetworkType
+     * enables communication over both IPv4 and IPv6 protocols. To use DUALSTACK,
+     * configure your virtual private cloud (VPC) and subnets to support both IPv4 and
+     * IPv6. This configuration involves adding IPv6 Classless Inter-Domain Routing
+     * (CIDR) blocks to the existing IPv4 CIDR blocks in your subnets. The NetworkType
+     * you choose affects the network addressing options for your cluster. DUALSTACK
+     * provides more flexibility by supporting both IPv4 and IPv6 communication.</p>
+     */
+    inline const NetworkType& GetNetworkType() const{ return m_networkType; }
+    inline bool NetworkTypeHasBeenSet() const { return m_networkTypeHasBeenSet; }
+    inline void SetNetworkType(const NetworkType& value) { m_networkTypeHasBeenSet = true; m_networkType = value; }
+    inline void SetNetworkType(NetworkType&& value) { m_networkTypeHasBeenSet = true; m_networkType = std::move(value); }
+    inline Cluster& WithNetworkType(const NetworkType& value) { SetNetworkType(value); return *this;}
+    inline Cluster& WithNetworkType(NetworkType&& value) { SetNetworkType(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
     /**
      * <p>Contains one or more certificates or a certificate signing request (CSR).</p>
      */
     inline const Certificates& GetCertificates() const{ return m_certificates; }
-
-    /**
-     * <p>Contains one or more certificates or a certificate signing request (CSR).</p>
-     */
     inline bool CertificatesHasBeenSet() const { return m_certificatesHasBeenSet; }
-
-    /**
-     * <p>Contains one or more certificates or a certificate signing request (CSR).</p>
-     */
     inline void SetCertificates(const Certificates& value) { m_certificatesHasBeenSet = true; m_certificates = value; }
-
-    /**
-     * <p>Contains one or more certificates or a certificate signing request (CSR).</p>
-     */
     inline void SetCertificates(Certificates&& value) { m_certificatesHasBeenSet = true; m_certificates = std::move(value); }
-
-    /**
-     * <p>Contains one or more certificates or a certificate signing request (CSR).</p>
-     */
     inline Cluster& WithCertificates(const Certificates& value) { SetCertificates(value); return *this;}
-
-    /**
-     * <p>Contains one or more certificates or a certificate signing request (CSR).</p>
-     */
     inline Cluster& WithCertificates(Certificates&& value) { SetCertificates(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The list of tags for the cluster.</p>
      */
     inline const Aws::Vector<Tag>& GetTagList() const{ return m_tagList; }
-
-    /**
-     * <p>The list of tags for the cluster.</p>
-     */
     inline bool TagListHasBeenSet() const { return m_tagListHasBeenSet; }
-
-    /**
-     * <p>The list of tags for the cluster.</p>
-     */
     inline void SetTagList(const Aws::Vector<Tag>& value) { m_tagListHasBeenSet = true; m_tagList = value; }
-
-    /**
-     * <p>The list of tags for the cluster.</p>
-     */
     inline void SetTagList(Aws::Vector<Tag>&& value) { m_tagListHasBeenSet = true; m_tagList = std::move(value); }
-
-    /**
-     * <p>The list of tags for the cluster.</p>
-     */
     inline Cluster& WithTagList(const Aws::Vector<Tag>& value) { SetTagList(value); return *this;}
-
-    /**
-     * <p>The list of tags for the cluster.</p>
-     */
     inline Cluster& WithTagList(Aws::Vector<Tag>&& value) { SetTagList(std::move(value)); return *this;}
-
-    /**
-     * <p>The list of tags for the cluster.</p>
-     */
     inline Cluster& AddTagList(const Tag& value) { m_tagListHasBeenSet = true; m_tagList.push_back(value); return *this; }
-
-    /**
-     * <p>The list of tags for the cluster.</p>
-     */
     inline Cluster& AddTagList(Tag&& value) { m_tagListHasBeenSet = true; m_tagList.push_back(std::move(value)); return *this; }
+    ///@}
 
+    ///@{
+    /**
+     * <p>The mode of the cluster.</p>
+     */
+    inline const ClusterMode& GetMode() const{ return m_mode; }
+    inline bool ModeHasBeenSet() const { return m_modeHasBeenSet; }
+    inline void SetMode(const ClusterMode& value) { m_modeHasBeenSet = true; m_mode = value; }
+    inline void SetMode(ClusterMode&& value) { m_modeHasBeenSet = true; m_mode = std::move(value); }
+    inline Cluster& WithMode(const ClusterMode& value) { SetMode(value); return *this;}
+    inline Cluster& WithMode(ClusterMode&& value) { SetMode(std::move(value)); return *this;}
+    ///@}
   private:
 
     BackupPolicy m_backupPolicy;
@@ -684,6 +319,9 @@ namespace Model
 
     Aws::String m_hsmType;
     bool m_hsmTypeHasBeenSet = false;
+
+    Aws::Utils::DateTime m_hsmTypeRollbackExpiration;
+    bool m_hsmTypeRollbackExpirationHasBeenSet = false;
 
     Aws::String m_preCoPassword;
     bool m_preCoPasswordHasBeenSet = false;
@@ -706,11 +344,17 @@ namespace Model
     Aws::String m_vpcId;
     bool m_vpcIdHasBeenSet = false;
 
+    NetworkType m_networkType;
+    bool m_networkTypeHasBeenSet = false;
+
     Certificates m_certificates;
     bool m_certificatesHasBeenSet = false;
 
     Aws::Vector<Tag> m_tagList;
     bool m_tagListHasBeenSet = false;
+
+    ClusterMode m_mode;
+    bool m_modeHasBeenSet = false;
   };
 
 } // namespace Model

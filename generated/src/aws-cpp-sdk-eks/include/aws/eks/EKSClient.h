@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/eks/EKS_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/eks/EKSServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/eks/EKSErrorMarshaller.h>
 
 namespace Aws
 {
 namespace EKS
 {
+  AWS_EKS_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon Elastic Kubernetes Service (Amazon EKS) is a managed service that
    * makes it easy for you to run Kubernetes on Amazon Web Services without needing
@@ -28,12 +32,20 @@ namespace EKS
    * means that you can easily migrate any standard Kubernetes application to Amazon
    * EKS without any code modification required.</p>
    */
-  class AWS_EKS_API EKSClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<EKSClient>
+  class AWS_EKS_API EKSClient : smithy::client::AwsSmithyClientT<Aws::EKS::SERVICE_NAME,
+      Aws::EKS::EKSClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      EKSEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::EKSErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<EKSClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "EKS"; }
 
       typedef EKSClientConfiguration ClientConfigurationType;
       typedef EKSEndpointProvider EndpointProviderType;
@@ -280,8 +292,8 @@ namespace EKS
          * you create an Amazon EKS cluster, you must configure your Kubernetes tooling to
          * communicate with the API server and launch nodes into your cluster. For more
          * information, see <a
-         * href="https://docs.aws.amazon.com/eks/latest/userguide/managing-auth.html">Managing
-         * Cluster Authentication</a> and <a
+         * href="https://docs.aws.amazon.com/eks/latest/userguide/cluster-auth.html">Allowing
+         * users to access your cluster</a> and <a
          * href="https://docs.aws.amazon.com/eks/latest/userguide/launch-workers.html">Launching
          * Amazon EKS nodes</a> in the <i>Amazon EKS User Guide</i>.</p><p><h3>See
          * Also:</h3>   <a
@@ -342,7 +354,7 @@ namespace EKS
          * least one Fargate profile in a cluster to be able to run pods on Fargate.</p>
          * <p>The Fargate profile allows an administrator to declare which pods run on
          * Fargate and specify which pods run on which Fargate profile. This declaration is
-         * done through the profile’s selectors. Each profile can have up to five selectors
+         * done through the profile's selectors. Each profile can have up to five selectors
          * that contain a namespace and labels. A namespace is required for every selector.
          * The label field consists of multiple optional key-value pairs. Pods that match
          * the selectors are scheduled on Fargate. If a to-be-scheduled pod matches any of
@@ -396,10 +408,11 @@ namespace EKS
          * version for the respective minor Kubernetes version of the cluster, unless you
          * deploy a custom AMI using a launch template. For more information about using
          * launch templates, see <a
-         * href="https://docs.aws.amazon.com/eks/latest/userguide/launch-templates.html">Launch
-         * template support</a>.</p> <p>An Amazon EKS managed node group is an Amazon EC2
-         * Auto Scaling group and associated Amazon EC2 instances that are managed by
-         * Amazon Web Services for an Amazon EKS cluster. For more information, see <a
+         * href="https://docs.aws.amazon.com/eks/latest/userguide/launch-templates.html">Customizing
+         * managed nodes with launch templates</a>.</p> <p>An Amazon EKS managed node group
+         * is an Amazon EC2 Auto Scaling group and associated Amazon EC2 instances that are
+         * managed by Amazon Web Services for an Amazon EKS cluster. For more information,
+         * see <a
          * href="https://docs.aws.amazon.com/eks/latest/userguide/managed-node-groups.html">Managed
          * node groups</a> in the <i>Amazon EKS User Guide</i>.</p>  <p>Windows AMI
          * types are only supported for commercial Amazon Web Services Regions that support
@@ -781,13 +794,13 @@ namespace EKS
          * href="http://docs.aws.amazon.com/goto/WebAPI/eks-2017-11-01/DescribeAddonVersions">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeAddonVersionsOutcome DescribeAddonVersions(const Model::DescribeAddonVersionsRequest& request) const;
+        virtual Model::DescribeAddonVersionsOutcome DescribeAddonVersions(const Model::DescribeAddonVersionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeAddonVersions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeAddonVersionsRequestT = Model::DescribeAddonVersionsRequest>
-        Model::DescribeAddonVersionsOutcomeCallable DescribeAddonVersionsCallable(const DescribeAddonVersionsRequestT& request) const
+        Model::DescribeAddonVersionsOutcomeCallable DescribeAddonVersionsCallable(const DescribeAddonVersionsRequestT& request = {}) const
         {
             return SubmitCallable(&EKSClient::DescribeAddonVersions, request);
         }
@@ -796,7 +809,7 @@ namespace EKS
          * An Async wrapper for DescribeAddonVersions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeAddonVersionsRequestT = Model::DescribeAddonVersionsRequest>
-        void DescribeAddonVersionsAsync(const DescribeAddonVersionsRequestT& request, const DescribeAddonVersionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeAddonVersionsAsync(const DescribeAddonVersionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeAddonVersionsRequestT& request = {}) const
         {
             return SubmitAsync(&EKSClient::DescribeAddonVersions, request, handler, context);
         }
@@ -832,6 +845,32 @@ namespace EKS
         void DescribeClusterAsync(const DescribeClusterRequestT& request, const DescribeClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&EKSClient::DescribeCluster, request, handler, context);
+        }
+
+        /**
+         * <p>Lists available Kubernetes versions for Amazon EKS clusters.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/eks-2017-11-01/DescribeClusterVersions">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DescribeClusterVersionsOutcome DescribeClusterVersions(const Model::DescribeClusterVersionsRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for DescribeClusterVersions that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DescribeClusterVersionsRequestT = Model::DescribeClusterVersionsRequest>
+        Model::DescribeClusterVersionsOutcomeCallable DescribeClusterVersionsCallable(const DescribeClusterVersionsRequestT& request = {}) const
+        {
+            return SubmitCallable(&EKSClient::DescribeClusterVersions, request);
+        }
+
+        /**
+         * An Async wrapper for DescribeClusterVersions that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DescribeClusterVersionsRequestT = Model::DescribeClusterVersionsRequest>
+        void DescribeClusterVersionsAsync(const DescribeClusterVersionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeClusterVersionsRequestT& request = {}) const
+        {
+            return SubmitAsync(&EKSClient::DescribeClusterVersions, request, handler, context);
         }
 
         /**
@@ -993,7 +1032,7 @@ namespace EKS
 
         /**
          * <p>Describes an update to an Amazon EKS resource.</p> <p>When the status of the
-         * update is <code>Succeeded</code>, the update is complete. If an update fails,
+         * update is <code>Successful</code>, the update is complete. If an update fails,
          * the status is <code>Failed</code>, and an error detail explains the reason for
          * the failure.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/eks-2017-11-01/DescribeUpdate">AWS
@@ -1103,13 +1142,13 @@ namespace EKS
          * href="http://docs.aws.amazon.com/goto/WebAPI/eks-2017-11-01/ListAccessPolicies">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListAccessPoliciesOutcome ListAccessPolicies(const Model::ListAccessPoliciesRequest& request) const;
+        virtual Model::ListAccessPoliciesOutcome ListAccessPolicies(const Model::ListAccessPoliciesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListAccessPolicies that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListAccessPoliciesRequestT = Model::ListAccessPoliciesRequest>
-        Model::ListAccessPoliciesOutcomeCallable ListAccessPoliciesCallable(const ListAccessPoliciesRequestT& request) const
+        Model::ListAccessPoliciesOutcomeCallable ListAccessPoliciesCallable(const ListAccessPoliciesRequestT& request = {}) const
         {
             return SubmitCallable(&EKSClient::ListAccessPolicies, request);
         }
@@ -1118,7 +1157,7 @@ namespace EKS
          * An Async wrapper for ListAccessPolicies that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListAccessPoliciesRequestT = Model::ListAccessPoliciesRequest>
-        void ListAccessPoliciesAsync(const ListAccessPoliciesRequestT& request, const ListAccessPoliciesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListAccessPoliciesAsync(const ListAccessPoliciesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListAccessPoliciesRequestT& request = {}) const
         {
             return SubmitAsync(&EKSClient::ListAccessPolicies, request, handler, context);
         }
@@ -1180,13 +1219,13 @@ namespace EKS
          * href="http://docs.aws.amazon.com/goto/WebAPI/eks-2017-11-01/ListClusters">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListClustersOutcome ListClusters(const Model::ListClustersRequest& request) const;
+        virtual Model::ListClustersOutcome ListClusters(const Model::ListClustersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListClusters that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListClustersRequestT = Model::ListClustersRequest>
-        Model::ListClustersOutcomeCallable ListClustersCallable(const ListClustersRequestT& request) const
+        Model::ListClustersOutcomeCallable ListClustersCallable(const ListClustersRequestT& request = {}) const
         {
             return SubmitCallable(&EKSClient::ListClusters, request);
         }
@@ -1195,7 +1234,7 @@ namespace EKS
          * An Async wrapper for ListClusters that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListClustersRequestT = Model::ListClustersRequest>
-        void ListClustersAsync(const ListClustersRequestT& request, const ListClustersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListClustersAsync(const ListClustersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListClustersRequestT& request = {}) const
         {
             return SubmitAsync(&EKSClient::ListClusters, request, handler, context);
         }
@@ -1206,13 +1245,13 @@ namespace EKS
          * href="http://docs.aws.amazon.com/goto/WebAPI/eks-2017-11-01/ListEksAnywhereSubscriptions">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListEksAnywhereSubscriptionsOutcome ListEksAnywhereSubscriptions(const Model::ListEksAnywhereSubscriptionsRequest& request) const;
+        virtual Model::ListEksAnywhereSubscriptionsOutcome ListEksAnywhereSubscriptions(const Model::ListEksAnywhereSubscriptionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListEksAnywhereSubscriptions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListEksAnywhereSubscriptionsRequestT = Model::ListEksAnywhereSubscriptionsRequest>
-        Model::ListEksAnywhereSubscriptionsOutcomeCallable ListEksAnywhereSubscriptionsCallable(const ListEksAnywhereSubscriptionsRequestT& request) const
+        Model::ListEksAnywhereSubscriptionsOutcomeCallable ListEksAnywhereSubscriptionsCallable(const ListEksAnywhereSubscriptionsRequestT& request = {}) const
         {
             return SubmitCallable(&EKSClient::ListEksAnywhereSubscriptions, request);
         }
@@ -1221,7 +1260,7 @@ namespace EKS
          * An Async wrapper for ListEksAnywhereSubscriptions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListEksAnywhereSubscriptionsRequestT = Model::ListEksAnywhereSubscriptionsRequest>
-        void ListEksAnywhereSubscriptionsAsync(const ListEksAnywhereSubscriptionsRequestT& request, const ListEksAnywhereSubscriptionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListEksAnywhereSubscriptionsAsync(const ListEksAnywhereSubscriptionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListEksAnywhereSubscriptionsRequestT& request = {}) const
         {
             return SubmitAsync(&EKSClient::ListEksAnywhereSubscriptions, request, handler, context);
         }
@@ -1416,8 +1455,10 @@ namespace EKS
          * <p>Connects a Kubernetes cluster to the Amazon EKS control plane. </p> <p>Any
          * Kubernetes cluster can be connected to the Amazon EKS control plane to view
          * current information about the cluster and its nodes. </p> <p>Cluster connection
-         * requires two steps. First, send a <code> <a>RegisterClusterRequest</a> </code>
-         * to add it to the Amazon EKS control plane.</p> <p>Second, a <a
+         * requires two steps. First, send a <a
+         * href="https://docs.aws.amazon.com/eks/latest/APIReference/API_RegisterClusterRequest.html">
+         * <code>RegisterClusterRequest</code> </a> to add it to the Amazon EKS control
+         * plane.</p> <p>Second, a <a
          * href="https://amazon-eks.s3.us-west-2.amazonaws.com/eks-connector/manifests/eks-connector/latest/eks-connector.yaml">Manifest</a>
          * containing the <code>activationID</code> and <code>activationCode</code> must be
          * applied to the Kubernetes cluster through it's native provider to provide
@@ -1582,11 +1623,13 @@ namespace EKS
          * from, the subnets must be in the same VPC as the subnets that the cluster was
          * created with. For more information about the VPC requirements, see <a
          * href="https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html">https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html</a>
-         * in the <i> <i>Amazon EKS User Guide</i> </i>.</p> <p>Cluster updates are
-         * asynchronous, and they should finish within a few minutes. During an update, the
-         * cluster status moves to <code>UPDATING</code> (this status transition is
-         * eventually consistent). When the update is complete (either <code>Failed</code>
-         * or <code>Successful</code>), the cluster status moves to
+         * in the <i> <i>Amazon EKS User Guide</i> </i>.</p> <p>You can also use this API
+         * operation to enable or disable ARC zonal shift. If zonal shift is enabled,
+         * Amazon Web Services configures zonal autoshift for the cluster.</p> <p>Cluster
+         * updates are asynchronous, and they should finish within a few minutes. During an
+         * update, the cluster status moves to <code>UPDATING</code> (this status
+         * transition is eventually consistent). When the update is complete (either
+         * <code>Failed</code> or <code>Successful</code>), the cluster status moves to
          * <code>Active</code>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/eks-2017-11-01/UpdateClusterConfig">AWS
          * API Reference</a></p>
@@ -1615,14 +1658,17 @@ namespace EKS
          * <p>Updates an Amazon EKS cluster to the specified Kubernetes version. Your
          * cluster continues to function during the update. The response output includes an
          * update ID that you can use to track the status of your cluster update with the
-         * <a>DescribeUpdate</a> API operation.</p> <p>Cluster updates are asynchronous,
-         * and they should finish within a few minutes. During an update, the cluster
-         * status moves to <code>UPDATING</code> (this status transition is eventually
-         * consistent). When the update is complete (either <code>Failed</code> or
-         * <code>Successful</code>), the cluster status moves to <code>Active</code>.</p>
-         * <p>If your cluster has managed node groups attached to it, all of your node
-         * groups’ Kubernetes versions must match the cluster’s Kubernetes version in order
-         * to update the cluster to a new Kubernetes version.</p><p><h3>See Also:</h3>   <a
+         * <a
+         * href="https://docs.aws.amazon.com/eks/latest/APIReference/API_DescribeUpdate.html">
+         * <code>DescribeUpdate</code> </a> API operation.</p> <p>Cluster updates are
+         * asynchronous, and they should finish within a few minutes. During an update, the
+         * cluster status moves to <code>UPDATING</code> (this status transition is
+         * eventually consistent). When the update is complete (either <code>Failed</code>
+         * or <code>Successful</code>), the cluster status moves to
+         * <code>Active</code>.</p> <p>If your cluster has managed node groups attached to
+         * it, all of your node groups' Kubernetes versions must match the cluster's
+         * Kubernetes version in order to update the cluster to a new Kubernetes
+         * version.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/eks-2017-11-01/UpdateClusterVersion">AWS
          * API Reference</a></p>
          */
@@ -1675,10 +1721,11 @@ namespace EKS
         /**
          * <p>Updates an Amazon EKS managed node group configuration. Your node group
          * continues to function during the update. The response output includes an update
-         * ID that you can use to track the status of your node group update with the
-         * <a>DescribeUpdate</a> API operation. Currently you can update the Kubernetes
-         * labels for a node group or the scaling configuration.</p><p><h3>See Also:</h3>  
-         * <a
+         * ID that you can use to track the status of your node group update with the <a
+         * href="https://docs.aws.amazon.com/eks/latest/APIReference/API_DescribeUpdate.html">
+         * <code>DescribeUpdate</code> </a> API operation. You can update the Kubernetes
+         * labels and taints for a node group and the scaling and version update
+         * configuration.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/eks-2017-11-01/UpdateNodegroupConfig">AWS
          * API Reference</a></p>
          */
@@ -1784,11 +1831,7 @@ namespace EKS
       std::shared_ptr<EKSEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<EKSClient>;
-      void init(const EKSClientConfiguration& clientConfiguration);
 
-      EKSClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<EKSEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace EKS

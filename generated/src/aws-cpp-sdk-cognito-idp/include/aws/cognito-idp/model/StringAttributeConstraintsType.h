@@ -24,8 +24,19 @@ namespace Model
 {
 
   /**
-   * <p>The constraints associated with a string attribute.</p><p><h3>See Also:</h3> 
-   * <a
+   * <p>The minimum and maximum length values of an attribute that is of the string
+   * type, for example <code>custom:department</code>.</p> <p>This data type is part
+   * of <a
+   * href="https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_SchemaAttributeType.html">SchemaAttributeType</a>.
+   * It defines the length constraints on string-type attributes that you configure
+   * in <a
+   * href="https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_CreateUserPool.html">CreateUserPool</a>
+   * and <a
+   * href="https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_UpdateUserPool.html">UpdateUserPool</a>,
+   * and displays the length constraints of all string-type attributes in the
+   * response to <a
+   * href="https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_DescribeUserPool.html">DescribeUserPool</a>
+   * </p><p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/cognito-idp-2016-04-18/StringAttributeConstraintsType">AWS
    * API Reference</a></p>
    */
@@ -38,103 +49,35 @@ namespace Model
     AWS_COGNITOIDENTITYPROVIDER_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
-     * <p>The minimum length.</p>
+     * <p>The minimum length of a string attribute value.</p>
      */
     inline const Aws::String& GetMinLength() const{ return m_minLength; }
-
-    /**
-     * <p>The minimum length.</p>
-     */
     inline bool MinLengthHasBeenSet() const { return m_minLengthHasBeenSet; }
-
-    /**
-     * <p>The minimum length.</p>
-     */
     inline void SetMinLength(const Aws::String& value) { m_minLengthHasBeenSet = true; m_minLength = value; }
-
-    /**
-     * <p>The minimum length.</p>
-     */
     inline void SetMinLength(Aws::String&& value) { m_minLengthHasBeenSet = true; m_minLength = std::move(value); }
-
-    /**
-     * <p>The minimum length.</p>
-     */
     inline void SetMinLength(const char* value) { m_minLengthHasBeenSet = true; m_minLength.assign(value); }
-
-    /**
-     * <p>The minimum length.</p>
-     */
     inline StringAttributeConstraintsType& WithMinLength(const Aws::String& value) { SetMinLength(value); return *this;}
-
-    /**
-     * <p>The minimum length.</p>
-     */
     inline StringAttributeConstraintsType& WithMinLength(Aws::String&& value) { SetMinLength(std::move(value)); return *this;}
-
-    /**
-     * <p>The minimum length.</p>
-     */
     inline StringAttributeConstraintsType& WithMinLength(const char* value) { SetMinLength(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The maximum length of a string attribute value. Must be a number less than or
      * equal to <code>2^1023</code>, represented as a string with a length of 131072
      * characters or fewer.</p>
      */
     inline const Aws::String& GetMaxLength() const{ return m_maxLength; }
-
-    /**
-     * <p>The maximum length of a string attribute value. Must be a number less than or
-     * equal to <code>2^1023</code>, represented as a string with a length of 131072
-     * characters or fewer.</p>
-     */
     inline bool MaxLengthHasBeenSet() const { return m_maxLengthHasBeenSet; }
-
-    /**
-     * <p>The maximum length of a string attribute value. Must be a number less than or
-     * equal to <code>2^1023</code>, represented as a string with a length of 131072
-     * characters or fewer.</p>
-     */
     inline void SetMaxLength(const Aws::String& value) { m_maxLengthHasBeenSet = true; m_maxLength = value; }
-
-    /**
-     * <p>The maximum length of a string attribute value. Must be a number less than or
-     * equal to <code>2^1023</code>, represented as a string with a length of 131072
-     * characters or fewer.</p>
-     */
     inline void SetMaxLength(Aws::String&& value) { m_maxLengthHasBeenSet = true; m_maxLength = std::move(value); }
-
-    /**
-     * <p>The maximum length of a string attribute value. Must be a number less than or
-     * equal to <code>2^1023</code>, represented as a string with a length of 131072
-     * characters or fewer.</p>
-     */
     inline void SetMaxLength(const char* value) { m_maxLengthHasBeenSet = true; m_maxLength.assign(value); }
-
-    /**
-     * <p>The maximum length of a string attribute value. Must be a number less than or
-     * equal to <code>2^1023</code>, represented as a string with a length of 131072
-     * characters or fewer.</p>
-     */
     inline StringAttributeConstraintsType& WithMaxLength(const Aws::String& value) { SetMaxLength(value); return *this;}
-
-    /**
-     * <p>The maximum length of a string attribute value. Must be a number less than or
-     * equal to <code>2^1023</code>, represented as a string with a length of 131072
-     * characters or fewer.</p>
-     */
     inline StringAttributeConstraintsType& WithMaxLength(Aws::String&& value) { SetMaxLength(std::move(value)); return *this;}
-
-    /**
-     * <p>The maximum length of a string attribute value. Must be a number less than or
-     * equal to <code>2^1023</code>, represented as a string with a length of 131072
-     * characters or fewer.</p>
-     */
     inline StringAttributeConstraintsType& WithMaxLength(const char* value) { SetMaxLength(value); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_minLength;

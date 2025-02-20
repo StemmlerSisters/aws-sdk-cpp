@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/qldb-session/QLDBSession_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/qldb-session/QLDBSessionServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/qldb-session/QLDBSessionErrorMarshaller.h>
 
 namespace Aws
 {
 namespace QLDBSession
 {
+  AWS_QLDBSESSION_API extern const char SERVICE_NAME[];
   /**
    * <p>The transactional data APIs for Amazon QLDB</p>  <p>Instead of
    * interacting directly with this API, we recommend using the QLDB driver or the
@@ -31,12 +35,20 @@ namespace QLDBSession
    * href="https://docs.aws.amazon.com/qldb/latest/developerguide/data-shell.html">Accessing
    * Amazon QLDB using the QLDB shell</a>.</p> </li> </ul> 
    */
-  class AWS_QLDBSESSION_API QLDBSessionClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<QLDBSessionClient>
+  class AWS_QLDBSESSION_API QLDBSessionClient : smithy::client::AwsSmithyClientT<Aws::QLDBSession::SERVICE_NAME,
+      Aws::QLDBSession::QLDBSessionClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      QLDBSessionEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::QLDBSessionErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<QLDBSessionClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "QLDB Session"; }
 
       typedef QLDBSessionClientConfiguration ClientConfigurationType;
       typedef QLDBSessionEndpointProvider EndpointProviderType;
@@ -108,13 +120,13 @@ namespace QLDBSession
          * href="http://docs.aws.amazon.com/goto/WebAPI/qldb-session-2019-07-11/SendCommand">AWS
          * API Reference</a></p>
          */
-        virtual Model::SendCommandOutcome SendCommand(const Model::SendCommandRequest& request) const;
+        virtual Model::SendCommandOutcome SendCommand(const Model::SendCommandRequest& request = {}) const;
 
         /**
          * A Callable wrapper for SendCommand that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename SendCommandRequestT = Model::SendCommandRequest>
-        Model::SendCommandOutcomeCallable SendCommandCallable(const SendCommandRequestT& request) const
+        Model::SendCommandOutcomeCallable SendCommandCallable(const SendCommandRequestT& request = {}) const
         {
             return SubmitCallable(&QLDBSessionClient::SendCommand, request);
         }
@@ -123,7 +135,7 @@ namespace QLDBSession
          * An Async wrapper for SendCommand that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename SendCommandRequestT = Model::SendCommandRequest>
-        void SendCommandAsync(const SendCommandRequestT& request, const SendCommandResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void SendCommandAsync(const SendCommandResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const SendCommandRequestT& request = {}) const
         {
             return SubmitAsync(&QLDBSessionClient::SendCommand, request, handler, context);
         }
@@ -133,11 +145,7 @@ namespace QLDBSession
       std::shared_ptr<QLDBSessionEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<QLDBSessionClient>;
-      void init(const QLDBSessionClientConfiguration& clientConfiguration);
 
-      QLDBSessionClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<QLDBSessionEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace QLDBSession

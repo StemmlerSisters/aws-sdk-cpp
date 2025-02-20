@@ -19,22 +19,27 @@ namespace Model
 {
 
 SearchSortExpression::SearchSortExpression() : 
+    m_userJobsFirstHasBeenSet(false),
     m_fieldSortHasBeenSet(false),
-    m_parameterSortHasBeenSet(false),
-    m_userJobsFirstHasBeenSet(false)
+    m_parameterSortHasBeenSet(false)
 {
 }
 
-SearchSortExpression::SearchSortExpression(JsonView jsonValue) : 
-    m_fieldSortHasBeenSet(false),
-    m_parameterSortHasBeenSet(false),
-    m_userJobsFirstHasBeenSet(false)
+SearchSortExpression::SearchSortExpression(JsonView jsonValue)
+  : SearchSortExpression()
 {
   *this = jsonValue;
 }
 
 SearchSortExpression& SearchSortExpression::operator =(JsonView jsonValue)
 {
+  if(jsonValue.ValueExists("userJobsFirst"))
+  {
+    m_userJobsFirst = jsonValue.GetObject("userJobsFirst");
+
+    m_userJobsFirstHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("fieldSort"))
   {
     m_fieldSort = jsonValue.GetObject("fieldSort");
@@ -49,19 +54,18 @@ SearchSortExpression& SearchSortExpression::operator =(JsonView jsonValue)
     m_parameterSortHasBeenSet = true;
   }
 
-  if(jsonValue.ValueExists("userJobsFirst"))
-  {
-    m_userJobsFirst = jsonValue.GetObject("userJobsFirst");
-
-    m_userJobsFirstHasBeenSet = true;
-  }
-
   return *this;
 }
 
 JsonValue SearchSortExpression::Jsonize() const
 {
   JsonValue payload;
+
+  if(m_userJobsFirstHasBeenSet)
+  {
+   payload.WithObject("userJobsFirst", m_userJobsFirst.Jsonize());
+
+  }
 
   if(m_fieldSortHasBeenSet)
   {
@@ -72,12 +76,6 @@ JsonValue SearchSortExpression::Jsonize() const
   if(m_parameterSortHasBeenSet)
   {
    payload.WithObject("parameterSort", m_parameterSort.Jsonize());
-
-  }
-
-  if(m_userJobsFirstHasBeenSet)
-  {
-   payload.WithObject("userJobsFirst", m_userJobsFirst.Jsonize());
 
   }
 

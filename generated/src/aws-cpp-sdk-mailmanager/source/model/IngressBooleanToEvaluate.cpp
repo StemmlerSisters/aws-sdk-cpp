@@ -19,12 +19,13 @@ namespace Model
 {
 
 IngressBooleanToEvaluate::IngressBooleanToEvaluate() : 
-    m_analysisHasBeenSet(false)
+    m_analysisHasBeenSet(false),
+    m_isInAddressListHasBeenSet(false)
 {
 }
 
-IngressBooleanToEvaluate::IngressBooleanToEvaluate(JsonView jsonValue) : 
-    m_analysisHasBeenSet(false)
+IngressBooleanToEvaluate::IngressBooleanToEvaluate(JsonView jsonValue)
+  : IngressBooleanToEvaluate()
 {
   *this = jsonValue;
 }
@@ -38,6 +39,13 @@ IngressBooleanToEvaluate& IngressBooleanToEvaluate::operator =(JsonView jsonValu
     m_analysisHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("IsInAddressList"))
+  {
+    m_isInAddressList = jsonValue.GetObject("IsInAddressList");
+
+    m_isInAddressListHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -48,6 +56,12 @@ JsonValue IngressBooleanToEvaluate::Jsonize() const
   if(m_analysisHasBeenSet)
   {
    payload.WithObject("Analysis", m_analysis.Jsonize());
+
+  }
+
+  if(m_isInAddressListHasBeenSet)
+  {
+   payload.WithObject("IsInAddressList", m_isInAddressList.Jsonize());
 
   }
 

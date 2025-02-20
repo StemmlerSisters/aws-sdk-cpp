@@ -45,6 +45,9 @@
 #include <aws/codeconnections/model/UpdateRepositoryLinkResult.h>
 #include <aws/codeconnections/model/UpdateSyncBlockerResult.h>
 #include <aws/codeconnections/model/UpdateSyncConfigurationResult.h>
+#include <aws/codeconnections/model/ListRepositoryLinksRequest.h>
+#include <aws/codeconnections/model/ListHostsRequest.h>
+#include <aws/codeconnections/model/ListConnectionsRequest.h>
 /* End of service model headers required in CodeConnectionsClient header */
 
 namespace Aws
@@ -78,7 +81,7 @@ namespace Aws
 
   namespace CodeConnections
   {
-    using CodeConnectionsClientConfiguration = Aws::Client::GenericClientConfiguration<false>;
+    using CodeConnectionsClientConfiguration = Aws::Client::GenericClientConfiguration;
     using CodeConnectionsEndpointProviderBase = Aws::CodeConnections::Endpoint::CodeConnectionsEndpointProviderBase;
     using CodeConnectionsEndpointProvider = Aws::CodeConnections::Endpoint::CodeConnectionsEndpointProvider;
 

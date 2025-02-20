@@ -44,6 +44,7 @@ namespace Model
     AWS_AUTOSCALING_API void OutputToStream(Aws::OStream& oStream, const char* location) const;
 
 
+    ///@{
     /**
      * <p>A short name that identifies the object's results in the response. This name
      * must be unique among all <code>TargetTrackingMetricDataQuery</code> objects
@@ -53,78 +54,16 @@ namespace Model
      * underscores. The first character must be a lowercase letter. </p>
      */
     inline const Aws::String& GetId() const{ return m_id; }
-
-    /**
-     * <p>A short name that identifies the object's results in the response. This name
-     * must be unique among all <code>TargetTrackingMetricDataQuery</code> objects
-     * specified for a single scaling policy. If you are performing math expressions on
-     * this set of data, this name represents that data and can serve as a variable in
-     * the mathematical expression. The valid characters are letters, numbers, and
-     * underscores. The first character must be a lowercase letter. </p>
-     */
     inline bool IdHasBeenSet() const { return m_idHasBeenSet; }
-
-    /**
-     * <p>A short name that identifies the object's results in the response. This name
-     * must be unique among all <code>TargetTrackingMetricDataQuery</code> objects
-     * specified for a single scaling policy. If you are performing math expressions on
-     * this set of data, this name represents that data and can serve as a variable in
-     * the mathematical expression. The valid characters are letters, numbers, and
-     * underscores. The first character must be a lowercase letter. </p>
-     */
     inline void SetId(const Aws::String& value) { m_idHasBeenSet = true; m_id = value; }
-
-    /**
-     * <p>A short name that identifies the object's results in the response. This name
-     * must be unique among all <code>TargetTrackingMetricDataQuery</code> objects
-     * specified for a single scaling policy. If you are performing math expressions on
-     * this set of data, this name represents that data and can serve as a variable in
-     * the mathematical expression. The valid characters are letters, numbers, and
-     * underscores. The first character must be a lowercase letter. </p>
-     */
     inline void SetId(Aws::String&& value) { m_idHasBeenSet = true; m_id = std::move(value); }
-
-    /**
-     * <p>A short name that identifies the object's results in the response. This name
-     * must be unique among all <code>TargetTrackingMetricDataQuery</code> objects
-     * specified for a single scaling policy. If you are performing math expressions on
-     * this set of data, this name represents that data and can serve as a variable in
-     * the mathematical expression. The valid characters are letters, numbers, and
-     * underscores. The first character must be a lowercase letter. </p>
-     */
     inline void SetId(const char* value) { m_idHasBeenSet = true; m_id.assign(value); }
-
-    /**
-     * <p>A short name that identifies the object's results in the response. This name
-     * must be unique among all <code>TargetTrackingMetricDataQuery</code> objects
-     * specified for a single scaling policy. If you are performing math expressions on
-     * this set of data, this name represents that data and can serve as a variable in
-     * the mathematical expression. The valid characters are letters, numbers, and
-     * underscores. The first character must be a lowercase letter. </p>
-     */
     inline TargetTrackingMetricDataQuery& WithId(const Aws::String& value) { SetId(value); return *this;}
-
-    /**
-     * <p>A short name that identifies the object's results in the response. This name
-     * must be unique among all <code>TargetTrackingMetricDataQuery</code> objects
-     * specified for a single scaling policy. If you are performing math expressions on
-     * this set of data, this name represents that data and can serve as a variable in
-     * the mathematical expression. The valid characters are letters, numbers, and
-     * underscores. The first character must be a lowercase letter. </p>
-     */
     inline TargetTrackingMetricDataQuery& WithId(Aws::String&& value) { SetId(std::move(value)); return *this;}
-
-    /**
-     * <p>A short name that identifies the object's results in the response. This name
-     * must be unique among all <code>TargetTrackingMetricDataQuery</code> objects
-     * specified for a single scaling policy. If you are performing math expressions on
-     * this set of data, this name represents that data and can serve as a variable in
-     * the mathematical expression. The valid characters are letters, numbers, and
-     * underscores. The first character must be a lowercase letter. </p>
-     */
     inline TargetTrackingMetricDataQuery& WithId(const char* value) { SetId(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The math expression to perform on the returned data, if this object is
      * performing a math expression. This expression can use the <code>Id</code> of the
@@ -134,178 +73,61 @@ namespace Model
      * either <code>Expression</code> or <code>MetricStat</code>, but not both.</p>
      */
     inline const Aws::String& GetExpression() const{ return m_expression; }
-
-    /**
-     * <p>The math expression to perform on the returned data, if this object is
-     * performing a math expression. This expression can use the <code>Id</code> of the
-     * other metrics to refer to those metrics, and can also use the <code>Id</code> of
-     * other expressions to use the result of those expressions. </p> <p>Conditional:
-     * Within each <code>TargetTrackingMetricDataQuery</code> object, you must specify
-     * either <code>Expression</code> or <code>MetricStat</code>, but not both.</p>
-     */
     inline bool ExpressionHasBeenSet() const { return m_expressionHasBeenSet; }
-
-    /**
-     * <p>The math expression to perform on the returned data, if this object is
-     * performing a math expression. This expression can use the <code>Id</code> of the
-     * other metrics to refer to those metrics, and can also use the <code>Id</code> of
-     * other expressions to use the result of those expressions. </p> <p>Conditional:
-     * Within each <code>TargetTrackingMetricDataQuery</code> object, you must specify
-     * either <code>Expression</code> or <code>MetricStat</code>, but not both.</p>
-     */
     inline void SetExpression(const Aws::String& value) { m_expressionHasBeenSet = true; m_expression = value; }
-
-    /**
-     * <p>The math expression to perform on the returned data, if this object is
-     * performing a math expression. This expression can use the <code>Id</code> of the
-     * other metrics to refer to those metrics, and can also use the <code>Id</code> of
-     * other expressions to use the result of those expressions. </p> <p>Conditional:
-     * Within each <code>TargetTrackingMetricDataQuery</code> object, you must specify
-     * either <code>Expression</code> or <code>MetricStat</code>, but not both.</p>
-     */
     inline void SetExpression(Aws::String&& value) { m_expressionHasBeenSet = true; m_expression = std::move(value); }
-
-    /**
-     * <p>The math expression to perform on the returned data, if this object is
-     * performing a math expression. This expression can use the <code>Id</code> of the
-     * other metrics to refer to those metrics, and can also use the <code>Id</code> of
-     * other expressions to use the result of those expressions. </p> <p>Conditional:
-     * Within each <code>TargetTrackingMetricDataQuery</code> object, you must specify
-     * either <code>Expression</code> or <code>MetricStat</code>, but not both.</p>
-     */
     inline void SetExpression(const char* value) { m_expressionHasBeenSet = true; m_expression.assign(value); }
-
-    /**
-     * <p>The math expression to perform on the returned data, if this object is
-     * performing a math expression. This expression can use the <code>Id</code> of the
-     * other metrics to refer to those metrics, and can also use the <code>Id</code> of
-     * other expressions to use the result of those expressions. </p> <p>Conditional:
-     * Within each <code>TargetTrackingMetricDataQuery</code> object, you must specify
-     * either <code>Expression</code> or <code>MetricStat</code>, but not both.</p>
-     */
     inline TargetTrackingMetricDataQuery& WithExpression(const Aws::String& value) { SetExpression(value); return *this;}
-
-    /**
-     * <p>The math expression to perform on the returned data, if this object is
-     * performing a math expression. This expression can use the <code>Id</code> of the
-     * other metrics to refer to those metrics, and can also use the <code>Id</code> of
-     * other expressions to use the result of those expressions. </p> <p>Conditional:
-     * Within each <code>TargetTrackingMetricDataQuery</code> object, you must specify
-     * either <code>Expression</code> or <code>MetricStat</code>, but not both.</p>
-     */
     inline TargetTrackingMetricDataQuery& WithExpression(Aws::String&& value) { SetExpression(std::move(value)); return *this;}
-
-    /**
-     * <p>The math expression to perform on the returned data, if this object is
-     * performing a math expression. This expression can use the <code>Id</code> of the
-     * other metrics to refer to those metrics, and can also use the <code>Id</code> of
-     * other expressions to use the result of those expressions. </p> <p>Conditional:
-     * Within each <code>TargetTrackingMetricDataQuery</code> object, you must specify
-     * either <code>Expression</code> or <code>MetricStat</code>, but not both.</p>
-     */
     inline TargetTrackingMetricDataQuery& WithExpression(const char* value) { SetExpression(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Information about the metric data to return.</p> <p>Conditional: Within each
      * <code>TargetTrackingMetricDataQuery</code> object, you must specify either
      * <code>Expression</code> or <code>MetricStat</code>, but not both.</p>
      */
     inline const TargetTrackingMetricStat& GetMetricStat() const{ return m_metricStat; }
-
-    /**
-     * <p>Information about the metric data to return.</p> <p>Conditional: Within each
-     * <code>TargetTrackingMetricDataQuery</code> object, you must specify either
-     * <code>Expression</code> or <code>MetricStat</code>, but not both.</p>
-     */
     inline bool MetricStatHasBeenSet() const { return m_metricStatHasBeenSet; }
-
-    /**
-     * <p>Information about the metric data to return.</p> <p>Conditional: Within each
-     * <code>TargetTrackingMetricDataQuery</code> object, you must specify either
-     * <code>Expression</code> or <code>MetricStat</code>, but not both.</p>
-     */
     inline void SetMetricStat(const TargetTrackingMetricStat& value) { m_metricStatHasBeenSet = true; m_metricStat = value; }
-
-    /**
-     * <p>Information about the metric data to return.</p> <p>Conditional: Within each
-     * <code>TargetTrackingMetricDataQuery</code> object, you must specify either
-     * <code>Expression</code> or <code>MetricStat</code>, but not both.</p>
-     */
     inline void SetMetricStat(TargetTrackingMetricStat&& value) { m_metricStatHasBeenSet = true; m_metricStat = std::move(value); }
-
-    /**
-     * <p>Information about the metric data to return.</p> <p>Conditional: Within each
-     * <code>TargetTrackingMetricDataQuery</code> object, you must specify either
-     * <code>Expression</code> or <code>MetricStat</code>, but not both.</p>
-     */
     inline TargetTrackingMetricDataQuery& WithMetricStat(const TargetTrackingMetricStat& value) { SetMetricStat(value); return *this;}
-
-    /**
-     * <p>Information about the metric data to return.</p> <p>Conditional: Within each
-     * <code>TargetTrackingMetricDataQuery</code> object, you must specify either
-     * <code>Expression</code> or <code>MetricStat</code>, but not both.</p>
-     */
     inline TargetTrackingMetricDataQuery& WithMetricStat(TargetTrackingMetricStat&& value) { SetMetricStat(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>A human-readable label for this metric or expression. This is especially
      * useful if this is a math expression, so that you know what the value
      * represents.</p>
      */
     inline const Aws::String& GetLabel() const{ return m_label; }
-
-    /**
-     * <p>A human-readable label for this metric or expression. This is especially
-     * useful if this is a math expression, so that you know what the value
-     * represents.</p>
-     */
     inline bool LabelHasBeenSet() const { return m_labelHasBeenSet; }
-
-    /**
-     * <p>A human-readable label for this metric or expression. This is especially
-     * useful if this is a math expression, so that you know what the value
-     * represents.</p>
-     */
     inline void SetLabel(const Aws::String& value) { m_labelHasBeenSet = true; m_label = value; }
-
-    /**
-     * <p>A human-readable label for this metric or expression. This is especially
-     * useful if this is a math expression, so that you know what the value
-     * represents.</p>
-     */
     inline void SetLabel(Aws::String&& value) { m_labelHasBeenSet = true; m_label = std::move(value); }
-
-    /**
-     * <p>A human-readable label for this metric or expression. This is especially
-     * useful if this is a math expression, so that you know what the value
-     * represents.</p>
-     */
     inline void SetLabel(const char* value) { m_labelHasBeenSet = true; m_label.assign(value); }
-
-    /**
-     * <p>A human-readable label for this metric or expression. This is especially
-     * useful if this is a math expression, so that you know what the value
-     * represents.</p>
-     */
     inline TargetTrackingMetricDataQuery& WithLabel(const Aws::String& value) { SetLabel(value); return *this;}
-
-    /**
-     * <p>A human-readable label for this metric or expression. This is especially
-     * useful if this is a math expression, so that you know what the value
-     * represents.</p>
-     */
     inline TargetTrackingMetricDataQuery& WithLabel(Aws::String&& value) { SetLabel(std::move(value)); return *this;}
-
-    /**
-     * <p>A human-readable label for this metric or expression. This is especially
-     * useful if this is a math expression, so that you know what the value
-     * represents.</p>
-     */
     inline TargetTrackingMetricDataQuery& WithLabel(const char* value) { SetLabel(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p> The period of the metric in seconds. The default value is 60. Accepted
+     * values are 10, 30, and 60. For high resolution metric, set the value to less
+     * than 60. For more information, see <a
+     * href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/policy-creating-high-resolution-metrics.html">Create
+     * a target tracking policy using high-resolution metrics for faster response</a>.
+     * </p>
+     */
+    inline int GetPeriod() const{ return m_period; }
+    inline bool PeriodHasBeenSet() const { return m_periodHasBeenSet; }
+    inline void SetPeriod(int value) { m_periodHasBeenSet = true; m_period = value; }
+    inline TargetTrackingMetricDataQuery& WithPeriod(int value) { SetPeriod(value); return *this;}
+    ///@}
 
+    ///@{
     /**
      * <p>Indicates whether to return the timestamps and raw data values of this
      * metric. </p> <p>If you use any math expressions, specify <code>true</code> for
@@ -317,43 +139,10 @@ namespace Model
      * (<code>true</code>).</p>
      */
     inline bool GetReturnData() const{ return m_returnData; }
-
-    /**
-     * <p>Indicates whether to return the timestamps and raw data values of this
-     * metric. </p> <p>If you use any math expressions, specify <code>true</code> for
-     * this value for only the final math expression that the metric specification is
-     * based on. You must specify <code>false</code> for <code>ReturnData</code> for
-     * all the other metrics and expressions used in the metric specification.</p>
-     * <p>If you are only retrieving metrics and not performing any math expressions,
-     * do not specify anything for <code>ReturnData</code>. This sets it to its default
-     * (<code>true</code>).</p>
-     */
     inline bool ReturnDataHasBeenSet() const { return m_returnDataHasBeenSet; }
-
-    /**
-     * <p>Indicates whether to return the timestamps and raw data values of this
-     * metric. </p> <p>If you use any math expressions, specify <code>true</code> for
-     * this value for only the final math expression that the metric specification is
-     * based on. You must specify <code>false</code> for <code>ReturnData</code> for
-     * all the other metrics and expressions used in the metric specification.</p>
-     * <p>If you are only retrieving metrics and not performing any math expressions,
-     * do not specify anything for <code>ReturnData</code>. This sets it to its default
-     * (<code>true</code>).</p>
-     */
     inline void SetReturnData(bool value) { m_returnDataHasBeenSet = true; m_returnData = value; }
-
-    /**
-     * <p>Indicates whether to return the timestamps and raw data values of this
-     * metric. </p> <p>If you use any math expressions, specify <code>true</code> for
-     * this value for only the final math expression that the metric specification is
-     * based on. You must specify <code>false</code> for <code>ReturnData</code> for
-     * all the other metrics and expressions used in the metric specification.</p>
-     * <p>If you are only retrieving metrics and not performing any math expressions,
-     * do not specify anything for <code>ReturnData</code>. This sets it to its default
-     * (<code>true</code>).</p>
-     */
     inline TargetTrackingMetricDataQuery& WithReturnData(bool value) { SetReturnData(value); return *this;}
-
+    ///@}
   private:
 
     Aws::String m_id;
@@ -367,6 +156,9 @@ namespace Model
 
     Aws::String m_label;
     bool m_labelHasBeenSet = false;
+
+    int m_period;
+    bool m_periodHasBeenSet = false;
 
     bool m_returnData;
     bool m_returnDataHasBeenSet = false;

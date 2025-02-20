@@ -53,44 +53,13 @@ NetworkInterface::NetworkInterface() :
     m_denyAllIgwTrafficHasBeenSet(false),
     m_ipv6Native(false),
     m_ipv6NativeHasBeenSet(false),
-    m_ipv6AddressHasBeenSet(false)
+    m_ipv6AddressHasBeenSet(false),
+    m_operatorHasBeenSet(false)
 {
 }
 
-NetworkInterface::NetworkInterface(const XmlNode& xmlNode) : 
-    m_associationHasBeenSet(false),
-    m_attachmentHasBeenSet(false),
-    m_availabilityZoneHasBeenSet(false),
-    m_connectionTrackingConfigurationHasBeenSet(false),
-    m_descriptionHasBeenSet(false),
-    m_groupsHasBeenSet(false),
-    m_interfaceType(NetworkInterfaceType::NOT_SET),
-    m_interfaceTypeHasBeenSet(false),
-    m_ipv6AddressesHasBeenSet(false),
-    m_macAddressHasBeenSet(false),
-    m_networkInterfaceIdHasBeenSet(false),
-    m_outpostArnHasBeenSet(false),
-    m_ownerIdHasBeenSet(false),
-    m_privateDnsNameHasBeenSet(false),
-    m_privateIpAddressHasBeenSet(false),
-    m_privateIpAddressesHasBeenSet(false),
-    m_ipv4PrefixesHasBeenSet(false),
-    m_ipv6PrefixesHasBeenSet(false),
-    m_requesterIdHasBeenSet(false),
-    m_requesterManaged(false),
-    m_requesterManagedHasBeenSet(false),
-    m_sourceDestCheck(false),
-    m_sourceDestCheckHasBeenSet(false),
-    m_status(NetworkInterfaceStatus::NOT_SET),
-    m_statusHasBeenSet(false),
-    m_subnetIdHasBeenSet(false),
-    m_tagSetHasBeenSet(false),
-    m_vpcIdHasBeenSet(false),
-    m_denyAllIgwTraffic(false),
-    m_denyAllIgwTrafficHasBeenSet(false),
-    m_ipv6Native(false),
-    m_ipv6NativeHasBeenSet(false),
-    m_ipv6AddressHasBeenSet(false)
+NetworkInterface::NetworkInterface(const XmlNode& xmlNode)
+  : NetworkInterface()
 {
   *this = xmlNode;
 }
@@ -299,6 +268,12 @@ NetworkInterface& NetworkInterface::operator =(const XmlNode& xmlNode)
       m_ipv6Address = Aws::Utils::Xml::DecodeEscapedXmlText(ipv6AddressNode.GetText());
       m_ipv6AddressHasBeenSet = true;
     }
+    XmlNode operatorNode = resultNode.FirstChild("operator");
+    if(!operatorNode.IsNull())
+    {
+      m_operator = operatorNode;
+      m_operatorHasBeenSet = true;
+    }
   }
 
   return *this;
@@ -483,6 +458,13 @@ void NetworkInterface::OutputToStream(Aws::OStream& oStream, const char* locatio
       oStream << location << index << locationValue << ".Ipv6Address=" << StringUtils::URLEncode(m_ipv6Address.c_str()) << "&";
   }
 
+  if(m_operatorHasBeenSet)
+  {
+      Aws::StringStream operatorLocationAndMemberSs;
+      operatorLocationAndMemberSs << location << index << locationValue << ".Operator";
+      m_operator.OutputToStream(oStream, operatorLocationAndMemberSs.str().c_str());
+  }
+
 }
 
 void NetworkInterface::OutputToStream(Aws::OStream& oStream, const char* location) const
@@ -636,6 +618,12 @@ void NetworkInterface::OutputToStream(Aws::OStream& oStream, const char* locatio
   if(m_ipv6AddressHasBeenSet)
   {
       oStream << location << ".Ipv6Address=" << StringUtils::URLEncode(m_ipv6Address.c_str()) << "&";
+  }
+  if(m_operatorHasBeenSet)
+  {
+      Aws::String operatorLocationAndMember(location);
+      operatorLocationAndMember += ".Operator";
+      m_operator.OutputToStream(oStream, operatorLocationAndMember.c_str());
   }
 }
 

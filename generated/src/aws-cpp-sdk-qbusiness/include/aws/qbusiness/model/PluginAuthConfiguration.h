@@ -8,6 +8,7 @@
 #include <aws/qbusiness/model/BasicAuthConfiguration.h>
 #include <aws/qbusiness/model/OAuth2ClientCredentialConfiguration.h>
 #include <aws/qbusiness/model/NoAuthConfiguration.h>
+#include <aws/qbusiness/model/IdcAuthConfiguration.h>
 #include <utility>
 
 namespace Aws
@@ -40,110 +41,56 @@ namespace Model
     AWS_QBUSINESS_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>Information about the basic authentication credentials used to configure a
      * plugin.</p>
      */
     inline const BasicAuthConfiguration& GetBasicAuthConfiguration() const{ return m_basicAuthConfiguration; }
-
-    /**
-     * <p>Information about the basic authentication credentials used to configure a
-     * plugin.</p>
-     */
     inline bool BasicAuthConfigurationHasBeenSet() const { return m_basicAuthConfigurationHasBeenSet; }
-
-    /**
-     * <p>Information about the basic authentication credentials used to configure a
-     * plugin.</p>
-     */
     inline void SetBasicAuthConfiguration(const BasicAuthConfiguration& value) { m_basicAuthConfigurationHasBeenSet = true; m_basicAuthConfiguration = value; }
-
-    /**
-     * <p>Information about the basic authentication credentials used to configure a
-     * plugin.</p>
-     */
     inline void SetBasicAuthConfiguration(BasicAuthConfiguration&& value) { m_basicAuthConfigurationHasBeenSet = true; m_basicAuthConfiguration = std::move(value); }
-
-    /**
-     * <p>Information about the basic authentication credentials used to configure a
-     * plugin.</p>
-     */
     inline PluginAuthConfiguration& WithBasicAuthConfiguration(const BasicAuthConfiguration& value) { SetBasicAuthConfiguration(value); return *this;}
-
-    /**
-     * <p>Information about the basic authentication credentials used to configure a
-     * plugin.</p>
-     */
     inline PluginAuthConfiguration& WithBasicAuthConfiguration(BasicAuthConfiguration&& value) { SetBasicAuthConfiguration(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Information about the OAuth 2.0 authentication credential/token used to
      * configure a plugin.</p>
      */
     inline const OAuth2ClientCredentialConfiguration& GetOAuth2ClientCredentialConfiguration() const{ return m_oAuth2ClientCredentialConfiguration; }
-
-    /**
-     * <p>Information about the OAuth 2.0 authentication credential/token used to
-     * configure a plugin.</p>
-     */
     inline bool OAuth2ClientCredentialConfigurationHasBeenSet() const { return m_oAuth2ClientCredentialConfigurationHasBeenSet; }
-
-    /**
-     * <p>Information about the OAuth 2.0 authentication credential/token used to
-     * configure a plugin.</p>
-     */
     inline void SetOAuth2ClientCredentialConfiguration(const OAuth2ClientCredentialConfiguration& value) { m_oAuth2ClientCredentialConfigurationHasBeenSet = true; m_oAuth2ClientCredentialConfiguration = value; }
-
-    /**
-     * <p>Information about the OAuth 2.0 authentication credential/token used to
-     * configure a plugin.</p>
-     */
     inline void SetOAuth2ClientCredentialConfiguration(OAuth2ClientCredentialConfiguration&& value) { m_oAuth2ClientCredentialConfigurationHasBeenSet = true; m_oAuth2ClientCredentialConfiguration = std::move(value); }
-
-    /**
-     * <p>Information about the OAuth 2.0 authentication credential/token used to
-     * configure a plugin.</p>
-     */
     inline PluginAuthConfiguration& WithOAuth2ClientCredentialConfiguration(const OAuth2ClientCredentialConfiguration& value) { SetOAuth2ClientCredentialConfiguration(value); return *this;}
-
-    /**
-     * <p>Information about the OAuth 2.0 authentication credential/token used to
-     * configure a plugin.</p>
-     */
     inline PluginAuthConfiguration& WithOAuth2ClientCredentialConfiguration(OAuth2ClientCredentialConfiguration&& value) { SetOAuth2ClientCredentialConfiguration(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>Information about invoking a custom plugin without any authentication.</p>
      */
     inline const NoAuthConfiguration& GetNoAuthConfiguration() const{ return m_noAuthConfiguration; }
-
-    /**
-     * <p>Information about invoking a custom plugin without any authentication.</p>
-     */
     inline bool NoAuthConfigurationHasBeenSet() const { return m_noAuthConfigurationHasBeenSet; }
-
-    /**
-     * <p>Information about invoking a custom plugin without any authentication.</p>
-     */
     inline void SetNoAuthConfiguration(const NoAuthConfiguration& value) { m_noAuthConfigurationHasBeenSet = true; m_noAuthConfiguration = value; }
-
-    /**
-     * <p>Information about invoking a custom plugin without any authentication.</p>
-     */
     inline void SetNoAuthConfiguration(NoAuthConfiguration&& value) { m_noAuthConfigurationHasBeenSet = true; m_noAuthConfiguration = std::move(value); }
-
-    /**
-     * <p>Information about invoking a custom plugin without any authentication.</p>
-     */
     inline PluginAuthConfiguration& WithNoAuthConfiguration(const NoAuthConfiguration& value) { SetNoAuthConfiguration(value); return *this;}
-
-    /**
-     * <p>Information about invoking a custom plugin without any authentication.</p>
-     */
     inline PluginAuthConfiguration& WithNoAuthConfiguration(NoAuthConfiguration&& value) { SetNoAuthConfiguration(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>Information about the IAM Identity Center Application used to configure
+     * authentication for a plugin.</p>
+     */
+    inline const IdcAuthConfiguration& GetIdcAuthConfiguration() const{ return m_idcAuthConfiguration; }
+    inline bool IdcAuthConfigurationHasBeenSet() const { return m_idcAuthConfigurationHasBeenSet; }
+    inline void SetIdcAuthConfiguration(const IdcAuthConfiguration& value) { m_idcAuthConfigurationHasBeenSet = true; m_idcAuthConfiguration = value; }
+    inline void SetIdcAuthConfiguration(IdcAuthConfiguration&& value) { m_idcAuthConfigurationHasBeenSet = true; m_idcAuthConfiguration = std::move(value); }
+    inline PluginAuthConfiguration& WithIdcAuthConfiguration(const IdcAuthConfiguration& value) { SetIdcAuthConfiguration(value); return *this;}
+    inline PluginAuthConfiguration& WithIdcAuthConfiguration(IdcAuthConfiguration&& value) { SetIdcAuthConfiguration(std::move(value)); return *this;}
+    ///@}
   private:
 
     BasicAuthConfiguration m_basicAuthConfiguration;
@@ -154,6 +101,9 @@ namespace Model
 
     NoAuthConfiguration m_noAuthConfiguration;
     bool m_noAuthConfigurationHasBeenSet = false;
+
+    IdcAuthConfiguration m_idcAuthConfiguration;
+    bool m_idcAuthConfigurationHasBeenSet = false;
   };
 
 } // namespace Model

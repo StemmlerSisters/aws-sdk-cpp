@@ -20,6 +20,11 @@
 
 #include <memory>
 
+namespace smithy
+{
+    class AwsSigV4Signer;
+}
+
 namespace Aws
 {
     namespace Http
@@ -165,6 +170,17 @@ namespace Aws
             */
             bool PresignRequest(Aws::Http::HttpRequest& request, const char* region, const char* serviceName, long long expirationInSeconds = 0) const override;
 
+            /**
+            * Takes a request and signs the URI based on request, region, servicename, expiration and credentials.
+            * The URI can then be used in a normal HTTP call until expiration.
+            * Uses AWS Auth V4 signing method with SHA256 HMAC algorithm.
+            * expirationInSeconds defaults to 0 which provides a URI good for 7 days.
+            * Using m_region by default if parameter region is nullptr.
+            * Using m_serviceName by default if parameter serviceName is nullptr.
+            */
+            bool PresignRequest(Aws::Http::HttpRequest& request, const Aws::Auth::AWSCredentials& creds, const char* region, const char* serviceName, long long expirationInSeconds = 0) const;
+
+
             virtual Aws::Auth::AWSCredentials GetCredentials(const std::shared_ptr<Aws::Http::ServiceSpecificParameters> &serviceSpecificParameters) const;
 
             Aws::String GetServiceName() const { return m_serviceName; }
@@ -178,7 +194,6 @@ namespace Aws
             bool m_includeSha256HashHeader;
 
         private:
-
             Aws::String GenerateSignature(const Aws::Auth::AWSCredentials& credentials,
                     const Aws::String& stringToSign, const Aws::String& simpleDate, const Aws::String& region,
                     const Aws::String& serviceName) const;
@@ -193,12 +208,18 @@ namespace Aws
             bool SignRequestWithSigV4a(Aws::Http::HttpRequest& request, const char* region, const char* serviceName,
                     bool signBody, long long expirationTimeInSeconds, Aws::Crt::Auth::SignatureType signatureType) const;
 
+            friend class smithy::AwsSigV4Signer;
+            /**
+             * Temporary method added for migration to the smithy architecture. Please do not use.
+             */
+            bool SignRequestWithCreds(Aws::Http::HttpRequest& request, const Auth::AWSCredentials& credentials,
+                                      const char* region, const char* serviceName, bool signBody) const;
+
+
             Aws::Auth::AWSSigningAlgorithm m_signingAlgorithm;
             std::shared_ptr<Auth::AWSCredentialsProvider> m_credentialsProvider;
             const Aws::String m_serviceName;
             const Aws::String m_region;
-            Aws::UniquePtr<Aws::Utils::Crypto::Sha256> m_hash;
-            Aws::UniquePtr<Aws::Utils::Crypto::Sha256HMAC> m_HMAC;
 
             Aws::Set<Aws::String> m_unsignedHeaders;
 
@@ -211,6 +232,7 @@ namespace Aws
             mutable Utils::Threading::ReaderWriterLock m_partialSignatureLock;
             PayloadSigningPolicy m_payloadSigningPolicy;
             bool m_urlEscapePath;
+            mutable Aws::Crt::Auth::Sigv4HttpRequestSigner m_crtSigner{};
         };
     } // namespace Client
 } // namespace Aws

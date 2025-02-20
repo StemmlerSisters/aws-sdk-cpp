@@ -3,18 +3,19 @@
  * SPDX-License-Identifier: Apache-2.0.
  */
 
-#include <aws/core/utils/logging/LogMacros.h>
 #include <aws/core/utils/HashingUtils.h>
+#include <aws/core/utils/Outcome.h>
 #include <aws/core/utils/StringUtils.h>
 #include <aws/core/utils/base64/Base64.h>
+#include <aws/core/utils/crypto/CRC32.h>
+#include <aws/core/utils/crypto/CRC64.h>
+#include <aws/core/utils/crypto/MD5.h>
+#include <aws/core/utils/crypto/Sha1.h>
 #include <aws/core/utils/crypto/Sha256.h>
 #include <aws/core/utils/crypto/Sha256HMAC.h>
-#include <aws/core/utils/crypto/Sha1.h>
-#include <aws/core/utils/crypto/MD5.h>
-#include <aws/core/utils/crypto/CRC32.h>
-#include <aws/core/utils/Outcome.h>
-#include <aws/core/utils/memory/stl/AWSStringStream.h>
+#include <aws/core/utils/logging/LogMacros.h>
 #include <aws/core/utils/memory/stl/AWSList.h>
+#include <aws/core/utils/memory/stl/AWSStringStream.h>
 
 #include <iomanip>
 
@@ -63,7 +64,6 @@ ByteBuffer HashingUtils::CalculateSHA256(Aws::IOStream& stream)
  */
 static ByteBuffer TreeHashFinalCompute(Aws::List<ByteBuffer>& input)
 {
-    Sha256 hash;
     assert(input.size() != 0);
 
     // O(n) time complexity of merging (n + n/2 + n/4 + n/8 +...+ 1)
@@ -73,6 +73,7 @@ static ByteBuffer TreeHashFinalCompute(Aws::List<ByteBuffer>& input)
         // if only one element left, just left it there
         while (std::next(iter) != input.end())
         {
+            Sha256 hash;
             // if >= two elements
             Aws::String str(reinterpret_cast<char*>(iter->GetUnderlyingData()), iter->GetLength());
             // list erase returns iterator of next element next to the erased element or end() if erased the last one
@@ -91,9 +92,9 @@ static ByteBuffer TreeHashFinalCompute(Aws::List<ByteBuffer>& input)
 
 ByteBuffer HashingUtils::CalculateSHA256TreeHash(const Aws::String& str)
 {
-    Sha256 hash;
     if (str.size() == 0)
     {
+        Sha256 hash;
         return hash.Calculate(str).GetResult();
     }
 
@@ -101,6 +102,7 @@ ByteBuffer HashingUtils::CalculateSHA256TreeHash(const Aws::String& str)
     size_t pos = 0;
     while (pos < str.size())
     {
+        Sha256 hash;
         input.push_back(hash.Calculate(Aws::String(str, pos, TREE_HASH_ONE_MB)).GetResult());
         pos += TREE_HASH_ONE_MB;
     }
@@ -110,7 +112,6 @@ ByteBuffer HashingUtils::CalculateSHA256TreeHash(const Aws::String& str)
 
 ByteBuffer HashingUtils::CalculateSHA256TreeHash(Aws::IOStream& stream)
 {
-    Sha256 hash;
     Aws::List<ByteBuffer> input;
     auto currentPos = stream.tellg();
     if (currentPos == std::ios::pos_type(-1))
@@ -126,6 +127,7 @@ ByteBuffer HashingUtils::CalculateSHA256TreeHash(Aws::IOStream& stream)
         auto bytesRead = stream.gcount();
         if (bytesRead > 0)
         {
+            Sha256 hash;
             input.push_back(hash.Calculate(Aws::String(reinterpret_cast<char*>(streamBuffer.GetUnderlyingData()), static_cast<size_t>(bytesRead))).GetResult());
         }
     }
@@ -134,6 +136,7 @@ ByteBuffer HashingUtils::CalculateSHA256TreeHash(Aws::IOStream& stream)
 
     if (input.size() == 0)
     {
+        Sha256 hash;
         return hash.Calculate("").GetResult();
     }
     return TreeHashFinalCompute(input);
@@ -257,6 +260,16 @@ ByteBuffer HashingUtils::CalculateCRC32C(Aws::IOStream& stream)
 {
     CRC32C hash;
     return hash.Calculate(stream).GetResult();
+}
+
+ByteBuffer HashingUtils::CalculateCRC64(const Aws::String& str) {
+  CRC64 hash;
+  return hash.Calculate(str).GetResult();
+}
+
+ByteBuffer HashingUtils::CalculateCRC64(Aws::IOStream& stream) {
+  CRC64 hash;
+  return hash.Calculate(stream).GetResult();
 }
 
 int HashingUtils::HashString(const char* strToHash)

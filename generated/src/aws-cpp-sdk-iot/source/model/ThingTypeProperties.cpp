@@ -20,13 +20,13 @@ namespace Model
 
 ThingTypeProperties::ThingTypeProperties() : 
     m_thingTypeDescriptionHasBeenSet(false),
-    m_searchableAttributesHasBeenSet(false)
+    m_searchableAttributesHasBeenSet(false),
+    m_mqtt5ConfigurationHasBeenSet(false)
 {
 }
 
-ThingTypeProperties::ThingTypeProperties(JsonView jsonValue) : 
-    m_thingTypeDescriptionHasBeenSet(false),
-    m_searchableAttributesHasBeenSet(false)
+ThingTypeProperties::ThingTypeProperties(JsonView jsonValue)
+  : ThingTypeProperties()
 {
   *this = jsonValue;
 }
@@ -50,6 +50,13 @@ ThingTypeProperties& ThingTypeProperties::operator =(JsonView jsonValue)
     m_searchableAttributesHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("mqtt5Configuration"))
+  {
+    m_mqtt5Configuration = jsonValue.GetObject("mqtt5Configuration");
+
+    m_mqtt5ConfigurationHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -71,6 +78,12 @@ JsonValue ThingTypeProperties::Jsonize() const
      searchableAttributesJsonList[searchableAttributesIndex].AsString(m_searchableAttributes[searchableAttributesIndex]);
    }
    payload.WithArray("searchableAttributes", std::move(searchableAttributesJsonList));
+
+  }
+
+  if(m_mqtt5ConfigurationHasBeenSet)
+  {
+   payload.WithObject("mqtt5Configuration", m_mqtt5Configuration.Jsonize());
 
   }
 

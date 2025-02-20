@@ -20,6 +20,7 @@ HeadObjectResult::HeadObjectResult() :
     m_deleteMarker(false),
     m_archiveStatus(ArchiveStatus::NOT_SET),
     m_contentLength(0),
+    m_checksumType(ChecksumType::NOT_SET),
     m_missingMeta(0),
     m_serverSideEncryption(ServerSideEncryption::NOT_SET),
     m_bucketKeyEnabled(false),
@@ -32,19 +33,8 @@ HeadObjectResult::HeadObjectResult() :
 {
 }
 
-HeadObjectResult::HeadObjectResult(const Aws::AmazonWebServiceResult<XmlDocument>& result) : 
-    m_deleteMarker(false),
-    m_archiveStatus(ArchiveStatus::NOT_SET),
-    m_contentLength(0),
-    m_missingMeta(0),
-    m_serverSideEncryption(ServerSideEncryption::NOT_SET),
-    m_bucketKeyEnabled(false),
-    m_storageClass(StorageClass::NOT_SET),
-    m_requestCharged(RequestCharged::NOT_SET),
-    m_replicationStatus(ReplicationStatus::NOT_SET),
-    m_partsCount(0),
-    m_objectLockMode(ObjectLockMode::NOT_SET),
-    m_objectLockLegalHoldStatus(ObjectLockLegalHoldStatus::NOT_SET)
+HeadObjectResult::HeadObjectResult(const Aws::AmazonWebServiceResult<XmlDocument>& result)
+  : HeadObjectResult()
 {
   *this = result;
 }
@@ -92,7 +82,11 @@ HeadObjectResult& HeadObjectResult::operator =(const Aws::AmazonWebServiceResult
   const auto& lastModifiedIter = headers.find("last-modified");
   if(lastModifiedIter != headers.end())
   {
-    m_lastModified = DateTime(lastModifiedIter->second, Aws::Utils::DateFormat::RFC822);
+    m_lastModified = DateTime(lastModifiedIter->second.c_str(), Aws::Utils::DateFormat::RFC822);
+    if(!m_lastModified.WasParseSuccessful())
+    {
+      AWS_LOGSTREAM_WARN("S3::HeadObjectResult", "Failed to parse lastModified header as an RFC822 timestamp: " << lastModifiedIter->second.c_str());
+    }
   }
 
   const auto& contentLengthIter = headers.find("content-length");
@@ -113,6 +107,12 @@ HeadObjectResult& HeadObjectResult::operator =(const Aws::AmazonWebServiceResult
     m_checksumCRC32C = checksumCRC32CIter->second;
   }
 
+  const auto& checksumCRC64NVMEIter = headers.find("x-amz-checksum-crc64nvme");
+  if(checksumCRC64NVMEIter != headers.end())
+  {
+    m_checksumCRC64NVME = checksumCRC64NVMEIter->second;
+  }
+
   const auto& checksumSHA1Iter = headers.find("x-amz-checksum-sha1");
   if(checksumSHA1Iter != headers.end())
   {
@@ -123,6 +123,12 @@ HeadObjectResult& HeadObjectResult::operator =(const Aws::AmazonWebServiceResult
   if(checksumSHA256Iter != headers.end())
   {
     m_checksumSHA256 = checksumSHA256Iter->second;
+  }
+
+  const auto& checksumTypeIter = headers.find("x-amz-checksum-type");
+  if(checksumTypeIter != headers.end())
+  {
+    m_checksumType = ChecksumTypeMapper::GetChecksumTypeForName(checksumTypeIter->second);
   }
 
   const auto& eTagIter = headers.find("etag");
@@ -173,10 +179,20 @@ HeadObjectResult& HeadObjectResult::operator =(const Aws::AmazonWebServiceResult
     m_contentType = contentTypeIter->second;
   }
 
+  const auto& contentRangeIter = headers.find("content-range");
+  if(contentRangeIter != headers.end())
+  {
+    m_contentRange = contentRangeIter->second;
+  }
+
   const auto& expiresIter = headers.find("expires");
   if(expiresIter != headers.end())
   {
-    m_expires = DateTime(expiresIter->second, Aws::Utils::DateFormat::RFC822);
+    m_expires = DateTime(expiresIter->second.c_str(), Aws::Utils::DateFormat::RFC822);
+    if(!m_expires.WasParseSuccessful())
+    {
+      AWS_LOGSTREAM_WARN("S3::HeadObjectResult", "Failed to parse expires header as an RFC822 timestamp: " << expiresIter->second.c_str());
+    }
   }
 
   const auto& websiteRedirectLocationIter = headers.find("x-amz-website-redirect-location");
@@ -259,13 +275,23 @@ HeadObjectResult& HeadObjectResult::operator =(const Aws::AmazonWebServiceResult
   const auto& objectLockRetainUntilDateIter = headers.find("x-amz-object-lock-retain-until-date");
   if(objectLockRetainUntilDateIter != headers.end())
   {
-    m_objectLockRetainUntilDate = DateTime(objectLockRetainUntilDateIter->second, Aws::Utils::DateFormat::ISO_8601);
+    m_objectLockRetainUntilDate = DateTime(objectLockRetainUntilDateIter->second.c_str(), Aws::Utils::DateFormat::ISO_8601);
+    if(!m_objectLockRetainUntilDate.WasParseSuccessful())
+    {
+      AWS_LOGSTREAM_WARN("S3::HeadObjectResult", "Failed to parse objectLockRetainUntilDate header as an ISO_8601 timestamp: " << objectLockRetainUntilDateIter->second.c_str());
+    }
   }
 
   const auto& objectLockLegalHoldStatusIter = headers.find("x-amz-object-lock-legal-hold");
   if(objectLockLegalHoldStatusIter != headers.end())
   {
     m_objectLockLegalHoldStatus = ObjectLockLegalHoldStatusMapper::GetObjectLockLegalHoldStatusForName(objectLockLegalHoldStatusIter->second);
+  }
+
+  const auto& expiresStringIter = headers.find("expires");
+  if(expiresStringIter != headers.end())
+  {
+    m_expiresString = expiresStringIter->second;
   }
 
   const auto& requestIdIter = headers.find("x-amz-request-id");

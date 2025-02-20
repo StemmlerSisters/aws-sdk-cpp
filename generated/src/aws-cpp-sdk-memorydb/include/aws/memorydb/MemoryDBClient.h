@@ -6,29 +6,42 @@
 #pragma once
 #include <aws/memorydb/MemoryDB_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/memorydb/MemoryDBServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/memorydb/MemoryDBErrorMarshaller.h>
 
 namespace Aws
 {
 namespace MemoryDB
 {
+  AWS_MEMORYDB_API extern const char SERVICE_NAME[];
   /**
-   * <p>MemoryDB for Redis is a fully managed, Redis-compatible, in-memory database
-   * that delivers ultra-fast performance and Multi-AZ durability for modern
-   * applications built using microservices architectures. MemoryDB stores the entire
-   * database in-memory, enabling low latency and high throughput data access. It is
-   * compatible with Redis, a popular open source data store, enabling you to
-   * leverage Redis’ flexible and friendly data structures, APIs, and commands.</p>
+   * <p>MemoryDB is a fully managed, Redis OSS-compatible, in-memory database that
+   * delivers ultra-fast performance and Multi-AZ durability for modern applications
+   * built using microservices architectures. MemoryDB stores the entire database
+   * in-memory, enabling low latency and high throughput data access. It is
+   * compatible with Redis OSS, a popular open source data store, enabling you to
+   * leverage Redis OSS’ flexible and friendly data structures, APIs, and
+   * commands.</p>
    */
-  class AWS_MEMORYDB_API MemoryDBClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<MemoryDBClient>
+  class AWS_MEMORYDB_API MemoryDBClient : smithy::client::AwsSmithyClientT<Aws::MemoryDB::SERVICE_NAME,
+      Aws::MemoryDB::MemoryDBClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      MemoryDBEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::MemoryDBErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<MemoryDBClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "MemoryDB"; }
 
       typedef MemoryDBClientConfiguration ClientConfigurationType;
       typedef MemoryDBEndpointProvider EndpointProviderType;
@@ -188,6 +201,31 @@ namespace MemoryDB
         }
 
         /**
+         * <p>Creates a new multi-Region cluster.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/memorydb-2021-01-01/CreateMultiRegionCluster">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::CreateMultiRegionClusterOutcome CreateMultiRegionCluster(const Model::CreateMultiRegionClusterRequest& request) const;
+
+        /**
+         * A Callable wrapper for CreateMultiRegionCluster that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename CreateMultiRegionClusterRequestT = Model::CreateMultiRegionClusterRequest>
+        Model::CreateMultiRegionClusterOutcomeCallable CreateMultiRegionClusterCallable(const CreateMultiRegionClusterRequestT& request) const
+        {
+            return SubmitCallable(&MemoryDBClient::CreateMultiRegionCluster, request);
+        }
+
+        /**
+         * An Async wrapper for CreateMultiRegionCluster that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename CreateMultiRegionClusterRequestT = Model::CreateMultiRegionClusterRequest>
+        void CreateMultiRegionClusterAsync(const CreateMultiRegionClusterRequestT& request, const CreateMultiRegionClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&MemoryDBClient::CreateMultiRegionCluster, request, handler, context);
+        }
+
+        /**
          * <p>Creates a new MemoryDB parameter group. A parameter group is a collection of
          * parameters and their values that are applied to all of the nodes in any cluster.
          * For more information, see <a
@@ -331,7 +369,9 @@ namespace MemoryDB
 
         /**
          * <p>Deletes a cluster. It also deletes all associated nodes and node
-         * endpoints</p><p><h3>See Also:</h3>   <a
+         * endpoints.</p>  <p> <code>CreateSnapshot</code> permission is required to
+         * create a final snapshot. Without this permission, the API call will fail with an
+         * <code>Access Denied</code> exception.</p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/memorydb-2021-01-01/DeleteCluster">AWS
          * API Reference</a></p>
          */
@@ -353,6 +393,31 @@ namespace MemoryDB
         void DeleteClusterAsync(const DeleteClusterRequestT& request, const DeleteClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&MemoryDBClient::DeleteCluster, request, handler, context);
+        }
+
+        /**
+         * <p>Deletes an existing multi-Region cluster.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/memorydb-2021-01-01/DeleteMultiRegionCluster">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DeleteMultiRegionClusterOutcome DeleteMultiRegionCluster(const Model::DeleteMultiRegionClusterRequest& request) const;
+
+        /**
+         * A Callable wrapper for DeleteMultiRegionCluster that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DeleteMultiRegionClusterRequestT = Model::DeleteMultiRegionClusterRequest>
+        Model::DeleteMultiRegionClusterOutcomeCallable DeleteMultiRegionClusterCallable(const DeleteMultiRegionClusterRequestT& request) const
+        {
+            return SubmitCallable(&MemoryDBClient::DeleteMultiRegionCluster, request);
+        }
+
+        /**
+         * An Async wrapper for DeleteMultiRegionCluster that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DeleteMultiRegionClusterRequestT = Model::DeleteMultiRegionClusterRequest>
+        void DeleteMultiRegionClusterAsync(const DeleteMultiRegionClusterRequestT& request, const DeleteMultiRegionClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&MemoryDBClient::DeleteMultiRegionCluster, request, handler, context);
         }
 
         /**
@@ -462,17 +527,17 @@ namespace MemoryDB
         }
 
         /**
-         * <p>Returns a list of ACLs</p><p><h3>See Also:</h3>   <a
+         * <p>Returns a list of ACLs.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/memorydb-2021-01-01/DescribeACLs">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeACLsOutcome DescribeACLs(const Model::DescribeACLsRequest& request) const;
+        virtual Model::DescribeACLsOutcome DescribeACLs(const Model::DescribeACLsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeACLs that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeACLsRequestT = Model::DescribeACLsRequest>
-        Model::DescribeACLsOutcomeCallable DescribeACLsCallable(const DescribeACLsRequestT& request) const
+        Model::DescribeACLsOutcomeCallable DescribeACLsCallable(const DescribeACLsRequestT& request = {}) const
         {
             return SubmitCallable(&MemoryDBClient::DescribeACLs, request);
         }
@@ -481,7 +546,7 @@ namespace MemoryDB
          * An Async wrapper for DescribeACLs that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeACLsRequestT = Model::DescribeACLsRequest>
-        void DescribeACLsAsync(const DescribeACLsRequestT& request, const DescribeACLsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeACLsAsync(const DescribeACLsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeACLsRequestT& request = {}) const
         {
             return SubmitAsync(&MemoryDBClient::DescribeACLs, request, handler, context);
         }
@@ -493,13 +558,13 @@ namespace MemoryDB
          * href="http://docs.aws.amazon.com/goto/WebAPI/memorydb-2021-01-01/DescribeClusters">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeClustersOutcome DescribeClusters(const Model::DescribeClustersRequest& request) const;
+        virtual Model::DescribeClustersOutcome DescribeClusters(const Model::DescribeClustersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeClusters that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeClustersRequestT = Model::DescribeClustersRequest>
-        Model::DescribeClustersOutcomeCallable DescribeClustersCallable(const DescribeClustersRequestT& request) const
+        Model::DescribeClustersOutcomeCallable DescribeClustersCallable(const DescribeClustersRequestT& request = {}) const
         {
             return SubmitCallable(&MemoryDBClient::DescribeClusters, request);
         }
@@ -508,24 +573,24 @@ namespace MemoryDB
          * An Async wrapper for DescribeClusters that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeClustersRequestT = Model::DescribeClustersRequest>
-        void DescribeClustersAsync(const DescribeClustersRequestT& request, const DescribeClustersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeClustersAsync(const DescribeClustersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeClustersRequestT& request = {}) const
         {
             return SubmitAsync(&MemoryDBClient::DescribeClusters, request, handler, context);
         }
 
         /**
-         * <p>Returns a list of the available Redis engine versions.</p><p><h3>See
+         * <p>Returns a list of the available Redis OSS engine versions.</p><p><h3>See
          * Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/memorydb-2021-01-01/DescribeEngineVersions">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeEngineVersionsOutcome DescribeEngineVersions(const Model::DescribeEngineVersionsRequest& request) const;
+        virtual Model::DescribeEngineVersionsOutcome DescribeEngineVersions(const Model::DescribeEngineVersionsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeEngineVersions that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeEngineVersionsRequestT = Model::DescribeEngineVersionsRequest>
-        Model::DescribeEngineVersionsOutcomeCallable DescribeEngineVersionsCallable(const DescribeEngineVersionsRequestT& request) const
+        Model::DescribeEngineVersionsOutcomeCallable DescribeEngineVersionsCallable(const DescribeEngineVersionsRequestT& request = {}) const
         {
             return SubmitCallable(&MemoryDBClient::DescribeEngineVersions, request);
         }
@@ -534,7 +599,7 @@ namespace MemoryDB
          * An Async wrapper for DescribeEngineVersions that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeEngineVersionsRequestT = Model::DescribeEngineVersionsRequest>
-        void DescribeEngineVersionsAsync(const DescribeEngineVersionsRequestT& request, const DescribeEngineVersionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeEngineVersionsAsync(const DescribeEngineVersionsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeEngineVersionsRequestT& request = {}) const
         {
             return SubmitAsync(&MemoryDBClient::DescribeEngineVersions, request, handler, context);
         }
@@ -548,13 +613,13 @@ namespace MemoryDB
          * href="http://docs.aws.amazon.com/goto/WebAPI/memorydb-2021-01-01/DescribeEvents">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeEventsOutcome DescribeEvents(const Model::DescribeEventsRequest& request) const;
+        virtual Model::DescribeEventsOutcome DescribeEvents(const Model::DescribeEventsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeEvents that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeEventsRequestT = Model::DescribeEventsRequest>
-        Model::DescribeEventsOutcomeCallable DescribeEventsCallable(const DescribeEventsRequestT& request) const
+        Model::DescribeEventsOutcomeCallable DescribeEventsCallable(const DescribeEventsRequestT& request = {}) const
         {
             return SubmitCallable(&MemoryDBClient::DescribeEvents, request);
         }
@@ -563,9 +628,35 @@ namespace MemoryDB
          * An Async wrapper for DescribeEvents that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeEventsRequestT = Model::DescribeEventsRequest>
-        void DescribeEventsAsync(const DescribeEventsRequestT& request, const DescribeEventsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeEventsAsync(const DescribeEventsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeEventsRequestT& request = {}) const
         {
             return SubmitAsync(&MemoryDBClient::DescribeEvents, request, handler, context);
+        }
+
+        /**
+         * <p>Returns details about one or more multi-Region clusters.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/memorydb-2021-01-01/DescribeMultiRegionClusters">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::DescribeMultiRegionClustersOutcome DescribeMultiRegionClusters(const Model::DescribeMultiRegionClustersRequest& request = {}) const;
+
+        /**
+         * A Callable wrapper for DescribeMultiRegionClusters that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename DescribeMultiRegionClustersRequestT = Model::DescribeMultiRegionClustersRequest>
+        Model::DescribeMultiRegionClustersOutcomeCallable DescribeMultiRegionClustersCallable(const DescribeMultiRegionClustersRequestT& request = {}) const
+        {
+            return SubmitCallable(&MemoryDBClient::DescribeMultiRegionClusters, request);
+        }
+
+        /**
+         * An Async wrapper for DescribeMultiRegionClusters that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename DescribeMultiRegionClustersRequestT = Model::DescribeMultiRegionClustersRequest>
+        void DescribeMultiRegionClustersAsync(const DescribeMultiRegionClustersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeMultiRegionClustersRequestT& request = {}) const
+        {
+            return SubmitAsync(&MemoryDBClient::DescribeMultiRegionClusters, request, handler, context);
         }
 
         /**
@@ -575,13 +666,13 @@ namespace MemoryDB
          * href="http://docs.aws.amazon.com/goto/WebAPI/memorydb-2021-01-01/DescribeParameterGroups">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeParameterGroupsOutcome DescribeParameterGroups(const Model::DescribeParameterGroupsRequest& request) const;
+        virtual Model::DescribeParameterGroupsOutcome DescribeParameterGroups(const Model::DescribeParameterGroupsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeParameterGroups that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeParameterGroupsRequestT = Model::DescribeParameterGroupsRequest>
-        Model::DescribeParameterGroupsOutcomeCallable DescribeParameterGroupsCallable(const DescribeParameterGroupsRequestT& request) const
+        Model::DescribeParameterGroupsOutcomeCallable DescribeParameterGroupsCallable(const DescribeParameterGroupsRequestT& request = {}) const
         {
             return SubmitCallable(&MemoryDBClient::DescribeParameterGroups, request);
         }
@@ -590,7 +681,7 @@ namespace MemoryDB
          * An Async wrapper for DescribeParameterGroups that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeParameterGroupsRequestT = Model::DescribeParameterGroupsRequest>
-        void DescribeParameterGroupsAsync(const DescribeParameterGroupsRequestT& request, const DescribeParameterGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeParameterGroupsAsync(const DescribeParameterGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeParameterGroupsRequestT& request = {}) const
         {
             return SubmitAsync(&MemoryDBClient::DescribeParameterGroups, request, handler, context);
         }
@@ -627,13 +718,13 @@ namespace MemoryDB
          * href="http://docs.aws.amazon.com/goto/WebAPI/memorydb-2021-01-01/DescribeReservedNodes">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeReservedNodesOutcome DescribeReservedNodes(const Model::DescribeReservedNodesRequest& request) const;
+        virtual Model::DescribeReservedNodesOutcome DescribeReservedNodes(const Model::DescribeReservedNodesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeReservedNodes that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeReservedNodesRequestT = Model::DescribeReservedNodesRequest>
-        Model::DescribeReservedNodesOutcomeCallable DescribeReservedNodesCallable(const DescribeReservedNodesRequestT& request) const
+        Model::DescribeReservedNodesOutcomeCallable DescribeReservedNodesCallable(const DescribeReservedNodesRequestT& request = {}) const
         {
             return SubmitCallable(&MemoryDBClient::DescribeReservedNodes, request);
         }
@@ -642,7 +733,7 @@ namespace MemoryDB
          * An Async wrapper for DescribeReservedNodes that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeReservedNodesRequestT = Model::DescribeReservedNodesRequest>
-        void DescribeReservedNodesAsync(const DescribeReservedNodesRequestT& request, const DescribeReservedNodesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeReservedNodesAsync(const DescribeReservedNodesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeReservedNodesRequestT& request = {}) const
         {
             return SubmitAsync(&MemoryDBClient::DescribeReservedNodes, request, handler, context);
         }
@@ -652,13 +743,13 @@ namespace MemoryDB
          * href="http://docs.aws.amazon.com/goto/WebAPI/memorydb-2021-01-01/DescribeReservedNodesOfferings">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeReservedNodesOfferingsOutcome DescribeReservedNodesOfferings(const Model::DescribeReservedNodesOfferingsRequest& request) const;
+        virtual Model::DescribeReservedNodesOfferingsOutcome DescribeReservedNodesOfferings(const Model::DescribeReservedNodesOfferingsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeReservedNodesOfferings that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeReservedNodesOfferingsRequestT = Model::DescribeReservedNodesOfferingsRequest>
-        Model::DescribeReservedNodesOfferingsOutcomeCallable DescribeReservedNodesOfferingsCallable(const DescribeReservedNodesOfferingsRequestT& request) const
+        Model::DescribeReservedNodesOfferingsOutcomeCallable DescribeReservedNodesOfferingsCallable(const DescribeReservedNodesOfferingsRequestT& request = {}) const
         {
             return SubmitCallable(&MemoryDBClient::DescribeReservedNodesOfferings, request);
         }
@@ -667,23 +758,23 @@ namespace MemoryDB
          * An Async wrapper for DescribeReservedNodesOfferings that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeReservedNodesOfferingsRequestT = Model::DescribeReservedNodesOfferingsRequest>
-        void DescribeReservedNodesOfferingsAsync(const DescribeReservedNodesOfferingsRequestT& request, const DescribeReservedNodesOfferingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeReservedNodesOfferingsAsync(const DescribeReservedNodesOfferingsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeReservedNodesOfferingsRequestT& request = {}) const
         {
             return SubmitAsync(&MemoryDBClient::DescribeReservedNodesOfferings, request, handler, context);
         }
 
         /**
-         * <p>Returns details of the service updates</p><p><h3>See Also:</h3>   <a
+         * <p>Returns details of the service updates.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/memorydb-2021-01-01/DescribeServiceUpdates">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeServiceUpdatesOutcome DescribeServiceUpdates(const Model::DescribeServiceUpdatesRequest& request) const;
+        virtual Model::DescribeServiceUpdatesOutcome DescribeServiceUpdates(const Model::DescribeServiceUpdatesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeServiceUpdates that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeServiceUpdatesRequestT = Model::DescribeServiceUpdatesRequest>
-        Model::DescribeServiceUpdatesOutcomeCallable DescribeServiceUpdatesCallable(const DescribeServiceUpdatesRequestT& request) const
+        Model::DescribeServiceUpdatesOutcomeCallable DescribeServiceUpdatesCallable(const DescribeServiceUpdatesRequestT& request = {}) const
         {
             return SubmitCallable(&MemoryDBClient::DescribeServiceUpdates, request);
         }
@@ -692,7 +783,7 @@ namespace MemoryDB
          * An Async wrapper for DescribeServiceUpdates that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeServiceUpdatesRequestT = Model::DescribeServiceUpdatesRequest>
-        void DescribeServiceUpdatesAsync(const DescribeServiceUpdatesRequestT& request, const DescribeServiceUpdatesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeServiceUpdatesAsync(const DescribeServiceUpdatesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeServiceUpdatesRequestT& request = {}) const
         {
             return SubmitAsync(&MemoryDBClient::DescribeServiceUpdates, request, handler, context);
         }
@@ -705,13 +796,13 @@ namespace MemoryDB
          * href="http://docs.aws.amazon.com/goto/WebAPI/memorydb-2021-01-01/DescribeSnapshots">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeSnapshotsOutcome DescribeSnapshots(const Model::DescribeSnapshotsRequest& request) const;
+        virtual Model::DescribeSnapshotsOutcome DescribeSnapshots(const Model::DescribeSnapshotsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeSnapshots that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeSnapshotsRequestT = Model::DescribeSnapshotsRequest>
-        Model::DescribeSnapshotsOutcomeCallable DescribeSnapshotsCallable(const DescribeSnapshotsRequestT& request) const
+        Model::DescribeSnapshotsOutcomeCallable DescribeSnapshotsCallable(const DescribeSnapshotsRequestT& request = {}) const
         {
             return SubmitCallable(&MemoryDBClient::DescribeSnapshots, request);
         }
@@ -720,7 +811,7 @@ namespace MemoryDB
          * An Async wrapper for DescribeSnapshots that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeSnapshotsRequestT = Model::DescribeSnapshotsRequest>
-        void DescribeSnapshotsAsync(const DescribeSnapshotsRequestT& request, const DescribeSnapshotsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeSnapshotsAsync(const DescribeSnapshotsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeSnapshotsRequestT& request = {}) const
         {
             return SubmitAsync(&MemoryDBClient::DescribeSnapshots, request, handler, context);
         }
@@ -732,13 +823,13 @@ namespace MemoryDB
          * href="http://docs.aws.amazon.com/goto/WebAPI/memorydb-2021-01-01/DescribeSubnetGroups">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeSubnetGroupsOutcome DescribeSubnetGroups(const Model::DescribeSubnetGroupsRequest& request) const;
+        virtual Model::DescribeSubnetGroupsOutcome DescribeSubnetGroups(const Model::DescribeSubnetGroupsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeSubnetGroups that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeSubnetGroupsRequestT = Model::DescribeSubnetGroupsRequest>
-        Model::DescribeSubnetGroupsOutcomeCallable DescribeSubnetGroupsCallable(const DescribeSubnetGroupsRequestT& request) const
+        Model::DescribeSubnetGroupsOutcomeCallable DescribeSubnetGroupsCallable(const DescribeSubnetGroupsRequestT& request = {}) const
         {
             return SubmitCallable(&MemoryDBClient::DescribeSubnetGroups, request);
         }
@@ -747,7 +838,7 @@ namespace MemoryDB
          * An Async wrapper for DescribeSubnetGroups that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeSubnetGroupsRequestT = Model::DescribeSubnetGroupsRequest>
-        void DescribeSubnetGroupsAsync(const DescribeSubnetGroupsRequestT& request, const DescribeSubnetGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeSubnetGroupsAsync(const DescribeSubnetGroupsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeSubnetGroupsRequestT& request = {}) const
         {
             return SubmitAsync(&MemoryDBClient::DescribeSubnetGroups, request, handler, context);
         }
@@ -757,13 +848,13 @@ namespace MemoryDB
          * href="http://docs.aws.amazon.com/goto/WebAPI/memorydb-2021-01-01/DescribeUsers">AWS
          * API Reference</a></p>
          */
-        virtual Model::DescribeUsersOutcome DescribeUsers(const Model::DescribeUsersRequest& request) const;
+        virtual Model::DescribeUsersOutcome DescribeUsers(const Model::DescribeUsersRequest& request = {}) const;
 
         /**
          * A Callable wrapper for DescribeUsers that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename DescribeUsersRequestT = Model::DescribeUsersRequest>
-        Model::DescribeUsersOutcomeCallable DescribeUsersCallable(const DescribeUsersRequestT& request) const
+        Model::DescribeUsersOutcomeCallable DescribeUsersCallable(const DescribeUsersRequestT& request = {}) const
         {
             return SubmitCallable(&MemoryDBClient::DescribeUsers, request);
         }
@@ -772,7 +863,7 @@ namespace MemoryDB
          * An Async wrapper for DescribeUsers that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename DescribeUsersRequestT = Model::DescribeUsersRequest>
-        void DescribeUsersAsync(const DescribeUsersRequestT& request, const DescribeUsersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void DescribeUsersAsync(const DescribeUsersResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const DescribeUsersRequestT& request = {}) const
         {
             return SubmitAsync(&MemoryDBClient::DescribeUsers, request, handler, context);
         }
@@ -804,6 +895,32 @@ namespace MemoryDB
         void FailoverShardAsync(const FailoverShardRequestT& request, const FailoverShardResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&MemoryDBClient::FailoverShard, request, handler, context);
+        }
+
+        /**
+         * <p>Lists the allowed updates for a multi-Region cluster.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/memorydb-2021-01-01/ListAllowedMultiRegionClusterUpdates">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListAllowedMultiRegionClusterUpdatesOutcome ListAllowedMultiRegionClusterUpdates(const Model::ListAllowedMultiRegionClusterUpdatesRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListAllowedMultiRegionClusterUpdates that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListAllowedMultiRegionClusterUpdatesRequestT = Model::ListAllowedMultiRegionClusterUpdatesRequest>
+        Model::ListAllowedMultiRegionClusterUpdatesOutcomeCallable ListAllowedMultiRegionClusterUpdatesCallable(const ListAllowedMultiRegionClusterUpdatesRequestT& request) const
+        {
+            return SubmitCallable(&MemoryDBClient::ListAllowedMultiRegionClusterUpdates, request);
+        }
+
+        /**
+         * An Async wrapper for ListAllowedMultiRegionClusterUpdates that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListAllowedMultiRegionClusterUpdatesRequestT = Model::ListAllowedMultiRegionClusterUpdatesRequest>
+        void ListAllowedMultiRegionClusterUpdatesAsync(const ListAllowedMultiRegionClusterUpdatesRequestT& request, const ListAllowedMultiRegionClusterUpdatesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&MemoryDBClient::ListAllowedMultiRegionClusterUpdates, request, handler, context);
         }
 
         /**
@@ -839,7 +956,7 @@ namespace MemoryDB
          * the key and value are case-sensitive. You can use tags to categorize and track
          * your MemoryDB resources. For more information, see <a
          * href="https://docs.aws.amazon.com/MemoryDB/latest/devguide/Tagging-Resources.html">Tagging
-         * your MemoryDB resources</a> </p><p><h3>See Also:</h3>   <a
+         * your MemoryDB resources</a>.</p><p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/memorydb-2021-01-01/ListTags">AWS
          * API Reference</a></p>
          */
@@ -955,7 +1072,8 @@ namespace MemoryDB
         }
 
         /**
-         * <p>Use this operation to remove tags on a resource</p><p><h3>See Also:</h3>   <a
+         * <p>Use this operation to remove tags on a resource.</p><p><h3>See Also:</h3>  
+         * <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/memorydb-2021-01-01/UntagResource">AWS
          * API Reference</a></p>
          */
@@ -1030,6 +1148,32 @@ namespace MemoryDB
         void UpdateClusterAsync(const UpdateClusterRequestT& request, const UpdateClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
         {
             return SubmitAsync(&MemoryDBClient::UpdateCluster, request, handler, context);
+        }
+
+        /**
+         * <p>Updates the configuration of an existing multi-Region cluster.</p><p><h3>See
+         * Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/memorydb-2021-01-01/UpdateMultiRegionCluster">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::UpdateMultiRegionClusterOutcome UpdateMultiRegionCluster(const Model::UpdateMultiRegionClusterRequest& request) const;
+
+        /**
+         * A Callable wrapper for UpdateMultiRegionCluster that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename UpdateMultiRegionClusterRequestT = Model::UpdateMultiRegionClusterRequest>
+        Model::UpdateMultiRegionClusterOutcomeCallable UpdateMultiRegionClusterCallable(const UpdateMultiRegionClusterRequestT& request) const
+        {
+            return SubmitCallable(&MemoryDBClient::UpdateMultiRegionCluster, request);
+        }
+
+        /**
+         * An Async wrapper for UpdateMultiRegionCluster that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename UpdateMultiRegionClusterRequestT = Model::UpdateMultiRegionClusterRequest>
+        void UpdateMultiRegionClusterAsync(const UpdateMultiRegionClusterRequestT& request, const UpdateMultiRegionClusterResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&MemoryDBClient::UpdateMultiRegionCluster, request, handler, context);
         }
 
         /**
@@ -1116,11 +1260,7 @@ namespace MemoryDB
       std::shared_ptr<MemoryDBEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<MemoryDBClient>;
-      void init(const MemoryDBClientConfiguration& clientConfiguration);
 
-      MemoryDBClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<MemoryDBEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace MemoryDB

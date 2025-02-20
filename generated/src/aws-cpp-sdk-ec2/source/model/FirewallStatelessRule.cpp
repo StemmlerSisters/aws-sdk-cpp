@@ -33,16 +33,8 @@ FirewallStatelessRule::FirewallStatelessRule() :
 {
 }
 
-FirewallStatelessRule::FirewallStatelessRule(const XmlNode& xmlNode) : 
-    m_ruleGroupArnHasBeenSet(false),
-    m_sourcesHasBeenSet(false),
-    m_destinationsHasBeenSet(false),
-    m_sourcePortsHasBeenSet(false),
-    m_destinationPortsHasBeenSet(false),
-    m_protocolsHasBeenSet(false),
-    m_ruleActionHasBeenSet(false),
-    m_priority(0),
-    m_priorityHasBeenSet(false)
+FirewallStatelessRule::FirewallStatelessRule(const XmlNode& xmlNode)
+  : FirewallStatelessRule()
 {
   *this = xmlNode;
 }
@@ -113,7 +105,7 @@ FirewallStatelessRule& FirewallStatelessRule::operator =(const XmlNode& xmlNode)
       XmlNode protocolsMember = protocolsNode.FirstChild("item");
       while(!protocolsMember.IsNull())
       {
-         m_protocols.push_back(StringUtils::ConvertToInt32(StringUtils::Trim(protocolsMember.GetText().c_str()).c_str()));
+        m_protocols.push_back(StringUtils::ConvertToInt32(StringUtils::Trim(protocolsMember.GetText().c_str()).c_str()));
         protocolsMember = protocolsMember.NextNode("item");
       }
 

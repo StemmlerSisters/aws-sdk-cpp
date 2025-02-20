@@ -41,71 +41,49 @@ namespace Model
     AWS_RDS_API void OutputToStream(Aws::OStream& oStream, const char* location) const;
 
 
+    ///@{
     /**
      * <p>The minimum number of Aurora capacity units (ACUs) for a DB instance in an
      * Aurora Serverless v2 cluster. You can specify ACU values in half-step
-     * increments, such as 8, 8.5, 9, and so on. The smallest value that you can use is
-     * 0.5.</p>
+     * increments, such as 8, 8.5, 9, and so on. For Aurora versions that support the
+     * Aurora Serverless v2 auto-pause feature, the smallest value that you can use is
+     * 0. For versions that don't support Aurora Serverless v2 auto-pause, the smallest
+     * value that you can use is 0.5. </p>
      */
     inline double GetMinCapacity() const{ return m_minCapacity; }
-
-    /**
-     * <p>The minimum number of Aurora capacity units (ACUs) for a DB instance in an
-     * Aurora Serverless v2 cluster. You can specify ACU values in half-step
-     * increments, such as 8, 8.5, 9, and so on. The smallest value that you can use is
-     * 0.5.</p>
-     */
     inline bool MinCapacityHasBeenSet() const { return m_minCapacityHasBeenSet; }
-
-    /**
-     * <p>The minimum number of Aurora capacity units (ACUs) for a DB instance in an
-     * Aurora Serverless v2 cluster. You can specify ACU values in half-step
-     * increments, such as 8, 8.5, 9, and so on. The smallest value that you can use is
-     * 0.5.</p>
-     */
     inline void SetMinCapacity(double value) { m_minCapacityHasBeenSet = true; m_minCapacity = value; }
-
-    /**
-     * <p>The minimum number of Aurora capacity units (ACUs) for a DB instance in an
-     * Aurora Serverless v2 cluster. You can specify ACU values in half-step
-     * increments, such as 8, 8.5, 9, and so on. The smallest value that you can use is
-     * 0.5.</p>
-     */
     inline ServerlessV2ScalingConfigurationInfo& WithMinCapacity(double value) { SetMinCapacity(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
      * <p>The maximum number of Aurora capacity units (ACUs) for a DB instance in an
      * Aurora Serverless v2 cluster. You can specify ACU values in half-step
-     * increments, such as 40, 40.5, 41, and so on. The largest value that you can use
-     * is 128.</p>
+     * increments, such as 32, 32.5, 33, and so on. The largest value that you can use
+     * is 256 for recent Aurora versions, or 128 for older versions.</p>
      */
     inline double GetMaxCapacity() const{ return m_maxCapacity; }
-
-    /**
-     * <p>The maximum number of Aurora capacity units (ACUs) for a DB instance in an
-     * Aurora Serverless v2 cluster. You can specify ACU values in half-step
-     * increments, such as 40, 40.5, 41, and so on. The largest value that you can use
-     * is 128.</p>
-     */
     inline bool MaxCapacityHasBeenSet() const { return m_maxCapacityHasBeenSet; }
-
-    /**
-     * <p>The maximum number of Aurora capacity units (ACUs) for a DB instance in an
-     * Aurora Serverless v2 cluster. You can specify ACU values in half-step
-     * increments, such as 40, 40.5, 41, and so on. The largest value that you can use
-     * is 128.</p>
-     */
     inline void SetMaxCapacity(double value) { m_maxCapacityHasBeenSet = true; m_maxCapacity = value; }
-
-    /**
-     * <p>The maximum number of Aurora capacity units (ACUs) for a DB instance in an
-     * Aurora Serverless v2 cluster. You can specify ACU values in half-step
-     * increments, such as 40, 40.5, 41, and so on. The largest value that you can use
-     * is 128.</p>
-     */
     inline ServerlessV2ScalingConfigurationInfo& WithMaxCapacity(double value) { SetMaxCapacity(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p> The number of seconds an Aurora Serverless v2 DB instance must be idle
+     * before Aurora attempts to automatically pause it. This property is only shown
+     * when the minimum capacity for the cluster is set to 0 ACUs. Changing the minimum
+     * capacity to a nonzero value removes this property. If you later change the
+     * minimum capacity back to 0 ACUs, this property is reset to its default value
+     * unless you specify it again. </p> <p>This value ranges between 300 seconds (five
+     * minutes) and 86,400 seconds (one day). The default is 300 seconds.</p>
+     */
+    inline int GetSecondsUntilAutoPause() const{ return m_secondsUntilAutoPause; }
+    inline bool SecondsUntilAutoPauseHasBeenSet() const { return m_secondsUntilAutoPauseHasBeenSet; }
+    inline void SetSecondsUntilAutoPause(int value) { m_secondsUntilAutoPauseHasBeenSet = true; m_secondsUntilAutoPause = value; }
+    inline ServerlessV2ScalingConfigurationInfo& WithSecondsUntilAutoPause(int value) { SetSecondsUntilAutoPause(value); return *this;}
+    ///@}
   private:
 
     double m_minCapacity;
@@ -113,6 +91,9 @@ namespace Model
 
     double m_maxCapacity;
     bool m_maxCapacityHasBeenSet = false;
+
+    int m_secondsUntilAutoPause;
+    bool m_secondsUntilAutoPauseHasBeenSet = false;
   };
 
 } // namespace Model

@@ -32,68 +32,51 @@ namespace Model
     AWS_S3CONTROL_API GetAccessPointPolicyForObjectLambdaResult& operator=(const Aws::AmazonWebServiceResult<Aws::Utils::Xml::XmlDocument>& result);
 
 
+    ///@{
     /**
      * <p>Object Lambda Access Point resource policy document.</p>
      */
     inline const Aws::String& GetPolicy() const{ return m_policy; }
-
-    /**
-     * <p>Object Lambda Access Point resource policy document.</p>
-     */
     inline void SetPolicy(const Aws::String& value) { m_policy = value; }
-
-    /**
-     * <p>Object Lambda Access Point resource policy document.</p>
-     */
     inline void SetPolicy(Aws::String&& value) { m_policy = std::move(value); }
-
-    /**
-     * <p>Object Lambda Access Point resource policy document.</p>
-     */
     inline void SetPolicy(const char* value) { m_policy.assign(value); }
-
-    /**
-     * <p>Object Lambda Access Point resource policy document.</p>
-     */
     inline GetAccessPointPolicyForObjectLambdaResult& WithPolicy(const Aws::String& value) { SetPolicy(value); return *this;}
-
-    /**
-     * <p>Object Lambda Access Point resource policy document.</p>
-     */
     inline GetAccessPointPolicyForObjectLambdaResult& WithPolicy(Aws::String&& value) { SetPolicy(std::move(value)); return *this;}
-
-    /**
-     * <p>Object Lambda Access Point resource policy document.</p>
-     */
     inline GetAccessPointPolicyForObjectLambdaResult& WithPolicy(const char* value) { SetPolicy(value); return *this;}
+    ///@}
 
-
-    
+    ///@{
+    /**
+     * AWS Request Id value
+     */
     inline const Aws::String& GetRequestId() const{ return m_requestId; }
-
-    
     inline void SetRequestId(const Aws::String& value) { m_requestId = value; }
-
-    
     inline void SetRequestId(Aws::String&& value) { m_requestId = std::move(value); }
-
-    
     inline void SetRequestId(const char* value) { m_requestId.assign(value); }
-
-    
     inline GetAccessPointPolicyForObjectLambdaResult& WithRequestId(const Aws::String& value) { SetRequestId(value); return *this;}
-
-    
     inline GetAccessPointPolicyForObjectLambdaResult& WithRequestId(Aws::String&& value) { SetRequestId(std::move(value)); return *this;}
-
-    
     inline GetAccessPointPolicyForObjectLambdaResult& WithRequestId(const char* value) { SetRequestId(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * x-amz-id-2 header value, also known as Host Id
+     */
+    inline const Aws::String& GetHostId() const{ return m_hostId; }
+    inline void SetHostId(const Aws::String& value) { m_hostId = value; }
+    inline void SetHostId(Aws::String&& value) { m_hostId = std::move(value); }
+    inline void SetHostId(const char* value) { m_hostId.assign(value); }
+    inline GetAccessPointPolicyForObjectLambdaResult& WithHostId(const Aws::String& value) { SetHostId(value); return *this;}
+    inline GetAccessPointPolicyForObjectLambdaResult& WithHostId(Aws::String&& value) { SetHostId(std::move(value)); return *this;}
+    inline GetAccessPointPolicyForObjectLambdaResult& WithHostId(const char* value) { SetHostId(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_policy;
 
     Aws::String m_requestId;
+
+    Aws::String m_hostId;
   };
 
 } // namespace Model

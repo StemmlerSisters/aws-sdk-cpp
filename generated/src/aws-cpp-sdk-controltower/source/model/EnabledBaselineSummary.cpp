@@ -22,17 +22,14 @@ EnabledBaselineSummary::EnabledBaselineSummary() :
     m_arnHasBeenSet(false),
     m_baselineIdentifierHasBeenSet(false),
     m_baselineVersionHasBeenSet(false),
+    m_parentIdentifierHasBeenSet(false),
     m_statusSummaryHasBeenSet(false),
     m_targetIdentifierHasBeenSet(false)
 {
 }
 
-EnabledBaselineSummary::EnabledBaselineSummary(JsonView jsonValue) : 
-    m_arnHasBeenSet(false),
-    m_baselineIdentifierHasBeenSet(false),
-    m_baselineVersionHasBeenSet(false),
-    m_statusSummaryHasBeenSet(false),
-    m_targetIdentifierHasBeenSet(false)
+EnabledBaselineSummary::EnabledBaselineSummary(JsonView jsonValue)
+  : EnabledBaselineSummary()
 {
   *this = jsonValue;
 }
@@ -58,6 +55,13 @@ EnabledBaselineSummary& EnabledBaselineSummary::operator =(JsonView jsonValue)
     m_baselineVersion = jsonValue.GetString("baselineVersion");
 
     m_baselineVersionHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("parentIdentifier"))
+  {
+    m_parentIdentifier = jsonValue.GetString("parentIdentifier");
+
+    m_parentIdentifierHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("statusSummary"))
@@ -96,6 +100,12 @@ JsonValue EnabledBaselineSummary::Jsonize() const
   if(m_baselineVersionHasBeenSet)
   {
    payload.WithString("baselineVersion", m_baselineVersion);
+
+  }
+
+  if(m_parentIdentifierHasBeenSet)
+  {
+   payload.WithString("parentIdentifier", m_parentIdentifier);
 
   }
 

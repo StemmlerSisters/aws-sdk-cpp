@@ -30,12 +30,14 @@ Workgroup::Workgroup() :
     m_endpointHasBeenSet(false),
     m_enhancedVpcRouting(false),
     m_enhancedVpcRoutingHasBeenSet(false),
+    m_ipAddressTypeHasBeenSet(false),
     m_maxCapacity(0),
     m_maxCapacityHasBeenSet(false),
     m_namespaceNameHasBeenSet(false),
     m_patchVersionHasBeenSet(false),
     m_port(0),
     m_portHasBeenSet(false),
+    m_pricePerformanceTargetHasBeenSet(false),
     m_publiclyAccessible(false),
     m_publiclyAccessibleHasBeenSet(false),
     m_securityGroupIdsHasBeenSet(false),
@@ -49,34 +51,8 @@ Workgroup::Workgroup() :
 {
 }
 
-Workgroup::Workgroup(JsonView jsonValue) : 
-    m_baseCapacity(0),
-    m_baseCapacityHasBeenSet(false),
-    m_configParametersHasBeenSet(false),
-    m_creationDateHasBeenSet(false),
-    m_crossAccountVpcsHasBeenSet(false),
-    m_customDomainCertificateArnHasBeenSet(false),
-    m_customDomainCertificateExpiryTimeHasBeenSet(false),
-    m_customDomainNameHasBeenSet(false),
-    m_endpointHasBeenSet(false),
-    m_enhancedVpcRouting(false),
-    m_enhancedVpcRoutingHasBeenSet(false),
-    m_maxCapacity(0),
-    m_maxCapacityHasBeenSet(false),
-    m_namespaceNameHasBeenSet(false),
-    m_patchVersionHasBeenSet(false),
-    m_port(0),
-    m_portHasBeenSet(false),
-    m_publiclyAccessible(false),
-    m_publiclyAccessibleHasBeenSet(false),
-    m_securityGroupIdsHasBeenSet(false),
-    m_status(WorkgroupStatus::NOT_SET),
-    m_statusHasBeenSet(false),
-    m_subnetIdsHasBeenSet(false),
-    m_workgroupArnHasBeenSet(false),
-    m_workgroupIdHasBeenSet(false),
-    m_workgroupNameHasBeenSet(false),
-    m_workgroupVersionHasBeenSet(false)
+Workgroup::Workgroup(JsonView jsonValue)
+  : Workgroup()
 {
   *this = jsonValue;
 }
@@ -152,6 +128,13 @@ Workgroup& Workgroup::operator =(JsonView jsonValue)
     m_enhancedVpcRoutingHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("ipAddressType"))
+  {
+    m_ipAddressType = jsonValue.GetString("ipAddressType");
+
+    m_ipAddressTypeHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("maxCapacity"))
   {
     m_maxCapacity = jsonValue.GetInteger("maxCapacity");
@@ -178,6 +161,13 @@ Workgroup& Workgroup::operator =(JsonView jsonValue)
     m_port = jsonValue.GetInteger("port");
 
     m_portHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("pricePerformanceTarget"))
+  {
+    m_pricePerformanceTarget = jsonValue.GetObject("pricePerformanceTarget");
+
+    m_pricePerformanceTargetHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("publiclyAccessible"))
@@ -311,6 +301,12 @@ JsonValue Workgroup::Jsonize() const
 
   }
 
+  if(m_ipAddressTypeHasBeenSet)
+  {
+   payload.WithString("ipAddressType", m_ipAddressType);
+
+  }
+
   if(m_maxCapacityHasBeenSet)
   {
    payload.WithInteger("maxCapacity", m_maxCapacity);
@@ -332,6 +328,12 @@ JsonValue Workgroup::Jsonize() const
   if(m_portHasBeenSet)
   {
    payload.WithInteger("port", m_port);
+
+  }
+
+  if(m_pricePerformanceTargetHasBeenSet)
+  {
+   payload.WithObject("pricePerformanceTarget", m_pricePerformanceTarget.Jsonize());
 
   }
 

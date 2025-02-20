@@ -31,7 +31,7 @@ namespace Model
    * repository in your Amazon Web Services account. This allows your container
    * service to pull images from Amazon ECR private repositories. For more
    * information, see <a
-   * href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-container-service-ecr-private-repo-access">Configuring
+   * href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-container-service-ecr-private-repo-access">Configuring
    * access to an Amazon ECR private repository for an Amazon Lightsail container
    * service</a> in the <i>Amazon Lightsail Developer Guide</i>.</p><p><h3>See
    * Also:</h3>   <a
@@ -47,26 +47,15 @@ namespace Model
     AWS_LIGHTSAIL_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>A Boolean value that indicates whether to activate the role.</p>
      */
     inline bool GetIsActive() const{ return m_isActive; }
-
-    /**
-     * <p>A Boolean value that indicates whether to activate the role.</p>
-     */
     inline bool IsActiveHasBeenSet() const { return m_isActiveHasBeenSet; }
-
-    /**
-     * <p>A Boolean value that indicates whether to activate the role.</p>
-     */
     inline void SetIsActive(bool value) { m_isActiveHasBeenSet = true; m_isActive = value; }
-
-    /**
-     * <p>A Boolean value that indicates whether to activate the role.</p>
-     */
     inline ContainerServiceECRImagePullerRoleRequest& WithIsActive(bool value) { SetIsActive(value); return *this;}
-
+    ///@}
   private:
 
     bool m_isActive;

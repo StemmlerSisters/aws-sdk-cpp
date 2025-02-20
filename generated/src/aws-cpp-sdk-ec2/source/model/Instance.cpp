@@ -21,29 +21,6 @@ namespace Model
 {
 
 Instance::Instance() : 
-    m_amiLaunchIndex(0),
-    m_amiLaunchIndexHasBeenSet(false),
-    m_imageIdHasBeenSet(false),
-    m_instanceIdHasBeenSet(false),
-    m_instanceType(InstanceType::NOT_SET),
-    m_instanceTypeHasBeenSet(false),
-    m_kernelIdHasBeenSet(false),
-    m_keyNameHasBeenSet(false),
-    m_launchTimeHasBeenSet(false),
-    m_monitoringHasBeenSet(false),
-    m_placementHasBeenSet(false),
-    m_platform(PlatformValues::NOT_SET),
-    m_platformHasBeenSet(false),
-    m_privateDnsNameHasBeenSet(false),
-    m_privateIpAddressHasBeenSet(false),
-    m_productCodesHasBeenSet(false),
-    m_publicDnsNameHasBeenSet(false),
-    m_publicIpAddressHasBeenSet(false),
-    m_ramdiskIdHasBeenSet(false),
-    m_stateHasBeenSet(false),
-    m_stateTransitionReasonHasBeenSet(false),
-    m_subnetIdHasBeenSet(false),
-    m_vpcIdHasBeenSet(false),
     m_architecture(ArchitectureValues::NOT_SET),
     m_architectureHasBeenSet(false),
     m_blockDeviceMappingsHasBeenSet(false),
@@ -90,81 +67,37 @@ Instance::Instance() :
     m_tpmSupportHasBeenSet(false),
     m_maintenanceOptionsHasBeenSet(false),
     m_currentInstanceBootMode(InstanceBootModeValues::NOT_SET),
-    m_currentInstanceBootModeHasBeenSet(false)
+    m_currentInstanceBootModeHasBeenSet(false),
+    m_networkPerformanceOptionsHasBeenSet(false),
+    m_operatorHasBeenSet(false),
+    m_instanceIdHasBeenSet(false),
+    m_imageIdHasBeenSet(false),
+    m_stateHasBeenSet(false),
+    m_privateDnsNameHasBeenSet(false),
+    m_publicDnsNameHasBeenSet(false),
+    m_stateTransitionReasonHasBeenSet(false),
+    m_keyNameHasBeenSet(false),
+    m_amiLaunchIndex(0),
+    m_amiLaunchIndexHasBeenSet(false),
+    m_productCodesHasBeenSet(false),
+    m_instanceType(InstanceType::NOT_SET),
+    m_instanceTypeHasBeenSet(false),
+    m_launchTimeHasBeenSet(false),
+    m_placementHasBeenSet(false),
+    m_kernelIdHasBeenSet(false),
+    m_ramdiskIdHasBeenSet(false),
+    m_platform(PlatformValues::NOT_SET),
+    m_platformHasBeenSet(false),
+    m_monitoringHasBeenSet(false),
+    m_subnetIdHasBeenSet(false),
+    m_vpcIdHasBeenSet(false),
+    m_privateIpAddressHasBeenSet(false),
+    m_publicIpAddressHasBeenSet(false)
 {
 }
 
-Instance::Instance(const XmlNode& xmlNode) : 
-    m_amiLaunchIndex(0),
-    m_amiLaunchIndexHasBeenSet(false),
-    m_imageIdHasBeenSet(false),
-    m_instanceIdHasBeenSet(false),
-    m_instanceType(InstanceType::NOT_SET),
-    m_instanceTypeHasBeenSet(false),
-    m_kernelIdHasBeenSet(false),
-    m_keyNameHasBeenSet(false),
-    m_launchTimeHasBeenSet(false),
-    m_monitoringHasBeenSet(false),
-    m_placementHasBeenSet(false),
-    m_platform(PlatformValues::NOT_SET),
-    m_platformHasBeenSet(false),
-    m_privateDnsNameHasBeenSet(false),
-    m_privateIpAddressHasBeenSet(false),
-    m_productCodesHasBeenSet(false),
-    m_publicDnsNameHasBeenSet(false),
-    m_publicIpAddressHasBeenSet(false),
-    m_ramdiskIdHasBeenSet(false),
-    m_stateHasBeenSet(false),
-    m_stateTransitionReasonHasBeenSet(false),
-    m_subnetIdHasBeenSet(false),
-    m_vpcIdHasBeenSet(false),
-    m_architecture(ArchitectureValues::NOT_SET),
-    m_architectureHasBeenSet(false),
-    m_blockDeviceMappingsHasBeenSet(false),
-    m_clientTokenHasBeenSet(false),
-    m_ebsOptimized(false),
-    m_ebsOptimizedHasBeenSet(false),
-    m_enaSupport(false),
-    m_enaSupportHasBeenSet(false),
-    m_hypervisor(HypervisorType::NOT_SET),
-    m_hypervisorHasBeenSet(false),
-    m_iamInstanceProfileHasBeenSet(false),
-    m_instanceLifecycle(InstanceLifecycleType::NOT_SET),
-    m_instanceLifecycleHasBeenSet(false),
-    m_elasticGpuAssociationsHasBeenSet(false),
-    m_elasticInferenceAcceleratorAssociationsHasBeenSet(false),
-    m_networkInterfacesHasBeenSet(false),
-    m_outpostArnHasBeenSet(false),
-    m_rootDeviceNameHasBeenSet(false),
-    m_rootDeviceType(DeviceType::NOT_SET),
-    m_rootDeviceTypeHasBeenSet(false),
-    m_securityGroupsHasBeenSet(false),
-    m_sourceDestCheck(false),
-    m_sourceDestCheckHasBeenSet(false),
-    m_spotInstanceRequestIdHasBeenSet(false),
-    m_sriovNetSupportHasBeenSet(false),
-    m_stateReasonHasBeenSet(false),
-    m_tagsHasBeenSet(false),
-    m_virtualizationType(VirtualizationType::NOT_SET),
-    m_virtualizationTypeHasBeenSet(false),
-    m_cpuOptionsHasBeenSet(false),
-    m_capacityReservationIdHasBeenSet(false),
-    m_capacityReservationSpecificationHasBeenSet(false),
-    m_hibernationOptionsHasBeenSet(false),
-    m_licensesHasBeenSet(false),
-    m_metadataOptionsHasBeenSet(false),
-    m_enclaveOptionsHasBeenSet(false),
-    m_bootMode(BootModeValues::NOT_SET),
-    m_bootModeHasBeenSet(false),
-    m_platformDetailsHasBeenSet(false),
-    m_usageOperationHasBeenSet(false),
-    m_usageOperationUpdateTimeHasBeenSet(false),
-    m_privateDnsNameOptionsHasBeenSet(false),
-    m_ipv6AddressHasBeenSet(false),
-    m_tpmSupportHasBeenSet(false),
-    m_maintenanceOptionsHasBeenSet(false),
-    m_currentInstanceBootMode(InstanceBootModeValues::NOT_SET),
-    m_currentInstanceBootModeHasBeenSet(false)
+Instance::Instance(const XmlNode& xmlNode)
+  : Instance()
 {
   *this = xmlNode;
 }
@@ -175,132 +108,6 @@ Instance& Instance::operator =(const XmlNode& xmlNode)
 
   if(!resultNode.IsNull())
   {
-    XmlNode amiLaunchIndexNode = resultNode.FirstChild("amiLaunchIndex");
-    if(!amiLaunchIndexNode.IsNull())
-    {
-      m_amiLaunchIndex = StringUtils::ConvertToInt32(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(amiLaunchIndexNode.GetText()).c_str()).c_str());
-      m_amiLaunchIndexHasBeenSet = true;
-    }
-    XmlNode imageIdNode = resultNode.FirstChild("imageId");
-    if(!imageIdNode.IsNull())
-    {
-      m_imageId = Aws::Utils::Xml::DecodeEscapedXmlText(imageIdNode.GetText());
-      m_imageIdHasBeenSet = true;
-    }
-    XmlNode instanceIdNode = resultNode.FirstChild("instanceId");
-    if(!instanceIdNode.IsNull())
-    {
-      m_instanceId = Aws::Utils::Xml::DecodeEscapedXmlText(instanceIdNode.GetText());
-      m_instanceIdHasBeenSet = true;
-    }
-    XmlNode instanceTypeNode = resultNode.FirstChild("instanceType");
-    if(!instanceTypeNode.IsNull())
-    {
-      m_instanceType = InstanceTypeMapper::GetInstanceTypeForName(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(instanceTypeNode.GetText()).c_str()).c_str());
-      m_instanceTypeHasBeenSet = true;
-    }
-    XmlNode kernelIdNode = resultNode.FirstChild("kernelId");
-    if(!kernelIdNode.IsNull())
-    {
-      m_kernelId = Aws::Utils::Xml::DecodeEscapedXmlText(kernelIdNode.GetText());
-      m_kernelIdHasBeenSet = true;
-    }
-    XmlNode keyNameNode = resultNode.FirstChild("keyName");
-    if(!keyNameNode.IsNull())
-    {
-      m_keyName = Aws::Utils::Xml::DecodeEscapedXmlText(keyNameNode.GetText());
-      m_keyNameHasBeenSet = true;
-    }
-    XmlNode launchTimeNode = resultNode.FirstChild("launchTime");
-    if(!launchTimeNode.IsNull())
-    {
-      m_launchTime = DateTime(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(launchTimeNode.GetText()).c_str()).c_str(), Aws::Utils::DateFormat::ISO_8601);
-      m_launchTimeHasBeenSet = true;
-    }
-    XmlNode monitoringNode = resultNode.FirstChild("monitoring");
-    if(!monitoringNode.IsNull())
-    {
-      m_monitoring = monitoringNode;
-      m_monitoringHasBeenSet = true;
-    }
-    XmlNode placementNode = resultNode.FirstChild("placement");
-    if(!placementNode.IsNull())
-    {
-      m_placement = placementNode;
-      m_placementHasBeenSet = true;
-    }
-    XmlNode platformNode = resultNode.FirstChild("platform");
-    if(!platformNode.IsNull())
-    {
-      m_platform = PlatformValuesMapper::GetPlatformValuesForName(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(platformNode.GetText()).c_str()).c_str());
-      m_platformHasBeenSet = true;
-    }
-    XmlNode privateDnsNameNode = resultNode.FirstChild("privateDnsName");
-    if(!privateDnsNameNode.IsNull())
-    {
-      m_privateDnsName = Aws::Utils::Xml::DecodeEscapedXmlText(privateDnsNameNode.GetText());
-      m_privateDnsNameHasBeenSet = true;
-    }
-    XmlNode privateIpAddressNode = resultNode.FirstChild("privateIpAddress");
-    if(!privateIpAddressNode.IsNull())
-    {
-      m_privateIpAddress = Aws::Utils::Xml::DecodeEscapedXmlText(privateIpAddressNode.GetText());
-      m_privateIpAddressHasBeenSet = true;
-    }
-    XmlNode productCodesNode = resultNode.FirstChild("productCodes");
-    if(!productCodesNode.IsNull())
-    {
-      XmlNode productCodesMember = productCodesNode.FirstChild("item");
-      while(!productCodesMember.IsNull())
-      {
-        m_productCodes.push_back(productCodesMember);
-        productCodesMember = productCodesMember.NextNode("item");
-      }
-
-      m_productCodesHasBeenSet = true;
-    }
-    XmlNode publicDnsNameNode = resultNode.FirstChild("dnsName");
-    if(!publicDnsNameNode.IsNull())
-    {
-      m_publicDnsName = Aws::Utils::Xml::DecodeEscapedXmlText(publicDnsNameNode.GetText());
-      m_publicDnsNameHasBeenSet = true;
-    }
-    XmlNode publicIpAddressNode = resultNode.FirstChild("ipAddress");
-    if(!publicIpAddressNode.IsNull())
-    {
-      m_publicIpAddress = Aws::Utils::Xml::DecodeEscapedXmlText(publicIpAddressNode.GetText());
-      m_publicIpAddressHasBeenSet = true;
-    }
-    XmlNode ramdiskIdNode = resultNode.FirstChild("ramdiskId");
-    if(!ramdiskIdNode.IsNull())
-    {
-      m_ramdiskId = Aws::Utils::Xml::DecodeEscapedXmlText(ramdiskIdNode.GetText());
-      m_ramdiskIdHasBeenSet = true;
-    }
-    XmlNode stateNode = resultNode.FirstChild("instanceState");
-    if(!stateNode.IsNull())
-    {
-      m_state = stateNode;
-      m_stateHasBeenSet = true;
-    }
-    XmlNode stateTransitionReasonNode = resultNode.FirstChild("reason");
-    if(!stateTransitionReasonNode.IsNull())
-    {
-      m_stateTransitionReason = Aws::Utils::Xml::DecodeEscapedXmlText(stateTransitionReasonNode.GetText());
-      m_stateTransitionReasonHasBeenSet = true;
-    }
-    XmlNode subnetIdNode = resultNode.FirstChild("subnetId");
-    if(!subnetIdNode.IsNull())
-    {
-      m_subnetId = Aws::Utils::Xml::DecodeEscapedXmlText(subnetIdNode.GetText());
-      m_subnetIdHasBeenSet = true;
-    }
-    XmlNode vpcIdNode = resultNode.FirstChild("vpcId");
-    if(!vpcIdNode.IsNull())
-    {
-      m_vpcId = Aws::Utils::Xml::DecodeEscapedXmlText(vpcIdNode.GetText());
-      m_vpcIdHasBeenSet = true;
-    }
     XmlNode architectureNode = resultNode.FirstChild("architecture");
     if(!architectureNode.IsNull())
     {
@@ -565,6 +372,144 @@ Instance& Instance::operator =(const XmlNode& xmlNode)
       m_currentInstanceBootMode = InstanceBootModeValuesMapper::GetInstanceBootModeValuesForName(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(currentInstanceBootModeNode.GetText()).c_str()).c_str());
       m_currentInstanceBootModeHasBeenSet = true;
     }
+    XmlNode networkPerformanceOptionsNode = resultNode.FirstChild("networkPerformanceOptions");
+    if(!networkPerformanceOptionsNode.IsNull())
+    {
+      m_networkPerformanceOptions = networkPerformanceOptionsNode;
+      m_networkPerformanceOptionsHasBeenSet = true;
+    }
+    XmlNode operatorNode = resultNode.FirstChild("operator");
+    if(!operatorNode.IsNull())
+    {
+      m_operator = operatorNode;
+      m_operatorHasBeenSet = true;
+    }
+    XmlNode instanceIdNode = resultNode.FirstChild("instanceId");
+    if(!instanceIdNode.IsNull())
+    {
+      m_instanceId = Aws::Utils::Xml::DecodeEscapedXmlText(instanceIdNode.GetText());
+      m_instanceIdHasBeenSet = true;
+    }
+    XmlNode imageIdNode = resultNode.FirstChild("imageId");
+    if(!imageIdNode.IsNull())
+    {
+      m_imageId = Aws::Utils::Xml::DecodeEscapedXmlText(imageIdNode.GetText());
+      m_imageIdHasBeenSet = true;
+    }
+    XmlNode stateNode = resultNode.FirstChild("instanceState");
+    if(!stateNode.IsNull())
+    {
+      m_state = stateNode;
+      m_stateHasBeenSet = true;
+    }
+    XmlNode privateDnsNameNode = resultNode.FirstChild("privateDnsName");
+    if(!privateDnsNameNode.IsNull())
+    {
+      m_privateDnsName = Aws::Utils::Xml::DecodeEscapedXmlText(privateDnsNameNode.GetText());
+      m_privateDnsNameHasBeenSet = true;
+    }
+    XmlNode publicDnsNameNode = resultNode.FirstChild("dnsName");
+    if(!publicDnsNameNode.IsNull())
+    {
+      m_publicDnsName = Aws::Utils::Xml::DecodeEscapedXmlText(publicDnsNameNode.GetText());
+      m_publicDnsNameHasBeenSet = true;
+    }
+    XmlNode stateTransitionReasonNode = resultNode.FirstChild("reason");
+    if(!stateTransitionReasonNode.IsNull())
+    {
+      m_stateTransitionReason = Aws::Utils::Xml::DecodeEscapedXmlText(stateTransitionReasonNode.GetText());
+      m_stateTransitionReasonHasBeenSet = true;
+    }
+    XmlNode keyNameNode = resultNode.FirstChild("keyName");
+    if(!keyNameNode.IsNull())
+    {
+      m_keyName = Aws::Utils::Xml::DecodeEscapedXmlText(keyNameNode.GetText());
+      m_keyNameHasBeenSet = true;
+    }
+    XmlNode amiLaunchIndexNode = resultNode.FirstChild("amiLaunchIndex");
+    if(!amiLaunchIndexNode.IsNull())
+    {
+      m_amiLaunchIndex = StringUtils::ConvertToInt32(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(amiLaunchIndexNode.GetText()).c_str()).c_str());
+      m_amiLaunchIndexHasBeenSet = true;
+    }
+    XmlNode productCodesNode = resultNode.FirstChild("productCodes");
+    if(!productCodesNode.IsNull())
+    {
+      XmlNode productCodesMember = productCodesNode.FirstChild("item");
+      while(!productCodesMember.IsNull())
+      {
+        m_productCodes.push_back(productCodesMember);
+        productCodesMember = productCodesMember.NextNode("item");
+      }
+
+      m_productCodesHasBeenSet = true;
+    }
+    XmlNode instanceTypeNode = resultNode.FirstChild("instanceType");
+    if(!instanceTypeNode.IsNull())
+    {
+      m_instanceType = InstanceTypeMapper::GetInstanceTypeForName(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(instanceTypeNode.GetText()).c_str()).c_str());
+      m_instanceTypeHasBeenSet = true;
+    }
+    XmlNode launchTimeNode = resultNode.FirstChild("launchTime");
+    if(!launchTimeNode.IsNull())
+    {
+      m_launchTime = DateTime(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(launchTimeNode.GetText()).c_str()).c_str(), Aws::Utils::DateFormat::ISO_8601);
+      m_launchTimeHasBeenSet = true;
+    }
+    XmlNode placementNode = resultNode.FirstChild("placement");
+    if(!placementNode.IsNull())
+    {
+      m_placement = placementNode;
+      m_placementHasBeenSet = true;
+    }
+    XmlNode kernelIdNode = resultNode.FirstChild("kernelId");
+    if(!kernelIdNode.IsNull())
+    {
+      m_kernelId = Aws::Utils::Xml::DecodeEscapedXmlText(kernelIdNode.GetText());
+      m_kernelIdHasBeenSet = true;
+    }
+    XmlNode ramdiskIdNode = resultNode.FirstChild("ramdiskId");
+    if(!ramdiskIdNode.IsNull())
+    {
+      m_ramdiskId = Aws::Utils::Xml::DecodeEscapedXmlText(ramdiskIdNode.GetText());
+      m_ramdiskIdHasBeenSet = true;
+    }
+    XmlNode platformNode = resultNode.FirstChild("platform");
+    if(!platformNode.IsNull())
+    {
+      m_platform = PlatformValuesMapper::GetPlatformValuesForName(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(platformNode.GetText()).c_str()).c_str());
+      m_platformHasBeenSet = true;
+    }
+    XmlNode monitoringNode = resultNode.FirstChild("monitoring");
+    if(!monitoringNode.IsNull())
+    {
+      m_monitoring = monitoringNode;
+      m_monitoringHasBeenSet = true;
+    }
+    XmlNode subnetIdNode = resultNode.FirstChild("subnetId");
+    if(!subnetIdNode.IsNull())
+    {
+      m_subnetId = Aws::Utils::Xml::DecodeEscapedXmlText(subnetIdNode.GetText());
+      m_subnetIdHasBeenSet = true;
+    }
+    XmlNode vpcIdNode = resultNode.FirstChild("vpcId");
+    if(!vpcIdNode.IsNull())
+    {
+      m_vpcId = Aws::Utils::Xml::DecodeEscapedXmlText(vpcIdNode.GetText());
+      m_vpcIdHasBeenSet = true;
+    }
+    XmlNode privateIpAddressNode = resultNode.FirstChild("privateIpAddress");
+    if(!privateIpAddressNode.IsNull())
+    {
+      m_privateIpAddress = Aws::Utils::Xml::DecodeEscapedXmlText(privateIpAddressNode.GetText());
+      m_privateIpAddressHasBeenSet = true;
+    }
+    XmlNode publicIpAddressNode = resultNode.FirstChild("ipAddress");
+    if(!publicIpAddressNode.IsNull())
+    {
+      m_publicIpAddress = Aws::Utils::Xml::DecodeEscapedXmlText(publicIpAddressNode.GetText());
+      m_publicIpAddressHasBeenSet = true;
+    }
   }
 
   return *this;
@@ -572,118 +517,6 @@ Instance& Instance::operator =(const XmlNode& xmlNode)
 
 void Instance::OutputToStream(Aws::OStream& oStream, const char* location, unsigned index, const char* locationValue) const
 {
-  if(m_amiLaunchIndexHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".AmiLaunchIndex=" << m_amiLaunchIndex << "&";
-  }
-
-  if(m_imageIdHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".ImageId=" << StringUtils::URLEncode(m_imageId.c_str()) << "&";
-  }
-
-  if(m_instanceIdHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".InstanceId=" << StringUtils::URLEncode(m_instanceId.c_str()) << "&";
-  }
-
-  if(m_instanceTypeHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".InstanceType=" << InstanceTypeMapper::GetNameForInstanceType(m_instanceType) << "&";
-  }
-
-  if(m_kernelIdHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".KernelId=" << StringUtils::URLEncode(m_kernelId.c_str()) << "&";
-  }
-
-  if(m_keyNameHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".KeyName=" << StringUtils::URLEncode(m_keyName.c_str()) << "&";
-  }
-
-  if(m_launchTimeHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".LaunchTime=" << StringUtils::URLEncode(m_launchTime.ToGmtString(Aws::Utils::DateFormat::ISO_8601).c_str()) << "&";
-  }
-
-  if(m_monitoringHasBeenSet)
-  {
-      Aws::StringStream monitoringLocationAndMemberSs;
-      monitoringLocationAndMemberSs << location << index << locationValue << ".Monitoring";
-      m_monitoring.OutputToStream(oStream, monitoringLocationAndMemberSs.str().c_str());
-  }
-
-  if(m_placementHasBeenSet)
-  {
-      Aws::StringStream placementLocationAndMemberSs;
-      placementLocationAndMemberSs << location << index << locationValue << ".Placement";
-      m_placement.OutputToStream(oStream, placementLocationAndMemberSs.str().c_str());
-  }
-
-  if(m_platformHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".Platform=" << PlatformValuesMapper::GetNameForPlatformValues(m_platform) << "&";
-  }
-
-  if(m_privateDnsNameHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".PrivateDnsName=" << StringUtils::URLEncode(m_privateDnsName.c_str()) << "&";
-  }
-
-  if(m_privateIpAddressHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".PrivateIpAddress=" << StringUtils::URLEncode(m_privateIpAddress.c_str()) << "&";
-  }
-
-  if(m_productCodesHasBeenSet)
-  {
-      unsigned productCodesIdx = 1;
-      for(auto& item : m_productCodes)
-      {
-        Aws::StringStream productCodesSs;
-        productCodesSs << location << index << locationValue << ".ProductCodes." << productCodesIdx++;
-        item.OutputToStream(oStream, productCodesSs.str().c_str());
-      }
-  }
-
-  if(m_publicDnsNameHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".PublicDnsName=" << StringUtils::URLEncode(m_publicDnsName.c_str()) << "&";
-  }
-
-  if(m_publicIpAddressHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".PublicIpAddress=" << StringUtils::URLEncode(m_publicIpAddress.c_str()) << "&";
-  }
-
-  if(m_ramdiskIdHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".RamdiskId=" << StringUtils::URLEncode(m_ramdiskId.c_str()) << "&";
-  }
-
-  if(m_stateHasBeenSet)
-  {
-      Aws::StringStream stateLocationAndMemberSs;
-      stateLocationAndMemberSs << location << index << locationValue << ".State";
-      m_state.OutputToStream(oStream, stateLocationAndMemberSs.str().c_str());
-  }
-
-  if(m_stateTransitionReasonHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".StateTransitionReason=" << StringUtils::URLEncode(m_stateTransitionReason.c_str()) << "&";
-  }
-
-  if(m_subnetIdHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".SubnetId=" << StringUtils::URLEncode(m_subnetId.c_str()) << "&";
-  }
-
-  if(m_vpcIdHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".VpcId=" << StringUtils::URLEncode(m_vpcId.c_str()) << "&";
-  }
-
   if(m_architectureHasBeenSet)
   {
       oStream << location << index << locationValue << ".Architecture=" << ArchitectureValuesMapper::GetNameForArchitectureValues(m_architecture) << "&";
@@ -929,102 +762,136 @@ void Instance::OutputToStream(Aws::OStream& oStream, const char* location, unsig
       oStream << location << index << locationValue << ".CurrentInstanceBootMode=" << InstanceBootModeValuesMapper::GetNameForInstanceBootModeValues(m_currentInstanceBootMode) << "&";
   }
 
-}
+  if(m_networkPerformanceOptionsHasBeenSet)
+  {
+      Aws::StringStream networkPerformanceOptionsLocationAndMemberSs;
+      networkPerformanceOptionsLocationAndMemberSs << location << index << locationValue << ".NetworkPerformanceOptions";
+      m_networkPerformanceOptions.OutputToStream(oStream, networkPerformanceOptionsLocationAndMemberSs.str().c_str());
+  }
 
-void Instance::OutputToStream(Aws::OStream& oStream, const char* location) const
-{
-  if(m_amiLaunchIndexHasBeenSet)
+  if(m_operatorHasBeenSet)
   {
-      oStream << location << ".AmiLaunchIndex=" << m_amiLaunchIndex << "&";
+      Aws::StringStream operatorLocationAndMemberSs;
+      operatorLocationAndMemberSs << location << index << locationValue << ".Operator";
+      m_operator.OutputToStream(oStream, operatorLocationAndMemberSs.str().c_str());
   }
-  if(m_imageIdHasBeenSet)
-  {
-      oStream << location << ".ImageId=" << StringUtils::URLEncode(m_imageId.c_str()) << "&";
-  }
+
   if(m_instanceIdHasBeenSet)
   {
-      oStream << location << ".InstanceId=" << StringUtils::URLEncode(m_instanceId.c_str()) << "&";
+      oStream << location << index << locationValue << ".InstanceId=" << StringUtils::URLEncode(m_instanceId.c_str()) << "&";
   }
-  if(m_instanceTypeHasBeenSet)
+
+  if(m_imageIdHasBeenSet)
   {
-      oStream << location << ".InstanceType=" << InstanceTypeMapper::GetNameForInstanceType(m_instanceType) << "&";
+      oStream << location << index << locationValue << ".ImageId=" << StringUtils::URLEncode(m_imageId.c_str()) << "&";
   }
-  if(m_kernelIdHasBeenSet)
+
+  if(m_stateHasBeenSet)
   {
-      oStream << location << ".KernelId=" << StringUtils::URLEncode(m_kernelId.c_str()) << "&";
+      Aws::StringStream stateLocationAndMemberSs;
+      stateLocationAndMemberSs << location << index << locationValue << ".State";
+      m_state.OutputToStream(oStream, stateLocationAndMemberSs.str().c_str());
   }
-  if(m_keyNameHasBeenSet)
-  {
-      oStream << location << ".KeyName=" << StringUtils::URLEncode(m_keyName.c_str()) << "&";
-  }
-  if(m_launchTimeHasBeenSet)
-  {
-      oStream << location << ".LaunchTime=" << StringUtils::URLEncode(m_launchTime.ToGmtString(Aws::Utils::DateFormat::ISO_8601).c_str()) << "&";
-  }
-  if(m_monitoringHasBeenSet)
-  {
-      Aws::String monitoringLocationAndMember(location);
-      monitoringLocationAndMember += ".Monitoring";
-      m_monitoring.OutputToStream(oStream, monitoringLocationAndMember.c_str());
-  }
-  if(m_placementHasBeenSet)
-  {
-      Aws::String placementLocationAndMember(location);
-      placementLocationAndMember += ".Placement";
-      m_placement.OutputToStream(oStream, placementLocationAndMember.c_str());
-  }
-  if(m_platformHasBeenSet)
-  {
-      oStream << location << ".Platform=" << PlatformValuesMapper::GetNameForPlatformValues(m_platform) << "&";
-  }
+
   if(m_privateDnsNameHasBeenSet)
   {
-      oStream << location << ".PrivateDnsName=" << StringUtils::URLEncode(m_privateDnsName.c_str()) << "&";
+      oStream << location << index << locationValue << ".PrivateDnsName=" << StringUtils::URLEncode(m_privateDnsName.c_str()) << "&";
   }
-  if(m_privateIpAddressHasBeenSet)
+
+  if(m_publicDnsNameHasBeenSet)
   {
-      oStream << location << ".PrivateIpAddress=" << StringUtils::URLEncode(m_privateIpAddress.c_str()) << "&";
+      oStream << location << index << locationValue << ".PublicDnsName=" << StringUtils::URLEncode(m_publicDnsName.c_str()) << "&";
   }
+
+  if(m_stateTransitionReasonHasBeenSet)
+  {
+      oStream << location << index << locationValue << ".StateTransitionReason=" << StringUtils::URLEncode(m_stateTransitionReason.c_str()) << "&";
+  }
+
+  if(m_keyNameHasBeenSet)
+  {
+      oStream << location << index << locationValue << ".KeyName=" << StringUtils::URLEncode(m_keyName.c_str()) << "&";
+  }
+
+  if(m_amiLaunchIndexHasBeenSet)
+  {
+      oStream << location << index << locationValue << ".AmiLaunchIndex=" << m_amiLaunchIndex << "&";
+  }
+
   if(m_productCodesHasBeenSet)
   {
       unsigned productCodesIdx = 1;
       for(auto& item : m_productCodes)
       {
         Aws::StringStream productCodesSs;
-        productCodesSs << location <<  ".ProductCodes." << productCodesIdx++;
+        productCodesSs << location << index << locationValue << ".ProductCodes." << productCodesIdx++;
         item.OutputToStream(oStream, productCodesSs.str().c_str());
       }
   }
-  if(m_publicDnsNameHasBeenSet)
+
+  if(m_instanceTypeHasBeenSet)
   {
-      oStream << location << ".PublicDnsName=" << StringUtils::URLEncode(m_publicDnsName.c_str()) << "&";
+      oStream << location << index << locationValue << ".InstanceType=" << InstanceTypeMapper::GetNameForInstanceType(m_instanceType) << "&";
   }
-  if(m_publicIpAddressHasBeenSet)
+
+  if(m_launchTimeHasBeenSet)
   {
-      oStream << location << ".PublicIpAddress=" << StringUtils::URLEncode(m_publicIpAddress.c_str()) << "&";
+      oStream << location << index << locationValue << ".LaunchTime=" << StringUtils::URLEncode(m_launchTime.ToGmtString(Aws::Utils::DateFormat::ISO_8601).c_str()) << "&";
   }
+
+  if(m_placementHasBeenSet)
+  {
+      Aws::StringStream placementLocationAndMemberSs;
+      placementLocationAndMemberSs << location << index << locationValue << ".Placement";
+      m_placement.OutputToStream(oStream, placementLocationAndMemberSs.str().c_str());
+  }
+
+  if(m_kernelIdHasBeenSet)
+  {
+      oStream << location << index << locationValue << ".KernelId=" << StringUtils::URLEncode(m_kernelId.c_str()) << "&";
+  }
+
   if(m_ramdiskIdHasBeenSet)
   {
-      oStream << location << ".RamdiskId=" << StringUtils::URLEncode(m_ramdiskId.c_str()) << "&";
+      oStream << location << index << locationValue << ".RamdiskId=" << StringUtils::URLEncode(m_ramdiskId.c_str()) << "&";
   }
-  if(m_stateHasBeenSet)
+
+  if(m_platformHasBeenSet)
   {
-      Aws::String stateLocationAndMember(location);
-      stateLocationAndMember += ".State";
-      m_state.OutputToStream(oStream, stateLocationAndMember.c_str());
+      oStream << location << index << locationValue << ".Platform=" << PlatformValuesMapper::GetNameForPlatformValues(m_platform) << "&";
   }
-  if(m_stateTransitionReasonHasBeenSet)
+
+  if(m_monitoringHasBeenSet)
   {
-      oStream << location << ".StateTransitionReason=" << StringUtils::URLEncode(m_stateTransitionReason.c_str()) << "&";
+      Aws::StringStream monitoringLocationAndMemberSs;
+      monitoringLocationAndMemberSs << location << index << locationValue << ".Monitoring";
+      m_monitoring.OutputToStream(oStream, monitoringLocationAndMemberSs.str().c_str());
   }
+
   if(m_subnetIdHasBeenSet)
   {
-      oStream << location << ".SubnetId=" << StringUtils::URLEncode(m_subnetId.c_str()) << "&";
+      oStream << location << index << locationValue << ".SubnetId=" << StringUtils::URLEncode(m_subnetId.c_str()) << "&";
   }
+
   if(m_vpcIdHasBeenSet)
   {
-      oStream << location << ".VpcId=" << StringUtils::URLEncode(m_vpcId.c_str()) << "&";
+      oStream << location << index << locationValue << ".VpcId=" << StringUtils::URLEncode(m_vpcId.c_str()) << "&";
   }
+
+  if(m_privateIpAddressHasBeenSet)
+  {
+      oStream << location << index << locationValue << ".PrivateIpAddress=" << StringUtils::URLEncode(m_privateIpAddress.c_str()) << "&";
+  }
+
+  if(m_publicIpAddressHasBeenSet)
+  {
+      oStream << location << index << locationValue << ".PublicIpAddress=" << StringUtils::URLEncode(m_publicIpAddress.c_str()) << "&";
+  }
+
+}
+
+void Instance::OutputToStream(Aws::OStream& oStream, const char* location) const
+{
   if(m_architectureHasBeenSet)
   {
       oStream << location << ".Architecture=" << ArchitectureValuesMapper::GetNameForArchitectureValues(m_architecture) << "&";
@@ -1232,6 +1099,110 @@ void Instance::OutputToStream(Aws::OStream& oStream, const char* location) const
   if(m_currentInstanceBootModeHasBeenSet)
   {
       oStream << location << ".CurrentInstanceBootMode=" << InstanceBootModeValuesMapper::GetNameForInstanceBootModeValues(m_currentInstanceBootMode) << "&";
+  }
+  if(m_networkPerformanceOptionsHasBeenSet)
+  {
+      Aws::String networkPerformanceOptionsLocationAndMember(location);
+      networkPerformanceOptionsLocationAndMember += ".NetworkPerformanceOptions";
+      m_networkPerformanceOptions.OutputToStream(oStream, networkPerformanceOptionsLocationAndMember.c_str());
+  }
+  if(m_operatorHasBeenSet)
+  {
+      Aws::String operatorLocationAndMember(location);
+      operatorLocationAndMember += ".Operator";
+      m_operator.OutputToStream(oStream, operatorLocationAndMember.c_str());
+  }
+  if(m_instanceIdHasBeenSet)
+  {
+      oStream << location << ".InstanceId=" << StringUtils::URLEncode(m_instanceId.c_str()) << "&";
+  }
+  if(m_imageIdHasBeenSet)
+  {
+      oStream << location << ".ImageId=" << StringUtils::URLEncode(m_imageId.c_str()) << "&";
+  }
+  if(m_stateHasBeenSet)
+  {
+      Aws::String stateLocationAndMember(location);
+      stateLocationAndMember += ".State";
+      m_state.OutputToStream(oStream, stateLocationAndMember.c_str());
+  }
+  if(m_privateDnsNameHasBeenSet)
+  {
+      oStream << location << ".PrivateDnsName=" << StringUtils::URLEncode(m_privateDnsName.c_str()) << "&";
+  }
+  if(m_publicDnsNameHasBeenSet)
+  {
+      oStream << location << ".PublicDnsName=" << StringUtils::URLEncode(m_publicDnsName.c_str()) << "&";
+  }
+  if(m_stateTransitionReasonHasBeenSet)
+  {
+      oStream << location << ".StateTransitionReason=" << StringUtils::URLEncode(m_stateTransitionReason.c_str()) << "&";
+  }
+  if(m_keyNameHasBeenSet)
+  {
+      oStream << location << ".KeyName=" << StringUtils::URLEncode(m_keyName.c_str()) << "&";
+  }
+  if(m_amiLaunchIndexHasBeenSet)
+  {
+      oStream << location << ".AmiLaunchIndex=" << m_amiLaunchIndex << "&";
+  }
+  if(m_productCodesHasBeenSet)
+  {
+      unsigned productCodesIdx = 1;
+      for(auto& item : m_productCodes)
+      {
+        Aws::StringStream productCodesSs;
+        productCodesSs << location <<  ".ProductCodes." << productCodesIdx++;
+        item.OutputToStream(oStream, productCodesSs.str().c_str());
+      }
+  }
+  if(m_instanceTypeHasBeenSet)
+  {
+      oStream << location << ".InstanceType=" << InstanceTypeMapper::GetNameForInstanceType(m_instanceType) << "&";
+  }
+  if(m_launchTimeHasBeenSet)
+  {
+      oStream << location << ".LaunchTime=" << StringUtils::URLEncode(m_launchTime.ToGmtString(Aws::Utils::DateFormat::ISO_8601).c_str()) << "&";
+  }
+  if(m_placementHasBeenSet)
+  {
+      Aws::String placementLocationAndMember(location);
+      placementLocationAndMember += ".Placement";
+      m_placement.OutputToStream(oStream, placementLocationAndMember.c_str());
+  }
+  if(m_kernelIdHasBeenSet)
+  {
+      oStream << location << ".KernelId=" << StringUtils::URLEncode(m_kernelId.c_str()) << "&";
+  }
+  if(m_ramdiskIdHasBeenSet)
+  {
+      oStream << location << ".RamdiskId=" << StringUtils::URLEncode(m_ramdiskId.c_str()) << "&";
+  }
+  if(m_platformHasBeenSet)
+  {
+      oStream << location << ".Platform=" << PlatformValuesMapper::GetNameForPlatformValues(m_platform) << "&";
+  }
+  if(m_monitoringHasBeenSet)
+  {
+      Aws::String monitoringLocationAndMember(location);
+      monitoringLocationAndMember += ".Monitoring";
+      m_monitoring.OutputToStream(oStream, monitoringLocationAndMember.c_str());
+  }
+  if(m_subnetIdHasBeenSet)
+  {
+      oStream << location << ".SubnetId=" << StringUtils::URLEncode(m_subnetId.c_str()) << "&";
+  }
+  if(m_vpcIdHasBeenSet)
+  {
+      oStream << location << ".VpcId=" << StringUtils::URLEncode(m_vpcId.c_str()) << "&";
+  }
+  if(m_privateIpAddressHasBeenSet)
+  {
+      oStream << location << ".PrivateIpAddress=" << StringUtils::URLEncode(m_privateIpAddress.c_str()) << "&";
+  }
+  if(m_publicIpAddressHasBeenSet)
+  {
+      oStream << location << ".PublicIpAddress=" << StringUtils::URLEncode(m_publicIpAddress.c_str()) << "&";
   }
 }
 

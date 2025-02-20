@@ -36,34 +36,36 @@ namespace Model
     AWS_DYNAMODB_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>Indicates whether point in time recovery is enabled (true) or disabled
      * (false) on the table.</p>
      */
     inline bool GetPointInTimeRecoveryEnabled() const{ return m_pointInTimeRecoveryEnabled; }
-
-    /**
-     * <p>Indicates whether point in time recovery is enabled (true) or disabled
-     * (false) on the table.</p>
-     */
     inline bool PointInTimeRecoveryEnabledHasBeenSet() const { return m_pointInTimeRecoveryEnabledHasBeenSet; }
-
-    /**
-     * <p>Indicates whether point in time recovery is enabled (true) or disabled
-     * (false) on the table.</p>
-     */
     inline void SetPointInTimeRecoveryEnabled(bool value) { m_pointInTimeRecoveryEnabledHasBeenSet = true; m_pointInTimeRecoveryEnabled = value; }
-
-    /**
-     * <p>Indicates whether point in time recovery is enabled (true) or disabled
-     * (false) on the table.</p>
-     */
     inline PointInTimeRecoverySpecification& WithPointInTimeRecoveryEnabled(bool value) { SetPointInTimeRecoveryEnabled(value); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>The number of preceding days for which continuous backups are taken and
+     * maintained. Your table data is only recoverable to any point-in-time from within
+     * the configured recovery period. This parameter is optional. If no value is
+     * provided, the value will default to 35.</p>
+     */
+    inline int GetRecoveryPeriodInDays() const{ return m_recoveryPeriodInDays; }
+    inline bool RecoveryPeriodInDaysHasBeenSet() const { return m_recoveryPeriodInDaysHasBeenSet; }
+    inline void SetRecoveryPeriodInDays(int value) { m_recoveryPeriodInDaysHasBeenSet = true; m_recoveryPeriodInDays = value; }
+    inline PointInTimeRecoverySpecification& WithRecoveryPeriodInDays(int value) { SetRecoveryPeriodInDays(value); return *this;}
+    ///@}
   private:
 
     bool m_pointInTimeRecoveryEnabled;
     bool m_pointInTimeRecoveryEnabledHasBeenSet = false;
+
+    int m_recoveryPeriodInDays;
+    bool m_recoveryPeriodInDaysHasBeenSet = false;
   };
 
 } // namespace Model

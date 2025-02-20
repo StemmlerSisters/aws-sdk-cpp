@@ -25,6 +25,7 @@
 #include <aws/kms/model/CreateKeyResult.h>
 #include <aws/kms/model/DecryptResult.h>
 #include <aws/kms/model/DeleteCustomKeyStoreResult.h>
+#include <aws/kms/model/DeriveSharedSecretResult.h>
 #include <aws/kms/model/DescribeCustomKeyStoresResult.h>
 #include <aws/kms/model/DescribeKeyResult.h>
 #include <aws/kms/model/DisconnectCustomKeyStoreResult.h>
@@ -55,6 +56,12 @@
 #include <aws/kms/model/UpdateCustomKeyStoreResult.h>
 #include <aws/kms/model/VerifyResult.h>
 #include <aws/kms/model/VerifyMacResult.h>
+#include <aws/kms/model/ListAliasesRequest.h>
+#include <aws/kms/model/DescribeCustomKeyStoresRequest.h>
+#include <aws/kms/model/GenerateRandomRequest.h>
+#include <aws/kms/model/RetireGrantRequest.h>
+#include <aws/kms/model/ListKeysRequest.h>
+#include <aws/kms/model/CreateKeyRequest.h>
 #include <aws/core/NoResult.h>
 /* End of service model headers required in KMSClient header */
 
@@ -89,7 +96,7 @@ namespace Aws
 
   namespace KMS
   {
-    using KMSClientConfiguration = Aws::Client::GenericClientConfiguration<false>;
+    using KMSClientConfiguration = Aws::Client::GenericClientConfiguration;
     using KMSEndpointProviderBase = Aws::KMS::Endpoint::KMSEndpointProviderBase;
     using KMSEndpointProvider = Aws::KMS::Endpoint::KMSEndpointProvider;
 
@@ -106,6 +113,7 @@ namespace Aws
       class DeleteAliasRequest;
       class DeleteCustomKeyStoreRequest;
       class DeleteImportedKeyMaterialRequest;
+      class DeriveSharedSecretRequest;
       class DescribeCustomKeyStoresRequest;
       class DescribeKeyRequest;
       class DisableKeyRequest;
@@ -161,6 +169,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<Aws::NoResult, KMSError> DeleteAliasOutcome;
       typedef Aws::Utils::Outcome<DeleteCustomKeyStoreResult, KMSError> DeleteCustomKeyStoreOutcome;
       typedef Aws::Utils::Outcome<Aws::NoResult, KMSError> DeleteImportedKeyMaterialOutcome;
+      typedef Aws::Utils::Outcome<DeriveSharedSecretResult, KMSError> DeriveSharedSecretOutcome;
       typedef Aws::Utils::Outcome<DescribeCustomKeyStoresResult, KMSError> DescribeCustomKeyStoresOutcome;
       typedef Aws::Utils::Outcome<DescribeKeyResult, KMSError> DescribeKeyOutcome;
       typedef Aws::Utils::Outcome<Aws::NoResult, KMSError> DisableKeyOutcome;
@@ -216,6 +225,7 @@ namespace Aws
       typedef std::future<DeleteAliasOutcome> DeleteAliasOutcomeCallable;
       typedef std::future<DeleteCustomKeyStoreOutcome> DeleteCustomKeyStoreOutcomeCallable;
       typedef std::future<DeleteImportedKeyMaterialOutcome> DeleteImportedKeyMaterialOutcomeCallable;
+      typedef std::future<DeriveSharedSecretOutcome> DeriveSharedSecretOutcomeCallable;
       typedef std::future<DescribeCustomKeyStoresOutcome> DescribeCustomKeyStoresOutcomeCallable;
       typedef std::future<DescribeKeyOutcome> DescribeKeyOutcomeCallable;
       typedef std::future<DisableKeyOutcome> DisableKeyOutcomeCallable;
@@ -274,6 +284,7 @@ namespace Aws
     typedef std::function<void(const KMSClient*, const Model::DeleteAliasRequest&, const Model::DeleteAliasOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteAliasResponseReceivedHandler;
     typedef std::function<void(const KMSClient*, const Model::DeleteCustomKeyStoreRequest&, const Model::DeleteCustomKeyStoreOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteCustomKeyStoreResponseReceivedHandler;
     typedef std::function<void(const KMSClient*, const Model::DeleteImportedKeyMaterialRequest&, const Model::DeleteImportedKeyMaterialOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteImportedKeyMaterialResponseReceivedHandler;
+    typedef std::function<void(const KMSClient*, const Model::DeriveSharedSecretRequest&, const Model::DeriveSharedSecretOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeriveSharedSecretResponseReceivedHandler;
     typedef std::function<void(const KMSClient*, const Model::DescribeCustomKeyStoresRequest&, const Model::DescribeCustomKeyStoresOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeCustomKeyStoresResponseReceivedHandler;
     typedef std::function<void(const KMSClient*, const Model::DescribeKeyRequest&, const Model::DescribeKeyOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DescribeKeyResponseReceivedHandler;
     typedef std::function<void(const KMSClient*, const Model::DisableKeyRequest&, const Model::DisableKeyOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DisableKeyResponseReceivedHandler;

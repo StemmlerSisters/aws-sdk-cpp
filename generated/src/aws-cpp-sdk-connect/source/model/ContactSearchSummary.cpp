@@ -31,24 +31,13 @@ ContactSearchSummary::ContactSearchSummary() :
     m_agentInfoHasBeenSet(false),
     m_initiationTimestampHasBeenSet(false),
     m_disconnectTimestampHasBeenSet(false),
-    m_scheduledTimestampHasBeenSet(false)
+    m_scheduledTimestampHasBeenSet(false),
+    m_segmentAttributesHasBeenSet(false)
 {
 }
 
-ContactSearchSummary::ContactSearchSummary(JsonView jsonValue) : 
-    m_arnHasBeenSet(false),
-    m_idHasBeenSet(false),
-    m_initialContactIdHasBeenSet(false),
-    m_previousContactIdHasBeenSet(false),
-    m_initiationMethod(ContactInitiationMethod::NOT_SET),
-    m_initiationMethodHasBeenSet(false),
-    m_channel(Channel::NOT_SET),
-    m_channelHasBeenSet(false),
-    m_queueInfoHasBeenSet(false),
-    m_agentInfoHasBeenSet(false),
-    m_initiationTimestampHasBeenSet(false),
-    m_disconnectTimestampHasBeenSet(false),
-    m_scheduledTimestampHasBeenSet(false)
+ContactSearchSummary::ContactSearchSummary(JsonView jsonValue)
+  : ContactSearchSummary()
 {
   *this = jsonValue;
 }
@@ -132,6 +121,16 @@ ContactSearchSummary& ContactSearchSummary::operator =(JsonView jsonValue)
     m_scheduledTimestampHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("SegmentAttributes"))
+  {
+    Aws::Map<Aws::String, JsonView> segmentAttributesJsonMap = jsonValue.GetObject("SegmentAttributes").GetAllObjects();
+    for(auto& segmentAttributesItem : segmentAttributesJsonMap)
+    {
+      m_segmentAttributes[segmentAttributesItem.first] = segmentAttributesItem.second.AsObject();
+    }
+    m_segmentAttributesHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -198,6 +197,17 @@ JsonValue ContactSearchSummary::Jsonize() const
   if(m_scheduledTimestampHasBeenSet)
   {
    payload.WithDouble("ScheduledTimestamp", m_scheduledTimestamp.SecondsWithMSPrecision());
+  }
+
+  if(m_segmentAttributesHasBeenSet)
+  {
+   JsonValue segmentAttributesJsonMap;
+   for(auto& segmentAttributesItem : m_segmentAttributes)
+   {
+     segmentAttributesJsonMap.WithObject(segmentAttributesItem.first, segmentAttributesItem.second.Jsonize());
+   }
+   payload.WithObject("SegmentAttributes", std::move(segmentAttributesJsonMap));
+
   }
 
   return payload;

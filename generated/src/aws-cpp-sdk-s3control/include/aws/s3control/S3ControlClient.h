@@ -1414,7 +1414,9 @@ namespace S3Control
          * <p>Retrieves the S3 Access Grants instance for a Region in your account. </p>
          * <dl> <dt>Permissions</dt> <dd> <p>You must have the
          * <code>s3:GetAccessGrantsInstance</code> permission to use this operation. </p>
-         * </dd> </dl><p><h3>See Also:</h3>   <a
+         * </dd> </dl>  <p> <code>GetAccessGrantsInstance</code> is not supported for
+         * cross-account access. You can only call the API from the account that owns the
+         * S3 Access Grants instance.</p> <p><h3>See Also:</h3>   <a
          * href="http://docs.aws.amazon.com/goto/WebAPI/s3control-2018-08-20/GetAccessGrantsInstance">AWS
          * API Reference</a></p>
          */
@@ -2623,6 +2625,46 @@ namespace S3Control
         }
 
         /**
+         * <p>Use this API to list the access grants that grant the caller access to Amazon
+         * S3 data through S3 Access Grants. The caller (grantee) can be an Identity and
+         * Access Management (IAM) identity or Amazon Web Services Identity Center
+         * corporate directory identity. You must pass the Amazon Web Services account of
+         * the S3 data owner (grantor) in the request. You can, optionally, narrow the
+         * results by <code>GrantScope</code>, using a fragment of the data's S3 path, and
+         * S3 Access Grants will return only the grants with a path that contains the path
+         * fragment. You can also pass the <code>AllowedByApplication</code> filter in the
+         * request, which returns only the grants authorized for applications, whether the
+         * application is the caller's Identity Center application or any other application
+         * (<code>ALL</code>). For more information, see <a
+         * href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-grants-list-grants.html">List
+         * the caller's access grants</a> in the <i>Amazon S3 User Guide</i>.</p> <dl>
+         * <dt>Permissions</dt> <dd> <p>You must have the
+         * <code>s3:ListCallerAccessGrants</code> permission to use this operation. </p>
+         * </dd> </dl><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/s3control-2018-08-20/ListCallerAccessGrants">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListCallerAccessGrantsOutcome ListCallerAccessGrants(const Model::ListCallerAccessGrantsRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListCallerAccessGrants that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListCallerAccessGrantsRequestT = Model::ListCallerAccessGrantsRequest>
+        Model::ListCallerAccessGrantsOutcomeCallable ListCallerAccessGrantsCallable(const ListCallerAccessGrantsRequestT& request) const
+        {
+            return SubmitCallable(&S3ControlClient::ListCallerAccessGrants, request);
+        }
+
+        /**
+         * An Async wrapper for ListCallerAccessGrants that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListCallerAccessGrantsRequestT = Model::ListCallerAccessGrantsRequest>
+        void ListCallerAccessGrantsAsync(const ListCallerAccessGrantsRequestT& request, const ListCallerAccessGrantsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&S3ControlClient::ListCallerAccessGrants, request, handler, context);
+        }
+
+        /**
          * <p>Lists current S3 Batch Operations jobs as well as the jobs that have ended
          * within the last 90 days for the Amazon Web Services account making the request.
          * For more information, see <a
@@ -3810,7 +3852,6 @@ namespace S3Control
         friend class Aws::Client::ClientWithAsyncTemplateMethods<S3ControlClient>;
         void init(const S3ControlClientConfiguration& clientConfiguration);
         S3ControlClientConfiguration m_clientConfiguration;
-        std::shared_ptr<Utils::Threading::Executor> m_executor;
         std::shared_ptr<S3ControlEndpointProviderBase> m_endpointProvider;
     };
 

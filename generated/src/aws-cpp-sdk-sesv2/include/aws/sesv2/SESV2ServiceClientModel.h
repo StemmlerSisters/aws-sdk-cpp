@@ -32,6 +32,7 @@
 #include <aws/sesv2/model/CreateEmailTemplateResult.h>
 #include <aws/sesv2/model/CreateExportJobResult.h>
 #include <aws/sesv2/model/CreateImportJobResult.h>
+#include <aws/sesv2/model/CreateMultiRegionEndpointResult.h>
 #include <aws/sesv2/model/DeleteConfigurationSetResult.h>
 #include <aws/sesv2/model/DeleteConfigurationSetEventDestinationResult.h>
 #include <aws/sesv2/model/DeleteContactResult.h>
@@ -41,6 +42,7 @@
 #include <aws/sesv2/model/DeleteEmailIdentityResult.h>
 #include <aws/sesv2/model/DeleteEmailIdentityPolicyResult.h>
 #include <aws/sesv2/model/DeleteEmailTemplateResult.h>
+#include <aws/sesv2/model/DeleteMultiRegionEndpointResult.h>
 #include <aws/sesv2/model/DeleteSuppressedDestinationResult.h>
 #include <aws/sesv2/model/GetAccountResult.h>
 #include <aws/sesv2/model/GetBlacklistReportsResult.h>
@@ -62,6 +64,7 @@
 #include <aws/sesv2/model/GetExportJobResult.h>
 #include <aws/sesv2/model/GetImportJobResult.h>
 #include <aws/sesv2/model/GetMessageInsightsResult.h>
+#include <aws/sesv2/model/GetMultiRegionEndpointResult.h>
 #include <aws/sesv2/model/GetSuppressedDestinationResult.h>
 #include <aws/sesv2/model/ListConfigurationSetsResult.h>
 #include <aws/sesv2/model/ListContactListsResult.h>
@@ -74,6 +77,7 @@
 #include <aws/sesv2/model/ListEmailTemplatesResult.h>
 #include <aws/sesv2/model/ListExportJobsResult.h>
 #include <aws/sesv2/model/ListImportJobsResult.h>
+#include <aws/sesv2/model/ListMultiRegionEndpointsResult.h>
 #include <aws/sesv2/model/ListRecommendationsResult.h>
 #include <aws/sesv2/model/ListSuppressedDestinationsResult.h>
 #include <aws/sesv2/model/ListTagsForResourceResult.h>
@@ -82,6 +86,7 @@
 #include <aws/sesv2/model/PutAccountSendingAttributesResult.h>
 #include <aws/sesv2/model/PutAccountSuppressionAttributesResult.h>
 #include <aws/sesv2/model/PutAccountVdmAttributesResult.h>
+#include <aws/sesv2/model/PutConfigurationSetArchivingOptionsResult.h>
 #include <aws/sesv2/model/PutConfigurationSetDeliveryOptionsResult.h>
 #include <aws/sesv2/model/PutConfigurationSetReputationOptionsResult.h>
 #include <aws/sesv2/model/PutConfigurationSetSendingOptionsResult.h>
@@ -110,6 +115,24 @@
 #include <aws/sesv2/model/UpdateCustomVerificationEmailTemplateResult.h>
 #include <aws/sesv2/model/UpdateEmailIdentityPolicyResult.h>
 #include <aws/sesv2/model/UpdateEmailTemplateResult.h>
+#include <aws/sesv2/model/ListContactListsRequest.h>
+#include <aws/sesv2/model/ListRecommendationsRequest.h>
+#include <aws/sesv2/model/ListExportJobsRequest.h>
+#include <aws/sesv2/model/GetAccountRequest.h>
+#include <aws/sesv2/model/ListDeliverabilityTestReportsRequest.h>
+#include <aws/sesv2/model/ListImportJobsRequest.h>
+#include <aws/sesv2/model/ListDedicatedIpPoolsRequest.h>
+#include <aws/sesv2/model/ListCustomVerificationEmailTemplatesRequest.h>
+#include <aws/sesv2/model/GetDeliverabilityDashboardOptionsRequest.h>
+#include <aws/sesv2/model/PutAccountSuppressionAttributesRequest.h>
+#include <aws/sesv2/model/PutAccountDedicatedIpWarmupAttributesRequest.h>
+#include <aws/sesv2/model/ListEmailTemplatesRequest.h>
+#include <aws/sesv2/model/ListConfigurationSetsRequest.h>
+#include <aws/sesv2/model/GetDedicatedIpsRequest.h>
+#include <aws/sesv2/model/ListMultiRegionEndpointsRequest.h>
+#include <aws/sesv2/model/ListEmailIdentitiesRequest.h>
+#include <aws/sesv2/model/ListSuppressedDestinationsRequest.h>
+#include <aws/sesv2/model/PutAccountSendingAttributesRequest.h>
 /* End of service model headers required in SESV2Client header */
 
 namespace Aws
@@ -143,7 +166,7 @@ namespace Aws
 
   namespace SESV2
   {
-    using SESV2ClientConfiguration = Aws::Client::GenericClientConfiguration<false>;
+    using SESV2ClientConfiguration = Aws::Client::GenericClientConfiguration;
     using SESV2EndpointProviderBase = Aws::SESV2::Endpoint::SESV2EndpointProviderBase;
     using SESV2EndpointProvider = Aws::SESV2::Endpoint::SESV2EndpointProvider;
 
@@ -164,6 +187,7 @@ namespace Aws
       class CreateEmailTemplateRequest;
       class CreateExportJobRequest;
       class CreateImportJobRequest;
+      class CreateMultiRegionEndpointRequest;
       class DeleteConfigurationSetRequest;
       class DeleteConfigurationSetEventDestinationRequest;
       class DeleteContactRequest;
@@ -173,6 +197,7 @@ namespace Aws
       class DeleteEmailIdentityRequest;
       class DeleteEmailIdentityPolicyRequest;
       class DeleteEmailTemplateRequest;
+      class DeleteMultiRegionEndpointRequest;
       class DeleteSuppressedDestinationRequest;
       class GetAccountRequest;
       class GetBlacklistReportsRequest;
@@ -194,6 +219,7 @@ namespace Aws
       class GetExportJobRequest;
       class GetImportJobRequest;
       class GetMessageInsightsRequest;
+      class GetMultiRegionEndpointRequest;
       class GetSuppressedDestinationRequest;
       class ListConfigurationSetsRequest;
       class ListContactListsRequest;
@@ -206,6 +232,7 @@ namespace Aws
       class ListEmailTemplatesRequest;
       class ListExportJobsRequest;
       class ListImportJobsRequest;
+      class ListMultiRegionEndpointsRequest;
       class ListRecommendationsRequest;
       class ListSuppressedDestinationsRequest;
       class ListTagsForResourceRequest;
@@ -214,6 +241,7 @@ namespace Aws
       class PutAccountSendingAttributesRequest;
       class PutAccountSuppressionAttributesRequest;
       class PutAccountVdmAttributesRequest;
+      class PutConfigurationSetArchivingOptionsRequest;
       class PutConfigurationSetDeliveryOptionsRequest;
       class PutConfigurationSetReputationOptionsRequest;
       class PutConfigurationSetSendingOptionsRequest;
@@ -259,6 +287,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<CreateEmailTemplateResult, SESV2Error> CreateEmailTemplateOutcome;
       typedef Aws::Utils::Outcome<CreateExportJobResult, SESV2Error> CreateExportJobOutcome;
       typedef Aws::Utils::Outcome<CreateImportJobResult, SESV2Error> CreateImportJobOutcome;
+      typedef Aws::Utils::Outcome<CreateMultiRegionEndpointResult, SESV2Error> CreateMultiRegionEndpointOutcome;
       typedef Aws::Utils::Outcome<DeleteConfigurationSetResult, SESV2Error> DeleteConfigurationSetOutcome;
       typedef Aws::Utils::Outcome<DeleteConfigurationSetEventDestinationResult, SESV2Error> DeleteConfigurationSetEventDestinationOutcome;
       typedef Aws::Utils::Outcome<DeleteContactResult, SESV2Error> DeleteContactOutcome;
@@ -268,6 +297,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<DeleteEmailIdentityResult, SESV2Error> DeleteEmailIdentityOutcome;
       typedef Aws::Utils::Outcome<DeleteEmailIdentityPolicyResult, SESV2Error> DeleteEmailIdentityPolicyOutcome;
       typedef Aws::Utils::Outcome<DeleteEmailTemplateResult, SESV2Error> DeleteEmailTemplateOutcome;
+      typedef Aws::Utils::Outcome<DeleteMultiRegionEndpointResult, SESV2Error> DeleteMultiRegionEndpointOutcome;
       typedef Aws::Utils::Outcome<DeleteSuppressedDestinationResult, SESV2Error> DeleteSuppressedDestinationOutcome;
       typedef Aws::Utils::Outcome<GetAccountResult, SESV2Error> GetAccountOutcome;
       typedef Aws::Utils::Outcome<GetBlacklistReportsResult, SESV2Error> GetBlacklistReportsOutcome;
@@ -289,6 +319,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<GetExportJobResult, SESV2Error> GetExportJobOutcome;
       typedef Aws::Utils::Outcome<GetImportJobResult, SESV2Error> GetImportJobOutcome;
       typedef Aws::Utils::Outcome<GetMessageInsightsResult, SESV2Error> GetMessageInsightsOutcome;
+      typedef Aws::Utils::Outcome<GetMultiRegionEndpointResult, SESV2Error> GetMultiRegionEndpointOutcome;
       typedef Aws::Utils::Outcome<GetSuppressedDestinationResult, SESV2Error> GetSuppressedDestinationOutcome;
       typedef Aws::Utils::Outcome<ListConfigurationSetsResult, SESV2Error> ListConfigurationSetsOutcome;
       typedef Aws::Utils::Outcome<ListContactListsResult, SESV2Error> ListContactListsOutcome;
@@ -301,6 +332,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<ListEmailTemplatesResult, SESV2Error> ListEmailTemplatesOutcome;
       typedef Aws::Utils::Outcome<ListExportJobsResult, SESV2Error> ListExportJobsOutcome;
       typedef Aws::Utils::Outcome<ListImportJobsResult, SESV2Error> ListImportJobsOutcome;
+      typedef Aws::Utils::Outcome<ListMultiRegionEndpointsResult, SESV2Error> ListMultiRegionEndpointsOutcome;
       typedef Aws::Utils::Outcome<ListRecommendationsResult, SESV2Error> ListRecommendationsOutcome;
       typedef Aws::Utils::Outcome<ListSuppressedDestinationsResult, SESV2Error> ListSuppressedDestinationsOutcome;
       typedef Aws::Utils::Outcome<ListTagsForResourceResult, SESV2Error> ListTagsForResourceOutcome;
@@ -309,6 +341,7 @@ namespace Aws
       typedef Aws::Utils::Outcome<PutAccountSendingAttributesResult, SESV2Error> PutAccountSendingAttributesOutcome;
       typedef Aws::Utils::Outcome<PutAccountSuppressionAttributesResult, SESV2Error> PutAccountSuppressionAttributesOutcome;
       typedef Aws::Utils::Outcome<PutAccountVdmAttributesResult, SESV2Error> PutAccountVdmAttributesOutcome;
+      typedef Aws::Utils::Outcome<PutConfigurationSetArchivingOptionsResult, SESV2Error> PutConfigurationSetArchivingOptionsOutcome;
       typedef Aws::Utils::Outcome<PutConfigurationSetDeliveryOptionsResult, SESV2Error> PutConfigurationSetDeliveryOptionsOutcome;
       typedef Aws::Utils::Outcome<PutConfigurationSetReputationOptionsResult, SESV2Error> PutConfigurationSetReputationOptionsOutcome;
       typedef Aws::Utils::Outcome<PutConfigurationSetSendingOptionsResult, SESV2Error> PutConfigurationSetSendingOptionsOutcome;
@@ -354,6 +387,7 @@ namespace Aws
       typedef std::future<CreateEmailTemplateOutcome> CreateEmailTemplateOutcomeCallable;
       typedef std::future<CreateExportJobOutcome> CreateExportJobOutcomeCallable;
       typedef std::future<CreateImportJobOutcome> CreateImportJobOutcomeCallable;
+      typedef std::future<CreateMultiRegionEndpointOutcome> CreateMultiRegionEndpointOutcomeCallable;
       typedef std::future<DeleteConfigurationSetOutcome> DeleteConfigurationSetOutcomeCallable;
       typedef std::future<DeleteConfigurationSetEventDestinationOutcome> DeleteConfigurationSetEventDestinationOutcomeCallable;
       typedef std::future<DeleteContactOutcome> DeleteContactOutcomeCallable;
@@ -363,6 +397,7 @@ namespace Aws
       typedef std::future<DeleteEmailIdentityOutcome> DeleteEmailIdentityOutcomeCallable;
       typedef std::future<DeleteEmailIdentityPolicyOutcome> DeleteEmailIdentityPolicyOutcomeCallable;
       typedef std::future<DeleteEmailTemplateOutcome> DeleteEmailTemplateOutcomeCallable;
+      typedef std::future<DeleteMultiRegionEndpointOutcome> DeleteMultiRegionEndpointOutcomeCallable;
       typedef std::future<DeleteSuppressedDestinationOutcome> DeleteSuppressedDestinationOutcomeCallable;
       typedef std::future<GetAccountOutcome> GetAccountOutcomeCallable;
       typedef std::future<GetBlacklistReportsOutcome> GetBlacklistReportsOutcomeCallable;
@@ -384,6 +419,7 @@ namespace Aws
       typedef std::future<GetExportJobOutcome> GetExportJobOutcomeCallable;
       typedef std::future<GetImportJobOutcome> GetImportJobOutcomeCallable;
       typedef std::future<GetMessageInsightsOutcome> GetMessageInsightsOutcomeCallable;
+      typedef std::future<GetMultiRegionEndpointOutcome> GetMultiRegionEndpointOutcomeCallable;
       typedef std::future<GetSuppressedDestinationOutcome> GetSuppressedDestinationOutcomeCallable;
       typedef std::future<ListConfigurationSetsOutcome> ListConfigurationSetsOutcomeCallable;
       typedef std::future<ListContactListsOutcome> ListContactListsOutcomeCallable;
@@ -396,6 +432,7 @@ namespace Aws
       typedef std::future<ListEmailTemplatesOutcome> ListEmailTemplatesOutcomeCallable;
       typedef std::future<ListExportJobsOutcome> ListExportJobsOutcomeCallable;
       typedef std::future<ListImportJobsOutcome> ListImportJobsOutcomeCallable;
+      typedef std::future<ListMultiRegionEndpointsOutcome> ListMultiRegionEndpointsOutcomeCallable;
       typedef std::future<ListRecommendationsOutcome> ListRecommendationsOutcomeCallable;
       typedef std::future<ListSuppressedDestinationsOutcome> ListSuppressedDestinationsOutcomeCallable;
       typedef std::future<ListTagsForResourceOutcome> ListTagsForResourceOutcomeCallable;
@@ -404,6 +441,7 @@ namespace Aws
       typedef std::future<PutAccountSendingAttributesOutcome> PutAccountSendingAttributesOutcomeCallable;
       typedef std::future<PutAccountSuppressionAttributesOutcome> PutAccountSuppressionAttributesOutcomeCallable;
       typedef std::future<PutAccountVdmAttributesOutcome> PutAccountVdmAttributesOutcomeCallable;
+      typedef std::future<PutConfigurationSetArchivingOptionsOutcome> PutConfigurationSetArchivingOptionsOutcomeCallable;
       typedef std::future<PutConfigurationSetDeliveryOptionsOutcome> PutConfigurationSetDeliveryOptionsOutcomeCallable;
       typedef std::future<PutConfigurationSetReputationOptionsOutcome> PutConfigurationSetReputationOptionsOutcomeCallable;
       typedef std::future<PutConfigurationSetSendingOptionsOutcome> PutConfigurationSetSendingOptionsOutcomeCallable;
@@ -452,6 +490,7 @@ namespace Aws
     typedef std::function<void(const SESV2Client*, const Model::CreateEmailTemplateRequest&, const Model::CreateEmailTemplateOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateEmailTemplateResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::CreateExportJobRequest&, const Model::CreateExportJobOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateExportJobResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::CreateImportJobRequest&, const Model::CreateImportJobOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateImportJobResponseReceivedHandler;
+    typedef std::function<void(const SESV2Client*, const Model::CreateMultiRegionEndpointRequest&, const Model::CreateMultiRegionEndpointOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > CreateMultiRegionEndpointResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::DeleteConfigurationSetRequest&, const Model::DeleteConfigurationSetOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteConfigurationSetResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::DeleteConfigurationSetEventDestinationRequest&, const Model::DeleteConfigurationSetEventDestinationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteConfigurationSetEventDestinationResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::DeleteContactRequest&, const Model::DeleteContactOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteContactResponseReceivedHandler;
@@ -461,6 +500,7 @@ namespace Aws
     typedef std::function<void(const SESV2Client*, const Model::DeleteEmailIdentityRequest&, const Model::DeleteEmailIdentityOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteEmailIdentityResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::DeleteEmailIdentityPolicyRequest&, const Model::DeleteEmailIdentityPolicyOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteEmailIdentityPolicyResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::DeleteEmailTemplateRequest&, const Model::DeleteEmailTemplateOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteEmailTemplateResponseReceivedHandler;
+    typedef std::function<void(const SESV2Client*, const Model::DeleteMultiRegionEndpointRequest&, const Model::DeleteMultiRegionEndpointOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteMultiRegionEndpointResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::DeleteSuppressedDestinationRequest&, const Model::DeleteSuppressedDestinationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > DeleteSuppressedDestinationResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::GetAccountRequest&, const Model::GetAccountOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetAccountResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::GetBlacklistReportsRequest&, const Model::GetBlacklistReportsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetBlacklistReportsResponseReceivedHandler;
@@ -482,6 +522,7 @@ namespace Aws
     typedef std::function<void(const SESV2Client*, const Model::GetExportJobRequest&, const Model::GetExportJobOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetExportJobResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::GetImportJobRequest&, const Model::GetImportJobOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetImportJobResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::GetMessageInsightsRequest&, const Model::GetMessageInsightsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetMessageInsightsResponseReceivedHandler;
+    typedef std::function<void(const SESV2Client*, const Model::GetMultiRegionEndpointRequest&, const Model::GetMultiRegionEndpointOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetMultiRegionEndpointResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::GetSuppressedDestinationRequest&, const Model::GetSuppressedDestinationOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > GetSuppressedDestinationResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::ListConfigurationSetsRequest&, const Model::ListConfigurationSetsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListConfigurationSetsResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::ListContactListsRequest&, const Model::ListContactListsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListContactListsResponseReceivedHandler;
@@ -494,6 +535,7 @@ namespace Aws
     typedef std::function<void(const SESV2Client*, const Model::ListEmailTemplatesRequest&, const Model::ListEmailTemplatesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListEmailTemplatesResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::ListExportJobsRequest&, const Model::ListExportJobsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListExportJobsResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::ListImportJobsRequest&, const Model::ListImportJobsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListImportJobsResponseReceivedHandler;
+    typedef std::function<void(const SESV2Client*, const Model::ListMultiRegionEndpointsRequest&, const Model::ListMultiRegionEndpointsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListMultiRegionEndpointsResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::ListRecommendationsRequest&, const Model::ListRecommendationsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListRecommendationsResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::ListSuppressedDestinationsRequest&, const Model::ListSuppressedDestinationsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListSuppressedDestinationsResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::ListTagsForResourceRequest&, const Model::ListTagsForResourceOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > ListTagsForResourceResponseReceivedHandler;
@@ -502,6 +544,7 @@ namespace Aws
     typedef std::function<void(const SESV2Client*, const Model::PutAccountSendingAttributesRequest&, const Model::PutAccountSendingAttributesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > PutAccountSendingAttributesResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::PutAccountSuppressionAttributesRequest&, const Model::PutAccountSuppressionAttributesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > PutAccountSuppressionAttributesResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::PutAccountVdmAttributesRequest&, const Model::PutAccountVdmAttributesOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > PutAccountVdmAttributesResponseReceivedHandler;
+    typedef std::function<void(const SESV2Client*, const Model::PutConfigurationSetArchivingOptionsRequest&, const Model::PutConfigurationSetArchivingOptionsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > PutConfigurationSetArchivingOptionsResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::PutConfigurationSetDeliveryOptionsRequest&, const Model::PutConfigurationSetDeliveryOptionsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > PutConfigurationSetDeliveryOptionsResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::PutConfigurationSetReputationOptionsRequest&, const Model::PutConfigurationSetReputationOptionsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > PutConfigurationSetReputationOptionsResponseReceivedHandler;
     typedef std::function<void(const SESV2Client*, const Model::PutConfigurationSetSendingOptionsRequest&, const Model::PutConfigurationSetSendingOptionsOutcome&, const std::shared_ptr<const Aws::Client::AsyncCallerContext>&) > PutConfigurationSetSendingOptionsResponseReceivedHandler;

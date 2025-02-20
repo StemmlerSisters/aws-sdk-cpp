@@ -26,9 +26,8 @@ AccountAttribute::AccountAttribute() :
 {
 }
 
-AccountAttribute::AccountAttribute(const XmlNode& xmlNode) : 
-    m_attributeNameHasBeenSet(false),
-    m_attributeValuesHasBeenSet(false)
+AccountAttribute::AccountAttribute(const XmlNode& xmlNode)
+  : AccountAttribute()
 {
   *this = xmlNode;
 }
@@ -75,7 +74,7 @@ void AccountAttribute::OutputToStream(Aws::OStream& oStream, const char* locatio
       for(auto& item : m_attributeValues)
       {
         Aws::StringStream attributeValuesSs;
-        attributeValuesSs << location << index << locationValue << ".AttributeValueTarget." << attributeValuesIdx++;
+        attributeValuesSs << location << index << locationValue << ".AttributeValues.AttributeValueTarget." << attributeValuesIdx++;
         item.OutputToStream(oStream, attributeValuesSs.str().c_str());
       }
   }

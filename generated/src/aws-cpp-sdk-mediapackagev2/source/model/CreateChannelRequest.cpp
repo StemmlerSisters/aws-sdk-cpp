@@ -18,7 +18,11 @@ CreateChannelRequest::CreateChannelRequest() :
     m_channelNameHasBeenSet(false),
     m_clientToken(Aws::Utils::UUID::PseudoRandomUUID()),
     m_clientTokenHasBeenSet(true),
+    m_inputType(InputType::NOT_SET),
+    m_inputTypeHasBeenSet(false),
     m_descriptionHasBeenSet(false),
+    m_inputSwitchConfigurationHasBeenSet(false),
+    m_outputHeaderConfigurationHasBeenSet(false),
     m_tagsHasBeenSet(false)
 {
 }
@@ -33,9 +37,26 @@ Aws::String CreateChannelRequest::SerializePayload() const
 
   }
 
+  if(m_inputTypeHasBeenSet)
+  {
+   payload.WithString("InputType", InputTypeMapper::GetNameForInputType(m_inputType));
+  }
+
   if(m_descriptionHasBeenSet)
   {
    payload.WithString("Description", m_description);
+
+  }
+
+  if(m_inputSwitchConfigurationHasBeenSet)
+  {
+   payload.WithObject("InputSwitchConfiguration", m_inputSwitchConfiguration.Jsonize());
+
+  }
+
+  if(m_outputHeaderConfigurationHasBeenSet)
+  {
+   payload.WithObject("OutputHeaderConfiguration", m_outputHeaderConfiguration.Jsonize());
 
   }
 

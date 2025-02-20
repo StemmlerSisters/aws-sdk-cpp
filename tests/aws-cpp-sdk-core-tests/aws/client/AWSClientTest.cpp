@@ -22,6 +22,9 @@
 #include <fstream>
 #include <thread>
 #include <aws/core/utils/logging/LogMacros.h>
+#include <aws/core/client/AWSErrorMarshaller.h>
+#include <aws/core/utils/xml/XmlSerializer.h>
+
 
 using namespace Aws;
 using namespace Aws::Client;
@@ -66,7 +69,7 @@ protected:
     std::shared_ptr<MockHttpClientFactory> mockHttpClientFactory;
     Aws::UniquePtr<MockAWSClient> client;
 
-    void SetUp()
+    virtual void SetUp()
     {
         ClientConfiguration config;
         config.scheme = Scheme::HTTP;
@@ -112,7 +115,9 @@ protected:
         {
             httpResponse->AddHeader(header.first, header.second);
         }
+
         mockHttpClient->AddResponseToReturn(httpResponse);
+
     }
 
     void QueueMockResponse(const AWSError<CoreErrors>& clientError, const HeaderValueCollection& headers)
@@ -142,6 +147,28 @@ protected:
         return substr;
     }
 };
+
+
+class XMLClientTestSuite : public AWSClientTestSuite
+{
+    protected:
+    void SetUp()
+    {
+        ClientConfiguration config;
+        config.scheme = Scheme::HTTP;
+        config.connectTimeoutMs = 30000;
+        config.requestTimeoutMs = 30000;
+        auto countedRetryStrategy = Aws::MakeShared<CountedRetryStrategy>(ALLOCATION_TAG,0);
+        config.retryStrategy = std::static_pointer_cast<DefaultRetryStrategy>(countedRetryStrategy);
+
+        mockHttpClient = Aws::MakeShared<MockHttpClient>(ALLOCATION_TAG);
+        mockHttpClientFactory = Aws::MakeShared<MockHttpClientFactory>(ALLOCATION_TAG);
+        mockHttpClientFactory->SetClient(mockHttpClient);
+        SetHttpClientFactory(mockHttpClientFactory);
+        client = Aws::MakeUnique<MockAWSClient>(ALLOCATION_TAG, config, Aws::MakeShared<Aws::Client::XmlErrorMarshaller>("xmlErrorMarshaller"));
+    }
+};
+
 
 TEST_F(AWSClientTestSuite, TestCreateHttpRequestWithIpV6KeepsEndpointWhenNoPortInURI)
 {
@@ -492,19 +519,39 @@ TEST_F(AWSClientTestSuite, TestRecursionDetection)
         mockHttpClient->Reset();
     }
 }
-
-TEST_F(AWSClientTestSuite, TestErrorInBodyOfResponse)
+using namespace Aws::Utils::Xml;
+TEST_F(XMLClientTestSuite, TestErrorInBodyOfResponse)
 {
     HeaderValueCollection responseHeaders;
     AmazonWebServiceRequestMock request;
-    QueueMockResponse(HttpResponseCode::OK, responseHeaders, "<Error><Code>SomeException</Code><Message>TestErrorInBodyOfResponse</Message></Error>");
+    QueueMockResponse(HttpResponseCode::OK, responseHeaders, "<?xml version=\"1.0\" encoding=\"UTF-8\"?> <Error><Code>SomeException</Code><Message>TestErrorInBodyOfResponse</Message></Error>");
+    
     auto outcome = client->MakeRequest(request);
 
     ASSERT_FALSE(outcome.IsSuccess());
-    ASSERT_EQ(outcome.GetError().GetErrorType(), CoreErrors::SLOW_DOWN);
-    ASSERT_EQ(outcome.GetError().GetMessage(), "TestErrorInBodyOfResponse");
-    ASSERT_EQ(outcome.GetError().GetExceptionName(), "TestErrorInBodyOfResponse");
+
+    ASSERT_EQ(outcome.GetError().GetErrorType(), CoreErrors::UNKNOWN);
+    ASSERT_EQ(outcome.GetError().GetExceptionName(), "SomeException");
+    ASSERT_EQ(outcome.GetError().GetMessage(), "Unable to parse ExceptionName: SomeException Message: TestErrorInBodyOfResponse");
+
 }
+
+TEST_F(XMLClientTestSuite, TestKnownErrorInBodyOfResponse)
+{
+    HeaderValueCollection responseHeaders;
+    AmazonWebServiceRequestMock request;
+    QueueMockResponse(HttpResponseCode::OK, responseHeaders, "<?xml version=\"1.0\" encoding=\"UTF-8\"?> <Error><Code>InternalError</Code><Message>TestErrorInBodyOfResponse</Message></Error>");
+    
+    auto outcome = client->MakeRequest(request);
+
+    ASSERT_FALSE(outcome.IsSuccess());
+
+    ASSERT_EQ(outcome.GetError().GetErrorType(), CoreErrors::INTERNAL_FAILURE);
+    ASSERT_EQ(outcome.GetError().GetExceptionName(), "InternalError");
+    ASSERT_EQ(outcome.GetError().GetMessage(), "TestErrorInBodyOfResponse");
+
+}
+
 
 TEST_F(AWSClientTestSuite, TestBuildHttpRequestWithHeadersOnly)
 {
@@ -524,21 +571,15 @@ TEST_F(AWSClientTestSuite, TestBuildHttpRequestWithHeadersOnly)
 
     ASSERT_TRUE(httpRequest->HasHeader("test1"));
     ASSERT_TRUE(httpRequest->HasHeader("test2"));
-    ASSERT_TRUE(httpRequest->HasHeader(Http::USER_AGENT_HEADER));
     ASSERT_TRUE(httpRequest->HasHeader(Http::HOST_HEADER));
     ASSERT_FALSE(httpRequest->HasHeader(Http::CONTENT_TYPE_HEADER));
     ASSERT_FALSE(httpRequest->HasHeader(Http::CONTENT_LENGTH_HEADER));
 
     HeaderValueCollection finalHeaders = httpRequest->GetHeaders();
-    ASSERT_EQ(4u, finalHeaders.size());
+    ASSERT_EQ(3u, finalHeaders.size());
     ASSERT_EQ("testValue1", finalHeaders["test1"]);
     ASSERT_EQ("testValue2", finalHeaders["test2"]);
     ASSERT_EQ("www.uri.com", finalHeaders[Http::HOST_HEADER]);
-    ASSERT_FALSE(finalHeaders[Http::USER_AGENT_HEADER].empty());
-    auto config = ClientConfiguration();
-    auto expUA = ComputeUserAgentString(&config);
-    auto actualUA = finalHeaders[Http::USER_AGENT_HEADER];
-    ASSERT_EQ(expUA, actualUA) << actualUA << " IS NOT " <<  expUA;
 
     headerValues[Http::CONTENT_LENGTH_HEADER] = "0";
     headerValues[Http::CONTENT_TYPE_HEADER] = "blah";
@@ -548,20 +589,15 @@ TEST_F(AWSClientTestSuite, TestBuildHttpRequestWithHeadersOnly)
 
     ASSERT_TRUE(httpRequest->HasHeader("test1"));
     ASSERT_TRUE(httpRequest->HasHeader("test2"));
-    ASSERT_TRUE(httpRequest->HasHeader(Http::USER_AGENT_HEADER));
     ASSERT_TRUE(httpRequest->HasHeader(Http::HOST_HEADER));
     ASSERT_FALSE(httpRequest->HasHeader(Http::CONTENT_TYPE_HEADER));
     ASSERT_FALSE(httpRequest->HasHeader(Http::CONTENT_LENGTH_HEADER));
 
     finalHeaders = httpRequest->GetHeaders();
-    ASSERT_EQ(4u, finalHeaders.size());
+    ASSERT_EQ(3u, finalHeaders.size());
     ASSERT_EQ("testValue1", finalHeaders["test1"]);
     ASSERT_EQ("testValue2", finalHeaders["test2"]);
     ASSERT_EQ("www.uri.com", finalHeaders[Http::HOST_HEADER]);
-    ASSERT_FALSE(finalHeaders[Http::USER_AGENT_HEADER].empty());
-    expUA = ComputeUserAgentString(&config);
-    actualUA = finalHeaders[Http::USER_AGENT_HEADER];
-    ASSERT_EQ(expUA, actualUA) << actualUA << " IS NOT " <<  expUA;
 }
 
 TEST_F(AWSClientTestSuite, TestBuildHttpRequestWithHeadersAndBody)
@@ -587,7 +623,6 @@ TEST_F(AWSClientTestSuite, TestBuildHttpRequestWithHeadersAndBody)
 
     ASSERT_TRUE(httpRequest->HasHeader("test1"));
     ASSERT_TRUE(httpRequest->HasHeader("test2"));
-    ASSERT_TRUE(httpRequest->HasHeader(Http::USER_AGENT_HEADER));
     ASSERT_TRUE(httpRequest->HasHeader(Http::HOST_HEADER));
     ASSERT_TRUE(httpRequest->HasHeader(Http::CONTENT_LENGTH_HEADER));
     ASSERT_TRUE(httpRequest->HasHeader(Http::CONTENT_MD5_HEADER));
@@ -595,16 +630,11 @@ TEST_F(AWSClientTestSuite, TestBuildHttpRequestWithHeadersAndBody)
     auto hashResult = Utils::HashingUtils::Base64Encode(Utils::HashingUtils::CalculateMD5(*ss));
 
     HeaderValueCollection finalHeaders = httpRequest->GetHeaders();
-    ASSERT_EQ(6u, finalHeaders.size());
+    ASSERT_EQ(5u, finalHeaders.size());
     ASSERT_EQ("testValue1", finalHeaders["test1"]);
     ASSERT_EQ("testValue2", finalHeaders["test2"]);
     ASSERT_EQ("www.uri.com", finalHeaders[Http::HOST_HEADER]);
     ASSERT_EQ(hashResult, finalHeaders[Http::CONTENT_MD5_HEADER]);
-    ASSERT_FALSE(finalHeaders[Http::USER_AGENT_HEADER].empty());
-    auto config = ClientConfiguration();
-    auto expUA = ComputeUserAgentString(&config);
-    auto actualUA = finalHeaders[Http::USER_AGENT_HEADER];
-    ASSERT_EQ(expUA, actualUA) << actualUA << " IS NOT " <<  expUA;
 
     Aws::StringStream contentLengthExpected;
     contentLengthExpected << ss->str().length();
@@ -639,7 +669,6 @@ TEST_F(AWSClientTestSuite, TestBuildHttpRequestWithAdditionalHeadersAndBody)
     ASSERT_TRUE(httpRequest->HasHeader("test2"));
     ASSERT_TRUE(httpRequest->HasHeader("test3"));
     ASSERT_TRUE(httpRequest->HasHeader("x-amz-request-payer"));
-    ASSERT_TRUE(httpRequest->HasHeader(Http::USER_AGENT_HEADER));
     ASSERT_TRUE(httpRequest->HasHeader(Http::HOST_HEADER));
     ASSERT_TRUE(httpRequest->HasHeader(Http::CONTENT_LENGTH_HEADER));
     ASSERT_TRUE(httpRequest->HasHeader(Http::CONTENT_MD5_HEADER));
@@ -647,18 +676,13 @@ TEST_F(AWSClientTestSuite, TestBuildHttpRequestWithAdditionalHeadersAndBody)
     auto hashResult = Utils::HashingUtils::Base64Encode(Utils::HashingUtils::CalculateMD5(*ss));
 
     HeaderValueCollection finalHeaders = httpRequest->GetHeaders();
-    ASSERT_EQ(8u, finalHeaders.size());
+    ASSERT_EQ(7u, finalHeaders.size());
     ASSERT_EQ("testValue1", finalHeaders["test1"]);
     ASSERT_EQ("testValue2", finalHeaders["test2"]);
     ASSERT_EQ("testValue3custom", finalHeaders["test3"]);
     ASSERT_EQ("requester", finalHeaders["x-amz-request-payer"]);
     ASSERT_EQ("www.uri.com", finalHeaders[Http::HOST_HEADER]);
     ASSERT_EQ(hashResult, finalHeaders[Http::CONTENT_MD5_HEADER]);
-    ASSERT_FALSE(finalHeaders[Http::USER_AGENT_HEADER].empty());
-    auto config = ClientConfiguration();
-    auto expUA = ComputeUserAgentString(&config);
-    auto actualUA = finalHeaders[Http::USER_AGENT_HEADER];
-    ASSERT_EQ(expUA, actualUA) << actualUA << " IS NOT " <<  expUA;
 
     Aws::StringStream contentLengthExpected;
     contentLengthExpected << ss->str().length();

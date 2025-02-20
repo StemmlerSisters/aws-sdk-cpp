@@ -22,8 +22,8 @@ CancelQueryResult::CancelQueryResult() :
 {
 }
 
-CancelQueryResult::CancelQueryResult(const Aws::AmazonWebServiceResult<JsonValue>& result) : 
-    m_queryStatus(QueryStatus::NOT_SET)
+CancelQueryResult::CancelQueryResult(const Aws::AmazonWebServiceResult<JsonValue>& result)
+  : CancelQueryResult()
 {
   *this = result;
 }
@@ -40,6 +40,12 @@ CancelQueryResult& CancelQueryResult::operator =(const Aws::AmazonWebServiceResu
   if(jsonValue.ValueExists("QueryStatus"))
   {
     m_queryStatus = QueryStatusMapper::GetQueryStatusForName(jsonValue.GetString("QueryStatus"));
+
+  }
+
+  if(jsonValue.ValueExists("EventDataStoreOwnerAccountId"))
+  {
+    m_eventDataStoreOwnerAccountId = jsonValue.GetString("EventDataStoreOwnerAccountId");
 
   }
 

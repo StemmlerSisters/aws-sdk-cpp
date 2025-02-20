@@ -30,16 +30,8 @@ ModifyCustomDBEngineVersionResult::ModifyCustomDBEngineVersionResult() :
 {
 }
 
-ModifyCustomDBEngineVersionResult::ModifyCustomDBEngineVersionResult(const Aws::AmazonWebServiceResult<XmlDocument>& result) : 
-    m_supportsLogExportsToCloudwatchLogs(false),
-    m_supportsReadReplica(false),
-    m_supportsParallelQuery(false),
-    m_supportsGlobalDatabases(false),
-    m_supportsBabelfish(false),
-    m_supportsLimitlessDatabase(false),
-    m_supportsCertificateRotationWithoutRestart(false),
-    m_supportsLocalWriteForwarding(false),
-    m_supportsIntegrations(false)
+ModifyCustomDBEngineVersionResult::ModifyCustomDBEngineVersionResult(const Aws::AmazonWebServiceResult<XmlDocument>& result)
+  : ModifyCustomDBEngineVersionResult()
 {
   *this = result;
 }
@@ -279,6 +271,11 @@ ModifyCustomDBEngineVersionResult& ModifyCustomDBEngineVersionResult::operator =
     if(!supportsIntegrationsNode.IsNull())
     {
       m_supportsIntegrations = StringUtils::ConvertToBool(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(supportsIntegrationsNode.GetText()).c_str()).c_str());
+    }
+    XmlNode serverlessV2FeaturesSupportNode = resultNode.FirstChild("ServerlessV2FeaturesSupport");
+    if(!serverlessV2FeaturesSupportNode.IsNull())
+    {
+      m_serverlessV2FeaturesSupport = serverlessV2FeaturesSupportNode;
     }
   }
 

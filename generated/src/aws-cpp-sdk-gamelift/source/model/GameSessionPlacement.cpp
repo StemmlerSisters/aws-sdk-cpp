@@ -39,32 +39,13 @@ GameSessionPlacement::GameSessionPlacement() :
     m_portHasBeenSet(false),
     m_placedPlayerSessionsHasBeenSet(false),
     m_gameSessionDataHasBeenSet(false),
-    m_matchmakerDataHasBeenSet(false)
+    m_matchmakerDataHasBeenSet(false),
+    m_priorityConfigurationOverrideHasBeenSet(false)
 {
 }
 
-GameSessionPlacement::GameSessionPlacement(JsonView jsonValue) : 
-    m_placementIdHasBeenSet(false),
-    m_gameSessionQueueNameHasBeenSet(false),
-    m_status(GameSessionPlacementState::NOT_SET),
-    m_statusHasBeenSet(false),
-    m_gamePropertiesHasBeenSet(false),
-    m_maximumPlayerSessionCount(0),
-    m_maximumPlayerSessionCountHasBeenSet(false),
-    m_gameSessionNameHasBeenSet(false),
-    m_gameSessionIdHasBeenSet(false),
-    m_gameSessionArnHasBeenSet(false),
-    m_gameSessionRegionHasBeenSet(false),
-    m_playerLatenciesHasBeenSet(false),
-    m_startTimeHasBeenSet(false),
-    m_endTimeHasBeenSet(false),
-    m_ipAddressHasBeenSet(false),
-    m_dnsNameHasBeenSet(false),
-    m_port(0),
-    m_portHasBeenSet(false),
-    m_placedPlayerSessionsHasBeenSet(false),
-    m_gameSessionDataHasBeenSet(false),
-    m_matchmakerDataHasBeenSet(false)
+GameSessionPlacement::GameSessionPlacement(JsonView jsonValue)
+  : GameSessionPlacement()
 {
   *this = jsonValue;
 }
@@ -206,6 +187,13 @@ GameSessionPlacement& GameSessionPlacement::operator =(JsonView jsonValue)
     m_matchmakerDataHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("PriorityConfigurationOverride"))
+  {
+    m_priorityConfigurationOverride = jsonValue.GetObject("PriorityConfigurationOverride");
+
+    m_priorityConfigurationOverrideHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -330,6 +318,12 @@ JsonValue GameSessionPlacement::Jsonize() const
   if(m_matchmakerDataHasBeenSet)
   {
    payload.WithString("MatchmakerData", m_matchmakerData);
+
+  }
+
+  if(m_priorityConfigurationOverrideHasBeenSet)
+  {
+   payload.WithObject("PriorityConfigurationOverride", m_priorityConfigurationOverride.Jsonize());
 
   }
 

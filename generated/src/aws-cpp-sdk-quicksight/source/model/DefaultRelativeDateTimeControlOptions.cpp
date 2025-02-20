@@ -19,12 +19,14 @@ namespace Model
 {
 
 DefaultRelativeDateTimeControlOptions::DefaultRelativeDateTimeControlOptions() : 
-    m_displayOptionsHasBeenSet(false)
+    m_displayOptionsHasBeenSet(false),
+    m_commitMode(CommitMode::NOT_SET),
+    m_commitModeHasBeenSet(false)
 {
 }
 
-DefaultRelativeDateTimeControlOptions::DefaultRelativeDateTimeControlOptions(JsonView jsonValue) : 
-    m_displayOptionsHasBeenSet(false)
+DefaultRelativeDateTimeControlOptions::DefaultRelativeDateTimeControlOptions(JsonView jsonValue)
+  : DefaultRelativeDateTimeControlOptions()
 {
   *this = jsonValue;
 }
@@ -38,6 +40,13 @@ DefaultRelativeDateTimeControlOptions& DefaultRelativeDateTimeControlOptions::op
     m_displayOptionsHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("CommitMode"))
+  {
+    m_commitMode = CommitModeMapper::GetCommitModeForName(jsonValue.GetString("CommitMode"));
+
+    m_commitModeHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -49,6 +58,11 @@ JsonValue DefaultRelativeDateTimeControlOptions::Jsonize() const
   {
    payload.WithObject("DisplayOptions", m_displayOptions.Jsonize());
 
+  }
+
+  if(m_commitModeHasBeenSet)
+  {
+   payload.WithString("CommitMode", CommitModeMapper::GetNameForCommitMode(m_commitMode));
   }
 
   return payload;

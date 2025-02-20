@@ -27,22 +27,15 @@ EnvironmentSummary::EnvironmentSummary() :
     m_environmentIdHasBeenSet(false),
     m_instanceTypeHasBeenSet(false),
     m_nameHasBeenSet(false),
+    m_networkType(NetworkType::NOT_SET),
+    m_networkTypeHasBeenSet(false),
     m_status(EnvironmentLifecycle::NOT_SET),
     m_statusHasBeenSet(false)
 {
 }
 
-EnvironmentSummary::EnvironmentSummary(JsonView jsonValue) : 
-    m_creationTimeHasBeenSet(false),
-    m_engineType(EngineType::NOT_SET),
-    m_engineTypeHasBeenSet(false),
-    m_engineVersionHasBeenSet(false),
-    m_environmentArnHasBeenSet(false),
-    m_environmentIdHasBeenSet(false),
-    m_instanceTypeHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_status(EnvironmentLifecycle::NOT_SET),
-    m_statusHasBeenSet(false)
+EnvironmentSummary::EnvironmentSummary(JsonView jsonValue)
+  : EnvironmentSummary()
 {
   *this = jsonValue;
 }
@@ -98,6 +91,13 @@ EnvironmentSummary& EnvironmentSummary::operator =(JsonView jsonValue)
     m_nameHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("networkType"))
+  {
+    m_networkType = NetworkTypeMapper::GetNetworkTypeForName(jsonValue.GetString("networkType"));
+
+    m_networkTypeHasBeenSet = true;
+  }
+
   if(jsonValue.ValueExists("status"))
   {
     m_status = EnvironmentLifecycleMapper::GetEnvironmentLifecycleForName(jsonValue.GetString("status"));
@@ -150,6 +150,11 @@ JsonValue EnvironmentSummary::Jsonize() const
   {
    payload.WithString("name", m_name);
 
+  }
+
+  if(m_networkTypeHasBeenSet)
+  {
+   payload.WithString("networkType", NetworkTypeMapper::GetNameForNetworkType(m_networkType));
   }
 
   if(m_statusHasBeenSet)

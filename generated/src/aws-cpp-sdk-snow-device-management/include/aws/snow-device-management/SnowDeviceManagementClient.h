@@ -6,24 +6,36 @@
 #pragma once
 #include <aws/snow-device-management/SnowDeviceManagement_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/snow-device-management/SnowDeviceManagementServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/snow-device-management/SnowDeviceManagementErrorMarshaller.h>
 
 namespace Aws
 {
 namespace SnowDeviceManagement
 {
+  AWS_SNOWDEVICEMANAGEMENT_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon Web Services Snow Device Management documentation.</p>
    */
-  class AWS_SNOWDEVICEMANAGEMENT_API SnowDeviceManagementClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<SnowDeviceManagementClient>
+  class AWS_SNOWDEVICEMANAGEMENT_API SnowDeviceManagementClient : smithy::client::AwsSmithyClientT<Aws::SnowDeviceManagement::SERVICE_NAME,
+      Aws::SnowDeviceManagement::SnowDeviceManagementClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      SnowDeviceManagementEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::SnowDeviceManagementErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<SnowDeviceManagementClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Snow Device Management"; }
 
       typedef SnowDeviceManagementClientConfiguration ClientConfigurationType;
       typedef SnowDeviceManagementEndpointProvider EndpointProviderType;
@@ -271,13 +283,13 @@ namespace SnowDeviceManagement
          * href="http://docs.aws.amazon.com/goto/WebAPI/snow-device-management-2021-08-04/ListDevices">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDevicesOutcome ListDevices(const Model::ListDevicesRequest& request) const;
+        virtual Model::ListDevicesOutcome ListDevices(const Model::ListDevicesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDevices that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDevicesRequestT = Model::ListDevicesRequest>
-        Model::ListDevicesOutcomeCallable ListDevicesCallable(const ListDevicesRequestT& request) const
+        Model::ListDevicesOutcomeCallable ListDevicesCallable(const ListDevicesRequestT& request = {}) const
         {
             return SubmitCallable(&SnowDeviceManagementClient::ListDevices, request);
         }
@@ -286,7 +298,7 @@ namespace SnowDeviceManagement
          * An Async wrapper for ListDevices that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDevicesRequestT = Model::ListDevicesRequest>
-        void ListDevicesAsync(const ListDevicesRequestT& request, const ListDevicesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDevicesAsync(const ListDevicesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDevicesRequestT& request = {}) const
         {
             return SubmitAsync(&SnowDeviceManagementClient::ListDevices, request, handler, context);
         }
@@ -349,13 +361,13 @@ namespace SnowDeviceManagement
          * href="http://docs.aws.amazon.com/goto/WebAPI/snow-device-management-2021-08-04/ListTasks">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListTasksOutcome ListTasks(const Model::ListTasksRequest& request) const;
+        virtual Model::ListTasksOutcome ListTasks(const Model::ListTasksRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListTasks that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListTasksRequestT = Model::ListTasksRequest>
-        Model::ListTasksOutcomeCallable ListTasksCallable(const ListTasksRequestT& request) const
+        Model::ListTasksOutcomeCallable ListTasksCallable(const ListTasksRequestT& request = {}) const
         {
             return SubmitCallable(&SnowDeviceManagementClient::ListTasks, request);
         }
@@ -364,7 +376,7 @@ namespace SnowDeviceManagement
          * An Async wrapper for ListTasks that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListTasksRequestT = Model::ListTasksRequest>
-        void ListTasksAsync(const ListTasksRequestT& request, const ListTasksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListTasksAsync(const ListTasksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListTasksRequestT& request = {}) const
         {
             return SubmitAsync(&SnowDeviceManagementClient::ListTasks, request, handler, context);
         }
@@ -424,11 +436,7 @@ namespace SnowDeviceManagement
       std::shared_ptr<SnowDeviceManagementEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<SnowDeviceManagementClient>;
-      void init(const SnowDeviceManagementClientConfiguration& clientConfiguration);
 
-      SnowDeviceManagementClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<SnowDeviceManagementEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace SnowDeviceManagement

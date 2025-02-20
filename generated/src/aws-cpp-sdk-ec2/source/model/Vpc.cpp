@@ -21,11 +21,6 @@ namespace Model
 {
 
 Vpc::Vpc() : 
-    m_cidrBlockHasBeenSet(false),
-    m_dhcpOptionsIdHasBeenSet(false),
-    m_state(VpcState::NOT_SET),
-    m_stateHasBeenSet(false),
-    m_vpcIdHasBeenSet(false),
     m_ownerIdHasBeenSet(false),
     m_instanceTenancy(Tenancy::NOT_SET),
     m_instanceTenancyHasBeenSet(false),
@@ -33,24 +28,18 @@ Vpc::Vpc() :
     m_cidrBlockAssociationSetHasBeenSet(false),
     m_isDefault(false),
     m_isDefaultHasBeenSet(false),
-    m_tagsHasBeenSet(false)
+    m_tagsHasBeenSet(false),
+    m_blockPublicAccessStatesHasBeenSet(false),
+    m_vpcIdHasBeenSet(false),
+    m_state(VpcState::NOT_SET),
+    m_stateHasBeenSet(false),
+    m_cidrBlockHasBeenSet(false),
+    m_dhcpOptionsIdHasBeenSet(false)
 {
 }
 
-Vpc::Vpc(const XmlNode& xmlNode) : 
-    m_cidrBlockHasBeenSet(false),
-    m_dhcpOptionsIdHasBeenSet(false),
-    m_state(VpcState::NOT_SET),
-    m_stateHasBeenSet(false),
-    m_vpcIdHasBeenSet(false),
-    m_ownerIdHasBeenSet(false),
-    m_instanceTenancy(Tenancy::NOT_SET),
-    m_instanceTenancyHasBeenSet(false),
-    m_ipv6CidrBlockAssociationSetHasBeenSet(false),
-    m_cidrBlockAssociationSetHasBeenSet(false),
-    m_isDefault(false),
-    m_isDefaultHasBeenSet(false),
-    m_tagsHasBeenSet(false)
+Vpc::Vpc(const XmlNode& xmlNode)
+  : Vpc()
 {
   *this = xmlNode;
 }
@@ -61,30 +50,6 @@ Vpc& Vpc::operator =(const XmlNode& xmlNode)
 
   if(!resultNode.IsNull())
   {
-    XmlNode cidrBlockNode = resultNode.FirstChild("cidrBlock");
-    if(!cidrBlockNode.IsNull())
-    {
-      m_cidrBlock = Aws::Utils::Xml::DecodeEscapedXmlText(cidrBlockNode.GetText());
-      m_cidrBlockHasBeenSet = true;
-    }
-    XmlNode dhcpOptionsIdNode = resultNode.FirstChild("dhcpOptionsId");
-    if(!dhcpOptionsIdNode.IsNull())
-    {
-      m_dhcpOptionsId = Aws::Utils::Xml::DecodeEscapedXmlText(dhcpOptionsIdNode.GetText());
-      m_dhcpOptionsIdHasBeenSet = true;
-    }
-    XmlNode stateNode = resultNode.FirstChild("state");
-    if(!stateNode.IsNull())
-    {
-      m_state = VpcStateMapper::GetVpcStateForName(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(stateNode.GetText()).c_str()).c_str());
-      m_stateHasBeenSet = true;
-    }
-    XmlNode vpcIdNode = resultNode.FirstChild("vpcId");
-    if(!vpcIdNode.IsNull())
-    {
-      m_vpcId = Aws::Utils::Xml::DecodeEscapedXmlText(vpcIdNode.GetText());
-      m_vpcIdHasBeenSet = true;
-    }
     XmlNode ownerIdNode = resultNode.FirstChild("ownerId");
     if(!ownerIdNode.IsNull())
     {
@@ -139,6 +104,36 @@ Vpc& Vpc::operator =(const XmlNode& xmlNode)
 
       m_tagsHasBeenSet = true;
     }
+    XmlNode blockPublicAccessStatesNode = resultNode.FirstChild("blockPublicAccessStates");
+    if(!blockPublicAccessStatesNode.IsNull())
+    {
+      m_blockPublicAccessStates = blockPublicAccessStatesNode;
+      m_blockPublicAccessStatesHasBeenSet = true;
+    }
+    XmlNode vpcIdNode = resultNode.FirstChild("vpcId");
+    if(!vpcIdNode.IsNull())
+    {
+      m_vpcId = Aws::Utils::Xml::DecodeEscapedXmlText(vpcIdNode.GetText());
+      m_vpcIdHasBeenSet = true;
+    }
+    XmlNode stateNode = resultNode.FirstChild("state");
+    if(!stateNode.IsNull())
+    {
+      m_state = VpcStateMapper::GetVpcStateForName(StringUtils::Trim(Aws::Utils::Xml::DecodeEscapedXmlText(stateNode.GetText()).c_str()).c_str());
+      m_stateHasBeenSet = true;
+    }
+    XmlNode cidrBlockNode = resultNode.FirstChild("cidrBlock");
+    if(!cidrBlockNode.IsNull())
+    {
+      m_cidrBlock = Aws::Utils::Xml::DecodeEscapedXmlText(cidrBlockNode.GetText());
+      m_cidrBlockHasBeenSet = true;
+    }
+    XmlNode dhcpOptionsIdNode = resultNode.FirstChild("dhcpOptionsId");
+    if(!dhcpOptionsIdNode.IsNull())
+    {
+      m_dhcpOptionsId = Aws::Utils::Xml::DecodeEscapedXmlText(dhcpOptionsIdNode.GetText());
+      m_dhcpOptionsIdHasBeenSet = true;
+    }
   }
 
   return *this;
@@ -146,26 +141,6 @@ Vpc& Vpc::operator =(const XmlNode& xmlNode)
 
 void Vpc::OutputToStream(Aws::OStream& oStream, const char* location, unsigned index, const char* locationValue) const
 {
-  if(m_cidrBlockHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".CidrBlock=" << StringUtils::URLEncode(m_cidrBlock.c_str()) << "&";
-  }
-
-  if(m_dhcpOptionsIdHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".DhcpOptionsId=" << StringUtils::URLEncode(m_dhcpOptionsId.c_str()) << "&";
-  }
-
-  if(m_stateHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".State=" << VpcStateMapper::GetNameForVpcState(m_state) << "&";
-  }
-
-  if(m_vpcIdHasBeenSet)
-  {
-      oStream << location << index << locationValue << ".VpcId=" << StringUtils::URLEncode(m_vpcId.c_str()) << "&";
-  }
-
   if(m_ownerIdHasBeenSet)
   {
       oStream << location << index << locationValue << ".OwnerId=" << StringUtils::URLEncode(m_ownerId.c_str()) << "&";
@@ -214,26 +189,37 @@ void Vpc::OutputToStream(Aws::OStream& oStream, const char* location, unsigned i
       }
   }
 
+  if(m_blockPublicAccessStatesHasBeenSet)
+  {
+      Aws::StringStream blockPublicAccessStatesLocationAndMemberSs;
+      blockPublicAccessStatesLocationAndMemberSs << location << index << locationValue << ".BlockPublicAccessStates";
+      m_blockPublicAccessStates.OutputToStream(oStream, blockPublicAccessStatesLocationAndMemberSs.str().c_str());
+  }
+
+  if(m_vpcIdHasBeenSet)
+  {
+      oStream << location << index << locationValue << ".VpcId=" << StringUtils::URLEncode(m_vpcId.c_str()) << "&";
+  }
+
+  if(m_stateHasBeenSet)
+  {
+      oStream << location << index << locationValue << ".State=" << VpcStateMapper::GetNameForVpcState(m_state) << "&";
+  }
+
+  if(m_cidrBlockHasBeenSet)
+  {
+      oStream << location << index << locationValue << ".CidrBlock=" << StringUtils::URLEncode(m_cidrBlock.c_str()) << "&";
+  }
+
+  if(m_dhcpOptionsIdHasBeenSet)
+  {
+      oStream << location << index << locationValue << ".DhcpOptionsId=" << StringUtils::URLEncode(m_dhcpOptionsId.c_str()) << "&";
+  }
+
 }
 
 void Vpc::OutputToStream(Aws::OStream& oStream, const char* location) const
 {
-  if(m_cidrBlockHasBeenSet)
-  {
-      oStream << location << ".CidrBlock=" << StringUtils::URLEncode(m_cidrBlock.c_str()) << "&";
-  }
-  if(m_dhcpOptionsIdHasBeenSet)
-  {
-      oStream << location << ".DhcpOptionsId=" << StringUtils::URLEncode(m_dhcpOptionsId.c_str()) << "&";
-  }
-  if(m_stateHasBeenSet)
-  {
-      oStream << location << ".State=" << VpcStateMapper::GetNameForVpcState(m_state) << "&";
-  }
-  if(m_vpcIdHasBeenSet)
-  {
-      oStream << location << ".VpcId=" << StringUtils::URLEncode(m_vpcId.c_str()) << "&";
-  }
   if(m_ownerIdHasBeenSet)
   {
       oStream << location << ".OwnerId=" << StringUtils::URLEncode(m_ownerId.c_str()) << "&";
@@ -275,6 +261,28 @@ void Vpc::OutputToStream(Aws::OStream& oStream, const char* location) const
         tagsSs << location <<  ".TagSet." << tagsIdx++;
         item.OutputToStream(oStream, tagsSs.str().c_str());
       }
+  }
+  if(m_blockPublicAccessStatesHasBeenSet)
+  {
+      Aws::String blockPublicAccessStatesLocationAndMember(location);
+      blockPublicAccessStatesLocationAndMember += ".BlockPublicAccessStates";
+      m_blockPublicAccessStates.OutputToStream(oStream, blockPublicAccessStatesLocationAndMember.c_str());
+  }
+  if(m_vpcIdHasBeenSet)
+  {
+      oStream << location << ".VpcId=" << StringUtils::URLEncode(m_vpcId.c_str()) << "&";
+  }
+  if(m_stateHasBeenSet)
+  {
+      oStream << location << ".State=" << VpcStateMapper::GetNameForVpcState(m_state) << "&";
+  }
+  if(m_cidrBlockHasBeenSet)
+  {
+      oStream << location << ".CidrBlock=" << StringUtils::URLEncode(m_cidrBlock.c_str()) << "&";
+  }
+  if(m_dhcpOptionsIdHasBeenSet)
+  {
+      oStream << location << ".DhcpOptionsId=" << StringUtils::URLEncode(m_dhcpOptionsId.c_str()) << "&";
   }
 }
 

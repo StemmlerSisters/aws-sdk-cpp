@@ -6,25 +6,37 @@
 #pragma once
 #include <aws/route53domains/Route53Domains_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/route53domains/Route53DomainsServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/route53domains/Route53DomainsErrorMarshaller.h>
 
 namespace Aws
 {
 namespace Route53Domains
 {
+  AWS_ROUTE53DOMAINS_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon Route 53 API actions let you register domain names and perform related
    * operations.</p>
    */
-  class AWS_ROUTE53DOMAINS_API Route53DomainsClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<Route53DomainsClient>
+  class AWS_ROUTE53DOMAINS_API Route53DomainsClient : smithy::client::AwsSmithyClientT<Aws::Route53Domains::SERVICE_NAME,
+      Aws::Route53Domains::Route53DomainsClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      Route53DomainsEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::Route53DomainsErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<Route53DomainsClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Route 53 Domains"; }
 
       typedef Route53DomainsClientConfiguration ClientConfigurationType;
       typedef Route53DomainsEndpointProvider EndpointProviderType;
@@ -463,13 +475,13 @@ namespace Route53Domains
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53domains-2014-05-15/GetContactReachabilityStatus">AWS
          * API Reference</a></p>
          */
-        virtual Model::GetContactReachabilityStatusOutcome GetContactReachabilityStatus(const Model::GetContactReachabilityStatusRequest& request) const;
+        virtual Model::GetContactReachabilityStatusOutcome GetContactReachabilityStatus(const Model::GetContactReachabilityStatusRequest& request = {}) const;
 
         /**
          * A Callable wrapper for GetContactReachabilityStatus that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename GetContactReachabilityStatusRequestT = Model::GetContactReachabilityStatusRequest>
-        Model::GetContactReachabilityStatusOutcomeCallable GetContactReachabilityStatusCallable(const GetContactReachabilityStatusRequestT& request) const
+        Model::GetContactReachabilityStatusOutcomeCallable GetContactReachabilityStatusCallable(const GetContactReachabilityStatusRequestT& request = {}) const
         {
             return SubmitCallable(&Route53DomainsClient::GetContactReachabilityStatus, request);
         }
@@ -478,7 +490,7 @@ namespace Route53Domains
          * An Async wrapper for GetContactReachabilityStatus that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename GetContactReachabilityStatusRequestT = Model::GetContactReachabilityStatusRequest>
-        void GetContactReachabilityStatusAsync(const GetContactReachabilityStatusRequestT& request, const GetContactReachabilityStatusResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void GetContactReachabilityStatusAsync(const GetContactReachabilityStatusResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const GetContactReachabilityStatusRequestT& request = {}) const
         {
             return SubmitAsync(&Route53DomainsClient::GetContactReachabilityStatus, request, handler, context);
         }
@@ -569,13 +581,13 @@ namespace Route53Domains
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53domains-2014-05-15/ListDomains">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListDomainsOutcome ListDomains(const Model::ListDomainsRequest& request) const;
+        virtual Model::ListDomainsOutcome ListDomains(const Model::ListDomainsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListDomains that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListDomainsRequestT = Model::ListDomainsRequest>
-        Model::ListDomainsOutcomeCallable ListDomainsCallable(const ListDomainsRequestT& request) const
+        Model::ListDomainsOutcomeCallable ListDomainsCallable(const ListDomainsRequestT& request = {}) const
         {
             return SubmitCallable(&Route53DomainsClient::ListDomains, request);
         }
@@ -584,7 +596,7 @@ namespace Route53Domains
          * An Async wrapper for ListDomains that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListDomainsRequestT = Model::ListDomainsRequest>
-        void ListDomainsAsync(const ListDomainsRequestT& request, const ListDomainsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListDomainsAsync(const ListDomainsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListDomainsRequestT& request = {}) const
         {
             return SubmitAsync(&Route53DomainsClient::ListDomains, request, handler, context);
         }
@@ -597,13 +609,13 @@ namespace Route53Domains
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53domains-2014-05-15/ListOperations">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListOperationsOutcome ListOperations(const Model::ListOperationsRequest& request) const;
+        virtual Model::ListOperationsOutcome ListOperations(const Model::ListOperationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListOperations that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListOperationsRequestT = Model::ListOperationsRequest>
-        Model::ListOperationsOutcomeCallable ListOperationsCallable(const ListOperationsRequestT& request) const
+        Model::ListOperationsOutcomeCallable ListOperationsCallable(const ListOperationsRequestT& request = {}) const
         {
             return SubmitCallable(&Route53DomainsClient::ListOperations, request);
         }
@@ -612,7 +624,7 @@ namespace Route53Domains
          * An Async wrapper for ListOperations that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListOperationsRequestT = Model::ListOperationsRequest>
-        void ListOperationsAsync(const ListOperationsRequestT& request, const ListOperationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListOperationsAsync(const ListOperationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListOperationsRequestT& request = {}) const
         {
             return SubmitAsync(&Route53DomainsClient::ListOperations, request, handler, context);
         }
@@ -625,13 +637,13 @@ namespace Route53Domains
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53domains-2014-05-15/ListPrices">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListPricesOutcome ListPrices(const Model::ListPricesRequest& request) const;
+        virtual Model::ListPricesOutcome ListPrices(const Model::ListPricesRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListPrices that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListPricesRequestT = Model::ListPricesRequest>
-        Model::ListPricesOutcomeCallable ListPricesCallable(const ListPricesRequestT& request) const
+        Model::ListPricesOutcomeCallable ListPricesCallable(const ListPricesRequestT& request = {}) const
         {
             return SubmitCallable(&Route53DomainsClient::ListPrices, request);
         }
@@ -640,7 +652,7 @@ namespace Route53Domains
          * An Async wrapper for ListPrices that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListPricesRequestT = Model::ListPricesRequest>
-        void ListPricesAsync(const ListPricesRequestT& request, const ListPricesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListPricesAsync(const ListPricesResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListPricesRequestT& request = {}) const
         {
             return SubmitAsync(&Route53DomainsClient::ListPrices, request, handler, context);
         }
@@ -823,13 +835,13 @@ namespace Route53Domains
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53domains-2014-05-15/ResendContactReachabilityEmail">AWS
          * API Reference</a></p>
          */
-        virtual Model::ResendContactReachabilityEmailOutcome ResendContactReachabilityEmail(const Model::ResendContactReachabilityEmailRequest& request) const;
+        virtual Model::ResendContactReachabilityEmailOutcome ResendContactReachabilityEmail(const Model::ResendContactReachabilityEmailRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ResendContactReachabilityEmail that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ResendContactReachabilityEmailRequestT = Model::ResendContactReachabilityEmailRequest>
-        Model::ResendContactReachabilityEmailOutcomeCallable ResendContactReachabilityEmailCallable(const ResendContactReachabilityEmailRequestT& request) const
+        Model::ResendContactReachabilityEmailOutcomeCallable ResendContactReachabilityEmailCallable(const ResendContactReachabilityEmailRequestT& request = {}) const
         {
             return SubmitCallable(&Route53DomainsClient::ResendContactReachabilityEmail, request);
         }
@@ -838,7 +850,7 @@ namespace Route53Domains
          * An Async wrapper for ResendContactReachabilityEmail that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ResendContactReachabilityEmailRequestT = Model::ResendContactReachabilityEmailRequest>
-        void ResendContactReachabilityEmailAsync(const ResendContactReachabilityEmailRequestT& request, const ResendContactReachabilityEmailResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ResendContactReachabilityEmailAsync(const ResendContactReachabilityEmailResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ResendContactReachabilityEmailRequestT& request = {}) const
         {
             return SubmitAsync(&Route53DomainsClient::ResendContactReachabilityEmail, request, handler, context);
         }
@@ -1144,13 +1156,13 @@ namespace Route53Domains
          * href="http://docs.aws.amazon.com/goto/WebAPI/route53domains-2014-05-15/ViewBilling">AWS
          * API Reference</a></p>
          */
-        virtual Model::ViewBillingOutcome ViewBilling(const Model::ViewBillingRequest& request) const;
+        virtual Model::ViewBillingOutcome ViewBilling(const Model::ViewBillingRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ViewBilling that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ViewBillingRequestT = Model::ViewBillingRequest>
-        Model::ViewBillingOutcomeCallable ViewBillingCallable(const ViewBillingRequestT& request) const
+        Model::ViewBillingOutcomeCallable ViewBillingCallable(const ViewBillingRequestT& request = {}) const
         {
             return SubmitCallable(&Route53DomainsClient::ViewBilling, request);
         }
@@ -1159,7 +1171,7 @@ namespace Route53Domains
          * An Async wrapper for ViewBilling that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ViewBillingRequestT = Model::ViewBillingRequest>
-        void ViewBillingAsync(const ViewBillingRequestT& request, const ViewBillingResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ViewBillingAsync(const ViewBillingResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ViewBillingRequestT& request = {}) const
         {
             return SubmitAsync(&Route53DomainsClient::ViewBilling, request, handler, context);
         }
@@ -1169,11 +1181,7 @@ namespace Route53Domains
       std::shared_ptr<Route53DomainsEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<Route53DomainsClient>;
-      void init(const Route53DomainsClientConfiguration& clientConfiguration);
 
-      Route53DomainsClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<Route53DomainsEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace Route53Domains

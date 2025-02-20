@@ -19,32 +19,31 @@ namespace Model
 {
 
 JobAttachmentDetailsEntity::JobAttachmentDetailsEntity() : 
-    m_attachmentsHasBeenSet(false),
-    m_jobIdHasBeenSet(false)
+    m_jobIdHasBeenSet(false),
+    m_attachmentsHasBeenSet(false)
 {
 }
 
-JobAttachmentDetailsEntity::JobAttachmentDetailsEntity(JsonView jsonValue) : 
-    m_attachmentsHasBeenSet(false),
-    m_jobIdHasBeenSet(false)
+JobAttachmentDetailsEntity::JobAttachmentDetailsEntity(JsonView jsonValue)
+  : JobAttachmentDetailsEntity()
 {
   *this = jsonValue;
 }
 
 JobAttachmentDetailsEntity& JobAttachmentDetailsEntity::operator =(JsonView jsonValue)
 {
-  if(jsonValue.ValueExists("attachments"))
-  {
-    m_attachments = jsonValue.GetObject("attachments");
-
-    m_attachmentsHasBeenSet = true;
-  }
-
   if(jsonValue.ValueExists("jobId"))
   {
     m_jobId = jsonValue.GetString("jobId");
 
     m_jobIdHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("attachments"))
+  {
+    m_attachments = jsonValue.GetObject("attachments");
+
+    m_attachmentsHasBeenSet = true;
   }
 
   return *this;
@@ -54,15 +53,15 @@ JsonValue JobAttachmentDetailsEntity::Jsonize() const
 {
   JsonValue payload;
 
-  if(m_attachmentsHasBeenSet)
-  {
-   payload.WithObject("attachments", m_attachments.Jsonize());
-
-  }
-
   if(m_jobIdHasBeenSet)
   {
    payload.WithString("jobId", m_jobId);
+
+  }
+
+  if(m_attachmentsHasBeenSet)
+  {
+   payload.WithObject("attachments", m_attachments.Jsonize());
 
   }
 

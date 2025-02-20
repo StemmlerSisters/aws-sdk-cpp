@@ -20,13 +20,13 @@ namespace Model
 
 DataDestinationConfig::DataDestinationConfig() : 
     m_s3ConfigHasBeenSet(false),
-    m_timestreamConfigHasBeenSet(false)
+    m_timestreamConfigHasBeenSet(false),
+    m_mqttTopicConfigHasBeenSet(false)
 {
 }
 
-DataDestinationConfig::DataDestinationConfig(JsonView jsonValue) : 
-    m_s3ConfigHasBeenSet(false),
-    m_timestreamConfigHasBeenSet(false)
+DataDestinationConfig::DataDestinationConfig(JsonView jsonValue)
+  : DataDestinationConfig()
 {
   *this = jsonValue;
 }
@@ -47,6 +47,13 @@ DataDestinationConfig& DataDestinationConfig::operator =(JsonView jsonValue)
     m_timestreamConfigHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("mqttTopicConfig"))
+  {
+    m_mqttTopicConfig = jsonValue.GetObject("mqttTopicConfig");
+
+    m_mqttTopicConfigHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -63,6 +70,12 @@ JsonValue DataDestinationConfig::Jsonize() const
   if(m_timestreamConfigHasBeenSet)
   {
    payload.WithObject("timestreamConfig", m_timestreamConfig.Jsonize());
+
+  }
+
+  if(m_mqttTopicConfigHasBeenSet)
+  {
+   payload.WithObject("mqttTopicConfig", m_mqttTopicConfig.Jsonize());
 
   }
 

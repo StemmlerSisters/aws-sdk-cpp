@@ -21,14 +21,15 @@ namespace Model
 TableOptimizerConfiguration::TableOptimizerConfiguration() : 
     m_roleArnHasBeenSet(false),
     m_enabled(false),
-    m_enabledHasBeenSet(false)
+    m_enabledHasBeenSet(false),
+    m_vpcConfigurationHasBeenSet(false),
+    m_retentionConfigurationHasBeenSet(false),
+    m_orphanFileDeletionConfigurationHasBeenSet(false)
 {
 }
 
-TableOptimizerConfiguration::TableOptimizerConfiguration(JsonView jsonValue) : 
-    m_roleArnHasBeenSet(false),
-    m_enabled(false),
-    m_enabledHasBeenSet(false)
+TableOptimizerConfiguration::TableOptimizerConfiguration(JsonView jsonValue)
+  : TableOptimizerConfiguration()
 {
   *this = jsonValue;
 }
@@ -49,6 +50,27 @@ TableOptimizerConfiguration& TableOptimizerConfiguration::operator =(JsonView js
     m_enabledHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("vpcConfiguration"))
+  {
+    m_vpcConfiguration = jsonValue.GetObject("vpcConfiguration");
+
+    m_vpcConfigurationHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("retentionConfiguration"))
+  {
+    m_retentionConfiguration = jsonValue.GetObject("retentionConfiguration");
+
+    m_retentionConfigurationHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("orphanFileDeletionConfiguration"))
+  {
+    m_orphanFileDeletionConfiguration = jsonValue.GetObject("orphanFileDeletionConfiguration");
+
+    m_orphanFileDeletionConfigurationHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -65,6 +87,24 @@ JsonValue TableOptimizerConfiguration::Jsonize() const
   if(m_enabledHasBeenSet)
   {
    payload.WithBool("enabled", m_enabled);
+
+  }
+
+  if(m_vpcConfigurationHasBeenSet)
+  {
+   payload.WithObject("vpcConfiguration", m_vpcConfiguration.Jsonize());
+
+  }
+
+  if(m_retentionConfigurationHasBeenSet)
+  {
+   payload.WithObject("retentionConfiguration", m_retentionConfiguration.Jsonize());
+
+  }
+
+  if(m_orphanFileDeletionConfigurationHasBeenSet)
+  {
+   payload.WithObject("orphanFileDeletionConfiguration", m_orphanFileDeletionConfiguration.Jsonize());
 
   }
 

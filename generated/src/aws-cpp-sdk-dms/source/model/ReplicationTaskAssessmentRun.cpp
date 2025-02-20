@@ -30,23 +30,15 @@ ReplicationTaskAssessmentRun::ReplicationTaskAssessmentRun() :
     m_resultLocationFolderHasBeenSet(false),
     m_resultEncryptionModeHasBeenSet(false),
     m_resultKmsKeyArnHasBeenSet(false),
-    m_assessmentRunNameHasBeenSet(false)
+    m_assessmentRunNameHasBeenSet(false),
+    m_isLatestTaskAssessmentRun(false),
+    m_isLatestTaskAssessmentRunHasBeenSet(false),
+    m_resultStatisticHasBeenSet(false)
 {
 }
 
-ReplicationTaskAssessmentRun::ReplicationTaskAssessmentRun(JsonView jsonValue) : 
-    m_replicationTaskAssessmentRunArnHasBeenSet(false),
-    m_replicationTaskArnHasBeenSet(false),
-    m_statusHasBeenSet(false),
-    m_replicationTaskAssessmentRunCreationDateHasBeenSet(false),
-    m_assessmentProgressHasBeenSet(false),
-    m_lastFailureMessageHasBeenSet(false),
-    m_serviceAccessRoleArnHasBeenSet(false),
-    m_resultLocationBucketHasBeenSet(false),
-    m_resultLocationFolderHasBeenSet(false),
-    m_resultEncryptionModeHasBeenSet(false),
-    m_resultKmsKeyArnHasBeenSet(false),
-    m_assessmentRunNameHasBeenSet(false)
+ReplicationTaskAssessmentRun::ReplicationTaskAssessmentRun(JsonView jsonValue)
+  : ReplicationTaskAssessmentRun()
 {
   *this = jsonValue;
 }
@@ -137,6 +129,20 @@ ReplicationTaskAssessmentRun& ReplicationTaskAssessmentRun::operator =(JsonView 
     m_assessmentRunNameHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("IsLatestTaskAssessmentRun"))
+  {
+    m_isLatestTaskAssessmentRun = jsonValue.GetBool("IsLatestTaskAssessmentRun");
+
+    m_isLatestTaskAssessmentRunHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("ResultStatistic"))
+  {
+    m_resultStatistic = jsonValue.GetObject("ResultStatistic");
+
+    m_resultStatisticHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -212,6 +218,18 @@ JsonValue ReplicationTaskAssessmentRun::Jsonize() const
   if(m_assessmentRunNameHasBeenSet)
   {
    payload.WithString("AssessmentRunName", m_assessmentRunName);
+
+  }
+
+  if(m_isLatestTaskAssessmentRunHasBeenSet)
+  {
+   payload.WithBool("IsLatestTaskAssessmentRun", m_isLatestTaskAssessmentRun);
+
+  }
+
+  if(m_resultStatisticHasBeenSet)
+  {
+   payload.WithObject("ResultStatistic", m_resultStatistic.Jsonize());
 
   }
 

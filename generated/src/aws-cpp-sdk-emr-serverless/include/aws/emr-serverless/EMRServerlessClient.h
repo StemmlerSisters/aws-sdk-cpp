@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/emr-serverless/EMRServerless_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/emr-serverless/EMRServerlessServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/emr-serverless/EMRServerlessErrorMarshaller.h>
 
 namespace Aws
 {
 namespace EMRServerless
 {
+  AWS_EMRSERVERLESS_API extern const char SERVICE_NAME[];
   /**
    * <p>Amazon EMR Serverless is a new deployment option for Amazon EMR. Amazon EMR
    * Serverless provides a serverless runtime environment that simplifies running
@@ -33,12 +37,20 @@ namespace EMRServerless
    * in Amazon EMR Serverless service endpoints. For example,
    * <code>emr-serverless.us-east-2.amazonaws.com</code>.</p> </li> </ul>
    */
-  class AWS_EMRSERVERLESS_API EMRServerlessClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<EMRServerlessClient>
+  class AWS_EMRSERVERLESS_API EMRServerlessClient : smithy::client::AwsSmithyClientT<Aws::EMRServerless::SERVICE_NAME,
+      Aws::EMRServerless::EMRServerlessClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      EMRServerlessEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::EMRServerlessErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<EMRServerlessClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "EMR Serverless"; }
 
       typedef EMRServerlessClientConfiguration ClientConfigurationType;
       typedef EMRServerlessEndpointProvider EndpointProviderType;
@@ -256,13 +268,13 @@ namespace EMRServerless
          * href="http://docs.aws.amazon.com/goto/WebAPI/emr-serverless-2021-07-13/ListApplications">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListApplicationsOutcome ListApplications(const Model::ListApplicationsRequest& request) const;
+        virtual Model::ListApplicationsOutcome ListApplications(const Model::ListApplicationsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListApplications that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListApplicationsRequestT = Model::ListApplicationsRequest>
-        Model::ListApplicationsOutcomeCallable ListApplicationsCallable(const ListApplicationsRequestT& request) const
+        Model::ListApplicationsOutcomeCallable ListApplicationsCallable(const ListApplicationsRequestT& request = {}) const
         {
             return SubmitCallable(&EMRServerlessClient::ListApplications, request);
         }
@@ -271,9 +283,34 @@ namespace EMRServerless
          * An Async wrapper for ListApplications that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListApplicationsRequestT = Model::ListApplicationsRequest>
-        void ListApplicationsAsync(const ListApplicationsRequestT& request, const ListApplicationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListApplicationsAsync(const ListApplicationsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListApplicationsRequestT& request = {}) const
         {
             return SubmitAsync(&EMRServerlessClient::ListApplications, request, handler, context);
+        }
+
+        /**
+         * <p>Lists all attempt of a job run.</p><p><h3>See Also:</h3>   <a
+         * href="http://docs.aws.amazon.com/goto/WebAPI/emr-serverless-2021-07-13/ListJobRunAttempts">AWS
+         * API Reference</a></p>
+         */
+        virtual Model::ListJobRunAttemptsOutcome ListJobRunAttempts(const Model::ListJobRunAttemptsRequest& request) const;
+
+        /**
+         * A Callable wrapper for ListJobRunAttempts that returns a future to the operation so that it can be executed in parallel to other requests.
+         */
+        template<typename ListJobRunAttemptsRequestT = Model::ListJobRunAttemptsRequest>
+        Model::ListJobRunAttemptsOutcomeCallable ListJobRunAttemptsCallable(const ListJobRunAttemptsRequestT& request) const
+        {
+            return SubmitCallable(&EMRServerlessClient::ListJobRunAttempts, request);
+        }
+
+        /**
+         * An Async wrapper for ListJobRunAttempts that queues the request into a thread executor and triggers associated callback when operation has finished.
+         */
+        template<typename ListJobRunAttemptsRequestT = Model::ListJobRunAttemptsRequest>
+        void ListJobRunAttemptsAsync(const ListJobRunAttemptsRequestT& request, const ListJobRunAttemptsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        {
+            return SubmitAsync(&EMRServerlessClient::ListJobRunAttempts, request, handler, context);
         }
 
         /**
@@ -490,11 +527,7 @@ namespace EMRServerless
       std::shared_ptr<EMRServerlessEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<EMRServerlessClient>;
-      void init(const EMRServerlessClientConfiguration& clientConfiguration);
 
-      EMRServerlessClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<EMRServerlessEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace EMRServerless

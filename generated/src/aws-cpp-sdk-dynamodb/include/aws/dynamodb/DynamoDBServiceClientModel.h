@@ -7,7 +7,7 @@
 
 /* Generic header includes */
 #include <aws/dynamodb/DynamoDBErrors.h>
-#include <aws/core/client/GenericClientConfiguration.h>
+#include <aws/dynamodb/DynamoDBClientConfiguration.h>
 #include <aws/core/client/AWSError.h>
 #include <aws/core/utils/memory/stl/AWSString.h>
 #include <aws/core/client/AsyncCallerContext.h>
@@ -74,6 +74,14 @@
 #include <aws/dynamodb/model/UpdateTableResult.h>
 #include <aws/dynamodb/model/UpdateTableReplicaAutoScalingResult.h>
 #include <aws/dynamodb/model/UpdateTimeToLiveResult.h>
+#include <aws/dynamodb/model/DescribeLimitsRequest.h>
+#include <aws/dynamodb/model/ListGlobalTablesRequest.h>
+#include <aws/dynamodb/model/ListImportsRequest.h>
+#include <aws/dynamodb/model/ListBackupsRequest.h>
+#include <aws/dynamodb/model/ListContributorInsightsRequest.h>
+#include <aws/dynamodb/model/ListTablesRequest.h>
+#include <aws/dynamodb/model/DescribeEndpointsRequest.h>
+#include <aws/dynamodb/model/ListExportsRequest.h>
 #include <aws/core/NoResult.h>
 /* End of service model headers required in DynamoDBClient header */
 
@@ -108,7 +116,6 @@ namespace Aws
 
   namespace DynamoDB
   {
-    using DynamoDBClientConfiguration = Aws::Client::GenericClientConfiguration<true>;
     using DynamoDBEndpointProviderBase = Aws::DynamoDB::Endpoint::DynamoDBEndpointProviderBase;
     using DynamoDBEndpointProvider = Aws::DynamoDB::Endpoint::DynamoDBEndpointProvider;
 

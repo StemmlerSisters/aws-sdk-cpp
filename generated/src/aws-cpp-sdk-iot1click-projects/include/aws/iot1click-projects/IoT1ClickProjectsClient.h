@@ -6,24 +6,36 @@
 #pragma once
 #include <aws/iot1click-projects/IoT1ClickProjects_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/iot1click-projects/IoT1ClickProjectsServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/iot1click-projects/IoT1ClickProjectsErrorMarshaller.h>
 
 namespace Aws
 {
 namespace IoT1ClickProjects
 {
+  AWS_IOT1CLICKPROJECTS_API extern const char SERVICE_NAME[];
   /**
    * <p>The AWS IoT 1-Click Projects API Reference</p>
    */
-  class AWS_IOT1CLICKPROJECTS_API IoT1ClickProjectsClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<IoT1ClickProjectsClient>
+  class AWS_IOT1CLICKPROJECTS_API IoT1ClickProjectsClient : smithy::client::AwsSmithyClientT<Aws::IoT1ClickProjects::SERVICE_NAME,
+      Aws::IoT1ClickProjects::IoT1ClickProjectsClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      IoT1ClickProjectsEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::IoT1ClickProjectsErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<IoT1ClickProjectsClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "IoT 1Click Projects"; }
 
       typedef IoT1ClickProjectsClientConfiguration ClientConfigurationType;
       typedef IoT1ClickProjectsEndpointProvider EndpointProviderType;
@@ -339,13 +351,13 @@ namespace IoT1ClickProjects
          * href="http://docs.aws.amazon.com/goto/WebAPI/iot1click-projects-2018-05-14/ListProjects">AWS
          * API Reference</a></p>
          */
-        virtual Model::ListProjectsOutcome ListProjects(const Model::ListProjectsRequest& request) const;
+        virtual Model::ListProjectsOutcome ListProjects(const Model::ListProjectsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListProjects that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListProjectsRequestT = Model::ListProjectsRequest>
-        Model::ListProjectsOutcomeCallable ListProjectsCallable(const ListProjectsRequestT& request) const
+        Model::ListProjectsOutcomeCallable ListProjectsCallable(const ListProjectsRequestT& request = {}) const
         {
             return SubmitCallable(&IoT1ClickProjectsClient::ListProjects, request);
         }
@@ -354,7 +366,7 @@ namespace IoT1ClickProjects
          * An Async wrapper for ListProjects that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListProjectsRequestT = Model::ListProjectsRequest>
-        void ListProjectsAsync(const ListProjectsRequestT& request, const ListProjectsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListProjectsAsync(const ListProjectsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListProjectsRequestT& request = {}) const
         {
             return SubmitAsync(&IoT1ClickProjectsClient::ListProjects, request, handler, context);
         }
@@ -499,11 +511,7 @@ namespace IoT1ClickProjects
       std::shared_ptr<IoT1ClickProjectsEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<IoT1ClickProjectsClient>;
-      void init(const IoT1ClickProjectsClientConfiguration& clientConfiguration);
 
-      IoT1ClickProjectsClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<IoT1ClickProjectsEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace IoT1ClickProjects

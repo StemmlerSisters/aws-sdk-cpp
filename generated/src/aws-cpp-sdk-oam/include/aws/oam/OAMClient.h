@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/oam/OAM_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/oam/OAMServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/oam/OAMErrorMarshaller.h>
 
 namespace Aws
 {
 namespace OAM
 {
+  AWS_OAM_API extern const char SERVICE_NAME[];
   /**
    * <p>Use Amazon CloudWatch Observability Access Manager to create and manage links
    * between source accounts and monitoring accounts by using <i>CloudWatch
@@ -32,12 +36,20 @@ namespace OAM
    * data can include metrics in Amazon CloudWatch, logs in Amazon CloudWatch Logs,
    * traces in X-Ray, and applications in Amazon CloudWatch Application Insights.</p>
    */
-  class AWS_OAM_API OAMClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<OAMClient>
+  class AWS_OAM_API OAMClient : smithy::client::AwsSmithyClientT<Aws::OAM::SERVICE_NAME,
+      Aws::OAM::OAMClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      OAMEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::OAMErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<OAMClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "OAM"; }
 
       typedef OAMClientConfiguration ClientConfigurationType;
       typedef OAMEndpointProvider EndpointProviderType;
@@ -338,13 +350,13 @@ namespace OAM
          * href="http://docs.aws.amazon.com/goto/WebAPI/oam-2022-06-10/ListLinks">AWS API
          * Reference</a></p>
          */
-        virtual Model::ListLinksOutcome ListLinks(const Model::ListLinksRequest& request) const;
+        virtual Model::ListLinksOutcome ListLinks(const Model::ListLinksRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListLinks that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListLinksRequestT = Model::ListLinksRequest>
-        Model::ListLinksOutcomeCallable ListLinksCallable(const ListLinksRequestT& request) const
+        Model::ListLinksOutcomeCallable ListLinksCallable(const ListLinksRequestT& request = {}) const
         {
             return SubmitCallable(&OAMClient::ListLinks, request);
         }
@@ -353,7 +365,7 @@ namespace OAM
          * An Async wrapper for ListLinks that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListLinksRequestT = Model::ListLinksRequest>
-        void ListLinksAsync(const ListLinksRequestT& request, const ListLinksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListLinksAsync(const ListLinksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListLinksRequestT& request = {}) const
         {
             return SubmitAsync(&OAMClient::ListLinks, request, handler, context);
         }
@@ -364,13 +376,13 @@ namespace OAM
          * href="http://docs.aws.amazon.com/goto/WebAPI/oam-2022-06-10/ListSinks">AWS API
          * Reference</a></p>
          */
-        virtual Model::ListSinksOutcome ListSinks(const Model::ListSinksRequest& request) const;
+        virtual Model::ListSinksOutcome ListSinks(const Model::ListSinksRequest& request = {}) const;
 
         /**
          * A Callable wrapper for ListSinks that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename ListSinksRequestT = Model::ListSinksRequest>
-        Model::ListSinksOutcomeCallable ListSinksCallable(const ListSinksRequestT& request) const
+        Model::ListSinksOutcomeCallable ListSinksCallable(const ListSinksRequestT& request = {}) const
         {
             return SubmitCallable(&OAMClient::ListSinks, request);
         }
@@ -379,7 +391,7 @@ namespace OAM
          * An Async wrapper for ListSinks that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename ListSinksRequestT = Model::ListSinksRequest>
-        void ListSinksAsync(const ListSinksRequestT& request, const ListSinksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void ListSinksAsync(const ListSinksResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const ListSinksRequestT& request = {}) const
         {
             return SubmitAsync(&OAMClient::ListSinks, request, handler, context);
         }
@@ -551,11 +563,7 @@ namespace OAM
       std::shared_ptr<OAMEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<OAMClient>;
-      void init(const OAMClientConfiguration& clientConfiguration);
 
-      OAMClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<OAMEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace OAM

@@ -42,205 +42,78 @@ namespace Model
     AWS_IVSREALTIME_API Aws::Utils::Json::JsonValue Jsonize() const;
 
 
+    ///@{
     /**
      * <p>This attribute name identifies the featured slot. A participant with this
      * attribute set to <code>"true"</code> (as a string value) in
-     * <a>ParticipantTokenConfiguration</a> is placed in the featured slot.</p>
+     * <a>ParticipantTokenConfiguration</a> is placed in the featured slot. Default:
+     * <code>""</code> (no featured participant).</p>
      */
     inline const Aws::String& GetFeaturedParticipantAttribute() const{ return m_featuredParticipantAttribute; }
-
-    /**
-     * <p>This attribute name identifies the featured slot. A participant with this
-     * attribute set to <code>"true"</code> (as a string value) in
-     * <a>ParticipantTokenConfiguration</a> is placed in the featured slot.</p>
-     */
     inline bool FeaturedParticipantAttributeHasBeenSet() const { return m_featuredParticipantAttributeHasBeenSet; }
-
-    /**
-     * <p>This attribute name identifies the featured slot. A participant with this
-     * attribute set to <code>"true"</code> (as a string value) in
-     * <a>ParticipantTokenConfiguration</a> is placed in the featured slot.</p>
-     */
     inline void SetFeaturedParticipantAttribute(const Aws::String& value) { m_featuredParticipantAttributeHasBeenSet = true; m_featuredParticipantAttribute = value; }
-
-    /**
-     * <p>This attribute name identifies the featured slot. A participant with this
-     * attribute set to <code>"true"</code> (as a string value) in
-     * <a>ParticipantTokenConfiguration</a> is placed in the featured slot.</p>
-     */
     inline void SetFeaturedParticipantAttribute(Aws::String&& value) { m_featuredParticipantAttributeHasBeenSet = true; m_featuredParticipantAttribute = std::move(value); }
-
-    /**
-     * <p>This attribute name identifies the featured slot. A participant with this
-     * attribute set to <code>"true"</code> (as a string value) in
-     * <a>ParticipantTokenConfiguration</a> is placed in the featured slot.</p>
-     */
     inline void SetFeaturedParticipantAttribute(const char* value) { m_featuredParticipantAttributeHasBeenSet = true; m_featuredParticipantAttribute.assign(value); }
-
-    /**
-     * <p>This attribute name identifies the featured slot. A participant with this
-     * attribute set to <code>"true"</code> (as a string value) in
-     * <a>ParticipantTokenConfiguration</a> is placed in the featured slot.</p>
-     */
     inline GridConfiguration& WithFeaturedParticipantAttribute(const Aws::String& value) { SetFeaturedParticipantAttribute(value); return *this;}
-
-    /**
-     * <p>This attribute name identifies the featured slot. A participant with this
-     * attribute set to <code>"true"</code> (as a string value) in
-     * <a>ParticipantTokenConfiguration</a> is placed in the featured slot.</p>
-     */
     inline GridConfiguration& WithFeaturedParticipantAttribute(Aws::String&& value) { SetFeaturedParticipantAttribute(std::move(value)); return *this;}
-
-    /**
-     * <p>This attribute name identifies the featured slot. A participant with this
-     * attribute set to <code>"true"</code> (as a string value) in
-     * <a>ParticipantTokenConfiguration</a> is placed in the featured slot.</p>
-     */
     inline GridConfiguration& WithFeaturedParticipantAttribute(const char* value) { SetFeaturedParticipantAttribute(value); return *this;}
+    ///@}
 
-
-    /**
-     * <p>Specifies the spacing between participant tiles in pixels. Default:
-     * <code>2</code>.</p>
-     */
-    inline int GetGridGap() const{ return m_gridGap; }
-
-    /**
-     * <p>Specifies the spacing between participant tiles in pixels. Default:
-     * <code>2</code>.</p>
-     */
-    inline bool GridGapHasBeenSet() const { return m_gridGapHasBeenSet; }
-
-    /**
-     * <p>Specifies the spacing between participant tiles in pixels. Default:
-     * <code>2</code>.</p>
-     */
-    inline void SetGridGap(int value) { m_gridGapHasBeenSet = true; m_gridGap = value; }
-
-    /**
-     * <p>Specifies the spacing between participant tiles in pixels. Default:
-     * <code>2</code>.</p>
-     */
-    inline GridConfiguration& WithGridGap(int value) { SetGridGap(value); return *this;}
-
-
+    ///@{
     /**
      * <p>Determines whether to omit participants with stopped video in the
      * composition. Default: <code>false</code>.</p>
      */
     inline bool GetOmitStoppedVideo() const{ return m_omitStoppedVideo; }
-
-    /**
-     * <p>Determines whether to omit participants with stopped video in the
-     * composition. Default: <code>false</code>.</p>
-     */
     inline bool OmitStoppedVideoHasBeenSet() const { return m_omitStoppedVideoHasBeenSet; }
-
-    /**
-     * <p>Determines whether to omit participants with stopped video in the
-     * composition. Default: <code>false</code>.</p>
-     */
     inline void SetOmitStoppedVideo(bool value) { m_omitStoppedVideoHasBeenSet = true; m_omitStoppedVideo = value; }
-
-    /**
-     * <p>Determines whether to omit participants with stopped video in the
-     * composition. Default: <code>false</code>.</p>
-     */
     inline GridConfiguration& WithOmitStoppedVideo(bool value) { SetOmitStoppedVideo(value); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p>Sets the non-featured participant display mode. Default:
-     * <code>VIDEO</code>.</p>
+     * <p>Sets the non-featured participant display mode, to control the aspect ratio
+     * of video tiles. <code>VIDEO</code> is 16:9, <code>SQUARE</code> is 1:1, and
+     * <code>PORTRAIT</code> is 3:4. Default: <code>VIDEO</code>.</p>
      */
     inline const VideoAspectRatio& GetVideoAspectRatio() const{ return m_videoAspectRatio; }
-
-    /**
-     * <p>Sets the non-featured participant display mode. Default:
-     * <code>VIDEO</code>.</p>
-     */
     inline bool VideoAspectRatioHasBeenSet() const { return m_videoAspectRatioHasBeenSet; }
-
-    /**
-     * <p>Sets the non-featured participant display mode. Default:
-     * <code>VIDEO</code>.</p>
-     */
     inline void SetVideoAspectRatio(const VideoAspectRatio& value) { m_videoAspectRatioHasBeenSet = true; m_videoAspectRatio = value; }
-
-    /**
-     * <p>Sets the non-featured participant display mode. Default:
-     * <code>VIDEO</code>.</p>
-     */
     inline void SetVideoAspectRatio(VideoAspectRatio&& value) { m_videoAspectRatioHasBeenSet = true; m_videoAspectRatio = std::move(value); }
-
-    /**
-     * <p>Sets the non-featured participant display mode. Default:
-     * <code>VIDEO</code>.</p>
-     */
     inline GridConfiguration& WithVideoAspectRatio(const VideoAspectRatio& value) { SetVideoAspectRatio(value); return *this;}
-
-    /**
-     * <p>Sets the non-featured participant display mode. Default:
-     * <code>VIDEO</code>.</p>
-     */
     inline GridConfiguration& WithVideoAspectRatio(VideoAspectRatio&& value) { SetVideoAspectRatio(std::move(value)); return *this;}
+    ///@}
 
-
+    ///@{
     /**
-     * <p>Defines how video fits within the participant tile. When not set,
-     * <code>videoFillMode</code> defaults to <code>COVER</code> fill mode for
-     * participants in the grid and to <code>CONTAIN</code> fill mode for featured
-     * participants.</p>
+     * <p>Defines how video content fits within the participant tile: <code>FILL</code>
+     * (stretched), <code>COVER</code> (cropped), or <code>CONTAIN</code>
+     * (letterboxed). When not set, <code>videoFillMode</code> defaults to
+     * <code>COVER</code> fill mode for participants in the grid and to
+     * <code>CONTAIN</code> fill mode for featured participants.</p>
      */
     inline const VideoFillMode& GetVideoFillMode() const{ return m_videoFillMode; }
-
-    /**
-     * <p>Defines how video fits within the participant tile. When not set,
-     * <code>videoFillMode</code> defaults to <code>COVER</code> fill mode for
-     * participants in the grid and to <code>CONTAIN</code> fill mode for featured
-     * participants.</p>
-     */
     inline bool VideoFillModeHasBeenSet() const { return m_videoFillModeHasBeenSet; }
-
-    /**
-     * <p>Defines how video fits within the participant tile. When not set,
-     * <code>videoFillMode</code> defaults to <code>COVER</code> fill mode for
-     * participants in the grid and to <code>CONTAIN</code> fill mode for featured
-     * participants.</p>
-     */
     inline void SetVideoFillMode(const VideoFillMode& value) { m_videoFillModeHasBeenSet = true; m_videoFillMode = value; }
-
-    /**
-     * <p>Defines how video fits within the participant tile. When not set,
-     * <code>videoFillMode</code> defaults to <code>COVER</code> fill mode for
-     * participants in the grid and to <code>CONTAIN</code> fill mode for featured
-     * participants.</p>
-     */
     inline void SetVideoFillMode(VideoFillMode&& value) { m_videoFillModeHasBeenSet = true; m_videoFillMode = std::move(value); }
-
-    /**
-     * <p>Defines how video fits within the participant tile. When not set,
-     * <code>videoFillMode</code> defaults to <code>COVER</code> fill mode for
-     * participants in the grid and to <code>CONTAIN</code> fill mode for featured
-     * participants.</p>
-     */
     inline GridConfiguration& WithVideoFillMode(const VideoFillMode& value) { SetVideoFillMode(value); return *this;}
-
-    /**
-     * <p>Defines how video fits within the participant tile. When not set,
-     * <code>videoFillMode</code> defaults to <code>COVER</code> fill mode for
-     * participants in the grid and to <code>CONTAIN</code> fill mode for featured
-     * participants.</p>
-     */
     inline GridConfiguration& WithVideoFillMode(VideoFillMode&& value) { SetVideoFillMode(std::move(value)); return *this;}
+    ///@}
 
+    ///@{
+    /**
+     * <p>Specifies the spacing between participant tiles in pixels. Default:
+     * <code>2</code>.</p>
+     */
+    inline int GetGridGap() const{ return m_gridGap; }
+    inline bool GridGapHasBeenSet() const { return m_gridGapHasBeenSet; }
+    inline void SetGridGap(int value) { m_gridGapHasBeenSet = true; m_gridGap = value; }
+    inline GridConfiguration& WithGridGap(int value) { SetGridGap(value); return *this;}
+    ///@}
   private:
 
     Aws::String m_featuredParticipantAttribute;
     bool m_featuredParticipantAttributeHasBeenSet = false;
-
-    int m_gridGap;
-    bool m_gridGapHasBeenSet = false;
 
     bool m_omitStoppedVideo;
     bool m_omitStoppedVideoHasBeenSet = false;
@@ -250,6 +123,9 @@ namespace Model
 
     VideoFillMode m_videoFillMode;
     bool m_videoFillModeHasBeenSet = false;
+
+    int m_gridGap;
+    bool m_gridGapHasBeenSet = false;
   };
 
 } // namespace Model

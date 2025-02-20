@@ -20,10 +20,13 @@ CreateFleetRequest::CreateFleetRequest() :
     m_environmentTypeHasBeenSet(false),
     m_computeType(ComputeType::NOT_SET),
     m_computeTypeHasBeenSet(false),
+    m_computeConfigurationHasBeenSet(false),
     m_scalingConfigurationHasBeenSet(false),
     m_overflowBehavior(FleetOverflowBehavior::NOT_SET),
     m_overflowBehaviorHasBeenSet(false),
     m_vpcConfigHasBeenSet(false),
+    m_proxyConfigurationHasBeenSet(false),
+    m_imageIdHasBeenSet(false),
     m_fleetServiceRoleHasBeenSet(false),
     m_tagsHasBeenSet(false)
 {
@@ -55,6 +58,12 @@ Aws::String CreateFleetRequest::SerializePayload() const
    payload.WithString("computeType", ComputeTypeMapper::GetNameForComputeType(m_computeType));
   }
 
+  if(m_computeConfigurationHasBeenSet)
+  {
+   payload.WithObject("computeConfiguration", m_computeConfiguration.Jsonize());
+
+  }
+
   if(m_scalingConfigurationHasBeenSet)
   {
    payload.WithObject("scalingConfiguration", m_scalingConfiguration.Jsonize());
@@ -69,6 +78,18 @@ Aws::String CreateFleetRequest::SerializePayload() const
   if(m_vpcConfigHasBeenSet)
   {
    payload.WithObject("vpcConfig", m_vpcConfig.Jsonize());
+
+  }
+
+  if(m_proxyConfigurationHasBeenSet)
+  {
+   payload.WithObject("proxyConfiguration", m_proxyConfiguration.Jsonize());
+
+  }
+
+  if(m_imageIdHasBeenSet)
+  {
+   payload.WithString("imageId", m_imageId);
 
   }
 

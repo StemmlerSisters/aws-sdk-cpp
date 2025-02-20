@@ -6,15 +6,19 @@
 #pragma once
 #include <aws/marketplace-agreement/AgreementService_EXPORTS.h>
 #include <aws/core/client/ClientConfiguration.h>
-#include <aws/core/client/AWSClient.h>
 #include <aws/core/client/AWSClientAsyncCRTP.h>
-#include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/marketplace-agreement/AgreementServiceServiceClientModel.h>
+#include <smithy/client/AwsSmithyClient.h>
+#include <smithy/identity/auth/built-in/SigV4AuthSchemeResolver.h>
+#include <smithy/identity/auth/built-in/SigV4AuthScheme.h>
+#include <smithy/client/serializer/JsonOutcomeSerializer.h>
+#include <aws/marketplace-agreement/AgreementServiceErrorMarshaller.h>
 
 namespace Aws
 {
 namespace AgreementService
 {
+  AWS_AGREEMENTSERVICE_API extern const char SERVICE_NAME[];
   /**
    * <p>AWS Marketplace is a curated digital catalog that customers can use to find,
    * buy, deploy, and manage third-party software, data, and services to build
@@ -31,12 +35,20 @@ namespace AgreementService
    * <li> <p> <code>SearchAgreements</code> – Grants permission to users to search
    * through all their agreements.</p> </li> </ul>
    */
-  class AWS_AGREEMENTSERVICE_API AgreementServiceClient : public Aws::Client::AWSJsonClient, public Aws::Client::ClientWithAsyncTemplateMethods<AgreementServiceClient>
+  class AWS_AGREEMENTSERVICE_API AgreementServiceClient : smithy::client::AwsSmithyClientT<Aws::AgreementService::SERVICE_NAME,
+      Aws::AgreementService::AgreementServiceClientConfiguration,
+      smithy::SigV4AuthSchemeResolver<>,
+      Aws::Crt::Variant<smithy::SigV4AuthScheme>,
+      AgreementServiceEndpointProviderBase,
+      smithy::client::JsonOutcomeSerializer,
+      smithy::client::JsonOutcome,
+      Aws::Client::AgreementServiceErrorMarshaller>,
+    Aws::Client::ClientWithAsyncTemplateMethods<AgreementServiceClient>
   {
     public:
-      typedef Aws::Client::AWSJsonClient BASECLASS;
       static const char* GetServiceName();
       static const char* GetAllocationTag();
+      inline const char* GetServiceClientName() const override { return "Marketplace Agreement"; }
 
       typedef AgreementServiceClientConfiguration ClientConfigurationType;
       typedef AgreementServiceEndpointProvider EndpointProviderType;
@@ -192,13 +204,13 @@ namespace AgreementService
          * href="http://docs.aws.amazon.com/goto/WebAPI/marketplace-agreement-2020-03-01/SearchAgreements">AWS
          * API Reference</a></p>
          */
-        virtual Model::SearchAgreementsOutcome SearchAgreements(const Model::SearchAgreementsRequest& request) const;
+        virtual Model::SearchAgreementsOutcome SearchAgreements(const Model::SearchAgreementsRequest& request = {}) const;
 
         /**
          * A Callable wrapper for SearchAgreements that returns a future to the operation so that it can be executed in parallel to other requests.
          */
         template<typename SearchAgreementsRequestT = Model::SearchAgreementsRequest>
-        Model::SearchAgreementsOutcomeCallable SearchAgreementsCallable(const SearchAgreementsRequestT& request) const
+        Model::SearchAgreementsOutcomeCallable SearchAgreementsCallable(const SearchAgreementsRequestT& request = {}) const
         {
             return SubmitCallable(&AgreementServiceClient::SearchAgreements, request);
         }
@@ -207,7 +219,7 @@ namespace AgreementService
          * An Async wrapper for SearchAgreements that queues the request into a thread executor and triggers associated callback when operation has finished.
          */
         template<typename SearchAgreementsRequestT = Model::SearchAgreementsRequest>
-        void SearchAgreementsAsync(const SearchAgreementsRequestT& request, const SearchAgreementsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr) const
+        void SearchAgreementsAsync(const SearchAgreementsResponseReceivedHandler& handler, const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context = nullptr, const SearchAgreementsRequestT& request = {}) const
         {
             return SubmitAsync(&AgreementServiceClient::SearchAgreements, request, handler, context);
         }
@@ -217,11 +229,7 @@ namespace AgreementService
       std::shared_ptr<AgreementServiceEndpointProviderBase>& accessEndpointProvider();
     private:
       friend class Aws::Client::ClientWithAsyncTemplateMethods<AgreementServiceClient>;
-      void init(const AgreementServiceClientConfiguration& clientConfiguration);
 
-      AgreementServiceClientConfiguration m_clientConfiguration;
-      std::shared_ptr<Aws::Utils::Threading::Executor> m_executor;
-      std::shared_ptr<AgreementServiceEndpointProviderBase> m_endpointProvider;
   };
 
 } // namespace AgreementService

@@ -20,17 +20,15 @@ namespace Model
 
 BatchGetDocumentStatusResponseError::BatchGetDocumentStatusResponseError() : 
     m_documentIdHasBeenSet(false),
+    m_dataSourceIdHasBeenSet(false),
     m_errorCode(ErrorCode::NOT_SET),
     m_errorCodeHasBeenSet(false),
     m_errorMessageHasBeenSet(false)
 {
 }
 
-BatchGetDocumentStatusResponseError::BatchGetDocumentStatusResponseError(JsonView jsonValue) : 
-    m_documentIdHasBeenSet(false),
-    m_errorCode(ErrorCode::NOT_SET),
-    m_errorCodeHasBeenSet(false),
-    m_errorMessageHasBeenSet(false)
+BatchGetDocumentStatusResponseError::BatchGetDocumentStatusResponseError(JsonView jsonValue)
+  : BatchGetDocumentStatusResponseError()
 {
   *this = jsonValue;
 }
@@ -42,6 +40,13 @@ BatchGetDocumentStatusResponseError& BatchGetDocumentStatusResponseError::operat
     m_documentId = jsonValue.GetString("DocumentId");
 
     m_documentIdHasBeenSet = true;
+  }
+
+  if(jsonValue.ValueExists("DataSourceId"))
+  {
+    m_dataSourceId = jsonValue.GetString("DataSourceId");
+
+    m_dataSourceIdHasBeenSet = true;
   }
 
   if(jsonValue.ValueExists("ErrorCode"))
@@ -68,6 +73,12 @@ JsonValue BatchGetDocumentStatusResponseError::Jsonize() const
   if(m_documentIdHasBeenSet)
   {
    payload.WithString("DocumentId", m_documentId);
+
+  }
+
+  if(m_dataSourceIdHasBeenSet)
+  {
+   payload.WithString("DataSourceId", m_dataSourceId);
 
   }
 

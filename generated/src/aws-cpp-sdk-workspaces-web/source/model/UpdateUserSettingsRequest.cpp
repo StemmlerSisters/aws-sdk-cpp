@@ -18,6 +18,8 @@ UpdateUserSettingsRequest::UpdateUserSettingsRequest() :
     m_cookieSynchronizationConfigurationHasBeenSet(false),
     m_copyAllowed(EnabledType::NOT_SET),
     m_copyAllowedHasBeenSet(false),
+    m_deepLinkAllowed(EnabledType::NOT_SET),
+    m_deepLinkAllowedHasBeenSet(false),
     m_disconnectTimeoutInMinutes(0),
     m_disconnectTimeoutInMinutesHasBeenSet(false),
     m_downloadAllowed(EnabledType::NOT_SET),
@@ -28,6 +30,7 @@ UpdateUserSettingsRequest::UpdateUserSettingsRequest() :
     m_pasteAllowedHasBeenSet(false),
     m_printAllowed(EnabledType::NOT_SET),
     m_printAllowedHasBeenSet(false),
+    m_toolbarConfigurationHasBeenSet(false),
     m_uploadAllowed(EnabledType::NOT_SET),
     m_uploadAllowedHasBeenSet(false),
     m_userSettingsArnHasBeenSet(false)
@@ -55,6 +58,11 @@ Aws::String UpdateUserSettingsRequest::SerializePayload() const
    payload.WithString("copyAllowed", EnabledTypeMapper::GetNameForEnabledType(m_copyAllowed));
   }
 
+  if(m_deepLinkAllowedHasBeenSet)
+  {
+   payload.WithString("deepLinkAllowed", EnabledTypeMapper::GetNameForEnabledType(m_deepLinkAllowed));
+  }
+
   if(m_disconnectTimeoutInMinutesHasBeenSet)
   {
    payload.WithInteger("disconnectTimeoutInMinutes", m_disconnectTimeoutInMinutes);
@@ -80,6 +88,12 @@ Aws::String UpdateUserSettingsRequest::SerializePayload() const
   if(m_printAllowedHasBeenSet)
   {
    payload.WithString("printAllowed", EnabledTypeMapper::GetNameForEnabledType(m_printAllowed));
+  }
+
+  if(m_toolbarConfigurationHasBeenSet)
+  {
+   payload.WithObject("toolbarConfiguration", m_toolbarConfiguration.Jsonize());
+
   }
 
   if(m_uploadAllowedHasBeenSet)

@@ -53,46 +53,14 @@ UserPoolType::UserPoolType() :
     m_userPoolAddOnsHasBeenSet(false),
     m_usernameConfigurationHasBeenSet(false),
     m_arnHasBeenSet(false),
-    m_accountRecoverySettingHasBeenSet(false)
+    m_accountRecoverySettingHasBeenSet(false),
+    m_userPoolTier(UserPoolTierType::NOT_SET),
+    m_userPoolTierHasBeenSet(false)
 {
 }
 
-UserPoolType::UserPoolType(JsonView jsonValue) : 
-    m_idHasBeenSet(false),
-    m_nameHasBeenSet(false),
-    m_policiesHasBeenSet(false),
-    m_deletionProtection(DeletionProtectionType::NOT_SET),
-    m_deletionProtectionHasBeenSet(false),
-    m_lambdaConfigHasBeenSet(false),
-    m_lastModifiedDateHasBeenSet(false),
-    m_creationDateHasBeenSet(false),
-    m_schemaAttributesHasBeenSet(false),
-    m_autoVerifiedAttributesHasBeenSet(false),
-    m_aliasAttributesHasBeenSet(false),
-    m_usernameAttributesHasBeenSet(false),
-    m_smsVerificationMessageHasBeenSet(false),
-    m_emailVerificationMessageHasBeenSet(false),
-    m_emailVerificationSubjectHasBeenSet(false),
-    m_verificationMessageTemplateHasBeenSet(false),
-    m_smsAuthenticationMessageHasBeenSet(false),
-    m_userAttributeUpdateSettingsHasBeenSet(false),
-    m_mfaConfiguration(UserPoolMfaType::NOT_SET),
-    m_mfaConfigurationHasBeenSet(false),
-    m_deviceConfigurationHasBeenSet(false),
-    m_estimatedNumberOfUsers(0),
-    m_estimatedNumberOfUsersHasBeenSet(false),
-    m_emailConfigurationHasBeenSet(false),
-    m_smsConfigurationHasBeenSet(false),
-    m_userPoolTagsHasBeenSet(false),
-    m_smsConfigurationFailureHasBeenSet(false),
-    m_emailConfigurationFailureHasBeenSet(false),
-    m_domainHasBeenSet(false),
-    m_customDomainHasBeenSet(false),
-    m_adminCreateUserConfigHasBeenSet(false),
-    m_userPoolAddOnsHasBeenSet(false),
-    m_usernameConfigurationHasBeenSet(false),
-    m_arnHasBeenSet(false),
-    m_accountRecoverySettingHasBeenSet(false)
+UserPoolType::UserPoolType(JsonView jsonValue)
+  : UserPoolType()
 {
   *this = jsonValue;
 }
@@ -338,6 +306,13 @@ UserPoolType& UserPoolType::operator =(JsonView jsonValue)
     m_accountRecoverySettingHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("UserPoolTier"))
+  {
+    m_userPoolTier = UserPoolTierTypeMapper::GetUserPoolTierTypeForName(jsonValue.GetString("UserPoolTier"));
+
+    m_userPoolTierHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -556,6 +531,11 @@ JsonValue UserPoolType::Jsonize() const
   {
    payload.WithObject("AccountRecoverySetting", m_accountRecoverySetting.Jsonize());
 
+  }
+
+  if(m_userPoolTierHasBeenSet)
+  {
+   payload.WithString("UserPoolTier", UserPoolTierTypeMapper::GetNameForUserPoolTierType(m_userPoolTier));
   }
 
   return payload;

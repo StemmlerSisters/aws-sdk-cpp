@@ -23,16 +23,13 @@ PipelineDetail::PipelineDetail() :
     m_activeInputSwitchActionNameHasBeenSet(false),
     m_activeMotionGraphicsActionNameHasBeenSet(false),
     m_activeMotionGraphicsUriHasBeenSet(false),
-    m_pipelineIdHasBeenSet(false)
+    m_pipelineIdHasBeenSet(false),
+    m_channelEngineVersionHasBeenSet(false)
 {
 }
 
-PipelineDetail::PipelineDetail(JsonView jsonValue) : 
-    m_activeInputAttachmentNameHasBeenSet(false),
-    m_activeInputSwitchActionNameHasBeenSet(false),
-    m_activeMotionGraphicsActionNameHasBeenSet(false),
-    m_activeMotionGraphicsUriHasBeenSet(false),
-    m_pipelineIdHasBeenSet(false)
+PipelineDetail::PipelineDetail(JsonView jsonValue)
+  : PipelineDetail()
 {
   *this = jsonValue;
 }
@@ -74,6 +71,13 @@ PipelineDetail& PipelineDetail::operator =(JsonView jsonValue)
     m_pipelineIdHasBeenSet = true;
   }
 
+  if(jsonValue.ValueExists("channelEngineVersion"))
+  {
+    m_channelEngineVersion = jsonValue.GetObject("channelEngineVersion");
+
+    m_channelEngineVersionHasBeenSet = true;
+  }
+
   return *this;
 }
 
@@ -108,6 +112,12 @@ JsonValue PipelineDetail::Jsonize() const
   if(m_pipelineIdHasBeenSet)
   {
    payload.WithString("pipelineId", m_pipelineId);
+
+  }
+
+  if(m_channelEngineVersionHasBeenSet)
+  {
+   payload.WithObject("channelEngineVersion", m_channelEngineVersion.Jsonize());
 
   }
 
