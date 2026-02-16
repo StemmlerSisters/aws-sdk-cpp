@@ -6,42 +6,42 @@
 #include <aws/core/Globals.h>
 #include <aws/core/utils/EnumParseOverflowContainer.h>
 #include <aws/core/utils/HashingUtils.h>
-#include <aws/qconnect/model/MessageType.h>
+#include <aws/kafka/model/NetworkType.h>
 
 using namespace Aws::Utils;
 
 namespace Aws {
-namespace QConnect {
+namespace Kafka {
 namespace Model {
-namespace MessageTypeMapper {
+namespace NetworkTypeMapper {
 
-static const int TEXT_HASH = HashingUtils::HashString("TEXT");
-static const int TOOL_USE_RESULT_HASH = HashingUtils::HashString("TOOL_USE_RESULT");
+static const int IPV4_HASH = HashingUtils::HashString("IPV4");
+static const int DUAL_HASH = HashingUtils::HashString("DUAL");
 
-MessageType GetMessageTypeForName(const Aws::String& name) {
+NetworkType GetNetworkTypeForName(const Aws::String& name) {
   int hashCode = HashingUtils::HashString(name.c_str());
-  if (hashCode == TEXT_HASH) {
-    return MessageType::TEXT;
-  } else if (hashCode == TOOL_USE_RESULT_HASH) {
-    return MessageType::TOOL_USE_RESULT;
+  if (hashCode == IPV4_HASH) {
+    return NetworkType::IPV4;
+  } else if (hashCode == DUAL_HASH) {
+    return NetworkType::DUAL;
   }
   EnumParseOverflowContainer* overflowContainer = Aws::GetEnumOverflowContainer();
   if (overflowContainer) {
     overflowContainer->StoreOverflow(hashCode, name);
-    return static_cast<MessageType>(hashCode);
+    return static_cast<NetworkType>(hashCode);
   }
 
-  return MessageType::NOT_SET;
+  return NetworkType::NOT_SET;
 }
 
-Aws::String GetNameForMessageType(MessageType enumValue) {
+Aws::String GetNameForNetworkType(NetworkType enumValue) {
   switch (enumValue) {
-    case MessageType::NOT_SET:
+    case NetworkType::NOT_SET:
       return {};
-    case MessageType::TEXT:
-      return "TEXT";
-    case MessageType::TOOL_USE_RESULT:
-      return "TOOL_USE_RESULT";
+    case NetworkType::IPV4:
+      return "IPV4";
+    case NetworkType::DUAL:
+      return "DUAL";
     default:
       EnumParseOverflowContainer* overflowContainer = Aws::GetEnumOverflowContainer();
       if (overflowContainer) {
@@ -52,7 +52,7 @@ Aws::String GetNameForMessageType(MessageType enumValue) {
   }
 }
 
-}  // namespace MessageTypeMapper
+}  // namespace NetworkTypeMapper
 }  // namespace Model
-}  // namespace QConnect
+}  // namespace Kafka
 }  // namespace Aws

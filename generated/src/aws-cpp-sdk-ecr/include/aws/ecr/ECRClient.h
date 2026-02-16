@@ -1124,8 +1124,9 @@ class AWS_ECR_API ECRClient : public Aws::Client::AWSJsonClient,
   }
 
   /**
-   * <p>Lists the artifacts associated with a specified subject image.</p><p><h3>See
-   * Also:</h3>   <a
+   * <p>Lists the artifacts associated with a specified subject image.</p>
+   * <p>The IAM principal invoking this operation must have the
+   * <code>ecr:BatchGetImage</code> permission.</p> <p><h3>See Also:</h3>   <a
    * href="http://docs.aws.amazon.com/goto/WebAPI/ecr-2015-09-21/ListImageReferrers">AWS
    * API Reference</a></p>
    */

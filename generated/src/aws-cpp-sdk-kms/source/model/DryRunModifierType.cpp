@@ -6,42 +6,37 @@
 #include <aws/core/Globals.h>
 #include <aws/core/utils/EnumParseOverflowContainer.h>
 #include <aws/core/utils/HashingUtils.h>
-#include <aws/qconnect/model/MessageType.h>
+#include <aws/kms/model/DryRunModifierType.h>
 
 using namespace Aws::Utils;
 
 namespace Aws {
-namespace QConnect {
+namespace KMS {
 namespace Model {
-namespace MessageTypeMapper {
+namespace DryRunModifierTypeMapper {
 
-static const int TEXT_HASH = HashingUtils::HashString("TEXT");
-static const int TOOL_USE_RESULT_HASH = HashingUtils::HashString("TOOL_USE_RESULT");
+static const int IGNORE_CIPHERTEXT_HASH = HashingUtils::HashString("IGNORE_CIPHERTEXT");
 
-MessageType GetMessageTypeForName(const Aws::String& name) {
+DryRunModifierType GetDryRunModifierTypeForName(const Aws::String& name) {
   int hashCode = HashingUtils::HashString(name.c_str());
-  if (hashCode == TEXT_HASH) {
-    return MessageType::TEXT;
-  } else if (hashCode == TOOL_USE_RESULT_HASH) {
-    return MessageType::TOOL_USE_RESULT;
+  if (hashCode == IGNORE_CIPHERTEXT_HASH) {
+    return DryRunModifierType::IGNORE_CIPHERTEXT;
   }
   EnumParseOverflowContainer* overflowContainer = Aws::GetEnumOverflowContainer();
   if (overflowContainer) {
     overflowContainer->StoreOverflow(hashCode, name);
-    return static_cast<MessageType>(hashCode);
+    return static_cast<DryRunModifierType>(hashCode);
   }
 
-  return MessageType::NOT_SET;
+  return DryRunModifierType::NOT_SET;
 }
 
-Aws::String GetNameForMessageType(MessageType enumValue) {
+Aws::String GetNameForDryRunModifierType(DryRunModifierType enumValue) {
   switch (enumValue) {
-    case MessageType::NOT_SET:
+    case DryRunModifierType::NOT_SET:
       return {};
-    case MessageType::TEXT:
-      return "TEXT";
-    case MessageType::TOOL_USE_RESULT:
-      return "TOOL_USE_RESULT";
+    case DryRunModifierType::IGNORE_CIPHERTEXT:
+      return "IGNORE_CIPHERTEXT";
     default:
       EnumParseOverflowContainer* overflowContainer = Aws::GetEnumOverflowContainer();
       if (overflowContainer) {
@@ -52,7 +47,7 @@ Aws::String GetNameForMessageType(MessageType enumValue) {
   }
 }
 
-}  // namespace MessageTypeMapper
+}  // namespace DryRunModifierTypeMapper
 }  // namespace Model
-}  // namespace QConnect
+}  // namespace KMS
 }  // namespace Aws
